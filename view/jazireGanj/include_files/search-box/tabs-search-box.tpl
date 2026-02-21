@@ -1,7 +1,7 @@
 <ul class="nav" id="searchBoxTabs">
     {foreach $info_access_client_to_service as $key=>$client}
         {if  $smarty.const.GDS_SWITCH eq 'mainPage'}
-test
+
             {if ($smarty.const.SOFTWARE_LANG eq 'fa') || $client['MainService'] neq 'Train' && $client['MainService'] neq 'Bus' &&
             $client['MainService'] neq 'Europcar' && $client['MainService'] neq 'GashtTransfer' && $client['MainService'] neq 'Package'}
                 <li class="nav-item">
