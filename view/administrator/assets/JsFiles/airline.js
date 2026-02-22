@@ -171,9 +171,6 @@ $(document).ready(function () {
     $('.js-switch').each(function() {
         new Switchery($(this)[0], $(this).data());
     });
-
-
-
     $("#AddRoute").validate({
         rules: {
             nameFa: "required",
@@ -247,7 +244,6 @@ $(document).ready(function () {
 
 
     });
-
     $("#EditRoute").validate({
         rules: {
             nameFa: "required",
@@ -319,6 +315,75 @@ $(document).ready(function () {
         }
 
 
+    });
+    $("#airlinePriceCeilingForm").submit(function(e) {
+        e.preventDefault();
+
+        var airlineIata = $('#airline_iata_id').val().trim().toUpperCase();
+        var origin = $('#origin').val().trim().toUpperCase();
+        var destination = $('#destination').val().trim().toUpperCase();
+        var ceiling_price = $('#ceiling_price').val().trim().toUpperCase();
+        // اعتبارسنجی ساده
+        if (!airlineIata) {
+            alert('لطفا نام ایرلاین را وارد کنید');
+            return;
+        }
+        if (!origin) {
+            alert('لطفا مبدا را وارد کنید');
+            return;
+        }
+
+        if (!destination) {
+            alert('لطفا مقصد را وارد کنید');
+            return;
+        }
+        if (!ceiling_price) {
+            alert('لطفا سقف قیمت ایرلاین را وارد کنید');
+            return;
+        }
+
+
+        // غیرفعال کردن دکمه برای جلوگیری از کلیک‌های مکرر
+        $('#addAirlineBtn').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> در حال افزودن...');
+
+        // ارسال درخواست Ajax
+        $.ajax({
+            url: amadeusPath + 'user_ajax.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                airlineIata: airlineIata,
+                origin: origin,
+                destination: destination,
+                ceiling_price: ceiling_price,
+                flag: 'add_ceilingPrice'
+            },
+            success: function(response) {
+                if (response) {
+                    $.toast({
+                        heading: 'با موفقیت ایرلاین اضافه شد.',
+                        position: 'top-right',
+                        loaderBg: '#fff',
+                        icon: 'success',
+                        hideAfter: 3500,
+                        textAlign: 'right',
+                        stack: 6
+                    });
+                    location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                $.toast({
+                    heading: 'خطا در پردازش',
+                    position: 'top-right',
+                    loaderBg: '#fff',
+                    icon: 'error',
+                    hideAfter: 3500,
+                    textAlign: 'right',
+                    stack: 6
+                });
+            }
+        });
     });
 });
 
