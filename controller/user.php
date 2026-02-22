@@ -1699,7 +1699,7 @@ class user extends baseController
                     }
 
                 }
-                //list button
+                //list button 1401/12/02
                if (
                    $item['StatusCancel'] !== 'close' && $item['StatusCancel'] !== 'ConfirmCancel' &&
                    $item['StatusCancel'] !== '' && $item['StatusCancel'] !== NULL
@@ -3432,8 +3432,10 @@ class user extends baseController
 
         $conditions = '';
         $conditions_flight = '';
+        $factor_number_flight= '';
         $factor_number = '';
         $passenger_factor_num = '';
+        $successfull_flight= '';
         $successfull = '';
         $status = '';
         if (!empty($param['startDate']) && !empty($param['endDate'])) {
@@ -3442,22 +3444,25 @@ class user extends baseController
             $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
             $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             $conditions .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
-            $conditions_flight .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
+            $conditions_flight .= " AND b.creation_date_int >= '{$date_of_int}' AND b.creation_date_int  <= '{$date_to_int}'";
         }
         if (isset($param['factorNumber']) && $param['factorNumber'] != '') {
+            $factor_number_flight .= " AND (b.factor_number  LIKE '%{$param['factorNumber']}%') ";
             $factor_number .= " AND (factor_number  LIKE '%{$param['factorNumber']}%') ";
             $passenger_factor_num .= " AND (passenger_factor_num LIKE '%{$param['factorNumber']}%') ";
         }
         if (isset($param['statusGroup']) && $param['statusGroup'] == 'cancel') {
+            $successfull_flight .= " AND b.successfull = 'book' AND b.request_cancel = 'confirm' ";
             $successfull .= " AND successfull = 'book' AND request_cancel = 'confirm' ";
             $status .= " AND (status = 'book' || status = 'BookedSuccessfully') AND request_cancel = 'confirm'  ";
         }elseif(isset($param['statusGroup']) && $param['statusGroup'] != '') {
+            $successfull_flight .= " AND (b.successfull LIKE '%{$param['statusGroup']}%') ";
             $successfull .= " AND (successfull LIKE '%{$param['statusGroup']}%') ";
             $status .= " AND (status LIKE '%{$param['statusGroup']}%') ";
         }
         if (isset($param['passengerName']) && $param['passengerName'] != '') {
             $conditions .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%'))";
-            $conditions_flight .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%') OR (concat(passenger_name_en,' ',passenger_family_en) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name_en,passenger_family_en) LIKE '%{$param['passengerName']}%'))";
+            $conditions_flight .= " AND ((concat(b.passenger_name,' ',b.passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(b.passenger_name,b.passenger_family) LIKE '%{$param['passengerName']}%') OR (concat(b.passenger_name_en,' ',b.passenger_family_en) LIKE '%{$param['passengerName']}%')  OR (concat(b.passenger_name_en,b.passenger_family_en) LIKE '%{$param['passengerName']}%'))";
         }
         $tableNameFlight = 'book_local_tb';
         $tableNameBus = 'book_bus_tb';
@@ -3474,20 +3479,20 @@ class user extends baseController
         $sql = "
             SELECT
                  'flight' As moduleTitle,                 
-                  passenger_name AS passenger_name,
-                  passenger_family AS passenger_family,     
-                  passenger_name_en AS passenger_name_en,
-                  passenger_family_en AS passenger_family_en,
+                  b.passenger_name AS passenger_name,
+                  b.passenger_family AS passenger_family,     
+                  b.passenger_name_en AS passenger_name_en,
+                  b.passenger_family_en AS passenger_family_en,
                   '' AS passenger_serviceRequestType,
                   '' AS passenger_serviceName,
                   '' AS passenger_serviceCityName,
                   '' AS passenger_number,
-                  total_price AS total_price,
-                  factor_number AS factor_number,
+                  b.total_price AS total_price,
+                  b.factor_number AS factor_number,
                   '' AS entertainment_data_json,
-                  creation_date_int AS  creation_date_int,
-                  successfull AS statusBook, 
-                  request_cancel AS request_cancel, 
+                  b.creation_date_int AS  creation_date_int,
+                  b.successfull AS statusBook, 
+                  b.request_cancel AS request_cancel, 
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3518,14 +3523,14 @@ class user extends baseController
                   '' AS passengers_file_tour,    
                   '' AS passenger_factor_num,
                   '' AS order_code,
-                  request_number AS request_number,
-                  airline_name AS airline_name,
-                  time_flight AS time_flight,
-                  flight_type AS flight_type,
-                  date_flight AS date_flight,
-                  IsInternal AS IsInternal,
-                  flight_number AS flight_number,
-                  eticket_number AS eticket_number,
+                  b.request_number AS request_number,
+                  b.airline_name AS airline_name,
+                  b.time_flight AS time_flight,
+                  b.flight_type AS flight_type,
+                  b.date_flight AS date_flight,
+                  b.IsInternal AS IsInternal,
+                  b.flight_number AS flight_number,
+                  b.eticket_number AS eticket_number,
                   '' AS DateMove,
                   '' AS TimeMove,
                   '' AS BaseCompany,
@@ -3533,22 +3538,30 @@ class user extends baseController
                   '' AS chairs,
                   '' AS passenger_birthday_en,
                   '' AS passenger_birthday,
-                  origin_city AS origin_city,
-                  desti_city AS desti_city,
+                  b.origin_city AS origin_city,
+                  b.desti_city AS desti_city,
                   ''  AS ExitDate,
                   ''  AS ExitTime,
                   ''  AS CompanyName,
                   ''  AS WagonName,
-                  direction  AS direction,
+                  b.direction  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber
+                  ''  AS TrainNumber,
+                  c.Status AS StatusCancel
             FROM
-                {$tableNameFlight}
+                {$tableNameFlight}  as b
+                 LEFT JOIN cancel_ticket_details_tb c 
+                    ON b.factor_number = c.FactorNumber
+                    AND c.RequestNumber = (
+                        SELECT MAX(c2.RequestNumber)
+                        FROM cancel_ticket_details_tb c2
+                        WHERE c2.FactorNumber = b.factor_number
+                    )
             WHERE
-                member_id = '{$memberId}'
-                {$conditions_flight} {$factor_number} {$successfull}
+                b.member_id = '{$memberId}'
+                {$conditions_flight} {$factor_number_flight} {$successfull_flight}
             GROUP BY 
-                request_number 
+                b.request_number 
              UNION
             SELECT
                  'bus' As moduleTitle,
@@ -3619,7 +3632,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber
+                  ''  AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameBus} 
             WHERE
@@ -3697,7 +3711,8 @@ class user extends baseController
                   WagonName  AS WagonName,
                   ''  AS direction,
                   TicketNumber  AS TicketNumber,
-                  TrainNumber  AS TrainNumber
+                  TrainNumber  AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameTrain} 
             WHERE
@@ -3776,7 +3791,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber
+                  ''  AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameGasht} 
             WHERE
@@ -3855,7 +3871,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameTour} 
             WHERE
@@ -3933,7 +3950,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameHotel} 
             WHERE
@@ -4011,7 +4029,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameInsurance} 
             WHERE
@@ -4090,7 +4109,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameVisa} 
             WHERE
@@ -4168,7 +4188,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameEntertainment} 
             WHERE
@@ -4247,7 +4268,8 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  ''  AS StatusCancel
             FROM
                 {$tableNameEuropcar} 
             WHERE
@@ -4325,7 +4347,8 @@ class user extends baseController
               '' AS WagonName,
               '' AS direction,
               '' AS TicketNumber,
-              '' AS TrainNumber
+              '' AS TrainNumber,
+              ''  AS StatusCancel
         FROM {$tableNameExclusiveTour}
         WHERE member_id = '{$memberId}' AND request_number > '0'
         GROUP BY request_number
@@ -4482,6 +4505,8 @@ class user extends baseController
 
                     }
 
+
+                    /*
                     $result[$key]['button_list'] = [
                         [
                             'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
@@ -4526,6 +4551,86 @@ class user extends baseController
                                 ];
                         }
                     }
+*/
+
+                    //list button   1401/12/03
+                    if (
+                        $item['StatusCancel'] !== 'close' && $item['StatusCancel'] !== 'ConfirmCancel' &&
+                        $item['StatusCancel'] !== '' && $item['StatusCancel'] !== NULL
+                    )
+                    {
+                        // درخواست در حال بررسی
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('OsafarRefundPending')->__toString(),
+                            'type' => 'button',
+                            'function' => ""
+                        ];
+                    }
+                    else if ($item['StatusCancel'] === 'ConfirmCancel') {
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                            'type' => 'link',
+                            'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] . '&cancelStatus=confirm',
+                        ];
+                    }
+                    else if ($item['StatusCancel'] === '' || $item['StatusCancel'] === NULL || $item['StatusCancel'] === 'close') {
+
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
+                            'type' => 'button',
+                            'function' => "modalPassengerDetails(event.currentTarget, " . $item['factor_number'] . ",'flight')",
+                        ];
+
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                            'type' => 'link',
+                            'link' => $bookList[$key]['dataBtnPdf'],
+                        ];
+
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('Viewbill')->__toString(),
+                            'type' => 'link',
+                            'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
+                        ];
+
+                        if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm') {//esterdad
+                            $result[$key]['button_list'][] =
+                                [
+                                    'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                                    'type' => 'link',
+                                    'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] . '&cancelStatus=confirm',
+                                ];
+                        } else {
+                            $result[$key]['button_list'][] =
+                                [
+                                    'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                                    'type' => 'button',
+                                    'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
+
+                                ];
+                        }
+
+                        if ($item['StatusCancel'] === 'close') {
+                            $result[$key]['button_list'][] = [
+                                'title' => functions::Xmlinformation('OsafarRefundClosed')->__toString(),
+                                'type' => 'button',
+                                'function' => ""
+                            ];
+                        }
+
+                        if ($item['successfull'] == 'book') {//bedone bilit
+                            if ($item['IsInternal'] != '0') {
+                                $result[$key]['button_list'][] =
+                                    [
+                                        'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                        'type' => 'link',
+                                        'link' => $bookList[$key]['dataBtnPdfFreeLink'],
+                                    ];
+                            }
+                        }
+                    }
+
+
                     if(CLIENT_ID == 271){
                         $reservation_proof = Load::controller('reservationProof');
                         $file = $reservation_proof->getProofFile($item['request_number'] , 'Flight');
