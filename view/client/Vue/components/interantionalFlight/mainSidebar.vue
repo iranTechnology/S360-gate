@@ -38,16 +38,12 @@
             <i class="fa fa-angle-down mr-auto"></i>
           </div>
 
-<!--          <div class="box_ways">-->
-<!--            <div @click="changeTypeSearch('Oneway',$event)" class="is_active_box_ways">{{ useXmltag('Oneway') }}</div>-->
-<!--            <div @click="changeTypeSearch('Twoway',$event)" class="multiWays" :class="(has_return ? 'checked' : '')">{{ useXmltag('Twoway') }}</div>-->
-<!--            <div @click="changeTypeSearch('multiSearch',$event)" v-if="searchSource">{{ useXmltag('multiSearch') }}</div>-->
-<!--          </div>-->
           <div class="box_ways">
-            <div @click="changeTypeSearch('Oneway',$event)" :class="{'is_active_box_ways': type_search === 'Oneway'}">{{ useXmltag('Oneway') }}</div>
-            <div @click="changeTypeSearch('Twoway',$event)" class="multiWays" :class="{'checked': has_return, 'is_active_box_ways': type_search === 'Twoway'}">{{ useXmltag('Twoway') }}</div>
-            <div @click="changeTypeSearch('multiSearch',$event)" :class="{'is_active_box_ways': type_search === 'multiSearch'}">{{ useXmltag('multiSearch') }}</div>
+            <div @click="changeTypeSearch('Oneway',$event)" class="is_active_box_ways">{{ useXmltag('Oneway') }}</div>
+            <div @click="changeTypeSearch('Twoway',$event)" class="multiWays" :class="(has_return ? 'checked' : '')">{{ useXmltag('Twoway') }}</div>
+<!--            <div @click="changeTypeSearch('multiSearch',$event)" v-if="searchSource">{{ useXmltag('multiSearch') }}</div>-->
           </div>
+
 
         </div>
 
@@ -128,7 +124,6 @@
 </template>
 <script>
   import partSearchSide from './partSearchSide'
-  import { mapState } from 'vuex';
   export default {
     name: 'mainSidebar',
     props: [ 'dataSearch', 'countFlights'],
@@ -273,9 +268,6 @@
       this.$store.dispatch('getSearchSources', {method: 'getSourceClient'});
     },
     computed:{
-      ...mapState({
-        type_search: state => state.data_search_type
-      }),
       searchSource(){
         let data_sources = this.$store.state.search_sources ;
         let result_parto = false ;

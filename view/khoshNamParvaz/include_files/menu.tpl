@@ -640,12 +640,7 @@
                         <span>{include file="`$smarty.const.FRONT_CURRENT_THEME`topBarName.tpl"}</span>
                         <i class="far fa-user"></i>
                     </a>
-{*                    <a class="__login_register_class__ button btn-user {if $obj_main_page->isLogin()}show-box-login-js main-navigation__button2{else}show-box-nologin-js main-navigation__button1{/if}"*}
 
-{*                        >*}
-{*                        <span>{include file="`$smarty.const.FRONT_CURRENT_THEME`topBarName.tpl"}</span>*}
-{*                        <i class="far fa-user"></i>*}
-{*                    </a>*}
 
 
                     <div class="main-navigation__sub-menu2 arrow-up show-content-box-login-js" style="display: none">
