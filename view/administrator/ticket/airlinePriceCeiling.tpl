@@ -68,7 +68,7 @@
                         <form id="airlinePriceCeilingForm" class="form-horizontal">
                             <div class="form-group">
                                 <input type="hidden" name="flag" value="flightPriceCeiling">
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <label for="airline_iata_id" class="control-label">ایرلاین</label><span style="color:red">*</span>
                                     <select class="form-control select2" id="airline_iata_id" name="airline_uniqe_iata">
                                         <option value="">لطفا یاتا مورد نظر را انتخاب نمایید</option>
@@ -77,33 +77,38 @@
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <label for="origin" class="control-label">شهر مبدا</label>
                                     <select name="origin" id="origin" class="form-control select2">
                                         <option value="">شهر مبدا</option>
                                         <option value="all">همه</option>
                                         {foreach $objSearch->airportsTb() as $item }
-                                            <option value="{$item.DepartureCode}" {if $smarty.post.origin eq $item.DepartureCode} selected {/if}>{$item.DepartureCityFa}</option>
+                                            <option value="{$item.DepartureCode}" {if $smarty.post.origin eq $item.DepartureCode} selected {/if}>{$item.DepartureCityFa}({$item.DepartureCode})</option>
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <label for="destination" class="control-label">شهر مقصد</label>
                                     <select name="destination" id="destination" class="form-control select2">
                                         <option value="">شهر مقصد</option>
                                         <option value="all">همه</option>
                                         {foreach $objSearch->airportsTb() as $item }
-                                            <option value="{$item.DepartureCode}" {if $smarty.post.destination eq $item.DepartureCode} selected {/if}>{$item.DepartureCityFa}</option>
+                                            <option value="{$item.DepartureCode}" {if $smarty.post.destination eq $item.DepartureCode} selected {/if}>{$item.DepartureCityFa}({$item.DepartureCode})</option>
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <label for="ceiling_price" class="control-label">سقف قیمت</label>
-                                    <input type="text" class="form-control" name="ceiling_price"
-                                           value="{$smarty.post.ceiling_price}" id="ceiling_price"
+                                    <input type="text"
+                                           class="form-control"
+                                           name="ceiling_price"
+                                           value="{$smarty.post.ceiling_price|number_format:0}"
+                                           id="ceiling_price"
+                                           onkeypress="return onlyNumberKey(event)"
+                                           onkeyup="formatNumber(this)"
                                            placeholder="سقف قیمت">
                                 </div>
-                                <div class="col-sm-4 pull-left">
+                                <div class="col-sm-1 ">
                                     <button type="submit" class="btn btn-success" style="margin-top: 20px;" id="addAirlineBtn">
                                         <i class="fa fa-plus"></i> افزودن
                                     </button>
@@ -283,7 +288,23 @@
             }
         });
     });
+    function formatNumber(input) {
+        let value = input.value.replace(/\D/g, '');
 
+        if (value === '') {
+            input.value = '';
+            return;
+        }
+        input.value = Number(value).toLocaleString('en-US');
+    }
+
+    // فقط اجازه ورود عدد
+    function onlyNumberKey(evt) {
+        let charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
     function removePrice(priceId) {
         if (confirm('آیا از حذف این آیتم اطمینان دارید؟')) {
             var xhr = new XMLHttpRequest();
