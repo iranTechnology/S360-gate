@@ -5382,4 +5382,23 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'remove_airlineFine'){
     $result = $obj->remove_airlineFine($_POST);
     echo $result;
 }
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'add_ceilingPrice'){
+    $obj = Load::controller('airLinePriceController');
+    unset($_POST['flag']);
+    $result = $obj->add_ceilingPrice($_POST);
+    echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'updatePriceCeiling'){
+    $obj = Load::controller('airLinePriceController');
+    unset($_POST['flag']);
+    $result = $obj->update_ceilingPrice($_POST);
+    echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'deletePriceCeiling'){
+    $obj = Load::controller('airLinePriceController');
+    unset($_POST['flag']);
+    $result = $obj->delete_ceilingPrice($_POST);
+    echo $result;
+}
+
 
