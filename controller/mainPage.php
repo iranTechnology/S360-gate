@@ -471,6 +471,7 @@ abstract class mainPage extends clientAuth
     }
 
     public function getExternalHotelCity($params=[]) {
+
         /** @var ModelBase $ModelBase */
         $limit = 20;
         if (isset($params['Count']) && $params['Count']) {
