@@ -706,6 +706,7 @@ class positions extends clientAuth
             switch ($position['service']) {
                 case 'Package' :
                 case 'Flight' :
+                case 'PackageSp' :
 
                     $city[$position['service']][$key]['origin']= [
                         'title' => isset($this->ListPositionFlight()[$position['origin']]['name']) ? $this->ListPositionFlight()[$position['origin']]['name'] : '',
@@ -722,6 +723,7 @@ class positions extends clientAuth
 
                     break;
                 case 'internalFlight' :
+                case 'internalFlightSp' :
 
                     $city[$position['service']][$key]['origin']= [
                         'title' => isset($this->ListPositionFlight()[$position['origin']]['name']) ? $this->ListPositionFlight()[$position['origin']]['name'] : '',
@@ -738,6 +740,7 @@ class positions extends clientAuth
 
                     break;
                 case 'internationalFlight' :
+                case 'internationalFlightSp' :
 
                     $city[$position['service']][$key]['origin']= [
                         'title' => isset($this->ListPositionFlight()[$position['origin']]['name']) ? $this->ListPositionFlight()[$position['origin']]['name'] : '',
@@ -754,6 +757,7 @@ class positions extends clientAuth
 
                     break;
                 case 'Hotel':
+                case 'HotelSp':
                     $city[$position['service']][$key]['origin'] = [
                         'title' => $this->getHotelCity($position['origin']),
                         'id' => $position['origin']
@@ -761,7 +765,9 @@ class positions extends clientAuth
                     break;
 
                 case 'Insurance':
+                case 'InsuranceSp':
                 case 'GashtTransfer':
+                case 'GashtTransferSp':
                     $city[$position['service']][$key]['origin'] = [
                         'title' => isset($this->{"ListPosition" . $position['service']}()[$position['origin']]['name']) ? $this->{"ListPosition" . $position['service']}()[$position['origin']]['name'] : '',
                         'id' => $position['origin']
@@ -769,6 +775,7 @@ class positions extends clientAuth
                     break;
 
                 case 'Bus' :
+                case 'BusSp' :
                     $city[$position['service']][$key]['origin'] = [
                         'title' => isset($this->ListPositionBus()[$position['origin']]['name']) ? $this->ListPositionBus()[$position['origin']]['name'] : '',
                         'id' => $position['origin']
@@ -783,6 +790,7 @@ class positions extends clientAuth
 
                     break;
                 case 'Insurance' :
+                case 'InsuranceSp' :
 
                     $city[$position['service']][$key]['origin'] = [
                         'title' => isset($this->ListPositionInsurance()[$position['origin']]['name']) ? $this->ListPositionInsurance()[$position['origin']]['name'] : '',
@@ -790,6 +798,7 @@ class positions extends clientAuth
                     ];
                     break;
                 case 'Train' :
+                case 'TrainSp' :
                     $city[$position['service']][$key]['origin'] = [
                         'title' => isset($this->ListPositionTrain()[$position['origin']]['name']) ? $this->ListPositionTrain()[$position['origin']]['name'] : '',
                         'id' => $position['origin']
@@ -806,6 +815,7 @@ class positions extends clientAuth
 
                     break;
                 case 'GashtTransfer' :
+                case 'GashtTransferSp' :
 
                     $city[$position['service']][$key]['origin'] = [
                         'title' => isset($this->ListPositionGashtTransfer()[$position['origin']]['name']) ? $this->ListPositionGashtTransfer()[$position['origin']]['name'] : '',
@@ -814,8 +824,7 @@ class positions extends clientAuth
 
                     break;
                 case 'Tour' :
-
-
+                case 'TourSp' :
                     $city[$position['service']][$key]['origin'] = [
                         'title' => isset($this->ListPositionTour()[$position['origin']]['name']) ? $this->ListPositionTour()[$position['origin']]['name'] : '',
                         'id' => $position['origin']
@@ -831,6 +840,7 @@ class positions extends clientAuth
 
                     break;
                 case 'Visa' :
+                case 'VisaSp' :
                     $position_data=explode(':',$position['origin']);
                     $name=$position_data[0];
                     $type=$position_data[1];

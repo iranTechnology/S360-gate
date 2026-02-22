@@ -2716,6 +2716,17 @@
   <LimitSelectRoomHotel>حداقل باید یک اتاق انتخاب نمائید</LimitSelectRoomHotel>
   <internationalFlight>پرواز خارجی</internationalFlight>
   <internalFlight>پرواز داخلی</internalFlight>
+  <internalFlightSp>پرواز داخلی(صفحه اختصاصی)</internalFlightSp>
+  <internationalFlightSp>پرواز خارجی(صفحه اختصاصی)</internationalFlightSp>
+  <CipSp>تشریفات فرودگاه(صفحه اختصاصی)</CipSp>
+  <exclusiveTourSp>وب سرویس تور اختصاصی(صفحه اختصاصی)</exclusiveTourSp>
+  <ResidenceSp>اقامتگاه(صفحه اختصاصی)</ResidenceSp>
+  <PackageSp>پرواز + هتل(صفحه اختصاصی)</PackageSp>
+  <EntertainmentSp>تفریحات(صفحه اختصاصی)</EntertainmentSp>
+  <TrainSp>قطار(صفحه اختصاصی)</TrainSp>
+  <BusSp>اتوبوس(صفحه اختصاصی)</BusSp>
+  <VisaSp>ویزا(صفحه اختصاصی)</VisaSp>
+  <TourSp>تور(صفحه اختصاصی)</TourSp>
   <Clear>پاک کردن</Clear>
   <PopularRoutes>مسیرهای پرتردد</PopularRoutes>
   <History>تاریخچه</History>
