@@ -361,7 +361,7 @@ $(document).ready(function () {
             success: function(response) {
                 if (response) {
                     $.toast({
-                        heading: 'با موفقیت ایرلاین اضافه شد.',
+                        heading: 'با موفقیت قیمت اضافه شد.',
                         position: 'top-right',
                         loaderBg: '#fff',
                         icon: 'success',
@@ -376,12 +376,14 @@ $(document).ready(function () {
                 $.toast({
                     heading: 'خطا در پردازش',
                     position: 'top-right',
+                    text: 'رکورد تکراری میباشد',
                     loaderBg: '#fff',
                     icon: 'error',
                     hideAfter: 3500,
                     textAlign: 'right',
                     stack: 6
                 });
+                location.reload();
             }
         });
     });
