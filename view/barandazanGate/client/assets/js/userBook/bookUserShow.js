@@ -16,6 +16,7 @@ function bookUserHistoryFilter(target) {
           flag: 'memberResultSearch',
         },
      success: function (data) {
+         console.log(data)
         TableDivision.html('');
         let JsonData = JSON.parse(data);
         let kind = $('#serviceType').val();

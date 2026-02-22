@@ -1518,30 +1518,40 @@ class user extends baseController
         $Model = Load::library('Model');
         $info_agency = functions::infoAgencyByMemberId($id);
         $sql = "SELECT   
-                   passenger_name,
-                   passenger_name_en,
-                   passenger_family,
-                   passenger_family_en,
-                   origin_city,
-                   desti_city,
-                   request_number,
-                   creation_date_int,
-                   airline_name,
-                   eticket_number,
-                   flight_number,
-                   flight_type,
-                   time_flight,
-                   date_flight,
-                   factor_number,
-                   successfull,
-                   IsInternal,
-                   type_app,
-                   request_cancel,
-                   direction,
-                   currency_code
-                 FROM book_local_tb 
+                   b.passenger_name,
+                   b.passenger_name_en,
+                   b.passenger_family,
+                   b.passenger_family_en,
+                   b.origin_city,
+                   b.desti_city,
+                   b.request_number,
+                   b.creation_date_int,
+                   b.airline_name,
+                   b.eticket_number,
+                   b.flight_number,
+                   b.flight_type,
+                   b.time_flight,
+                   b.date_flight,
+                   b.factor_number,
+                   b.successfull,
+                   b.IsInternal,
+                   b.type_app,
+                   b.request_cancel,
+                   b.direction,
+                   b.currency_code,
+                   c.Status as StatusCancel
+                 FROM book_local_tb b 
+                 LEFT JOIN cancel_ticket_details_tb c 
+                    ON b.factor_number = c.FactorNumber
+                    AND c.RequestNumber = (
+                        SELECT MAX(c2.RequestNumber)
+                        FROM cancel_ticket_details_tb c2
+                        WHERE c2.FactorNumber = b.factor_number
+                    )
+                 
                  WHERE 
-                    member_id='{$id}' AND request_number > '0' ";
+                    b.member_id='{$id}' AND 
+                    b.request_number > '0' ";
 
         if (!empty($param['startDate']) && !empty($param['endDate'])) {
             $date_of = explode('-', $_POST['startDate']);
@@ -1553,26 +1563,27 @@ class user extends baseController
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
-            $sql .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
+            $sql .= " AND b.creation_date_int >= '{$date_of_int}' AND b.creation_date_int  <= '{$date_to_int}'";
 
         }
 
         if (isset($param['factorNumber']) && $param['factorNumber'] != '') {
-            $sql .= " AND (request_number LIKE '%{$param['factorNumber']}%' OR factor_number LIKE '%{$param['factorNumber']}%') ";
+            $sql .= " AND (b.request_number LIKE '%{$param['factorNumber']}%' OR b.factor_number LIKE '%{$param['factorNumber']}%') ";
         }
         if (isset($param['statusGroup']) && $param['statusGroup'] == 'cancel') {
-            $sql .= " AND successfull = 'book' AND request_cancel = 'confirm'  ";
+            $sql .= " AND b.successfull = 'book' AND b.request_cancel = 'confirm'  ";
         }elseif(isset($param['statusGroup']) && $param['statusGroup'] != '') {
-            $sql .= " AND (successfull LIKE '%{$param['statusGroup']}%') ";
+            $sql .= " AND (b.successfull LIKE '%{$param['statusGroup']}%') ";
         }
         if (isset($param['passengerName']) && $param['passengerName'] != '') {
-            $sql .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%'))";
+            $sql .= " AND ((concat(b.passenger_name,' ',b.passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(b.passenger_name,b.passenger_family) LIKE '%{$param['passengerName']}%'))";
         }
         $sql .= "
-                GROUP BY request_number 
-                ORDER BY creation_date_int DESC ";
-//echo $sql;
+                GROUP BY b.request_number 
+                ORDER BY b.creation_date_int DESC ";
+//echo $sql; die();
         $bookList = $Model->select($sql);
+        var_dump($bookList);
         $result = [] ;
         foreach ($bookList as  $key => $item ){
             $amount_buy = functions::CalculateDiscount($item['request_number']) ;
@@ -1688,50 +1699,80 @@ class user extends baseController
                     }
 
                 }
-                $result[$key]['button_list'] = [
-                    [
+                //list button
+                $result[$key]['button_list'] = [];
+                if ($item['StatusCancel'] !== 'close' && $item['StatusCancel'] !== 'ConfirmCancel' && ($item['StatusCancel'] === '' || $item['StatusCancel'] === NULL)) {
+                    // درخواست نامشخص
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('OsafarRefundPending')->__toString(),
+                        'type' => 'text'
+                    ];
+                }
+                else if ($item['StatusCancel'] === 'ConfirmCancel') {
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                        'type' => 'link',
+                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] . '&cancelStatus=confirm',
+                    ];
+                }
+                else if ($item['StatusCancel'] === '' || $item['StatusCancel'] === NULL || $item['StatusCancel'] === 'close') {
+
+                    $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
-                        'type' => 'button' ,
-                        'function'  => "modalPassengerDetails(event.currentTarget  , ".$item['factor_number'].",'flight')" ,
-                    ],
-                    [
+                        'type' => 'button',
+                        'function' => "modalPassengerDetails(event.currentTarget, " . $item['factor_number'] . ",'flight')",
+                    ];
+
+                    $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('GetTicket')->__toString(),
                         'type' => 'link',
                         'link' => $bookList[$key]['dataBtnPdf'],
-                    ],
-                    [
+                    ];
+
+                    $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('Viewbill')->__toString(),
                         'type' => 'link',
                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
-                    ],
+                    ];
 
-                ];
-                if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm' ) {
-                    $result[$key]['button_list'][] =
-                        [
-                            'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
-                            'type' => 'link',
-                            'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] .'&cancelStatus=confirm',
-                        ];
-                }else{
-                    $result[$key]['button_list'][] =
-                        [
-                            'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
-                            'type' => 'button' ,
-                            'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '".$item['request_number']."')",
-
-                        ];
-                }
-                if ($item['successfull'] == 'book') {
-                    if ($item['IsInternal'] != '0') {
+                    if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm') {//esterdad
                         $result[$key]['button_list'][] =
                             [
-                                'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
                                 'type' => 'link',
-                                'link' => $bookList[$key]['dataBtnPdfFreeLink'],
+                                'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] . '&cancelStatus=confirm',
+                            ];
+                    } else {
+                        $result[$key]['button_list'][] =
+                            [
+                                'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                                'type' => 'button',
+                                'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
+
                             ];
                     }
+
+                    if ($item['StatusCancel'] === 'close') {
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('OsafarRefundClosed')->__toString(),
+                            'type' => 'text'
+                        ];
+                    }
+
+                    if ($item['successfull'] == 'book') {//bedone bilit
+                        if ($item['IsInternal'] != '0') {
+                            $result[$key]['button_list'][] =
+                                [
+                                    'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                    'type' => 'link',
+                                    'link' => $bookList[$key]['dataBtnPdfFreeLink'],
+                                ];
+                        }
+                    }
                 }
+
+
+
                 if(CLIENT_ID == 271){
                     $reservation_proof = Load::controller('reservationProof');
                     $file = $reservation_proof->getProofFile($item['request_number'] , 'Flight');
