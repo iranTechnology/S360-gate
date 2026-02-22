@@ -8,6 +8,8 @@
 {load_presentation_object filename="currencyEquivalent" assign="objCurrencyEquivalent"}
 {assign var='currencies' value=$objCurrencyEquivalent->ListCurrencyEquivalentAdmin()}
 
+{assign var="serviceName" value=$page.position}
+{assign var="serviceName" value="`$serviceName`Sp"}
 
 <section class="special-pages-div text-right">
     <div class="container">
@@ -189,6 +191,12 @@
                 {/if}
             </div>
         {/if}
+        {assign var="moduleData" value=[
+        'service'=>{$serviceName}
+        ]}
+
+        {include file="`$smarty.const.FRONT_CURRENT_CLIENT`faqs.tpl"
+        moduleData=$moduleData}
     </div>
 </section>
 {if $page.page_type eq 'separate' && $page['files']['attach_files']}
