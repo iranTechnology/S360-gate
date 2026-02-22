@@ -24,6 +24,7 @@ class functions {
         $apiAddress = '';
         $isTest     = self::isTestServer();
         $apiAddress = 'http://safar360.com/Core/V-1/';
+
         if ( $isTest ) {//local
 
 //            $apiAddress = 'http://safar360.com/CoreTestDeveloper/V-1/';
@@ -9206,7 +9207,7 @@ class functions {
      * @return bool
      */
     public static function isTestServer( $host = '' ) {
-        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir');
+        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir','localhost');
         $res     = false;
         if ( ! empty( $host ) ) {
             if ( is_array( $host ) ) {
