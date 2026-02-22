@@ -31,7 +31,7 @@ class airLinePriceController extends clientAuth
         $data['airline_iata_id'] = $params['airlineIata'];
         $data['origin'] = $params['origin'];
         $data['destination'] = $params['destination'];
-        $data['ceiling_price'] = $params['ceiling_price'];
+        $data['ceiling_price'] = (int) str_replace(',', '', $params['ceiling_price']);
         $this->Model->setTable('airline_ceiling_price');
         $result = $this->Model->insertWithBind($data);
         if($result){
@@ -42,10 +42,11 @@ class airLinePriceController extends clientAuth
     }
     public function update_ceilingPrice($params){
         $data = [];
-        $data['id'] = $params['id'];
+        $id = $params['id'];
+        $con = "id = $id" ;
         $data['ceiling_price'] = $params['ceiling_price'];
         $this->Model->setTable('airline_ceiling_price');
-        $result = $this->Model->updateWithBind($data);
+        $result = $this->Model->updateWithBind($data,$con);
         if($result){
             return $this->returnJson(true, "قیمت با موفقیت تغییر یافت");
         }
