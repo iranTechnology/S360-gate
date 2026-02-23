@@ -168,7 +168,7 @@
                             <path class="outer" d="M10,1 L10,1 L10,1 C14.9705627,1 19,5.02943725 19,10 L19,10 L19,10 C19,14.9705627 14.9705627,19 10,19 L10,19 L10,19 C5.02943725,19 1,14.9705627 1,10 L1,10 L1,10 C1,5.02943725 5.02943725,1 10,1 L10,1 Z"></path>
                         </svg>
                         <span>دو طرفه </span>
-                    </label>
+                    </label>nn
                 </div>
             </div>
             <div class="col-lg-2 col-md-6 col-sm-6 col-12 col_search search_col col_with_route p-1">
