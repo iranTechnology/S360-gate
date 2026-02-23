@@ -69,7 +69,7 @@
                      <div class="airlines-detail-box-2">
                                 <span class="padt0 iranb  lh18 displayb" v-if="flight.baggage !=''">
                                     {{useXmltag('Permissible')}} :
-                                    <i class="iranNum">{{flight.baggage}} {{useXmltag('Kg')}} </i>
+                                    <i class="iranNum">{{flight.baggage}} </i>
                                 </span>
                         <span class="padt0 iranL  lh18 displayb" v-if="flight.cabin_type !=''">
                                     {{useXmltag('Classrate')}} :
