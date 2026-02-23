@@ -1,4 +1,3 @@
-{load_presentation_object filename="reservationTour" assign="ObjResult"}
 {load_presentation_object filename="reservationSetting" assign="ObjSetting"}
 {assign var="settingList" value=$ObjSetting->getReservationSetting()}
 <div class="container-fluid">
@@ -6,9 +5,8 @@
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
             <ol class="breadcrumb FloatRight">
                 <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/admin">خانه</a></li>
-                <li>رزرواسیون</li>
                 <li>تنظیمات</li>
-                <li class="active">تنظیمات کلی رزرواسیون</li>
+                <li class="active">دسترسی</li>
             </ol>
         </div>
     </div>
@@ -18,15 +16,15 @@
 
         <div class="col-sm-12">
             <div class="white-box">
-                <h3 class="box-title m-b-0">تنظیم ویرایشگر برای ثبت تور</h3>
+                <h3 class="box-title m-b-0">دسترسی</h3>
                 <p class="text-muted m-b-30"></p>
                 <div class="table-responsive">
                     <table id="myTable" class="table table-striped">
                         <thead>
                         <tr>
                             <th> ردیف</th>
+                            <th>عنوان</th>
                             <th>توضیحات</th>
-                            <th>سرویس</th>
                             <th>وضعیت</th>
                         </tr>
                         </thead>
@@ -36,8 +34,8 @@
                             {$number=$number+1}
                             <tr id="del-{$item.id}">
                                 <td>{$number}</td>
+                                <td>{$item.title}</td>
                                 <td>{$item.description}</td>
-                                <td>{$item.service}</td>
                                 <td>
                                     <a onclick="isEditorActive('{$item.id}'); return false;">
                                         {if $item.enable eq '1'}

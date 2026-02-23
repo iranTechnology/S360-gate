@@ -85,9 +85,8 @@ a:hover {
 
 //start about
 .about-ghods {
-  //padding: 80px 0;
+  padding: 80px 0;
   position: relative;
-  margin-top: 50px;
 
   .parent-about {
     @include grid-style(2, 30px, 30px);
@@ -363,7 +362,6 @@ a:hover {
 }
 .search_flight{
   background: #f8f8f8;
-  padding: 50px 0 !important;
   .container{
     position: relative;
   }
@@ -545,7 +543,11 @@ a:hover {
   .moreBtnMobile{
     display: flex;
   }
-}
+  .title-demo {
+    align-items: end;
+
+
+  }}
 //end search_flight
 
 
@@ -1285,4 +1287,133 @@ a:hover {
     margin-top: 0;
   }
 
+}
+
+
+.search_flight #search_flight-tabContent .search_flight_grid {
+  display: grid;
+  margin-top: 30px;
+  grid-template-columns:repeat(3, 1fr);
+  grid-template-rows:1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div {
+  padding: 15px 30px;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .3s;
+  cursor: pointer;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03)
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div:hover {
+  box-shadow: 0 12px 24px 0 rgba(88, 114, 195, .2)
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div h5 {
+  color: #575757;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-family: $fontFamily;
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div > div {
+  display: flex;
+  align-items: center;
+  gap: 3px
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div > div svg:nth-child(1) {
+  width: 4px;
+  height: 4px;
+  fill: #62666b
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div > div svg:nth-child(2) {
+  width: 6px;
+  height: 6px;
+  fill: #5b6065
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div > div svg:nth-child(3) {
+  width: 8px;
+  height: 8px;
+  fill: #4e555b
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid > div > div svg:nth-child(4) {
+  width: 30px;
+  height: 30px;
+  fill: $mainColor;
+  transform: rotate(180deg)
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a {
+  padding: 15px 30px;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .3s;
+  cursor: pointer;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03)
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a:hover {
+  box-shadow: 0 12px 24px 0 rgba(88, 114, 195, .2)
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a h5 {
+  color: #575757;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-family: $fontFamily
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a > div {
+  display: flex;
+  align-items: center;
+  gap: 3px
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a > div svg:nth-child(1) {
+  width: 4px;
+  height: 4px;
+  fill: #62666b
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a > div svg:nth-child(2) {
+  width: 6px;
+  height: 6px;
+  fill: #5b6065
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a > div svg:nth-child(3) {
+  width: 8px;
+  height: 8px;
+  fill: #4e555b
+}
+
+.search_flight #search_flight-tabContent .search_flight_grid a > div svg:nth-child(4) {
+  width: 30px;
+  height: 30px;
+  fill:  $mainColor;
+  transform: rotate(180deg)
+}
+.search_flight .dropdown_custom::after{
+  content: "";
+  width: 1px;
+  height: 30px;
+  background: #d2cfcd;
+  display: flex;
+  position: absolute;
+  right: -16px;
+  top: 43%;
+  transform: translateY(-50%);
 }

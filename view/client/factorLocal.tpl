@@ -3,10 +3,12 @@
 {load_presentation_object filename="passengersDetailLocal" assign="objDetail"}
 {load_presentation_object filename="factorLocal" assign="objFactor"}
 {load_presentation_object filename="members" assign="objMember"}
+{load_presentation_object filename="members" assign="objMember"}
+{load_presentation_object filename="reservationSetting" assign="ObjSetting"}
 {$objMember->get()}
 {assign var="InfoCounter" value=$objFunctions->infoCounterType($objMember->list['fk_counter_type_id'])}
 {assign var="FlightSelected" value=$objFactor->getSpecific($objFactor->factor_number)}
-
+{assign var="Access" value=$ObjSetting->getReservationSetting()}
 {assign var="PriceTotal" value=$objFunctions->CalculateDiscount($objFactor->factor_number)}
 
 <div class="lazy-loader-parent lazy_loader_flight">
@@ -1541,7 +1543,7 @@
     </div>
 
 </div>
-    {if $objFunctions->TypeUser($objSession->getUserId()) eq 'Counter' && $smarty.const.SOFTWARE_LANG == 'fa' }
+    {if $objFunctions->TypeUser($objSession->getUserId()) eq 'Counter' && $smarty.const.SOFTWARE_LANG == 'fa' && $Access[0]['enable'] eq 0 }
         <div class="return-bank-box">
                 <div class="row">
                     <div class="col-md-12 mr-auto ml-auto">

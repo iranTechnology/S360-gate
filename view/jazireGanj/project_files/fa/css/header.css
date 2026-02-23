@@ -1356,8 +1356,8 @@ amenu-list > li.megamenu-list-title > a {
 }
 
 .header_area.fixedmenu .logo img {
-    width: 63px;
-    height: 100%;
+    width: 63px !important;
+    height: 100% !important;
 }
 
 .register i.fa {
@@ -2052,7 +2052,7 @@ a{
     width: 230px;
     left: 0;
     position: absolute;
-    top: 110%;
+    top: 85%;
     z-index: 1000000;
     overflow: hidden;
 }
