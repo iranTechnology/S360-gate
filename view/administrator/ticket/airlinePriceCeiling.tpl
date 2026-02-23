@@ -97,6 +97,21 @@
                                         {/foreach}
                                     </select>
                                 </div>
+                                <div class="col-sm-3">
+                                    <label for="trip_type" class="control-label">نوع سفر</label>
+                                    <select name="trip_type" id="trip_type" class="form-control">
+                                        <option value="one_way">یک طرفه</option>
+                                        <option value="two_way" selected>دو طرفه</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="fare_class" class="control-label">کلاس نرخی</label>
+                                    <select name="fare_class" id="fare_class" class="form-control">
+                                        <option value="premium_economy">پرمیوم اکونومی</option>
+                                        <option value="economy" selected>اکونومی</option>
+                                        <option value="business">بیزینس</option>
+                                    </select>
+                                </div>
                                 <div class="col-sm-2">
                                     <label for="ceiling_price" class="control-label">سقف قیمت</label>
                                     <input type="text"
@@ -127,6 +142,8 @@
                             <th>نام ایرلاین(یاتا)</th>
                             <th>شهر مبدا</th>
                             <th>شهر مقصد</th>
+                            <th>نوع سفر</th>
+                            <th>کلاس نرخی</th>
                             <th>سقف قیمت</th>
                             <th>حذف</th>
                         </tr>
@@ -134,52 +151,39 @@
                         <tbody>
                         {foreach key=key item=price from=$airLinePrices}
                             {assign var="number" value=$key+1}
-
-                            {* پیدا کردن نام ایرلاین *}
-                            {assign var="airlineInfo" value=null}
-                            {foreach $airLineiataCodes as $airline}
-                                {if $airline.id == $price.airline_iata_id}
-                                    {assign var="airlineInfo" value=$airline}
-                                {/if}
-                            {/foreach}
-
-                            {* پیدا کردن نام شهر مبدا و مقصد *}
-                            {assign var="originCity" value=""}
-                            {assign var="destCity" value=""}
-                            {foreach $objSearch->airportsTb() as $airport}
-                                {if $airport.DepartureCode == $price.origin}
-                                    {assign var="originCity" value=$airport.DepartureCityFa}
-                                {/if}
-                                {if $airport.DepartureCode == $price.destination}
-                                    {assign var="destCity" value=$airport.DepartureCityFa}
-                                {/if}
-                            {/foreach}
-
                             <tr id="price-row-{$price.id}">
                                 <td>{$number}</td>
                                 <td>
-                                    {if $airlineInfo}
-                                        {$airlineInfo.airline_name} ({$airlineInfo.airline_uniqe_iata})
-                                    {else}
-                                        نامشخص
-                                    {/if}
+                                    {$price.airline_name}({$price.airline_uniqe_iata})
                                 </td>
                                 <td>
                                     {if $price.origin == 'all'}
                                         همه
-                                    {elseif $originCity}
-                                        {$originCity} ({$price.origin})
                                     {else}
-                                        {$price.origin}
+                                        {$price.origin_fa} ({$price.origin})
                                     {/if}
                                 </td>
                                 <td>
                                     {if $price.destination == 'all'}
                                         همه
-                                    {elseif $destCity}
-                                        {$destCity} ({$price.destination})
                                     {else}
-                                        {$price.destination}
+                                        {$price.destination_fa}({$price.destination})
+                                    {/if}
+                                </td>
+                                <td>
+                                    {if $price.trip_type == 'one_way'}
+                                        یک طرفه
+                                    {elseif $price.trip_type == 'two_way'}
+                                        دو طرفه
+                                    {/if}
+                                </td>
+                                <td>
+                                    {if $price.fare_class == 'premium_economy'}
+                                        پرمیوم اکونومی
+                                    {elseif $price.fare_class == 'economy'}
+                                        اکونومی
+                                    {elseif $price.fare_class == 'business'}
+                                    بیزینس
                                     {/if}
                                 </td>
                                 <td>

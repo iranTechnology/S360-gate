@@ -27,10 +27,13 @@ class airLinePriceController extends clientAuth
     }
 
     public function add_ceilingPrice($params){
+
         $data = [];
         $data['airline_iata_id'] = $params['airlineIata'];
         $data['origin'] = $params['origin'];
         $data['destination'] = $params['destination'];
+        $data['fare_class'] = $params['fare_class'];
+        $data['trip_type'] = $params['trip_type'];
         $data['ceiling_price'] = (int) str_replace(',', '', $params['ceiling_price']);
         $this->Model->setTable('airline_ceiling_price');
         $result = $this->Model->insertWithBind($data);
@@ -68,6 +71,20 @@ class airLinePriceController extends clientAuth
 
         $this->Model->setTable('airline_ceiling_price');
         $result = $this->Model->get()->all();
+        $airportModel = $this->getModel('airportModel');
+        $airlineIataModel = $this->getModel('airlineIataModel');
+        foreach ($result as &$r){
+            $origin_fa = $airportModel->get(['id','DepartureCode','DepartureCityFa'])->whereIn('DepartureCode',$r['origin'])->all()[0]['DepartureCityFa'];
+            $destination_fa = $airportModel->get(['id','DepartureCode','DepartureCityFa'])->whereIn('DepartureCode',$r['destination'])->all()[0]['DepartureCityFa'];
+            $airline = $airlineIataModel->get(['id','airline_name','airline_uniqe_iata'])->whereIn('id',$r['airline_iata_id'])->all()[0];
+
+            $airline_uniqe_iata = $airline['airline_uniqe_iata'];
+            $airline_name = $airline['airline_name'];
+            $r['origin_fa'] = $origin_fa;
+            $r['destination_fa'] = $destination_fa;
+            $r['airline_name'] = $airline_name;
+            $r['airline_uniqe_iata'] = $airline_uniqe_iata;
+        }
         return $result;
     }
 
