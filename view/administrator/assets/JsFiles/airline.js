@@ -323,6 +323,8 @@ $(document).ready(function () {
         var origin = $('#origin').val().trim().toUpperCase();
         var destination = $('#destination').val().trim().toUpperCase();
         var ceiling_price = $('#ceiling_price').val().trim().toUpperCase();
+        var trip_type = $('#trip_type').val().trim().toUpperCase();
+        var fare_class = $('#fare_class').val().trim().toUpperCase();
         // اعتبارسنجی ساده
         if (!airlineIata) {
             alert('لطفا نام ایرلاین را وارد کنید');
@@ -356,6 +358,8 @@ $(document).ready(function () {
                 origin: origin,
                 destination: destination,
                 ceiling_price: ceiling_price,
+                trip_type: trip_type,
+                fare_class: fare_class,
                 flag: 'add_ceilingPrice'
             },
             success: function(response) {
