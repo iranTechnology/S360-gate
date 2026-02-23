@@ -41,8 +41,10 @@
           <div class="box_ways">
             <div @click="changeTypeSearch('Oneway',$event)" class="is_active_box_ways">{{ useXmltag('Oneway') }}</div>
             <div @click="changeTypeSearch('Twoway',$event)" class="multiWays" :class="(has_return ? 'checked' : '')">{{ useXmltag('Twoway') }}</div>
-            <div @click="changeTypeSearch('multiSearch',$event)" v-if="searchSource">{{ useXmltag('multiSearch') }}</div>
+<!--            <div @click="changeTypeSearch('multiSearch',$event)" v-if="searchSource">{{ useXmltag('multiSearch') }}</div>-->
           </div>
+
+
         </div>
 
         </div>
@@ -141,8 +143,7 @@
         boxWays:"",
         boxWaysHeight : "",
         has_return : false,
-        search_box_type : 'multiSearch'
-
+        search_box_type : 'multiSearch',
       }
     },
     methods: {
@@ -162,37 +163,50 @@
         this.count_search_part=  this.data_search_side.length;
 
       },
-      changeTypeSearch: function(type_search_box,event) {
-        let selector_div = document.querySelectorAll('.box_ways > div');
+      // changeTypeSearch: function(type_search_box,event) {
+      //   let selector_div = document.querySelectorAll('.box_ways > div');
+      //   this.$store.commit('setSearchType',type_search_box)
+      //   selector_div.forEach(div => {
+      //     div.classList.remove('is_active_box_ways');
+      //   });
+      //   document.querySelector('.click_ways').classList.toggle("site-border-main-color")
+      //   this.boxWays.classList.toggle("active_h_boxWays");
+      //   document.querySelector('.click_ways > i').classList.toggle("active_i_click_ways")
+      //   event.target.classList.add("is_active_box_ways")
+      //
+      //     if(type_search_box=='Oneway'){
+      //         this.is_multi_destination = false;
+      //         this.has_return = false;
+      //       document.getElementsByClassName('multiWays')[0].classList.remove('checked');
+      //
+      //
+      //     }
+      //     if(type_search_box=='Twoway'){
+      //       this.is_multi_destination = false;
+      //       this.has_return = true;
+      //       document.getElementsByClassName('multiWays')[0].classList.add('checked');
+      //     }
+      //     if(type_search_box=='multiSearch'){
+      //       this.is_multi_destination = true;
+      //       this.has_return = false;
+      //       document.getElementsByClassName('multiWays')[0].classList.remove('checked');
+      //
+      //     }
+      // },
+      changeTypeSearch(type_search_box, event) {
+        // this.type_search = type_search_box; // به جای دستکاری $store، اگر نیاز دارید commit کنید جدا
         this.$store.commit('setSearchType',type_search_box)
-
-
-        selector_div.forEach(div => {
-          div.classList.remove('is_active_box_ways');
-        });
-        document.querySelector('.click_ways').classList.toggle("site-border-main-color")
-        this.boxWays.classList.toggle("active_h_boxWays");
-        document.querySelector('.click_ways > i').classList.toggle("active_i_click_ways")
-        event.target.classList.add("is_active_box_ways")
-
-          if(type_search_box=='Oneway'){
-              this.is_multi_destination = false;
-              this.has_return = false;
-            document.getElementsByClassName('multiWays')[0].classList.remove('checked');
-
-
-          }
-          if(type_search_box=='Twoway'){
-            this.is_multi_destination = false;
-            this.has_return = true;
-            document.getElementsByClassName('multiWays')[0].classList.add('checked');
-          }
-          if(type_search_box=='multiSearch'){
-            this.is_multi_destination = true;
-            this.has_return = false;
-            document.getElementsByClassName('multiWays')[0].classList.remove('checked');
-
-          }
+        // مقدار دهی متغیرها
+        if(type_search_box === 'Oneway') {
+          this.is_multi_destination = false;
+          this.has_return = false;
+        } else if(type_search_box === 'Twoway') {
+          this.is_multi_destination = false;
+          this.has_return = true;
+        } else if(type_search_box === 'multiSearch') {
+          this.is_multi_destination = true;
+          this.has_return = false;
+        }
       },
       addPatternPartSearchSide(){
 

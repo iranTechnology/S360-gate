@@ -201,21 +201,22 @@
                     <div class="act-buttons act-buttons-mobile">
                         <div class="nav-search">
                             <div class="top__user_menu">
-                                <button class="{if $obj_main_page->isLogin()}main-navigation__button2{else}main-navigation__button1{/if} {if $obj_main_page->isLogin() }show-box-login-js{/if}">
-
-                                    {include file="`$smarty.const.FRONT_CURRENT_THEME`topBarName.tpl"}
-
-                                    <div class="button-chevron-2 ">
-
-                                    </div>
-                                </button>
-
+                                <a class="__login_register_class__ button btn-user {if $obj_main_page->isLogin()}show-box-login-js main-navigation__button2{else}show-box-nologin-js main-navigation__button1{/if}"
+                                        {if $obj_main_page->isLogin()}
+                                            href="javascript:"
+                                        {else}
+                                            {if $smarty.const.SOFTWARE_LANG == 'fa'}
+                                                href="{$smarty.const.ROOT_ADDRESS}/authenticate"
+                                            {else}
+                                                href="{$smarty.const.ROOT_ADDRESS}/loginUser"
+                                            {/if}
+                                        {/if}
+                                >
+                                    <span>{include file="`$smarty.const.FRONT_CURRENT_THEME`topBarName.tpl"}</span>
+                                </a>
                                 <div class="main-navigation__sub-menu2 arrow-up show-content-box-login-js" style="display: none">
-
                                     {include file="`$smarty.const.FRONT_CURRENT_THEME`topBar.tpl"}
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
