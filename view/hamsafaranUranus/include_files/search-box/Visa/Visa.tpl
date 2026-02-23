@@ -9,7 +9,7 @@
                 <input type="hidden" name="visaID" id="visaID" value="" />
                 <input type="hidden" name="visa_type" id="visa_type" value="" />
 
-                {include file="./sections/Visa/active_visa.tpl"}
+                {include file="./active_visa.tpl"}
                 <div class="col-lg-2 col-md-4 col-sm-6 col-12 btn_s col_search margin-center p-1">
                     <button type="button" onclick="searchActiveVisa()" class="btn theme-btn seub-btn b-0">
                         <span>##Search##</span>
