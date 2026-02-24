@@ -3566,7 +3566,6 @@ class newApiFlight extends clientAuth
 
         $flights = json_decode($this->findTicketInSearch(), true);
 
-        functions::insertLog('$flights: ' . json_encode($flights) , '0abbasi');
 
         $request_numbers = [];
         foreach ($flights as $direction => $arrayFlight) {
