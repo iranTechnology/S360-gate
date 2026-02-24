@@ -1714,6 +1714,7 @@
   <OsafarPegasusTicketsOnlineBooking>حجز تذاكر بكاسوس عبر الانترنت</OsafarPegasusTicketsOnlineBooking>
   <OsafarDashboard>لوحة التحكم</OsafarDashboard>
   <OsafarRefund>استرجاع</OsafarRefund>
+  <OsafarRefundPending>استرجاع أشخاص آخرين</OsafarRefundPending>
   <OsafarRefundPending>استرجاع قيد المراجعة</OsafarRefundPending>
   <OsafarRefundClosed>تم إغلاق استردادك</OsafarRefundClosed>
   <OsafarEnterClub>الدخول إلى نادي العملاء</OsafarEnterClub>

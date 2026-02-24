@@ -1688,6 +1688,7 @@
   <OsafarPegasusTicketsOnlineBooking>Бронирование билетов Pegasus онлайн</OsafarPegasusTicketsOnlineBooking>
   <OsafarDashboard>Панель инструментов</OsafarDashboard>
   <OsafarRefund>Возвращать деньги</OsafarRefund>
+  <OsafarRefundother>Экстрадиция других лиц</OsafarRefundother>
   <OsafarRefundPending>Возврат в обработке</OsafarRefundPending>
   <OsafarRefundClosed>Ваш возврат закрыт</OsafarRefundClosed>
   <OsafarEnterClub>Вступление в Клуб Путешественников</OsafarEnterClub>

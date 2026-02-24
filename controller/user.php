@@ -1711,6 +1711,15 @@ class user extends baseController
                         'type' => 'button',
                         'function' => ""
                     ];
+
+                   $result[$key]['button_list'][] =
+                       [
+                           'title' => functions::Xmlinformation('OsafarRefundother')->__toString(),
+                           'type' => 'button',
+                           'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
+
+                       ];
+
                 }
                else if ($item['StatusCancel'] === 'ConfirmCancel') {
                     $result[$key]['button_list'][] = [
@@ -4565,6 +4574,15 @@ class user extends baseController
                             'type' => 'button',
                             'function' => ""
                         ];
+
+                        $result[$key]['button_list'][] =
+                            [
+                                'title' => functions::Xmlinformation('OsafarRefundother')->__toString(),
+                                'type' => 'button',
+                                'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
+
+                            ];
+
                     }
                     else if ($item['StatusCancel'] === 'ConfirmCancel') {
                         $result[$key]['button_list'][] = [
