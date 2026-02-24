@@ -3940,7 +3940,21 @@ class newApiFlight extends clientAuth
                         'unique_code' => $flight['Code'],
                         'point_club' => (($point_club > 0) ? $point_club : 0),
                         'flight_id' => $flight['FlightID'],
-                        'baggage' => ($flight['OutputRoutes'][0]['Baggage']['Code'] > 0) ? $this->baggageTitle($flight['SourceId'],$flight['OutputRoutes'][0],$translateVariable):'20',
+//                        'baggage' => ($flight['OutputRoutes'][0]['Baggage']['Code'] > 0) ? $this->baggageTitle($flight['SourceId'],$flight['OutputRoutes'][0],$translateVariable):'20',
+                        'baggage' => (
+                            isset($flight['OutputRoutes'][0]['CabinType']) &&
+                            isset($businessCabinTypes[$flight['OutputRoutes'][0]['CabinType']])
+                        )
+                            ? '25 کیلوگرم'
+                            : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
+//                            ($flight['OutputRoutes'][0]['Baggage']['Code'] > 0)
+//                                ? $this->baggageTitle(
+//                                $flight['SourceId'],
+//                                $flight['OutputRoutes'][0],
+//                                $translateVariable
+//                            )
+
+
                     ];
 
                     if($direction == 'twoWay') {
@@ -3966,11 +3980,17 @@ class newApiFlight extends clientAuth
                                 'arrival_time' => (!empty($details_dept['ArrivalDate'])) ? functions::format_hour($details_dept['ArrivalTime']) : null,
                                 'duration_flight_time' => (!empty($details_dept['ArrivalDate'])) ? functions::format_hour($details_dept['FlightTime']) : null,
                                 'seat_class' => (($details_dept['CabinType'] == 'C' || $details_dept['CabinType'] == 'C1' || $details_dept['CabinType'] == 'C2' || $details_dept['CabinType'] == 'C3' || $details_dept['CabinType'] == 'C4' || $details_dept['CabinType'] == 'C5' || $details_dept['CabinType'] == 'J'  || $details_dept['CabinType'] == 'I' || $details_dept['CabinType'] == 'Z') ? $seatClassBusinessText : $seatClassEconomyText),
-                                'baggage' => array('code' => $details_dept['Baggage'][0]['Code'],
-                                    'charge' => $details_dept['Baggage'][0]['Charge'],
-                                    'type' => $details_dept['Baggage'][0]['Type'],
-                                    'baggage_statement' => $this->baggageTitle($source_id, $details_dept, $translateVariable)
-                                ),
+//                                'baggage' => array('code' => $details_dept['Baggage'][0]['Code'],
+//                                    'charge' => $details_dept['Baggage'][0]['Charge'],
+//                                    'type' => $details_dept['Baggage'][0]['Type'],
+//                                    'baggage_statement' => $this->baggageTitle($source_id, $details_dept, $translateVariable)
+//                                ),
+                                'baggage' => (
+                                    isset($details_dept['CabinType']) &&
+                                    isset($businessCabinTypes[$details_dept['CabinType']])
+                                )
+                                    ? '25 کیلوگرم'
+                                    : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
                                 'airline' => array(
                                     'airline_name' => $airlines_name[$details_dept['Airline']['Code']][$langFieldIndex],
                                     'airline_code' => $details_dept['Airline']['Code'],
@@ -4056,12 +4076,18 @@ class newApiFlight extends clientAuth
                                     'arrival_date_abbreviation' => (!empty($details_return['ArrivalDate'])) ? functions::DateFormatType($details_return['ArrivalDate'], 'gregorian') : null,
                                     'duration_flight_time' => functions::format_hour($details_return['FlightTime']),
                                     'seat_class' => (($details_return['CabinType'] == 'C' || $details_return['CabinType'] == 'C1' || $details_return['CabinType'] == 'C2' || $details_return['CabinType'] == 'C3' || $details_return['CabinType'] == 'C4' || $details_return['CabinType'] == 'C5' || $details_return['CabinType'] == 'J' ||  $details_return['CabinType'] == 'I' || $details_return['CabinType'] == 'Z') ? $seatClassBusinessXml : $seatClassEconomyXml),
-                                    'baggage' => array(
-                                        'code' => $details_return['Baggage'][0]['Code'],
-                                        'charge' => $details_return['Baggage'][0]['Charge'],
-                                        'type' => $details_return['Baggage'][0]['Type'],
-                                        'baggage_statement' => $this->baggageTitle($source_id, $details_return,$translateVariable)
-                                    ),
+//                                    'baggage' => array(
+//                                        'code' => $details_return['Baggage'][0]['Code'],
+//                                        'charge' => $details_return['Baggage'][0]['Charge'],
+//                                        'type' => $details_return['Baggage'][0]['Type'],
+//                                        'baggage_statement' => $this->baggageTitle($source_id, $details_return,$translateVariable)
+//                                    ),
+                                    'baggage' => (
+                                        isset($details_return['CabinType']) &&
+                                        isset($businessCabinTypes[$details_return['CabinType']])
+                                    )
+                                        ? '25 کیلوگرم'
+                                        : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
                                     'airline' => array(
                                         'airline_name' => $airlines_name[$details_return['Airline']['Code']][$langFieldIndex],
                                         'airline_code' => $details_return['Airline']['Code'],

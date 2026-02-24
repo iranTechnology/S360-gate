@@ -245,18 +245,33 @@ class visa extends clientAuth {
         $id    = filter_var( $id, FILTER_VALIDATE_INT );
 
 //        $query = "SELECT V.*, VT.title AS visaTypeTitle FROM  visa_tb V LEFT JOIN visa_type_tb VT ON V.visaTypeID = VT.id WHERE V.id = '{$id}'";
+//        $query = "
+//    SELECT
+//        V.*,
+//        VT.title AS visaTypeTitle,
+//        RC.pic
+//    FROM visa_tb V
+//    LEFT JOIN visa_type_tb VT ON V.visaTypeID = VT.id
+//    LEFT JOIN reservation_country_tb RC ON V.countryCode = RC.abbreviation
+//    WHERE V.id = '{$id}'
+//";
         $query = "
-    SELECT 
-        V.*, 
-        VT.title AS visaTypeTitle, 
-        RC.pic 
-    FROM visa_tb V
-    LEFT JOIN visa_type_tb VT ON V.visaTypeID = VT.id
-    LEFT JOIN reservation_country_tb RC ON V.countryCode = RC.abbreviation
-    WHERE V.id = '{$id}'
-";
-
+        SELECT 
+    V.*, 
+    VT.title AS visaTypeTitle, 
+    RC.pic
+FROM visa_tb V
+LEFT JOIN visa_type_tb VT 
+    ON V.visaTypeID = VT.id
+    AND VT.isDell = 'no'
+LEFT JOIN reservation_country_tb RC 
+    ON V.countryCode = RC.abbreviation
+    AND RC.is_del = 'no'
+WHERE V.id = '{$id}'
+  AND V.isDell = 'no'
+  ";
         $result = $Model->load( $query );
+
 
         $discountedPrice = $reservation_visa->calcDiscountedPrice($result['mainCost']);
         $result['priceWithDiscount'] = $discountedPrice['price'];

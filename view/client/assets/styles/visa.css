@@ -1,7 +1,9 @@
 /****************
     sidebar Styles
 *****************/
-
+strong{
+    font-family: "yekanbakhmedium" !important;
+}
 .factorLocal-btn {
     padding: 0 10px !important;
     border-radius: 8px;
@@ -1754,6 +1756,7 @@ polyline {
     border:1px solid #ccc !important;
     padding:10px;
     border-radius:10px !important;
+    position:relative;
 }
 .visa-page-passenger .counting-of-count-passenger{
     display:flex !important;
@@ -1848,7 +1851,7 @@ polyline {
     align-items:center;
     gap:10px;
     background-color:rgb(226, 230, 233);
-width:160px
+    width:160px
 }
 .info-visa span{
     font-weight: 700;
@@ -1951,12 +1954,7 @@ width:160px
 .select2-container--default .select2-selection--single{
     border:1px solid #475565 !important;
 }
-.price-table-body {
-    font-family: initial !important;
-}
-.price-table-body * {
-    font-family: initial !important;
-}
+
 /* استایل مخصوص برای select ویزا - شبیه عکس */
 .visa-style-select + .select2-container {
     width: 100% !important;
@@ -2106,3 +2104,115 @@ width:160px
     visibility: visible;
 }
 
+.parent-svg-input-search-box {
+    padding-top: 3px;
+}
+.box-of-count-passenger-boxes {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 0 8px;
+    justify-content: space-between;
+    align-items: unset !important;
+}
+
+
+.cbox-count-passenger {
+    position: absolute;
+    min-width: 290px;
+    top: 100%;
+    z-index: 10;
+    left: 0;
+    border-radius: 12px;
+    right: 0;
+    background-color: #fff;
+    display: none;
+    cursor: default;
+    border-top: 0;
+    border: 1px solid #eee;
+    box-shadow: none !important;
+}
+
+.type-of-count-passenger {
+    color: #999;
+    font-size: 11px;
+    font-weight: 400;
+    text-align: right;
+    vertical-align: middle;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.type-of-count-passenger h6 {
+    margin-left: 6px;
+    margin-bottom: 0;
+    padding: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.num-of-count-passenger {
+    color: #333;
+    text-align: left;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.num-of-count-passenger i:nth-child(1) {
+    background: var(--mainColor);
+    color: #fff;
+    transition: all ease .5s;
+}.num-of-count-passenger i:nth-child(2) {
+     font-size: 16px;
+ }
+
+.num-of-count-passenger i:nth-child(3) {
+    background:var(--mainColor);
+    color: #fff;
+    transition: all ease .5s;
+}
+.cbox-count-passenger-ch {
+    padding: 10px;
+}
+.cbox-count-passenger-ch > .row {
+    margin-right: -5px;
+    margin-left: -5px;
+}
+.cbox-count-passenger-ch > .row > div {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.div_btn {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-close {
+    background: var(--mainColor);
+    transition: all ease .4s;
+    color: #fff;
+    cursor: pointer;
+    width: 100px;
+    border-radius: 20px;
+}
+.btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+.counting-of-count-passenger {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 7px;
+    margin: 0 5px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none !important;
+}
