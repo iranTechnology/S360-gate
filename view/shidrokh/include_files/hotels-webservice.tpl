@@ -13,7 +13,7 @@
 
                 {if $internal_hotels[0]}
                     <div class="__i_modular_c_item_class_0 div1">  {* پست ویژه / بزرگ‌تر *}
-                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[0]['HotelIndex']}">
+                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[0]['HotelIndex']}" target="_blank">
                             <img alt="{$internal_hotels[0]['Name']}" class="__image_class__" src="{$internal_hotels[0]['Picture']}" loading="lazy" />
                             <div>
                                 <div>
@@ -34,7 +34,7 @@
 
                 {if $internal_hotels[1]}
                     <div class="__i_modular_c_item_class_1 div2">
-                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[1]['HotelIndex']}">
+                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[1]['HotelIndex']}" target="_blank">
                             <img alt="{$internal_hotels[1]['Name']}" class="__image_class__" src="{$internal_hotels[1]['Picture']}" loading="lazy" />
                             <div>
                                 <div>
@@ -55,7 +55,7 @@
 
                 {if $internal_hotels[2]}
                     <div class="__i_modular_c_item_class_2 div3">
-                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[2]['HotelIndex']}">
+                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[2]['HotelIndex']}" target="_blank">
                             <img alt="{$internal_hotels[2]['Name']}" class="__image_class__" src="{$internal_hotels[2]['Picture']}" loading="lazy" />
                             <div>
                                 <div>
@@ -76,7 +76,7 @@
 
                 {if $internal_hotels[3]}
                     <div class="__i_modular_c_item_class_3 div4">
-                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[3]['HotelIndex']}">
+                        <a href="{$smarty.const.ROOT_ADDRESS}/detailHotel/api/{$internal_hotels[3]['HotelIndex']}" target="_blank">
                             <img alt="{$internal_hotels[3]['Name']}" class="__image_class__" src="{$internal_hotels[3]['Picture']}" loading="lazy" />
                             <div>
                                 <div>
