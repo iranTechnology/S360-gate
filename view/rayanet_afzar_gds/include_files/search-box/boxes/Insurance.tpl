@@ -3,7 +3,7 @@
 <div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Insurance">
     <div class="col-md-12 col-12">
         <div class="row  ">
-            <form data-action="https://s360online.iran-tech.com/" method="post" data-target="_blank"
+            <form data-action="https://s360online.iran-tech.com/" method="post" target="_blank"
                   name="gdsInsurance" id="gdsInsurance" class="d_contents">
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 col_search">
                     <div class="form-group">

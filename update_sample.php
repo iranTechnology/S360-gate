@@ -7,7 +7,7 @@
  */
 
 $client_sql = <<<SQL
-    
+INSERT INTO `reservation_setting_tb` (`id`, `service`, `title`, `description`, `enable`) VALUES (1, 'tour', 'toman', 'نمایش قیمت های تور به صورت تومانی', 1);
 
 SQL;
 
