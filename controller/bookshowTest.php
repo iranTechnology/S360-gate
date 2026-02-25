@@ -6560,7 +6560,8 @@ class bookshowTest extends clientAuth {
             if ( $visa['totalPrice'] != $visa['totalPayment'] ) {
                 '<span style="text-decoration: line-through;">' . number_format( $visa['totalPrice'] ) . '</span> <br/>';
             }
-            $DataPayment = number_format( $visa['totalPayment'] ) . '<br/>' . number_format( $visa['totalPrePayment'] );
+//            $DataPayment = number_format( $visa['totalPayment'] ) . '<br/>' . number_format( $visa['totalPrePayment'] );
+            $DataPayment = number_format( $visa['totalPrePayment'] );
 
             $DataVisaStatuses = '';
 
@@ -6652,7 +6653,7 @@ class bookshowTest extends clientAuth {
             $DataTable['data'][ $key ]["نام خریدار<br />نوع کاربر<br />تعداد<br />نوع کانتر"] = $DataCounter;
             $DataTable['data'][ $key ]["سهم آژانس"]                                           = $DataAgencyPart;
             ( TYPE_ADMIN == '1' ? $DataTable['data'][ $key ][" سهم ما"] = $DataIranCommission : "" );
-            $DataTable['data'][ $key ]["مبلغ کل<br />مبلغ پرداختی"] = $DataPayment;
+            $DataTable['data'][ $key ]["مبلغ پرداختی"] = $DataPayment;
             $DataTable['data'][ $key ]["تعیین وضعیت"]                    = $DataVisaStatuses;
             $DataTable['data'][ $key ]["عملیات"]                    = $DataAction;
             $DataTable['data'][ $key ]["وضعیت"]                     = $DataStatus;

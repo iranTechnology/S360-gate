@@ -712,7 +712,8 @@ class bookingVisa extends clientAuth {
             $passengerAge = ($data['passenger_age'] == 'Adt' ? 'بزرگسال' : ($data['passenger_age'] == 'Chd' ? 'کودک' : 'نوزاد'));
             $offPrice = $data['visa_main_cost'] * ($data['percent_discount'] / 100);
             $paymentPrice = $data['visa_main_cost'] - ($data['visa_prepayment_cost'] + $offPrice);
-
+            $date = $data['passenger_birthday']; // 1370-06-19
+            $datePassengerBirthday = str_replace('-', '/', $date);
             $pdfContent .= '
 <!DOCTYPE html>
 <html>
@@ -819,10 +820,10 @@ class bookingVisa extends clientAuth {
                 </tr>
                 <tr>
                     <td width="50%" align="right">
-                        <ul>
-                            <li>نام: ' . $data['passenger_name'] . '</li>
-                            <li>نام خانوادگی: ' . $data['passenger_family'] . '</li>
-                            <li>تاریخ تولد: ' . (!empty($data['passenger_birthday']) ? $data['passenger_birthday'] : functions::ConvertToJalali($data['passenger_birthday_en'])) . '</li>
+                        <ul style="text-align: right; padding-right: 10px;">
+                            <li>نام: ' . $data['passenger_name_en'] . '</li>
+                            <li>نام خانوادگی: ' . $data['passenger_family_en'] . '</li>
+                            <li>تاریخ تولد: ' . (!empty($data['passenger_birthday']) ? $datePassengerBirthday : '-') . '</li>
                             <li>شماره پاسپورت: ' . $data['passport_number'] . '</li>
                             <li>رده سنی: ' . $passengerAge . '</li>
                         </ul>
@@ -831,7 +832,7 @@ class bookingVisa extends clientAuth {
                         <ul>
                             <li>Name: ' . $data['passenger_name_en'] . '</li>
                             <li>Family Name: ' . $data['passenger_family_en'] . '</li>
-                            <li>Date of Birth: ' . (!empty($data['passenger_birthday_en']) ? $data['passenger_birthday_en'] : functions::ConvertToMiladi($data['passenger_birthday'])) . '</li>
+                            <li>Date of Birth: ' . (!empty($data['passenger_birthday']) ? functions::ConvertToMiladi($data['passenger_birthday'] ) : '-') . '</li>
                             <li>Passport Number: ' . $data['passport_number'] . '</li>
                             <li>Age Range: ' . $data['passenger_age'] . '</li>
                         </ul>
@@ -853,38 +854,7 @@ class bookingVisa extends clientAuth {
                 </tr>
             </table>
             
-            <p class="topFrame">  توضیحات: </p>
-            <table width="100%" align="center" cellpadding="0" cellspacing="0" class="page rtl">
-                <tr>
-                    <td align="right" style="padding: 25px 15px 15px;">' . $data['visa_descriptions'] . ' </td>
-                </tr>
-            </table>
-            
-            <table width="100%" align="center" cellpadding="0" cellspacing="0" class="page rtl">
-                <tr>
-                    <th width="70%">هزینه ها</th>
-                    <th width="30%">مبلغ به ریال</th>
-                </tr>
-                <tr>
-                    <td class="borderBottomTd">مبلغ ویزا</td>
-                    <td class="borderBottomTd">' . number_format($data['visa_main_cost']) . '</td>
-                </tr>
-                ' . ($data['percent_discount'] > 0 ? '
-                <tr>
-                    <td class="borderBottomTd">میزان تخفیف (' . $data['percent_discount'] . ' درصد)</td>
-                    <td class="borderBottomTd">' . number_format($offPrice) . '</td>
-                </tr>
-                ' : '') . '
-                <tr>
-                    <td class="borderBottomTd">پیش پرداخت</td>
-                    <td class="borderBottomTd">' . number_format($data['visa_prepayment_cost']) . '</td>
-                </tr>
-                <tr>
-                    <td>مبلغ قابل پرداخت</td>
-                    <td><p>' . number_format($paymentPrice) . '</p></td>
-                </tr>
-            </table>
-            
+           
             <div class="footer">
                 <table width="100%" align="center" cellpadding="0" cellspacing="0" class="rtl">
                     <tr>
@@ -908,6 +878,7 @@ class bookingVisa extends clientAuth {
 
         return 'خطا: رزرو با شماره فاکتور مذکور قطعی نشده است';
     }
+
 
     #endregion
 
