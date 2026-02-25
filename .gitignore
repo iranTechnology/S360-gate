@@ -7,6 +7,7 @@
 /logs/
 /vendor/
 /view/client/assets/js/vue/node_modules
+config/bootstrap.php
 
 
 
@@ -25,9 +26,5 @@
 /library/pdf/examples/
 /library/PHPExcel-1.8/Documentation/Examples/
 /library/ApiSource/searchEngineApi/predis/
-/view/administrator/assets/ckeditor-old/
-/view/administrator/assets/plugins/
-/view/administrator/assets/ckeditor-min/
-/view/administrator/assets/editor_TinyMCE/
-/view/administrator/assets/less/
+
 .DS_Store

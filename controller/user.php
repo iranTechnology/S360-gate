@@ -1563,7 +1563,7 @@ class user extends baseController
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
-            $sql .= " AND b.creation_date_int >= '{$date_of_int}' AND b.creation_date_int  <= '{$date_to_int}'";
+            $sql .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
 
         }
 

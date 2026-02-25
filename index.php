@@ -1,20 +1,5 @@
 <?php
 
-//if ((empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') && $_SERVER['REQUEST_METHOD'] !='POST' && $_SERVER['REMOTE_ADDR'] !='172.18.0.1') {
-//    // Construct the new URL with HTTPS
-//    $newUrl = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-//
-//    // Perform the 301 redirect
-//    header('HTTP/1.1 301 Moved Permanently');
-//    header('Location: ' . $newUrl);
-//    exit();
-//}
-//ini_set('memory_limit', '-1');
-
-
-
-
-
 //date_default_timezone_set('Asia/Tehran');
 require 'config/bootstrap.php';
 require CONFIG_DIR . 'config.php';
@@ -24,6 +9,8 @@ require LIBRARY_DIR . 'functions.php';
 require LIBRARY_DIR . 'baseController.php';
 require LIBRARY_DIR . 'Session.php';
 require CONTROLLERS_DIR . 'dateTimeSetting.php';
+
+
 
 Session::init();
 
@@ -65,7 +52,6 @@ if (functions::checkClientConfigurationAccess('redirect',CLIENT_ID)) {
 }
 
 
-
 functions::redirectTo410();
 
 
@@ -78,9 +64,9 @@ if(GDS_SWITCH == 'mag' && SOFTWARE_LANG == 'fa') {
  * @return void
  */
 
+$clientIds = functions::getClientIds();
 
-
-if (GDS_SWITCH == 'resultTourLocal' && (CLIENT_ID == '4' || CLIENT_ID == '298' || CLIENT_ID == '292'  ||  CLIENT_ID == '224' ||  CLIENT_ID == '325' ||  CLIENT_ID == '166' || CLIENT_ID == '339' || CLIENT_ID == '383' || CLIENT_ID == '373' || CLIENT_ID == '318' || CLIENT_ID == '418' || CLIENT_ID == '419'|| CLIENT_ID == '420'|| CLIENT_ID == '421'|| CLIENT_ID == '422' || CLIENT_ID == '416')) {
+if (GDS_SWITCH == 'resultTourLocal' && (CLIENT_ID == '4' || CLIENT_ID == '298' || CLIENT_ID == '292'  ||  CLIENT_ID == '224' ||  CLIENT_ID == '325' ||  CLIENT_ID == '166' || CLIENT_ID == '339' || CLIENT_ID == '383' || CLIENT_ID == '373' || CLIENT_ID == '318' || CLIENT_ID == '408'  || CLIENT_ID == '418' || CLIENT_ID == '419'|| CLIENT_ID == '420'|| CLIENT_ID == '421'|| CLIENT_ID == '422' || CLIENT_ID == '416' || CLIENT_ID == '517' || in_array(CLIENT_ID, $clientIds, true))) {
     $slug_controller = new tourSlugController();
     $slug_controller->redirectToSlug();
 } elseif (GDS_SWITCH == 'tours') {
@@ -115,7 +101,7 @@ if(GDS_SWITCH == 'resultExternalHotel' || GDS_SWITCH == 'searchHotel') {
 }
 //
 
-if(GDS_SWITCH == 'roomHotelLocal' || GDS_SWITCH == 'resultTourLocal') {
+if(GDS_SWITCH == 'resultTourLocal') {
     functions::setCorrectName(GDS_SWITCH);
 }
 
@@ -260,16 +246,19 @@ elseif (GDS_SWITCH == 'syncDataGds') {
 elseif (GDS_SWITCH == 'checkStatusHotel') {
     require CRONJOBS_DIR . 'checkStatusHotel.php';
 }
-
 elseif (GDS_SWITCH == 'ApiWeatherCronjob') {
     require CRONJOBS_DIR . 'ApiWeatherCronjob.php';
 }
-
+elseif (GDS_SWITCH == 'refreshFlightLimitRateCronjob') {
+    require CRONJOBS_DIR . 'refreshFlightLimitRateCronjob.php';
+}
+elseif (GDS_SWITCH == 'apiLogin') {
+    require LIBRARY_DIR . 'ApiSource/Sso/loginApi.php';
+}
 elseif (GDS_SWITCH == 'TrainBotSearch') {
 
     require CRONJOBS_DIR . 'TrainBotSearch.php';
 } else {
-
 
     if (substr_count($firstURL, FOLDER_ADMIN)) {
 

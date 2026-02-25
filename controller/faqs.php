@@ -145,6 +145,9 @@ class faqs extends positions
         if (!in_array($serviceGroup, array_keys($allServiceGroup))) {
             return false;
         }
+        if (substr($serviceGroup, -2) === 'Sp') {
+            return false;
+        }
         $method = 'ListPosition' . $serviceGroup;
 
         return $this->$method();
@@ -177,6 +180,91 @@ class faqs extends positions
 
             $list[$service['MainService']] = $service;
         }
+        $list['internalFlightSp'] = [
+            'Title' => 'پرواز داخلی (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'internalFlightSp',
+            'order_number' => '50',
+        ];
+        $list['internationalFlightSp'] = [
+            'Title' => 'پرواز خارجی (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'internationalFlightSp',
+            'order_number' => '50',
+        ];
+        $list['HotelSp'] = [
+            'Title' => 'هتل (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'HotelSp',
+            'order_number' => '50',
+        ];
+        $list['EuropcarSp'] = [
+            'Title' => 'اجاره خودرو (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'EuropcarSp',
+            'order_number' => '50',
+        ];
+        $list['GashtTransferSp'] = [
+            'Title' => 'گشت و ترانسفر (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'GashtTransferSp',
+            'order_number' => '50',
+        ];
+        $list['TourSp'] = [
+            'Title' => 'تور (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'TourSp',
+            'order_number' => '50',
+        ];
+        $list['VisaSp'] = [
+            'Title' => 'ویزا (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'VisaSp',
+            'order_number' => '50',
+        ];
+        $list['BusSp'] = [
+            'Title' => 'اتوبوس (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'BusSp',
+            'order_number' => '50',
+        ];
+        $list['TrainSp'] = [
+            'Title' => 'قطار (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'TrainSp',
+            'order_number' => '50',
+        ];
+        $list['EntertainmentSp'] = [
+            'Title' => 'تفریحات (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'EntertainmentSp',
+            'order_number' => '50',
+        ];
+        $list['PackageSp'] = [
+            'Title' => 'پرواز + هتل (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'PackageSp',
+            'order_number' => '50',
+        ];
+        $list['ResidenceSp'] = [
+            'Title' => 'اقامتگاه (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'ResidenceSp',
+            'order_number' => '50',
+        ];
+        $list['exclusiveTourSp'] = [
+            'Title' => 'وب سرویس تور اختصاصی (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'exclusiveTourSp',
+            'order_number' => '50',
+        ];
+        $list['CipSp'] = [
+            'Title' => 'تشریفات فرودگاه (صفحه اختصاصی)',
+            'id' => '',
+            'MainService' => 'CipSp',
+            'order_number' => '50',
+        ];
+
         $list['contactUs'] = [
             'Title' => 'تماس با ما',
             'id' => '',
@@ -185,12 +273,6 @@ class faqs extends positions
         ];
         $list['Public'] = [
             'Title' => 'عمومی',
-            'id' => '',
-            'MainService' => 'Public',
-            'order_number' => '50',
-        ];
-        $list['Flight'] = [
-            'Title' => 'پرواز (صفحه اختصاصی)',
             'id' => '',
             'MainService' => 'Public',
             'order_number' => '50',

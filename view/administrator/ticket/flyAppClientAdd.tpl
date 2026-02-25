@@ -365,7 +365,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">ارسال اطلاعات</button>
+                                <button type="submit" class="btn btn-primary" id="btnAddClient">ارسال اطلاعات</button>
                             </div>
                         </div>
                     </div>

@@ -58,7 +58,6 @@ class smsPanel
             } else{
                 $data['creationDateInt'] = time();
                 $resultInsert = $admin->ConectDbClient('', $clientID, 'Insert', $data, 'sms_service_info_tb', '');
-
                 if ($resultInsert) {
                     $output['result_status'] = 'success';
                     $output['result_message'] = 'افزودن سرویس پیامک با موفقیت انجام شد';

@@ -71,6 +71,7 @@ $SqlClient = "
 $query = $mainConfig->prepare($SqlClient);
 $query->execute();
 $client = $query->fetch(PDO::FETCH_ASSOC);
+
 //select id current page panel counter
 if (isset($_SESSION['memberIdCounterInAdmin']) && !isset($pageCallCurllFactorIrantech)) {
     defined('memberIdCounterInAdmin') or define('memberIdCounterInAdmin',$_SESSION['memberIdCounterInAdmin']);
@@ -341,7 +342,7 @@ if(!empty($client['Services'])){
     // mr javani >>>
     elseif($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
     {
-        $client['ThemeDir'] = 'demo360';
+        $client['ThemeDir'] = 'hamsafaranUranus';
     }
 
 

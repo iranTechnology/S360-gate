@@ -111,7 +111,7 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
     /** @var members_tb $controller */
     $controller = Load::controller( 'members' );
     if(functions::validateMobileOrEmail($_POST['entry'])){
-        $entry=functions::checkParamsInput( $_POST['entry']);
+        $entry = functions::checkParamsInput( $_POST['entry']);
     }
 
 //	$email        = functions::checkParamsInput( functions::sanitizeString( filter_var( $_POST['entry'], FILTER_VALIDATE_EMAIL ) ) );
@@ -884,6 +884,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_cip' ) {
 
     $bookModel = Load::getModel('cipModel');
     $objTransaction    = Load::controller( 'transaction' );
+    $objFactorCip = Load::controller( 'cip' );
 
     $total_price           = 0;
     $TicketPriceBank       = 0;
@@ -913,6 +914,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_cip' ) {
     if ( empty( $existTransaction ) ) {
         // Caution: اعتبارسنجی صاحب سیستم
         $check = $objTransaction->checkCreditNew( $total_price, 'online' ,'', $total_price , $_POST['selectedBank']);
+
         if ( $check['status'] == 'TRUE' ) {
 
             $reason = 'buy';
@@ -921,6 +923,8 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_cip' ) {
 
 
             if ( $reduceTransaction ) {
+                $objFactorCip->updateSuccessfull( $factorNumber, 'bank' );
+
                 $output = 'TRUE';
             } else {
                 $output = 'FALSE';
@@ -5382,4 +5386,23 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'remove_airlineFine'){
     $result = $obj->remove_airlineFine($_POST);
     echo $result;
 }
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'add_ceilingPrice'){
+    $obj = Load::controller('airLinePriceController');
+    unset($_POST['flag']);
+    $result = $obj->add_ceilingPrice($_POST);
+    echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'updatePriceCeiling'){
+    $obj = Load::controller('airLinePriceController');
+    unset($_POST['flag']);
+    $result = $obj->update_ceilingPrice($_POST);
+    echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'deletePriceCeiling'){
+    $obj = Load::controller('airLinePriceController');
+    unset($_POST['flag']);
+    $result = $obj->delete_ceilingPrice($_POST);
+    echo $result;
+}
+
 
