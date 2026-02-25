@@ -109,8 +109,6 @@ $(document).ready(function () {
                     }
                 },
                 error: function(response) {
-
-
                     $.toast({
                         heading: 'آپلود فایل',
                         text: response.responseJSON.message,
