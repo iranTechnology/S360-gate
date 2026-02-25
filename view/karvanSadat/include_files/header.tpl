@@ -29,11 +29,18 @@
           })(window,document,'script','dataLayer','GTM-P6HK85KJ');</script>
         <!-- End Google Tag Manager -->
     {/literal}
+
+
     <meta charset="utf-8" />
     <meta test="i_modular_modulation" />
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
           name="viewport" />
     <meta content="ie=edge" http-equiv="X-UA-Compatible" />
+    {if $smarty.const.GDS_SWITCH eq 'mainPage'}
+        <title>{$smarty.const.CLIENT_NAME} | رزرو هتل کربلا و خدمات عتبات</title>
+    {/if}
+
+
 
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/rich/pageInfo/main.tpl" obj_main_page=$obj_main_page}
 
@@ -46,7 +53,7 @@
         {/foreach}
     {/if}
 
-    <base href="{$smarty.const.CLIENT_DOMAIN}" />
+    <base href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}"/>
     <link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
 
 
@@ -108,4 +115,25 @@
     <link rel="stylesheet" href="assets/all-css/all.min.css">
     <link rel="stylesheet" href="project_files/css/register.css">
     <link rel="stylesheet" href="project_files/css/style.css">
+
+    {if $smarty.const.GDS_SWITCH eq 'mainPage'}
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "{$smarty.const.CLIENT_NAME}",
+    "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}",
+    "logo": "project_files/images/logo.png"
+    }
+        </script>
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "{$smarty.const.CLIENT_NAME}",
+            "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}"
+        }
+        </script>
+    {/if}
 </head>

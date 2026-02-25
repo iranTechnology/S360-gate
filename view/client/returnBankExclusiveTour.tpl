@@ -9,8 +9,6 @@
 
 
 {if $smarty.post['flag'] !='credit'}
-    {var_dump($smarty.post)}
-    {var_dump($smarty.get)}
     {load_presentation_object filename="bank" assign="objBank"}
     {$objBank->initBankParams($smarty.get.bank)}
     {$objBank->executeBank('return')}
@@ -30,7 +28,6 @@
     {assign var="infoReserve" value=['paymentType' => $paymentType, 'factorNumber' => $objBank->factorNumber,'trackingCode'=>$objBank->trackingCode,'successPayment'=>$successPayment
     ,'paymentBank'=>$paymentBank]}
     {assign var="factorNumber" value= $objBank->factorNumber}
-    {var_dump($infoReserve)}
 {else}
     {$paymentType='credit'}
     {assign var="factorNumber" value=$item[0]['factor_number']}

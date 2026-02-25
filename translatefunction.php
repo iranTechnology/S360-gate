@@ -1,6 +1,6 @@
 <?php
 function translateFromDb( $lang = 'fa', $filename = 'frontMaster' ) {
-    $mysqli = new mysqli( "localhost", "safar360", 'GW@!pvGOZ$h9Mk[JdoU', "safar360_gds" );
+    $mysqli = new mysqli( "localhost", "root", '', "amadeus_db" );
 	/* check connection */
 	if ( $mysqli->connect_errno ) {
 		echo "Connect failed " . $mysqli->connect_error;
@@ -60,7 +60,7 @@ function xmlToDbFromFile( $lang = 'fa' ) {
 }
 
 function insertToDb( $dataArray, $lang = 'fa' ) {
-    $mysqli = new mysqli( "localhost", "safar360", 'GW@!pvGOZ$h9Mk[JdoU', "safar360_gds" );
+    $mysqli = new mysqli( "localhost", "root", '', "amadeus_db" );
     /* check connection */
 	if ( $mysqli->connect_errno ) {
 		echo "Connect failed " . $mysqli->connect_error;

@@ -1,5 +1,7 @@
 {load_presentation_object filename="specialPages" assign="objSpecialPages"}
 {assign var="page" value=$objSpecialPages->unSlugPage($smarty.const.PAGE_TITLE)}
+
+
 {*{$page|var_dump}*}
 <link rel="stylesheet" href="assets/modules/css/visa-page.css">
 
