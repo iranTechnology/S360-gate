@@ -1,1 +1,0 @@
-{include file="view/administrator/ticket/counterAdd.tpl"}

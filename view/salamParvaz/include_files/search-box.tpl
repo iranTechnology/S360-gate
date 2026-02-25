@@ -1,13 +1,14 @@
 
-<section class="i_modular_searchBox search_box mt-5">
+<section class="i_modular_searchBox search_box mt-5 ">
     <div class="container">
         <div class="search_box_div">
             <ul class="__search_box_tabs__ nav" id="searchBoxTabs" >
                 {include file="./search-box/tabs-search-box.tpl"}
-                <li class="nav-item">
+                <li class="nav-item {if $smarty.const.GDS_SWITCH_PAGE eq 'visa' && $smarty.const.GDS_SWITCH eq 'page'} d-none {/if}">
                     <a
                             href="https://salamparvaz.com/tours"
                        class="{$tab_id}-tab-pic nav-link"
+                            target="_blank"
                       >
 
                         <div>
