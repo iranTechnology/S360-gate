@@ -56,6 +56,88 @@ $(document).ready(function () {
     //     }
     // });
 
+    $('#InsertExelCanceling').validate({
+        rules: {
+            file_type: 'required'
+        },
+        messages: {
+            file: {
+                required: "آپلود یک فایل الزامیست"
+            },
+            file_type: {
+                required: "نوع فایل را انتخاب کنید"
+            }
+        },
+        errorElement: 'em',
+        errorPlacement: function(error, element) {
+            // Add the `help-block` class to the error element
+            error.addClass('help-block')
+
+            if (element.prop('type') === 'checkbox') {
+                error.insertAfter(element.parent('label'))
+            } else {
+                error.insertAfter(element)
+            }
+        },
+        submitHandler: function(form) {
+            //tinyMCE.triggerSave();
+            $(form).ajaxSubmit({
+                url: amadeusPath + 'ajax',
+                type: 'POST',
+                success: function(response) {
+                    $.toast({
+                        heading: 'آپلود فایل',
+                        text: response.message,
+                        position: 'top-right',
+                        icon: 'success',
+                        hideAfter: 3500,
+                        textAlign: 'right',
+                        stack: 6,
+                    })
+
+
+                    if (response.success === true) {
+                        setTimeout(function() {
+                            // location.reload()
+                            $('#uploadButton').html('لطفا صبر کنید...');
+                            document.getElementById("uploadButton").disabled=true;
+                        }, 200)
+                        setTimeout(function() {
+                            // location.reload()
+                            window.location = `${amadeusPath}itadmin/ticket/ticketCancellationHistory`;
+                        }, 2000)
+                    }
+                },
+                error: function(response) {
+
+
+                    $.toast({
+                        heading: 'آپلود فایل',
+                        text: response.responseJSON.message,
+                        position: 'top-right',
+                        icon: 'error',
+                        hideAfter: 3500,
+                        textAlign: 'right',
+                        stack: 6,
+                    })
+                }
+            })
+        },
+        highlight: function(element, errorClass, validClass) {
+            $(element)
+                .parents('.form-group ')
+                .addClass('has-error')
+                .removeClass('has-success')
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element)
+                .parents('.form-group ')
+                .addClass('has-success')
+                .removeClass('has-error')
+        },
+    })
+
+
 });
 
 
