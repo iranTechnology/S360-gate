@@ -11,6 +11,7 @@
   <EnterHotelName>Enter the name hotel</EnterHotelName>
   <FlightRepetition>Eliminate duplicate flights</FlightRepetition>
   <FlightRepetitionCount>Duplicate flight added to search results</FlightRepetitionCount>
+  <TelescopeMarket>Telescope Market</TelescopeMarket>
 
   <Namepersion>Name (Farsi only)</Namepersion>
   <Nameenglish>Name</Nameenglish>
@@ -85,7 +86,7 @@
   <Reportbuytour>Tor Report Purchase Reports</Reportbuytour>
   <codeTour>The tour code</codeTour>
   <organizer>organizer</organizer>
-
+  <lock>preserved</lock>
   <Deletetourdates>Delete current tour dates</Deletetourdates>
   <Tourpackagechanges>Tour Package Changes</Tourpackagechanges>
   <ProblemreservationTour>Bug in the tour booking process</ProblemreservationTour>
@@ -334,6 +335,7 @@
   <Numflight>Flight Number</Numflight>
   <Informationflight>Flight Information</Informationflight>
   <Flight>Flight</Flight>
+  <ExclusiveTour>Flight</ExclusiveTour>
   <Flightlength>Flight Length</Flightlength>
   <Flighttime>duration</Flighttime>
   <FlightNumber>Flight Number</FlightNumber>
@@ -525,6 +527,8 @@
   <Cancelbecauseperson>Consell because of personal</Cancelbecauseperson>
   <Delaymorethantwohours>Delay more than 2 hours</Delaymorethantwohours>
   <specialoffer>Special Offer</specialoffer>
+  <specialoffer2>Offer</specialoffer2>
+
   <TravelerGuard>Traveler Guard</TravelerGuard>
   <Typepassenger>Passenger Type</Typepassenger>
   <Membershipnumber>Membership Number</Membershipnumber>
@@ -788,6 +792,8 @@
   <Startprice>Starting price from</Startprice>
   <Car>Vehicle</Car>
   <Baseprice>price</Baseprice>
+  <Price>price</Price>
+
   <BaseStartTime>time</BaseStartTime>
   <PriceLTM>Low to High</PriceLTM>
   <PriceMTL>Price from high to low</PriceMTL>
@@ -820,6 +826,7 @@
   <Type>Type</Type>
   <Graphicdesignpurchaseconstraint>A graphic design has been set for your purchase restrictions.</Graphicdesignpurchaseconstraint>
   <Sendinformation>Send Information</Sendinformation>
+  <CancelRequestByPassenger>I’m cancelling it</CancelRequestByPassenger>
   <BecauseOf>because</BecauseOf>
   <EidToEid>Eid to Eid</EidToEid>
   <WorldCup>World Cup</WorldCup>
@@ -1471,6 +1478,7 @@
   <Choosereasonfortheconsole>Choose the consellation reason ...</Choosereasonfortheconsole>
   <Canselforpersonalreasons>Console for personal reasons</Canselforpersonalreasons>
   <AbandonedbyAirline>Cancellation by Airline</AbandonedbyAirline>
+  <missedFlight>I missed my flight - No Show</missedFlight>
   <delayTrain>Delays in train</delayTrain>
   <Idonotcareaboutthepercentagepenaltypleasebesurecancel>
     Canceled regardless of the penalty percentage
@@ -1699,6 +1707,9 @@
   <OsafarPegasusTicketsOnlineBooking>Pegasus Ticket Booking Online</OsafarPegasusTicketsOnlineBooking>
   <OsafarDashboard>Dashboard</OsafarDashboard>
   <OsafarRefund>Refund</OsafarRefund>
+  <OsafarRefundother>Refund for other passengers</OsafarRefundother>
+  <OsafarRefundPending>Refund Pending</OsafarRefundPending>
+  <OsafarRefundClosed>Your refund is closed</OsafarRefundClosed>
   <OsafarEnterClub>Entering the Travel Club</OsafarEnterClub>
   <OsafarEmeraldGettingGuide>Emerald Getting Guide</OsafarEmeraldGettingGuide>
   <OsafarWelcomeUserName>Dear friend @@ getNameUser @@ welcome</OsafarWelcomeUserName>

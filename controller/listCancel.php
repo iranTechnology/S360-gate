@@ -1,11 +1,5 @@
 <?php
 
-//if(  $_SERVER['REMOTE_ADDR']=='84.241.4.20'  ) {
-//    error_reporting(1);
-//    error_reporting(E_ALL | E_STRICT);
-//    @ini_set('display_errors', 1);
-//    @ini_set('display_errors', 'on');
-//}
 /**
  * Class listCancel
  * @property listCancel $listCancel
@@ -14,6 +8,26 @@
  * @property admin      $admin
  * @property string     $Pid
  */
+define('BASE_PATH', dirname(__DIR__));
+
+spl_autoload_register(function ($class) {
+    $prefix = 'Box\\Spout\\';
+    $base_dir = BASE_PATH . '/library/Spout/';
+
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return;
+    }
+
+    $relative_class = substr($class, $len);
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+
+    if (file_exists($file)) {
+        require $file;
+    }
+}, true, false);
+
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 class listCancel extends clientAuth {
 	public $id = '';
 	public $list;
@@ -22,7 +36,7 @@ class listCancel extends clientAuth {
 	public $ModelBase;
 	public $admin;
 	public $Pid;
-
+    private $pnrListExelCanceling=[];
     public $transactions;
 
 	/**
@@ -52,9 +66,10 @@ class listCancel extends clientAuth {
 
 			if ($each['id'] > '1') {
 
-				$sql = "SELECT TCancel.*, Cancel.*,Ticket.pnr,Ticket.IsInternal , Ticket.api_id "
+				$sql = "SELECT TCancel.*, Cancel.*,Ticket.pnr,Ticket.IsInternal , Ticket.api_id , PFE.id as IdPFE "
                     . " FROM cancel_ticket_tb AS TCancel "
                     . " LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail"
+                    . " LEFT JOIN  pnr_from_excel_tb AS PFE ON Cancel.id = PFE.IdDetail"
                     . " LEFT JOIN book_local_tb AS Ticket ON Ticket.request_number = Cancel.RequestNumber"
                     . " WHERE Cancel.Status <> 'SetCancelClient' AND Cancel.Status <> 'RequestMember' AND Cancel.Status <> 'Nothing'"
                     . " AND Cancel.Status <> 'ConfirmCancel' AND Cancel.Status != 'close' ";
@@ -71,7 +86,7 @@ class listCancel extends clientAuth {
 
 				if (!empty($_POST['Status'])) {
 
-					$sql .= " AND TCancel.Status ='{$_POST['Status']}'  ";
+					$sql .= " AND Cancel.Status ='{$_POST['Status']}'  ";
 				}
 
 				if (!empty($_POST['RequestNumber'])) {
@@ -103,8 +118,6 @@ class listCancel extends clientAuth {
 
 
 
-
-
 				if(!empty($CancelClient))
                 {
                     foreach ($CancelClient as $key => &$CancelRequest) {
@@ -124,7 +137,10 @@ class listCancel extends clientAuth {
 			$Cancel['DateRequestCancelClientInt'][$key] = $row['DateRequestCancelClientInt'];
 		}
 
-		array_multisort($Cancel['DateRequestCancelClientInt'], SORT_DESC, $ListCancelClient);
+        if (!empty($Cancel['DateRequestCancelClientInt']) && is_array($Cancel['DateRequestCancelClientInt'])) {
+            array_multisort($Cancel['DateRequestCancelClientInt'], SORT_DESC, $ListCancelClient);
+        }
+
         $factorColors = [];
         $colorList = ["#fbbdbd", "#d2cbcb"];
         $colorIndex = 0;
@@ -1341,5 +1357,128 @@ class listCancel extends clientAuth {
     }
 
 
+    public function InsertExelCanceling($params)
+    {
+        // فعال کردن نمایش خطاها (برای تست)
+        error_reporting(E_ALL);
+        @ini_set('display_errors', 1);
+        @ini_set('display_errors', 'on');
 
+        // بررسی ارسال فایل
+        if (!isset($_FILES['pnr_file']) || empty($_FILES['pnr_file']['name'])) {
+            return functions::JsonError('هیچ فایلی ارسال نشده است', 500);
+        }
+
+        // بررسی نوع فایل
+        if (empty($params['file_type'])) {
+            return functions::JsonError('نوع فایل مشخص نشده است', 400);
+        }
+
+        // تفکیک فایل‌ها
+        $separated_files = functions::separateFiles('pnr_file');
+
+        if (!is_array($separated_files)) {
+            return functions::JsonError('خطا در پردازش فایل', 500);
+        }
+
+        if (count($separated_files) > 1) {
+            return functions::JsonError('فقط یک فایل اکسل مجاز است', 400);
+        }
+
+        $separated_file = $separated_files[0];
+        $_FILES['file'] = $separated_file;
+
+        // بررسی پسوند
+        $ext = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+        if ($ext !== 'xlsx') {
+            return functions::JsonError('فقط فایل xlsx مجاز است', 400);
+        }
+
+        // خواندن فایل اکسل
+        $reader = ReaderEntityFactory::createXLSXReader();
+        $reader->open($_FILES['file']['tmp_name']);
+
+        foreach ($reader->getSheetIterator() as $sheet) {
+            $rowIndex = 0;
+
+            foreach ($sheet->getRowIterator() as $row) {
+                $rowIndex++;
+                $cells = $row->getCells();
+                $row_data = [];
+
+                if (is_array($cells)) {
+                    foreach ($cells as $cell) {
+                        $row_data[] = $cell->getValue();
+                    }
+                }
+
+                // رد کردن ۳ ردیف اول (هدر)
+                if ($rowIndex < 4) continue;
+
+                // مدل استردادی - provider21
+                if ($params['file_type'] == 'provider21_excel') {
+
+                    $pnr = isset($row_data[5]) ? trim($row_data[5]) : null;
+                    $amount = isset($row_data[15]) ? (int) str_replace(',', '', $row_data[15]) : 0;
+
+                    if (!empty($pnr) && $amount > 0) {
+                        $this->pnrListExelCanceling[$pnr] = $amount;
+                    }
+                }
+
+                // مدل جریمه‌ای - provider43
+                elseif ($params['file_type'] == 'provider43_excel') {
+                    // این قسمت رو طبق نیازت پر کن
+                }
+            }
+        }
+
+        $reader->close();
+
+        // بررسی لیست استخراج شده
+        if (empty($this->pnrListExelCanceling)) {
+            return functions::JsonError('هیچ PNR معتبری یافت نشد', 400);
+        }
+
+
+        //حالا باید این آرایه را بفرستیم به دیتابیس تا update رخ بده
+        $this->UpdateCancelFromExcel();
+        // خروجی موفق
+       // return functions::JsonSuccess(null, 'اطلاعات با موفقیت بارگذاری شد');
+    }
+
+    public function UpdateCancelFromExcel()
+    {
+        // 1. گرفتن لیست کنسلی‌ها با فیلتر Status = ConfirmClient
+        $_POST['Status'] = 'ConfirmClient'; // برای فیلتر داخلی تابع
+        $ListCancelClient = $this->ListCancelAdmin();
+var_dump($ListCancelClient);
+        if (empty($ListCancelClient)) {
+            return functions::JsonError('هیچ رکوردی برای بررسی وجود ندارد', 400);
+        }
+
+        // 2. حلقه روی رکوردها
+        foreach ($ListCancelClient as $record) {
+
+            $pnr = $record['pnr'] ?? null;
+            $clientId = $record['ClientId'] ?? null;
+            $IdDetail = $record['IdDetail'] ?? null;
+            $create_at=date('Y-m-d H:i:s');
+
+            // بررسی شرط: PNR در اکسل وجود دارد
+            if ($pnr && $IdDetail && $clientId && isset($this->pnrListExelCanceling[$pnr])) {
+                // مقدار از اکسل
+                $amount = $this->pnrListExelCanceling[$pnr];
+
+                $data['pnr'] = $pnr;
+                $data['amount'] = $amount;
+                $data['IdDetail'] = $IdDetail;
+                $data['create_at'] = $create_at;
+                $result_pnr_from_excel = $this->admin->ConectDbClient('', $clientId, "Insert", $data, "pnr_from_excel_tb", '');
+
+                echo $clientId.'***';
+            }
+        }
+
+    }
 }
