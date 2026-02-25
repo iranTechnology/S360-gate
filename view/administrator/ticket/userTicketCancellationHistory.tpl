@@ -66,7 +66,20 @@
 
                     </div>
 
-
+                    <div class="form-group col-sm-6">
+                        <label for="Status" class="control-label">وضعیت</label>
+                        <select name="Status" id="Status" class="form-control">
+                            <option value="">انتخاب کنید</option>
+                            <option value="RequestMember">درخواست کاربر</option>
+                            <option value="ConfirmCancel">تایید شده</option>
+                            <option value="RequestClient">در انتظار تعیین درصد</option>
+                            <option value="SetCancelClient">رد درخواست کاربر</option>
+                            <option value="SetIndemnity">تعیین درصد جریمه</option>
+                            <option value="ConfirmClient">در انتظار واریز تامیین کننده</option>
+                            <option value="SetFailedIndemnity">رد درصد توسط آژانس</option>
+                            <option value="close">بسته شد</option>
+                        </select>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
@@ -97,12 +110,12 @@
                             <th>ردیف</th>
                             <th>دلیل <br> درخواست</th>
                             <th>شماره <br> رزرو</th>
-{*                            <th>نوع <br> درخواست</th>*}
+                            {*                            <th>نوع <br> درخواست</th>*}
                             <th>تاریخ <br> درخواست کاربر</th>
                             <th>تاریخ ارسال <br> به کارگزار</th>
                             <th>تاریخ تایید/رد درخواست</th>
                             <th>درصد <br> جریمه</th>
-                            <th>مبلغ <br> استرداد</th>
+{*                            <th>مبلغ <br> استرداد</th>*}
                             <th style="width: 227px; text-align: center">عملیات</th>
                             <th>وضعیت <br> درخواست</th>
 
@@ -143,8 +156,14 @@
                                             <a onclick="ModalShowBook('{$item.RequestNumber}','{$item.TypeCancel}');return false"
                                                data-toggle="modal" data-target="#ModalPublic" class="btn btn-info yn">
                                                 {$item.RequestNumber}
-                                                {if $item.Pnr neq ''}-{$item.Pnr}{/if}
+
                                             </a>
+                                        {if $item.pnr neq ''}
+                                            <a href="#"
+                                               class="btn btn-info yn">
+                                                {$item.pnr}
+                                            </a>
+                                        {/if}
                                     </span>
                                     {if $item.TypeCancel eq 'bus'}
                                         <span class='badge badge-info'>
@@ -152,34 +171,36 @@
                                     </span>
                                     {/if}
                                 </td>
-{*                                <td>*}
-
-{*                                    {if $item.TypeCancel eq 'flight' || $item.TypeCancel eq '' }*}
-{*                                        پرواز-*}
-{*                                        {if $typeFlight eq 'PrivateSystem'}*}
-{*                                            سیستمی اختصاصی*}
-
-{*                                        {elseif $typeFlight eq 'PublicSystem'}*}
-{*                                            سیستمی اشتراکی*}
-{*                                        {elseif $typeFlight eq 'charter'}*}
-{*                                            چارتری*}
-{*                                        {elseif $typeFlight eq 'reservation'}*}
-{*                                            رزرواسیون*}
-{*                                        {/if}*}
-{*                                    {elseif $item.TypeCancel eq 'train'}*}
-{*                                        قطار*}
-{*                                    {elseif $item.TypeCancel eq 'bus'}*}
-{*                                        اتوبوس*}
-{*                                    {elseif $item.TypeCancel eq 'hotel'}*}
-{*                                        هتل*}
-{*                                    {elseif $item.TypeCancel eq 'insurance'}*}
-{*                                        بیمه*}
-{*                                    {elseif $item.TypeCancel eq 'tour'}*}
-{*                                        تور*}
-{*                                    {/if}*}
 
 
-{*                                </td>*}
+                                {*                                <td>*}
+
+                                {*                                    {if $item.TypeCancel eq 'flight' || $item.TypeCancel eq '' }*}
+                                {*                                        پرواز-*}
+                                {*                                        {if $typeFlight eq 'PrivateSystem'}*}
+                                {*                                            سیستمی اختصاصی*}
+
+                                {*                                        {elseif $typeFlight eq 'PublicSystem'}*}
+                                {*                                            سیستمی اشتراکی*}
+                                {*                                        {elseif $typeFlight eq 'charter'}*}
+                                {*                                            چارتری*}
+                                {*                                        {elseif $typeFlight eq 'reservation'}*}
+                                {*                                            رزرواسیون*}
+                                {*                                        {/if}*}
+                                {*                                    {elseif $item.TypeCancel eq 'train'}*}
+                                {*                                        قطار*}
+                                {*                                    {elseif $item.TypeCancel eq 'bus'}*}
+                                {*                                        اتوبوس*}
+                                {*                                    {elseif $item.TypeCancel eq 'hotel'}*}
+                                {*                                        هتل*}
+                                {*                                    {elseif $item.TypeCancel eq 'insurance'}*}
+                                {*                                        بیمه*}
+                                {*                                    {elseif $item.TypeCancel eq 'tour'}*}
+                                {*                                        تور*}
+                                {*                                    {/if}*}
+
+
+                                {*                                </td>*}
                                 <td dir="ltr" class="text-left">
                                     {$objDate->jdate('Y-m-d (H:i:s)', $item.DateRequestMemberInt)}
                                 </td>
@@ -238,19 +259,19 @@
                                     {/if}
 
                                 </td>
-                                <td>
+{*                                <td>*}
 
                                     {*                                    {if $item.PercentIndemnity neq 0}*}
                                     {*                                        <span class="yn">{{$objCancelUser->totalPriceFlight($item.RequestNumber , $item.id , {$smarty.const.CLIENT_ID})}|number_format} &nbsp;ریال</span>*}
                                     {*                                    {else}*}
                                     {*                                        -----*}
                                     {*                                    {/if}*}
-                                    {if $item.PriceIndemnity neq 0}
-                                        <span class="yn">{$item.PriceIndemnity|number_format} &nbsp;ریال</span>
-                                    {else}
+{*                                    {if $item.PriceIndemnity neq 0}*}
+{*                                        <span class="yn">{$item.PriceIndemnity|number_format} &nbsp;ریال</span>*}
+{*                                    {else}*}
                                         -----
-                                    {/if}
-                                </td>
+{*                                    {/if}*}
+{*                                </td>*}
                                 {if ($item.pid_private eq '1' and $item.TypeCancel eq 'flight') || ($item.type_application eq 'reservation' and $item.TypeCancel eq 'hotel')}
 
                                     <td>

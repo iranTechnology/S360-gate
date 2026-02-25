@@ -361,31 +361,34 @@ class reservationBasicInformation extends clientAuth {
         $sql = " SELECT * FROM  reservation_country_tb WHERE abbreviation='{$info['country_code']}' AND is_del='no'";
         $country = $Model->load($sql);
         if (empty($country)) {
-            $config = Load::Config('application');
-            $path = "country/".CLIENT_ID."/";
-            $config->pathFile($path);
-            $ext = explode(".", $_FILES['pic']['name']);
-            $_FILES['pic']['name'] = date("sB")."-" . rand(10, 10000);
-            $ext = strtolower($ext[count($ext)-1]);
-            $_FILES['pic']['name'] = $_FILES['pic']['name'].".".$ext;
-            if (in_array ( $ext, array ( 'jpg', 'jpe', 'jpeg', 'png', 'gif' ) ) ) {
-                $type = 'pic';
-            } else{
-                $type = 'file';
+            if(!empty($_FILES['pic'])) {
+                $config = Load::Config('application');
+                $path = "country/" . CLIENT_ID . "/";
+                $config->pathFile($path);
+                $ext = explode(".", $_FILES['pic']['name']);
+                $_FILES['pic']['name'] = date("sB") . "-" . rand(10, 10000);
+                $ext = strtolower($ext[count($ext) - 1]);
+                $_FILES['pic']['name'] = $_FILES['pic']['name'] . "." . $ext;
+                if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'png', 'gif'))) {
+                    $type = 'pic';
+                } else {
+                    $type = 'file';
+                }
+                $result_upload = $config->UploadFile($type, "pic", "");
+                $explode_name_pic = explode(':', $result_upload);
+                if ($explode_name_pic[0] == 'done') {
+                    $result_upload = $explode_name_pic[1];
+                } else {
+                    return functions::withError('', 200, $explode_name_pic[0]);
+                }
+                if ($type = 'pic') {
+                    functions::SaveImages('pic/country/' . CLIENT_ID, '', $result_upload);
+                }
+//            if (empty($result_upload)) {
+//                return functions::withError('', 200, 'ورود فیلد فایل اجباری می باشد');
+//            }
             }
-            $result_upload = $config->UploadFile($type, "pic", "");
-            $explode_name_pic = explode(':', $result_upload);
-            if ($explode_name_pic[0] == 'done') {
-                $result_upload = $explode_name_pic[1];
-            }else{
-                return functions::withError('', 200, $explode_name_pic[0]);
-            }
-            if ($type = 'pic'){
-                functions::SaveImages('pic/country/'.CLIENT_ID ,'', $result_upload);
-            }
-            if (empty($result_upload)) {
-                return functions::withError('', 200, 'ورود فیلد فایل اجباری می باشد');
-            }
+
             $data['name'] = $countryBase['titleFa'];
             $data['name_en'] = $countryBase['titleEn'];
             $data['abbreviation'] = $countryBase['code'];
@@ -394,7 +397,7 @@ class reservationBasicInformation extends clientAuth {
             $data['type_arz'] = $info['type_arz'];
             $data['comments_visa'] = $info['comments_visa'];
             $data['is_del'] = 'no';
-            $data['pic'] = $result_upload;
+            $data['pic'] = $result_upload ?? '';
 //            $data['expire_passport'] = $info['expire_passport'];
 
             $Model->setTable('reservation_country_tb');
@@ -1092,7 +1095,7 @@ class reservationBasicInformation extends clientAuth {
         $data['cost_arz'] = $info['cost_arz'];
         $data['type_arz'] = $info['type_arz'];
         $data['comments_visa'] = $info['comments_visa'];
-        $data['pic'] = $result_upload;
+        $data['pic'] = $result_upload ?? '';
 
 //        $data['expire_passport'] = $info['expire_passport'];
 

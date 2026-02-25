@@ -11,7 +11,9 @@
 {/if}
 
 {load_presentation_object filename="members" assign="objCounterLogin"}
+{load_presentation_object filename="listCancel" assign="listCancel"}
 {assign var=Infocounter value=$objCounterLogin->getMemberById({$smarty.session.memberIdCounterInAdmin})}
+{assign var=listCancelAdmin value=$listCancel->ListCancelAdmin()}
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
 
@@ -372,6 +374,24 @@
                             <span id="GRSCredit" class="ActiveBadge"> ... </span>
                         </a>
                     </li>
+                </ul>
+            {/if}
+            {if $smarty.const.TYPE_ADMIN eq '1'}
+                <ul class="nav navbar-top-links navbar-right pull-right"
+                    style="border-left: 1px solid rgba(0,0,0,.08);">
+
+                    {foreach $listCancelAdmin as $item}
+                        {if $item.note_admin|trim == ""}
+                            <li class="dropdown">
+                                <div class="alertBlink profile-pic">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    یادداشت بگذارید
+                                </div>
+                            </li>
+                            {break}
+                        {/if}
+                    {/foreach}
+
                 </ul>
             {/if}
 

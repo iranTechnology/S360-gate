@@ -337,7 +337,7 @@ if(!empty($client['Services'])){
 
     if($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
     {
-        $client['ThemeDir'] = 'hamsafaranUranus';
+        $client['ThemeDir'] = 'demo360';
     }
 
 

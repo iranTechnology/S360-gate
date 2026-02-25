@@ -157,14 +157,35 @@ class partner_tb extends ModelBase
         $this->userPassCustomer->insertCustomer($params);
     }
 
+    protected function createDatabaseForCustomer($dbName)
+    {
+        $conn = new mysqli("localhost", "safar360", 'GW@!pvGOZ$h9Mk[JdoU', "safar360_gds");
+        $password= 'GW@!pvGOZ$h9Mk[JdoU';
+        if ($conn->connect_errno) {
+            return ['message' => 'خطا در اتصال دیتابیس', 'status' => 500];
+        }
 
+        $conn->query("CREATE DATABASE `$dbName` CHARACTER SET utf8 COLLATE utf8_general_ci");
+
+        $cmd = "mysqldump -u safar360 -p'$password' safar360_sample | mysql -u safar360 -p'$password' $dbName";
+
+        exec($cmd, $output, $returnStatus);
+
+        if ($returnStatus === 0) {
+            return ['message' => 'success : دیتابیس مشتری با موفقیت ایجاد شد','status'=>200];
+        } else {
+            return ['message' => 'error : خطا در ایجاد دیتابیس مشتری ', 'status' => 500];
+        }
+    }
     public function InsertClientModel($Info)
     {
-
+        $mainDomainNew = $Info['Domain']; // مثال: iran.ir یا online.salam.ir
+        preg_match('/(?:^[^.]+\.([^\.]+)\..+$)|(^([^\.]+)\.[^\.]+$)/', $mainDomainNew, $m);
+        $dbNameNew = $m[1] ?: $m[3];
 
         $data['AgencyName'] = $Info['AgencyName'];
         $data['Domain'] = $Info['Domain'];
-        $data['DbName'] = 'safar360_'.$Info['ThemeDir'];
+        $data['DbName'] = 'safar360_'.$dbNameNew;
 //        $data['DbUser'] = 'safar360_OnRes';
         $data['DbUser'] = 'safar360';
 //        $data['DbPass'] = 'Safar@360#';
@@ -246,6 +267,9 @@ class partner_tb extends ModelBase
                     'link' => 'http://' . $Info['Domain'],
                 ];
                 $this->insertUserPassCustomer($dataUserPass);
+                $this->insertUserPassCustomer($dataUserPass);
+
+                $this->createDatabaseForCustomer('safar360_'.$dbNameNew);
 
                 return "success : مشتری جدید با موفقیت ثبت شد";
             } else {

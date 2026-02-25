@@ -149,6 +149,16 @@ functions::insertLog(json_encode($infoAirline) , '000shojaee');
 
                     </tr>
 
+                    <tr>
+                        <td style="padding: 5px;" align="left" width="80%">
+                            <?php echo $info['passportNumber'] ?>
+                        </td>
+                        <td style="padding: 5px;" align="left" width="20%">
+                            :Passport Number
+                        </td>
+
+                    </tr>
+
                     <?php if($info['api_id'] != '16'){?>
                       <tr>
                         <td style="padding: 5px;" align="left" width="80%">
