@@ -42,11 +42,21 @@ class penaltyFees extends clientAuth{
     }
     public function getPenalty()
     {
-        $pages = $this->getModel('penaltyFeesModel')
+        $list = $this->getModel('penaltyFeesModel')
             ->get()
             ->where('dell', '1', '!=')
             ->orderBy('id','desc')
             ->all();
-        return $pages;
+        return $list;
+    }
+    public function getPenaltyEnd()
+    {
+        $PenaltyEnd = $this->getModel('penaltyFeesModel')
+            ->get('amount')
+            ->where('dell', '1', '!=')
+            ->orderBy('id','desc')
+            ->limit(0,1)
+            ->find();
+        return $PenaltyEnd['amount'];
     }
 }
