@@ -68,9 +68,12 @@ class members extends clientAuth {
             )
         ));
     }
-    public function memberInsert($data) {
+    public function memberInsert($data , $sendMsg = true) {
         $exist_member = $this->members_model->getMemberByUserName($data);
+
         if (!$exist_member || ($exist_member['is_member'] == 0)) {
+
+
 
             if ($exist_member && $exist_member['is_member'] == 0) {
 
@@ -89,6 +92,7 @@ class members extends clientAuth {
             }
 
             if(isset($info_member['id']) && $info_member['id'] > 0 && $data['no_login']) {
+
                 return functions::toJson(['success' => true, 'message' => functions::Xmlinformation('SuccessRegisterUser')->__toString(), 'position' => 'resLoginSuccess' , 'data' => $info_member]);
             }
 
@@ -96,6 +100,8 @@ class members extends clientAuth {
                 if($data['reagentCode']){
                     $this->setPointReagentCode($data['reagentCode'], $info_member);
                 }
+
+                if ($sendMsg) {
 
                 if(SOFTWARE_LANG == 'fa') {
                     //sms
@@ -128,6 +134,7 @@ class members extends clientAuth {
                         $smsController->sendSMS( $smsArray );
                     }
                 }
+
                 if (filter_var($data['entry'], FILTER_VALIDATE_EMAIL)){
                     $emailBody = functions::Xmlinformation('HiThere') . '<br>';
                     $emailBody .= functions::StrReplaceInXml([
@@ -150,6 +157,8 @@ class members extends clientAuth {
                     mail($to, $subject, $message, $headers);
                 }
 
+                }
+
                 $resLogin = $this->memberLogin($data['entry'], $data['password'], 'off', '0', 'byRegister');
                 if ($resLogin && isset($data['Type']) && strtolower($data['Type']) == 'app') {
                     return  $this->ReturnOutLoginApp($info_member);
@@ -166,9 +175,10 @@ class members extends clientAuth {
             return functions::toJson(['success' => false, 'message' => functions::Xmlinformation('RegistrationFailedTryAgain')->__toString(), 'position' => 'resError', 'redirect_url' => '']);
         }
 
-        if (isset($data['Type']) && strtolower($data['Type']) == 'app' && $exist_member && $exist_member['is_member'] == 1) {
-            return $this->ReturnOutLoginApp($exist_member);
-        }
+//        if (isset($data['Type']) && strtolower($data['Type']) == 'app' && $exist_member && $exist_member['is_member'] == 1) {
+//            return $this->ReturnOutLoginApp($exist_member);
+//        }
+
         else if(SOFTWARE_LANG == 'fa') {
             return functions::toJson(['success' => false, 'message' => functions::Xmlinformation('MobileIsDuplicate')->__toString(), 'position' => 'ExistsUser', 'redirect_url' => '']);
         }else{
@@ -186,7 +196,7 @@ class members extends clientAuth {
      *
      * @return bool|string
      */
-    public function memberLogin($entry, $password, $remember = 'off', $organizationLevel = 0, $isEnableClub) {
+    public function memberLogin($entry, $password, $remember = 'off', $organizationLevel = 0, $isEnableClub , $sendMsg = true) {
 
         $data_login['entry'] = $entry ;
         $data_login['password']  = functions::encryptPassword($password) ;
@@ -240,7 +250,7 @@ class members extends clientAuth {
                 setcookie('password', $password, time() - 3600, ("/"));
             }
 
-            if(SOFTWARE_LANG == 'fa'  && CLIENT_ID == '271') {
+            if(SOFTWARE_LANG == 'fa'  && CLIENT_ID == '271' && $sendMsg) {
                 //sms
                 $smsController = Load::controller('smsServices');
                 $objSms = $smsController->initService('0');

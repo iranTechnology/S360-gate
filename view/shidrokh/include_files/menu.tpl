@@ -47,7 +47,7 @@
         </div>
         <ul class="tools add-right-xs">
             <li class="phone-tool">
-                <a class="SMFooterPhone2" href=""><i class=" fas fa-phone"></i></a>
+                <a class="SMFooterPhone2" href=""><i class=" fa fa-phone"></i></a>
 
                 <div class="tooldropdown">
                             <span class="info">
@@ -63,7 +63,7 @@
                 </div>
             </li>
             <li class="marker-tool">
-                <i class="fas fa-map-marker-alt"></i>
+                <i class="fa fa-map"></i>
                 <div class="tooldropdown">
                             <span class="info">
                                 <span class="title">آدرس: </span>
@@ -73,7 +73,7 @@
             </li>
             <li class="contact-tool">
 
-                <a class="SMFooterEmail2" href=""><i class="fas fa-envelope "></i></a>
+                <a class="SMFooterEmail2" href=""><i class="fa fa-envelope "></i></a>
                 <div class="tooldropdown">
                             <span class="info">
                                 <span class="title">ایمیل: </span>
@@ -97,7 +97,7 @@
             <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
                 <ul class="tools-mob">
                     <li class="phone-tool" onclick="ToggleTools(this)">
-                        <i class="fas fa-phone"></i>
+                        <i class="fa fa-phone"></i>
                         <div class="tooldropdown">
 									<span class="info">
 										<span class="title">Main Office</span>
@@ -116,7 +116,7 @@
                         </div>
                     </li>
                     <li class="marker-tool" onclick="ToggleTools(this)">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <i class="fa fa-map-marker-alt"></i>
                         <div class="tooldropdown">
 									<span class="info">
 										<span class="title">Main Office</span>
@@ -135,7 +135,7 @@
                         </div>
                     </li>
                     <li class="contact-tool" onclick="ToggleTools(this)">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fa fa-envelope"></i>
                         <div class="tooldropdown">
 									<span class="info">
 										<span class="title">Main Office</span>
