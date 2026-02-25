@@ -4,7 +4,7 @@
                 <div class="row">
                     <div class="col-lg-12 social-link-parent">
                         <div class="col-xs-12 title-social">
-                            <i class="fas fa-phone-volume"></i>
+                            <i class="fa fa-phone-volume"></i>
                             راههای ارتباط با شیدرخ
 
                         </div>
@@ -13,14 +13,14 @@
                             <div class="col-lg-12 social-link">
                                 <div class="icon-newtwork">
                                     <a href="https://www.linkedin.com/in/shidrokh-travel-agency-7637081b8" class="linkin">
-                                        <i class="fab fa-linkedin-in"></i>
+                                        <i class="fa fa-linkedin-in"></i>
                                     </a>
                                     <div class="lable-network">لینکدین</div>
                                 </div>
 
                                 <div class="icon-newtwork">
                                     <a href="https://www.facebook.com/shidrokhtravelagency/" class="facebook">
-                                        <i class="fab fa-facebook-f"></i>
+                                        <i class="fa fa-facebook-f"></i>
                                     </a>
                                     <div class="lable-network">فیسبوک</div>
                                 </div>
@@ -32,7 +32,7 @@
                                     {if $socialMedia['social_media'] == 'telegram'}
                                         <div class="icon-newtwork">
                                             <a href="{$socialMedia['link']}" class="SMTelegram telegram">
-                                                <i class="fab fa-telegram-plane"></i>
+                                                <i class="fa fa-telegram-plane"></i>
                                             </a>
                                             <div class="lable-network">تلگرام</div>
                                         </div>
@@ -40,7 +40,7 @@
                                     {if $socialMedia['social_media'] == 'whatsapp'}
                                         <div class="icon-newtwork">
                                             <a href="{$socialMedia['link']}" class="SMWhatsApp whatsapp">
-                                                <i class="fab fa-whatsapp"></i>
+                                                <i class="fa fa-whatsapp"></i>
                                             </a>
                                             <div class="lable-network">واتساپ</div>
                                         </div>
@@ -49,7 +49,7 @@
                                     {if $socialMedia['social_media'] == 'instagram'}
                                         <div class="icon-newtwork">
                                             <a href="{$socialMedia['link']}" class="SMInstageram instagram">
-                                                <i class="fab fa-instagram"></i>
+                                                <i class="fa fa-instagram"></i>
                                             </a>
                                             <div class="lable-network">اینستاگرام فارسی</div>
                                         </div>
@@ -58,19 +58,19 @@
 
                                 <div class="icon-newtwork">
                                     <a href="https://www.instagram.com/p/CGVMsa1hGxV/?igshid=gg397t38r1mx" class="instagram">
-                                        <i class="fab fa-instagram"></i>
+                                        <i class="fa fa-instagram"></i>
                                     </a>
                                     <div class="lable-network">اینستاگرام انگلیسی</div>
                                 </div>
                                 <div class="icon-newtwork">
                                     <a href="https://instagram.com/easytravel.iran?igshid=84ylj0km2pt2" class="instagram">
-                                        <i class="fab fa-instagram"></i>
+                                        <i class="fa fa-instagram"></i>
                                     </a>
                                     <div class="lable-network">اینستاگرام روسی</div>
                                 </div>
                                 <div class="icon-newtwork">
                                     <a href="https://instagram.com/voyagefacile_en_iran?igshid=17u77dg5m2s9j" class="instagram">
-                                        <i class="fab fa-instagram"></i>
+                                        <i class="fa fa-instagram"></i>
                                     </a>
                                     <div class="lable-network">اینستاگرام فرانسه</div>
                                 </div>
@@ -93,7 +93,7 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-6 footer-sec-address">
                                 <div class="footer-title-sec">
-                                    <i class="fas fa-phone"></i>
+                                    <i class="fa fa-phone"></i>
                                     <h4>ارتباط با ما</h4>
                                 </div>
                                 <div class="footer-sec-info">
@@ -107,7 +107,7 @@
                             <div class="col-lg-4 col-md-4 col-sm-6 footer-sec-address">
 
                                 {*                        <div class="footer-title-sec">*}
-                                {*                            <i class="fas fa-chart-bar"></i>*}
+                                {*                            <i class="fa fa-chart-bar"></i>*}
                                 {*                            <h4>آمار بازدید سایت</h4>*}
                                 {*                        </div>*}
                                 {*                        <div class="footer-sec-info">*}

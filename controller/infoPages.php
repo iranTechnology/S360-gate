@@ -110,6 +110,7 @@ class infoPages extends positions
             ->where('language', SOFTWARE_LANG)
             ->find(false);
 
+
         if ($page) {
             return $this->pagesIndexes([$page])[0];
         }
@@ -141,6 +142,7 @@ class infoPages extends positions
             $result[$key]['heading'] = !empty($page['heading']) ? $page['heading'] : $result[$key]['name'];
 
         }
+
         return $result;
     }
 
@@ -173,7 +175,6 @@ class infoPages extends positions
 
         $switch = $this->getSwitchByName($switch_name, $has_main_page);
 
-
         if ($switch) {
 
             $page = $this->pages_info_model
@@ -192,7 +193,7 @@ class infoPages extends positions
                 ->where('language', SOFTWARE_LANG)
                     ->find(false);
             }
-          
+
             if ($page) {
                 return $this->pagesIndexes([$page])[0];
             }

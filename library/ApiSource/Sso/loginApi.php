@@ -138,28 +138,54 @@ class loginApi extends clientAuth
                             'Type' => 'app'
                         ];
 
-                        $memberController = Load::controller( 'members' );
-                        $response = $memberController->memberInsert($memberData);;
+                        $membersModel = $this->getModel('membersModel');
+                        $exist_member = $membersModel->getMemberByUserName($memberData);
 
-                        $info_member = $response;
+                        $memberController = $this->getController( 'members' );
+
+                        if ($exist_member) {
+                            $response = $memberController->memberLogin( $memberData['mobile'], $memberData['password'], 'off', '0', IS_ENABLE_CLUB , false);
+                            if (!$response) {
+                                $infoCode = array(
+                                    'RequestStatus' => 'Success',
+                                    'Message' => 'The login information is incorrect'
+                                );
+                                echo json_encode($infoCode);
+                                exit;
+                            }
+                        } else {
+                            $response = $memberController->memberInsert($memberData , false);
+                        }
+
+
+
+                        $info_member = $exist_member;
+
                         if ($info_member && isset($info_member['data'])) {
                             session_start();
                             $_SESSION['Login'] = 'success';
-                            $_SESSION['nameUser'] = $info_member['data']['nameUser'];
-                            $_SESSION['userId'] = $info_member['data']['userId'];
-                            $_SESSION['typeUser'] = $info_member['data']['typeUser'];
-                            $_SESSION['cardNo'] = $info_member['data']['cardNo'];
+                            $_SESSION['nameUser'] = $info_member['name'] . ' ' . $info_member['family'];
+                            $_SESSION['userId'] = $info_member['id'];
+                            $_SESSION['typeUser'] = ($info_member['fk_counter_type_id'] == 5 ? 'member' : 'counter');
+                            $_SESSION['cardNo'] = (isset($info_member['card_number']) ? $info_member['card_number'] : '');
                             $_SESSION['LastLogin'] = time();
-                            $_SESSION['counterTypeId'] = $info_member['data']['counterTypeId'];
-                            $_SESSION['layout'] = $info_member['data']['layout'];
+                            $_SESSION['counterTypeId'] = (isset($info_member['fk_counter_type_id']) ? $info_member['fk_counter_type_id'] : '');
+                            $_SESSION['layout'] = (isset($info_member['TypeOs']) ? $info_member['TypeOs'] : '');
                         }
 
-                        $infoCode = array(
+                        if ($exist_member) {
+                            $infoCode = array(
                             'RequestStatus' => 'Success',
-                            'Message' => 'The operation was successful.'
+                            'Message' => 'The login was successful'
                         );
-                        echo json_encode($infoCode);
+                        } else {
+                            $infoCode = array(
+                            'RequestStatus' => 'Success',
+                            'Message' => 'The register was successful'
+                        );
+                        }
 
+                        echo json_encode($infoCode);
                         exit;
                     }
                     else {

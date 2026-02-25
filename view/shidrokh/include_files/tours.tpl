@@ -20,7 +20,7 @@
         <div class="tour-carousel owl-carousel" id="specialCarousel">
             {foreach $special_tours as $tour}
                 <div class="tour-card">
-                    <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$tour['id_same']}/{$tour['tour_slug']}">
+                    <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$tour['id_same']}/{$tour['tour_slug']}" target="_blank">
                         <div class="tour-img">
                             <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$tour['tour_pic']}" alt="{$tour['tour_name']}">
                         </div>
@@ -45,7 +45,7 @@
         <div class="tour-carousel owl-carousel" id="internalCarousel">
             {foreach $internalTours as $item}
                 <div class="tour-card">
-                    <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
+                    <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}" target="_blank">
                         <div class="tour-img">
                             <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}" alt="{$item['tour_name']}">
                         </div>
@@ -70,7 +70,7 @@
         <div class="tour-carousel owl-carousel" id="foreignCarousel">
             {foreach $foreginTours as $item}
                 <div class="tour-card">
-                    <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
+                    <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}" target="_blank">
                         <div class="tour-img">
                             <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}" alt="{$item['tour_name']}">
                         </div>
