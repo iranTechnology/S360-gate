@@ -111,7 +111,7 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
     /** @var members_tb $controller */
     $controller = Load::controller( 'members' );
     if(functions::validateMobileOrEmail($_POST['entry'])){
-        $entry=functions::checkParamsInput( $_POST['entry']);
+        $entry = functions::checkParamsInput( $_POST['entry']);
     }
 
 //	$email        = functions::checkParamsInput( functions::sanitizeString( filter_var( $_POST['entry'], FILTER_VALIDATE_EMAIL ) ) );

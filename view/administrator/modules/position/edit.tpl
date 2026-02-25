@@ -33,7 +33,7 @@
                                 id="service{$service_count+1}"
                                 class="form-control select2">
 
-                           {foreach $object->getServices()|@array_reverse:true as $service}
+                            {foreach $object->getServices()|@array_reverse:true as $service}
                                 <option {if $service['MainService'] == $service_key}selected{/if}
                                         value="{$service['MainService']}">{$service['Title']}</option>
                             {/foreach}

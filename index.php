@@ -260,7 +260,6 @@ elseif (GDS_SWITCH == 'TrainBotSearch') {
     require CRONJOBS_DIR . 'TrainBotSearch.php';
 } else {
 
-
     if (substr_count($firstURL, FOLDER_ADMIN)) {
 
         $pagestring = $page->fetch('../' . ADMIN_DIR . '/frontAdmin.tpl');
