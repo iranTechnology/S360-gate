@@ -283,11 +283,11 @@
                                               </div>
                                           </template>-->
 
-               <div class="cancel-policy cancel-policy-charter" v-if="flight.flight_type_li !='system'">
-                        <span class="">
-                            {{useXmltag('ThecharterflightscharterunderstandingCivilAviationOrganization')}}
-                        </span>
-               </div>
+<!--               <div class="cancel-policy cancel-policy-charter" v-if="flight.flight_type_li !='system'">-->
+<!--                        <span class="">-->
+<!--                            {{useXmltag('ThecharterflightscharterunderstandingCivilAviationOrganization')}}-->
+<!--                        </span>-->
+<!--               </div>-->
 
             </div>
             <div id="tab-3-0" class="tab-content"><p class="iranL  lh25 displayb"></p>
@@ -303,6 +303,7 @@
                <cancel-policy
                   :fee_cancel="fee_cancel"
                   :flight_type_li="flight.flight_type_li"
+                  :cancel_rules="flight.cancel_rules"
                />
             </div>
             <div :id="`tab-4-0`" class="tab-content w-100" v-show="flight.source_id=='14'">

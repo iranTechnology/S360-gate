@@ -217,6 +217,7 @@
                                <cancel-policy
                                   :fee_cancel="fee_cancel"
                                   :flight_type_li="each_flight.flight_type_li"
+                                  :cancel_rules="each_flight.cancel_rules"
                                />
                             </div>
                             <div :id="`tab-4-${key_flight}`" class="tab-content w-100" v-show="each_flight.source_id=='14'">

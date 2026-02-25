@@ -36,9 +36,12 @@
                   <div class="cancel-policy-head-text">{{ useXmltag('DetailMoneyCancel') }}</div>
                </div>
 
-               <span class="site-bg-main-color-admin">
-            {{ useXmltag('Contactbackupunitinformationaboutamountconsignmentfines') }}
-          </span>
+              <span v-if="cancel_rules">
+        {{cancel_rules}}
+      </span>
+              <span v-else>
+        {{ useXmltag('Contactbackupunitinformationaboutamountconsignmentfines') }}
+      </span>
             </div>
          </template>
 
@@ -49,6 +52,6 @@
 <script>
 export default {
    name: "CancelPolicy",
-   props: ["fee_cancel", "flight_type_li"]
+   props: ["fee_cancel", "flight_type_li" , "cancel_rules"]
 }
 </script>
