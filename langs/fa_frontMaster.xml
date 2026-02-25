@@ -84,7 +84,11 @@
   <Reportbuytour>گزارش سوابق خرید تور</Reportbuytour>
   <codeTour>کد تور</codeTour>
   <organizer>برگزارکننده</organizer>
-
+  <Request>درخواست</Request>
+  <AdultInfo>اطلاعات مسافر بزرگسال</AdultInfo>
+  <ChildInfo>اطلاعات مسافر کودک</ChildInfo>
+  <BabyInfo>اطلاعات مسافر نوزاد</BabyInfo>
+  <alertFillingInfo>لطفا در تکمیل اطلاعات توجه بفرمایید</alertFillingInfo>
   <Deletetourdates>حذف تاریخ های برگزاری تور</Deletetourdates>
   <Tourpackagechanges>تغییرات پکیج تور</Tourpackagechanges>
   <ProblemreservationTour>اشکال در فرآیند رزرو تور</ProblemreservationTour>
@@ -332,6 +336,8 @@
   <Returnticket>بلیط برگشت</Returnticket>
   <Freeticket>بلیط بدون قیمت</Freeticket>
   <Ticket>بلیط</Ticket>
+  <TelescopeMarket>تلسکوپ مارکت</TelescopeMarket>
+
   <NewPriceForTicket>
     اگر به هر دلیلی مایل هستید، بلیط را با قیمت بالاتری چاپ نموده و به مسافر ارائه دهید،
     مبلغی که در نظر دارید بر روی بلیط افزایش داده شود را در کادر زیر وارد نموده تا در قسمت چاپ بلیط، مبلغ با افزایش اعمال شده نمایش داده شود.
@@ -363,7 +369,9 @@
   <Twobeduser>تخت دو نفره</Twobeduser>
   <Onebeduser>تخت تک نفره</Onebeduser>
   <Roomthreebed>اتاق سه تخته</Roomthreebed>
+  <RoomthreebedEachPerson>اتاق سه تخته به ازای هر نفر</RoomthreebedEachPerson>
   <Roomtwobed>اتاق دو تخته</Roomtwobed>
+  <RoomtwobedEachPerson>اتاق دو تخته به ازای هر نفر</RoomtwobedEachPerson>
   <Roominformationandpassengers>اطلاعات اتاق ها و مسافران</Roominformationandpassengers>
   <Roominformation>اطلاعات اتاق ها</Roominformation>
   <Roomanumber>شماره اتاق</Roomanumber>
@@ -402,9 +410,12 @@
   <Wentflight>پرواز رفت</Wentflight>
   <Returnflight>پرواز برگشت</Returnflight>
   <Selectionflight>انتخاب پرواز</Selectionflight>
+  <SelectionExclusiveTour>انتخاب تور</SelectionExclusiveTour>
+  <TourSpecifications>انتخاب مشخصات تور</TourSpecifications>
   <Numflight>شماره پرواز</Numflight>
   <Informationflight>اطلاعات پرواز</Informationflight>
   <Flight>پرواز</Flight>
+  <ExclusiveTour>تور اختصاصی</ExclusiveTour>
   <Flightlength>طول پرواز</Flightlength>
   <Flighttime>طول پرواز</Flighttime>
   <FlightNumber>شماره پرواز</FlightNumber>
@@ -566,7 +577,7 @@
   <Uploadfilepackage>آپلود عکس شاخص و فایل پکیج</Uploadfilepackage>
   <Route>مسیر</Route>
   <Regulation>مقررات</Regulation>
-  <TermsandConditions>قوانین عمومی</TermsandConditions>
+  <TermsandConditions>قوانین و استرداد</TermsandConditions>
   <Description>توضیحات</Description>
   <Package>پکیج</Package>
   <Showpackagefile>مشاهده فایل پکیج</Showpackagefile>
@@ -606,6 +617,8 @@
   <Cancelbecauseperson>کنسلی به دلیل شخصی</Cancelbecauseperson>
   <Delaymorethantwohours>تاخیر بیش از 2 ساعت</Delaymorethantwohours>
   <specialoffer>پیشنهاد ویژه</specialoffer>
+  <specialoffer2>ویژه</specialoffer2>
+
   <TravelerGuard>سرپرست مسافران</TravelerGuard>
   <Typepassenger>نوع مسافر</Typepassenger>
   <Membershipnumber>شماره عضویت</Membershipnumber>
@@ -657,6 +670,7 @@
   <Accessoriesprovidedstation>در این ایستگاه لوازم جانبی فراهم نمیباشد.</Accessoriesprovidedstation>
   <Driverprofile>مشخصات راننده</Driverprofile>
   <Repeatsearch>جستجوی مجدد</Repeatsearch>
+  <ChangeSearch>تغییر جستجو</ChangeSearch>
   <Donthave>ندارد</Donthave>
   <Have>دارد</Have>
   <Systemupdatingchargeminutes>سیستم وب سایت در حال به روزرسانی شارژ ریالی می باشد، لطفا دقایقی دیگر مراجعه نمایید</Systemupdatingchargeminutes>
@@ -697,6 +711,7 @@
   <Informationprofile>اطلاعات مشتری</Informationprofile>
   <Validity>اعتبار</Validity>
   <Credit>اعتباری</Credit>
+  <lock>پیش رزرو</lock>
   <Starttime>ساعت حرکت</Starttime>
   <Returntime>ساعت برگشت</Returntime>
   <Return>بازگشت</Return>
@@ -771,6 +786,7 @@
   <Removeextrabeds>حذف تخت اضافه</Removeextrabeds>
   <Thechildsagegroup>گروه سنی کودک</Thechildsagegroup>
   <Passengerbook>دفترچه مسافر</Passengerbook>
+  <Userbook>دفترچه کاربر</Userbook>
   <Adultagegroup>گروه سنی بزرگسال</Adultagegroup>
   <Vote>رای</Vote>
   <Typeairline>نوع هواپیما</Typeairline>
@@ -840,6 +856,7 @@
   <Business>بیزینس</Business>
   <Sortby>مرتب کردن بر اساس</Sortby>
   <Formertravelers>مسافران سابق</Formertravelers>
+  <FormertravelersUser>کاربران سابق</FormertravelersUser>
   <FormerTravelersDescription>باز نشانی لیست آخرین مسافران انتخاب شده؟</FormerTravelersDescription>
   <ConfirmedCounter>تایید شده توسط کانتر</ConfirmedCounter>
   <Cancelrequestpassenger>درخواست کنسلی از طرف مسافر</Cancelrequestpassenger>
@@ -869,9 +886,11 @@
   <ExtrabedPrice>قمیت تخت اضافه</ExtrabedPrice>
   <Addexteraroom>اضافه کردن تخت اضافه</Addexteraroom>
   <ExtrabedAdult>تخت اضافه بزرگسال</ExtrabedAdult>
-  <Priceadult>قیمت بزرگسال</Priceadult>
+  <Priceadult>کمیسیون بزرگسال</Priceadult>
+  <PriceAdultEachPerson>کمیسیون بزرگسال به ازای هر نفر</PriceAdultEachPerson>
   <Extrabedchild>تخت اضافه کودک</Extrabedchild>
-  <Pricechild>قیمت کودک</Pricechild>
+  <Pricechild>کمیسیون کودک</Pricechild>
+  <PriceChildEachPerson>کمیسیون کودک</PriceChildEachPerson>
   <Year>سال</Year>
   <Exterabed>تخت اضافه</Exterabed>
   <Startprice>شروع قیمت از</Startprice>
@@ -879,6 +898,7 @@
   <Car>وسیله نقلیه</Car>
   <Baseprice>براساس قیمت</Baseprice>
   <BaseStartTime>براساس زمان</BaseStartTime>
+  <Price>قیمت</Price>
   <PriceLTM>قیمت از کم به زیاد</PriceLTM>
   <PriceMTL>قیمت از زیاد به کم</PriceMTL>
   <LTM>از کم به زیاد</LTM>
@@ -911,6 +931,7 @@
   <Type>نوع</Type>
   <Graphicdesignpurchaseconstraint>کاربرگرامی، برای شما محدودیت خرید تعیین شده است.</Graphicdesignpurchaseconstraint>
   <Sendinformation>ارسال اطلاعات</Sendinformation>
+  <CancelRequestByPassenger>کنسل می کنم</CancelRequestByPassenger>
   <BecauseOf>به دلیل</BecauseOf>
   <EidToEid>عید تا عید</EidToEid>
   <WorldCup>جام جهانی</WorldCup>
@@ -1069,7 +1090,8 @@
   <Archivetour>آرشیو تور</Archivetour>
   <Action>عملیات</Action>
   <Cancelrule>قوانین کنسلی</Cancelrule>
-  <Pricebaby>قیمت نوزاد</Pricebaby>
+  <Pricebaby>کمیسیون نوزاد</Pricebaby>
+  <PriceInfantEachPerson>کمیسیون نوزاد</PriceInfantEachPerson>
   <MaximumKg>حداکثر کیلوگرم</MaximumKg>
   <Countallpeople>تعداد کل افراد</Countallpeople>
   <Site>سایت</Site>
@@ -1287,6 +1309,7 @@
   <ConfirmTermsFirst>لطفا ابتدا قوانین و مقررات را تایید نمائید</ConfirmTermsFirst>
   <AgencyRegistration>ثبت نام آژانس</AgencyRegistration>
   <CompletingFieldsRequired>تکمیل تمامی فیلدها الزامیست</CompletingFieldsRequired>
+  <NationalCodeNeed10digits>کد ملی باید 10 رقم باشد</NationalCodeNeed10digits>
   <NewPasswordNotSameRepeating>کلمه عبور جدید با تکرار آن یکسان نیست</NewPasswordNotSameRepeating>
   <DateBirthDoesNotMatch>تاریخ تولد مسافر انتخابی با تاریخ تولد درج شده مطابقت ندارد</DateBirthDoesNotMatch>
   <NoPermissionDuplicateNationalCode>شما اجازه انتخاب افراد با کد ملی تکراری را ندارید</NoPermissionDuplicateNationalCode>
@@ -1311,7 +1334,7 @@
   <ExpirationPassportValidSevenMonths>تاریخ انقضای پاسپورت باید بیش از 7 ماه اعتبار داشته باشد</ExpirationPassportValidSevenMonths>
   <BirthEnteredNotCorrect>تاریخ تولد وارد شده صحیح نمی باشد</BirthEnteredNotCorrect>
   <NationalCodeDuplicate>کد ملی تکراری می باشد</NationalCodeDuplicate>
-  <OnlyTenDigitsNationalCode>در کد ملی تنها از 10 رقم میتوانید استفاده کنید</OnlyTenDigitsNationalCode>
+  <OnlyTenDigitsNationalCode>کد ملی باید 10 رقم باشد</OnlyTenDigitsNationalCode>
   <EnteredCationalCodeNotValid>کد ملی وارد شده معتبر نمی باشد</EnteredCationalCodeNotValid>
   <SystemUpdatedTryLater>اعتبار سامانه در حال بروزرسانی است،لطفا کمی بعد مجددا تلاش بفرمائید.</SystemUpdatedTryLater>
   <SelectBankPort>انتخاب درگاه بانکی</SelectBankPort>
@@ -1614,11 +1637,12 @@
   <Blicens>بارگذاری مجوز بند ب</Blicens>
   <Paziresh>را می پذیرم</Paziresh>
   <withmeal>همراه با غذا</withmeal>
-  <Noflight>در این تاریخ پروازی موجود نمی باشد یا تمام پرواز ها پر شده است.</Noflight>
+  <Noflight>در این تاریخ پروازی موجود نمی باشد یا تمام پرواز ها پر شده است و یا پروایدر نتیجه ای ندارد.</Noflight>
   <Changedate>لطفا تاریخ دیگری را جستجو نمائید</Changedate>
   <InfoCreditUserAgency>اعتبار آژانس شما در حال حاضر@@money@@ ریال میش باشد</InfoCreditUserAgency>
   <DoingReserve>شما در حال رزرو @@typeTicket@@ می باشید</DoingReserve>
   <Pricesort>بر اساس قیمت</Pricesort>
+  <Priority>اولویت</Priority>
   <Timesort>بر اساس ساعت حرکت</Timesort>
   <Ticketselect>انتخاب بلیط</Ticketselect>
   <Startfrom>حرکت از</Startfrom>
@@ -1694,7 +1718,7 @@
   <Fromnoondaybeforeflighthoursbeforeflight>از 12:00 ظهر 1 روز قبل از پرواز تا 3 ساعت قبل از پرواز</Fromnoondaybeforeflighthoursbeforeflight>
   <Fromhoursbeforeflighttominutesbeforeflight>از 3 ساعت قبل از پرواز تا 30 دقیقه قبل از پرواز</Fromhoursbeforeflighttominutesbeforeflight>
   <Minutesbeforetheflight>از 30 دقیقه قبل از پرواز به بعد</Minutesbeforetheflight>
-  <Contactbackupunitinformationaboutamountconsignmentfines>برای اطلاع از میزان جریمه کنسلی با واحد پشتیبان تماس حاص نمائید
+  <Contactbackupunitinformationaboutamountconsignmentfines>برای اطلاع از میزان جریمه کنسلی با واحد پشتیبان تماس فرمایید
   </Contactbackupunitinformationaboutamountconsignmentfines>
   <ThecharterflightscharterunderstandingCivilAviationOrganization>
     قوانین کنسلی پروازهای چارتری تابع توافق بین چارترکننده و سازمان هواپیمایی کشوری می‌باشد
@@ -1703,6 +1727,7 @@
   <Choosereasonfortheconsole>دلیل کنسلی را انتخاب کنید ...</Choosereasonfortheconsole>
   <Canselforpersonalreasons>کنسلی به دلایل شخصی</Canselforpersonalreasons>
   <AbandonedbyAirline>لغو پرواز توسط ایرلاین</AbandonedbyAirline>
+  <missedFlight>از پرواز جا ماندم- No Show</missedFlight>
   <delayTrain>تاخیر در حرکت قطار</delayTrain>
   <Idonotcareaboutthepercentagepenaltypleasebesurecancel>
     بدون در نظر گرفتن درصد جریمه کنسل گردد
@@ -1977,6 +2002,9 @@
   <OsafarPegasusTicketsOnlineBooking>رزرو آنلاین بلیط </OsafarPegasusTicketsOnlineBooking>
   <OsafarDashboard>داشبورد</OsafarDashboard>
   <OsafarRefund>استرداد</OsafarRefund>
+  <OsafarRefundother>استرداد دیگر افراد</OsafarRefundother>
+  <OsafarRefundPending>استرداد در حال بررسی</OsafarRefundPending>
+  <OsafarRefundClosed>استرداد شما Close شد</OsafarRefundClosed>
   <OsafarEnterClub>ورود به باشگاه اُ سفر</OsafarEnterClub>
   <OsafarEmeraldGettingGuide>راهنمای دریافت زمرد</OsafarEmeraldGettingGuide>
   <OsafarWelcomeUserName>دوست عزیز @@getNameUser@@ خوش آمدید</OsafarWelcomeUserName>
@@ -2734,6 +2762,7 @@
   <DisplayFiles>مشاهده فایل های اپلود شده</DisplayFiles>
   <LongProfessionError>عنوان شغل شما طولانی است.</LongProfessionError>
   <PleaseenterReserveDate>تاریخ مورد نظر خود را انتخاب کنید.</PleaseenterReserveDate>
+  <PleaseenterReserveDateRow>تاریخ مورد نظر خود را انتخاب کنید.</PleaseenterReserveDateRow>
   <PleaseenterReserveTime>ساعت مورد نظر خود را وارد کنید.</PleaseenterReserveTime>
   <PleaseenterAppointmentRecognition>نحوه آشنایی خود با ما را انتخاب کنید.</PleaseenterAppointmentRecognition>
   <PleaseenterAppointmentField>فیلد مورد نظر را انتخاب کنید.</PleaseenterAppointmentField>
@@ -3665,7 +3694,7 @@
   <countReserve>تعداد رزرو</countReserve>
   <DecreaseChargeOrDebtor>کسر از اعتبار (بدهکار)</DecreaseChargeOrDebtor>
   <ChargeAccountOrCreditor>افزایش اعتبار (بستانکار)</ChargeAccountOrCreditor>
-  <premiumEconomy>پریمیوم اکونومی</premiumEconomy>
+  <premiumEconomy>پریمیوم</premiumEconomy>
   <twowayWarningSentence>توجه : امکان دارد درصد کنسلی پرواز رفت با پرواز برگشت متفاوت باشد. این اختلاف در پروازهای چارتری در زمان کنسلی مشخص میشود.</twowayWarningSentence>
   <STARTDAYFARA>@@Day@@ تا</STARTDAYFARA>
   <ENDDAYFARA> @@Day@@ روز</ENDDAYFARA>

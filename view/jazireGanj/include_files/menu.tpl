@@ -97,25 +97,8 @@
                         <li id="hotels_m" class=""><a class="smoothScrollTo TabScroll " data-target="#hotel-tab"
                                                       href="{$smarty.const.ROOT_ADDRESS}/page/hotel"> ##S360Hotels## </a></li>
 
-                        <li class=""><a href="javascript:;">ویزا</a>
-                            <ul class="nav-dropdown first_child_menu fadeIn animated">
+                        <li class=""><a href="{$smarty.const.ROOT_ADDRESS}/page/visa">ویزا</a>
 
-                                {foreach key=key_continent item=item_continent from=$obj_main_page->continentsHaveVisa()}
-                                    <li>
-                                        <a href="javascript:;">
-                                            {$item_continent.titleFa}
-                                        </a>
-                                        <ul class="nav-dropdown submenu-child fadeIn animated">
-                                            {foreach key=key_country item=item_country from=$obj_main_page->countriesHaveVisa($item_continent.id)}
-                                                <li>
-                                                    <a href="{$smarty.const.ROOT_ADDRESS}/resultVisa/{$item_country.code}/all/1-0-0">{$item_country.title}</a>
-                                                </li>
-                                            {/foreach}
-                                        </ul>
-                                    </li>
-                                {/foreach}
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa">جست و جوی ویزا</a></li>
-                            </ul>
                         </li>
 
 

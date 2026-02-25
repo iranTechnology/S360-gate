@@ -4,7 +4,7 @@
     {include file="./sections/hotel/international/btn_radio_internal_external.tpl"}
     <div id="internal_hotel" class="d_flex flex-wrap internal-hotel-js">
         <form data-action="s360online.iran-tech.com/" name="gdsHotelLocal"
-              data-target="_blank"  id="internal_hotel_form" class="d_contents" method="post">
+              target="_blank"  id="internal_hotel_form" class="d_contents" method="post">
             {include file="./sections/hotel/internal/destination_city.tpl"}
             {include file="./sections/hotel/internal/check_in_date.tpl"}
             {include file="./sections/hotel/internal/check_out_date.tpl"}
@@ -16,7 +16,7 @@
         </form>
     </div>
     <div id="international_hotel" class="flex-wrap international-hotel-js">
-        <form data-target="_blank"  data-action="https://s360online.iran-tech.com/" class="d_contents"  method="post" id="international_hotel_form">
+        <form target="_blank"  data-action="https://s360online.iran-tech.com/" class="d_contents"  method="post" id="international_hotel_form">
             {include file="./sections/hotel/international/destination_city.tpl"}
             {include file="./sections/hotel/international/check_in_date.tpl"}
             {include file="./sections/hotel/international/check_out_date.tpl"}
