@@ -16,7 +16,56 @@
                 <!--<h4 class="page-title FloatLeft">Dashboard 3</h4>-->
             </div>
         </div>
+        <div class="row">
+            <form id="InsertExelCanceling" method="post" enctype="multipart/form-data" class="w-100">
 
+                <input type='hidden' value='InsertExelCanceling' name='method'>
+                <input type='hidden' value='listCancel' name='className'>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="bg-white p-4 rounded">
+
+                        <h4 class="mb-4">آپلود فایل اکسل</h4>
+
+                        <div class="row align-items-end">
+
+                            <!-- نوع فایل -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>نوع فایل</label>
+                                    <select name="file_type" class="form-control" required>
+                                        <option value="">انتخاب کنید</option>
+                                        <option value="provider21_excel">استردادی - پرووایدر 21</option>
+                                        <option value="provider43_excel">جریمه ای - پرووایدر 43</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- انتخاب فایل -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>انتخاب فایل اکسل</label>
+                                    <input type="file" name="pnr_file" class="form-control" p required>
+                                </div>
+                            </div>
+
+                            <!-- دکمه -->
+                            <div class="col-md-3">
+                                <label> </label>
+                                <button type="submit" class="btn btn-success btn-block">
+                                    بارگذاری فایل
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
                 <div class="white-box">
@@ -512,6 +561,12 @@
                                                     جریمه مشخص شد / منتظر تایید آژانس
 
                                                 </div>
+                                            {elseif $item.Status eq 'ConfirmClient' && !empty($item.IdPFE)}
+                                                <div id="ConfirmClientStatus-{$item.id}"
+                                                     class="btn btn-success-excel cursor-default"
+                                                     disabled="disabled">
+                                                    تایید از طریق اکسل / واریز کنید
+                                                </div>
                                             {elseif $item.Status eq 'ConfirmClient' }
                                                 <div id="ConfirmClientStatus-{$item.id}" class="btn btn-info cursor-default"
                                                      disabled="disabled"
@@ -569,7 +624,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 {literal}
     <style>
@@ -619,3 +673,17 @@
 
     </script>
 {/if}
+<style>
+    .btn-success-excel {
+        background-color: #28a745;   /* سبز اصلی */
+        border-color: #19692c;
+        color: #fff;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-success-excel:hover {
+        background-color: #218838;   /* سبز تیره‌تر برای هاور */
+        border-color: #1e7e34;
+        color: #fff;
+    }
+</style>
