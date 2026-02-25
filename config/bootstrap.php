@@ -42,7 +42,7 @@ $mainConfig = new PDO(
 );
 
 
-
+$arrUrl = [];
 $mainConfig->exec("set names utf8");
 $domainName = $_SERVER["HTTP_HOST"];
 

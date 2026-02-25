@@ -111,14 +111,17 @@ function internalHotelSearchDetails() {
                roomHtml += `<span class='online-badge'><span class='online-txt'><i class='fas fa-user site-main-text-color'></i>  ${useXmltag('NoExtraCapacity')} </span></span>`
 
             }
+             /*
+           باشد . (دکمه جزئیات قیمت)  roomHtml این بلاک باید داخل
+             <div class='divided-list-item detail_div_local '>
+               <div class='DetailRoom DetailRoom_local showCancelRule' id='btnCancelRule-${Rate.RoomToken}' data-RoomCode='${Rate.RoomToken}' style='opacity: 1; cursor: pointer;'>
+
+                   <span>${useXmltag('Detailprice')}</span>
+                   <i class='fa fa-angle-down'></i>
+               </div>
+            </div> */
             roomHtml += ` 
-                              <div class='divided-list-item detail_div_local '>
-                                            <div class='DetailRoom DetailRoom_local showCancelRule' id='btnCancelRule-${Rate.RoomToken}' data-RoomCode='${Rate.RoomToken}' style='opacity: 1; cursor: pointer;'>
-                                                
-                                                <span>${useXmltag('Detailprice')}</span>
-                                                <i class='fa fa-angle-down'></i>
-                                            </div>
-                               </div> 
+
                        </span>
                        <div class="box-div-data-hotel">
                                <div class='divided-list divided-list-1'>
