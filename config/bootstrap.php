@@ -42,7 +42,7 @@ $mainConfig = new PDO(
 );
 
 
-$arrUrl = [];
+
 $mainConfig->exec("set names utf8");
 $domainName = $_SERVER["HTTP_HOST"];
 
@@ -162,7 +162,7 @@ if(!empty($client['Services'])){
 
             if(!empty($agency['id']))
             {
-
+           
                 $client['id'] = $clientWhiteLabel['client_id'];
                 $client['Domain'] = $agency['domain'];
                 $client['MainDomain'] = $agency['mainDomain'];
@@ -335,9 +335,14 @@ if(!empty($client['Services'])){
         '52' => 'myna',
     ];
 
-    if($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
+    if(in_array($_SERVER['REMOTE_ADDR'],$mizbanFly)) {
+        $client['jahangaThemeDir'] = 'mizbanfly';
+    }
+
+    // mr javani >>>
+    elseif($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
     {
-        $client['ThemeDir'] = 'demo360';
+        $client['ThemeDir'] = 'hamsafaranUranus';
     }
 
 
@@ -804,7 +809,7 @@ if(!empty($client['Services'])){
                     defined('SEARCH_STAR') or define('SEARCH_STAR', isset($arrUrl[9]) ? $arrUrl[9] : 'all');
                     defined('SEARCH_HOTEL_NAME') or define('SEARCH_HOTEL_NAME', isset($arrUrl[10]) ? $arrUrl[10] : 'all');
                     defined('REQUEST') or define('REQUEST', GDS_SWITCH);
-
+                   
                     break;
                 }
                 case 'detailHotel' :{
@@ -821,7 +826,7 @@ if(!empty($client['Services'])){
                     defined('TYPE_APPLICATION') or define('TYPE_APPLICATION', $arrUrl[4]);
                     defined('HOTEL_ID') or define('HOTEL_ID', $arrUrl[5]);
                     defined('HOTEL_NAME_EN') or define('HOTEL_NAME_EN', $arrUrl[6]);
-
+                    
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if (isset($_POST['nights'])) {
                             defined('NIGHTS') or define('NIGHTS', $_POST['nights']);
@@ -1026,7 +1031,7 @@ if(!empty($client['Services'])){
                     defined('NEWS_TITLE') or define('NEWS_TITLE', $arrUrl[4]);
                     defined('NEWS_CATEGORY') or define('NEWS_CATEGORY', $arrUrl[5]);
                     defined('MAG_CATEGORY') or define('MAG_CATEGORY', $arrUrl[5]);
-
+                    
                     defined('REQUEST') or define('REQUEST', 'news');
 
                     break;
@@ -1388,7 +1393,7 @@ if(!empty($client['Services'])){
                 case 'hotelFinancialCenter':
                 case 'newInvoice':
                 case 'hotelInvoices': {
-
+              
                     defined('MARKET_HOTEL_ID') or define('MARKET_HOTEL_ID', $arrUrl[4]);
                     defined('REQUEST') or define('REQUEST', GDS_SWITCH);
                     break;
@@ -1454,7 +1459,7 @@ if(!empty($client['Services'])){
                 defined('GDS_SWITCH') or define('GDS_SWITCH', 'mainPage');
                 defined('REQUEST') or define('REQUEST', GDS_SWITCH);
             } else {
-
+	  
                 header("HTTP/1.0 404 Not Found");
                 include_once './404.html';
                 exit();
@@ -1496,7 +1501,7 @@ if(!empty($client['Services'])){
             }
             defined('REQUEST') or define('REQUEST', GDS_SWITCH);
         }
-
+        
 
     }
 
@@ -1541,7 +1546,7 @@ function detect_and_redirect_xss($array_url = null) {
             }
         }
 
-
+    
 
     foreach ($final_parameters as $key => $value) {
 

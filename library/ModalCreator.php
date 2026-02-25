@@ -10107,7 +10107,7 @@ public function ModalVisaShowSms($params){
 
                   <div class="mr-auto d-flex nopad align-items-center">
                     <div class="input_s d-flex justify-content-center align-items-center">
-                      <input onchange='inputDisabled(event)' class="form-control" type="checkbox" id="backCredit" name="backCredit">
+                      <input onchange='inputDisabled(event)' class="form-control" type="checkbox" id="backCredit" name="backCredit" checked="checked">
                     </div>
                     <label for='backCredit' class="mr-2 lh45 mb-0">
                       به کیف پول من برگردانده شود
@@ -10126,17 +10126,17 @@ public function ModalVisaShowSms($params){
                         <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 nopad  " style="direction: rtl;margin: 10px">
                           <label style="float:right;"><?php echo functions::Xmlinformation("CardOrShebanumber") ?></label>
 
-                          <input class="form-control input-disabled-js" type="text" id="CardNumber" name="CardNumber"
+                          <input class="form-control input-disabled-js" type="text" id="CardNumber" name="CardNumber" disabled="disabled"
                                  style="float: right;margin-right: 10px">
                         </div>
                         <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 nopad  " style="direction: rtl;margin: 10px">
                           <label style="float:right;"><?php echo functions::Xmlinformation("Namebankowner") ?></label>
-                          <input class="form-control input-disabled-js" type="text" id="AccountOwner" name="AccountOwner"
+                          <input class="form-control input-disabled-js" type="text" id="AccountOwner" name="AccountOwner" disabled="disabled"
                                  style="float: right;margin-right: 10px">
                         </div>
                         <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 nopad  " style="direction: rtl;margin: 10px">
                           <label style="float:right;"><?php echo functions::Xmlinformation("Cardname") ?></label>
-                          <input class="form-control input-disabled-js" type="text" id="NameBank" name="NameBank"
+                          <input class="form-control input-disabled-js" type="text" id="NameBank" name="NameBank" disabled="disabled"
                                  style="float: right;margin-right: 10px">
                         </div>
                       </div>
@@ -10203,16 +10203,16 @@ public function ModalVisaShowSms($params){
                     ?>
                   <div class='mt-4'>
                     <div class="w-100 modal-text-center modal-h mb-0">
-                      <label class="mb-0" for="ReasonUser"><?php echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?></label>
+                      <label class="mb-0" for="ReasonUser"><?php echo functions::Xmlinformation("Choosereasonfortheconsole") ?></label>
                     </div>
                     <div class="col-md-3 col-lg-3 col-sm-12  nopad ">
-                      <select class="form-control mart5" name="ReasonUser"
-                              id="ReasonUser">
+                      <select class="form-control mart5" name="ReasonUser"  id="ReasonUser">
                         <option value=""> <?php echo functions::Xmlinformation("Choosereasonfortheconsole") ?></option>
                         <option value="PersonalReason"><?php echo functions::Xmlinformation("Canselforpersonalreasons") ?></option>
                           <?php if (isset($param2) && $param2 == 'flight') { ?>
                             <option value="DelayTwoHours"><?php echo functions::Xmlinformation("Delaymorethantwohours") ?></option>
                             <option value="CancelByAirline"><?php echo functions::Xmlinformation("AbandonedbyAirline") ?></option>
+                            <option value="missedFlight"><?php echo functions::Xmlinformation("missedFlight") ?></option>
                           <?php } elseif($param2 == 'train') { ?>
                             <option value="DelayTwoHours"><?php echo functions::Xmlinformation("delayTrain") ?></option>
                           <?php }else{
@@ -10263,7 +10263,7 @@ public function ModalVisaShowSms($params){
                   </div>
                 <div class="box_btn my-4 pb-4 w-100" style='margin-bottom: 10px; float: left'>
                   <button class="btn-send-information pull-left btn-cancel site-bg-main-color site-bg-main-color-hover d-flex justify-content-center align-items-center" id='btn-information' onclick="SelectUser('<?php echo $Param ?>')">
-                      <?php echo functions::Xmlinformation("Sendinformation") ?>
+                      <?php echo functions::Xmlinformation("CancelRequestByPassenger") ?>
                     <div class="spinner-border" id='btn-send-information-load' role="status">
                       <span class="sr-only">Loading...</span>
                     </div>

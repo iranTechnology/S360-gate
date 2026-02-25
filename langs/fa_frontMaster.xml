@@ -336,9 +336,9 @@
   <Returnticket>بلیط برگشت</Returnticket>
   <Freeticket>بلیط بدون قیمت</Freeticket>
   <Ticket>بلیط</Ticket>
-  <TelescopeMarket>تلسکوپ مارکت</TelescopeMarket>
+    <TelescopeMarket>تلسکوپ مارکت</TelescopeMarket>
 
-  <NewPriceForTicket>
+    <NewPriceForTicket>
     اگر به هر دلیلی مایل هستید، بلیط را با قیمت بالاتری چاپ نموده و به مسافر ارائه دهید،
     مبلغی که در نظر دارید بر روی بلیط افزایش داده شود را در کادر زیر وارد نموده تا در قسمت چاپ بلیط، مبلغ با افزایش اعمال شده نمایش داده شود.
   </NewPriceForTicket>
