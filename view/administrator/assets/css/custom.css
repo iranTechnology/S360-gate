@@ -3130,3 +3130,23 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
     padding: 13px;
     object-fit: cover;
 }
+.alertBlink {
+    color: #fff;
+    font-weight: bold;
+    animation: blink 0.9s infinite;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    padding: 6px 20px;
+}
+
+.alertBlink i {
+    font-size: 18px;
+}
+
+@keyframes blink {
+    0%   { opacity: 1; }
+    50%  { opacity: 0; }
+    100% { opacity: 1; }
+}

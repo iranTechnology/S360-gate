@@ -1863,8 +1863,9 @@ class user extends baseController
         $bookList = $Model->select($sql);
 
         $result = [];
-
         foreach ($bookList as $key => $item) {
+
+
             $price_final = number_format($item['total_price']);
             //        ============================EntertainmentData============================
             $entertainmentSection = null;
@@ -5398,6 +5399,7 @@ class user extends baseController
                 }
             }
             elseif ($item['moduleTitle'] == 'exclusivetour'){
+
                 //        ============================EntertainmentData============================
                 $entertainmentSection = null;
                 if (!empty($item['entertainment_data_json'])) {
@@ -5454,6 +5456,7 @@ class user extends baseController
                     case 'credit': $view_status = functions::Xmlinformation('Credit')->__toString(); break;
                     default: $view_status = 'نامشخص';
                 }
+                functions::insertLog('$item: ' . json_encode($item) , '$item');
                 $result[$key]['service'] = 'ExclusiveTour';
                 $result[$key]['title'] = functions::Xmlinformation('ExclusiveTour')->__toString() .' '. $item['origin_city'] .' - '. $item['desti_city'] .' ('. $item['hotel_name'].')';
                 $result[$key]['date'] = $creation_date;

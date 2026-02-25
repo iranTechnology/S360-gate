@@ -64,6 +64,7 @@ class factorVisa
     {
 
 
+
         if($this->check_exist_doubtful){
             $this->error = true;
             $this->errorMessage = functions::Xmlinformation('doubtCharacter');
@@ -453,6 +454,7 @@ class factorVisa
                 foreach ($this->bookInfo['passengers'] as $passenger_key => $eachPassenger) {
 
                     $result_custom_file_fields = array();
+                    $custom_file_field_name = json_decode($visaInfo['custom_file_fields'],true);
 
                     /* ================= FILE A ================= */
                     $inputA = 'custom_file_fields_A_' . ($passenger_key + 1);
@@ -461,15 +463,16 @@ class factorVisa
 
                         $filesA = functions::separateFiles($inputA);
 
-                        foreach ($filesA as $file) {
+                        foreach ($filesA as $key => $file) {
                             $_FILES[$inputA] = $file;
 
                             $success = $config->UploadFile("pic", $inputA, "2097152");
-                            $exp = explode(':', $success);
 
+
+                            $exp = explode(':', $success);
                             if ($exp[0] === 'done') {
                                 $result_custom_file_fields[] = array(
-                                    'passport' => $exp[1]
+                                    $custom_file_field_name[$key] => $exp[1]
                                 );
                             }
                         }
@@ -482,7 +485,7 @@ class factorVisa
 
                         $filesC = functions::separateFiles($inputC);
 
-                        foreach ($filesC as $file) {
+                        foreach ($filesC as $key  =>  $file) {
                             $_FILES[$inputC] = $file;
 
                             $success = $config->UploadFile("pic", $inputC, "2097152");
@@ -490,7 +493,7 @@ class factorVisa
 
                             if ($exp[0] === 'done') {
                                 $result_custom_file_fields[] = array(
-                                    'photo' => $exp[1]
+                                    $custom_file_field_name[$key] => $exp[1]
                                 );
                             }
                         }
