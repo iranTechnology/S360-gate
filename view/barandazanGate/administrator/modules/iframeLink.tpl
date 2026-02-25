@@ -1,1 +1,0 @@
-(<a target='_blank' href="assets/css/images/iframeLink.png">آموزش دریافت لینک آی فریم</a> )

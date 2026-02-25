@@ -6492,12 +6492,12 @@ class ModalCreator extends clientAuth {
 
                                          ?>
                                             <a id="downloadLink" target="_blank"
-                                               class="d-flex flex-wrap justify-content-center"
+                                               class="d-flex flex-column justify-content-center"
                                                href="<?php echo ROOT_ADDRESS_WITHOUT_LANG .'/pic/visaPassengersFiles/' . array_values($item)[0]; ?>"
                                                type="application/octet-stream">
-                                                <img src="<?php echo ROOT_ADDRESS_WITHOUT_LANG .'/pic/visaPassengersFiles/' . array_values($item)[0]; ?>"
-                                                     class="w-100 p-3 mb-3 border rounded"
-                                                     alt="<?php echo key($item);?>">
+<!--                                                <img src="--><?php //echo ROOT_ADDRESS_WITHOUT_LANG .'/pic/visaPassengersFiles/' . array_values($item)[0]; ?><!--"-->
+<!--                                                     class="w-50 p-1 mb-3 border rounded"-->
+<!--                                                     alt="--><?php //echo key($item);?><!--">-->
                                                 <?php echo key($item);?><i class="fa mr-2 fa-download"></i>
                                             </a>
 
