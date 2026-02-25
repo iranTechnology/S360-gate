@@ -23,7 +23,7 @@ class functions {
 
         $apiAddress = '';
         $isTest     = self::isTestServer();
-        $apiAddress = 'http://192.168.1.100/Core/V-1/';
+        $apiAddress = 'http://safar360.com/Core/V-1/';
         if ( $isTest ) {//local
 
 //            $apiAddress = 'http://safar360.com/CoreTestDeveloper/V-1/';

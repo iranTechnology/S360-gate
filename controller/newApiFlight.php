@@ -2018,6 +2018,7 @@ class newApiFlight extends clientAuth
                         'count_transit_title' => functions::countInterruptTitle(($count_dept_route - 1), $translateVariable),
                         'point_club' => (($point_club > 0) ? $point_club : 0),
                         'flight_id' => $flightID,
+                        'cancel_rules' => isset($flight['CancelRules']) ? $flight['CancelRules'] : '',
                         'total_output_flight_duration' => functions::duration_time_source($source_id, $flight['TotalOutputFlightDuration'], $translateVariable),
                         'total_output_stop_duration' => functions::duration_time_source($source_id, $flight['TotalOutputStopDuration'], $translateVariable),
                         'is_foreign_airline' => $isForeignAirline
@@ -3566,7 +3567,6 @@ class newApiFlight extends clientAuth
 
         $flights = json_decode($this->findTicketInSearch(), true);
 
-
         $request_numbers = [];
         foreach ($flights as $direction => $arrayFlight) {
             $request_numbers[$direction] = $arrayFlight['Code'] ;
@@ -3939,6 +3939,7 @@ class newApiFlight extends clientAuth
                         'unique_code' => $flight['Code'],
                         'point_club' => (($point_club > 0) ? $point_club : 0),
                         'flight_id' => $flight['FlightID'],
+                        'cancel_rules' => isset($flight['CancelRules']) ? $flight['CancelRules'] : '',
 //                        'baggage' => ($flight['OutputRoutes'][0]['Baggage']['Code'] > 0) ? $this->baggageTitle($flight['SourceId'],$flight['OutputRoutes'][0],$translateVariable):'20',
                         'baggage' => (
                             isset($flight['OutputRoutes'][0]['CabinType']) &&

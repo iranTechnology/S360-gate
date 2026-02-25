@@ -44,7 +44,10 @@
       </template>
 
       <div class="cancel-policy cancel-policy-charter" v-else>
-      <span>
+      <span v-if="cancel_rules">
+        {{cancel_rules}}
+      </span>
+        <span v-else>
         {{ useXmltag('ThecharterflightscharterunderstandingCivilAviationOrganization') }}
       </span>
       </div>
@@ -54,6 +57,6 @@
 <script>
 export default {
    name: "CancelPolicy",
-   props: ["fee_cancel", "flight_type_li"]
+   props: ["fee_cancel", "flight_type_li" , "cancel_rules"]
 }
 </script>

@@ -75,8 +75,6 @@ class bookExclusiveTour extends exclusiveTour
      */
     public function book($dataBooked) {
 
-        functions::insertLog('$dataBooked: ' . json_encode($dataBooked) , '0abbasi');
-
         functions::insertLog('params==>' . json_encode($dataBooked, 256), 'newBookExclusiveTour');
 
         $factorNumber = $dataBooked['factorNumber'];
@@ -108,8 +106,6 @@ class bookExclusiveTour extends exclusiveTour
                         set_time_limit($maxTime + 5);
 
                         $resultBook = $this->reserveTicket($payType, $info);
-
-                        functions::insertLog('$resultBook: ' . json_encode($resultBook) , '0abbasi');
 
                         $elapsed = time() - $startTime;
                         if ($elapsed > $maxTime) {
@@ -161,7 +157,6 @@ class bookExclusiveTour extends exclusiveTour
             'tracking_code_bank' => $data['trackingCode'],
             'payment_date' => Date('Y-m-d H:i:s')
         );
-        functions::insertLog('updateInfoBankBookFlight: ' . json_encode($dataUpdate) , '0abbasi');
         $this->bookModel->updateWithBind($dataUpdate, $condition);
     }
 #endregion
@@ -187,22 +182,16 @@ class bookExclusiveTour extends exclusiveTour
     
     private function updateInfo($payType, $eachDirection, $ReserveTicket = array()) {
 
-        functions::insertLog('updateInfo hi' , '0abbasi');
-
 
         if ($payType != 'credit') {
             // Caution: آپدیت تراکنش به موفق
             $this->transaction->setCreditToSuccess($eachDirection['factor_number'], $eachDirection['tracking_code_bank']);
         }
 
-        functions::insertLog('calculateProfitClient hi' , '0abbasi');
                 $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
-        functions::insertLog('memberCreditConfirm hi' , '0abbasi');
 
                 //email to buyer
                 $this->sendSmsToClient($eachDirection);
-
-        functions::insertLog('sendSmsToClient hi' , '0abbasi');
 
 
         return true;
@@ -328,16 +317,11 @@ class bookExclusiveTour extends exclusiveTour
 
         $ReserveTicket = parent::Book($eachDirection);
 
-        functions::insertLog('Book: ' . json_encode($ReserveTicket) , '0abbasi');
-        functions::insertLog('flag: ' . json_encode(!empty($ReserveTicket) && $ReserveTicket['curl_error'] == false && !empty($ReserveTicket['Pnr'])) , '0abbasi');
-
-
         functions::insertLog('after reserve ticket==>' . json_encode([$eachDirection['factor_number']], 256), 'newBookExclusiveTour');
 
         if (!empty($ReserveTicket) && $ReserveTicket['curl_error'] == false && !empty($ReserveTicket['Pnr'])) {
                 functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookExclusiveTour');
                 $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
-            functions::insertLog('updateInfo: ' . json_encode($resultBookedFlight) , '0abbasi');
 
                 functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookExclusiveTour');
         }
