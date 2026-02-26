@@ -1983,6 +1983,8 @@ class ModalCreator extends clientAuth {
                  font-weight: 500;
              }
 
+
+
          </style>
 
 
@@ -3999,76 +4001,145 @@ class ModalCreator extends clientAuth {
 	#region FinalConfirm
 
      public function FinalConfirm($Param, $id, $ClientId) {
-      $request_number = $Param['RequestNumber'];
-      $pnr = $Param['pnr'];
+        $request_number = $Param['RequestNumber'];
+        $pnr = $Param['pnr'];
 
+         //کارمزد هر نفر
+         $listpenalty = Load::controller('penaltyFees');
+         $PenaltyEnd = $listpenalty->getPenaltyEnd();
 
-       $listCancel = Load::controller('listCancel');
+         // تراکنش مالی این خرید
+         $Transactions = Load::controller('bookshowTest');
+         $TransactionsReport = $Transactions->getTransactionsByDateRange('','',$pnr,'','','');
+
+        $listCancel = Load::controller('listCancel');
 		$Cancel = $listCancel->InfoCancelTicket($request_number, $id, $ClientId);
 		$typeFlightCancel = ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '');
         $indemnityPrice = '0';
 
 		if ($typeFlightCancel) {
 			 if($Cancel[0]['flight_type'] == 'system' && $Cancel[0]['IsInternal'] == '1') {
-			list($TotalPrice,$fare) = functions::TotalPriceCancelTicketSystem($Cancel);
-			   $PricePenalty = functions::CalculatePenaltyPriceCancel($TotalPrice,$fare, $Cancel[0]);
-			   $indemnityPrice =round($PricePenalty-(30000 * count($Cancel)));
-
+                   list($TotalPrice,$fare) = functions::TotalPriceCancelTicketSystem($Cancel);
+                   $PricePenalty = functions::CalculatePenaltyPriceCancel($TotalPrice,$fare, $Cancel[0]);
+                   $indemnityPrice =round($PricePenalty-(30000 * count($Cancel)));
 			 }elseif($Cancel[0]['flight_type'] == 'charter'){
 			    $TotalPrice = functions::TotalPriceNetTicketCharter($Cancel);
-			    
-			   $indemnityPrice = round(functions::CalculatePenaltyPriceCancelCharter($TotalPrice, $Cancel[0]));
-
-			   
-			 }
+			    $indemnityPrice = round(functions::CalculatePenaltyPriceCancelCharter($TotalPrice, $Cancel[0]));
+ 		     }
 		}elseif($Cancel[0]['TypeCancel'] == 'bus'){
-
 		    $admin = Load::controller('admin');
 		    $priceBusSql = "SELECT * FROM book_bus_tb WHERE order_code='{$request_number}'";
 		    $priceBookBus = $airlineClientCharter = $admin->ConectDbClient($priceBusSql, $ClientId, "Select", "", "", "");
-
 		    $indemnityPrice = ($priceBookBus['price_api']-($priceBookBus['price_api']*($Cancel[0]['PercentIndemnity']/100))) ;
-
 		}elseif($Cancel[0]['TypeCancel'] == 'insurance'){
-        $admin = Load::controller('admin');
-        $priceInsuranceSql = "SELECT * FROM book_insurance_tb WHERE factor_number='{$request_number}'";
-        $priceBookInsurance = $airlineClientCharter = $admin->ConectDbClient($priceInsuranceSql, $ClientId, "Select", "", "", "");
-        $indemnityPrice = ($priceBookInsurance['base_price']-($priceBookInsurance['base_price']*($Cancel[0]['PercentIndemnity']/100))) ;
-    }elseif($Cancel[0]['TypeCancel'] == 'hotel'){
-        $admin = Load::controller('admin');
-        $priceHotelSql = "SELECT * FROM book_hotel_local_tb WHERE factor_number='{$request_number}'";
-        $priceBookHotel = $airlineClientCharter = $admin->ConectDbClient($priceHotelSql, $ClientId, "Select", "", "", "");
-        $indemnityPrice = ($priceBookHotel['total_price']-($priceBookHotel['total_price']*($Cancel[0]['PercentIndemnity']/100))) ;
-    }
-
+            $admin = Load::controller('admin');
+            $priceInsuranceSql = "SELECT * FROM book_insurance_tb WHERE factor_number='{$request_number}'";
+            $priceBookInsurance = $airlineClientCharter = $admin->ConectDbClient($priceInsuranceSql, $ClientId, "Select", "", "", "");
+            $indemnityPrice = ($priceBookInsurance['base_price']-($priceBookInsurance['base_price']*($Cancel[0]['PercentIndemnity']/100))) ;
+        }elseif($Cancel[0]['TypeCancel'] == 'hotel'){
+            $admin = Load::controller('admin');
+            $priceHotelSql = "SELECT * FROM book_hotel_local_tb WHERE factor_number='{$request_number}'";
+            $priceBookHotel = $airlineClientCharter = $admin->ConectDbClient($priceHotelSql, $ClientId, "Select", "", "", "");
+            $indemnityPrice = ($priceBookHotel['total_price']-($priceBookHotel['total_price']*($Cancel[0]['PercentIndemnity']/100))) ;
+        }
+         $CostFinalForReturn =0;
+         $AmountExcelCanceling=0;
+         $ReturnProvider=0;
 		?>
 		<div class="modal-dialog modal-lg">
 
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header site-bg-main-color">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-               <div style="display:flex; gap:5px;">
-					<h4 class="modal-title">تعیین مبلغ کنسلی </h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                       <div style="display:flex; gap:5px;">
+                            <h4 class="modal-title">تعیین مبلغ کنسلی </h4>
 
-					<h4 class="modal-title"> (<?php echo $request_number; ?>) </h4>
+                            <h4 class="modal-title"> (<?php echo $request_number; ?>) </h4>
 
-					<h4 class="modal-title">(<?php echo $pnr; ?>)</h4>
-               </div>
+                            <h4 class="modal-title">(<?php echo $pnr; ?>)</h4>
+                            <?php  if($Cancel[0]['AmountExcelCanceling']>0) {?>
+                                <h4 class="modal-title">(اکسل  <?php echo $Cancel[0]['TypeExcelCanceling'];?>)</h4>
+                            <?php } ?>
+                       </div>
 				</div>
+
 				<div class="modal-body">
-
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <h5>
+                            مبلغ اولیه فروش به آژانس :
+                            <?php $BuyFromIt=$TransactionsReport[$Cancel[0]['factor_number']];
+                                  echo number_format($BuyFromIt); //خرید از سفر30
+                            ?>      ریال
+                            </h5>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <h5>
+                             <?php
+                                   if($Cancel[0]['AmountExcelCanceling']>0) {
+                                        echo 'مبلغ استرداد اکسل : '.number_format($Cancel[0]['AmountExcelCanceling']).' ریال ';
+                                        $AmountExcelCanceling=$Cancel[0]['AmountExcelCanceling'];
+                                   }
+                                   else  echo 'مبلغ استرداد اکسل در سیستم ثبت نشده است';
+                             ?>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <?php if($AmountExcelCanceling>0 && $Cancel[0]['TypeExcelCanceling']=='provider43') {
+                            $ReturnProvider=$BuyFromIt-$AmountExcelCanceling;
+                        ?>
+                            <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                <h5>
+                            برگشتی به مسافر قبل کارمزد :     <?php echo number_format($ReturnProvider);?>
+                                </h5>
+                            </div>
+                            <?php } ?>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <h5>
+                              کارمزد جریمه به ازای هر نفر :   <?php echo number_format($PenaltyEnd);?> ریال
+                            </h5>
+                        </div>
+                    </div>
+                    <?php if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {?>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h5>
+                                افراد این خرید &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                ADl= <?php echo $Cancel[0]['adt_qty'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                CHD= <?php echo $Cancel[0]['chd_qty'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                INF= <?php echo $Cancel[0]['inf_qty'];?>
+                                </h5>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php
+                    if($AmountExcelCanceling>0 && $Cancel[0]['TypeExcelCanceling']=='provider21') {
+                        if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {
+                            $CostFinalForReturn = $AmountExcelCanceling - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
+                        } else {
+                            $CostFinalForReturn =$AmountExcelCanceling;
+                        }
+                    }
+                    else if($AmountExcelCanceling>0 && $Cancel[0]['TypeExcelCanceling']=='provider43') {
+                        if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {
+                           $CostFinalForReturn = $ReturnProvider - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
+                        } else {
+                            $CostFinalForReturn =$AmountExcelCanceling;
+                        }
+                    }
+                    ?>
 					<div class="row">
-
 						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label for="DescriptionClient" class="PercentLabel">تعیین مبلغ
+								<label for="DescriptionClient" class="PercentLabel">مبلغ استرداد
 									<small>(شما میتوانید مبلغ استرداد مربوط را در اینجا وارد نمائید)</small>
 								</label>
 								<input class="form-control" id="PriceIndemnity"
 								       placeholder="مبلغ مورد نظر را به ریال  وارد نمائید"
-                               onkeyup="javascript:separator(this);"
-								       value="">
+                                       onkeyup="javascript:separator(this);"
+								       value="<?php echo number_format($CostFinalForReturn);?>">
 							</div>
 						</div>
 

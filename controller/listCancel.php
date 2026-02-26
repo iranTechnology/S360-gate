@@ -37,7 +37,8 @@ class listCancel extends clientAuth {
 	public $admin;
 	public $Pid;
     private $pnrListExelCanceling=[];
-    public $transactions;
+    private $file_type_excel;
+    public  $transactions;
 
 	/**
 	 * listCancel constructor.
@@ -932,24 +933,40 @@ class listCancel extends clientAuth {
 	public function InfoCancelTicket($RequestNumber, $IdCancel, $ClientId) {
 
 
-		$SqlCancel = "SELECT * FROM cancel_ticket_details_tb WHERE id='{$IdCancel}'";
+		$SqlCancel = "SELECT 
+                            CT.*
+                      FROM 
+                            cancel_ticket_details_tb  CT
+                      WHERE 
+                            CT.id='{$IdCancel}'
+                      ";
 		$InfoCancel = $this->admin->ConectDbClient($SqlCancel, $ClientId, "Select", "", "", "");
 
 		if ($InfoCancel['TypeCancel'] == 'flight' || $InfoCancel['TypeCancel'] == '') {
 			$Sql = "SELECT 
-             book.* , Cancel.PercentIndemnity as PercentIndemnity,
-             Cancel.TypeCancel AS TypeCancel
-             FROM cancel_ticket_tb AS TCancel 
-             LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
-             LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
-            WHERE book.request_number='{$RequestNumber}' AND TCancel.IdDetail='{$IdCancel}' 
-             GROUP BY TCancel.NationalCode";
+                         book.* ,                         
+                         Cancel.PercentIndemnity as PercentIndemnity,
+                         Cancel.TypeCancel AS TypeCancel,
+                         PE.amount as AmountExcelCanceling,
+                         PE.type_excel as TypeExcelCanceling
+                     FROM 
+                         cancel_ticket_tb AS TCancel 
+                         LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
+                         LEFT JOIN pnr_from_excel_tb  PE ON (Cancel.id=PE.IdDetail)
+                         LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
+                    WHERE
+                        book.request_number='{$RequestNumber}' AND 
+                        TCancel.IdDetail='{$IdCancel}' 
+                     GROUP BY 
+                         TCancel.NationalCode";
 
 			return $this->admin->ConectDbClient($Sql, $ClientId, "SelectAll", "", "", "");
 		}elseif ($InfoCancel['TypeCancel'] == 'bus'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
-             Cancel.TypeCancel AS TypeCancel
+             Cancel.TypeCancel AS TypeCancel,
+             '' as AmountExcelCanceling,
+             '' as TypeExcelCanceling
              FROM cancel_ticket_tb AS TCancel 
              LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
              LEFT JOIN book_bus_tb AS book ON book.order_code = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
@@ -960,7 +977,9 @@ class listCancel extends clientAuth {
         }elseif ($InfoCancel['TypeCancel'] == 'hotel'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
-             Cancel.TypeCancel AS TypeCancel
+             Cancel.TypeCancel AS TypeCancel,
+             '' as AmountExcelCanceling,
+             '' as TypeExcelCanceling
              FROM cancel_ticket_tb AS TCancel 
              LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
              LEFT JOIN book_hotel_local_tb AS book ON book.factor_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
@@ -971,7 +990,9 @@ class listCancel extends clientAuth {
         }elseif ($InfoCancel['TypeCancel'] == 'insurance'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
-             Cancel.TypeCancel AS TypeCancel
+             Cancel.TypeCancel AS TypeCancel,
+             '' as AmountExcelCanceling,
+             '' as TypeExcelCanceling
              FROM cancel_ticket_tb AS TCancel 
              LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
              LEFT JOIN book_insurance_tb AS book ON book.factor_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passport_number)) 
@@ -1359,11 +1380,10 @@ class listCancel extends clientAuth {
 
     public function InsertExelCanceling($params)
     {
-        // فعال کردن نمایش خطاها (برای تست)
+        error_reporting(1);
         error_reporting(E_ALL);
         @ini_set('display_errors', 1);
         @ini_set('display_errors', 'on');
-
         // بررسی ارسال فایل
         if (!isset($_FILES['pnr_file']) || empty($_FILES['pnr_file']['name'])) {
             return functions::JsonError('هیچ فایلی ارسال نشده است', 500);
@@ -1397,7 +1417,7 @@ class listCancel extends clientAuth {
         // خواندن فایل اکسل
         $reader = ReaderEntityFactory::createXLSXReader();
         $reader->open($_FILES['file']['tmp_name']);
-
+        $this->file_type_excel=$params['file_type'];
         foreach ($reader->getSheetIterator() as $sheet) {
             $rowIndex = 0;
 
@@ -1412,49 +1432,88 @@ class listCancel extends clientAuth {
                     }
                 }
 
-                // رد کردن ۳ ردیف اول (هدر)
-                if ($rowIndex < 4) continue;
-
                 // مدل استردادی - provider21
-                if ($params['file_type'] == 'provider21_excel') {
+                if ($params['file_type'] == 'provider21') {
 
-                    $pnr = isset($row_data[5]) ? trim($row_data[5]) : null;
+                    $rowIndex++;
+                    $cells = $row->getCells();
+
+                    // mapping ستون‌ها (A=0, B=1, ... ,Q=16)
+                    $row_data = [];
+                    foreach ($cells as $cell) {
+                        $row_data[] = $cell->getValue();
+                    }
+
+                    // رد کردن ۳ ردیف اول فقط برای provider21
+                    if ($params['file_type'] == 'provider21' && $rowIndex < 4) continue;
+
+                    // حداقل تا ستون P وجود داشته باشد
+                    if (count($row_data) !== 16) {
+                        return functions::JsonError(null, 'فرمت فایل provider21 اشتباه است. باید تا ستون Q پر شده باشد.');
+                    }
+
+                    // گرفتن ستون F و P با ایندکس ایمن
+                    $pnr = $row_data[5] ?? null; // F
                     $amount = isset($row_data[15]) ? (int) str_replace(',', '', $row_data[15]) : 0;
 
                     if (!empty($pnr) && $amount > 0) {
                         $this->pnrListExelCanceling[$pnr] = $amount;
                     }
+
                 }
 
                 // مدل جریمه‌ای - provider43
-                elseif ($params['file_type'] == 'provider43_excel') {
-                    // این قسمت رو طبق نیازت پر کن
+                elseif ($params['file_type'] == 'provider43') {
+                    $rowIndex++;
+                    $cells = $row->getCells();
+
+                    // حداقل تا ستون AM وجود داشته باشد
+                    if (count($cells) < 39) { // ستون AM = index 38
+                        return functions::JsonError(null, 'فرمت فایل provider43 اشتباه است. باید تا ستون AM پر شده باشد.');
+                    }
+
+                    $row_data = [];
+                    foreach ($cells as $cell) {
+                        $row_data[] = $cell->getValue();
+                    }
+
+                    // ستون I برای PNR (index 8)
+                    $pnr_group = $row_data[8] ?? null;
+                    // ستون AC برای مقدار مالی (index 28)
+                    $amount_ac = isset($row_data[28]) ? (float) str_replace([',',' '], '', $row_data[28]) : 0;
+
+                    if (!empty($pnr_group)) {
+                        if (!isset($this->pnrListExelCanceling[$pnr_group])) {
+                            $this->pnrListExelCanceling[$pnr_group] = 0;
+                        }
+                        // جمع کردن مقادیر AC برای PNRهای یکسان
+                        $this->pnrListExelCanceling[$pnr_group] += $amount_ac;
+                    }
                 }
             }
         }
 
         $reader->close();
-
         // بررسی لیست استخراج شده
         if (empty($this->pnrListExelCanceling)) {
-            return functions::JsonError('هیچ PNR معتبری یافت نشد', 400);
+            return functions::JsonError(null,'هیچ PNR معتبری یافت نشد');
         }
 
 
         //حالا باید این آرایه را بفرستیم به دیتابیس تا update رخ بده
-        $this->UpdateCancelFromExcel();
+        $this->InsertCancelingFromExcel();
         // خروجی موفق
-       // return functions::JsonSuccess(null, 'اطلاعات با موفقیت بارگذاری شد');
+       return functions::JsonSuccess(null, 'اطلاعات با موفقیت بارگذاری شد');
     }
 
-    public function UpdateCancelFromExcel()
+    public function InsertCancelingFromExcel()
     {
         // 1. گرفتن لیست کنسلی‌ها با فیلتر Status = ConfirmClient
         $_POST['Status'] = 'ConfirmClient'; // برای فیلتر داخلی تابع
         $ListCancelClient = $this->ListCancelAdmin();
-var_dump($ListCancelClient);
+
         if (empty($ListCancelClient)) {
-            return functions::JsonError('هیچ رکوردی برای بررسی وجود ندارد', 400);
+            return functions::JsonError(null,'هیچ رکوردی برای بررسی وجود ندارد');
         }
 
         // 2. حلقه روی رکوردها
@@ -1473,10 +1532,10 @@ var_dump($ListCancelClient);
                 $data['pnr'] = $pnr;
                 $data['amount'] = $amount;
                 $data['IdDetail'] = $IdDetail;
+                $data['type_excel'] =$this->file_type_excel ;
                 $data['create_at'] = $create_at;
                 $result_pnr_from_excel = $this->admin->ConectDbClient('', $clientId, "Insert", $data, "pnr_from_excel_tb", '');
-
-                echo $clientId.'***';
+               // echo $clientId.'***';
             }
         }
 
