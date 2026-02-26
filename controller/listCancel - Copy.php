@@ -29,44 +29,45 @@ spl_autoload_register(function ($class) {
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 class listCancel extends clientAuth {
-    public $id = '';
-    public $list;
-    public $edit;
-    public $Model;
-    public $ModelBase;
-    public $admin;
-    public $Pid;
+	public $id = '';
+	public $list;
+	public $edit;
+	public $Model;
+	public $ModelBase;
+	public $admin;
+	public $Pid;
     private $pnrListExelCanceling=[];
-    public $transactions;
+    private $file_type_excel;
+    public  $transactions;
 
-    /**
-     * listCancel constructor.
-     */
-    public function __construct() {
-        $this->Model = Load::library('Model');
-        $this->ModelBase =  Load::library('ModelBase');
-        $this->admin = Load::controller('admin');
+	/**
+	 * listCancel constructor.
+	 */
+	public function __construct() {
+		$this->Model = Load::library('Model');
+		$this->ModelBase =  Load::library('ModelBase');
+		$this->admin = Load::controller('admin');
 
         $this->transactions = $this->getModel('transactionsModel');
-    }
+	}
 
-    public function ListCancelAdmin() {
+	public function ListCancelAdmin() {
 
-        $sql = " SELECT * FROM clients_tb WHERE id >'1'";
-        $res = $this->ModelBase->select($sql);
+		$sql = " SELECT * FROM clients_tb WHERE id >'1'";
+		$res = $this->ModelBase->select($sql);
 
 
-        $date = dateTimeSetting::jdate("Y-m-d", time());
-        $date_now_explode = explode('-', $date);
-        $date_now_int_start = dateTimeSetting::jmktime(0, 0, 0, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
-        $date_now_int_end = dateTimeSetting::jmktime(23, 59, 59, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
+		$date = dateTimeSetting::jdate("Y-m-d", time());
+		$date_now_explode = explode('-', $date);
+		$date_now_int_start = dateTimeSetting::jmktime(0, 0, 0, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
+		$date_now_int_end = dateTimeSetting::jmktime(23, 59, 59, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
 
-        $ListCancelClient = [];
-        foreach ($res as $each) {
+		$ListCancelClient = [];
+		foreach ($res as $each) {
 
-            if ($each['id'] > '1') {
+			if ($each['id'] > '1') {
 
-                $sql = "SELECT TCancel.*, Cancel.*,Ticket.pnr,Ticket.IsInternal , Ticket.api_id , PFE.id as IdPFE "
+				$sql = "SELECT TCancel.*, Cancel.*,Ticket.pnr,Ticket.IsInternal , Ticket.api_id , PFE.id as IdPFE "
                     . " FROM cancel_ticket_tb AS TCancel "
                     . " LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail"
                     . " LEFT JOIN  pnr_from_excel_tb AS PFE ON Cancel.id = PFE.IdDetail"
@@ -75,28 +76,28 @@ class listCancel extends clientAuth {
                     . " AND Cancel.Status <> 'ConfirmCancel' AND Cancel.Status != 'close' ";
 
 
-                if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
+				if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
 
-                    $date_of = explode('-', $_POST['date_of']);
-                    $date_to = explode('-', $_POST['to_date']);
-                    $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
-                    $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
-                    $sql .= " AND TCancel.DateRequestCancelClientInt >= '{$date_of_int}' AND TCancel.DateRequestCancelClientInt  <= '{$date_to_int}'";
-                }
+					$date_of = explode('-', $_POST['date_of']);
+					$date_to = explode('-', $_POST['to_date']);
+					$date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
+					$date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
+					$sql .= " AND TCancel.DateRequestCancelClientInt >= '{$date_of_int}' AND TCancel.DateRequestCancelClientInt  <= '{$date_to_int}'";
+				}
 
-                if (!empty($_POST['Status'])) {
+				if (!empty($_POST['Status'])) {
 
-                    $sql .= " AND Cancel.Status ='{$_POST['Status']}'  ";
-                }
+					$sql .= " AND Cancel.Status ='{$_POST['Status']}'  ";
+				}
 
-                if (!empty($_POST['RequestNumber'])) {
-                    $sql .= " AND TCancel.RequestNumber ='{$_POST['RequestNumber']}'";
-                }
+				if (!empty($_POST['RequestNumber'])) {
+					$sql .= " AND TCancel.RequestNumber ='{$_POST['RequestNumber']}'";
+				}
 
 
-                $sql .= "GROUP BY TCancel.IdDetail ";
+				$sql .= "GROUP BY TCancel.IdDetail ";
 
-                $CancelClient = $this->admin->ConectDbClient($sql, $each['id'], "SelectAll", "", "", "");
+				$CancelClient = $this->admin->ConectDbClient($sql, $each['id'], "SelectAll", "", "", "");
                 $apiProviders = [
                     '1'  => 'سرور 5',
                     '5'  => 'سرور 4',
@@ -118,7 +119,7 @@ class listCancel extends clientAuth {
 
 
 
-                if(!empty($CancelClient))
+				if(!empty($CancelClient))
                 {
                     foreach ($CancelClient as $key => &$CancelRequest) {
                         $CancelRequest['AgencyName'] = $each['AgencyName'];
@@ -128,14 +129,14 @@ class listCancel extends clientAuth {
                     }
                 }
 
-            }
-        }
+			}
+		}
 
 
         $Cancel = array();
-        foreach ($ListCancelClient as $key => $row) {
-            $Cancel['DateRequestCancelClientInt'][$key] = $row['DateRequestCancelClientInt'];
-        }
+		foreach ($ListCancelClient as $key => $row) {
+			$Cancel['DateRequestCancelClientInt'][$key] = $row['DateRequestCancelClientInt'];
+		}
 
         if (!empty($Cancel['DateRequestCancelClientInt']) && is_array($Cancel['DateRequestCancelClientInt'])) {
             array_multisort($Cancel['DateRequestCancelClientInt'], SORT_DESC, $ListCancelClient);
@@ -161,20 +162,20 @@ class listCancel extends clientAuth {
 //            die();
 //        }
 
-        return $ListCancelClient;
-    }
+		return $ListCancelClient;
+	}
 
 
-    public function ListCancelAdminCertain() {
-        $sql = " SELECT * FROM clients_tb";
-        $res = $this->ModelBase->select($sql);
+	public function ListCancelAdminCertain() {
+		$sql = " SELECT * FROM clients_tb";
+		$res = $this->ModelBase->select($sql);
 
-        $ListCancelClient = [];
-        foreach ($res as $each) {
+		$ListCancelClient = [];
+		foreach ($res as $each) {
 
-            if ($each['id'] > '1') {
+			if ($each['id'] > '1') {
 
-                $sql = "SELECT TCancel.*, Cancel.*" . " FROM cancel_ticket_tb AS TCancel " . " LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail" . " WHERE  (Cancel.Status = 'ConfirmCancel' OR Cancel.Status = 'close') ";
+				$sql = "SELECT TCancel.*, Cancel.*" . " FROM cancel_ticket_tb AS TCancel " . " LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail" . " WHERE  (Cancel.Status = 'ConfirmCancel' OR Cancel.Status = 'close') ";
 
                 if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
 
@@ -199,46 +200,46 @@ class listCancel extends clientAuth {
                     $sql .= " AND Cancel.RequestNumber ='{$_POST['RequestNumber']}'";
                 }
 
-                $sql .=' GROUP BY TCancel.IdDetail ';
+				$sql .=' GROUP BY TCancel.IdDetail ';
 
-                $CancelClient = $this->admin->ConectDbClient($sql, $each['id'], "SelectAll", "", "", "");
+				$CancelClient = $this->admin->ConectDbClient($sql, $each['id'], "SelectAll", "", "", "");
 
-                foreach ($CancelClient as $key => $CancelRequest) {
-                    $CancelRequest['AgencyName'] = $each['AgencyName'];
-                    $CancelRequest['ClientId'] = $each['id'];
-                    $ListCancelClient[] = $CancelRequest;
-                }
-            }
+				foreach ($CancelClient as $key => $CancelRequest) {
+					$CancelRequest['AgencyName'] = $each['AgencyName'];
+					$CancelRequest['ClientId'] = $each['id'];
+					$ListCancelClient[] = $CancelRequest;
+				}
+			}
 
-        }
-
-
-        $Cancel = array();
-        foreach ($ListCancelClient as $key => $row) {
-            $Cancel['DateRequestCancelClientInt'][$key] = $row['DateRequestCancelClientInt'];
-        }
-
-        array_multisort($Cancel['DateRequestCancelClientInt'], SORT_DESC, $ListCancelClient);
+		}
 
 
-        return $ListCancelClient;
-    }
+		$Cancel = array();
+		foreach ($ListCancelClient as $key => $row) {
+			$Cancel['DateRequestCancelClientInt'][$key] = $row['DateRequestCancelClientInt'];
+		}
 
-    public function TypeFlight($request_number) {
-        $sql = "select * from book_local_tb  where request_number='{$request_number}' ";
-        $result = $this->Model->load($sql);
+		array_multisort($Cancel['DateRequestCancelClientInt'], SORT_DESC, $ListCancelClient);
 
-        $this->Pid = $result['pd_private'];
 
-        return $result['flight_type'];
-    }
+		return $ListCancelClient;
+	}
+
+	public function TypeFlight($request_number) {
+		$sql = "select * from book_local_tb  where request_number='{$request_number}' ";
+		$result = $this->Model->load($sql);
+
+		$this->Pid = $result['pd_private'];
+
+		return $result['flight_type'];
+	}
 
     public function GoToSetRequestCancelUser($params, $apiCancel = false) {
 
         $_POST = $params;
         $this->SetRequestCancelUser($params, $apiCancel);
     }
-    public function SetRequestCancelUser($params, $apiCancel = false, $exitOption = false) {
+	public function SetRequestCancelUser($params, $apiCancel = false, $exitOption = false) {
 
 
         $Model = Load::library('Model');
@@ -273,183 +274,183 @@ class listCancel extends clientAuth {
 //        $ListCancelRTRD = $Model->select($sql);
 
 //        if (!$ListCancelRTRD) {
-        $smsController = Load::controller('smsServices');
+            $smsController = Load::controller('smsServices');
 
-        if ($apiCancel) {
-            $_POST = $params;
-        }
+            if ($apiCancel) {
+                $_POST = $params;
+            }
 
-        $NationalCodesWithAge = $_POST['NationalCodes'];
+            $NationalCodesWithAge = $_POST['NationalCodes'];
 
 
-        $BookResult = $this->getInfoCancelWithTypeService($_POST, $apiCancel);
+            $BookResult = $this->getInfoCancelWithTypeService($_POST, $apiCancel);
 
-        list($Age, $NationalCodes) = $this->getNationalCodesRequest($NationalCodesWithAge);
-        list($adt, $chd, $inf) = $this->getCountAge($Age);
+            list($Age, $NationalCodes) = $this->getNationalCodesRequest($NationalCodesWithAge);
+            list($adt, $chd, $inf) = $this->getCountAge($Age);
 
-        if (!empty($BookResult)) {
+            if (!empty($BookResult)) {
 
-            if (($BookResult['Adt_passenger'] - $adt) >= 1 || (($inf + $chd + $adt) == ($BookResult['Adt_passenger'] + $BookResult['Chd_passenger'] + $BookResult['Inf_passenger'])) || $_POST['typeService'] == 'bus') {
+                if (($BookResult['Adt_passenger'] - $adt) >= 1 || (($inf + $chd + $adt) == ($BookResult['Adt_passenger'] + $BookResult['Chd_passenger'] + $BookResult['Inf_passenger'])) || $_POST['typeService'] == 'bus') {
 
-                list($result, $id) = $this->insertInfoCancel($_POST, $apiCancel);
+                    list($result, $id) = $this->insertInfoCancel($_POST, $apiCancel);
 
-                $_POST['idDetailCancel'] = $id;
-                if ($result) {
-                    $this->insertNationalCodeCancel($NationalCodes, $_POST, $apiCancel);
-                    //sms to site manager
-                    /** @var smsServices $smsController */
-                    $this->sendSmsCancel($smsController, $BookResult);
+                    $_POST['idDetailCancel'] = $id;
+                    if ($result) {
+                        $this->insertNationalCodeCancel($NationalCodes, $_POST, $apiCancel);
+                        //sms to site manager
+                        /** @var smsServices $smsController */
+                        $this->sendSmsCancel($smsController, $BookResult);
 
-                    if ((isset($_POST['Type']) && $_POST['Type'] == 'App') || $apiCancel) {
+                        if ((isset($_POST['Type']) && $_POST['Type'] == 'App') || $apiCancel) {
 
-                        if ($apiCancel) {
+                            if ($apiCancel) {
 
-                            $objSms = $smsController->initService('1');
-                            if ($objSms) {
+                                $objSms = $smsController->initService('1');
+                                if ($objSms) {
 
-                                $sms = "کنسلی جدید از طرف " . CLIENT_NAME . "ثبت شد";
-                                $cellArray = array(
-                                    'afraze' => '09057078341'
-                                );
-                                foreach ($cellArray as $cellNumber) {
-                                    $smsArray = array(
-                                        'smsMessage' => $sms,
-                                        'cellNumber' => $cellNumber
+                                    $sms = "کنسلی جدید از طرف " . CLIENT_NAME . "ثبت شد";
+                                    $cellArray = array(
+                                        'afraze' => '09057078341'
                                     );
-                                    $smsController->sendSMS($smsArray);
+                                    foreach ($cellArray as $cellNumber) {
+                                        $smsArray = array(
+                                            'smsMessage' => $sms,
+                                            'cellNumber' => $cellNumber
+                                        );
+                                        $smsController->sendSMS($smsArray);
+                                    }
                                 }
+                                $MessageCancel['Status'] = 'success';
+                                $MessageCancel['Message'] = 'کنسلی شما با موفقیت ثبت شد،برای پیگیری روند به پنل مدیریت خود مراجعه فرمائید';
+
+                                return json_encode($MessageCancel);
                             }
                             $MessageCancel['Status'] = 'success';
-                            $MessageCancel['Message'] = 'کنسلی شما با موفقیت ثبت شد،برای پیگیری روند به پنل مدیریت خود مراجعه فرمائید';
+                            $MessageCancel['Message'] = functions::Xmlinformation('RequestCancellationYourPurchaseScrutiny');
 
                             return json_encode($MessageCancel);
-                        }
-                        $MessageCancel['Status'] = 'success';
-                        $MessageCancel['Message'] = functions::Xmlinformation('RequestCancellationYourPurchaseScrutiny');
-
-                        return json_encode($MessageCancel);
-                    } else {
-                        if (Session::IsLogin()) {
-                            if (!$exitOption) {
-                                echo 'success : ' . functions::Xmlinformation('YourPurchaseCancellationRequestSuccessfullySubmittedPlusDetail');
-                            }
-                            $objSms = $smsController->initService('0');
-                            if ($objSms) {
-                                $sms = " مسافر گرامی  کنسلی شما، به شماره درخواست ";
-                                $sms .= $_POST['RequestNumber'];
-                                $sms .= PHP_EOL;
-                                $sms .= "در سیستم ثبت شد،شما میتوانید از قسمت پروفایل کاربری و یا قسمت پیگیری خرید ،کنسلی خود را پیگیری نمایید  ";
+                        } else {
+                            if (Session::IsLogin()) {
+                                if (!$exitOption) {
+                                    echo 'success : ' . functions::Xmlinformation('YourPurchaseCancellationRequestSuccessfullySubmittedPlusDetail');
+                                }
+                                $objSms = $smsController->initService('0');
+                                if ($objSms) {
+                                    $sms = " مسافر گرامی  کنسلی شما، به شماره درخواست ";
+                                    $sms .= $_POST['RequestNumber'];
+                                    $sms .= PHP_EOL;
+                                    $sms .= "در سیستم ثبت شد،شما میتوانید از قسمت پروفایل کاربری و یا قسمت پیگیری خرید ،کنسلی خود را پیگیری نمایید  ";
 
 
-                                $cellArray = array(
-                                    'manager' => $BookResult['mobile_buyer'],
-                                );
-                                foreach ($cellArray as $cellNumber) {
-                                    $smsArray = array(
-                                        'smsMessage' => $sms,
-                                        'cellNumber' => $cellNumber
+                                    $cellArray = array(
+                                        'manager' => $BookResult['mobile_buyer'],
                                     );
-                                    $smsController->sendSMS($smsArray);
+                                    foreach ($cellArray as $cellNumber) {
+                                        $smsArray = array(
+                                            'smsMessage' => $sms,
+                                            'cellNumber' => $cellNumber
+                                        );
+                                        $smsController->sendSMS($smsArray);
+                                    }
+                                }
+                                if ($exitOption) {
+                                    return;
+                                } else {
+                                    exit();
+                                }
+                            } else {
+                                if ($exitOption) {
+                                    return;
+                                } else {
+                                    echo 'success :  ' . functions::Xmlinformation('RequestCancellationYourPurchaseScrutiny');
+                                    exit();
                                 }
                             }
-                            if ($exitOption) {
-                                return;
-                            } else {
-                                exit();
-                            }
+                        }
+
+                    } else {
+                        if ((isset($_POST['Type']) && $_POST['Type'] == 'App') || $apiCancel) {
+
+                            $MessageCancel['Status'] = 'error';
+                            $MessageCancel['Message'] = 'خطای غیر منتظره لطفا با پشتیبانی تماس بگیرید';
+
+                            return json_encode($MessageCancel);
                         } else {
                             if ($exitOption) {
                                 return;
                             } else {
-                                echo 'success :  ' . functions::Xmlinformation('RequestCancellationYourPurchaseScrutiny');
+                                echo 'error : خطای غیر منتظره لطفا با پشتیبانی تماس بگیرید';
                                 exit();
                             }
                         }
                     }
-
-                } else {
+                }
+                else {
                     if ((isset($_POST['Type']) && $_POST['Type'] == 'App') || $apiCancel) {
-
                         $MessageCancel['Status'] = 'error';
-                        $MessageCancel['Message'] = 'خطای غیر منتظره لطفا با پشتیبانی تماس بگیرید';
+                        $MessageCancel['Message'] = 'تعدادباقی مانده بزرگسال نمیتواند کمتر از تعداد کودک و نوزاد باشد';
 
                         return json_encode($MessageCancel);
                     } else {
                         if ($exitOption) {
                             return;
                         } else {
-                            echo 'error : خطای غیر منتظره لطفا با پشتیبانی تماس بگیرید';
+                            echo 'error : تعدادباقی مانده بزرگسال نمیتواند کمتر از تعداد کودک و نوزاد باشد';
                             exit();
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 if ((isset($_POST['Type']) && $_POST['Type'] == 'App') || $apiCancel) {
                     $MessageCancel['Status'] = 'error';
-                    $MessageCancel['Message'] = 'تعدادباقی مانده بزرگسال نمیتواند کمتر از تعداد کودک و نوزاد باشد';
+                    $MessageCancel['Message'] = 'اطلاعات ارسالی برای کنسلی صحیح نمی باشد،لطفا با پشتیبانی تماس بگیرید';
 
                     return json_encode($MessageCancel);
                 } else {
                     if ($exitOption) {
                         return;
                     } else {
-                        echo 'error : تعدادباقی مانده بزرگسال نمیتواند کمتر از تعداد کودک و نوزاد باشد';
+                        echo 'error : اطلاعات ارسالی برای کنسلی صحیح نمی باشد،لطفا با پشتیبانی تماس بگیرید';
                         exit();
                     }
                 }
             }
-        } else {
-            if ((isset($_POST['Type']) && $_POST['Type'] == 'App') || $apiCancel) {
-                $MessageCancel['Status'] = 'error';
-                $MessageCancel['Message'] = 'اطلاعات ارسالی برای کنسلی صحیح نمی باشد،لطفا با پشتیبانی تماس بگیرید';
-
-                return json_encode($MessageCancel);
-            } else {
-                if ($exitOption) {
-                    return;
-                } else {
-                    echo 'error : اطلاعات ارسالی برای کنسلی صحیح نمی باشد،لطفا با پشتیبانی تماس بگیرید';
-                    exit();
-                }
-            }
-        }
 //        }
 
-    }
+	}
 
-    public function ShowInfoModalTicketCancel($RequestNumber, $ClientId, $IdDetail) {
+	public function ShowInfoModalTicketCancel($RequestNumber, $ClientId, $IdDetail) {
 
-        $sql = "SELECT TCancel.*, " . " book.passenger_name, " . " book.passenger_family, " . " book.passenger_age, " . " book.passenger_national_code, " . " book.passportNumber, " . " book.passenger_birthday_en, " . " book.passenger_birthday, " . " book.factor_number, " . " book.member_id , " . " Cancel.* " . " FROM cancel_ticket_tb AS TCancel " . " LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail " . " LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) " . " WHERE Cancel.RequestNumber='{$RequestNumber}' AND TCancel.IdDetail='{$IdDetail}' " . " GROUP BY TCancel.NationalCode ";
+	    $sql = "SELECT TCancel.*, " . " book.passenger_name, " . " book.passenger_family, " . " book.passenger_age, " . " book.passenger_national_code, " . " book.passportNumber, " . " book.passenger_birthday_en, " . " book.passenger_birthday, " . " book.factor_number, " . " book.member_id , " . " Cancel.* " . " FROM cancel_ticket_tb AS TCancel " . " LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail " . " LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) " . " WHERE Cancel.RequestNumber='{$RequestNumber}' AND TCancel.IdDetail='{$IdDetail}' " . " GROUP BY TCancel.NationalCode ";
 
-        $InfoCancel = $this->admin->ConectDbClient($sql, $ClientId, "SelectAll", "", "", "");
+		$InfoCancel = $this->admin->ConectDbClient($sql, $ClientId, "SelectAll", "", "", "");
 
-        return $InfoCancel;
-    }
+		return $InfoCancel;
+	}
 
-    /*
-     * @param $Param
-     */
+	/*
+	 * @param $Param
+	 */
 
-    public function SendPercentForAgency($Param) {
+	public function SendPercentForAgency($Param) {
 
-        $sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$Param['id']}'AND RequestNumber='{$Param['RequestNumber']}' ";
+		$sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$Param['id']}'AND RequestNumber='{$Param['RequestNumber']}' ";
 
-        $InfoCancel = $this->admin->ConectDbClient($sql, $Param['ClientId'], "Select", "", "", "");
+		$InfoCancel = $this->admin->ConectDbClient($sql, $Param['ClientId'], "Select", "", "", "");
 
 
 
-        if (!empty($InfoCancel)) {
-            $data['PercentIndemnity'] = $Param['PercentIndemnity'];
-            $data['DescriptionAdmin'] = $Param['DescriptionAdmin'];
-            $data['Status'] = 'SetIndemnity';
-            $data['DateSetIndemnityInt'] = time();
+		if (!empty($InfoCancel)) {
+			$data['PercentIndemnity'] = $Param['PercentIndemnity'];
+			$data['DescriptionAdmin'] = $Param['DescriptionAdmin'];
+			$data['Status'] = 'SetIndemnity';
+			$data['DateSetIndemnityInt'] = time();
 
-            $Condition = "id={$Param['id']} AND RequestNumber='{$Param['RequestNumber']}'";
+			$Condition = "id={$Param['id']} AND RequestNumber='{$Param['RequestNumber']}'";
 
-            $result = $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
+			$result = $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
 
-            if ($result) {
+			if ($result) {
 
                 $smsController = Load::controller('smsServices');
                 $objSms = $smsController->initService('1');
@@ -507,29 +508,29 @@ class listCancel extends clientAuth {
                     }
                 }
 
-                return 'success : درصد تعیین شده با موفقیت ثبت شد';
-            } else {
-                return 'error : خطا در ثبت درصد ،لطفا مجددا تلاش نمائید';
-            }
-        } else {
-            return 'error : در خواست  نا معتبر است';
-        }
-    }
+				return 'success : درصد تعیین شده با موفقیت ثبت شد';
+			} else {
+				return 'error : خطا در ثبت درصد ،لطفا مجددا تلاش نمائید';
+			}
+		} else {
+			return 'error : در خواست  نا معتبر است';
+		}
+	}
 
-    /*
-     * @param $Param
-     */
+	/*
+	 * @param $Param
+	 */
 
-    public function SendPriceForCalculate($Param) {
+	public function SendPriceForCalculate($Param) {
         $Param['PriceIndemnity'] = str_replace(',', '', $Param['PriceIndemnity']);
 
-        /** @var smsServices $smsController */
-        $smsController = Load::controller('smsServices');
+		/** @var smsServices $smsController */
+		$smsController = Load::controller('smsServices');
         Load::autoload('Model');
         $Model = new Model();
-        $sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$Param['id']}'AND RequestNumber='{$Param['RequestNumber']}' ";
-        $InfoCancel = $this->admin->ConectDbClient($sql, $Param['ClientId'], "Select", "", "", "");
-        $typeFightCancel = ($InfoCancel['TypeCancel'] == 'flight' || $InfoCancel['TypeCancel'] == '');
+		$sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$Param['id']}'AND RequestNumber='{$Param['RequestNumber']}' ";
+		$InfoCancel = $this->admin->ConectDbClient($sql, $Param['ClientId'], "Select", "", "", "");
+		$typeFightCancel = ($InfoCancel['TypeCancel'] == 'flight' || $InfoCancel['TypeCancel'] == '');
 
 
         if (!empty($InfoCancel)) {
@@ -577,26 +578,26 @@ class listCancel extends clientAuth {
 //                $data['PriceIndemnity'] = $busRefundCheck['data']['totalRefundableAmount'];
             }
 
-            $data['Status'] = 'ConfirmCancel';
-            $data['DateConfirmCancelInt'] = time();
+			$data['Status'] = 'ConfirmCancel';
+			$data['DateConfirmCancelInt'] = time();
 
-            $Condition = "id={$Param['id']} AND RequestNumber='{$Param['RequestNumber']}'";
+			$Condition = "id={$Param['id']} AND RequestNumber='{$Param['RequestNumber']}'";
 
-            $result = $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
+			$result = $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
 
 
 
-            if (!empty($result)) {
-                $InfoBook = $d = [];
-                $titleType = '';
-                if ($typeFightCancel) {
-                    list($InfoBook, $d) = $this->getInfoFlightForCancel($Param);
-                }
+			if (!empty($result)) {
+				$InfoBook = $d = [];
+				$titleType = '';
+				if ($typeFightCancel) {
+					list($InfoBook, $d) = $this->getInfoFlightForCancel($Param);
+				}
                 elseif ($InfoCancel['TypeCancel'] == 'train') {
-                    $InfoBook['factor_number'] = $InfoCancel['FactorNumber'];
-                    $d['Price'] = '0';
-                    $titleType = 'قطار';
-                }
+					$InfoBook['factor_number'] = $InfoCancel['FactorNumber'];
+					$d['Price'] = '0';
+					$titleType = 'قطار';
+				}
                 elseif ($InfoCancel['TypeCancel'] == 'bus') {
                     $d['Price']=$Param['PriceIndemnity'];
                     if($reserveInfo['SourceCode'] == 'reservation_bus' ){
@@ -613,17 +614,17 @@ class listCancel extends clientAuth {
                     $InfoBook['factor_number'] = $InfoCancel['FactorNumber'];
                 }
 
-                $dataCancelTransaction['Comment'] = 'بند برگشت استرداد بلیط ' . $Param['RequestNumber'] . '' . $titleType;
-                $dataCancelTransaction['Status'] = '1';
-                $dataCancelTransaction['Reason'] = 'indemnity_cancel';
-                $dataCancelTransaction['FactorNumber'] = $InfoBook['factor_number'];
-                $dataCancelTransaction['price'] = $d['Price'];
-                $dataCancelTransaction['PaymentStatus'] = 'success';
-                $dataCancelTransaction['CreationDateInt'] = time();
-                $dataCancelTransaction['PriceDate'] = date("Y-m-d H:i:s");
+				$dataCancelTransaction['Comment'] = 'بند برگشت استرداد بلیط ' . $Param['RequestNumber'] . '' . $titleType;
+				$dataCancelTransaction['Status'] = '1';
+				$dataCancelTransaction['Reason'] = 'indemnity_cancel';
+				$dataCancelTransaction['FactorNumber'] = $InfoBook['factor_number'];
+				$dataCancelTransaction['price'] = $d['Price'];
+				$dataCancelTransaction['PaymentStatus'] = 'success';
+				$dataCancelTransaction['CreationDateInt'] = time();
+				$dataCancelTransaction['PriceDate'] = date("Y-m-d H:i:s");
 
 
-                $insert_transaction = $this->admin->ConectDbClient('', $Param['ClientId'], "Insert", $dataCancelTransaction, "transaction_tb", "");
+				$insert_transaction = $this->admin->ConectDbClient('', $Param['ClientId'], "Insert", $dataCancelTransaction, "transaction_tb", "");
 
                 //for admin panel and transactions table
                 $dataCancelTransaction['clientID'] = $Param['ClientId'];
@@ -663,25 +664,25 @@ class listCancel extends clientAuth {
 
 
 
-                $sql = "SELECT * FROM cancel_ticket_tb WHERE IdDetail='{$Param['id']}'";
-                $InfoCancelNationalCodes = $this->admin->ConectDbClient($sql, $Param['ClientId'], "SelectAll", "", "", "");
+				$sql = "SELECT * FROM cancel_ticket_tb WHERE IdDetail='{$Param['id']}'";
+				$InfoCancelNationalCodes = $this->admin->ConectDbClient($sql, $Param['ClientId'], "SelectAll", "", "", "");
 
                 $PriceIndemnityResult = false;
 
-                foreach ($InfoCancelNationalCodes as $key => $NationalCode) {
-                    $book = [];
-                    if ($typeFightCancel) {
-                        $book['request_cancel'] = 'confirm';
-                        $Condition = "request_number='{$Param['RequestNumber']}' AND passenger_national_code='{$NationalCode['NationalCode']}'";
-                        $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $book, "book_local_tb", $Condition);
-                        $this->ModelBase->setTable('report_tb');
-                    } elseif ($InfoCancel['TypeCancel'] == 'train') {
-                        $book['request_cancel'] = 'confirm';
-                        $Condition = "requestNumber='{$Param['RequestNumber']}' AND passenger_national_code='{$NationalCode['NationalCode']}'";
+				foreach ($InfoCancelNationalCodes as $key => $NationalCode) {
+					$book = [];
+					if ($typeFightCancel) {
+						$book['request_cancel'] = 'confirm';
+						$Condition = "request_number='{$Param['RequestNumber']}' AND passenger_national_code='{$NationalCode['NationalCode']}'";
+						$this->admin->ConectDbClient('', $Param['ClientId'], "Update", $book, "book_local_tb", $Condition);
+						$this->ModelBase->setTable('report_tb');
+					} elseif ($InfoCancel['TypeCancel'] == 'train') {
+						$book['request_cancel'] = 'confirm';
+						$Condition = "requestNumber='{$Param['RequestNumber']}' AND passenger_national_code='{$NationalCode['NationalCode']}'";
 
-                        $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $book, "book_train_tb", $Condition);
-                        $this->ModelBase->setTable('report_train_tb');
-                    }elseif ($InfoCancel['TypeCancel'] == 'bus') {
+						$this->admin->ConectDbClient('', $Param['ClientId'], "Update", $book, "book_train_tb", $Condition);
+						$this->ModelBase->setTable('report_train_tb');
+					}elseif ($InfoCancel['TypeCancel'] == 'bus') {
                         $book['request_cancel'] = 'confirm';
                         $Condition = "order_code='{$Param['RequestNumber']}' AND passenger_national_code='{$NationalCode['NationalCode']}'";
 
@@ -704,9 +705,9 @@ class listCancel extends clientAuth {
                         $this->ModelBase->setTable('report_insurance_tb');
                     }
 
-                    $PriceIndemnityResult = $this->ModelBase->update($book, $Condition);
+					$PriceIndemnityResult = $this->ModelBase->update($book, $Condition);
 
-                }
+				}
 
                 if($PriceIndemnityResult && $InfoCancel['isCreditPayment']=='1' && $typeFightCancel){
 
@@ -725,55 +726,55 @@ class listCancel extends clientAuth {
 
                 }
 
-                //sms to buyer
-                $objSms = $smsController->initService('0', $Param['ClientId']);
-                if ($objSms) {
-                    $Client = functions::infoClient($Param['ClientId']);
+				//sms to buyer
+				$objSms = $smsController->initService('0', $Param['ClientId']);
+				if ($objSms) {
+					$Client = functions::infoClient($Param['ClientId']);
 
-                    //to member
-                    $messageVariables = array('sms_name'             => $InfoBook['member_name'],
-                        'sms_service'          => 'بلیط',
-                        'sms_factor_number'    => $InfoBook['request_number'],
-                        'sms_airline'          => $InfoBook['airline_name'],
-                        'sms_origin'           => $InfoBook['origin_city'],
-                        'sms_destination'      => $InfoBook['desti_city'],
-                        'sms_flight_number'    => $InfoBook['flight_number'],
-                        'sms_flight_date'      => dateTimeSetting::jdate("Y-F-d", functions::ConvertToDateJalaliInt($InfoBook['date_flight'])),
-                        'sms_flight_time'      => $InfoBook['time_flight'],
-                        'sms_flight_indemnity' => $InfoCancel['PercentIndemnity'],
-                        'sms_agency'           => $Client['AgencyName'],
-                        'sms_agency_mobile'    => $Client['Mobile'],
-                        'sms_agency_phone'     => $Client['Phone'],
-                        'sms_agency_email'     => $Client['Email'],
-                        'sms_agency_address'   => $Client['Address'],);
-                    $smsArray = array('smsMessage'      => $smsController->getUsableMessage('cancelConfirmTicket', $messageVariables),
-                        'cellNumber'      => $InfoBook['member_mobile'],
-                        'smsMessageTitle' => 'cancelConfirmTicket',
-                        'memberID'        => (!empty($InfoBook['member_id']) ? $InfoBook['member_id'] : ''),
-                        'receiverName'    => $messageVariables['sms_name'],);
-                    $smsController->sendSMS($smsArray);
+					//to member
+					$messageVariables = array('sms_name'             => $InfoBook['member_name'],
+					                          'sms_service'          => 'بلیط',
+					                          'sms_factor_number'    => $InfoBook['request_number'],
+					                          'sms_airline'          => $InfoBook['airline_name'],
+					                          'sms_origin'           => $InfoBook['origin_city'],
+					                          'sms_destination'      => $InfoBook['desti_city'],
+					                          'sms_flight_number'    => $InfoBook['flight_number'],
+					                          'sms_flight_date'      => dateTimeSetting::jdate("Y-F-d", functions::ConvertToDateJalaliInt($InfoBook['date_flight'])),
+					                          'sms_flight_time'      => $InfoBook['time_flight'],
+					                          'sms_flight_indemnity' => $InfoCancel['PercentIndemnity'],
+					                          'sms_agency'           => $Client['AgencyName'],
+					                          'sms_agency_mobile'    => $Client['Mobile'],
+					                          'sms_agency_phone'     => $Client['Phone'],
+					                          'sms_agency_email'     => $Client['Email'],
+					                          'sms_agency_address'   => $Client['Address'],);
+					$smsArray = array('smsMessage'      => $smsController->getUsableMessage('cancelConfirmTicket', $messageVariables),
+					                  'cellNumber'      => $InfoBook['member_mobile'],
+					                  'smsMessageTitle' => 'cancelConfirmTicket',
+					                  'memberID'        => (!empty($InfoBook['member_id']) ? $InfoBook['member_id'] : ''),
+					                  'receiverName'    => $messageVariables['sms_name'],);
+					$smsController->sendSMS($smsArray);
                     functions::insertLog('5=>','testTimeCancel');
-                    //to first passenger
-                    $messageVariables['sms_name'] = $InfoBook['passenger_name'] . ' ' . $InfoBook['passenger_family'];
-                    $smsArray = array('smsMessage'      => $smsController->getUsableMessage('cancelConfirmTicket', $messageVariables),
-                        'cellNumber'      => $InfoBook['mobile_buyer'],
-                        'smsMessageTitle' => 'cancelConfirmTicket',
-                        'memberID'        => (!empty($InfoBook['member_id']) ? $InfoBook['member_id'] : ''),
-                        'receiverName'    => $messageVariables['sms_name'],);
-                    $smsController->sendSMS($smsArray);
+					//to first passenger
+					$messageVariables['sms_name'] = $InfoBook['passenger_name'] . ' ' . $InfoBook['passenger_family'];
+					$smsArray = array('smsMessage'      => $smsController->getUsableMessage('cancelConfirmTicket', $messageVariables),
+					                  'cellNumber'      => $InfoBook['mobile_buyer'],
+					                  'smsMessageTitle' => 'cancelConfirmTicket',
+					                  'memberID'        => (!empty($InfoBook['member_id']) ? $InfoBook['member_id'] : ''),
+					                  'receiverName'    => $messageVariables['sms_name'],);
+					$smsController->sendSMS($smsArray);
                     functions::insertLog('6=>','testTimeCancel');
-                }
+				}
 
-                return 'success : مبلغ تعیین شده با موفقیت ثبت شد';
-            } else {
-                return 'error : خطا در ثبت مبلغ ،لطفا مجددا تلاش نمائید';
-            }
-        } else {
-            return 'error : در خواست  نا معتبر است';
-        }
-    }
+				return 'success : مبلغ تعیین شده با موفقیت ثبت شد';
+			} else {
+				return 'error : خطا در ثبت مبلغ ،لطفا مجددا تلاش نمائید';
+			}
+		} else {
+			return 'error : در خواست  نا معتبر است';
+		}
+	}
 
-    public function CancelRTRD() {
+	public function CancelRTRD() {
         $date = dateTimeSetting::jdate("Y-m-d", time());
         $date_now_explode = explode('-', $date);
         $date_now_int_start = dateTimeSetting::jmktime(0, 0, 0, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
@@ -790,7 +791,7 @@ class listCancel extends clientAuth {
             }
             $res = $this->ModelBase->select($sql);
 
-            $ListCancelRTRD = [];
+          $ListCancelRTRD = [];
             foreach ($res as $result) {
                 $sql = "SELECT
                             Book.*,
@@ -860,7 +861,7 @@ class listCancel extends clientAuth {
             array_multisort($Cancel['creation_date_int'], SORT_DESC, $ListCancelRTRD);
 
         }else{
-            $Model = Load::library('Model');
+	        $Model = Load::library('Model');
             $sql = "SELECT
                             Book.*,
                             CancelDetail.PercentIndemnity AS PercentIndemnity,
@@ -926,31 +927,32 @@ class listCancel extends clientAuth {
         }
 
 
-        return $ListCancelRTRD;
-    }
+		return $ListCancelRTRD;
+	}
 
-    public function InfoCancelTicket($RequestNumber, $IdCancel, $ClientId) {
+	public function InfoCancelTicket($RequestNumber, $IdCancel, $ClientId) {
 
 
-        $SqlCancel = "SELECT 
+		$SqlCancel = "SELECT 
                             CT.*
                       FROM 
                             cancel_ticket_details_tb  CT
                       WHERE 
                             CT.id='{$IdCancel}'
                       ";
-        $InfoCancel = $this->admin->ConectDbClient($SqlCancel, $ClientId, "Select", "", "", "");
+		$InfoCancel = $this->admin->ConectDbClient($SqlCancel, $ClientId, "Select", "", "", "");
 
-        if ($InfoCancel['TypeCancel'] == 'flight' || $InfoCancel['TypeCancel'] == '') {
-            $Sql = "SELECT 
-                         book.* , Cancel.PercentIndemnity as PercentIndemnity,
+		if ($InfoCancel['TypeCancel'] == 'flight' || $InfoCancel['TypeCancel'] == '') {
+			$Sql = "SELECT 
+                         book.* ,                         
+                         Cancel.PercentIndemnity as PercentIndemnity,
                          Cancel.TypeCancel AS TypeCancel,
-                         PE.id as IdExcelCanceling,
                          PE.amount as AmountExcelCanceling,
                          PE.type_excel as TypeExcelCanceling
-             FROM cancel_ticket_tb AS TCancel 
-                 LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
-                 LEFT JOIN (
+                     FROM 
+                         cancel_ticket_tb AS TCancel 
+                         LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
+                         LEFT JOIN (
                                 SELECT *
                                 FROM pnr_from_excel_tb p1
                                 WHERE p1.id = (
@@ -959,16 +961,18 @@ class listCancel extends clientAuth {
                                     WHERE p2.IdDetail = p1.IdDetail
                                 )
                             ) PE ON (Cancel.id = PE.IdDetail)
-                LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
-            WHERE book.request_number='{$RequestNumber}' AND TCancel.IdDetail='{$IdCancel}' 
-             GROUP BY TCancel.NationalCode";
+                         LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
+                    WHERE
+                        book.request_number='{$RequestNumber}' AND 
+                        TCancel.IdDetail='{$IdCancel}' 
+                     GROUP BY 
+                         TCancel.NationalCode";
 
-             return $this->admin->ConectDbClient($Sql, $ClientId, "SelectAll", "", "", "");
-        }elseif ($InfoCancel['TypeCancel'] == 'bus'){
+			return $this->admin->ConectDbClient($Sql, $ClientId, "SelectAll", "", "", "");
+		}elseif ($InfoCancel['TypeCancel'] == 'bus'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
              Cancel.TypeCancel AS TypeCancel,
-             '' as IdExcelCanceling,
              '' as AmountExcelCanceling,
              '' as TypeExcelCanceling
              FROM cancel_ticket_tb AS TCancel 
@@ -982,7 +986,6 @@ class listCancel extends clientAuth {
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
              Cancel.TypeCancel AS TypeCancel,
-             '' as IdExcelCanceling,
              '' as AmountExcelCanceling,
              '' as TypeExcelCanceling
              FROM cancel_ticket_tb AS TCancel 
@@ -996,7 +999,6 @@ class listCancel extends clientAuth {
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
              Cancel.TypeCancel AS TypeCancel,
-             '' as IdExcelCanceling,
              '' as AmountExcelCanceling,
              '' as TypeExcelCanceling
              FROM cancel_ticket_tb AS TCancel 
@@ -1012,93 +1014,93 @@ class listCancel extends clientAuth {
 
 
         return $InfoCancel;
-    }
+	}
 
 
-    public function setTicketClose($param) {
+	public function setTicketClose($param) {
 
-        $sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$param['id']}' ";
-        $infoCancel = $this->admin->ConectDbClient($sql, $param['clientId'], "Select", "", "", "");
-        if (!empty($infoCancel)) {
+		$sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$param['id']}' ";
+		$infoCancel = $this->admin->ConectDbClient($sql, $param['clientId'], "Select", "", "", "");
+		if (!empty($infoCancel)) {
 
-            $data['DescriptionAdmin'] = $param['descriptionClose'];
-            $data['Status'] = 'close';
-            $data['DateSetIndemnityInt'] = time();
-            $data['DateConfirmCancelInt'] = time();
+			$data['DescriptionAdmin'] = $param['descriptionClose'];
+			$data['Status'] = 'close';
+			$data['DateSetIndemnityInt'] = time();
+			$data['DateConfirmCancelInt'] = time();
 
-            $Condition = "id={$param['id']}";
+			$Condition = "id={$param['id']}";
 
-            $result = $this->admin->ConectDbClient('', $param['clientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
-            if ($result) {
-                return 'success : درخواست شما با موفقیت ثبت شد';
-            } else {
-                return 'error : خطا در ثبت درخواست شما، لطفا مجددا تلاش نمائید';
-            }
+			$result = $this->admin->ConectDbClient('', $param['clientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
+			if ($result) {
+				return 'success : درخواست شما با موفقیت ثبت شد';
+			} else {
+				return 'error : خطا در ثبت درخواست شما، لطفا مجددا تلاش نمائید';
+			}
 
-        } else {
-            return 'error : در خواست  نا معتبر است';
-        }
-    }
+		} else {
+			return 'error : در خواست  نا معتبر است';
+		}
+	}
 
-    #region changePercentIndemnity
-    public function changePercentIndemnity($param) {
+	#region changePercentIndemnity
+	public function changePercentIndemnity($param) {
 
-        $sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$param['id']}' ";
-        $infoCancel = $this->admin->ConectDbClient($sql, $param['clientId'], "Select", "", "", "");
-        if (!empty($infoCancel)) {
+		$sql = " SELECT * FROM cancel_ticket_details_tb WHERE id='{$param['id']}' ";
+		$infoCancel = $this->admin->ConectDbClient($sql, $param['clientId'], "Select", "", "", "");
+		if (!empty($infoCancel)) {
 
-            $data['PercentIndemnity'] = $param['changePercentIndemnity'];
+			$data['PercentIndemnity'] = $param['changePercentIndemnity'];
 
-            $Condition = "id='{$param['id']}'";
+			$Condition = "id='{$param['id']}'";
 
-            $result = $this->admin->ConectDbClient('', $param['clientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
-            if ($result) {
-                return 'success : درخواست شما با موفقیت ثبت شد';
-            } else {
-                return 'error : خطا در ثبت درخواست شما، لطفا مجددا تلاش نمائید';
-            }
+			$result = $this->admin->ConectDbClient('', $param['clientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
+			if ($result) {
+				return 'success : درخواست شما با موفقیت ثبت شد';
+			} else {
+				return 'error : خطا در ثبت درخواست شما، لطفا مجددا تلاش نمائید';
+			}
 
-        } else {
-            return 'error : در خواست  نا معتبر است';
-        }
-    }
-    #endregion
+		} else {
+			return 'error : در خواست  نا معتبر است';
+		}
+	}
+	#endregion
 
-    /**
-     * @param      $params
-     * @param null $apiCancel
-     * @return mixed
-     */
-    protected function getFlightForCancel($params, $apiCancel = null) {
+	/**
+	 * @param      $params
+	 * @param null $apiCancel
+	 * @return mixed
+	 */
+	protected function getFlightForCancel($params, $apiCancel = null) {
 
-        $sql = " SELECT *,  "
+		$sql = " SELECT *,  "
             . " (Select COUNT(passenger_age) FROM book_local_tb WHERE passenger_age='Adt' AND request_number='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Adt_passenger ,"
             . " (Select COUNT(passenger_age) FROM book_local_tb WHERE passenger_age='Chd' AND request_number='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Chd_passenger ,"
             . " (Select COUNT(passenger_age) FROM book_local_tb WHERE passenger_age='Inf' AND request_number='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Inf_passenger "
             . " FROM book_local_tb WHERE request_number='{$params['RequestNumber']}' AND successfull='book' AND request_cancel <> 'confirm' ";
 
-        if ($apiCancel) {
-            return $this->admin->ConectDbClient($sql, $params['clientId'], 'Select', '', '', '');
-        }
+		if ($apiCancel) {
+			return $this->admin->ConectDbClient($sql, $params['clientId'], 'Select', '', '', '');
+		}
 
-        return $this->Model->load($sql);
-    }
+		return $this->Model->load($sql);
+	}
 
-    /**
-     * @param      $params
-     * @return mixed
-     * @internal param null $apiCancel
-     */
-    protected function getTrainForCancel($params) {
+	/**
+	 * @param      $params
+	 * @return mixed
+	 * @internal param null $apiCancel
+	 */
+	protected function getTrainForCancel($params) {
 
-        $sql = " SELECT *,  " . " (Select COUNT(passenger_age) FROM book_train_tb WHERE passenger_age='Adt' AND requestNumber='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Adt_passenger ," . " (Select COUNT(passenger_age) FROM book_train_tb WHERE passenger_age='Chd' AND requestNumber='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Chd_passenger ," . " (Select COUNT(passenger_age) FROM book_train_tb WHERE passenger_age='Inf' AND requestNumber='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Inf_passenger " . " FROM book_train_tb WHERE requestNumber='{$params['RequestNumber']}' AND successfull='book' AND request_cancel <> 'confirm' ";
+		$sql = " SELECT *,  " . " (Select COUNT(passenger_age) FROM book_train_tb WHERE passenger_age='Adt' AND requestNumber='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Adt_passenger ," . " (Select COUNT(passenger_age) FROM book_train_tb WHERE passenger_age='Chd' AND requestNumber='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Chd_passenger ," . " (Select COUNT(passenger_age) FROM book_train_tb WHERE passenger_age='Inf' AND requestNumber='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Inf_passenger " . " FROM book_train_tb WHERE requestNumber='{$params['RequestNumber']}' AND successfull='book' AND request_cancel <> 'confirm' ";
 
 
-        return $this->Model->load($sql);
-    }
+		return $this->Model->load($sql);
+	}
 
     protected function getBusForCancel($params) {
-        $sql = " SELECT *,  " . "
+	    $sql = " SELECT *,  " . "
 	1 AS Adt_passenger,
 	0 AS Chd_passenger,
 	0 AS Inf_passenger " . " FROM book_bus_tb WHERE order_code='{$params['RequestNumber']}' AND status='book' AND request_cancel <> 'confirm' ";
@@ -1108,7 +1110,7 @@ class listCancel extends clientAuth {
     }
     protected function getHotelForCancel($params) {
 
-        $sql = " SELECT *,  " . "
+	    $sql = " SELECT *,  " . "
 	1 AS Adt_passenger,
 	0 AS Chd_passenger,
 	0 AS Inf_passenger " . " FROM book_hotel_local_tb WHERE factor_number='{$params['RequestNumber']}' AND status='BookedSuccessfully' AND request_cancel <> 'confirm' ";
@@ -1117,7 +1119,7 @@ class listCancel extends clientAuth {
     }
     protected function getInsuranceForCancel($params) {
 
-        $sql = " SELECT *,  "
+	    $sql = " SELECT *,  "
             . " (Select COUNT(passenger_age) FROM book_insurance_tb WHERE passenger_age='Adt' AND factor_number='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Adt_passenger ,"
             . " (Select COUNT(passenger_age) FROM book_insurance_tb WHERE passenger_age='Chd' AND factor_number='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Chd_passenger ,"
             . " (Select COUNT(passenger_age) FROM book_insurance_tb WHERE passenger_age='Inf' AND factor_number='{$params['RequestNumber']}' AND request_cancel <> 'confirm') AS Inf_passenger "
@@ -1130,195 +1132,195 @@ class listCancel extends clientAuth {
 
 
 
-    /**
-     * @param $NationalCodesWithAge
-     * @return array[]
-     * @internal param array $Type
-     * @internal param array $Age
-     * @internal param array $NationalCodes
-     */
-    public function getNationalCodesRequest($NationalCodesWithAge) {
-        $Type = array();
-        $Age = array();
-        $NationalCodes = array();
-        foreach ($NationalCodesWithAge as $i => $rec) {
+	/**
+	 * @param $NationalCodesWithAge
+	 * @return array[]
+	 * @internal param array $Type
+	 * @internal param array $Age
+	 * @internal param array $NationalCodes
+	 */
+	public function getNationalCodesRequest($NationalCodesWithAge) {
+		$Type = array();
+		$Age = array();
+		$NationalCodes = array();
+		foreach ($NationalCodesWithAge as $i => $rec) {
+             
+			$Type[] = explode('-', $rec);
+			$Age[] = $Type[$i][1];
+			$NationalCodes[] = $Type[$i][0];
+		}
 
-            $Type[] = explode('-', $rec);
-            $Age[] = $Type[$i][1];
-            $NationalCodes[] = $Type[$i][0];
-        }
+		return array($Age, $NationalCodes);
+	}
 
-        return array($Age, $NationalCodes);
-    }
+	/**
+	 * @param      $params
+	 * @param bool $apiCancel
+	 * @return array
+	 */
+	public function insertInfoCancel($params, $apiCancel = false) {
 
-    /**
-     * @param      $params
-     * @param bool $apiCancel
-     * @return array
-     */
-    public function insertInfoCancel($params, $apiCancel = false) {
-
-        $data['PercentIndemnity'] =0;
-        $data['PriceIndemnity'] =0;
-        $data['DateSetCancelInt'] = 0;
-        $data['DateRequestCancelClientInt'] = 0;
-        $data['DateSetIndemnityInt'] = 0;
-        $data['DateSetFailedIndemnityInt'] = 0;
-        $data['DateConfirmClientInt'] = 0;
-        $data['DateConfirmCancelInt'] = 0;
-        $data['MemberId'] = $params['MemberId'];
-        $data['TypeCancel'] = $params['typeService'];
-        $data['backCredit'] = $params['backCredit'];
-        $data['FactorNumber'] = $params['FactorNumber'];
-        $data['RequestNumber'] = $params['RequestNumber'];
-        $data['ReasonMember'] = $params['Reasons'];
-        $data['AccountOwner'] = isset($params['AccountOwner']) ? $params['AccountOwner'] : '';
-        $data['CardNumber'] = isset($params['CardNumber']) ? $params['CardNumber'] : '';
-        $data['NameBank'] = isset($params['NameBank']) ? $params['NameBank'] : '';
-        $data['PercentNoMatter'] = isset($params['PercentNoMatter']) ? $params['PercentNoMatter'] : '';
+		$data['PercentIndemnity'] =0;
+		$data['PriceIndemnity'] =0;
+		$data['DateSetCancelInt'] = 0;
+		$data['DateRequestCancelClientInt'] = 0;
+		$data['DateSetIndemnityInt'] = 0;
+		$data['DateSetFailedIndemnityInt'] = 0;
+		$data['DateConfirmClientInt'] = 0;
+		$data['DateConfirmCancelInt'] = 0;
+		$data['MemberId'] = $params['MemberId'];
+		$data['TypeCancel'] = $params['typeService'];
+		$data['backCredit'] = $params['backCredit'];
+		$data['FactorNumber'] = $params['FactorNumber'];
+		$data['RequestNumber'] = $params['RequestNumber'];
+		$data['ReasonMember'] = $params['Reasons'];
+		$data['AccountOwner'] = isset($params['AccountOwner']) ? $params['AccountOwner'] : '';
+		$data['CardNumber'] = isset($params['CardNumber']) ? $params['CardNumber'] : '';
+		$data['NameBank'] = isset($params['NameBank']) ? $params['NameBank'] : '';
+		$data['PercentNoMatter'] = isset($params['PercentNoMatter']) ? $params['PercentNoMatter'] : '';
 
 //        var_dump($data);
 //        die;
-        if ($apiCancel || ((isset($params['admin']) && $params['admin'] == 'yes' && $params['flightType'] == 'system'))) {
-            if ($params['flightType'] == 'system') {
-                $CalculateIndemnity = $this->getIndemnityCancel($params['RequestNumber']);
-                if (is_numeric($CalculateIndemnity)) {
-                    $data['PercentIndemnity'] = $CalculateIndemnity;
-                    $data['Status'] = 'ConfirmClient';
-                    $data['DateConfirmClientInt'] = time();
-                }else{
+		if ($apiCancel || ((isset($params['admin']) && $params['admin'] == 'yes' && $params['flightType'] == 'system'))) {
+			if ($params['flightType'] == 'system') {
+				$CalculateIndemnity = $this->getIndemnityCancel($params['RequestNumber']);
+				if (is_numeric($CalculateIndemnity)) {
+					$data['PercentIndemnity'] = $CalculateIndemnity;
+					$data['Status'] = 'ConfirmClient';
+					$data['DateConfirmClientInt'] = time();
+				}else{
                     $data['Status'] = 'RequestClient';
                 }
-            } else {
-                $data['Status'] = 'RequestClient';
-            }
-            $data['DateRequestCancelClientInt'] = time();
-        } else {
-            $data['Status'] = 'RequestMember';
-        }
+			} else {
+				$data['Status'] = 'RequestClient';
+			}
+			$data['DateRequestCancelClientInt'] = time();
+		} else {
+			$data['Status'] = 'RequestMember';
+		}
 
-        $data['DateRequestMemberInt'] = time();
+		$data['DateRequestMemberInt'] = time();
 
-        if (!$apiCancel) {
+		if (!$apiCancel) {
 
 
-            $this->Model->setTable('cancel_ticket_details_tb');
-            $result = $this->Model->insertLocal($data);
+			$this->Model->setTable('cancel_ticket_details_tb');
+			$result = $this->Model->insertLocal($data);
 
-            $id = $this->Model->getLastId();
+			$id = $this->Model->getLastId();
 
-        } else {
+		} else {
 
-            $result = $this->admin->ConectDbClient('', $params['clientId'], "Insert", $data, "cancel_ticket_details_tb", "");
-            $sql = "SELECT * FROM cancel_ticket_details_tb ORDER BY id DESC LIMIT 1";
-            $lastId = $this->admin->ConectDbClient($sql, $params['clientId'], 'Select', '', '', '');
-            $id = $lastId['id'];
-        }
+			$result = $this->admin->ConectDbClient('', $params['clientId'], "Insert", $data, "cancel_ticket_details_tb", "");
+			$sql = "SELECT * FROM cancel_ticket_details_tb ORDER BY id DESC LIMIT 1";
+			$lastId = $this->admin->ConectDbClient($sql, $params['clientId'], 'Select', '', '', '');
+			$id = $lastId['id'];
+		}
 
-        return array($result, $id);
-    }
+		return array($result, $id);
+	}
 
-    /**
-     * @param array $NationalCodes
-     * @param array $params
-     * @param       $apiCancel
-     * @return bool|mixed
-     */
-    public function insertNationalCodeCancel(array $NationalCodes, array $params, $apiCancel) {
-        $d = array();
-        $result = false;
-        foreach ($NationalCodes as $code) {
+	/**
+	 * @param array $NationalCodes
+	 * @param array $params
+	 * @param       $apiCancel
+	 * @return bool|mixed
+	 */
+	public function insertNationalCodeCancel(array $NationalCodes, array $params, $apiCancel) {
+		$d = array();
+		$result = false;
+		foreach ($NationalCodes as $code) {
 
-            $d['IdDetail'] = $params['idDetailCancel'];
-            $d['NationalCode'] = $code;
+			$d['IdDetail'] = $params['idDetailCancel'];
+			$d['NationalCode'] = $code;
 
-            if (!$apiCancel) {
-                $this->Model->setTable('cancel_ticket_tb');
-                $result = $this->Model->insertLocal($d);
-            } else {
-                $result = $this->admin->ConectDbClient('', $params['clientId'], "Insert", $d, "cancel_ticket_tb", "");
-            }
+			if (!$apiCancel) {
+				$this->Model->setTable('cancel_ticket_tb');
+				$result = $this->Model->insertLocal($d);
+			} else {
+				$result = $this->admin->ConectDbClient('', $params['clientId'], "Insert", $d, "cancel_ticket_tb", "");
+			}
 
-        }
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 
-    /**
-     * @param array $Age
-     * @return int[]
-     */
-    public function getCountAge(array $Age) {
-        $adt = 0;
-        $chd = 0;
-        $inf = 0;
-        foreach ($Age as $a) {
-            switch ($a) {
-                case 'Adt':
-                    $adt++;
-                    break;
-                case 'Chd':
-                    $chd++;
-                    break;
-                case 'Inf':
-                    $inf++;
-                    break;
-            }
-        }
+	/**
+	 * @param array $Age
+	 * @return int[]
+	 */
+	public function getCountAge(array $Age) {
+		$adt = 0;
+		$chd = 0;
+		$inf = 0;
+		foreach ($Age as $a) {
+			switch ($a) {
+			case 'Adt':
+				$adt++;
+				break;
+			case 'Chd':
+				$chd++;
+				break;
+			case 'Inf':
+				$inf++;
+				break;
+			}
+		}
 
-        return array($adt, $chd, $inf);
-    }
+		return array($adt, $chd, $inf);
+	}
 
-    /**
-     * @param smsServices $smsController
-     * @param array       $BookResult
-     */
-    protected function sendSmsCancel($smsController, $BookResult) {
-        $objSms = $smsController->initService('0');
-        if ($objSms) {
-            $messageVariables = array('sms_name'          => $BookResult['member_name'], 'sms_service' => 'بلیط',
-                'sms_factor_number' => $BookResult['request_number'],
-                'sms_airline'       => $BookResult['airline_name'],
-                'sms_origin'        => $BookResult['origin_city'],
-                'sms_destination'   => $BookResult['desti_city'],
-                'sms_flight_number' => $BookResult['flight_number'],
-                'sms_flight_date'   => functions::DateJalali($BookResult['date_flight']),
-                'sms_flight_time'   => $BookResult['time_flight'], 'sms_agency' => CLIENT_NAME,
-                'sms_agency_mobile' => CLIENT_MOBILE, 'sms_agency_phone' => CLIENT_PHONE,
-                'sms_agency_email'  => CLIENT_EMAIL, 'sms_agency_address' => CLIENT_ADDRESS,);
-            $smsArray = array('smsMessage'   => $smsController->getUsableMessage('cancelRequestTicketToManager', $messageVariables),
-                'cellNumber'   => CLIENT_MOBILE, 'smsMessageTitle' => 'cancelRequestTicketToManager',
-                'memberID'     => (!empty($BookResult['member_id']) ? $BookResult['member_id'] : ''),
-                'receiverName' => $messageVariables['sms_name'],);
-            $smsController->sendSMS($smsArray);
-        }
-    }
+	/**
+	 * @param smsServices $smsController
+	 * @param array       $BookResult
+	 */
+	protected function sendSmsCancel($smsController, $BookResult) {
+		$objSms = $smsController->initService('0');
+		if ($objSms) {
+			$messageVariables = array('sms_name'          => $BookResult['member_name'], 'sms_service' => 'بلیط',
+			                          'sms_factor_number' => $BookResult['request_number'],
+			                          'sms_airline'       => $BookResult['airline_name'],
+			                          'sms_origin'        => $BookResult['origin_city'],
+			                          'sms_destination'   => $BookResult['desti_city'],
+			                          'sms_flight_number' => $BookResult['flight_number'],
+			                          'sms_flight_date'   => functions::DateJalali($BookResult['date_flight']),
+			                          'sms_flight_time'   => $BookResult['time_flight'], 'sms_agency' => CLIENT_NAME,
+			                          'sms_agency_mobile' => CLIENT_MOBILE, 'sms_agency_phone' => CLIENT_PHONE,
+			                          'sms_agency_email'  => CLIENT_EMAIL, 'sms_agency_address' => CLIENT_ADDRESS,);
+			$smsArray = array('smsMessage'   => $smsController->getUsableMessage('cancelRequestTicketToManager', $messageVariables),
+			                  'cellNumber'   => CLIENT_MOBILE, 'smsMessageTitle' => 'cancelRequestTicketToManager',
+			                  'memberID'     => (!empty($BookResult['member_id']) ? $BookResult['member_id'] : ''),
+			                  'receiverName' => $messageVariables['sms_name'],);
+			$smsController->sendSMS($smsArray);
+		}
+	}
 
-    /**
-     * @param $params
-     * @return mixed
-     */
-    protected function getIndemnityCancel($params) {
-        /** @var cancellationFeeSetting $CancellationFeeSettingController */
-        $CancellationFeeSettingController = Load::controller('cancellationFeeSetting');
+	/**
+	 * @param $params
+	 * @return mixed
+	 */
+	protected function getIndemnityCancel($params) {
+		/** @var cancellationFeeSetting $CancellationFeeSettingController */
+		$CancellationFeeSettingController = Load::controller('cancellationFeeSetting');
 
-        return $CancellationFeeSettingController->CalculateIndemnity($params);
-    }
+		return $CancellationFeeSettingController->CalculateIndemnity($params);
+	}
 
-    /**
-     * @param $params
-     * @param $apiCancel
-     * @return mixed
-     */
-    private function getInfoCancelWithTypeService($params, $apiCancel) {
-        $BookResult = array();
-        if ($params['typeService'] == 'flight') {
-            $BookResult = $this->getFlightForCancel($params, $apiCancel);
-        }
+	/**
+	 * @param $params
+	 * @param $apiCancel
+	 * @return mixed
+	 */
+	private function getInfoCancelWithTypeService($params, $apiCancel) {
+		$BookResult = array();
+		if ($params['typeService'] == 'flight') {
+			$BookResult = $this->getFlightForCancel($params, $apiCancel);
+		}
 
-        if ($params['typeService'] == 'train') {
-            $BookResult = $this->getTrainForCancel($params);
-        }
+		if ($params['typeService'] == 'train') {
+			$BookResult = $this->getTrainForCancel($params);
+		}
 
         if ($params['typeService'] == 'bus') {
             $BookResult = $this->getBusForCancel($params);
@@ -1330,32 +1332,32 @@ class listCancel extends clientAuth {
             $BookResult = $this->getInsuranceForCancel($params);
         }
 
-        return $BookResult;
-    }
+		return $BookResult;
+	}
 
-    public function InfoCancel($id) {
-        $sql = "SELECT * FROM cancel_ticket_details_tb WHERE id='{$id}'";
+	public function InfoCancel($id) {
+		$sql = "SELECT * FROM cancel_ticket_details_tb WHERE id='{$id}'";
 
-        return $this->Model->load($sql);
-    }
+		return $this->Model->load($sql);
+	}
 
-    /**
-     * @param $Param
-     * @return array
-     * @internal param $d
-     */
-    private function getInfoFlightForCancel($Param) {
-        $SqlBook = " SELECT * FROM book_local_tb WHERE request_number='{$Param['RequestNumber']}'";
-        $InfoBook = $this->admin->ConectDbClient($SqlBook, $Param['ClientId'], "Select", "", "", "");
+	/**
+	 * @param $Param
+	 * @return array
+	 * @internal param $d
+	 */
+	private function getInfoFlightForCancel($Param) {
+		$SqlBook = " SELECT * FROM book_local_tb WHERE request_number='{$Param['RequestNumber']}'";
+		$InfoBook = $this->admin->ConectDbClient($SqlBook, $Param['ClientId'], "Select", "", "", "");
 
-        if ($InfoBook['pid_private'] == '0') {
-            $d['Price'] = $Param['PriceIndemnity'];
-        } else {
-            $d['Price'] = '0';
-        }
+		if ($InfoBook['pid_private'] == '0') {
+			$d['Price'] = $Param['PriceIndemnity'];
+		} else {
+			$d['Price'] = '0';
+		}
 
-        return array($InfoBook, $d);
-    }
+		return array($InfoBook, $d);
+	}
 
 
     public function setCancelNote($params) {
@@ -1509,7 +1511,7 @@ class listCancel extends clientAuth {
         //حالا باید این آرایه را بفرستیم به دیتابیس تا update رخ بده
         $this->InsertCancelingFromExcel();
         // خروجی موفق
-        return functions::JsonSuccess(null, 'اطلاعات با موفقیت بارگذاری شد');
+       return functions::JsonSuccess(null, 'اطلاعات با موفقیت بارگذاری شد');
     }
 
     public function InsertCancelingFromExcel()
@@ -1533,14 +1535,14 @@ class listCancel extends clientAuth {
             // بررسی شرط: PNR در اکسل وجود دارد
             if ($pnr && $IdDetail && $clientId && isset($this->pnrListExelCanceling[$pnr])) {
                 // مقدار از اکسل
-                $amount = $this->pnrListExelCanceling[$pnr];
-                $data['pnr'] = $pnr;
-                $data['amount'] = $amount;
-                $data['IdDetail'] = $IdDetail;
-                $data['type_excel'] = $this->file_type_excel;
-                $data['create_at'] = $create_at;
-                $result_pnr_from_excel = $this->admin->ConectDbClient('', $clientId, "Insert", $data, "pnr_from_excel_tb", '');
-                //echo $clientId.'***';
+                    $amount = $this->pnrListExelCanceling[$pnr];
+                    $data['pnr'] = $pnr;
+                    $data['amount'] = $amount;
+                    $data['IdDetail'] = $IdDetail;
+                    $data['type_excel'] = $this->file_type_excel;
+                    $data['create_at'] = $create_at;
+                    $result_pnr_from_excel = $this->admin->ConectDbClient('', $clientId, "Insert", $data, "pnr_from_excel_tb", '');
+                    //echo $clientId.'***';
             }
         }
 
