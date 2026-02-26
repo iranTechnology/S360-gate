@@ -35,8 +35,8 @@
                                     <label>نوع فایل</label>
                                     <select name="file_type" class="form-control" required>
                                         <option value="">انتخاب کنید</option>
-                                        <option value="provider21_excel">استردادی - پرووایدر 21</option>
-                                        <option value="provider43_excel">جریمه ای - پرووایدر 43</option>
+                                        <option value="provider21">استردادی - پرووایدر 21</option>
+                                        <option value="provider43">جریمه ای - پرووایدر 43</option>
                                     </select>
                                 </div>
                             </div>
