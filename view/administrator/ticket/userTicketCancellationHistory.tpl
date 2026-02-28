@@ -114,8 +114,8 @@
                             <th>تاریخ <br> درخواست کاربر</th>
                             <th>تاریخ ارسال <br> به کارگزار</th>
                             <th>تاریخ تایید/رد درخواست</th>
-                            <th>درصد <br> جریمه</th>
-{*                            <th>مبلغ <br> استرداد</th>*}
+                            {*                            <th>درصد <br> جریمه</th>*}
+                            <th>مبلغ <br> استرداد</th>
                             <th style="width: 227px; text-align: center">عملیات</th>
                             <th>وضعیت <br> درخواست</th>
 
@@ -243,35 +243,35 @@
                                 {*                                        -----*}
                                 {*                                    {/if}*}
                                 {*                                </td>*}
+                                {*                                <td>*}
+
+                                {*                                    {if $item.ReasonMember eq 'CancelByAirline' || $item.ReasonMember eq 'DelayTwoHours'}*}
+                                {*                                        <span class="yn">---</span>*}
+                                {*                                    {else}*}
+                                {*                                        <span class="yn">{$item.PercentIndemnity}%</span>*}
+                                {*                                    {/if}*}
+
+                                {*                                    {if $item.PercentIndemnity neq  0 }*}
+                                {*                                        <span class="yn">{$item.PercentIndemnity}%</span>*}
+                                {*                                    {else}*}
+                                {*                                        <span class="yn">---</span>*}
+
+                                {*                                    {/if}*}
+
+                                {*                                </td>*}
                                 <td>
-
-                                    {*                                    {if $item.ReasonMember eq 'CancelByAirline' || $item.ReasonMember eq 'DelayTwoHours'}*}
-                                    {*                                        <span class="yn">---</span>*}
-                                    {*                                    {else}*}
-                                    {*                                        <span class="yn">{$item.PercentIndemnity}%</span>*}
-                                    {*                                    {/if}*}
-
-                                    {if $item.PercentIndemnity neq  0 }
-                                        <span class="yn">{$item.PercentIndemnity}%</span>
-                                    {else}
-                                        <span class="yn">---</span>
-
-                                    {/if}
-
-                                </td>
-{*                                <td>*}
 
                                     {*                                    {if $item.PercentIndemnity neq 0}*}
                                     {*                                        <span class="yn">{{$objCancelUser->totalPriceFlight($item.RequestNumber , $item.id , {$smarty.const.CLIENT_ID})}|number_format} &nbsp;ریال</span>*}
                                     {*                                    {else}*}
                                     {*                                        -----*}
                                     {*                                    {/if}*}
-{*                                    {if $item.PriceIndemnity neq 0}*}
-{*                                        <span class="yn">{$item.PriceIndemnity|number_format} &nbsp;ریال</span>*}
-{*                                    {else}*}
+                                    {if $item.PriceIndemnity neq 0}
+                                        <span class="yn">{$item.PriceIndemnity|number_format} &nbsp;ریال</span>
+                                    {else}
                                         -----
-{*                                    {/if}*}
-{*                                </td>*}
+                                    {/if}
+                                </td>
                                 {if ($item.pid_private eq '1' and $item.TypeCancel eq 'flight') || ($item.type_application eq 'reservation' and $item.TypeCancel eq 'hotel')}
 
                                     <td>
