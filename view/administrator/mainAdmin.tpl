@@ -382,12 +382,14 @@
 
                     {foreach $listCancelAdmin as $item}
                         {if $item.note_admin|trim == ""}
+{*                            <a href=FRONT_CURRENT_PANEL>*}
                             <li class="dropdown">
                                 <div class="alertBlink profile-pic">
                                     <i class="fa fa-exclamation-triangle"></i>
                                     یادداشت بگذارید
                                 </div>
                             </li>
+{*                            </a>*}
                             {break}
                         {/if}
                     {/foreach}

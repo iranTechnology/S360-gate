@@ -7974,6 +7974,7 @@ class functions {
             "train"         => self::Xmlinformation( 'Train' ),
             "entertainment" => self::Xmlinformation( 'Entertainment' ),
             "package"       => self::Xmlinformation( 'Package' ),
+            "cip"       => self::Xmlinformation( 'Cip' )
         );
         foreach ( $ArrayInstead AS $key => $value ) {
             if ( $key == $String ) {
