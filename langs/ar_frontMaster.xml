@@ -14,6 +14,7 @@
   <Nameenglish>الاسم (انجليزي)</Nameenglish>
   <Familypersion>اسم العائلة (الحروف فقط باللغة العربیة)</Familypersion>
   <Familyenglish>اسم العائلة (انجليزي)</Familyenglish>
+  <PleaseselectthedesiredpassengerCancel>يرجى تحديد الراكب الذي ترغب في إلغاء عملية الشراء الخاصة به.</PleaseselectthedesiredpassengerCancel>
   <Phonenumber>رقم الاتصال</Phonenumber>
   <PhonenumberTraveler>رقم جوال المسافر  </PhonenumberTraveler>
   <Telephonhome>هاتف المنزل</Telephonhome>
@@ -936,6 +937,7 @@
   <SecuritycodeDept>ذهب رمز أمان الرحلة </SecuritycodeDept>
   <SecuritycodeReturn>تم إرجاع رمز أمان الرحلة</SecuritycodeReturn>
   <Visa>التأشيرة</Visa>
+  <Cip>إجراءات المطار</Cip>
   <Bugpasswordrecoveryprocess>خطأ في عملية استعادة كلمة المرور</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>يرجى المحاولة مرة أخرى لاستعادة كلمة المرور الخاصة بك</Requestnewpasswordpassword>
   <expireddeadlinerequest>عذرا ، لقد انتهت صلاحية طلبك</expireddeadlinerequest>

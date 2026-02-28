@@ -11,7 +11,7 @@
   <EnterHotelName>Enter the name hotel</EnterHotelName>
   <FlightRepetition>Eliminate duplicate flights</FlightRepetition>
   <FlightRepetitionCount>Duplicate flight added to search results</FlightRepetitionCount>
-
+  <PleaseselectthedesiredpassengerCancel>Please select the passenger whose purchase you want to cancel.</PleaseselectthedesiredpassengerCancel>
   <Namepersion>Name (Farsi only)</Namepersion>
   <Nameenglish>Name</Nameenglish>
   <Familypersion>Last name (Farsi only)</Familypersion>
@@ -939,6 +939,7 @@
   <SecuritycodeDept>Flight security code gone</SecuritycodeDept>
   <SecuritycodeReturn>Flight security code returned</SecuritycodeReturn>
   <Visa>Visa</Visa>
+  <Cip>Cip</Cip>
   <Bugpasswordrecoveryprocess>Bug in the password recovery process</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>To retrieve the password, re-request</Requestnewpasswordpassword>
   <expireddeadlinerequest>Sorry, the deadline for your request has expired</expireddeadlinerequest>

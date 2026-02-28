@@ -518,21 +518,15 @@ function requestCancelFinalBuy(typeApplication, factorNumber) {
 }
 
 
+function inputDisabled(event) {
+    const fields = document.querySelectorAll(".input-disabled-js");
 
-function inputDisabled (event){
-
-  const inputDisabledJsItem = document.querySelectorAll('.input-disabled-js');
-  if (event.target.checked){
-    inputDisabledJsItem.forEach(input =>{
-      input.disabled = true;
-    })
-  } else {
-    inputDisabledJsItem.forEach(input =>{
-      input.disabled = false;
-    })
-  }
+    if (event.target.id === "backCredit") {
+        fields.forEach(f => f.disabled = true);
+    } else {
+        fields.forEach(f => f.disabled = false);
+    }
 }
-
 
 
 
