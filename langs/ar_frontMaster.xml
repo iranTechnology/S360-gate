@@ -37,6 +37,7 @@
   <Cardnumber>رقم بطاقة الدفع</Cardnumber>
   <Single>اعزب</Single>
   <Married>متزوج</Married>
+  <TelescopeMarket>تلسكوب السوق</TelescopeMarket>
   <Name>اسم</Name>
   <OtherRequests>طلبات أخرى</OtherRequests>
   <Emailbuyer>البريد الإلكتروني للمشتري</Emailbuyer>
@@ -524,6 +525,8 @@
   <Cancelbecauseperson>القنصل بسبب شخص   </Cancelbecauseperson>
   <Delaymorethantwohours>تأخير أكثر من 2 ساعة</Delaymorethantwohours>
   <specialoffer>عرض خاص</specialoffer>
+  <specialoffer2>خاص</specialoffer2>
+
   <TravelerGuard>حارس المسافر</TravelerGuard>
   <Typepassenger>نوع الركاب </Typepassenger>
   <Membershipnumber>رقم العضوية </Membershipnumber>
@@ -786,6 +789,8 @@
   <Startprice>ابتداء السعر من</Startprice>
   <Car>مرکبة</Car>
   <Baseprice>حسب السعر</Baseprice>
+  <Price>سعر</Price>
+
   <BaseStartTime>حسب الوقت</BaseStartTime>
   <PriceLTM>السعر من الأقل إلى الأعلى</PriceLTM>
   <PriceMTL>السعر من الاعلى الى الادنى</PriceMTL>
@@ -818,6 +823,7 @@
   <Type>نوع </Type>
   <Graphicdesignpurchaseconstraint>عزيزي المستخدم, لايمنك الشراء اكثر من الحد المقرر لك .</Graphicdesignpurchaseconstraint>
   <Sendinformation>إرسال المعلومات</Sendinformation>
+  <CancelRequestByPassenger>سأُلغي</CancelRequestByPassenger>
   <BecauseOf>بسبب</BecauseOf>
   <EidToEid>من العيد الى العيد</EidToEid>
   <WorldCup>كأس العالم</WorldCup>
@@ -1481,7 +1487,8 @@
   <Choosereasonfortheconsole>حدد سبب الالغاء ...</Choosereasonfortheconsole>
   <Canselforpersonalreasons>الالغاء لأسباب شخصية</Canselforpersonalreasons>
   <AbandonedbyAirline>تم الغاء الرحلة بواسطة شركة الطيران</AbandonedbyAirline>
-  <delayTrain> </delayTrain>
+  <missedFlight>فاتني موعد رحلتي - لم يحضر أحد</missedFlight>
+  <delayTrain>تأخير في حركة القطار</delayTrain>
   <Idonotcareaboutthepercentagepenaltypleasebesurecancel>
     تم الإلغاء بغض النظر عن نسبة العقوبة
   </Idonotcareaboutthepercentagepenaltypleasebesurecancel>
@@ -1709,6 +1716,9 @@
   <OsafarPegasusTicketsOnlineBooking>حجز تذاكر بكاسوس عبر الانترنت</OsafarPegasusTicketsOnlineBooking>
   <OsafarDashboard>لوحة التحكم</OsafarDashboard>
   <OsafarRefund>استرجاع</OsafarRefund>
+  <OsafarRefundPending>استرجاع أشخاص آخرين</OsafarRefundPending>
+  <OsafarRefundPending>استرجاع قيد المراجعة</OsafarRefundPending>
+  <OsafarRefundClosed>تم إغلاق استردادك</OsafarRefundClosed>
   <OsafarEnterClub>الدخول إلى نادي العملاء</OsafarEnterClub>
   <OsafarEmeraldGettingGuide>دليل الحصول على النقاط</OsafarEmeraldGettingGuide>
   <OsafarWelcomeUserName>اخي العزيز @@getNameUser@@ مرحبًا بك</OsafarWelcomeUserName>
