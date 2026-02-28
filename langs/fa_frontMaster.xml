@@ -1046,6 +1046,7 @@
   <SecuritycodeDept>کد امنیتی پرواز رفت</SecuritycodeDept>
   <SecuritycodeReturn>کد امنیتی پرواز برگشت</SecuritycodeReturn>
   <Visa>ویزا</Visa>
+  <Cip>تشریفات فرودگاه</Cip>
   <Bugpasswordrecoveryprocess>اشکال در فرآیند بازیابی کلمه عبور</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>برای بازیابی رمز عبور، مجددا درخواست نمایید</Requestnewpasswordpassword>
   <expireddeadlinerequest>متاسفانه مهلت اعتبار درخواست شما به پایان رسیده است</expireddeadlinerequest>
@@ -1681,6 +1682,7 @@
     بي ولأصحابها.
   </OnbehalfmyselfcompanionsrightAhwaneHotelcontainedReservationcompanions>
   <Pleaseselectthedesiredpassenger>لطفا مسافر مورد نظر را انتخاب کنید</Pleaseselectthedesiredpassenger>
+  <PleaseselectthedesiredpassengerCancel>لطفا مسافری که می خواهید خرید ایشان را کنسل کنید انتخاب کنید</PleaseselectthedesiredpassengerCancel>
   <Cancelpurchasebookingnumber>کنسل کردن خرید به شماره رزرو</Cancelpurchasebookingnumber>
   <Deniedrequest>رد درخواست شده است</Deniedrequest>
   <Actionhasalreadybeentaken>قبلا اقدام شده است</Actionhasalreadybeentaken>
