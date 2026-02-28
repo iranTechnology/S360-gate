@@ -23,9 +23,9 @@ class functions {
 
         $apiAddress = '';
         $isTest     = self::isTestServer();
-        $apiAddress = 'http://192.168.1.100/Core/V-1/';
-        if ( $isTest ) {//local
+        $apiAddress = 'http://safar360.com/Core/V-1/';
 
+        if ( $isTest ) {//local
 //            $apiAddress = 'http://safar360.com/CoreTestDeveloper/V-1/';
             $apiAddress = 'http://192.168.1.100/CoreTestDeveloper/V-1/';
         }
@@ -320,28 +320,56 @@ class functions {
         return $TotalCharge . ' ' . 'ریال' . '(' . $TextType . ')';
     }
 
-    public static function calculateChargeUserPrice($id)
+    public static function calculateChargeUserPrice($id , $numberFactor='')
     {
-        $time = time() - 600;
+        $time = time() - 600;//10 min ghabl
         $admin = Load::controller('admin');
 
-
-        $sql_charge = "SELECT sum(Price) AS total_charge FROM transaction_tb WHERE Status='1' AND PaymentStatus = 'success'";
-        $charge = $admin->ConectDbClient($sql_charge, $id, "Select", "", "", "");
-        $TotalCharge=0;
-        if($charge){
-
-
-        $total_charge = $charge['total_charge'];
-
-
-
-        $sql_buy = "SELECT SUM(Price) AS total_buy FROM transaction_tb WHERE Status='2' AND ((PaymentStatus = 'success') OR (PaymentStatus = 'pending' AND CreationDateInt > '{$time}'))";
-        $buy = $admin->ConectDbClient($sql_buy, $id, "Select", "", "", "");
-        $total_buy = $buy['total_buy'];
-
-        $TotalCharge = $total_charge - $total_buy;
+        $command_FactorNumber='';
+        if($numberFactor!=''){//شارژ قبل این شماره فاکتور
+            $sql_id = "SELECT id 
+                       FROM transaction_tb 
+                       WHERE 
+                           FactorNumber='".$numberFactor."'
+                       ";
+            $id_FactorNumber = $admin->ConectDbClient($sql_id, $id, "Select", "", "", "");
+            if($id_FactorNumber['id']>0)
+               $command_FactorNumber=" and id< '".$id_FactorNumber['id']."' ";
         }
+
+        if($numberFactor!='' && $command_FactorNumber=='') {//اگر شماره فاکتور اومد باید شرطش هم به وجود اومده باشه والا هیچی دیده نشه
+            $TotalCharge='ErrorCharge';
+        }
+        else{
+             $sql_charge = "SELECT sum(Price) AS total_charge 
+                             FROM transaction_tb 
+                             WHERE 
+                                 Status='1' AND 
+                                 PaymentStatus = 'success'
+                                 ".$command_FactorNumber."
+                             ";
+              $charge = $admin->ConectDbClient($sql_charge, $id, "Select", "", "", "");
+              $TotalCharge=0;
+              $total_buy=0;
+              if($charge){
+                 $total_charge = $charge['total_charge'];
+
+                 $sql_buy = "SELECT SUM(Price) AS total_buy 
+                             FROM transaction_tb 
+                             WHERE 
+                                  Status='2' AND 
+                                  (
+                                      (PaymentStatus = 'success') OR 
+                                      (PaymentStatus = 'pending' AND CreationDateInt > '{$time}')
+                                  )
+                                  ".$command_FactorNumber."
+                             ";
+                 $buy = $admin->ConectDbClient($sql_buy, $id, "Select", "", "", "");
+                 $total_buy = $buy['total_buy'];
+
+                 $TotalCharge = $total_charge - $total_buy;
+              }
+        }//end else $numberFactor
         return $TotalCharge;
     }
 
@@ -9207,7 +9235,7 @@ class functions {
      * @return bool
      */
     public static function isTestServer( $host = '' ) {
-        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir');
+        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir','localhost');
         $res     = false;
         if ( ! empty( $host ) ) {
             if ( is_array( $host ) ) {
@@ -10441,7 +10469,7 @@ class functions {
      *
      * @return array
      */
-    public static function separateFiles( $file_name ) {
+    public static function separateFiles($file_name) {
         $file_indexes = array(
             'name',
             'type',
@@ -10449,10 +10477,21 @@ class functions {
             'error',
             'size',
         );
-        $file         = array();
-        for ( $j = 0; $j < count( $_FILES[ $file_name ]['name'] ); $j ++ ) {
-            foreach ( $file_indexes as $index ) {
-                $file[ $j ][ $index ] = $_FILES[ $file_name ][ $index ][ $j ];
+
+        $file = array();
+
+        // اگر فقط یک فایل آپلود شده است
+        if (!is_array($_FILES[$file_name]['name'])) {
+            foreach ($file_indexes as $index) {
+                $file[0][$index] = $_FILES[$file_name][$index];
+            }
+            return $file;
+        }
+
+        // اگر چند فایل آپلود شده است
+        for ($j = 0; $j < count($_FILES[$file_name]['name']); $j++) {
+            foreach ($file_indexes as $index) {
+                $file[$j][$index] = $_FILES[$file_name][$index][$j];
             }
         }
 

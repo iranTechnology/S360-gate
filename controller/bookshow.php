@@ -3754,6 +3754,9 @@ class bookshow extends clientAuth
 
     public function createExcelForRavisFlight($param)
     {
+        $resultTransactions = Load::controller('bookshowTest');
+        $transactions=$resultTransactions->getTransactionsByDateRange($param['date_of'],$param['to_date'],$param['pnr'],$param['factor_number'],$param['request_number'],$param['passenger_name']);//list Transactions
+
         $_POST = $param;
         $resultBook = $this->listBookLocal();
         if (!empty($resultBook)) {
@@ -3770,7 +3773,8 @@ class bookshow extends clientAuth
                     ->where('id' , $book['agency_id'])
                     ->find();
 
-                $total_price = !empty($book['total_price']) ? number_format($book['total_price']) : 0;
+                //$total_price = !empty($book['total_price']) ? number_format($book['total_price']) : 0;
+                $total_price=!empty($transactions[$book['factor_number']]) ? number_format($transactions[$book['factor_number']]) : 0;//خرید از سفر30 1404/12/03
                 //$tracking_code = !empty($book['tracking_code_bank']) ? $book['tracking_code_bank'] : '';
                 $ravis_code = !empty($resultRavis['ravis_code']) ? $resultRavis['ravis_code'] : '';
 
