@@ -1386,10 +1386,6 @@ class listCancel extends clientAuth {
 
     public function InsertExelCanceling($params)
     {
-        error_reporting(1);
-        error_reporting(E_ALL);
-        @ini_set('display_errors', 1);
-        @ini_set('display_errors', 'on');
         // بررسی ارسال فایل
         if (!isset($_FILES['pnr_file']) || empty($_FILES['pnr_file']['name'])) {
             return functions::JsonError('هیچ فایلی ارسال نشده است', 500);

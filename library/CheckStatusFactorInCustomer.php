@@ -1,4 +1,5 @@
 <?php
+/* بخاطر جنگ
 // از سمت سایت iran-tech.com وصل میشیم و فاکتورهایی که پرداخت نشده را close می کنیم
 //iran-tech.com/factors/CurlFromOtherSyatems/CheckFactorForSafar360.php
 
@@ -59,4 +60,5 @@ if (is_array($input) && !empty($input)) {
         'fail' => $fail
     ], JSON_UNESCAPED_UNICODE);
 }
+*/
 ?>
