@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * Class listCancelUser
  * @property listCancelUser $listCancelUser
@@ -11,7 +9,7 @@ class listCancelUser extends clientAuth
     public $id = '';
     public $list;
     public $edit;
-
+    public $twoWeeksAgoJalali;
     public $transactions;
 
     public function __construct()
@@ -19,6 +17,10 @@ class listCancelUser extends clientAuth
         $this->transactions = $this->getModel('transactionsModel');
         $this->admin = Load::controller('admin');
 
+        // 2 هفته آینده (میلادی)
+        $twoWeeksAgoGregorian = date('Y-m-d', strtotime('-2 weeks'));
+        // تبدیل به شمسی
+        $this->twoWeeksAgoJalali = dateTimeSetting::jdate('Y-m-d', strtotime($twoWeeksAgoGregorian));
     }
 
     public function listCancelLocal()
@@ -32,22 +34,27 @@ class listCancelUser extends clientAuth
 
 
         $sql = "
-SELECT 
-    cancel.*, 
-    book.pnr, 
-    book.eticket_number, 
-    book.pid_private,
-    hotel.type_application
-FROM cancel_ticket_details_tb AS cancel
-LEFT JOIN book_local_tb AS book 
-    ON book.request_number = cancel.RequestNumber
-LEFT JOIN book_hotel_local_tb AS hotel
-    ON hotel.factor_number = cancel.FactorNumber
-WHERE 1=1
-";
+                SELECT 
+                    cancel.*, 
+                    book.pnr, 
+                    book.eticket_number, 
+                    book.pid_private,
+                    book.origin_city,
+                    book.desti_city,
+                    book.airline_name,
+                    book.date_flight,
+                    hotel.type_application,
+                    hotel.city_name,
+                    hotel.hotel_name        
+                FROM cancel_ticket_details_tb AS cancel
+                LEFT JOIN book_local_tb AS book 
+                    ON book.request_number = cancel.RequestNumber
+                LEFT JOIN book_hotel_local_tb AS hotel
+                    ON hotel.factor_number = cancel.FactorNumber
+                WHERE 1=1
+                ";
 
         if (!empty($_POST['RequestNumber']) && !empty($_POST['pnr']) && !empty($_POST['Status'])) {
-
             if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
                 $date_of = explode('-', $_POST['date_of']);
                 $date_to = explode('-', $_POST['to_date']);
@@ -55,7 +62,7 @@ WHERE 1=1
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
                 $sql .= " AND DateRequestMemberInt >= '{$date_of_int}' AND DateRequestMemberInt  <= '{$date_to_int}'";
             }
-        }
+          }
 
         $requestNumber = trim($_POST['RequestNumber']);
         if (!empty($_POST['RequestNumber'])) {
@@ -74,16 +81,7 @@ WHERE 1=1
             $sql .= " AND cancel.Status ='{$_POST['Status']}'";
         }
         $sql .="GROUP BY cancel.DateRequestMemberInt DESC";
-
-
-
-//            var_dump($sql);
-//            die();
-
-
         $res = $Model->select($sql);
-
-
         return $res;
     }
 
@@ -229,18 +227,18 @@ WHERE 1=1
                                 'cellNumber' => $cellNumber
                             );
                             $smsController->sendSMS($smsArray);
-                        }
-
                     }
 
-                    return 'success : درصد تعیین شده با موفقیت ثبت شد';
-                } else {
-                    return 'error : خطا در ثبت درصد ،لطفا مجددا تلاش نمائید';
                 }
+
+                return 'success : درصد تعیین شده با موفقیت ثبت شد';
             } else {
-                return 'error : در خواست  نا معتبر است';
+                return 'error : خطا در ثبت درصد ،لطفا مجددا تلاش نمائید';
             }
-        }}
+        } else {
+            return 'error : در خواست  نا معتبر است';
+        }
+    }}
     public function format_hour($num)
     {
 
@@ -281,7 +279,7 @@ WHERE 1=1
 
         $id = $Param['id'];
         $RequestNumber = $Param['RequestNumber'];
-
+      
         $sql = "SELECT  * FROM  cancel_ticket_details_tb  WHERE  id={$id} AND RequestNumber='{$RequestNumber}' ";
         $result = $Model->load($sql);
 
@@ -603,7 +601,7 @@ WHERE 1=1
     public function getReportCancelAgency($agencyId)
     {
         /** @var cancelTicketModel $cancelTicketModel */
-        $cancelTicketModel = Load::getmodel('cancelTicketModel');
+	    $cancelTicketModel = Load::getmodel('cancelTicketModel');
         $infoMembersAgency =  $cancelTicketModel->getReportCancelAgency($agencyId);
 
         $dataMemberAgency = array();

@@ -39,12 +39,7 @@ class bookshowTest extends clientAuth {
             $ReturnDate=functions::ChangeDateForTransactions($date_of,$to_date);
         }
         else{//3ماه قبل را واکشی کند
-            // امروز میلادی
-            $todayGregorian = date('Y-m-d');
-            // 3 ماه قبل (میلادی)
-            $threeMonthAgoGregorian = date('Y-m-d', strtotime('-3 months'));
-            // تبدیل به شمسی
-            $todayJalali = dateTimeSetting::jdate('Y-m-d', strtotime($todayGregorian));
+           0
             $threeMonthAgoJalali = dateTimeSetting::jdate('Y-m-d', strtotime($threeMonthAgoGregorian));
 
             $ReturnDate=functions::ChangeDateForTransactions($threeMonthAgoJalali,$todayJalali);
