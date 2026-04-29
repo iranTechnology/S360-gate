@@ -3804,30 +3804,45 @@ class bookshowTest extends clientAuth {
             if ( $flightBook['type_app'] == 'Web' || $flightBook['type_app'] == 'Application' || $flightBook['type_app'] == 'Api' ) {
                 if ( $flightBook['successfull'] == 'nothing' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;"
-                                               class="btn btn-default cursor-default popoverBox  popover-default"
+                                               class="btn btn-default cursor-default popoverBox  popover-default w-90" 
                                                data-toggle="popover" title="انصراف از خرید" data-placement="right"
                                                data-content="مسافر از تایید نهایی استفاده نکرده است"> انصراف از
                                                 خرید </a>';
                 } elseif ( $flightBook['successfull'] == 'error') {
                     $DataFlightAgencyShare .= $this->btnErrorFlight($flightBook);
                 } elseif ( $flightBook['successfull'] == 'prereserve' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-warning cursor-default">
-                                                پیش رزرو </a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-warning cursor-default w-90" >
+                                                پیش رزرو
+                                               <div style="display: none;" class="parent-ld">
+    در حال صدور
+  <div class="ld ld-ring ld-spin"></div>
+    </div>
+                                                 </a>';
                 } elseif ( $flightBook['successfull'] == 'bank' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;"
-                                               class="btn btn-primary cursor-default popoverBox  popover-primary"
+                                               class="btn btn-primary cursor-default popoverBox  popover-primary w-90"
                                                data-toggle="popover" title="هدایت به درگاه" data-placement="right"
                                                data-content="مسافر به درگاه بانکی منتقل شده است و سیستم در انتظار بازگشت از بانک است ،این خرید فقط در صورتی که بانک به سیستم کد تایید پرداخت را بدهد تکمیل میشود">
-                                                هدایت به درگاه </a>';
+                                                هدایت به درگاه
+                                                 <div style="display: none;" class="parent-ld">
+    در حال صدور
+  <div class="ld ld-ring ld-spin"></div>
+    </div>
+                                                 </a>';
                 } elseif ( $flightBook['successfull'] == 'credit' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-default cursor-default ">
-                                                انتخاب گزینه اعتباری </a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-default cursor-default w-90" >
+                                                انتخاب گزینه اعتباری
+                                                 <div style="display: none;" class="parent-ld">
+    در حال صدور
+  <div class="ld ld-ring ld-spin"></div>
+    </div>
+                                                 </a>';
                 } elseif ( $flightBook['successfull'] == 'processing' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-primary ">در حال پردازش</a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-primary w-90" >در حال پردازش</a>';
                 }elseif ( $flightBook['successfull'] == 'pending' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-print cursor-warning ">در حال صدور</a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-print cursor-warning w-90 ">در حال صدور</a>';
                 } elseif ( $flightBook['successfull'] == 'private_reserve' && $flightBook['pid_private'] == '1') {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-info cursor-default ">رزرو اختصاصی <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-info cursor-default w-90">رزرو اختصاصی <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a>';
                 }
 //                elseif ( $flightBook['successfull'] == 'private_reserve' && $flightBook['private_m4'] == '1' && $flightBook['IsInternal'] == '0' && $flightBook['api_id'] == '10' ) {
 //                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-default">رزرو
@@ -3882,9 +3897,9 @@ class bookshowTest extends clientAuth {
 //                }
                 elseif ( $flightBook['successfull'] == 'book' ) {
                     if ( $flightBook['request_cancel'] == 'confirm' ) {
-                        $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default" onclick="return false;">کنسل شده</a>';
+                        $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;">کنسل شده</a>';
                     } else {
-                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default" onclick="return false;"> رزرو قطعی <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
+                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;"> رزرو قطعی <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
                     }
                 }
                 if(TYPE_ADMIN !='1')
@@ -3989,17 +4004,29 @@ class bookshowTest extends clientAuth {
                     if ( $flightBook['request_cancel'] == 'confirm' ) {
                         $DataFlightCondition = '<a class="btn btn-danger cursor-default" onclick="return false;">کنسل شده</a>';
                     } else {
-                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default" onclick="return false;"> رزرو قطعی <p style="margin: 0;cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
+                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;"> رزرو قطعی <p style="margin: 0;cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
 
                     }
                 } elseif ( $flightBook['successfull'] == 'prereserve' ) {
-                    $DataFlightAgencyShare .= '<a class="btn btn-warning cursor-default" onclick="return false;">پیش رزرو</a>';
+                    $DataFlightAgencyShare .= '<a class="btn btn-warning cursor-default w-90" onclick="return false;" >
+پیش رزرو
+<div style="display: none;" class="parent-ld">
+    در حال صدور
+  <div class="ld ld-ring ld-spin"></div>
+    </div>
+</a>';
                 } elseif ( $flightBook['successfull'] == '' ) {
-                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>';
+                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >نامشخص</a>';
                 } elseif ( $flightBook['successfull'] == 'bank' ) {
-                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default" onclick="return false;">هدایت به درگاه</a>';
+                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >هدایت به درگاه
+<div style="display: none;" class="parent-ld">
+    در حال صدور
+  <div class="ld ld-ring ld-spin"></div>
+    </div>
+
+</a>';
                 } else {
-                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>';
+                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >نامشخص</a>';
                 }
                 $DataFlightAgencyShare .= '<hr style="margin:3px">بلیط رزرواسیون';
             }
@@ -4007,9 +4034,9 @@ class bookshowTest extends clientAuth {
             if ( TYPE_ADMIN == '1' ) {
                 if ( $flightBook['type_app'] == 'Web' || $flightBook['type_app'] == 'Application' || $flightBook['type_app'] == 'Api' ) {
                     if ( $flightBook['successfull'] != 'nothing' ) {
-                        $DataFlightAgencyShare .= '<div class="btn-group m-r-10" style="margin-top:3px">
+                        $DataFlightAgencyShare .= '<div class="btn-group m-r-10 w-95" style="margin-top:3px">
                                                     <button aria-expanded="false" data-toggle="dropdown"
-                                                            class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light"
+                                                            class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light w-100"
                                                             type="button"> عملیات <span class="caret"></span></button>
                                                     <ul role="menu" class="dropdown-menu animated flipInY mainTicketHistory-operation">
                                                         <li>
@@ -4018,6 +4045,19 @@ class bookshowTest extends clientAuth {
                         if ( $flightBook['successfull'] != 'nothing' ) {
                             $DataFlightAgencyShare .= '<a onclick="ModalShowBookForFlight(' . "'" . $flightBook['request_number'] . "'" . ');return false" data-toggle="modal" data-target="#ModalPublic"> <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye" data-toggle="tooltip" data-placement="top" title="" data-original-title="مشاهده خرید"></i> </a>';
                         }
+
+                        if ( $flightBook['successfull'] != 'book' && $flightBook['successfull'] != 'private_reserve' ) {
+                            $DataFlightAgencyShare .= '</div>
+
+                        <div class="pull-left margin-10">';
+                            $DataFlightAgencyShare .= '<a onclick="confirmReservationRequestAgain(this ' . ", '" . $flightBook['request_number'] . "'" . ", '" . $flightBook['member_id'] . "'" . ", '" . $flightBook['api_id'] . "'" . ", '" . $flightBook['direction'] . "'" . ", '" . $flightBook['factor_number'] . "'" . ');return false">
+                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-share"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top" title=""
+                                                                               data-original-title="درخواست مجدد رزرو"></i>
+                                                                        </a>';
+                        }
+
                         $DataFlightAgencyShare .= '</div>
 
                         <div class="pull-left margin-10">';
@@ -4061,6 +4101,16 @@ class bookshowTest extends clientAuth {
                                 }
 
                             }
+                            $DataFlightAgencyShare .= '</div>';
+                        }
+                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
+                            $DataFlightAgencyShare .= "<div class='pull-left margin-10'>";
+                            $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=fa&Letterhead=true'
+                                                                           target='_blank'>
+                                                                            <i class='fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o '
+                                                                               data-toggle='tooltip'
+                                                                               data-placement='top' title=''
+                                                                               data-original-title='بلیط بدون سربرگ'></i></a>";
                             $DataFlightAgencyShare .= '</div>';
                         }
 
@@ -4145,9 +4195,9 @@ class bookshowTest extends clientAuth {
                                        data-original-title="ثبت تراکنش">
                                 </button></div>';
                         }
-                        $DataFlightAgencyShare .= '<div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'credit' && TYPE_ADMIN == '1' ) ) {
 
+                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'credit' && TYPE_ADMIN == '1' ) ) {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">';
                             $DataFlightAgencyShare .= ' <a onclick="ModalSendSms(' . "'" . $flightBook['request_number'] . "'" . ');return false"
                                                        id="sendSms' . $flightBook['request_number'] . '"
                                                        target="_blank"
@@ -4159,10 +4209,22 @@ class bookshowTest extends clientAuth {
                                                            title=""
                                                            data-original-title="برای ارسال پیام کلیک کنید"></i>
                                                     </a>';
+                        $DataFlightAgencyShare .= '</div>';
+
+                        }
+                        if($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve'){
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">';
+                            $DataFlightAgencyShare .= '<a id="AddNote' . $flightBook['request_number'] . '"
+                                                                       onclick="AddNote(' . "'" . $flightBook['request_number'] . "'" . ( $flightBook['client_id'] != '' ? ",'" . $flightBook['client_id'] . "'" : "" ) . ');return false"
+                                                                       data-toggle="modal" data-target="#ModalPublic">
+                                                                        <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-note"
+                                                                           data-toggle="tooltip" data-placement="top"
+                                                                           title=""
+                                                                           data-original-title="یادداشت"></i>
+                                                                    </a></div>
+                                                                ';
                         }
 
-
-                        $DataFlightAgencyShare .= '</div>';
 
 
 
@@ -4456,6 +4518,15 @@ class bookshowTest extends clientAuth {
                                                                                data-placement="top" title=""
                                                                                data-original-title="مشاهده خرید"></i>
                                                                         </a>';
+                            $DataFlightAgencyShare .= '</div> <div class="pull-left margin-10">';
+                            $DataFlightAgencyShare .= '<a onclick="reBook(this ' . "'" . $flightBook['request_number'] . "'" . "'" . $flightBook['member_id'] . "'" . "'" . $flightBook['api_id'] . "'" . ');return false"
+                                                                           data-toggle="modal"
+                                                                           data-target="#ModalPublic">
+                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-share"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top" title=""
+                                                                               data-original-title="درخواست مجدد رزرو"></i>
+                                                                        </a>';
                         }
                         $DataFlightAgencyShare .= '</div> <div class="pull-left margin-10">';
                         if ( $flightBook['successfull'] == 'book' ) {
@@ -4497,13 +4568,86 @@ class bookshowTest extends clientAuth {
                     $DataFlightAgencyShare .= '</div> </div> </li> </ul> </div> <hr style="margin:3px">';
                 }
             }
+            if ($flightBook['successfull']) {
+
+                // unread badge for chat
+                $obj = Load::controller('bookshow');
+                $unreadCount = $obj->getUnreadCount($flightBook['request_number'], 'flight');
+
+                $badge = '';
+                if ($unreadCount > 0) {
+                    $badge = '
+            <span style="
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background: #ff3b30;
+                color: white;
+                padding: 2px 6px;
+                font-size: 10px;
+                border-radius: 50%;
+                font-weight: bold;
+                box-shadow: 0 0 3px rgba(0,0,0,0.3);
+            ">'.$unreadCount.'</span>
+        ';
+                }
+                $current_client_id =  ($flightBook['client_id'] == '' || $flightBook['client_id'] == 0) ? CLIENT_ID: $flightBook['client_id'] ;
+
+                // دکمه چت
+                $DataFlightAgencyShare .= '
+        <div style="display: flex; gap: 6px; align-items: center; position: relative; margin-bottom: 5px;">
+
+            <button type="button"
+                    id="ChatBtn' . $flightBook['request_number'] . '"
+                    class="fcbtn btn btn-outline btn-info btn-1c"
+                    onclick="OpenChat(\'' . $flightBook['request_number'] . '\', \'flight\',\'' . $current_client_id . '\');"
+                    data-toggle="modal"
+                    data-target="#ModalPublic"
+                    style="width: 55px; height: 36px; display:flex; align-items:center; justify-content:center;"
+                    title="چت">
+                <i class="fa fa-comments"></i>
+            </button>
+
+            ' . $badge . '
+    ';
+            }
+
+
+// دکمه یادداشت کنار هم با دکمه چت
+            if ($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve') {
+
+                $objBookShow = Load::controller('bookshow');
+                $result = $objBookShow->getAgencyNote($flightBook['request_number']);
+
+                if ($result[0]) {
+
+                    $DataFlightAgencyShare .= '
+            <button type="button"
+                    id="AddNote' . $flightBook['request_number'] . '"
+                    onclick="AddNote(\'' . $flightBook['request_number'] . '\'' . ($flightBook['client_id'] != '' ? ',\'' . $flightBook['client_id'] . '\'' : '') . '); return false;"
+                    class="fcbtn btn btn-outline btn-warning btn-1c"
+                    data-toggle="modal"
+                    data-target="#ModalPublic"
+                    style="width: 55px; height: 36px; display:flex; align-items:center; justify-content:center;"
+                    title="مشاهده یادداشت‌ها">
+                <i class="fa fa-sticky-note"></i>
+            </button>
+        ';
+                }
+            }
+
+// بستن div
+            $DataFlightAgencyShare .= '</div>';
+            $DataFlightType .= '<hr style="margin:3px">';
+
+
 
             if ( $flightBook['payment_type'] == 'cash' || $flightBook['payment_type'] == 'member_credit' ) {
                 if ( $flightBook['payment_type'] == 'cash' ) {
-                    $DataFlightAgencyShare .= 'نقدی';
+                    $DataFlightType .= 'نقدی';
                 }
                 else {
-                    $DataFlightAgencyShare .= 'اعتباری';
+                    $DataFlightType .= 'اعتباری';
                 }
                 if ( $flightBook['number_bank_port'] == '379918' ) {
                     if ( $flightBook['flight_type'] == 'charter' && $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -4520,7 +4664,7 @@ class bookshowTest extends clientAuth {
                 }
             }
             elseif ( $flightBook['payment_type'] == 'credit' ) {
-                $DataFlightAgencyShare .= 'اعتباری';
+                $DataFlightType .= 'اعتباری';
                 if ( $flightBook['flight_type'] == 'charter' && $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                     $CreditTotal += ( $flightBook['agency_commission'] + $flightBook['irantech_commission'] + $flightBook['supplier_commission'] );
                 } elseif ( $flightBook['flight_type'] == 'system' && $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -4529,13 +4673,13 @@ class bookshowTest extends clientAuth {
 
             }
             elseif ( $flightBook['payment_type'] == 'nothing' ) {
-                $DataFlightAgencyShare .= 'نا مشخص';
+                $DataFlightType .= 'نا مشخص';
             }
             if ( $flightBook['name_bank_port'] != '' ) {
                 if (in_array($flightBook['number_bank_port'],$GetWayIranTech) || $flightBook['number_bank_port'] == '5b8c0bc6-7f26-11ea-b1af-000c295eb8fc' || $flightBook['number_bank_port'] == '379918' ) {
-                    $DataFlightAgencyShare .= "درگاه سفر360";
+                    $DataFlightType .= "درگاه سفر360";
                 } else {
-                    $DataFlightAgencyShare .= " - درگاه خودش";
+                    $DataFlightType .= " - درگاه خودش";
                 }
             }
 
@@ -5869,31 +6013,76 @@ class bookshowTest extends clientAuth {
                 }
 
             }
+
+            if ($hotel['status']) {
+                $current_client_id =  ($hotel['client_id'] == '' || $hotel['client_id'] == 0) ? CLIENT_ID : $hotel['client_id'];
+                $obj = Load::controller('bookshow');
+                $unreadCount = $obj->getUnreadCount($hotel['factor_number'], 'hotel');
+
+                $badge = '';
+                if ($unreadCount > 0) {
+                    $badge = '
+            <span style="
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                background: #ff3b30;
+                color: white;
+                padding: 2px 6px;
+                font-size: 11px;
+                border-radius: 50%;
+                font-weight: bold;
+                box-shadow: 0 0 3px rgba(0,0,0,0.3);
+            ">
+                '.$unreadCount.'
+            </span>
+        ';
+                }
+                $DataAction .= "<hr style='margin:3px'>";
+                $DataAction .= '
+        <div style="position: relative; display: inline-block;">
+            <button type="button"
+                    id="ChatBtn' . $hotel['factor_number'] . '"
+                    class="fcbtn btn btn-outline btn-info btn-1c"
+                    onclick="OpenChat(\'' . $hotel['factor_number'] . '\', \'hotel\',\'' . $current_client_id . '\');"
+                    data-toggle="modal"
+                    data-target="#ModalPublic"
+                    style="width: 80px;margin-top:3px;"
+                    title="چت">
+
+                <i class="fa fa-comments"></i>
+            </button>
+
+            '.$badge.'
+        </div>
+    ';
+            }
+
             if ($hotel['status'] == 'Requested') {
-                $DataActivity = ' <a class="btn btn-warning cursor-default" onclick="return false;" onclick="return false;">درخواست شده(پیش پرداخت)</a>';
+                $DataActivity = ' <a class="btn btn-warning cursor-default w-90" onclick="return false;" onclick="return false;">درخواست شده(پیش پرداخت)</a>';
             }
             elseif  ($hotel['status'] == 'RequestRejected') {
-                $DataActivity = ' <a class="btn btn-success cursor-default" onclick="return false;"> درخواست رد شده</a>';
+                $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;"> درخواست رد شده</a>';
             }
             elseif  ($hotel['status'] == 'RequestAccepted') {
-                $DataActivity = ' <a class="btn btn-success cursor-default" onclick="return false;"> درخواست تایید شده</a>';
+                $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;"> درخواست تایید شده</a>';
             }
             elseif ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataActivity = '<a class="btn btn-success cursor-default" onclick="return false;"> رزرو قطعی</a>';
+                $DataActivity = '<a class="btn btn-success cursor-default w-90" onclick="return false;"> رزرو قطعی</a>';
             } elseif ( $hotel['status'] == 'PreReserve' ) {
-                $DataActivity = '<a class="btn btn-warning cursor-default" onclick="return false;">پیش رزرو</a>';
+                $DataActivity = '<a class="btn btn-warning cursor-default w-90" onclick="return false;">پیش رزرو</a>';
             } elseif ( $hotel['status'] == '' ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">نامشخص</a>';
             } elseif ( $hotel['status'] == 'bank' ) {
-                $DataActivity = '<a class="btn btn-primary cursor-default" onclick="return false;">هدایت به درگاه</a>';
+                $DataActivity = '<a class="btn btn-primary cursor-default w-90" onclick="return false;">هدایت به درگاه</a>';
             } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 0 ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">لغو درخواست</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">لغو درخواست</a>';
             } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 1 ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">کنسل شده</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">کنسل شده</a>';
             } elseif ( $hotel['status'] == 'OnRequest' ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">هتل استعلامی</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">هتل استعلامی</a>';
             } elseif ( $hotel['status'] == 'pending' ) {
-                $DataActivity = '<a class="btn btn-print cursor-warning" onclick="return false;">در حال صدور</a>';
+                $DataActivity = '<a class="btn btn-print cursor-warning w-90" onclick="return false;">در حال صدور</a>';
 
             }else {
 
@@ -6219,19 +6408,19 @@ class bookshowTest extends clientAuth {
             }
 
             if ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataActivity = '<a class="btn btn-success cursor-default" onclick="return false;"> رزرو قطعی</a>';
+                $DataActivity = '<a class="btn btn-success cursor-default" onclick="return false;" style="width: 97%;"> رزرو قطعی</a>';
             } elseif ( $hotel['status'] == 'PreReserve' ) {
-                $DataActivity = '<a class="btn btn-warning cursor-default" onclick="return false;">پیش رزرو</a>';
+                $DataActivity = '<a class="btn btn-warning cursor-default" onclick="return false;" style="width: 97%;">پیش رزرو</a>';
             } elseif ( $hotel['status'] == '' ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;" style="width: 97%;">نامشخص</a>';
             } elseif ( $hotel['status'] == 'bank' ) {
-                $DataActivity = '<a class="btn btn-primary cursor-default" onclick="return false;">هدایت به درگاه</a>';
+                $DataActivity = '<a class="btn btn-primary cursor-default" onclick="return false;" style="width: 97%;">هدایت به درگاه</a>';
             } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 0 ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">لغو درخواست</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;" style="width: 97%;">لغو درخواست</a>';
             } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 1 ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">کنسل شده</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;" style="width: 97%;">کنسل شده</a>';
             } elseif ( $hotel['status'] == 'OnRequest' ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;">هتل استعلامی</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default" onclick="return false;" style="width: 97%;">هتل استعلامی</a>';
             } else {
                 $DataActivity = $this->btnErrorHotel($hotel);
             }
@@ -7346,7 +7535,7 @@ class bookshowTest extends clientAuth {
                         $DataFlightActionBtn .= '</div>';
                         $DataFlightActionBtn .= "<div class='pull-left margin-10'>";
                         if ( $flightBook['successfull'] == 'book' ) {
-                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
+                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookExclusiveTour&id=' . $flightBook['factor_number'] . '"
                                                                            target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
@@ -10114,9 +10303,14 @@ class bookshowTest extends clientAuth {
         }
 
 
-        return  '<a href="#" onclick="return false;" class="btn btn-danger '. $classes .' cursor-default popoverBox  popover-danger"
+        return  '<a href="#"  onclick="return false;" class="btn btn-danger '. $classes .' cursor-default popoverBox w-90  popover-danger"
                                                data-toggle="popover" title="'.$text_btn.'" data-placement="right"
-                                               data-content="'. $content_btn .'">'. $text_btn .'</a>';
+                                               data-content="'. $content_btn .'">'. $text_btn .'
+                                               <div style="display: none;" class="parent-ld">
+    در حال صدور
+  <div class="ld ld-ring ld-spin"></div>
+    </div>
+                                               </a>';
 
 
     }
@@ -10172,7 +10366,7 @@ class bookshowTest extends clientAuth {
                                                data-toggle="popover" title="'.$text_btn.'" data-placement="right"
                                                data-content="'. $content_btn .'">'. $text_btn .'</a>';
         }else {
-            return '<a class="btn btn-danger cursor-default" onclick="return false;">خطا</a>';
+            return '<a class="btn btn-danger cursor-default" style="width: 90%;" onclick="return false;">خطا</a>';
 
         }
 

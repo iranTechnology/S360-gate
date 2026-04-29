@@ -21,7 +21,7 @@
     {assign var='check_general' value=true}
 {/if}
 {assign var="min_" value=0}
-{assign var="max_" value=1}
+{assign var="max_" value=10}
 
 {if $check_general}
     <section class="i_modular_tours background tours">
@@ -51,7 +51,12 @@
                                             </div>
                                             <article class="parent-text-tour-right">
                                                 <span class="coin_money">
-                                                <span class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}</span> ریال
+                                                <span class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}</span>
+                                                                                                        {if $item['min_price']['is_toman'] == true}
+                                                                                                            تومان
+                                                                                                        {else}
+                                                                                                            ریال
+                                                                                                        {/if}
                                                 </span>
                                                 <span class="calendar2">
                                                       اعتبار تور
@@ -90,7 +95,12 @@
                                             <span class="coin_money">
 
                                             قیمت  <span
-            class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}</span> ریال
+            class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}</span>
+                                                                                                    {if $item['min_price']['is_toman'] == true}
+                                                                                                        تومان
+                                                                                                    {else}
+                                                                                                        ریال
+                                                                                                    {/if}
 
                                              </span>
                                                 <span class="calendar2"> اعتبار تور <span

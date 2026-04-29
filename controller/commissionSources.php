@@ -197,7 +197,7 @@ class commissionSources extends clientAuth
     /**
      * محاسبه سود آژانس برای پروازهای سیستمی
      */
-    public function setAgencyBenefitSystemFlight(array $flight, $method)
+    public function setAgencyBenefitSystemFlight(array $flight, $method , $IdMember = null)
     {
         // Early return for non-matching client
 
@@ -212,7 +212,7 @@ class commissionSources extends clientAuth
             } elseif ($method === 'revalidate') {
                 return $this->calculateAgencyBenefitForRevalidate($flight);
             } elseif ($method === 'book') {
-                return $this->calculateAgencyBenefitForBook($flight);
+                return $this->calculateAgencyBenefitForBook($flight , $IdMember);
             }
         }
         catch (Exception $e) {
@@ -501,7 +501,7 @@ class commissionSources extends clientAuth
     /**
      * محاسبه سود آژانس برای رزرو
      */
-    private function calculateAgencyBenefitForBook(array $flight)
+    private function calculateAgencyBenefitForBook(array $flight , $IdMember = null)
     {
         // Get flight book local data
         $flightBookLocal = $this->getFlightBookLocal(isset($flight['request_number']) ? $flight['request_number'] : '');
@@ -539,7 +539,7 @@ class commissionSources extends clientAuth
             'inf_fare' => 'inf_price'
         );
 
-        $isCounter = $this->getController('login')->isCounter();
+        $isCounter = $this->getController('login')->isCounter($IdMember);
         $isCounter = json_decode($isCounter);
         $isSafar360 = functions::isSafar360();
 

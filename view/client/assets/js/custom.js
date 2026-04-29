@@ -267,8 +267,9 @@ $(document).ready(function () {
 
         })
     }
-
-    $('.select2_sex').select2();
+    if ($('.select2_sex').length > 0) {
+        $('.select2_sex').select2();
+    }
     $('body').on('click', '.research_Hotel ', function () {
         $('.filtertip_hotel_researh').fadeToggle();
         $('.filterBox_external_hotel').fadeToggle();
@@ -3621,7 +3622,7 @@ function creditBuy(Obj, link, inputs) {
                         'opacity': '0.6'   // حس غیرفعال بودن
                     });
 
-                    document.body.removeChild(modal); }, 300);
+                    if (modal && modal.parentNode) { modal.parentNode.removeChild(modal); } }, 300);
             };
 
             content.appendChild(closeBtn);
@@ -3694,8 +3695,12 @@ function creditBuy(Obj, link, inputs) {
                                     form.appendChild(hiddenField);
 
                                     form.submit();
-                                    document.body.removeChild(form);
 
+                                    setTimeout(function() {
+                                        if (form && form.parentNode) {
+                                            form.parentNode.removeChild(form);
+                                        }
+                                    }, 100);
                                 } else {
 
                                     $.alert({
@@ -8214,6 +8219,11 @@ function sendFromResultToVisaPassengers(){
 }
 
 function sendToCip() {
+    if (window.cipData) {
+        localStorage.setItem('selectedCip', JSON.stringify(window.cipData));
+        var expirationTime = new Date().getTime() + (60 * 60 * 1000);
+        localStorage.setItem('cipExpiration', expirationTime.toString());
+    }
     window.location.href = `${amadeusPathByLang}cip-detail/${cipCode}/${sourceId}`;
 }
 

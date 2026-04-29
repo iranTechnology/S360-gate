@@ -59,6 +59,7 @@ class parvazBookingLocal extends apiLocal
 
     public function flightBook($FactorNumber, $payType = null)
     {
+
         /**
          * این کامنت ها برای جابجایی در بین فانکشن ها و کلاسها از طریق PHPstorm کاربرد دارد. لطفا حذف نفرمایید :-D
          *
@@ -460,7 +461,8 @@ class parvazBookingLocal extends apiLocal
                                     }
                                 }
                             }
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e) {
 
                             $d['message'] = $e->getMessage();
                             $d['creation_date_int'] = time();
@@ -1243,6 +1245,7 @@ class parvazBookingLocal extends apiLocal
             //               $barcodeBase64 = barcode128_base64($info['pnr']);
             ?>
             <div  style='margin-top: 1000px;font-family: "yekanbakh"'>
+              <?php if(!$_GET['Letterhead']):?>
                 <table width="100%" align="center" style="margin: 20px 100px;" class="page">
                     <tr>
                         <td style="padding-bottom:30px">
@@ -1258,6 +1261,7 @@ class parvazBookingLocal extends apiLocal
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=300&data=<?= urlencode('http://' . CLIENT_DOMAIN .'/gds/pdf&target=parvazBookingLocal&id='. $info['request_number'] .'&lang=fa') ?>" style="max-width: 80px; min-height: 50px">                       </td>
                     </tr>
                 </table>
+              <?php endif;?>
 
                 <div class="divborder" style="margin: 20px 100px;">
                     <table width="100%" align="center" class="page">
@@ -1868,13 +1872,14 @@ class parvazBookingLocal extends apiLocal
                             <img src="<?php echo $StampAgency ?>" height="100" style="max-width: 230px; float: left; margin: 0 -50px 0 0">
                         </div>
                     <?php } ?>
+                  <?php if(!$_GET['Letterhead']):?>
                     <hr style="margin: <?php echo ($StampAgency != ROOT_ADDRESS_WITHOUT_LANG.'/pic/') ? '10px' : '100px';?> 100px 5px 100px ; width: 90%"/>
                     <table width="100%" align="center" style="width:100%; margin: 10px 100px <?php echo ($info['request_cancel'] !='confirm' && $cash=='no') ? '20px' : '10px'?> 50px ;    font-size: 17px" scellpadding="0"
                            cellspacing="0">
                         <tr>
                             <td colspan="2">
                                 <?= $_GET['lang'] == 'fa' ? 'آدرس :' : 'Address:'; ?>
-                                <?php echo $getSubAgencyInfo['address_fa']; ?>
+                                <?= !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : $ClientAddress; ?>
 
                             </td>
                         </tr>
@@ -1887,19 +1892,19 @@ class parvazBookingLocal extends apiLocal
                             <td style="padding-top:15px">
                                 <?= $_GET['lang'] == 'fa' ? ' تلفن پشتیبانی :' : 'Support phone:'; ?>
 
-                                <?php echo $phone; ?>
+                                <?= !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : $phone; ?>
                             </td>
                             <?php if($info_ticket[0]['agency_id']) {?>
                                 <td style="padding-top:15px">
                                     <?= $_GET['lang'] == 'fa' ? 'تلفن کانتر فروش :' : 'Sales counter telephone:'; ?>
-
-                                    <?php echo $PhoneManage; ?>
+                                    <?=  !empty($getSubAgencyInfo['mobile']) ? $getSubAgencyInfo['mobile'] : $PhoneManage; ?>
                                 </td>
                             <?php  } ?>
                         </tr>
 
 
                     </table>
+                  <?php endif;?>
 
                 </div>
 

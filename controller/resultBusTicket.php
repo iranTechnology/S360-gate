@@ -328,7 +328,7 @@ class resultBusTicket extends apiBus
                         '</div>';
                 }
             }
-                $output .= '<div onclick="showDescriptionDetail(this, \'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
+                $output .= '<div onclick="showDescriptionDetail(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
                       <i class="fa fa-angle-down"></i>
                   </div>';
 
@@ -431,7 +431,7 @@ class resultBusTicket extends apiBus
                 $busSearchApiData=$resultBuses=parent::busSearch($jsonData);
 
                 }
-             
+
                 if(trim($dateMove) >= trim($dateNow)){
                     if($this->checkApiSuccessfulStatus($resultBuses) && $resultInfoSourcesApi) {
                         $countBuses = count($resultBuses['response']['data']);
@@ -1282,7 +1282,7 @@ class resultBusTicket extends apiBus
             if($create_temporary_bus){
                 return 'success|'.json_encode(['requestNumber'=>$data['requestNumber'],'factor_number'=>$data['factor_number']],true);
             }else{
-                return 'error|'.Functions::Xmlinformation('NewRequestError');
+                return 'error|'.json_encode(['requestNumber'=>$data['requestNumber'],'message'=>Functions::Xmlinformation('NewRequestError')],true);
             }
         }
 

@@ -1,6 +1,6 @@
 
 
-{assign var="data_search_blog" value=['service'=>'Public','section'=>'article', 'limit' =>'3']}
+{assign var="data_search_blog" value=['service'=>'Public','section'=>'article', 'limit' =>'4']}
 {assign var='blog' value=$obj_main_page->articlesPosition($data_search_blog)}
 {assign var='counter' value=0}
 {assign var="article_count" value=$blog|count}
@@ -60,6 +60,30 @@
                     {/foreach}
 
                 </div>
+
+            </div>
+            <div class="owl-carousel owl-theme owl-blog">
+                {foreach $blog as $item}
+                    <div class="big_news">
+                        <div class="single_trip eq">
+
+                            <div class="thumb"><img src="{$item['image']}"
+                                                    alt="{$item['alt']}">
+                            </div>
+                            <div class="info">
+                                <div class="date"><a
+                                            href="{$item['link']}"><span>
+                                                {$item['heading']}
+                                            </span></a>
+                                </div>
+                                <h3 class="p-0">{$item['description']}</h3>
+                                <div class="more_tour"><a
+                                            href="{$item['link']}"><span>##ViewDetails##</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/foreach}
 
             </div>
         </div>

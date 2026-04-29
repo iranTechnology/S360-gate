@@ -13,6 +13,7 @@ function internalHotelSearchDetails() {
       }),
       success: function(response){
 
+
          if(lang === "fa"){
             $("#autoComplateSearchIN").val(response.name);
          } else {
@@ -1165,6 +1166,7 @@ function internalHotelSearchDetails() {
             },
             success: function(data) {
 
+
                let value = data.Hotels
                let request_number = data.requestNumber
                let advertises = data.Advertises
@@ -1172,6 +1174,8 @@ function internalHotelSearchDetails() {
                $('#webServiceType').val(data.WebServiceType)
                $('.silence_span').html(`<b id='countHotelHtml'>${data.Count}</b> ${useXmltag('silenceSpanHotel')}`)
                $('#hotelResultItem').remove()
+                $('#requestNumber').text(request_number);
+
                if (data.Count > 0) {
                   $.each(value, function(index, item) {
                      if(!hotelType.includes(item.type_code)) {
@@ -1433,7 +1437,6 @@ function internalHotelSearchDetails() {
                 <div class='fullCapacity_div'>
                     <img src='${full_capacity_image}' alt='fullCapacity'>
                     <h2>${useXmltag('Nohotel')}</h2>
-                    <kbd class="kbd_style">${request_number}</kbd>
                 </div>
             </div>`
                   $('#hotelResult').html(htmlError)

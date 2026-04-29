@@ -2,6 +2,11 @@
 
     <div class="row">
 
+      <div class="requestNumber">
+        {{requestNumber}}
+        {{requestNumberNoData}}
+      </div>
+
         <sidebar :dataSearch="setDataSearch" :price="price" :interrupt="interrupt" :timeFilter="timeFilter"
                  :typeFlightFilter="typeFlightFilter" :seatClassFilter="seatClassFilter"
                  :minPriceAirline="minPriceAirline" :countFlights="count_flights" @filterFlights="filterFlightsFinally"
@@ -19,11 +24,6 @@
             <input type="hidden" value='' name="flight_id_private" id="flight_id_private">
         </form>
     </div>
-
-<!--   <div class="requestNumber">-->
-<!--      {{requestNumber}}-->
-<!--      {{requestNumberNoData}}-->
-<!--   </div>-->
 
 </template>
 <script>
@@ -400,12 +400,12 @@
             price() {
                 return this.$store.state.price;
             },
-           // requestNumber() {
-           //    return this.$store.state.requestNumber
-           // },
-           // requestNumberNoData() {
-           //    return this.$store.state.requestNumberNoData
-           // },
+           requestNumber() {
+              return this.$store.state.requestNumber
+           },
+           requestNumberNoData() {
+              return this.$store.state.requestNumberNoData
+           },
             setDataSearch() {
                 return this.$store.state.setDataSearch
             }
@@ -460,3 +460,13 @@
       }
     }
 </script>
+
+<style>
+.requestNumber {
+  position: absolute;
+  z-index: 1000;
+  color: transparent;
+  top: 90px;
+  left: 0;
+}
+</style>

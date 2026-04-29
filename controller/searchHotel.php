@@ -304,6 +304,8 @@ class searchHotel extends ApiHotelCore {
 
                     $resultHotelApi = json_decode($this->hotelList($dataSearch), true);
 
+                    $this->requestNumber = $resultHotelApi['RequestNumber'];
+
                     if (!empty($resultHotelApi['Result'])) {
                         $t2 = microtime(true);
                         $final_result_search = $this->excludeWebserviceHotel($resultHotelApi['Result']);

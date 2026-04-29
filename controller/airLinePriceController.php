@@ -43,6 +43,7 @@ class airLinePriceController extends clientAuth
         return  $this->returnJson(false, "عملیات با خطا مواجه شد",  null, 500);
 
     }
+
     public function update_ceilingPrice($params){
         $data = [];
         $id = $params['id'];
@@ -67,6 +68,7 @@ class airLinePriceController extends clientAuth
         return  $this->returnJson(false, "عملیات با خطا مواجه شد",  null, 500);
 
     }
+
     public function getAllPrices(){
 
         $this->Model->setTable('airline_ceiling_price');
@@ -88,8 +90,77 @@ class airLinePriceController extends clientAuth
         return $result;
     }
 
+    public function getRoutePrices($origin, $destination)
+    {
+        $airlineCeilingPriceModel = $this->getModel('airlineCeilingPriceModel');
+        $airlineIataModel = $this->getModel('airlineIataModel');
+
+        $airlineCeilingPrice = $airlineCeilingPriceModel
+            ->get(['*'])
+            ->where('origin', $origin)
+            ->where('destination', $destination)
+            ->all();
 
 
+        if (empty($airlineCeilingPrice)) {
+            $reverseRoute = $airlineCeilingPriceModel
+                ->get()
+                ->where('origin', $destination)
+                ->where('destination', $origin)
+                ->all();
+
+            if (!empty($reverseRoute)) {
+                $firstItem = $reverseRoute[0] ?? null;
+                if ($firstItem && ($firstItem['trip_type'] ?? '') === 'two_way') {
+                    $airlineCeilingPrice = $reverseRoute;
+                }
+            }
+        }
+
+        if (empty($airlineCeilingPrice)) {
+            $airlineCeilingPrice = $airlineCeilingPriceModel
+                ->get(['*'])
+                ->where('origin', 'ALL')
+                ->where('destination', $destination)
+                ->all();
+        }
+
+        if (empty($airlineCeilingPrice)) {
+            $airlineCeilingPrice = $airlineCeilingPriceModel
+                ->get(['*'])
+                ->where('origin', $origin)
+                ->where('destination', 'ALL')
+                ->all();
+        }
+
+        if (empty($airlineCeilingPrice)) {
+            $airlineCeilingPrice = $airlineCeilingPriceModel
+                ->get(['*'])
+                ->where('origin', 'ALL')
+                ->where('destination', 'ALL')
+                ->all();
+        }
+
+        $airlineIata = $airlineIataModel
+            ->get(['id' , 'airline_uniqe_iata'])
+            ->all();
+
+        $map = [];
+        foreach ($airlineIata as $item) {
+            $map[$item['id']] = $item['airline_uniqe_iata'];
+        }
+
+        foreach ($airlineCeilingPrice as &$item) {
+            $id = $item['airline_iata_id'];
+            if (isset($map[$id])) {
+                $item['airline_uniqe_iata'] = $map[$id];
+            }
+        }
+
+        unset($item);
+
+        return $airlineCeilingPrice;
+    }
 }
 
 ?>

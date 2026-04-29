@@ -73,21 +73,22 @@ public function getAllOrderByiata()
     public function InsertAirlineModel($InfoAirline)
     {
 
-        $data['name_fa'] = $InfoAirline['nameFa'];
-        $data['name_en'] = $InfoAirline['nameEn'];
-        $data['abbreviation'] = $InfoAirline['abbreviation'];
-
         $config = Load::Config('application');
         $config->pathFile('airline/');
         $success = $config->UploadFile("pic", "photo", "");
         $explod_name_pic = explode(':', $success);
         if ($explod_name_pic[0] == "done") {
 
-            $data['photo'] = $explod_name_pic[1];
-            $result = parent::insertLocal($data);
+            $result = $this->insertWithBind([
+                'name_fa'     => $InfoAirline['nameFa'],
+                'name_en'        => $InfoAirline['nameEn'],
+                'abbreviation'     => $InfoAirline['abbreviation'],
+                'foreignAirline'         => $InfoAirline['foreignAirline'],
+                'photo'  => $explod_name_pic[1],
+            ]);
             if ($result) {
 
-                return 'success : خطوط پروازی مورد نظر با موفقیت ثبت شد';
+                return $result;
             } else {
                 return 'error : خطا در ثبت خطوط پروازی';
             }
@@ -116,6 +117,7 @@ public function getAllOrderByiata()
             $data['name_fa'] = $InfoAirline['nameFa'];
             $data['name_en'] = $InfoAirline['nameEn'];
             $data['abbreviation'] = $InfoAirline['abbreviation'];
+            $data['foreignAirline'] = $InfoAirline['foreignAirline'];
             if (empty($_FILES['photo'])) {
 
                 $success = "done:" . $result['photo'];

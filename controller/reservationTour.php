@@ -591,6 +591,11 @@ class reservationTour extends clientAuth
                 $data['create_date_in'] = $dateNow;
                 $data['create_time_in'] = date('H:i:s');
                 $data['is_show'] = '';
+
+                if($arrayInfoAgency['fk_counter_type_id'] == 1){
+                    $data['is_show'] = 'yes';
+                }
+
                 $data['is_del'] = 'no';
                 $data['id_same'] = $idSame;
                 $data['tour_status'] = $param['TourStatus'];
@@ -696,7 +701,7 @@ class reservationTour extends clientAuth
                         '',
                         '" . $dateNow . "',
                         '" . date('H:i:s') . "',
-                        '',
+                        '" . $data['is_show'] . "',
                         '',
                         '',
                         'no',
@@ -1318,6 +1323,7 @@ class reservationTour extends clientAuth
         try {
 
             $infoTourById = $this->infoTourById($param['tourId']);
+            $arrayInfoAgency = functions::infoAgencyByMemberId($param['userId']);
 
             $Model = Load::library('Model');
 
@@ -1402,7 +1408,9 @@ class reservationTour extends clientAuth
             $data['comment_cancel'] = '';
             $data['create_date_in'] = $dateNow;
             $data['create_time_in'] = date('H:i:s');
-
+            if($arrayInfoAgency['fk_counter_type_id'] == 1){
+                $data['is_show'] = 'yes';
+            }
 //                $data['is_show'] = '';
             $data['is_del'] = 'no';
 
@@ -1804,6 +1812,7 @@ class reservationTour extends clientAuth
                 $idSame = $param['tourIdSame'];
                 $userId = $param['userId'];
                 $tourCode = $param['tourCode'];
+                $arrayInfoAgency = functions::infoAgencyByMemberId($param['userId']);
 
 
                 $config = Load::Config('application');
@@ -1987,6 +1996,9 @@ class reservationTour extends clientAuth
                 $data['create_date_in'] = $dateNow;
                 $data['create_time_in'] = date('H:i:s');
                 $data['is_show'] = '';
+                if($arrayInfoAgency['fk_counter_type_id'] == 1){
+                    $data['is_show'] = 'yes';
+                }
                 $data['is_del'] = 'no';
                 $data['language'] = $param['softwareLanguage'];
                 $data['tour_status'] = $param['TourStatus'];
@@ -3851,6 +3863,278 @@ class reservationTour extends clientAuth
             return 'success : ' . functions::Xmlinformation('SuccessRemove');
         }
     }
+
+
+    private function makeUniqueCopyName($baseName, $current_id_same)
+    {
+        $Model = Load::library('Model');
+
+        $name = $baseName;
+
+        // حذف الگوی قبلی (کپی) و (کپی X)
+        $name = preg_replace('/-?کپی\d*$/u', '', $name);
+        $name = trim($name);
+
+        // کاندیدهای جدید
+        $candidates = [];
+        $candidates[] = $name . '-کپی';  // اولین نسخه بدون شماره
+
+        for ($i = 1; $i < 1000; $i++) {
+            $candidates[] = $name . "-کپی{$i}";
+        }
+
+        // بررسی یکتا بودن
+        foreach ($candidates as $candidate) {
+
+            $exists = $Model->load("
+            SELECT id 
+            FROM reservation_tour_tb 
+            WHERE tour_name = " . $this->quote($candidate) . "
+            AND id_same != '{$current_id_same}'
+            LIMIT 1
+        ");
+
+            if (!$exists) {
+                return $candidate;
+            }
+        }
+
+        return end($candidates);
+    }
+
+
+    private function makeUniqueCopyCode($baseCode, $current_id_same)
+    {
+        $Model = Load::library('Model');
+
+        // حذف پسوند -کپی یا -کپیX
+        $code = preg_replace('/-کپی\d*$/u', '', $baseCode);
+
+        // ساخت لیست کاندید
+        $candidates = [];
+        $candidates[] = $code . '-کپی';
+        for ($i = 1; $i < 1000; $i++) {
+            $candidates[] = $code . '-کپی' . $i;
+        }
+
+        // چک بر اساس id_same متفاوت
+        foreach ($candidates as $candidate) {
+
+            $exists = $Model->load("
+            SELECT id 
+            FROM reservation_tour_tb 
+            WHERE tour_code = " . $this->quote($candidate) . "
+            AND id_same != '{$current_id_same}'
+            LIMIT 1
+        ");
+
+            if (!$exists) {
+                return $candidate;
+            }
+        }
+
+        return end($candidates);
+    }
+
+
+
+    private function quote($value)
+    {
+        return "'" . str_replace("'", "''", $value) . "'";
+    }
+    #duplicateTour
+    public function duplicateTour($old_id_same)
+    {
+        $Model = Load::library('Model');
+
+        try {
+
+
+            $today = dateTimeSetting::jdate("Ymd",time(),'','','en');
+
+
+            $Model->execQuery("START TRANSACTION");
+
+            // new id_same برای گروه جدید
+            $rowNewSame = $Model->load("SELECT MAX(id_same)+1 AS new_id_same FROM reservation_tour_tb");
+            $new_id_same = (int)$rowNewSame['new_id_same'];
+
+            // گرفتن همه تورها
+            $mains = $Model->loadAll("
+            SELECT *
+            FROM reservation_tour_tb
+            WHERE id_same = '{$old_id_same}'
+            AND start_date >= '{$today}'
+            AND is_del = 'no'
+        ");
+
+            if (!$mains) {
+                throw new Exception("Tour not found.");
+            }
+
+            foreach ($mains as $main) {
+
+                $rowNewId = $Model->load("SELECT MAX(id)+1 AS new_id FROM reservation_tour_tb");
+                $new_id = (int)$rowNewId['new_id'];
+
+                $old_id = $main['id'];
+
+                $main['id'] = $new_id;
+                $main['id_same'] = $new_id_same;
+
+                if (!empty($main['tour_name'])) {
+                    $main['tour_name'] = $this->makeUniqueCopyName($main['tour_name'], $new_id_same);
+                } else {
+                    $main['tour_name'] = $this->makeUniqueCopyName('تور بدون نام');
+                }
+
+                if (!empty($main['tour_code'])) {
+                    $main['tour_code'] = $this->makeUniqueCopyCode($main['tour_code'], $new_id_same);
+                } else {
+                    $main['tour_code'] = '';
+                }
+
+                $Model->setTable('reservation_tour_tb');
+                $Model->insertWithBind($main);
+
+                /*
+                -------------------
+                packages
+                -------------------
+                */
+
+                $packageIdMap = [];
+
+                $packages = $Model->loadAll("
+                SELECT *
+                FROM reservation_tour_package_tb
+                WHERE fk_tour_id = '{$old_id}'
+            ");
+
+                foreach ($packages as $row) {
+
+                    $old_package_id = $row['id'];
+
+                    unset($row['id']);
+                    $row['fk_tour_id'] = $new_id;
+
+                    $Model->setTable('reservation_tour_package_tb');
+                    $new_package_id = $Model->insertWithBind($row);
+
+                    $packageIdMap[$old_package_id] = $new_package_id;
+                }
+
+                /*
+                -------------------
+                hotels
+                -------------------
+                */
+
+                $hotels = $Model->loadAll("
+                SELECT *
+                FROM reservation_tour_hotel_tb
+                WHERE fk_tour_id = '{$old_id}'
+            ");
+
+                foreach ($hotels as $row) {
+
+                    unset($row['id']);
+
+                    $row['fk_tour_id'] = $new_id;
+
+                    if (!empty($row['fk_tour_package_id']) && isset($packageIdMap[$row['fk_tour_package_id']])) {
+                        $row['fk_tour_package_id'] = $packageIdMap[$row['fk_tour_package_id']];
+                    }
+
+                    $Model->setTable('reservation_tour_hotel_tb');
+                    $Model->insertWithBind($row);
+                }
+
+                /*
+                -------------------
+                other relations
+                -------------------
+                */
+
+                $relations = [
+
+                    "tourtravelprogram_tb" => [
+                        "fk" => "tour_id",
+                        "src" => $old_id_same,
+                        "new" => $new_id_same
+                    ],
+
+                    "reservation_tour_rout_tb" => [
+                        "fk" => "fk_tour_id",
+                        "src" => $old_id,
+                        "new" => $new_id
+                    ],
+
+                    "reservation_tour_tourType_tb" => [
+                        "fk" => "fk_tour_id_same",
+                        "src" => $old_id_same,
+                        "new" => $new_id_same
+                    ],
+
+                    "reservation_tour_gallery_tb" => [
+                        "fk" => "fk_tour_id_same",
+                        "src" => $old_id_same,
+                        "new" => $new_id_same
+                    ],
+
+                    "reservation_tour_change_price_package_tb" => [
+                        "fk" => "fk_tour_id",
+                        "src" => $old_id,
+                        "new" => $new_id
+                    ],
+
+                    "reservation_tour_discount_tb" => [
+                        "fk" => "tour_id",
+                        "src" => $old_id,
+                        "new" => $new_id
+                    ],
+
+                ];
+
+                foreach ($relations as $table => $conf) {
+
+                    $rows = $Model->loadAll("
+                    SELECT *
+                    FROM {$table}
+                    WHERE {$conf['fk']} = '{$conf['src']}'
+                ");
+
+                    foreach ($rows as $row) {
+
+                        unset($row['id']);
+
+                        $row[$conf['fk']] = $conf['new'];
+
+                        $Model->setTable($table);
+                        $Model->insertWithBind($row);
+                    }
+                }
+            }
+
+            $Model->execQuery("COMMIT");
+
+            return json_encode([
+                "status" => "success",
+                "new_id_same" => $new_id_same
+            ]);
+
+        } catch (Exception $e) {
+
+            $Model->execQuery("ROLLBACK");
+
+            return json_encode([
+                "status" => "error",
+                "message" => $e->getMessage()
+            ]);
+        }
+    }
+
+
     #endregion
 
     #region logicalDeletionGalleryTour
@@ -4786,6 +5070,7 @@ class reservationTour extends clientAuth
                 $reservation_tour_table . '.tour_video',
                 $reservation_tour_table . '.description',
                 $reservation_tour_table . '.night',
+                $reservation_tour_table . '.day',
                 $reservation_tour_table . '.start_date',
                 $reservation_tour_table . '.tour_pic',
                 $reservation_tour_table . '.tour_type_id',
