@@ -26,7 +26,7 @@
 
     {*    {include file="include_files/app-section.tpl"}*}
 
-        {include file="include_files/hotels-sections.tpl"}
+{*        {include file="include_files/hotels-sections.tpl"}*}
 
 {*        {include file="include_files/news.tpl"}*}
 

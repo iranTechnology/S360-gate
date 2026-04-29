@@ -308,12 +308,15 @@
   border-radius: $rounded $rounded 0 0;
   overflow: hidden;
   border-bottom: $border;
-  gap: 15px;
 }
 
 .search_box{
   //width: 1130px;
   margin: -132px 50px;
+}
+
+.search_box .fa-calendar-alt {
+  display: none;
 }
 
 
@@ -353,26 +356,9 @@
   background: $mainColor;
   border-radius: 9999px;
 }
-//#searchBoxTabs .nav-link.active::after{
-//  content: "";
-//  width: 100%;
-//  height: 3px;
-//  border-radius: 100px;
-//  background: $mainColor;
-//  position: absolute;
-//  bottom: -1px;
-//  left: 0;
-//}
-#searchBoxTabs .nav-link i svg {
-  width: 100%;
-  height: 100%;
-  fill: #777
-}
 
-
-
-#searchBoxTabs .nav-link.active i svg {
-  fill: #fff;
+#searchBoxTabs .nav-link.active i {
+  color: #fff;
 }
 
 .rotate-45- {
@@ -948,10 +934,10 @@
   position: relative;
 }
 
-#searchBoxTabs .nav-link i svg{
-  width: 20px;
-  height: 20px;
-  fill: #333;
+#searchBoxTabs .nav-link i{
+  font-weight: 300;
+  font-size: 20px;
+  color: #333;
   transition: $transition;
 }
 .flaticon {
@@ -1784,19 +1770,22 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 
 .with_multiTrack {
   width: 275px;
-}@media (max-width: 991px) {
-  #searchBoxContent{
-    border-radius:0 14px 14px!important;
-  }
-
-
 }
 @media (max-width: 1200px) {
   #searchBoxTabs{
-    gap:0 !important;
+    column-gap: 20px !important;
+    justify-content: center;
+    row-gap: 10px;
   }
+  #searchBoxContent{
+    border-radius:0 0 14px 14px!important;
+  }
+}
 
-
+@media (max-width: 992px) {
+  #searchBoxTabs{
+    column-gap: 0 !important;
+  }
 }
 
 @media (max-width: 769px) {
@@ -1812,6 +1801,15 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
   }
   .col_search input.return_input, .col_search input.return_input2, .col_search input.return_input_train{
     margin: 0 1px !important;
+  }
+  #searchBoxTabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 20px;
+    width: auto;
+    border-radius: 14px 14px 14px 14px;
   }
 }
 
@@ -1839,15 +1837,6 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     width: 17px;
     height: 17px;
   }
-  #searchBoxTabs {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
-    grid-column-gap: 10px;
-    grid-row-gap: 20px;
-    width: auto;
-    border-radius: 14px 14px 14px 14px;
-}
 
   #searchBoxTabs a div h4 {
     font-size: 13px;

@@ -147,8 +147,8 @@ const store = new Vuex.Store({
     seatClassFilter: [],
     minPriceAirline: [],
     price: [],
-    // requestNumber: null,
-    // requestNumberNoData: null,
+    requestNumber: null,
+    requestNumberNoData: null,
     setDataSearch:[],
     mobileHeaderSearchBox: true,
     formDataSearch:[],
@@ -253,12 +253,12 @@ const store = new Vuex.Store({
     setPrice(state, price) {
       state.price = price;
     },
-    // requestNumber(state, requestNumber) {
-    //   state.requestNumber = requestNumber;
-    // },
-    //  requestNumberNoData(state, requestNumberNoData) {
-    //     state.requestNumberNoData = requestNumberNoData;
-    //  },
+    requestNumber(state, requestNumber) {
+      state.requestNumber = requestNumber;
+    },
+     requestNumberNoData(state, requestNumberNoData) {
+        state.requestNumberNoData = requestNumberNoData;
+     },
     setCheckComplete(state, isComplete) {
       state.isComplete = isComplete;
     },
@@ -760,7 +760,6 @@ const store = new Vuex.Store({
     //region [internationalFlight]
     async getFlight({ commit }, payload) {
 
-
       await axios
         .post(
           amadeusPath + "ajax",
@@ -774,16 +773,6 @@ const store = new Vuex.Store({
           }
         )
         .then(function (response) {
-          // console.log('store -> > >>>>' , response.data.data.flights)
-          // response.data.data.flights.forEach(f => {
-          //   // f.forEach(c => {
-          //   //   console.log(c)
-          //   // })
-          //   console.log(f)
-          // })
-       
-
-
 
           commit("setFlights", response.data.data.flights);
           commit("getCount", response.data.data.count_flights);
@@ -793,8 +782,7 @@ const store = new Vuex.Store({
           commit("setSeatClassFilter", response.data.data.seat_class_filter);
           commit("setMinPriceAirline", response.data.data.min_price_airline);
           commit("setPrice", response.data.data.price);
-          // commit("requestNumber", response.data.data.request_number);
-          // commit("requestNumberNoData", response.data.data.dept);
+          commit("requestNumber", response.data.data.request_number);
 
           if(payload.method == 'flightInternal') {
             commit("setCheckComplete", response.data.data.dept.is_complete);
@@ -811,6 +799,8 @@ const store = new Vuex.Store({
 
         })
         .catch(function (error) {
+
+          commit("requestNumberNoData", error.response.data.data.dept);
           commit("setDefaultLoader", false);
           commit("setFlights", []);
         });

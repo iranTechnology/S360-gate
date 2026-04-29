@@ -25,26 +25,26 @@
 <div class="camera_wrap camera_azure_skin" id="camera_wrap_1">
 <div data-src="project_files/images/bg.jpg" data-thumb="project_files/images/bg.jpg">
 <div class="title-banner">
-<h3>کانون نهضت تبلیغ</h3>
+<h3> موسسه فرهنگی خادمان نهضت تبلیغ</h3>
 <p class="__title_class__">مجری کاروان‌های گروهی و سفرهای انفرادی</p>
 </div>
 </div>
 <div data-src="project_files/images/KarbalaNight.jpg" data-thumb="project_files/images/KarbalaNight.jpg">
 <div class="title-banner">
-<h3>کانون نهضت تبلیغ</h3>
+<h3> موسسه فرهنگی خادمان نهضت تبلیغ</h3>
 <p class="__title_class__">مجری کاروان‌های گروهی و سفرهای انفرادی</p>
 </div>
 </div>
 <div data-src="project_files/images/emam-hoseyn-1.jpg" data-thumb="project_files/images/emam-hoseyn-1.jpg">
 <div class="title-banner">
-<h3>کانون نهضت تبلیغ</h3>
+<h3> موسسه فرهنگی خادمان نهضت تبلیغ</h3>
 <p class="__title_class__">مجری کاروان‌های گروهی و سفرهای انفرادی</p>
 </div>
 </div>
 </div>
 </div>
 <div class="title-banner title-banner-res">
-<h3>کانون نهضت تبلیغ</h3>
+<h3> موسسه فرهنگی خادمان نهضت تبلیغ</h3>
 <p class="__title_class__">مجری کاروان‌های عتبات و تورهای زیارتی</p>
 </div>
 <div class="i_modular_searchBox search_box">
@@ -79,7 +79,7 @@
 <!--                                        </g>-->
 <!--                                    </svg>-->
 <!--                                    <!&ndash;                                    <img src="project_files/images/Icon-01.png" alt="Hotel-tab">&ndash;>-->
-<!--                                    <h4>هتل</h4>-->
+<!--                                    <h4>اقامتگاه</h4>-->
 <!--                                </div>-->
 <!--                            </a>-->
 <!--                        </li>-->

@@ -316,6 +316,7 @@ function  getResultBusSearch(cityOrigin, cityDestination, dateMove,lang) {
             }
             $("#resultBusSearch").html(data.resultBuses);
             $("#requestNumber").val(data.requestNumber);
+            $('.requestNumber').text(data.requestNumber);
 
             $('.f-loader-check').hide();
             // sortBuses('min_time_move');
@@ -529,7 +530,7 @@ async function showDescriptionDetail(el, busCode, sourceCode) {
 
     await reserveBusTicketWithoutRegister(true, $container)
 }
-async function reserveBusTicketWithoutRegister(description_only=false, $container=null) {
+async function reserveBusTicketWithoutRegister(description_only=false) {
 
     let busCode = $('#busCode').val();
     let sourceCode = $('#sourceCode').val();
@@ -556,6 +557,9 @@ async function reserveBusTicketWithoutRegister(description_only=false, $containe
 
                 $('#factorNumber').val(parseData.factor_number);
                 $('#requestNumber').val(parseData.requestNumber);
+
+
+
                 if(description_only && $container){
                     $container.find('[data-name="bus-extra-descriptions-loading"]').removeClass('d-flex').addClass('d-none')
                     $container.find('[data-name="bus-extra-descriptions"]').removeClass('d-none').addClass('d-block')
@@ -584,7 +588,10 @@ async function reserveBusTicketWithoutRegister(description_only=false, $containe
                     $("#formReserveBusTicket").submit();
                 }
 
-            } else {
+            }
+            else {
+
+
                 if($container) {
                     $container.find('[data-name="bus-extra-descriptions-loading"]').removeClass('d-flex').addClass('d-none')
                     $container.find('[data-name="bus-extra-descriptions"]').removeClass('d-none').addClass('d-block')

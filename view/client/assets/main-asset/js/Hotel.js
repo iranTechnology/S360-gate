@@ -708,7 +708,7 @@ function viewResultInternationalHotel(data_response) {
 // }
 function searchInternalHotel() {
    const form = document.getElementById('internal_hotel_form');
-   const is_new_tab = form.target === '_blank';
+   const is_new_tab = form?.target === '_blank';
 
    let type_application = $("#autoComplateSearchIN_hidden_en")
 
@@ -794,7 +794,7 @@ function searchInternalHotel() {
 }
 function searchInternationalHotel() {
    const form = document.getElementById('international_hotel_form');
-   const is_new_tab = form.target === '_blank';
+   const is_new_tab = form?.target === '_blank';
 
    let check_in_date = $(".check-in-date-international-js")
    let check_out_date_js = $(".check-out-date-international-js")
@@ -2082,9 +2082,530 @@ function searchResidence(is_new_tab = false) {
       })
    })
 })(jQuery)
+
+// const typesHotel = $('#type-hotel').text('انتخاب مقصد');
+setupMobileHotelDrawerElements('internal')
+function handleMobileHotelSearch(keyword, search_type) {
+
+   const listContainer = $("#mobilePopularDestinationsHotel");
+
+   // اگر سرچ خالی شد → دوباره لیست محبوب را برگردان
+   if (!keyword.trim()) {
+      if(search_type == 'internal'){
+         renderMobileHotelPopularInternalCities(search_type);
+         return;
+      }else{
+         renderMobileHotelPopularExternalCities(search_type);
+         return;
+      }
+   }
+
+   if(search_type == 'internal'){
+      $.post(amadeusPath + 'hotel_ajax.php', {
+         inputSearchValue: keyword,
+         flag: 'searchCityHotelForInternalHotel',
+         json: true
+      }, function(data) {
+         try {
+            // Parse کردن دیتا اگر string باشه
+            const response = typeof data === 'string' ? JSON.parse(data) : data;
+
+            let html_items = [];
+
+         if(response.length === 0){
+            html_items.push(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
+         }
+
+            if(response.Cities !== undefined){
+               response.Cities.forEach((item) => {
+                  html_items.push(`
+                <li onclick="selectCity_internal('${item.CityId}','${item.CityName}' , '${item.CityNameEn}' , 'city')">
+                    <div class="mobile-city-item">
+                        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0">
+                            <path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path>
+                        </svg>
+                        <span class="city-text">${lang == 'fa'? item.CityName : item.city_name_en}</span>
+                    </div>
+                </li>
+                <div class="mobile-divider"></div>
+            `);
+
+               })
+            }
+            if(response.ApiHotels !== undefined){
+               response.ApiHotels.forEach((item) => {
+                  html_items.push(`
+                  <li onclick="selectCity_internal('${item.HotelId}','${item.HotelName}' , '${item.HotelNameEn}' , 'api')">
+                     <div class="mobile-city-item">
+                        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor"
+                             className="mobile-drawer-svg-map shrink-0">
+                           <path
+                               d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z"
+                               fill-rule="evenodd"></path>
+                        </svg>
+                        <span class="city-text"> ${lang == 'fa' ? item.HotelName : item.HotelNameEn}</span>
+                     </div>
+                  </li>
+                  <div class="mobile-divider"></div>
+                  `);
+               })
+            }
+            if(response.ReservationHotels !== undefined){
+               response.ReservationHotels.forEach((item) => {
+                  html_items.push(`
+                  <li onclick="selectCity_internal('${item.HotelId}','${item.HotelName}' , '${item.HotelNameEn}' , 'reservation')">
+                     <div class="mobile-city-item">
+                        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor"
+                             className="mobile-drawer-svg-map shrink-0">
+                           <path
+                               d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z"
+                               fill-rule="evenodd"></path>
+                        </svg>
+                        <span class="city-text">  ${lang == 'fa' ? item.HotelName : item.HotelNameEn}</span>
+                     </div>
+                  </li>
+                  <div class="mobile-divider"></div>
+                  `);
+
+               })
+            }
+
+
+            listContainer.html(`
+            <h2>${useXmltag("SearchResult")}</h2>
+            <ul class="ul-mobile-drawer">${html_items.join("")}</ul>
+        `);
+
+         } catch(e) {
+            console.error("Parse Error:", e);
+            listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
+         }
+      }).fail(function(xhr, status, error) {
+         console.error("Request failed:", error);
+         listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
+      });
+   }else{
+      $.post(amadeusPath + 'hotel_ajax.php', {
+         inputSearchValue: keyword,
+         flag: 'searchCityForExternalHotel',
+         json: true
+      }, function(data) {
+         try {
+            // Parse کردن دیتا اگر string باشه
+            const response = typeof data === 'string' ? JSON.parse(data) : data;
+
+            let html_items = [];
+
+            if(response.length === 0){
+               html_items.push(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
+            }
+            console.log(response)
+
+               response.forEach((item) => {
+                  let indexCountry = item.CountryFa || item.CountryEn || " ";
+                  let indexCity = item.DepartureCityFa || item.DepartureCityEn || " ";
+                  html_items.push(`
+                  <li onclick="selectCity(event , '${item.AirportEn}','${item.AirportFa}','${item.CountryEn}','${item.CountryFa}','${item.DepartureCityEn}','${item.DepartureCityFa}','${item.DepartureCode}')">
+                <div class="mobile-city-item">
+                   <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
+                  <div class="city-text">
+                  <div>
+                  <span>${indexCountry}</span>
+                  </div>
+                  <div style="font-size:12px !important">
+                   <span>${indexCity}</span>
+                   </div>
+                   </div>
+                </div>
+              </li>
+              <div class="mobile-divider"></div>
+                  `);
+               })
+
+
+            listContainer.html(`
+            <h2>${useXmltag("SearchResult")}</h2>
+            <ul class="ul-mobile-drawer">${html_items.join("")}</ul>
+        `);
+
+         } catch(e) {
+            console.error("Parse Error:", e);
+            listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
+         }
+      }).fail(function(xhr, status, error) {
+         console.error("Request failed:", error);
+         listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
+      })
+   }
+}
+function renderMobileHotelPopularInternalCities(type) {
+
+   const container = $('#mobilePopularDestinationsHotel');
+   container.html('');
+
+   $.post(amadeusPath + 'hotel_ajax.php', {
+      flag: 'popularCityForInternalHotel',
+      self_Db: true,
+   }, function(data) {
+      try {
+         const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+
+         let html_output = '';
+         let popularListHTML = '';
+
+         if (!parsedData || !Array.isArray(parsedData)) {
+            console.error("Invalid data format:", parsedData);
+            container.html('<div class="error-message">داده دریافتی نامعتبر است</div>');
+            return;
+         }
+
+         $(parsedData).each(function(_, index) {
+            if (lang === 'en' || lang === 'ar') {
+               popularListHTML += `
+                 <li onclick="selectCity_internal('${index.id}','${index.city_name_en}' , '${index.city_name_en}' , 'city')">
+                   <div class="mobile-city-item">
+                      <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
+                     <span class="city-text">${index.city_name_en}</span>
+                   </div>
+                 </li>
+                 <div class="mobile-divider"></div>`;
+            }else{
+               popularListHTML += `
+                 <li onclick="selectCity_internal('${index.id}','${index.city_name}' , '${index.city_name}' , 'city')">
+                   <div class="mobile-city-item">
+                      <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
+                     <span class="city-text">${lang === 'fa' ? index.city_name : index.city_name_en}</span>
+                   </div>
+                 </li>
+                 <div class="mobile-divider"></div>`;
+            }
+
+         });
+
+         html_output += `
+        <h2 style="font-size: 16px;
+  margin-right: 15px;
+  margin-top: 10px;">${useXmltag("Busy")}</h2>
+        <ul class="ul-mobile-drawer">${popularListHTML}</ul>
+      `;
+
+         container.html(html_output);
+
+         // نمایش کانتینر
+         container.removeClass('displayiN');
+
+      } catch(e) {
+         console.error("JSON Parse Error:", e);
+         console.error("Raw data received:", data);
+         container.html('<div class="error-message">خطا در دریافت اطلاعات</div>');
+         container.removeClass('displayiN');
+      }
+   }).fail(function(xhr, status, error) {
+      console.error("Request failed!");
+      console.error("Status:", status);
+      console.error("Error:", error);
+      console.error("Response Text:", xhr.responseText);
+      console.error("Status Code:", xhr.status);
+
+      container.html('<div class="error-message">خطا در ارتباط با سرور</div>');
+      container.removeClass('displayiN');
+   });
+
+
+
+}
+function renderMobileHotelPopularExternalCities(type) {
+
+   const container = $('#mobilePopularDestinationsHotel');
+   container.html('');
+
+   $.post(amadeusPath + 'hotel_ajax.php', {
+      flag: 'flightExternalRoutesDefault',
+      self_Db: true,
+   }, function(data) {
+      try {
+         const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+
+         let html_output = '';
+         let popularListHTML = '';
+
+         if (!parsedData || !Array.isArray(parsedData)) {
+            console.error("Invalid data format:", parsedData);
+            container.html('<div class="error-message">داده دریافتی نامعتبر است</div>');
+            return;
+         }
+
+         $(parsedData).each(function(_, index) {
+            // if (lang === 'en' || lang === 'ar') {
+               let indexCountry = index.CountryFa || index.CountryEn || " ";
+               let indexCity = index.DepartureCityFa || index.DepartureCityEn || " ";
+               popularListHTML += `
+                
+ <li onclick="selectCity(event , '${index.AirportEn}','${index.AirportFa}','${index.CountryEn}','${index.CountryFa}','${index.DepartureCityEn}','${index.DepartureCityFa}','${index.DepartureCode}')">
+    <div class="mobile-city-item">
+       <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
+      <div class="city-text">
+      <div>
+      <span>${indexCountry}</span>
+      </div>
+      <div style="font-size:12px !important">
+       <span>${indexCity}</span>
+       </div>
+       </div>
+    </div>
+  </li>
+  <div class="mobile-divider"></div>
+
+`;
+            // }
+
+         });
+
+         if (html_output) {
+            container.html(html_output);
+         } else if (popularListHTML) {
+            container.html(popularListHTML);
+         } else {
+            container.html('<div class="error-message">هیچ داده‌ای یافت نشد</div>');
+         }
+
+         // نمایش کانتینر
+         container.removeClass('displayiN');
+
+      } catch(e) {
+         console.error("JSON Parse Error:", e);
+         console.error("Raw data received:", data);
+         container.html('<div class="error-message">خطا در دریافت اطلاعات</div>');
+         container.removeClass('displayiN');
+      }
+   }).fail(function(xhr, status, error) {
+      console.error("Request failed!");
+      console.error("Status:", status);
+      console.error("Error:", error);
+      console.error("Response Text:", xhr.responseText);
+      console.error("Status Code:", xhr.status);
+
+      container.html('<div class="error-message">خطا در ارتباط با سرور</div>');
+      container.removeClass('displayiN');
+   });
+
+
+
+}
+function setupMobileHotelDrawerElements(search_type) {
+   const drawer = document.getElementById('mobileDrawerHotel');  // تغییر: اضافه کردن Hotel
+   const overlay = document.getElementById('drawerOverlayHotel');  // تغییر: اضافه کردن Hotel
+
+   if (drawer && overlay) {
+      const searchInput = document.getElementById('mobileSearchInputHotel');  // تغییر: id جدید
+      if (searchInput) {
+         searchInput.placeholder = 'انتخاب مقصد یا هتل';
+         searchInput.oninput = () => handleMobileHotelSearch(searchInput.value, search_type);
+      }
+      return;
+   }
+
+   // ساخت overlay
+   const newOverlay = document.createElement('div');
+   newOverlay.id = 'drawerOverlayHotel';
+   newOverlay.className = 'drawer-overlay';
+   document.body.appendChild(newOverlay);
+
+   // ساخت drawer
+   const newDrawer = document.createElement('div');
+   newDrawer.id = 'mobileDrawerHotel';
+   newDrawer.className = 'mobile-drawer';
+
+   newDrawer.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mx-3">
+        <h5 id="type-hotel">انتخاب مقصد</h5>
+        <button class="close-drawer-btn ml-2">&times;</button>
+    </div>
+
+    <div class="drawer-header mb-1">
+        <input type="text" id="mobileSearchInputHotel"
+            class="mobile-search-input m-0"
+            placeholder="انتخاب مقصد یا هتل">
+    </div>
+
+    <div class="border-bottom w-100"></div>
+
+    <div id="mobilePopularDestinationsHotel" class="mobile-popular-list"></div>
+  `;
+
+   document.body.appendChild(newDrawer);
+
+   const closeButton = newDrawer.querySelector('.close-drawer-btn');
+   if (closeButton) {
+      closeButton.onclick = closeMobileHotelDrawer;
+   }
+   if (newOverlay) {
+      newOverlay.onclick = closeMobileHotelDrawer;
+   }
+
+   const searchInput = document.getElementById('mobileSearchInputHotel');
+   if (searchInput) {
+      searchInput.oninput = () => handleMobileHotelSearch(searchInput.value, search_type);
+   }
+}
+function openMobileHotelDrawer() {
+   const drawerOverlay = document.getElementById('drawerOverlayHotel');
+   const mobileDrawer = document.getElementById('mobileDrawerHotel');
+   if (drawerOverlay && mobileDrawer) {
+      drawerOverlay.classList.add('visible');
+      mobileDrawer.classList.add('visible');
+      console.log('Drawer opened.');
+   }
+}
+function closeMobileHotelDrawer() {
+   const drawerOverlay = document.getElementById('drawerOverlayHotel');
+   const mobileDrawer = document.getElementById('mobileDrawerHotel');
+   if (drawerOverlay && mobileDrawer) {
+      drawerOverlay.classList.remove('visible');
+      mobileDrawer.classList.remove('visible');
+      console.log('Drawer closed.');
+   }
+}
+
+
+
+function setupMobileHotelDrawerElementsDatePicker(type) {
+   const drawerId = 'mobileDrawerDatePickerHotel';  // تغییر: اضافه کردن Hotel
+   const overlayId = 'drawerOverlayHotel';          // تغییر: اضافه کردن Hotel
+   const datepickerPlaceholderId = "mobileDatepickerContainerPlaceholderHotel"; // تغییر: اضافه کردن Hotel
+
+   let drawer = document.getElementById(drawerId);
+   let overlay = document.getElementById(overlayId);
+
+   const typesText = type === 'dept' ? 'انتخاب تاریخ ورود' : 'انتخاب تاریخ خروج';
+
+   // --- اگر عناصر از قبل موجود بودند ---
+   if (drawer && overlay) {
+      document.getElementById('typesHotel').textContent = typesText;  // تغییر: استفاده از id جدید
+      overlay.style.display = 'block';
+      drawer.style.display = 'block';
+
+      const datepickerWrapper = document.querySelector(`#${drawerId} .mdp-uni`);
+      if (datepickerWrapper) {
+         const currentPlaceholder = document.getElementById(datepickerPlaceholderId);
+         if (currentPlaceholder && !currentPlaceholder.contains(datepickerWrapper)) {
+            currentPlaceholder.appendChild(datepickerWrapper);
+         }
+      }
+      return;
+   }
+
+   // --- ساخت overlay ---
+   if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = overlayId;
+      overlay.className = 'drawer-overlay';
+      document.body.appendChild(overlay);
+   }
+
+   // --- ساخت drawer ---
+   drawer = document.createElement('div');
+   drawer.id = drawerId;
+   drawer.className = 'mobile-drawer';
+
+   // --- محتوای داخل drawer ---
+   drawer.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mx-3 mb-3">
+        <h5 id="typesHotel">${typesText}</h5>  <!-- تغییر: id جدید -->
+        <button class="close-drawer-btn ml-2">&times;</button>
+    </div>
+    <div class="border-bottom w-100"></div>
+    <div id="${datepickerPlaceholderId}" class="datepicker-placeholder">
+    </div>
+`;
+   document.body.appendChild(drawer);
+
+   const closeButton = drawer.querySelector('.close-drawer-btn');
+   if (closeButton) {
+      closeButton.onclick = closeMobileHotelDrawerDatePicker;
+   }
+   if (overlay) {
+      overlay.onclick = closeMobileHotelDrawerDatePicker;
+   }
+
+   overlay.style.display = 'block';
+   drawer.style.display = 'block';
+}
+
+function openMobileHotelDrawerDatePicker(type = 'dept', type_nat = 'internal') {
+   const drawerOverlay = document.getElementById('drawerOverlayHotel');
+   const mobileDrawer = document.getElementById('mobileDrawerDatePickerHotel');
+
+   if (drawerOverlay && mobileDrawer) {
+      drawerOverlay.classList.add('visible');
+      mobileDrawer.classList.add('visible');
+      console.log('Drawer opened.');
+   }
+}
+function closeMobileHotelDrawerDatePicker() {
+   const drawerOverlay = document.getElementById('drawerOverlayHotel');  // تغییر: id جدید
+   const mobileDrawer = document.getElementById('mobileDrawerDatePickerHotel');  // تغییر: id جدید
+   if (drawerOverlay && mobileDrawer) {
+      drawerOverlay.classList.remove('visible');
+      mobileDrawer.classList.remove('visible');
+      console.log('Drawer closed.');
+   }
+}
+
+if(window.innerWidth <= 576){
+   $('#autoComplateSearchIN, #autoComplateSearchIN_2,#startDateForHotelLocal,#endDateForHotelLocal,#startDateForExternalHotelInternational,#endDateForExternalHotelInternational')
+       .attr('readonly', 'readonly')
+       .css('background-color', '#fff');
+   $('#startDateForHotelLocal').click(()=>{
+      setupMobileHotelDrawerElementsDatePicker('dept')
+      setTimeout(()=>{
+         openMobileHotelDrawerDatePicker()
+         $("#startDateForHotelLocal").focus();
+      },100)
+   })
+
+   $('#endDateForHotelLocal').click(()=>{
+      setupMobileHotelDrawerElementsDatePicker('retu')
+      setTimeout(()=>{
+         openMobileHotelDrawerDatePicker()
+         $("#endDateForHotelLocal").focus();
+      },100)
+   })
+   $('#startDateForExternalHotelInternational').click(()=>{
+      setupMobileHotelDrawerElementsDatePicker('dept')
+      setTimeout(()=>{
+         openMobileHotelDrawerDatePicker()
+         $("#startDateForExternalHotelInternational").focus();
+      },100)
+   })
+
+   $('#endDateForExternalHotelInternational').click(()=>{
+      setupMobileHotelDrawerElementsDatePicker('retu')
+      setTimeout(()=>{
+         openMobileHotelDrawerDatePicker()
+         $("#endDateForExternalHotelInternational").focus();
+      },100)
+   })
+
+}
+
+
 function openBoxPopular(e) {
+   if(window.innerWidth <= 576) {
+      if(e === 'hotel') {
+         setupMobileHotelDrawerElements('internal');
+         renderMobileHotelPopularInternalCities('internal')
+         openMobileHotelDrawer('internal');
+      }else{
+         setupMobileHotelDrawerElements('externalHotel');
+         renderMobileHotelPopularExternalCities('externalHotel')
+         openMobileHotelDrawer('externalHotel');
+      }
+   }else{
    HotelPopular(e);
    $("#autoComplateSearchIN_2,#autoComplateSearchIN,#destination_city,#destination_country,#autoComplateSearchIN_hidden,#autoComplateSearchINResidence,#autoComplateSearchIN_hiddenResidence").val("");
+}
+
 }
 
 
@@ -2251,9 +2772,19 @@ function selectCity_internal(id , name , nameEN , type_application){
    $('#autoComplateSearchIN_hidden').val(id)
    $("#autoComplateSearchIN_hidden_en").val(nameEN)
    $('#autoComplateSearchIN').val(name)
-   type_application_searchInternalHotel = type_application;
+   if(window.innerWidth <= 576){
+      closeMobileHotelDrawer();
+      setupMobileHotelDrawerElementsDatePicker('dept')
+      setTimeout(()=>{
+      openMobileHotelDrawerDatePicker('dept' , 'internal')
+      $("#startDateForHotelLocal").focus();
+      },200)
+
+   }else{
    $("#startDateForHotelLocal").trigger('click')
    $("#startDateForHotelLocal").focus();
+   }
+   type_application_searchInternalHotel = type_application;
 
 }
 
@@ -2262,6 +2793,9 @@ function selectCity_residence(id, name, nameEN, type_application) {
    $('#autoComplateSearchIN_hiddenResidence').val(id);
    $('#autoComplateSearchINResidence').val(name);
    $('#autoComplateSearchIN_hidden_en_residence').val(nameEN);
+   if(window.innerWidth <= 576){
+      closeMobileHotelDrawer();
+   }
    type_application_searchResidence = type_application;
    $('#type_code').trigger('click');
    $('#type_code').select2('open');
@@ -2315,9 +2849,18 @@ function selectCity( e, AirportEn , AirportFa , CountryEn , CountryFa , Departur
    $('#destination_city_foreign').val(DepartureCityEn)
    $('#listSearchCity , #listSearchCity_2, #listSearchCityResidence').addClass('displayiN')
    e.stopPropagation();
+   if(window.innerWidth <= 576){
+      closeMobileHotelDrawer();
+      setupMobileHotelDrawerElementsDatePicker('dept')
+      setTimeout(()=>{
+         openMobileHotelDrawerDatePicker()
+         $("#startDateForExternalHotelInternational").focus();
+      },200)
 
+   }else{
    $("#startDateForExternalHotelInternational").trigger('click')
    $("#startDateForExternalHotelInternational").focus();
+}
 }
 
 function item_search(CountryEn,DepartureCityEn,DepartureCityEn,city,country) {

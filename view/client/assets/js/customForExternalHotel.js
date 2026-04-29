@@ -158,6 +158,8 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
             console.log('he he he he h')
             let advertises = data.advertises;
             let request_number = data.requestNumber
+            $('#requestNumber').text(request_number);
+
             if (data.error) {
                 // let htmlError = '<div class="userProfileInfo-messge">' +
                 //     '<div class="messge-login BoxErrorSearch">' +
@@ -169,7 +171,6 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
                     <div class='fullCapacity_div'>
                         <img src='${full_capacity_image}' alt='fullCapacity'>
                             <h2>${useXmltag('Nohotel')}</h2>
-                              <kbd class="kbd_style">${request_number}</kbd>
                     </div>
                 </div>`;
                 $("#hotelResult").html(htmlError);

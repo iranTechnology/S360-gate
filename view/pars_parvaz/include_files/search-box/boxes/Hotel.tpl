@@ -1,6 +1,6 @@
 <div aria-labelledby="hotel-tab" class="__box__ tab-pane {if $active}active{/if} internal-hotel-js" id="Hotel_internal" role="tabpanel">
     <div class="d-flex flex-wrap">
-        <form class="d-contents">
+        <form class="d-contents" target="_blank">
             {include file="./sections/Hotel/internal/destination_city.tpl"}
             {include file="./sections/Hotel/internal/check_in_date.tpl"}
             {include file="./sections/Hotel/internal/check_out_date.tpl"}
@@ -14,7 +14,7 @@
 </div>
 <div aria-labelledby="hotel_international-tab" class="__box__ tab-pane international-hotel-js" id="Hotel_external" role="tabpanel">
     <div id='international_hotel' class="d-flex flex-wrap">
-        <form class="d-contents">
+        <form class="d-contents" target="_blank">
             {include file="./sections/Hotel/international/destination_city.tpl"}
             {include file="./sections/Hotel/international/check_in_date.tpl"}
             {include file="./sections/Hotel/international/check_out_date.tpl"}

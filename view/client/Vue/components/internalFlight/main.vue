@@ -2,8 +2,10 @@
 
 
 <div class="d-flex flex-wrap">
-
-
+  <div class="requestNumber">
+    {{requestNumber}}
+    {{requestNumberNoData}}
+  </div>
     <sidebar :dataSearch="setDataSearch" :price="price"  :timeFilter="timeFilter"
              :typeFlightFilter="typeFlightFilter" :seatClassFilter="seatClassFilter"
              :minPriceAirline="minPriceAirline" :countFlights="filteredFlights.length"
@@ -14,10 +16,6 @@
                  @sortPriceOfShowTicket="priceSortFlight" ></show-ticket>
   <input type="hidden" value='' name="flight_id_private" id="flight_id_private">
 </div>
-<!--   <div class="requestNumber">-->
-<!--   {{requestNumber}}-->
-<!--   {{requestNumberNoData}}-->
-<!--   </div>-->
 </template>
 
 <script>
@@ -442,12 +440,12 @@
                 }
 
             },
-           // requestNumber() {
-           //    return this.$store.state.requestNumber
-           // },
-           // requestNumberNoData() {
-           //    return this.$store.state.requestNumberNoData
-           // },
+           requestNumber() {
+              return this.$store.state.requestNumber
+           },
+           requestNumberNoData() {
+              return this.$store.state.requestNumberNoData
+           },
             setDataSearch() {
                 return this.$store.state.setDataSearch
             },
@@ -532,3 +530,13 @@
         }
     }
 </script>
+
+<style>
+.requestNumber {
+  position: absolute;
+  z-index: 1000;
+  color: transparent;
+  top: 90px;
+  left: 0;
+}
+</style>

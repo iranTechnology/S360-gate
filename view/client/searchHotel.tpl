@@ -83,6 +83,10 @@
 <input type='hidden' name='sort_hotel_type' id='sort_hotel_type' value='{$which_sort[0]['title_en']}'>
 {include file="`$smarty.const.FRONT_CURRENT_CLIENT`hotelTimeoutModal.tpl"}
 <div id="appHotel" class="row minW-100">
+
+    <div id="requestNumber">
+    </div>
+
     <div class="col-lg-3 col-md-12  col-12 col-padding-5 ">
         <div class="parent_sidebar">
             <!-- Change Currency Box -->
@@ -470,4 +474,14 @@
 
     </script>
 {/literal}
+
+<style>
+    #requestNumber {
+        position: absolute;
+        z-index: 1000;
+        color: transparent;
+        top: 90px;
+        left: 0;
+    }
+</style>
 

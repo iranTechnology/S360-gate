@@ -85,8 +85,6 @@
                             <a target="_blank" rel="nofollow" href="http://aira.ir/images/final3.pdf"><img src="project_files/images/certificate3.png" alt=""></a>
                             <a target="_blank" rel="nofollow" href="https://enamad.ir/"><img src="project_files/images/enamad.png" alt=""></a>
                             <a target="_blank" rel="nofollow" href="https://samandehi.ir/Pages/HomePage.aspx"><img src="project_files/images/samandeh.jpg" alt=""></a>
-
-
                             <a target="_blank" rel="nofollow" href="https://www.rai.ir/"><img src="project_files/images/logo_F.png" alt="logo_F"></a>
                             <a target="_blank" rel="nofollow" href="https://www.haj.ir/"><img src="project_files/images/logo_F2.png" alt="logo_F2"></a>
                             <a target="_blank" rel="nofollow" href="https://www.mcth.ir/"><img src="project_files/images/logo_F3.png" alt="logo_F3"></a>

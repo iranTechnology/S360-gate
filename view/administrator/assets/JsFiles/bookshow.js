@@ -58,6 +58,345 @@ function ModalShowBook(RequestNumber) {
         });
 }
 
+function reReserve(factorNum, RequestNumber, dir) {
+    return new Promise((resolve, reject) => {
+
+        let RequestNumberObj = {};
+        RequestNumberObj[dir] = RequestNumber;
+
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'user_ajax.php',
+            data: {
+                flag: 'buyByCreditLocal',
+                factorNum: factorNum,
+                RequestNumber: RequestNumberObj
+            },
+            success: function (data) {
+
+                if (data.indexOf('success') > -1) {
+                    $.ajax({
+                        url: amadeusPath + 'ajax',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: JSON.stringify({
+                            method: 'bookFlight',
+                            className: 'bookTicketFlight',
+                            factorNumber: factorNum,
+                            paymentType: 'credit',
+                            trackingCode: '',
+                            successPayment: '1',
+                            paymentBank: ''
+                        }),
+                        success: function (data) {
+
+                            resolve(true);
+
+                        },
+                        error: function () {
+                            resolve(false);
+                        }
+                    });
+                } else {
+                    reject('creditError');
+                }
+
+            },
+        });
+    });
+}
+
+async function confirmReservationRequestAgain(el, RequestNumber, IdMember, SourceId, dir, factorNum) {
+    $.confirm({
+        theme: 'supervan',
+        title: 'درخواست مجدد صدور رزرو',
+        icon: 'fa fa-shopping-cart',
+        content: 'آیا از درخواست مجدد برای صدور رزرو اطمینان دارید ؟',
+        rtl: true,
+        closeIcon: true,
+        type: 'orange',
+        buttons: {
+            confirm: {
+                text: 'تایید',
+                btnClass: 'btn-green',
+                action: async function () {
+                    let parentLoader = el.closest('td');
+                    let loader = parentLoader.querySelector('.parent-ld');
+                    let loaderLd = parentLoader.querySelector('.ld');
+                    loader.style.display = 'block';
+                    loaderLd.style.display = 'inline-block';
+
+                    try {
+                        let reBookResult = await reBook(el, RequestNumber, IdMember, SourceId, dir);
+
+                        if (reBookResult) {
+                            let priceChangeResponse = await hasChangePriceFlight(RequestNumber, factorNum);
+
+                            if (priceChangeResponse.priceChanges && Object.keys(priceChangeResponse.priceChanges).length > 0) {
+                                let message = '<div style="text-align: right; line-height: 2;">';
+                                message += '<strong>تغییرات قیمت:</strong><br><br>';
+
+                                for (let direction in priceChangeResponse.priceChanges) {
+                                    let directionName =
+                                        direction === 'dept'
+                                            ? 'پرواز رفت'
+                                            : direction === 'return'
+                                                ? 'پرواز برگشت'
+                                                : 'پرواز';
+                                    message += '<strong>' + directionName + ':</strong><br>';
+
+                                    priceChangeResponse.priceChanges[direction].forEach(function(change) {
+                                        message += '• ' + change.message + '<br>';
+                                    });
+
+                                    message += '<br>';
+                                }
+                                message += '</div>';
+
+                                $.confirm({
+                                    theme: 'supervan',
+                                    title: 'تغییر قیمت',
+                                    icon: 'fa fa-exclamation-triangle',
+                                    content: message,
+                                    rtl: true,
+                                    closeIcon: true,
+                                    type: 'orange',
+                                    buttons: {
+                                        confirm: {
+                                            text: 'تایید و ادامه',
+                                            btnClass: 'btn-green',
+                                            action: async function () {
+                                                await proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderLd);
+                                            }
+                                        },
+                                        cancel: {
+                                            text: 'انصراف',
+                                            btnClass: 'btn-red',
+                                            action: function() {
+                                                loader.style.display = 'none';
+                                                loaderLd.style.display = 'none';
+                                            }
+                                        }
+                                    }
+                                });
+                            } else {
+                                await proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderLd);
+                            }
+                        } else {
+                            $.toast({
+                                heading: 'خطا در صدور',
+                                text: 'صدور مجدد رزرو با خطا مواجه گردید',
+                                position: 'top-right',
+                                loaderBg: '#fff',
+                                icon: 'error',
+                                hideAfter: 4000,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                            loader.style.display = 'none';
+                            loaderLd.style.display = 'none';
+                        }
+                    }
+                    catch (error) {
+                        if (error === 'creditError') {
+                            $.toast({
+                                heading: 'خطا در اعتبار',
+                                text: 'اعتبار آژانس اصلی و یا آژانس زیر مجموعه جهت صدور رزرو کافی نیست',
+                                position: 'top-right',
+                                loaderBg: '#fff',
+                                icon: 'error',
+                                hideAfter: 4000,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                        } else {
+                            $.toast({
+                                heading: 'خطا',
+                                text: 'خطای غیرمنتظره رخ داد',
+                                position: 'top-right',
+                                loaderBg: '#fff',
+                                icon: 'error',
+                                hideAfter: 4000,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                        }
+                        loader.style.display = 'none';
+                        loaderLd.style.display = 'none';
+                    }
+                }
+            },
+            cancel: {
+                text: 'انصراف',
+                btnClass: 'btn-orange',
+            }
+        }
+    });
+}
+
+async function proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderLd) {
+    try {
+        let reReserveResult = await reReserve(factorNum, RequestNumber, dir);
+
+        if (reReserveResult) {
+            $.toast({
+                heading: 'صدور موفق',
+                text: 'صدور مجدد رزرو با موفقیت انجام شد',
+                position: 'top-right',
+                loaderBg: '#fff',
+                icon: 'success',
+                hideAfter: 4000,
+                textAlign: 'right',
+                stack: 6
+            });
+        } else {
+            $.toast({
+                heading: 'خطا در صدور',
+                text: 'صدور مجدد رزرو با خطا مواجه گردید',
+                position: 'top-right',
+                loaderBg: '#fff',
+                icon: 'error',
+                hideAfter: 4000,
+                textAlign: 'right',
+                stack: 6
+            });
+        }
+    } catch (error) {
+        $.toast({
+            heading: 'خطا',
+            text: 'خطای غیرمنتظره در صدور رزرو رخ داد',
+            position: 'top-right',
+            loaderBg: '#fff',
+            icon: 'error',
+            hideAfter: 4000,
+            textAlign: 'right',
+            stack: 6
+        });
+    }
+
+    loader.style.display = 'none';
+    loaderLd.style.display = 'none';
+
+    setTimeout(() => {
+        location.reload();
+    }, 4000);
+}
+
+function reBook(el , RequestNumber , IdMember , SourceId , dir) {
+
+    let RequestNumberObj = `{"${dir}":"${RequestNumber}"}`;
+    let SourceIdObj = `{"${dir}":"${SourceId}"}`;
+
+    return new Promise((resolve, reject) => {
+
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'user_ajax.php',
+            dataType: 'JSON',
+            data: {
+                flag: 'bookFlight',
+                RequestNumber: RequestNumberObj,
+                IdMember: IdMember,
+                SourceId: SourceIdObj,
+                CaptchaCode: '',
+                CaptchaReturnCode: ''
+            },
+            success: function (data) {
+
+                if (data.total_status == 'success' || data?.dept?.result_code == 'ERROR113') {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            },
+            error: function () {
+                resolve(false);
+            }
+        });
+
+    });
+
+}
+
+function hasChangePriceFlight(RequestNum, factorNum) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'user_ajax.php',
+            dataType: 'JSON',
+            data: {
+                flag: 'hasChangePriceFlight',
+                RequestNum: RequestNum,
+                factorNum: factorNum
+            },
+            success: function(response) {
+                console.log('hasChangePriceFlight: ' , response)
+                if (response.priceChanges && Object.keys(response.priceChanges).length > 0) {
+                    let message = 'تغییرات قیمت:\n\n';
+
+                    for (let direction in response.priceChanges) {
+                        let directionName =
+                            direction === 'dept'
+                                ? 'پرواز رفت'
+                                : direction === 'return'
+                                    ? 'پرواز برگشت'
+                                    : 'پرواز';
+                        message += directionName + ':\n';
+
+                        response.priceChanges[direction].forEach(function(change) {
+                            message += '• ' + change.message + '\n';
+                        });
+
+                        message += '\n';
+                    }
+
+                }
+
+                resolve(response); // اضافه شد
+            },
+            error: function(xhr, status, error) {
+                reject(error); // اضافه شد
+            }
+        });
+    });
+}
+
+function AddNote(RequestNumber,ClientID) {
+    $.post(libraryPath + 'ModalCreator.php',
+        {
+            Controller: 'bookshow',
+            Method: 'ModalAddNote',
+            Param: RequestNumber,
+            ParamId: ClientID
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
+}
+
+function OpenChat(RequestNumber,Type,clientId) {
+    document
+        .querySelector('#ChatBtn' + RequestNumber)
+        ?.parentNode
+        .querySelector('span')
+        ?.remove();
+
+    $.post(libraryPath + 'ModalCreator.php',
+        {
+            Controller: 'bookshow',
+            Method: 'ModalChat',
+            Param: {
+                RequestNumber: RequestNumber,
+                clientId: clientId
+            },
+            ParamId: Type
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
+}
+
+
 function ModalShowBookForFlight(RequestNumber) {
 
 
