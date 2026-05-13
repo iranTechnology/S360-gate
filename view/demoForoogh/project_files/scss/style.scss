@@ -237,6 +237,10 @@ a:hover{
         font-weight: 700;
       }
       span{
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
         font-size: 14px;
         color: #888;
       }
@@ -315,7 +319,6 @@ a:hover{
         .tour_title{
           color: #333;
           font-size: 18px;
-          font-family: $fontFamily;
           margin: 0;
           text-align: right;
           font-weight: 700;
@@ -338,7 +341,6 @@ a:hover{
           .tour_night{
             width: fit-content;
             font-size: 13px;
-            font-family: $fontFamily;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -366,7 +368,6 @@ a:hover{
             .tour_title_price{
               color: $mainColor;
               font-size: 24px;
-              font-family: $fontFamily;
               margin: 0;
               font-weight: 700;
             }
@@ -1116,16 +1117,24 @@ a:hover{
   display:none !important;
 }
 
-
-
-
-
-
-
-
-
+@media (max-width: 1200px) {
+  .latest-tour .parent-latest-tour .parent-grid-latest-tour {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 
 @media (max-width: 991px) {
+  .news .news-section-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .title {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+  .tour .parent-grid-box .tour_div {
+    grid-template-columns: repeat(1, 1fr);
+  }
   .tour-kanoun .tour-owl{
     display: block;
   }
@@ -1154,6 +1163,9 @@ a:hover{
   .line {
     width: 54%;
   }
+  .other-links .parent-other-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -1166,26 +1178,9 @@ a:hover{
     display:block !important;
   }
 
-  .tour .parent-grid-box .tour_div {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-
-  .latest-tour .parent-latest-tour .parent-grid-latest-tour {
-  grid-template-columns: repeat(1, 1fr);
-}
-
   .hotels .parent-grid-box-hotel {
   grid-template-columns: repeat(2, 1fr);
 }
-
-  .other-links .parent-other-links {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .news .news-section-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
 
   .tour .parent-grid-box {
     grid-template-columns: repeat(1, 1fr);
@@ -1224,9 +1219,32 @@ a:hover{
   .titr-tour-tab {
     font-size: 18px;
   }
+  .latest-tour .parent-latest-tour a img {
+    display: none;
+  }
+
+  .latest-tour .parent-latest-tour a h4 {
+    font-size: 12px;
+  }
+
+  .latest-tour .parent-latest-tour a h5 {
+    font-size: 13px;
+  }
+
+  .latest-tour .parent-latest-tour a .parent-price-latest-tour .price-latest-tour h3 {
+    font-size: 13px;
+  }
+
+  .latest-tour .parent-latest-tour a .parent-data-latest-tour {
+    width: calc(100% - 95px);
+  }
 }
 
 @media (max-width: 576px) {
+
+  .latest-tour .ul-latest-tour button {
+    padding: 6px 0px;
+  }
 
   .work-team-migration .owl-prev {
     left: -25px;
@@ -1238,7 +1256,7 @@ a:hover{
 
   .banner-gallery {
     min-height: 580px;
-    height: 90vh;
+    height: 758px;
     justify-content: start;
   }
 
@@ -1294,26 +1312,6 @@ a:hover{
   .news .news-section-grid .news-piece-piece a .parent-img {
     width: auto;
     height: 100%;
-  }
-
-  .latest-tour .parent-latest-tour a img {
-    display: none;
-  }
-
-  .latest-tour .parent-latest-tour a h4 {
-    font-size: 12px;
-  }
-
-  .latest-tour .parent-latest-tour a h5 {
-    font-size: 13px;
-  }
-
-  .latest-tour .parent-latest-tour a .parent-price-latest-tour .price-latest-tour h3 {
-    font-size: 13px;
-  }
-
-  .latest-tour .parent-latest-tour a .parent-data-latest-tour {
-    width: calc(100% - 95px);
   }
 
   .title .more-title {
@@ -1383,10 +1381,6 @@ a:hover{
   .nav-pills .nav-link {
     width: 78px !important;
     height: 45px !important;
-  }
-
-  .latest-tour .ul-latest-tour button {
-    padding: 6px 0px;
   }
 
   .title .box-right .text-title h5 {

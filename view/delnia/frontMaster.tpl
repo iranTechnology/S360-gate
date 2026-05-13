@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="project_files/css/all.min.css">
     <link rel="stylesheet" href="project_files/css/header.css">
     <link rel="stylesheet" href="project_files/css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://delniagasht.ir/fa/user/GlobalFile/css/register.css">
+{*    <link rel="stylesheet" type="text/css" href="https://delniagasht.ir/fa/user/GlobalFile/css/register.css">*}
     {literal}
         <script  src="project_files/js/jquery-3.4.1.min.js"></script>
     {/literal}

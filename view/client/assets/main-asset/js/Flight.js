@@ -68,8 +68,8 @@ const origin_multi_way = $('.origin-multi-way-js')
 // multi_way
 const numberOfMonthsResponsive = $(window).width() > 768 ? 2 : 1
 
-const nothing_found  = useXmltag("NothingFound")
-const threeLetters  = useXmltag("EnterThreeLettersAtLeast")
+const nothing_found  = useXmltag("NothingFound");
+const threeLetters  = useXmltag("EnterThreeLettersAtLeast");
 let Loading_flight = `<div class='flight_loading'>
                                 <ul>
                                   <li> 

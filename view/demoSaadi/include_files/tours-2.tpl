@@ -19,7 +19,7 @@
         <div class="container">
             <div class="title-demo">
                 <div class="text-title-demo">
-                    <h2>تورهای سفر 360</h2>
+                    <h2>تورهای سعدی</h2>
                     <p>
                         سفر به دنیا، تورهای داخلی و خارجی پرطرفدار برای لذت بردن از زیبایی‌های جهان
                     </p>

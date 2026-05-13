@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-6 col-sm-6 col-12 col_search">
     <div class="form-group">
-        <select data-placeholder="نام شهر مقصد"
+        <select data-placeholder="مقصد"
                 name="destination_bus"
                 id="destination_bus"
                 class="select2_in  select2-hidden-accessible select-destination-route-bus-js select2-hidden-accessible"

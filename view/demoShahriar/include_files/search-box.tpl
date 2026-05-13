@@ -8,7 +8,8 @@
                                     display: none !important;
                                 }
                                 .banner-kanoun .banner-site{
-                               background:  url({$banners[0]['pic']}) no-repeat center !important;
+                               background:  url('project_files/images/parvaz-bg.jpg') no-repeat center !important;
+                                {*background:  url({$banners[0]['pic']}) no-repeat center !important;*}
                                 }
                             </style>
 

@@ -120,147 +120,151 @@ if (lang == 'fa') {
 
 //order Reserve Car
 
-$('#order_reserve_car').validate({
-   rules: {
-      'count_people': {
-         required: true,
+if ($('#order_reserve_car').length) {
+   $('#order_reserve_car').validate({
+      rules: {
+         'count_people': {
+            required: true,
+         },
+         'rent_date': {
+            required: true,
+         },
+         'rent_place': {
+            required: true,
+         },
+         'delivery_date': {
+            required: true,
+         },
+         'delivery_place': {
+            required: true,
+         },
+         'mobile': {
+            required: true,
+            phone: true,
+            maxlength: 11
+         },
+         'name': {
+            required: true,
+         },
+         'email': {
+            email: true,
+            required: true
+         },
       },
-      'rent_date': {
-         required: true,
+      messages: {
+         'count_people': {
+            'required': useXmltag("EnterAmountValue"),
+         },
+         'rent_date': {
+            'required': useXmltag("EnterAmountValue"),
+         },
+         'rent_place': {
+            'required': useXmltag("EnterAmountValue"),
+         },
+         'delivery_date': {
+            'required': useXmltag("EnterAmountValue"),
+         },
+         'delivery_place': {
+            'required': useXmltag("EnterAmountValue"),
+         },
+         'mobile': {
+            'required': useXmltag("PleaseenterPhoneNumber"),
+            'phone': useXmltag("PhoneNumberError"),
+            'maxlength': useXmltag("LongPhoneNumberError")
+         },
+         'name': {
+            'required': useXmltag("EnterAmountValue"),
+         },
+         'email': {
+            'email': useXmltag("Invalidemail"),
+            'required': useXmltag("EnterAmountValue")
+         },
       },
-      'rent_place': {
-         required: true,
-      },
-      'delivery_date': {
-         required: true,
-      },
-      'delivery_place': {
-         required: true,
-      },
-      'mobile': {
-         required: true,
-         phone: true,
-         maxlength: 11
-      },
-      'name': {
-         required: true,
-      },
-      'email': {
-         email: true,
-         required: true
-      },
-   },
-   messages: {
-      'count_people': {
-         'required': useXmltag("EnterAmountValue"),
-      },
-      'rent_date': {
-         'required': useXmltag("EnterAmountValue"),
-      },
-      'rent_place': {
-         'required': useXmltag("EnterAmountValue"),
-      },
-      'delivery_date': {
-         'required': useXmltag("EnterAmountValue"),
-      },
-      'delivery_place': {
-         'required': useXmltag("EnterAmountValue"),
-      },
-      'mobile': {
-         'required': useXmltag("PleaseenterPhoneNumber"),
-         'phone': useXmltag("PhoneNumberError"),
-         'maxlength': useXmltag("LongPhoneNumberError")
-      },
-      'name': {
-         'required': useXmltag("EnterAmountValue"),
-      },
-      'email': {
-         'email': useXmltag("Invalidemail"),
-         'required': useXmltag("EnterAmountValue")
-      },
-   },
-   errorElement: 'em',
-   errorPlacement: function(error, element) {
-      // Add the `help-block` class to the error element
-      error.addClass('help-block')
+      errorElement: 'em',
+      errorPlacement: function(error, element) {
+         // Add the `help-block` class to the error element
+         error.addClass('help-block')
 
-      if (element.prop('type') === 'checkbox') {
-         error.insertAfter(element.parent('label'))
-      } else {
-         error.insertAfter(element)
-      }
-   },
-   submitHandler: function(form) {
-      //tinyMCE.triggerSave();
-      $.post(amadeusPath + 'captcha/securimage_check.php',
-        {
-           captchaAjax: $('#item-captcha').val()
-        },
-        function (data) {
-           console.log(data)
-           if (data == true) {
-              reloadCaptcha();
-              $(form).ajaxSubmit({
-                 url: amadeusPath + 'ajax',
-                 type: 'POST',
-                 success: function (response) {
+         if (element.prop('type') === 'checkbox') {
+            error.insertAfter(element.parent('label'))
+         } else {
+            error.insertAfter(element)
+         }
+      },
+      submitHandler: function(form) {
+         //tinyMCE.triggerSave();
+         $.post(amadeusPath + 'captcha/securimage_check.php',
+             {
+                captchaAjax: $('#item-captcha').val()
+             },
+             function (data) {
+                console.log(data)
+                if (data == true) {
+                   reloadCaptcha();
+                   $(form).ajaxSubmit({
+                      url: amadeusPath + 'ajax',
+                      type: 'POST',
+                      success: function (response) {
 
-                    if (response.success === true) {
-                       var statusType = 'green';
-                    } else {
-                       var statusType = 'red';
-                    }
-                    $.alert({
-                       title: useXmltag("OrderRentCar"),
-                       icon: 'fa fa-refresh',
-                       content: response.message,
-                       rtl: true,
-                       type: statusType
-                    });
-                    if (response.success === true) {
+                         if (response.success === true) {
+                            var statusType = 'green';
+                         } else {
+                            var statusType = 'red';
+                         }
+                         $.alert({
+                            title: useXmltag("OrderRentCar"),
+                            icon: 'fa fa-refresh',
+                            content: response.message,
+                            rtl: true,
+                            type: statusType
+                         });
+                         if (response.success === true) {
 
-                       $('#count_people').val('');
-                       $('#rent_date').val('');
-                       $('#rent_place').val('');
-                       $('#delivery_date').val('');
-                       $('#delivery_place').val('');
-                       $('#name').val('');
-                       $('#email').val('');
-                       $('#mobile').val('');
-                       $(".select2").select2();
-                    }
+                            $('#count_people').val('');
+                            $('#rent_date').val('');
+                            $('#rent_place').val('');
+                            $('#delivery_date').val('');
+                            $('#delivery_place').val('');
+                            $('#name').val('');
+                            $('#email').val('');
+                            $('#mobile').val('');
+                            $(".select2").select2();
+                         }
 
 
-                 }
+                      }
 
-              })
-           } else {
-              reloadCaptcha();
-              $.alert({
-                 title: useXmltag("OrderRentCar"),
-                 icon: 'fa fa-warning',
-                 content: useXmltag("WrongSecurityCode"),
-                 rtl: true,
-                 type: 'red'
-              });
-              return false;
-           }
-        });
+                   })
+                } else {
+                   reloadCaptcha();
+                   $.alert({
+                      title: useXmltag("OrderRentCar"),
+                      icon: 'fa fa-warning',
+                      content: useXmltag("WrongSecurityCode"),
+                      rtl: true,
+                      type: 'red'
+                   });
+                   return false;
+                }
+             });
 
-   },
-   highlight: function(element, errorClass, validClass) {
-      $(element)
-        .parents('.form-group ')
-        .addClass('has-error')
-        .removeClass('has-success')
-   },
-   unhighlight: function(element, errorClass, validClass) {
-      $(element)
-        .parents('.form-group ')
-        .addClass('has-success')
-        .removeClass('has-error')
-   },
-})
+      },
+      highlight: function(element, errorClass, validClass) {
+         $(element)
+             .parents('.form-group ')
+             .addClass('has-error')
+             .removeClass('has-success')
+      },
+      unhighlight: function(element, errorClass, validClass) {
+         $(element)
+             .parents('.form-group ')
+             .addClass('has-success')
+             .removeClass('has-error')
+      },
+   })
+
+}
+
 
 
 

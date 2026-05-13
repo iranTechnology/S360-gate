@@ -130,13 +130,13 @@
                                     {if $item_tour['city_list']}
                                     <ul class="nav-dropdown my-dropdown">
                                         {foreach $item_tour['city_list'] as $city }
-                                            {if $city.vehicle_ids2 eq 1}
+{*                                            {if $city.vehicle_ids2 eq 1}*}
                                         <li>
                                             <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/{$item_tour.id}-{$city['id']}/all/all">
                                                 تور {$city['name']}-{$item_tour.type_vehicle_id}
                                             </a>
                                         </li>
-                                            {/if}
+{*                                            {/if}*}
                                         {/foreach}
                                     </ul>
                                     {/if}
@@ -166,11 +166,11 @@
                                             {if $item_tour['city_list']}
 
                                                     {foreach $item_tour['city_list'] as $city }
-                                                        {if $city.vehicle_ids2 eq 1}
+{*                                                        {if $city.vehicle_ids2 eq 1}*}
                                                             <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/{$item_tour.id}-{$city['id']}/all/all">
                                                                 تور {$city['name']}
                                                             </a>
-                                                        {/if}
+{*                                                        {/if}*}
                                                     {/foreach}
                                             {/if}
                                         </li>
@@ -263,33 +263,33 @@
 {*                            <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/all-all/all/15">تور ناکجا</a>*}
 {*                        </div>*}
 
-                        <li>
-                            <a class='nowruz-link-menu'>
-                                تور نوروز 1405
-                            </a>
-                                {assign var="summer_tours_params" value=['type'=>'','limit'=> '15','dateNow' => $dateNow,'category' => '13']}
-                                {assign var='summerTours' value=$obj_main_page->getToursReservation($summer_tours_params)}
-                            {if !empty($summerTours)}
-                            <ul class="nav-dropdown">
-                                {foreach $summerTours as $item}
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
-                                            {$item['tour_name']}
-                                        </a>
-                                    </li>
-                                {/foreach}
+{*                        <li>*}
+{*                            <a class='nowruz-link-menu'>*}
+{*                                تور نوروز 1405*}
+{*                            </a>*}
+{*                                {assign var="summer_tours_params" value=['type'=>'','limit'=> '15','dateNow' => $dateNow,'category' => '13']}*}
+{*                                {assign var='summerTours' value=$obj_main_page->getToursReservation($summer_tours_params)}*}
+{*                            {if !empty($summerTours)}*}
+{*                            <ul class="nav-dropdown">*}
+{*                                {foreach $summerTours as $item}*}
+{*                                    <li>*}
+{*                                        <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">*}
+{*                                            {$item['tour_name']}*}
+{*                                        </a>*}
+{*                                    </li>*}
+{*                                {/foreach}*}
 
-                                <li class="other-tour">
-                                    <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/all-all/all/13">
-                                        همه تورهای نوروز 1405
-                                    </a>
-                                </li>
+{*                                <li class="other-tour">*}
+{*                                    <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/all-all/all/13">*}
+{*                                        همه تورهای نوروز 1405*}
+{*                                    </a>*}
+{*                                </li>*}
 
 
 
-                            </ul>
-                            {/if}
-                        </li>
+{*                            </ul>*}
+{*                            {/if}*}
+{*                        </li>*}
 {*                        <li>*}
 {*                            <a class='nowruz-link-menu'>*}
 {*                                تورهای تابستانه*}

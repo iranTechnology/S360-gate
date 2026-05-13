@@ -14,9 +14,6 @@
 'aparat' => 'آپارات'
 ]}
 
-
-
-
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-xs-12">
@@ -28,7 +25,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="white-box">
+            <div class="white-box">##Login##
                 <h3 class="box-title m-b-0  PA_Ab_TITLE" >درباره ی ما</h3>
 
 
@@ -170,6 +167,8 @@
                         <button type='submit' class='btn submit-button btn-primary btn-block' id="PA_Ab_SUBMIT">
                             به روز رسانی
                         </button>
+                        <span class="d-none" id="PA_AB_UPDATEDMSG">اطلاعات درباره ی ما ویرایش شد</span>
+                        <span class="d-none" id="PA_AB_NOCHANGE">تغییری نداده اید!</span>
                     </div>
 
                 </form>
@@ -204,6 +203,8 @@
                     $(".tooltip-info").attr("data-original-title", xmlDoc.getElementsByTagName("PA_Ab_COMMENTVIDEOLINK")[0].textContent);
                     $("#PA_Ab_SUBMIT").text(xmlDoc.getElementsByTagName("PA_Ab_SUBMIT")[0]?.textContent);
                     $("#ChoseOption").text(xmlDoc.getElementsByTagName("ChoseOption")[0]?.textContent);
+                    $("#PA_AB_UPDATEDMSG").html(xmlDoc.getElementsByTagName("PA_AB_UPDATEDMSG")[0].textContent);
+                    $("#PA_AB_NOCHANGE").html(xmlDoc.getElementsByTagName("PA_AB_NOCHANGE")[0].textContent);
                 }
             })
             .catch(error => {

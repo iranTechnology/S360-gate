@@ -45,7 +45,11 @@
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور</a>
                                     <ul class="nav-dropdown">
-                                        <li><a href="javascript:">خارجی</a>
+{*                                        <li>*}
+{*                                        <a href="https://manshoortravel.com/gds/fa/resultTourLocal/all-all/all-all/all/38">نوروز 1405</a>*}
+{*                                        </li>*}
+                                        <li>
+                                            <a href="javascript:">خارجی</a>
                                             <ul class="nav-dropdown">
 
 

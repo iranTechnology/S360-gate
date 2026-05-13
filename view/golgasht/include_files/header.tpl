@@ -107,6 +107,10 @@
     </script>
     <!-- End Google Tag Manager -->
 
+        <script type="text/javascript">
+        !function(){var i="jhJSB1",d=document,g=d.createElement("script"),s="https://www.goftino.com/widget/"+i,l=localStorage.getItem("goftino_"+i);g.type="text/javascript",g.async=!0,g.src=l?s+"?o="+l:s;d.getElementsByTagName("head")[0].appendChild(g);}();
+        </script>
+
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG54RTWG"

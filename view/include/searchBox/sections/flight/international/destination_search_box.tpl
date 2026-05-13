@@ -7,7 +7,7 @@
                id="iata_destination_international"
                name="iata_destination_international"
                class="inputSearchForeign form-control iata-destination-international-js"
-               placeholder="##DestinationCityAirPlane2##">
+               placeholder="##Destination##">
         </span>
         <input id="destination_international"
                class="destination-international-js"

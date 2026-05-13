@@ -11,6 +11,8 @@
 {/if}
 
 {load_presentation_object filename="members" assign="objCounterLogin"}
+{load_presentation_object filename="bookshow" assign="objChatNotif"}
+{$chatNotifications = $objChatNotif->chatNotifications()}
 {load_presentation_object filename="listCancel" assign="listCancel"}
 {assign var=Infocounter value=$objCounterLogin->getMemberById({$smarty.session.memberIdCounterInAdmin})}
 {assign var=listCancelAdmin value=$listCancel->ListCancelAdmin()}
@@ -295,6 +297,18 @@
                         <li><a href="http://www.safarbank.ir/irantech" target="_blank"><i
                                         class="mdi mdi-bell-ring"></i>
                                 <span>اخبار </span></a></li>
+                        {if $smarty.const.TYPE_ADMIN eq '1'}
+                        <li>
+                            <div class="language-selector">
+                                <span>
+                                    <i class="mdi mdi-translate"></i>مدیریت با زبان :
+                                </span>
+                                <a href="#" onclick="funSetLangPanelAdmin('fa')"  class="{if $smarty.const.LANG_PANEL_ADMIN == 'fa'}active{/if}" >فارسی</a>
+                                <a href="#" onclick="funSetLangPanelAdmin('ar')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'ar'}active{/if}" >عربی</a>
+                                <a href="#" onclick="funSetLangPanelAdmin('en')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'en'}active{/if}" >انگلیسی</a>
+                            </div>
+                        </li>
+                        {/if}
                         <li role="separator" class="divider"></li>
                         <li><a href="#" onclick="logoute(); return false;" class="colorExit"><i
                                         class="fa fa-power-off fa-fw"></i>
@@ -392,6 +406,98 @@
                         {/if}
                     {/foreach}
 
+                </ul>
+            {/if}
+            {if !empty($chatNotifications)}
+                {* محاسبه مجموع کل نوتیفیکیشن‌ها برای بَج اصلی *}
+                {$totalUnreadCount = 0}
+                {foreach $chatNotifications as $notif}
+                    {$totalUnreadCount = $totalUnreadCount + $notif.unread_count}
+                {/foreach}
+
+                <ul class="nav navbar-top-links navbar-right pull-right" style="border-left: 1px solid rgba(0,0,0,.08);">
+                    <!-- Notification Dropdown -->
+                    <li class="dropdown" id="chatNotificationDropdown" style="position: relative;">
+                        <!-- Top Notification Button -->
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style=" position: relative;">
+                            <i id="notifBell" class="fa fa-bell {if $totalUnreadCount > 0}bell-shake{/if}" style="font-size: 20px;"></i>
+                            <!-- Badge Count -->
+                            <span id="chatNotifCount"
+                                  style="
+                                          position: absolute;
+                                          top: 10px;
+                                          right: 5px;
+                                          background: red;
+                                          color: white;
+                                          padding: 2px 6px;
+                                          border-radius: 50%;
+                                          font-size: 10px;
+                                  {if $totalUnreadCount == 0}display: none;{/if}
+                                          ">
+                {$totalUnreadCount}
+            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages animated fadeInDown"
+                            style="width: 350px; max-height: 400px; overflow-y: auto;">
+                            <li class="dropdown-header" style="font-weight: bold; padding: 10px 15px;">
+                                شما در قسمت سوابق خرید {$totalUnreadCount} چت خوانده نشده دارید
+                            </li>
+                            <li class="divider"></li>
+                            {foreach $chatNotifications as $notif}
+                                <li>
+                                    {* تبدیل service_type به نام فارسی یا استفاده از خود service_type *}
+                                    {$serviceName = ''}
+                                    {if $notif.service_type == 'flight'}
+                                        {$serviceName = 'هواپیما'}
+                                    {elseif $notif.service_type == 'train'}
+                                        {$serviceName = 'قطار'}
+                                    {elseif $notif.service_type == 'hotel'}
+                                        {$serviceName = 'هتل'}
+                                    {else}
+                                        {$serviceName = $notif.service_type|capitalize} {* یا هر مقدار پیش‌فرض دیگر *}
+                                    {/if}
+
+                                    <a href="/gds/itadmin/ticket/mainTicketHistory" style="padding: 10px 15px; display: block;">
+                                        <div>
+                                            <strong>{$serviceName}</strong>
+                                            <span class="pull-right text-muted" style="font-size: 12px;">{$notif.unread_count} پیام خوانده نشده</span>
+                                        </div>
+
+                                        <div style="margin-top: 5px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span>شماره درخواست: {$notif.request_number}</span>
+
+                                            <!-- دکمه کپی -->
+                                            <button
+                                                    class="copy-btn"
+                                                    data-copy="{$notif.request_number}"
+                                                    title="کپی شماره درخواست"
+                                                    style="
+                                                    border: none;
+                                                    background: transparent;
+                                                    cursor: pointer;
+                                                    font-size: 14px;
+                                                    color: #007bff;
+                                                ">
+                                                <i class="fa fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+
+                                </li>
+                                <li class="divider"></li>
+                            {/foreach}
+
+                            {* در صورت تمایل می‌توانید لینکی برای "مشاهده همه" اضافه کنید *}
+                            {*
+                            <li>
+                                <a class="text-center" href="#">
+                                    <strong>مشاهده همه</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                            *}
+                        </ul>
+                    </li>
                 </ul>
             {/if}
 
@@ -639,6 +745,53 @@
    $(document).ready(function(){
       $(".bg-title").attr("style", "margin-top:55px !important;margin-bottom: 5px  !important;");
    });
+   setTimeout(() => {
+       document.getElementById("notifBell").classList.remove("bell-shake");
+   }, 5000);
+   const bell = document.getElementById("notifBell");
+   bell.addEventListener("mouseenter", () => {
+       bell.classList.remove("bell-shake");
+   });
+   bell.addEventListener("click", () => {
+       bell.classList.remove("bell-shake");
+   });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".copy-btn");
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const text = btn.getAttribute("data-copy");
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => showCheck(btn));
+                } else {
+                    // Fallback برای مرورگرهای قدیمی
+                    const textarea = document.createElement("textarea");
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        showCheck(btn);
+                    } catch (err) {
+                        console.error("Copy command failed:", err);
+                    }
+                    document.body.removeChild(textarea);
+                }
+            });
+        });
+
+        function showCheck(btn) {
+            const originalIcon = btn.innerHTML;
+            btn.innerHTML = "<i class='fa fa-check' style='color:green;'></i>";
+            setTimeout(() => { btn.innerHTML = originalIcon; }, 1500);
+        }
+    });
 </script>
 </body>
 </html>

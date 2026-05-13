@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-6 col-sm-6 col-12 col_search date_search">
+<div class="col-lg-4 col-md-6 col-sm-12 col-12 col_search date_search">
     <div class="form-group">
          <input readonly="" type="text"
                 id="train_departure_date"

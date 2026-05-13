@@ -119,21 +119,30 @@
     {if $smarty.const.GDS_SWITCH eq 'mainPage'}
         <script type="application/ld+json">
             {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "{$smarty.const.CLIENT_NAME}",
-    "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}",
-    "logo": "project_files/images/logo.png"
-    }
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#organization",
+              "name": "{$smarty.const.CLIENT_NAME}",
+              "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/project_files/images/logo.png"
+              }
+            }
         </script>
 
         <script type="application/ld+json">
             {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "name": "{$smarty.const.CLIENT_NAME}",
-            "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}"
-        }
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#website",
+              "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/",
+              "name": "{$smarty.const.CLIENT_NAME}",
+              "publisher": {
+                "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#organization"
+              }
+            }
         </script>
+
     {/if}
 </head>
