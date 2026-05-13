@@ -17,19 +17,19 @@
                 <div class="parent-data-hotel-tab-demo">
                     <ul class="nav nav-pills" id="pills-tab2" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button aria-controls="hotel-dakheli-demo" aria-selected="true" class="nav-link active" data-target="#hotel-dakheli-demo" data-toggle="pill" id="tab-hotel-dakheli-demo" role="tab" type="button"> داخلی
+                            <button aria-controls="hotel-khareji-demo" aria-selected="false" class="nav-link active" data-target="#hotel-khareji-demo" data-toggle="pill" id="tab-hotel-khareji-demo" role="tab" type="button"> خارجی
 
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button aria-controls="hotel-khareji-demo" aria-selected="false" class="nav-link" data-target="#hotel-khareji-demo" data-toggle="pill" id="tab-hotel-khareji-demo" role="tab" type="button"> خارجی
+                            <button aria-controls="hotel-dakheli-demo" aria-selected="true" class="nav-link" data-target="#hotel-dakheli-demo" data-toggle="pill" id="tab-hotel-dakheli-demo" role="tab" type="button"> داخلی
 
                             </button>
                         </li>
                     </ul>
                     <div class="parent-tab-tour">
                         <div class="tab-content" id="pills-tabContent2">
-                            <div aria-labelledby="tab-hotel-dakheli-demo" class="tab-pane fade show active" id="hotel-dakheli-demo" role="tabpanel">
+                            <div aria-labelledby="tab-hotel-dakheli-demo" class="tab-pane fade" id="hotel-dakheli-demo" role="tabpanel">
                                 <div class="owl-carousel owl-theme owl-hotels">
                                     {foreach $internal_hotels as $item}
                                     <div class="item">
@@ -57,7 +57,7 @@
                                {/foreach}
                                 </div>
                             </div>
-                            <div aria-labelledby="tab-hotel-khareji-demo" class="tab-pane fade" id="hotel-khareji-demo" role="tabpanel">
+                            <div aria-labelledby="tab-hotel-khareji-demo" class="tab-pane fade show active" id="hotel-khareji-demo" role="tabpanel">
                                 <div class="owl-carousel owl-theme owl-hotels">
                                                                          {foreach $foregin_hotels as $item}
 

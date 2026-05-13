@@ -1958,6 +1958,10 @@ transition: all linear .3s;
 
 @media (max-width: 1200px){
 
+  .btn-header {
+    margin-right: auto;
+  }
+
   .nav-menu > li > a{
     padding: 15px 25px;
     font-size: 14px;
@@ -1978,9 +1982,6 @@ transition: all linear .3s;
   .parent-btn-header i {
     font-size: 20px;
   }
-}
-
-@media (max-width: 991px){
   .btn-phone span{
     display: none;
   }
@@ -2019,7 +2020,6 @@ transition: all linear .3s;
   .btn-user span{
     display: none;
   }
-
   .btn-user{
     margin-right: auto !important;
   }
@@ -2036,8 +2036,6 @@ transition: all linear .3s;
   .nav-dropdown{
     border: none!important;
   }
-
-
   .nav-toggle{
     margin-right: 15px;
   }
@@ -2088,7 +2086,6 @@ transition: all linear .3s;
   .namads{
     justify-content: center;
   }
-
   .navigation-portrait .nav-search{
     margin-right: auto;
   }
@@ -2167,18 +2164,8 @@ transition: all linear .3s;
     flex-direction: column !important;
     display: flex !important;
   }
-
   .call{
     margin-top: 30px;
-  }
-
-  .parent_btn_top{
-    right: 10px;
-  }
-  .fixicone{
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
   }
   .nav-search-button span{
     display: none;
@@ -2232,7 +2219,6 @@ transition: all linear .3s;
     margin-right: 0;
     margin-left: 10px;
   }
-
   .sub-all-phone{
     left: 75px;
   }
@@ -2247,6 +2233,17 @@ transition: all linear .3s;
   }
   .child-item-footer a {
     font-size: 20px !important;
+  }
+  .parent_btn_top{
+    right: 10px;
+  }
+}
+
+@media (max-width: 991px){
+  .fixicone{
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
   }
 }
 
@@ -2766,13 +2763,13 @@ transition: all linear .3s;
 
 @media (min-width: 991px) and (max-width: 1200px){
   .nav-menu > li > a{
-    padding: 24px 5px !important;
+    padding: 8px 5px !important;
   }
   .img-box-footer h4{
     font-size: 16px;
   }
   .nav-brand img{
-    width: 66px !important;
+    width: 115px !important;
   }
   .btn-user,.btn-phone{
     padding: 7px !important;

@@ -410,6 +410,7 @@
   <Wentflight>پرواز رفت</Wentflight>
   <Returnflight>پرواز برگشت</Returnflight>
   <Selectionflight>انتخاب پرواز</Selectionflight>
+  <SelectionAndDetailflight>  جزئیات پرواز و خرید </SelectionAndDetailflight>
   <SelectionExclusiveTour>انتخاب تور</SelectionExclusiveTour>
   <TourSpecifications>انتخاب مشخصات تور</TourSpecifications>
   <Numflight>شماره پرواز</Numflight>
@@ -654,6 +655,7 @@
   <Passportexpirydate>تاریخ انقضاء پاسپورت</Passportexpirydate>
   <Requireddocuments>مدارک مورد نیاز</Requireddocuments>
   <InformationSaler>مشخصات خریدار</InformationSaler>
+  <InformationSalerInfo>اطلاعات تماس خریدار</InformationSalerInfo>
   <Tracknumber>شماره پیگیری</Tracknumber>
   <Title>عنوان</Title>
   <TitleEnglish>عنوان انگلیسی</TitleEnglish>
@@ -1067,6 +1069,7 @@
   <SecuritycodeDept>کد امنیتی پرواز رفت</SecuritycodeDept>
   <SecuritycodeReturn>کد امنیتی پرواز برگشت</SecuritycodeReturn>
   <Visa>ویزا</Visa>
+    <Cip>تشریفات فرودگاه</Cip>
   <Bugpasswordrecoveryprocess>اشکال در فرآیند بازیابی کلمه عبور</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>برای بازیابی رمز عبور، مجددا درخواست نمایید</Requestnewpasswordpassword>
   <expireddeadlinerequest>متاسفانه مهلت اعتبار درخواست شما به پایان رسیده است</expireddeadlinerequest>
@@ -1250,6 +1253,7 @@
   <YourvotebeenrecordedThankyou>رأی شما ثبت شد، از شما سپاسگزاریم</YourvotebeenrecordedThankyou>
   <YouhavealreadyvotedThankyou>شما قبلا رأی داده اید، از شما سپاسگزاریم</YouhavealreadyvotedThankyou>
   <Removechanges>حذف تغییرات</Removechanges>
+  <Copychanges>با موفقیت کپی شد</Copychanges>
 
   <Areyousureyouwantdeletechanges>آیا از حذف تغییرات اطمینان دارید ؟</Areyousureyouwantdeletechanges>
   <Pleaseenteryourfulldetails>لطفا اطلاعات خود را کامل وارد کنید.</Pleaseenteryourfulldetails>
@@ -1705,6 +1709,7 @@
     بي ولأصحابها.
   </OnbehalfmyselfcompanionsrightAhwaneHotelcontainedReservationcompanions>
   <Pleaseselectthedesiredpassenger>لطفا مسافر مورد نظر را انتخاب کنید</Pleaseselectthedesiredpassenger>
+  <PleaseselectthedesiredpassengerCancel>لطفا مسافری که می خواهید خرید ایشان را کنسل کنید انتخاب کنید</PleaseselectthedesiredpassengerCancel>
   <Cancelpurchasebookingnumber>کنسل کردن خرید به شماره رزرو</Cancelpurchasebookingnumber>
   <Deniedrequest>رد درخواست شده است</Deniedrequest>
   <Actionhasalreadybeentaken>قبلا اقدام شده است</Actionhasalreadybeentaken>
@@ -2227,7 +2232,7 @@
   <SpecifiedAmountUnSuccessfullyRecorded>خطا در ثبت مبلغ ،لطفا مجددا تلاش نمائید</SpecifiedAmountUnSuccessfullyRecorded>
   <ErrorRegisteringRequest>خطا در ثبت درخواست شما، لطفا مجددا تلاش نمائید</ErrorRegisteringRequest>
   <ErrorRegisteringRequestCacselBuy>خطا در ثبت درخواست شما، شماره فاکتور تکراری می باشد.</ErrorRegisteringRequestCacselBuy>
-  <TicketSelected>بلیط رفت انتخاب شده</TicketSelected>
+  <TicketSelected>بلیط رفتی که انتخاب کردید</TicketSelected>
   <DueLimitationsTwoWayAgreementBetweenIran>با توجه به محدودیت هایی که در تفاهم دو ایرلاین موسوم به قرارداد 14 جانبه در ایران وجود دارد بعضا ایرلاین
     ها در صورت کنسلی یک طرف از پرواز تعهدی نسبت به کنسل نمودن طرف دیگر پرواز ندارند، لذا در انتخاب این نوع پروازها دقت بفرمایید.
   </DueLimitationsTwoWayAgreementBetweenIran>
@@ -2235,9 +2240,11 @@
     استفاده باشد. قطعا در زمان بروز این مشکل، به شما اطمینان داده می شود بخش پشتیبانی شبانه روزی ما سعی خواهد نمود تا پروازی جایگزین برای شما تهیه
     کرده و ضرر مالی احتمالی شما را جبران نماید. ما خود را موظف می دانیم تا سفر خوشی را برای شما فراهم کنیم.
   </TermsAirlinesCharterFlightsLessThanPercentLikely>
-  <SelectReturnTicket>انتخاب بلیط برگشت</SelectReturnTicket>
+  <SelectReturnTicket> بلیط برگشت را انتخاب کنید</SelectReturnTicket>
   <FinalReservationError>خطا در رزرو نهایی</FinalReservationError>
   <InvalidFlight>پرواز نا معتبر</InvalidFlight>
+  <TicketFlightWent>جزئیات و انتخاب رفت</TicketFlightWent>
+  <TicketFlightReturn>جزئیات و انتخاب برگشت</TicketFlightReturn>
   <SharedPidSystem>سیستمی پید اشتراکی</SharedPidSystem>
   <DedicatedPidSystem>سیستمی پید اختصاصی</DedicatedPidSystem>
   <DedicatedPiedChart>چارتری پید اختصاصی</DedicatedPiedChart>
@@ -2838,7 +2845,7 @@
   <PleaseEnterMobileOrEmail>لطفا ایمیل یا شماره همراه خود را وارد کنید</PleaseEnterMobileOrEmail>
   <FlightRepetition>حذف پروازهای تکراری</FlightRepetition>
   <FlightRepetitionCount>پرواز تکراری به نتایج جستجو اضافه شد</FlightRepetitionCount>
-
+  <FlightRepetitionShow>نمایش پروازهای تکراری</FlightRepetitionShow>
   <PleaseEnterUserEntry>لطفا شماره همراه خود را وارد کنید</PleaseEnterUserEntry>
   <optExpired>مدت استفاده از رمز عبور موقت به پایان رسیده است. کد جدید ارسال شد.</optExpired>
   <optSent>کد جدید ارسال شد.</optSent>
@@ -3222,6 +3229,7 @@
   <commentText>متن دیدگاه</commentText>
   <enterYourOpinion>دیدگاه خود را وارد نمایید</enterYourOpinion>
   <YourTrackingCode>کد پیگیری شما </YourTrackingCode>
+  <TrackingCodeEnd>کد پیگیری</TrackingCodeEnd>
   <YourRequestHasBeenSuccessfullyRegistered>درخواست شما با موفقیت ثبت شد</YourRequestHasBeenSuccessfullyRegistered>
 
   <FlightFrom>پروازهای</FlightFrom>
@@ -3329,6 +3337,7 @@
   <SelectDestinationCity>انتخاب شهر مقصد</SelectDestinationCity>
   <SelectDestinationCountry>انتخاب کشور مقصد</SelectDestinationCountry>
   <AllEntertainments> مجموعه تفریحات</AllEntertainments>
+  <TotalSelection>انتخاب مجموعه</TotalSelection>
   <ServiceRequestDate>تاریخ درخواست سرویس</ServiceRequestDate>
   <IndividualGasht>گشت انفرادی</IndividualGasht>
   <GroupGasht>گشت گروهی</GroupGasht>
@@ -3732,4 +3741,25 @@
   <CapacityLimit>ظرفیت اتاق تا @@ نفر است</CapacityLimit>
   <ExtraBedsExceeded>شما @@ اتاق انتخاب کرده اید. پس حداکثر اجازه دارید @@ تخت اضافه (کودک+بزرگسال) انتخاب کنید</ExtraBedsExceeded>
   <ExtraBedsLimit>حداکثر @@ تخت اضافه مجاز است</ExtraBedsLimit>
+  <NameCip>نام سرویس</NameCip>
+
+
+  <!--  panel admin  (en ar fa) -->
+  <PA_HOME>خانه</PA_HOME>
+  <PA_Ab_TITLE>درباره ی ما</PA_Ab_TITLE>
+  <PA_Ab_LANG>زبان</PA_Ab_LANG>
+  <PA_Ab_SUBJECT>عنوان</PA_Ab_SUBJECT>
+  <PA_Ab_BANNER>تصویر بنر</PA_Ab_BANNER>
+  <PA_Ab_VIDEOLINK>لینک ویدئو</PA_Ab_VIDEOLINK>
+  <PA_Ab_COMMENTVIDEOLINK> در این قسمت تنها لینک ویدئو را قرار دهید</PA_Ab_COMMENTVIDEOLINK>
+  <PA_Ab_SOIALMEDIA>شبکه‌های اجتماعی</PA_Ab_SOIALMEDIA>
+  <PA_Ab_CLUB>عنوان باشگاه مشتریان شما</PA_Ab_CLUB>
+  <PA_Ab_AboutCUSTOMER>درباره باشگاه مشتریان شما</PA_Ab_AboutCUSTOMER>
+  <PA_Ab_SUBMIT>به روز رسانی</PA_Ab_SUBMIT>
+  <PA_AB_UPDATEDMSG>اطلاعات درباره ی ما ویرایش شد</PA_AB_UPDATEDMSG>
+  <PA_AB_NOCHANGE>تغییری نداده اید!</PA_AB_NOCHANGE>
+
+  <PA_CO_LIST>لیست تماس ها</PA_CO_LIST>
+  <PA_CO_LISTTITLE>در لیست زیر شما میتوانید لیست همه تماس های خود را مشاهده نمائید</PA_CO_LISTTITLE>
+
 </Main>

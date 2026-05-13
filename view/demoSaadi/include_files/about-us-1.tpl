@@ -4,7 +4,7 @@
    <div class="about-text position-relative">
     <img alt="img-about" class="img-taj" src="project_files/images/taj.png"/>
     <h3 class="nastaliq">
-     آشنایی با سفر360
+     آشنایی با سعدی
     </h3>
     <h2>
      جاذبه‌های توریستی در سراسر جهان با راهنمای گردشگری ما به همراه تجاربی بی‌نظیر و جذاب

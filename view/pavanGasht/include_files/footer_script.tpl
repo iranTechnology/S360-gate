@@ -6,7 +6,7 @@
     <script type="text/javascript" src="project_files/{$smarty.const.SOFTWARE_LANG}/js/jquery.smoothscroll.min.js"></script>
     <script type="text/javascript" src="project_files/{$smarty.const.SOFTWARE_LANG}/js/scripts.js"></script>
     <script type="text/javascript" src="assets/js/jquery-confirm.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>
+{*    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>*}
 {else}
     {if $smarty.const.GDS_SWITCH neq 'app'}
         <script type="text/javascript" src="project_files/{$smarty.const.SOFTWARE_LANG}/js/modernizr.js"></script>

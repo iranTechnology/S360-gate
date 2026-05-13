@@ -9,7 +9,7 @@
 {/if}
 <div class="col-lg-3 col-md-6 col-sm-6 col-12 col_search">
     <div class="form-group">
-        <select data-placeholder="##SelectDestinationCountry##"
+        <select data-placeholder="##Destinationcountry##"
                 name="select_entertainment_country"
                 id="select_entertainment_country"
                 class="select2_in entertainment-destination-country-js select2-hidden-accessible"

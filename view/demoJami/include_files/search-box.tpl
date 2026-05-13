@@ -3,7 +3,6 @@
 {assign var="services_array" value=$services_array_json|json_decode}
 <section class="i_modular_banner_gallery banner-kanoun">
     {if $smarty.const.GDS_SWITCH eq 'mainPage'}
-    {include file="include_files/banner-slider.tpl"}
 {/if}
     <div class="container">
         <div class="i_modular_searchBox search_box_div">
@@ -13,3 +12,5 @@
          </div>
     </div>
 </section>
+
+{include file="include_files/banner-slider.tpl"}

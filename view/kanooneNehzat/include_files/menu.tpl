@@ -11,10 +11,16 @@
                     <div class="nav-menus-wrapper">
                         <ul class="nav-menu align-to-right">
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل</a>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">اقامتگاه</a>
+                                <ul class="nav-dropdown nav-submenu">
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=65&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های مشهد مقدس</a></li>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/resultExternalHotel/iraq/Karbala/{$objDate->daysAfterToday('1')}/{$objDate->daysAfterToday('2')}/1/R:2-0-0">اقامتگاه های عراق</a></li>
+                                    <li><a href="javascript:">اقامتگاه های گیلان</a></li>
+                                    <li><a href="javascript:">اقامتگاه های مازندران</a></li>
+                                </ul>
                             </li>
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/authenticate">باشگاه مسافران</a>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/profile">باشگاه اعضا</a>
                             </li>
                             <li>
                                 <a href="{$smarty.const.ROOT_ADDRESS}/news">اخبار</a>
@@ -26,7 +32,7 @@
                                 <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">تماس با ما</a></li>
-                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">چرا کانون نهضت ؟</a></li>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">چرا موسسه نهضت ؟</a></li>
                                 </ul>
                             </li>
                         </ul>

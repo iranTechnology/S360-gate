@@ -1,6 +1,6 @@
 {assign var=dateNow value=dateTimeSetting::jdate("Ymd", "", "", "", "en")}
-{assign var="internal_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'internal','category' => '9']}
-{assign var="foreging_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'external','category' => '5']}
+{assign var="internal_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'internal']}
+{assign var="foreging_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'external']}
 {assign var="installment_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'category' =>'17']}
 {assign var="earth_tours_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow,'category' => '3']}
 {assign var="summer_tours_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow,'category' => '14']}
@@ -57,7 +57,6 @@
                         <div class="parent-grid-latest-tour">
                             {foreach $internalTours as $item}
                             {assign var="tour_type_id" value=$item['tour_type_id']}
-                            {assign var="isInstallment" value=strpos($tour_type_id, '"17"')}
 
                             <a class="parent-link-domestic" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                 <div class="parent-data-latest-tour">

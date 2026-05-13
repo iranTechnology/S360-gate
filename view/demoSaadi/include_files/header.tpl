@@ -88,7 +88,7 @@
 <link href="project_files/css/{$StyleSheetHeader}" rel="stylesheet"/>
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHead.tpl"}
     {/if}
-    <link rel="stylesheet" href="assets/main-asset/css/register.css">
+    <link rel="stylesheet" href="project_files/css/register.css">
     <link rel="stylesheet" href="project_files/css/style.css">
     <link rel="stylesheet" href="project_files/css/tabs.css">
     <link rel="stylesheet" href="project_files/css/header.css">

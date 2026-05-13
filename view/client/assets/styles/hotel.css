@@ -4049,6 +4049,7 @@ External
     color: #292929;
     border-radius: 3px;
     border: 1px solid #ccc;
+    width: 100%;
 }
 .myroom-hotel-item .myroom-hotel-item-title {
     font-weight: bold;

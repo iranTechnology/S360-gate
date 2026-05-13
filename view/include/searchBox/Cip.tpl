@@ -6,7 +6,7 @@
             {include file="./sections/cip/trip_type.tpl"}
             {include file="./sections/cip/date_cip.tpl"}
             {include file="./sections/cip/passenger_count.tpl"}
-            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-3 col-sm-6 col-12 btn_s col_search margin-center">
+            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-6 col-sm-6 col-12 btn_s col_search margin-center">
                 <button type="button"
                 <button type="button" onclick="searchCip()"
                         class="btn theme-btn seub-btn b-0"><span>##Search##</span></button>

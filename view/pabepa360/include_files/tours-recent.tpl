@@ -6,6 +6,7 @@
 {assign var="earth_tours_params" value=['type'=>'','limit'=> '20','dateNow' => $dateNow,'category' => '3']}
 {assign var="summer_tours_params" value=['type'=>'','limit'=> '20','dateNow' => $dateNow,'category' => '14']}
 {assign var="recent_tours_params" value=['type'=>'','limit'=> '20','dateNow' => $dateNow,  'category' => '6']}
+{assign var="norouz_tours_params" value=['type'=>'','limit'=> '20','dateNow' => $dateNow,  'category' => '13']}
 
 {assign var='internalTours' value=$obj_main_page->getToursReservation($internal_tour_params)}
 {assign var='foreginTours' value=$obj_main_page->getToursReservation($foreging_tour_params)}
@@ -13,10 +14,11 @@
 {assign var='earthTours' value=$obj_main_page->getToursReservation($earth_tours_params)}
 {*{assign var='summerTours' value=$obj_main_page->getToursReservation($summer_tours_params)}*}
 {assign var='recentTours' value=$obj_main_page->getToursReservation($recent_tours_params)}
+{*{assign var='norouzTours' value=$obj_main_page->getToursReservation($norouz_tours_params)}*}
 
 
 
-{if !empty($internalTours) || !empty($foreginTours) || !empty($earthTours)  || !empty($summerTours)  || !empty($recentTours) || !empty($installmentTours)}
+{if !empty($internalTours) || !empty($foreginTours) || !empty($earthTours)  || !empty($summerTours)  || !empty($recentTours) || !empty($installmentTours) || !empty($norouzTours)}
 <section class="new_tours">
     <div class="container">
         <div class="titr_Terms_Conditions">
@@ -53,6 +55,9 @@
                     <button class="nav-link" id="pills-installment-tour-tab" data-toggle="pill" data-target="#pills-installment-tour" type="button" role="tab" aria-controls="pills-installment-tour" aria-selected="false">تور اقساطی</button>
                 </li>
                 {/if}
+{*                <li class="nav-item" role="presentation">*}
+{*                    <button class="nav-link " id="pills-norouzi-tab" data-toggle="pill" data-target="#pills-norouzi-tour" type="button" role="tab" aria-controls="pills-norouzi-tour" aria-selected="false">نوروزی</button>*}
+{*                </li>*}
             </ul>
         </div>
         <div class="tab-content" id="tab-content-tour">
@@ -695,6 +700,120 @@
 {*                    </a>*}
                 </div>
             </div>
+{*            <div class="tab-pane fade" id="pills-norouzi-tour" role="tabpanel" aria-labelledby="pills-norouzi-tab">*}
+{*                <div class="tour-list-component">*}
+{*                    <div class="tours_titr">*}
+{*                        <div class="d-flex flex-wrap w-100">*}
+{*                            <div class="col border_my">*}
+{*                                <div class="d-flex align-items-center">*}
+{*                                    <i class="fa-light fa-pen-to-square icon_titr"></i>*}
+{*                                    <span class="text_titr">عنوان تور</span>*}
+{*                                </div>*}
+{*                            </div>*}
+{*                            <div class="col border_my">*}
+{*                                <div class="d-flex align-items-center">*}
+{*                                    <i class="fa-light fa-calendar"></i>*}
+{*                                    <span class="text_titr">تاریخ حرکت</span>*}
+{*                                </div>*}
+{*                            </div>*}
+{*                            <div class="col border_my">*}
+{*                                <div class="d-flex align-items-center">*}
+{*                                    <i class="fa-light fa-bed-front icon_titr"></i>*}
+{*                                    <span class="text_titr">مدت اقامت</span>*}
+{*                                </div>*}
+{*                            </div>*}
+{*                            <div class="col border_my">*}
+{*                                <div class="d-flex align-items-center">*}
+{*                                    <i class="fa-light fa-globe icon_titr"></i>*}
+{*                                    <span class="text_titr">حمل و نقل</span>*}
+{*                                </div>*}
+{*                            </div>*}
+{*                            <div class="col border_my">*}
+{*                                <div class="d-flex align-items-center">*}
+{*                                    <i class="fa-light fa-coins icon_titr"></i>*}
+{*                                    <span class="text_titr">قیمت</span>*}
+{*                                </div>*}
+{*                            </div>*}
+{*                        </div>*}
+{*                    </div>*}
+{*                </div>*}
+
+{*                <div class="respancive_flex">*}
+{*                    {foreach $norouzTours as $item}*}
+{*                        {assign var="tour_type_id" value=$item['tour_type_id']}*}
+{*                        {assign var="isInstallment" value=strpos($tour_type_id, '"17"')}*}
+
+{*                        <div class="tour-list-body">*}
+{*                            <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}" class="tour_body">*}
+{*                                <div class="d-flex flex-wrap w-100 h-100%">*}
+
+{*                                    <div class="col-lg col-md-12 col-sm-12 col-12 d-flex align-items-center justify-content-start border_my padding_my">*}
+{*                                        <div class="parent_item">*}
+{*                                            <i class="fa-light fa-location-dot"></i>*}
+{*                                            <span class="font-weight-bold hover_titel">*}
+{*                            {$item['tour_name']}*}
+{*                        </span>*}
+{*                                        </div>*}
+{*                                    </div>*}
+
+{*                                    <div class="col-lg col-md-6 col-sm-6 col-6 d-flex align-items-center justify-content-start border_my padding_my">*}
+{*                                        <div class="parent_item">*}
+{*                                            <i class="fa-light fa-person-walking-luggage person-icon-recent-tour"></i>*}
+{*                                            <span class="font-weight-bold hover_titel">*}
+{*                            {assign var="year" value=substr($item['start_date'],0,4)}*}
+{*                                                {assign var="month" value=substr($item['start_date'],4,2)}*}
+{*                                                {assign var="day" value=substr($item['start_date'],6)}*}
+{*                                                {$year}/{$month}/{$day}*}
+{*                        </span>*}
+{*                                        </div>*}
+{*                                    </div>*}
+
+{*                                    <div class="col-lg col-md-6 col-sm-6 col-6 d-flex align-items-center justify-content-start border_my padding_my">*}
+{*                                        <div class="d-flex parent_item">*}
+{*                                            <i class="fa-light fa-moon"></i>*}
+{*                                            <span class="font-weight-bold">*}
+{*                            {if $item['night'] eq '0'}بدون اقامت{else}{$item['night']} شب{/if}*}
+{*                        </span>*}
+{*                                        </div>*}
+{*                                    </div>*}
+
+{*                                    <div class="col-lg col-md-12 col-sm-12 col-12 d-flex align-items-center justify-content-start border_my padding_my">*}
+{*                                        <div class="parent_item">*}
+{*                        <span>*}
+{*                            <img src="{$item['logo_transport']}" style="width:35px">*}
+{*                            {$item['airline_name']}*}
+{*                        </span>*}
+{*                                        </div>*}
+{*                                    </div>*}
+
+{*                                    <div class="col-lg col-md-12 col-sm-12 col-12 d-flex align-items-center justify-content-start border_my padding_my position-relative parent_after">*}
+{*                                        {if $isInstallment !== false}*}
+{*                                            <span class="installment-label">اقساطی</span>*}
+{*                                        {/if}*}
+
+{*                                        <div class="parent_item">*}
+{*                        <span class="Money_color font-weight-bold">*}
+{*                            <i class="fa-light fa-sack-dollar"></i>*}
+{*                            {$item['min_price_r']|number_format}*}
+{*                            <span class="text_toman">ریال</span>*}
+{*                        </span>*}
+{*                                        </div>*}
+
+{*                                        <i class="fa-solid fa-caret-left arrow_after"></i>*}
+{*                                    </div>*}
+
+{*                                </div>*}
+{*                            </a>*}
+{*                        </div>*}
+{*                    {/foreach}*}
+{*                    <a class="btn-more--new"*}
+{*                       href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/13">*}
+{*                        نمایش تمام تورهای نوروزی*}
+{*                        <i class="fa-solid fa-arrow-left"></i>*}
+{*                    </a>*}
+{*                </div>*}
+{*            </div>*}
+
         </div>
     </div>
 </section>

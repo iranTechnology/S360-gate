@@ -37,24 +37,29 @@
      <div class="item-footer item-footer2">
       <div class="box-item-footer text-right">
        <h3>
-        هتل‌های عراق
+        اقامتگاه‌ها
        </h3>
        <ul>
         <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/page/karbala">
-          رزرو هتل کربلا
+         <a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=65&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">
+          اقامتگاه های مشهد مقدس
          </a>
         </li>
         <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/page/najaf">
-          رزرو هتل نجف
+         <a href="{$smarty.const.ROOT_ADDRESS}/resultExternalHotel/iraq/Karbala/{$objDate->daysAfterToday('1')}/{$objDate->daysAfterToday('2')}/1/R:2-0-0">
+          اقامتگاه های عراق
          </a>
         </li>
         <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/page/kadhimiya">
-          رزرو هتل کاظمین
+         <a href="javascript:">
+          اقامتگاه های گیلان
          </a>
         </li>
+           <li>
+               <a href="javascript:">
+                   اقامتگاه های مازندران
+               </a>
+           </li>
        </ul>
       </div>
      </div>
@@ -66,7 +71,7 @@
        <ul>
         <li>
          <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
-          هتل
+          اقامتگاه
          </a>
         </li>
         <li>
@@ -90,7 +95,7 @@
        <ul>
         <li>
          <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">
-          چرا کانون نهضت تبلیغ
+          چرا موسسه نهضت تبلیغ
          </a>
         </li>
         <li>
@@ -117,30 +122,6 @@
           تلفن دفتر :
           <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_PHONE}">
            {$smarty.const.CLIENT_PHONE}
-          </a>
-         </div>
-        </li>
-        <li>
-         <div class="child-item-footer">
-          سفر انفرادی :
-          <a href="tel:{$smarty.const.CLIENT_MOBILE}">
-           {$smarty.const.CLIENT_MOBILE}
-          </a>
-         </div>
-        </li>
-        <li>
-         <div class="child-item-footer">
-          کاروان‌ها :
-          <a href="tel:{$smarty.const.CLIENT_MOBILE}">
-           {$smarty.const.CLIENT_MOBILE}
-          </a>
-         </div>
-        </li>
-        <li>
-         <div class="child-item-footer">
-          پرواز :
-          <a href="tel:{$smarty.const.CLIENT_MOBILE}">
-           {$smarty.const.CLIENT_MOBILE}
           </a>
          </div>
         </li>
@@ -261,7 +242,7 @@
   <div class="container">
    <div class="parent-iran-tech">
     <p>
-     کپی هر محتوایی از سایت و سوشال مدیای کانون نهضت تبلیغ تنها با مجوز کتبی و ذکر منبع برای مقاصد غیر تجاری امکان پذیر میباشد.
+     کپی هر محتوایی از سایت و سوشال مدیای موسسه نهضت تبلیغ تنها با مجوز کتبی و ذکر منبع برای مقاصد غیر تجاری امکان پذیر میباشد.
     </p>
     <div class="parent-text-iran-tech">
      <a class="last_a" href="https://www.iran-tech.com/">

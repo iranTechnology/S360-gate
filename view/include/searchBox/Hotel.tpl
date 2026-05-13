@@ -9,7 +9,7 @@
             {include file="./sections/hotel/internal/check_in_date.tpl"}
             {include file="./sections/hotel/internal/check_out_date.tpl"}
             {include file="./sections/hotel/internal/count_passenger_room.tpl"}
-            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-3 col-sm-6 col-12 btn_s col_search margin-center">
+            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-6 col-sm-6 col-12 btn_s col_search margin-center">
                 <button type="button" onclick="searchInternalHotel()"
                         class="btn theme-btn seub-btn b-0"><span>##Search##</span></button>
             </div>
@@ -22,7 +22,7 @@
             {include file="./sections/hotel/international/check_out_date.tpl"}
             {include file="./sections/hotel/international/count_passenger_room.tpl"}
 
-            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-3 col-sm-6 col-12 btn_s col_search margin-center">
+            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-6 col-sm-6 col-12 btn_s col_search margin-center">
                 <input type="hidden" id="nights_hotel" name="nights_hotel" value="" placeholder='##Exitdate##' class='nights-hotel-js'>
 
                 <button onclick="searchInternationalHotel()" type="button"  class="btn theme-btn seub-btn b-0"><span>##Search##</span></button>

@@ -2,37 +2,37 @@
     <div class="container">
         <div class="title-safiran">
             <div class="text-title-safiran">
-                <h2>هتل‌های عراق</h2>
+                <h2>اقامتگاه‌ها</h2>
             </div>
         </div>
         <div class="parent-hotel">
             <div class="item">
-                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/page/karbala">
+                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=65&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">
                     <div class="img-hotel">
-                        <img alt="img-hotel" src="project_files/images/karbala.jpg" />
+                        <img alt="img-hotel" src="project_files/images/Untitled.jpeg" />
                     </div>
                     <div class="text-hotel">
-                        <h3>رزرو هتل در کربلا</h3>
+                        <h3>اقامتگاه های مشهد مقدس</h3>
                     </div>
                 </a>
             </div>
             <div class="item">
-                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/page/najaf">
+                <a class="link-parent" href="javascript:">
                     <div class="img-hotel">
-                        <img alt="img-hotel" src="project_files/images/najaf.jpg" />
+                        <img alt="img-hotel" src="project_files/images/Untitled2.jpeg" />
                     </div>
                     <div class="text-hotel">
-                        <h3>رزرو هتل در نجف</h3>
+                        <h3>اقامتگاه های عراق</h3>
                     </div>
                 </a>
             </div>
             <div class="item">
-                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/page/kadhimiya">
+                <a class="link-parent" href="javascript:">
                     <div class="img-hotel">
-                        <img alt="img-hotel" src="project_files/images/kazemein.jpg" />
+                        <img alt="img-hotel" src="project_files/images/Untitled3.jpeg" />
                     </div>
                     <div class="text-hotel">
-                        <h3>رزرو هتل در کاظمین</h3>
+                        <h3>اقامتگاه های شمال</h3>
                     </div>
                 </a>
             </div>
@@ -40,32 +40,32 @@
 {*        {include file="./hotels-webservice.tpl"}*}
         <div class="owl-carousel owl-theme parent-hotel-owl">
             <div class="item">
-                <a class="link-parent"  href="{$smarty.const.ROOT_ADDRESS}/page/najaf">
+                <a class="link-parent"  href="javascript:">
                     <div class="img-hotel">
-                        <img alt="img-hotel" src="project_files/images/najaf.jpg" />
+                        <img alt="img-hotel" src="project_files/images/Untitled.jpeg" />
                     </div>
                     <div class="text-hotel">
-                        <h3>رزرو هتل در نجف</h3>
+                        <h3>اقامتگاه های مشهد مقدس</h3>
                     </div>
                 </a>
             </div>
             <div class="item">
-                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/page/karbala">
+                <a class="link-parent" href="javascript:">
                     <div class="img-hotel">
-                        <img alt="img-hotel" src="project_files/images/karbala.jpg" />
+                        <img alt="img-hotel" src="project_files/images/Untitled2.jpeg" />
                     </div>
                     <div class="text-hotel">
-                        <h3>رزرو هتل در کربلا</h3>
+                        <h3>اقامتگاه های عراق</h3>
                     </div>
                 </a>
             </div>
             <div class="item">
-                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/page/kadhimiya">
+                <a class="link-parent" href="javascript:">
                     <div class="img-hotel">
-                        <img alt="img-hotel" src="project_files/images/kazemein.jpg" />
+                        <img alt="img-hotel" src="project_files/images/Untitled3.jpeg" />
                     </div>
                     <div class="text-hotel">
-                        <h3>رزرو هتل در کاظمین</h3>
+                        <h3>اقامتگاه های شمال</h3>
                     </div>
                 </a>
             </div>
