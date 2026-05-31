@@ -121,12 +121,12 @@
             {
               "@context": "https://schema.org",
               "@type": "Organization",
-              "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#organization",
+              "@id": "https://karevansadat.com/#organization",
               "name": "{$smarty.const.CLIENT_NAME}",
-              "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/",
+              "url": "https://karevansadat.com/",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/project_files/images/logo.png"
+                "url": "project_files/images/logo.png"
               }
             }
         </script>
@@ -135,11 +135,11 @@
             {
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#website",
-              "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/",
+              "@id": "https://karevansadat.com/#website",
+              "url": "https://karevansadat.com/",
               "name": "{$smarty.const.CLIENT_NAME}",
               "publisher": {
-                "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#organization"
+                "@id": "https://karevansadat.com/#organization"
               }
             }
         </script>

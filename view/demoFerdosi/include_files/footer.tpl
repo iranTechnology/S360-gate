@@ -8,10 +8,58 @@
   <div class="container">
    <div class="row">
     <div class="parent-footer-iran d-flex flex-wrap w-100">
+     <div class="item-footer col-lg-3 col-md-3 col-sm-4 col-12 order-foot2">
+      <div class="box-item-footer text-right">
+       <h3>
+        خدمات
+       </h3>
+       <ul>
+        <li>
+         <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">
+          پرواز
+         </a>
+        </li>
+        <li>
+         <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
+          هتل
+         </a>
+        </li>
+        <li>
+         <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">
+          تور
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="item-footer col-lg-3 col-md-3 col-sm-4 col-12">
+      <div class="box-item-footer text-right">
+       <h3>
+        دانستنیها
+       </h3>
+       <ul>
+        <li>
+         <a href="https://{$smarty.const.ROOT_ADDRESS}/news">
+          اخبار
+         </a>
+        </li>
+        <li>
+         <a href="https://{$smarty.const.ROOT_ADDRESS}/currency">
+          نرخ ارز
+         </a>
+        </li>
+        <li>
+         <a href="https://{$smarty.const.ROOT_ADDRESS}/mag">
+          وبلاگ
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
      <div class="item-footer col-lg-3 col-md-3 col-sm-4 col-12 display-footer-none">
       <div class="box-item-footer text-right">
        <h3>
-        دسترسی آسان
+        آژانس ما
        </h3>
        <ul>
         <li>
@@ -25,51 +73,8 @@
          </a>
         </li>
         <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/mag">
-          مجله فردوسی
-         </a>
-        </li>
-        <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/club">
-          باشگاه مشتریان
-         </a>
-        </li>
-       </ul>
-      </div>
-     </div>
-     <div class="item-footer col-lg-3 col-md-3 col-sm-4 col-12 order-foot2">
-      <div class="box-item-footer text-right">
-       <h3>
-        خدمات مشتریان
-       </h3>
-       <ul>
-        <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">
-          تماس با ما
-         </a>
-        </li>
-        <li>
          <a href="{$smarty.const.ROOT_ADDRESS}/rules">
           قوانین و مقررات
-         </a>
-        </li>
-        <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/faq">
-          سوالات متداول
-         </a>
-        </li>
-       </ul>
-      </div>
-     </div>
-     <div class="item-footer col-lg-3 col-md-3 col-sm-4 col-12">
-      <div class="box-item-footer text-right">
-       <h3>
-        اطلاعات تکمیلی
-       </h3>
-       <ul>
-        <li>
-         <a href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/page/Licenses">
-          مجوزها
          </a>
         </li>
        </ul>
@@ -146,10 +151,71 @@
   </a>
   <div aria-multiselectable="true" id="accordion-faq" role="tablist">
    <div class="panel panel-default card">
+    <div class="panel-heading card-header" id="heading-faq-2" role="tab">
+     <h4 class="panel-title mb-0 parent-accordion">
+      <a aria-controls="Collapse-faq-2" aria-expanded="false" class="btn-link w-100 collapsed" data-parent="#accordion-faq" data-toggle="collapse" href="#Collapse-faq-2">
+       خدمات
+       <i class="fa icone-arrow">
+       </i>
+      </a>
+     </h4>
+    </div>
+    <div aria-labelledby="heading-faq-2" class="panel-collapse collapse" id="Collapse-faq-2" role="tabpanel" style="">
+     <ul class="ul-footer-mobile">
+      <li>
+       <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">
+        پرواز
+       </a>
+      </li>
+      <li>
+       <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
+        هتل
+       </a>
+      </li>
+      <li>
+       <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">
+        تور
+       </a>
+      </li>
+
+     </ul>
+    </div>
+   </div>
+   <div class="panel panel-default card">
+    <div class="panel-heading card-header" id="heading-faq-3" role="tab">
+     <h4 class="panel-title mb-0 parent-accordion">
+      <a aria-controls="Collapse-faq-3" aria-expanded="false" class="collapsed btn-link w-100" data-parent="#accordion-faq" data-toggle="collapse" href="#Collapse-faq-3">
+       دانستنیها
+       <i class="fa icone-arrow">
+       </i>
+      </a>
+     </h4>
+    </div>
+    <div aria-labelledby="heading-faq-3" class="panel-collapse collapse" id="Collapse-faq-3" role="tabpanel">
+     <ul class="ul-footer-mobile">
+      <li>
+       <a href="https://{$smarty.const.ROOT_ADDRESS}/news">
+        اخبار
+       </a>
+      </li>
+      <li>
+       <a href="https://{$smarty.const.ROOT_ADDRESS}/currency">
+        نرخ ارز
+       </a>
+      </li>
+      <li>
+       <a href="https://{$smarty.const.ROOT_ADDRESS}/mag">
+        وبلاگ
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+   <div class="panel panel-default card">
     <div class="panel-heading card-header" id="heading-faq-1" role="tab">
      <h4 class="panel-title mb-0 parent-accordion">
       <a aria-controls="Collapse-faq-1" aria-expanded="false" class="btn-link w-100 collapsed" data-parent="#accordion-faq" data-toggle="collapse" href="#Collapse-faq-1">
-       فردوسی
+       آژانس ما
        <i class="fa icone-arrow">
        </i>
       </a>
@@ -168,64 +234,8 @@
        </a>
       </li>
       <li>
-       <a href="{$smarty.const.ROOT_ADDRESS}/mag">
-        مجله فردوسی
-       </a>
-      </li>
-      <li>
-       <a href="{$smarty.const.ROOT_ADDRESS}/club">
-        باشگاه مشتریان
-       </a>
-      </li>
-
-     </ul>
-    </div>
-   </div>
-   <div class="panel panel-default card">
-    <div class="panel-heading card-header" id="heading-faq-2" role="tab">
-     <h4 class="panel-title mb-0 parent-accordion">
-      <a aria-controls="Collapse-faq-2" aria-expanded="false" class="btn-link w-100 collapsed" data-parent="#accordion-faq" data-toggle="collapse" href="#Collapse-faq-2">
-       خدمات مشتریان
-       <i class="fa icone-arrow">
-       </i>
-      </a>
-     </h4>
-    </div>
-    <div aria-labelledby="heading-faq-2" class="panel-collapse collapse" id="Collapse-faq-2" role="tabpanel" style="">
-     <ul class="ul-footer-mobile">
-      <li>
-       <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">
-        تماس با ما
-       </a>
-      </li>
-      <li>
        <a href="{$smarty.const.ROOT_ADDRESS}/rules">
         قوانین و مقررات
-       </a>
-      </li>
-      <li>
-       <a href="{$smarty.const.ROOT_ADDRESS}/faq">
-        سوالات متداول
-       </a>
-      </li>
-     </ul>
-    </div>
-   </div>
-   <div class="panel panel-default card">
-    <div class="panel-heading card-header" id="heading-faq-3" role="tab">
-     <h4 class="panel-title mb-0 parent-accordion">
-      <a aria-controls="Collapse-faq-3" aria-expanded="false" class="collapsed btn-link w-100" data-parent="#accordion-faq" data-toggle="collapse" href="#Collapse-faq-3">
-       اطلاعات تکمیلی
-       <i class="fa icone-arrow">
-       </i>
-      </a>
-     </h4>
-    </div>
-    <div aria-labelledby="heading-faq-3" class="panel-collapse collapse" id="Collapse-faq-3" role="tabpanel">
-     <ul class="ul-footer-mobile">
-      <li>
-       <a href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/page/Licenses">
-        مجوزها
        </a>
       </li>
      </ul>

@@ -39,11 +39,11 @@
     "addressCountry": "IQ",
     "postalCode": "56001"
   },
-  "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/hotel/royal-karbala",
+  "url": "https://karevansadat.com/hotel/royal-karbala",
   "image": [
-    "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/hotel/royal-karbala/gallery-36.jpg",
-    "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/hotel/royal-karbala/gallery-56.jpg",
-    "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/hotel/royal-karbala/gallery-57.jpg"
+    "https://karevansadat.com/hotel/royal-karbala/gallery-36.jpg",
+    "https://karevansadat.com/hotel/royal-karbala/gallery-56.jpg",
+    "https://karevansadat.com/hotel/royal-karbala/gallery-57.jpg"
   ],
   "starRating": {
     "@type": "Rating",
@@ -66,7 +66,7 @@
       "longitude": "44.02662288989773"
     },
     "provider": {
-      "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#organization"
+      "@id": "https://karevansadat.com/#organization"
   }
 }
 </script>
@@ -78,12 +78,12 @@
       "@type": "VideoObject",
       "name": "معرفی هتل رویال کربلا",
       "description": "رزرو هتل رویال کربلا با قیمت مناسب، نزدیک حرم. مشاهده امکانات، تصاویر اتاق‌ها و فاصله تا حرم در سایت {$smarty.const.CLIENT_NAME}.",
-  "thumbnailUrl": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/hotel/royal-karbala/thumb.jpg",
+  "thumbnailUrl": "https://karevansadat.com/hotel/royal-karbala/thumb.jpg",
   "uploadDate": "2025-01-01T00:00:00+03:30",
   "duration": "PT1M28S",
   "embedUrl": "https://www.aparat.com/video/video/embed/videohash/ugxvn56/vt/frame",
   "publisher": {
-    "@id": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}/#organization"
+    "@id": "https://karevansadat.com/#organization"
   }
 }
 </script>

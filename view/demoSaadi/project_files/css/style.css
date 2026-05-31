@@ -28,7 +28,7 @@ body {
     line-height: 24px;
     text-align: right;
     color: #4b5259 !important;
-    font-family: "yekanbakhmedium" !important
+    font-family: var(--fontFamilyfontFamily) !important
 }
 
 a:hover {
@@ -51,7 +51,7 @@ a:hover {
     position: absolute;
     height: 100%;
     width: 100%;
-    background: rgba(0, 0, 0, .7);
+    background: rgba(0, 0, 0, .3);
     left: 0;
     top: 0;
     transition: opacity .3s ease;
@@ -86,7 +86,7 @@ a:hover {
 
 .banner-demo .parent-banner-demo .text-banner-demo h2 {
     color: #fff;
-    font-family: "iranbold";
+    font-family: var(--fontFamilyBold);
     margin-bottom: 0;
     font-size: 36px
 }
@@ -134,7 +134,7 @@ a:hover {
     display: -webkit-box;
     margin-bottom: 22px;
     color: #232323;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     font-size: 28px;
     line-height: 48px
 }
@@ -164,7 +164,7 @@ a:hover {
 }
 
 .about-ghods .parent-about .ul-about li i {
-    background: #c50021;
+    background: var(--mainColor);
     padding: 10px;
     border-radius: 50%;
     color: #fff;
@@ -178,8 +178,8 @@ a:hover {
 }
 
 .about-ghods .parent-about .btn-more-about {
-    background: #c50021;
-    border-radius: 16px;
+    background: var(--mainColor);
+    border-radius: var(--rounded);
     padding: 10px 25px;
     color: #fff;
     transition: all .3s;
@@ -188,7 +188,7 @@ a:hover {
 }
 
 .about-ghods .parent-about .btn-more-about:hover {
-    opacity: .7;
+    background-color: var(--secondColor) !important;
     text-decoration: none
 }
 
@@ -241,20 +241,20 @@ a:hover {
 }
 
 .hotel-ghods .parent-ul-hotel #pills-tab-hotel .nav-link {
-    border: 2px solid #c50021;
-    color: #c50021;
+    border: 2px solid var(--mainColor);
+    color: var(--mainColor);
     padding: 10px 30px;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     transition: all .3s;
     font-size: 18px;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     background: rgba(0, 0, 0, 0)
 }
 
 .hotel-ghods .parent-ul-hotel #pills-tab-hotel .nav-link.active {
-    background: #c50021 !important;
+    background: var(--mainColor) !important;
     color: #fff !important;
-    border-color: #c50021
+    border-color: var(--mainColor)
 }
 
 .hotel-ghods .link-parent {
@@ -267,7 +267,7 @@ a:hover {
     position: relative;
     padding: 20px;
     transition: all .3s;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     overflow: hidden
 }
 
@@ -325,7 +325,7 @@ a:hover {
 }
 
 .hotel-ghods .link-parent .text-hotel h3 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #fff3cd;
     margin-bottom: 0;
     font-size: 26px
@@ -369,7 +369,7 @@ a:hover {
 }
 
 .title h2 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #333;
     margin-bottom: 0;
     font-size: 26px
@@ -411,7 +411,7 @@ a:hover {
     gap: 5px;
     cursor: pointer;
     border: none;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     font-size: 18px;
     transition: all .3s
 }
@@ -429,7 +429,7 @@ a:hover {
     background-color: #fff;
     outline: 0;
     position: absolute;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     overflow: hidden;
     z-index: 22222
 }
@@ -474,21 +474,21 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #c50021;
+    border: 1px solid var(--mainColor);
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0);
-    color: #c50021;
+    color: var(--mainColor);
     height: 45px;
     padding: 10px 25px;
     gap: 5px;
     cursor: pointer;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     font-size: 18px;
     transition: all .3s
 }
 
 .search_flight #search_flight-tabContent .nav.nav-pills .nav-link.active {
-    background-color: #c50021;
+    background-color: var(--mainColor);
     color: #fff
 }
 
@@ -503,7 +503,7 @@ a:hover {
 
 .search_flight #search_flight-tabContent .search_flight_grid > div {
     padding: 15px 30px;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     background: #fff;
     display: flex;
     justify-content: space-between;
@@ -520,7 +520,7 @@ a:hover {
     color: #575757;
     margin-bottom: 0;
     font-size: 1rem;
-    font-family: "yekanbakhBold"
+    font-family: var(--fontFamilyBold2)
 }
 
 .search_flight #search_flight-tabContent .search_flight_grid > div > div {
@@ -550,17 +550,17 @@ a:hover {
 .search_flight #search_flight-tabContent .search_flight_grid > div > div svg:nth-child(4) {
     width: 30px;
     height: 30px;
-    fill: #c50021;
+    fill: var(--mainColor);
     transform: rotate(180deg)
 }
 
 .button {
-    background: #c50021;
+    background: var(--mainColor);
     color: #fff;
     padding: 8px 20px;
     cursor: pointer;
-    border-radius: 16px;
-    border: 1px solid #c50021;
+    border-radius: var(--rounded);
+    border: 1px solid var(--mainColor);
     transition: all .3s;
     font-size: .9rem;
     display: flex;
@@ -571,7 +571,7 @@ a:hover {
 .button:hover {
     background: #8d8d8d;
     color: #fff;
-    border-color: #c50021
+    border-color: var(--mainColor)
 }
 
 .moreBtnMobile {
@@ -585,7 +585,7 @@ a:hover {
 }
 
 .newsletters {
-    margin-top: 50px
+    margin-top: 70px
 }
 
 .newsletters .newsletterMain {
@@ -598,7 +598,7 @@ a:hover {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     align-items: center
 }
 
@@ -629,7 +629,7 @@ a:hover {
 }
 
 .newsletters .newsletterMain .text_newsletter div h2 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     font-size: 2rem;
     margin-bottom: 10px;
     text-transform: capitalize
@@ -647,7 +647,7 @@ a:hover {
 
 .newsletters .newsletterMain .form_newsletter label input {
     padding-right: 1rem;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     border: none;
     font-size: 17px;
     height: 50px;
@@ -655,14 +655,14 @@ a:hover {
 }
 
 .newsletters .newsletterMain .form_newsletter label a {
-    background: #c50021;
+    background: var(--mainColor);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
     font-size: 20px;
     color: #fff;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     transition: all ease .5s
 }
 
@@ -673,7 +673,7 @@ a:hover {
 }
 
 .newsletters .newsletterMain .form_newsletter label a:hover {
-    background: #8d8d8d
+    background: var(--secondColor)
 }
 
 .accordion-gallery {
@@ -693,7 +693,7 @@ a:hover {
     flex-direction: row;
     width: 100%;
     height: 590px;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     overflow: hidden
 }
 
@@ -726,7 +726,7 @@ a:hover {
 }
 
 .accordion-gallery .item-accordion-gallery .accordion-gallery-box-hover h2 {
-    font-family: "iranbold";
+    font-family: var(--fontFamilyBold);
     color: #fff;
     -webkit-line-clamp: 1;
     overflow: hidden;
@@ -743,7 +743,7 @@ a:hover {
     overflow: hidden;
     -webkit-box-orient: vertical;
     display: -webkit-box;
-    font-family: "yekanbakhmedium";
+    font-family: var(--fontFamilyfontFamily);
     color: #fff;
     text-align: right;
     transition-delay: .3s;
@@ -753,7 +753,7 @@ a:hover {
 }
 
 .accordion-gallery .item-accordion-gallery .accordion-gallery-box-hover h3 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #fff;
     transition-delay: .4s;
     transform: translateY(18px);
@@ -763,8 +763,8 @@ a:hover {
 
 .accordion-gallery .item-accordion-gallery .accordion-gallery-box-hover a {
     background: #fff;
-    border-radius: 16px;
-    color: #c50021;
+    border-radius: var(--rounded);
+    color: var(--mainColor);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -855,13 +855,13 @@ a:hover {
     border-radius: 7em;
     border: 1px solid #999;
     transition: all ease .3s;
-    color: #c50021
+    color: var(--mainColor)
 }
 
 .tour-owl .owl-nav button span:hover {
-    background: #c50021;
+    background: var(--mainColor);
     color: #fff;
-    border-color: #c50021
+    border-color: var(--mainColor)
 }
 
 .tour-owl .owl-nav .owl-next span {
@@ -881,7 +881,7 @@ a:hover {
     transition: all ease .3s;
     display: flex;
     flex-direction: column;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     overflow: hidden; /*! box-shadow: 0px 10px 15px 0px rgba(0,0,0,0.1); */
     border: 1px solid #ccc;
     position: relative
@@ -906,13 +906,13 @@ a:hover {
 }
 
 .city-tour {
-    color: #c50021;
+    color: var(--mainColor);
     font-size: 14px
 }
 
 .parent-text-tour h4 {
     font-size: 22px;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #424242;
     margin-bottom: 6px;
     -webkit-line-clamp: 1;
@@ -931,7 +931,7 @@ a:hover {
 }
 
 .night-tour i {
-    color: #c50021;
+    color: var(--mainColor);
     margin-left: 5px
 }
 
@@ -960,26 +960,26 @@ a:hover {
     order: 1 !important;
     font-size: 12px !important;
     color: #797f86 !important;
-    font-family: "yekanbakhBold" !important
+    font-family: var(--fontFamilyBold2) !important
 }
 
 .start-tour span {
     order: 2;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #424242;
     margin-right: 7px
 }
 
 .number-price {
-    color: #c50021 !important;
-    font-family: "yekanbakhBold" !important;
+    color: var(--mainColor) !important;
+    font-family: var(--fontFamilyBold2) !important;
     margin-left: 1px !important;
     font-size: 18px !important
 }
 
 .number-price span {
-    color: #c50021 !important;
-    font-family: "yekanbakhBold" !important;
+    color: var(--mainColor) !important;
+    font-family: var(--fontFamilyBold2) !important;
     margin-left: 1px !important;
     font-size: 18px !important
 }
@@ -1026,20 +1026,20 @@ a:hover {
 }
 
 .tour-demo #pills-tab .nav-link {
-    border: 1px solid #c50021;
-    color: #c50021;
+    border: 1px solid var(--mainColor);
+    color: var(--mainColor);
     padding: 10px 30px;
-    border-radius: 16px;
+    border-radius: var(--rounded);
     transition: all ease .5s;
     font-size: 18px;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     background: rgba(0, 0, 0, 0)
 }
 
 .tour-demo #pills-tab .nav-link.active {
-    background: #c50021 !important;
+    background: var(--mainColor) !important;
     color: #fff !important;
-    border-color: #c50021
+    border-color: var(--mainColor)
 }
 
 .app {
@@ -1051,7 +1051,7 @@ a:hover {
 }
 
 .app-text h3 {
-    font-family: "iranbold", sans-serif;
+    font-family: var(--fontFamilyBold), sans-serif;
     color: #000
 }
 
@@ -1094,6 +1094,290 @@ a:hover {
     display: none
 }
 
+.blog-kharazmi .parent-special-tours-paeiz {
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 30px
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz {
+    position: relative;
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    padding: 20px 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all .3s;
+    height: 190px
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz:hover {
+    text-decoration: none
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz:hover img {
+    transform: scale(1.1)
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz::after {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(100%, transparent), to(rgba(15, 15, 15, 0.75)));
+    background: -webkit-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.99) 100%);
+    background: -o-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    background: linear-gradient(top bottom, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    position: absolute;
+    height: 150%;
+    width: 100%;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+    content: "";
+    transition: all ease .5s
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transition: all .3s;
+    object-fit: cover;
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    z-index: 2
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text p {
+    color: #fff;
+    text-align: justify;
+    line-height: 23px;
+    font-size: 14px;
+    margin-bottom: 0;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    transition: all ease .5s;
+    display: none
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog {
+    display: flex;
+    align-items: center;
+    gap: 7px
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog svg {
+    width: 14px;
+    fill: #fff
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog span {
+    font-size: 14px;
+    color: #fff
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 0;
+    font-family: "iranbold";
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h4 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 0
+}
+
+.blog-kharazmi .parent-special-tours2 {
+    display: grid;
+    grid-template-columns:repeat(1, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 30px
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 {
+    position: relative;
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all .3s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2:hover {
+    text-decoration: none
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2:hover img {
+    transform: scale(1.1)
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2::after {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(100%, transparent), to(rgba(15, 15, 15, 0.75)));
+    background: -webkit-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.99) 100%);
+    background: -o-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    background: linear-gradient(top bottom, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    position: absolute;
+    height: 200%;
+    width: 100%;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+    content: "";
+    transition: all ease .5s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transition: all .3s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    z-index: 2
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text p {
+    color: #fff;
+    text-align: justify;
+    line-height: 23px;
+    font-size: 14px;
+    margin-bottom: 0;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    transition: all ease .5s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog {
+    display: flex;
+    align-items: center;
+    gap: 7px
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog svg {
+    width: 14px;
+    fill: #fff
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog span {
+    font-size: 14px;
+    color: #fff
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text h2 {
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 0;
+    font-family: "iranbold"
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text h4 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 0
+}
+
+@media (max-width: 1200px) {
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 280px !important
+    }
+}
+
+@media (max-width: 991px) {
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz {
+        height: 250px
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz2 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz1 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz3 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz4 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz5 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz6 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 300px !important
+    }
+
+    .blog-kharazmi .parent-special-tours-paeiz {
+        grid-template-columns:repeat(2, 1fr)
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 230px !important
+    }
+
+    .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
+        font-size: 18px
+    }
+}
+
+@media (max-width: 576px) {
+
+    .blog-kharazmi .parent-special-tours-paeiz {
+        grid-template-columns:1fr
+    }
+
+    .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
+        font-size: 17px
+    }
+
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 320px !important
+    }
+
+    .blog-kharazmi .items-special-tours-paeiz4, .blog-kharazmi .items-special-tours-paeiz5, .blog-kharazmi .items-special-tours-paeiz6 {
+        display: none !important
+    }
+}
+
 .title-center {
     display: flex;
     justify-content: center;
@@ -1109,7 +1393,7 @@ a:hover {
 }
 
 .title-center .text-title-center h2 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #333;
     margin-bottom: 0;
     font-size: 26px
@@ -1137,7 +1421,7 @@ a:hover {
 }
 
 .title-demo .text-title-demo h2 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #333;
     margin-bottom: 0;
     font-size: 30px
@@ -1147,7 +1431,7 @@ a:hover {
     color: rgba(74, 74, 74, .58);
     font-size: 18px;
     margin-bottom: 0;
-    font-family: "yekanbakhBold"
+    font-family: var(--fontFamilyBold2)
 }
 
 .title-demo .more-title-demo {
@@ -1155,7 +1439,7 @@ a:hover {
     color: #444;
     width: auto;
     transition: all ease .5s;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1170,12 +1454,12 @@ a:hover {
 
 .title-demo .more-title-demo:hover {
     text-decoration: none;
-    color: #c50021
+    color: var(--mainColor)
 }
 
 .title-demo .more-title-demo:hover svg {
     text-decoration: none;
-    fill: #c50021
+    fill: var(--mainColor)
 }
 
 .owl-theme .owl-dots {
@@ -1197,7 +1481,13 @@ a:hover {
 }
 
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
-    background: #c50021
+    background: var(--mainColor)
+}
+
+@media (max-width: 1200px) {
+    #searchBoxTabs {
+        gap: unset !important
+    }
 }
 
 @media (max-width: 991px) {
@@ -1226,12 +1516,6 @@ a:hover {
     }
 }
 
-@media (max-width: 1200px) {
-    #searchBoxTabs {
-        gap: unset !important
-    }
-}
-
 @media (max-width: 769px) {
     .title-demo .text-title-demo h2 {
         font-size: 26px;
@@ -1257,6 +1541,9 @@ a:hover {
 }
 
 @media (max-width: 576px) {
+    .parent-btn-app img {
+        width: 350px
+    }
     .banner-demo {
         background: #fff;
         height: unset;
@@ -1341,10 +1628,6 @@ a:hover {
 
     .app-text > img {
         width: 100%
-    }
-
-    .newsletters {
-        margin-top: 0
     }
 
     .banner-demo .parent-banner-demo {

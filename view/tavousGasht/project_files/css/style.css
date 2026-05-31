@@ -1,0 +1,2785 @@
+@import "animate.css/animate.css";
+
+@font-face {
+    font-family: "iransans";
+    src: url("../../../assets/all-fonts/iransans/IRANSansWeb(FaNum).eot") format("eot");
+    src: url("../../../assets/all-fonts/iransans/IRANSansWeb(FaNum).woff") format("woff");
+    src: url("../../../assets/all-fonts/iransans/IRANSansWeb(FaNum).woff2") format("woff2");
+    src: url("../../../assets/all-fonts/iransans/IRANSansWeb(FaNum).ttf") format("truetype");
+    font-style: normal
+}
+
+@font-face {
+    font-family: "iranbold";
+    src: url("../../../assets/all-fonts/iranbold/IRANSansWeb_Bold.eot") format("eot");
+    src: url("../../../assets/all-fonts/iranbold/IRANSansWeb_Bold.woff") format("woff");
+    src: url("../../../assets/all-fonts/iranbold/IRANSansWeb_Bold.woff2") format("woff2");
+    src: url("../../../assets/all-fonts/iranbold/IRANSansWeb_Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1100px
+    }
+}
+
+@media (max-width: 1200px) {
+    .dnone {
+        display: none !important
+    }
+}
+
+body {
+    overflow-x: hidden;
+    direction: rtl;
+    padding: 0;
+    background: #f4f4f9 !important;
+    line-height: 24px;
+    text-align: right;
+    color: #4b5259 !important;
+    font-family: "iransans" !important
+}
+
+a:hover {
+    text-decoration: none
+}
+
+.parent-modal-login .btn-form4 {
+    background: #092634
+}
+
+.owl-nav {
+    transition: all ease .3s
+}
+
+.owl-nav button {
+    outline: none;
+    height: 35px !important;
+    transition: all ease .3s !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%)
+}
+
+.owl-nav > .owl-prev {
+    right: -20px
+}
+
+.owl-nav > .owl-next {
+    left: -20px
+}
+
+.owl-nav > button > svg {
+    width: 40px;
+    height: 40px;
+    fill: #192945;
+    transition: all ease .3s
+}
+
+.banner-safiran, .tours, .hotel-ghods, .newsletters, .news, .other-services, .advertising, .search_flight, .about, .blog, .banner-ads {
+    margin: 0 0 60px 0
+}
+
+.position-unset {
+    position: unset !important
+}
+
+.owl-theme .owl-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px
+}
+
+.owl-theme .owl-dots .owl-dot span {
+    width: 9px;
+    height: 9px;
+    margin: 5px 7px;
+    background: #d6d6d6;
+    display: block;
+    -webkit-backface-visibility: visible;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    border-radius: 30px
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background: #092634
+}
+
+@media (max-width: 576px) {
+    .owl-theme .owl-dots .owl-dot span {
+        width: 7px;
+        height: 7px;
+        margin: 5px 5px
+    }
+}
+
+.title-safiran {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px
+}
+
+.title-safiran .text-title-safiran {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.title-safiran .text-title-safiran h2 {
+    font-family: "iranbold";
+    color: #333;
+    margin-bottom: 0;
+    font-size: 28px
+}
+
+.title-safiran .text-title-safiran p {
+    color: rgba(74, 74, 74, .58);
+    font-size: 18px;
+    margin-bottom: 0;
+    font-family: "iransans"
+}
+
+.title-safiran .more-title-safiran {
+    font-size: 21px;
+    color: #333;
+    width: auto;
+    line-height: 44px;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    font-family: "iransans";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px
+}
+
+.title-safiran .more-title-safiran span {
+    font-size: 16px
+}
+
+.title-safiran .more-title-safiran svg {
+    width: 8px;
+    fill: #333;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s
+}
+
+.title-safiran .more-title-safiran:hover {
+    color: #092634;
+    text-decoration: none
+}
+
+.title-safiran .more-title-safiran:hover svg {
+    fill: #092634
+}
+
+@media (max-width: 576px) {
+    .title-safiran .text-title-safiran h2 {
+        font-size: 18px
+    }
+
+    .title-safiran .more-title-safiran span {
+        font-size: 14px
+    }
+
+    .title-safiran .more-title-safiran svg {
+        width: 7px
+    }
+}
+
+.banner-safiran {
+    width: 100%;
+    height: calc(100vh - 87px);
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    background-position: center;
+    position: relative;
+    min-height: 500px
+}
+
+.banner-safiran .bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 11;
+    transition: all cubic-bezier(1, 0, 0, 1) .8s
+}
+
+.banner-safiran .bg-default {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 10
+}
+
+.banner-safiran .bg-768 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 10;
+    display: none
+}
+
+.banner-safiran .bg-576 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 10;
+    display: none
+}
+
+.banner-safiran .bg-airplane-768, .banner-safiran .bg-rent-768, .banner-safiran .bg-hotel-768, .banner-safiran .bg-bus-768, .banner-safiran .bg-insurance-768, .banner-safiran .bg-train-768, .banner-safiran .bg-package-768, .banner-safiran .bg-passport-768 {
+    display: none
+}
+
+.banner-safiran .bg-airplane-576, .banner-safiran .bg-rent-576, .banner-safiran .bg-hotel-576, .banner-safiran .bg-bus-576, .banner-safiran .bg-insurance-576, .banner-safiran .bg-train-576, .banner-safiran .bg-package-576, .banner-safiran .bg-passport-576 {
+    display: none
+}
+
+.banner-safiran .passport {
+    position: absolute;
+    bottom: 0;
+    left: -30px;
+    width: 200px;
+    height: 170px;
+    z-index: 99;
+    transition: all ease .3s
+}
+
+.banner-safiran .passport-active, .banner-safiran .passport-unactive {
+    z-index: 100;
+    position: absolute;
+    bottom: 0;
+    left: -30px;
+    opacity: 0;
+    width: 200px;
+    height: 170px;
+    transition: all ease .3s
+}
+
+.banner-safiran > .bottom {
+    width: 100%;
+    position: absolute;
+    height: 260px;
+    bottom: -2px;
+    top: auto;
+    z-index: 11;
+    right: 0;
+    left: 0
+}
+
+@media (max-width: 1200px) {
+    .banner-safiran .bottom {
+        height: 210px
+    }
+
+    .banner-safiran .bg {
+        width: unset
+    }
+
+    .banner-safiran .bg-default {
+        width: unset
+    }
+
+    .banner-safiran .search-box {
+        left: 90px
+    }
+}
+
+@media (max-width: 992px) {
+    .banner-safiran .services {
+        display: none
+    }
+
+    .banner-safiran .services-res {
+        display: block
+    }
+
+    .banner-safiran .bottom {
+        height: 180px
+    }
+
+    .banner-safiran .search-box {
+        gap: 20px;
+        top: 50px;
+        left: 90px
+    }
+
+    .banner-safiran .search-box .item-search-box {
+        font-size: 28px;
+        padding: 0
+    }
+
+    .banner-safiran .passport {
+        bottom: 0;
+        left: -10px;
+        width: 150px;
+        height: 130px
+    }
+
+    .banner-safiran .passport-active, .banner-safiran .passport-unactive {
+        bottom: 0;
+        left: -10px;
+        width: 150px;
+        height: 130px
+    }
+}
+
+@media (max-width: 767px) {
+    .banner-safiran .bottom {
+        height: 140px
+    }
+
+    .banner-safiran .slider_circle_10 .active {
+        width: 229px
+    }
+
+    .banner-safiran .passport {
+        bottom: 39px;
+        left: unset;
+        width: 150px;
+        height: 130px;
+        right: 270px
+    }
+
+    .banner-safiran .passport-active, .banner-safiran .passport-unactive {
+        bottom: 39px;
+        left: unset;
+        opacity: 0;
+        width: 150px;
+        height: 130px;
+        right: 270px
+    }
+
+    .banner-safiran .bg {
+        width: 100%
+    }
+
+    .banner-safiran .bg-768 {
+        display: inline-block
+    }
+
+    .banner-safiran .bg-default {
+        display: none
+    }
+
+    .banner-safiran .bg-airplane, .banner-safiran .bg-rent, .banner-safiran .bg-hotel, .banner-safiran .bg-bus, .banner-safiran .bg-insurance, .banner-safiran .bg-train, .banner-safiran .bg-package, .banner-safiran .bg-passport {
+        display: none
+    }
+
+    .banner-safiran .bg-airplane-768, .banner-safiran .bg-rent-768, .banner-safiran .bg-hotel-768, .banner-safiran .bg-bus-768, .banner-safiran .bg-insurance-768, .banner-safiran .bg-train-768, .banner-safiran .bg-package-768, .banner-safiran .bg-passport-768 {
+        display: inline-block
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-safiran {
+        height: 800px;
+        align-items: start
+    }
+
+    .banner-safiran .text-title-safiran h2 {
+        font-size: 22px
+    }
+
+    .banner-safiran .search-box {
+        margin-top: 100px;
+        position: unset
+    }
+
+    .banner-safiran .bg-airplane-768, .banner-safiran .bg-rent-768, .banner-safiran .bg-hotel-768, .banner-safiran .bg-bus-768, .banner-safiran .bg-insurance-768, .banner-safiran .bg-train-768, .banner-safiran .bg-package-768, .banner-safiran .bg-passport-768 {
+        display: none
+    }
+
+    .banner-safiran .bg-768 {
+        display: none
+    }
+
+    .banner-safiran .passport {
+        bottom: 19px;
+        left: unset;
+        width: 110px;
+        height: 95px;
+        right: 200px
+    }
+
+    .banner-safiran .passport-active, .banner-safiran .passport-unactive {
+        bottom: 19px;
+        left: unset;
+        width: 110px;
+        height: 95px;
+        right: 200px
+    }
+
+    .banner-safiran .bg-576 {
+        display: inline-block
+    }
+
+    .banner-safiran .bg-airplane-576, .banner-safiran .bg-rent-576, .banner-safiran .bg-hotel-576, .banner-safiran .bg-bus-576, .banner-safiran .bg-insurance-576, .banner-safiran .bg-train-576, .banner-safiran .bg-package-576, .banner-safiran .bg-passport-576 {
+        display: inline-block
+    }
+
+    .banner-safiran .services-mob {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 650px
+    }
+
+    .banner-safiran .services-res {
+        display: none
+    }
+
+    .banner-safiran .bottom {
+        display: none
+    }
+
+    .banner-safiran .parent-services {
+        grid-template-columns:repeat(1, 1fr);
+        grid-template-rows:repeat(6, 1fr);
+        position: relative;
+        width: 100%
+    }
+
+    .banner-safiran .parent-services .service {
+        justify-content: end;
+        margin: 0;
+        height: 109px !important;
+        margin-right: auto
+    }
+
+    .banner-safiran .parent-services .service > img:first-child {
+        width: 100%;
+        height: 100%;
+        object-fit: cover
+    }
+
+    .banner-safiran .parent-services .service > img:last-child {
+        width: 75px
+    }
+
+    .banner-safiran .parent-services .service div:last-child {
+        display: flex;
+        writing-mode: rl;
+        text-orientation: mixed;
+        top: 10px;
+        right: 10px;
+        left: unset;
+        color: #fff;
+        font-size: 35px;
+        gap: 7px;
+        position: absolute;
+        flex-direction: row-reverse
+    }
+
+    .banner-safiran .parent-services .service div:last-child img {
+        width: 50px
+    }
+
+    .banner-safiran .parent-services .service1 {
+        width: calc(100% - 10px)
+    }
+
+    .banner-safiran .parent-services .service2 {
+        width: 100%
+    }
+
+    .banner-safiran .parent-services .service3 {
+        width: calc(100% - 40px)
+    }
+
+    .banner-safiran .parent-services .service4 {
+        width: calc(100% - 60px)
+    }
+
+    .banner-safiran .parent-services .service5 {
+        width: 100%
+    }
+
+    .banner-safiran .parent-services .service6 {
+        width: calc(100% - 70px)
+    }
+
+    @keyframes b {
+        from {
+            top: -90px
+        }
+        to {
+            top: 20px
+        }
+    }@keyframes a {
+         from {
+             top: -90px
+         }
+         to {
+             top: 125px
+         }
+     }@keyframes d {
+          from {
+              top: -90px
+          }
+          to {
+              top: 240px
+          }
+      }@keyframes b1 {
+           from {
+               top: -90px
+           }
+           to {
+               top: 345px
+           }
+       }@keyframes a1 {
+            from {
+                top: -90px
+            }
+            to {
+                top: 450px
+            }
+        }@keyframes n {
+             from {
+                 top: -90px
+             }
+             to {
+                 top: 555px
+             }
+         }.banner-safiran .parent-services .b {
+              width: 75px;
+              position: absolute;
+              z-index: 20;
+              left: 10px;
+              top: 100px;
+              animation-name: b
+          }
+
+    .banner-safiran .parent-services .a {
+        width: 75px;
+        position: absolute;
+        z-index: 20;
+        left: 10px;
+        top: 105px;
+        animation-delay: .5s;
+        animation-name: a
+    }
+
+    .banner-safiran .parent-services .d {
+        width: 75px;
+        position: absolute;
+        z-index: 20;
+        left: 10px;
+        top: 200px;
+        animation-delay: 1s;
+        animation-name: d
+    }
+
+    .banner-safiran .parent-services .b1 {
+        width: 75px;
+        position: absolute;
+        z-index: 20;
+        left: 10px;
+        top: 295px;
+        animation-delay: 1.5s;
+        animation-name: b1
+    }
+
+    .banner-safiran .parent-services .a1 {
+        width: 75px;
+        position: absolute;
+        z-index: 20;
+        left: 10px;
+        top: 390px;
+        animation-delay: 2s;
+        animation-name: a1
+    }
+
+    .banner-safiran .parent-services .n {
+        width: 75px;
+        position: absolute;
+        z-index: 20;
+        left: 10px;
+        top: 485px;
+        animation-delay: 2.5s;
+        animation-name: n
+    }
+
+    .banner-safiran .container {
+        padding-right: 0;
+        padding-left: 0
+    }
+}
+
+.search-box {
+    display: grid;
+    grid-template-columns:repeat(2, 1fr);
+    grid-template-rows:repeat(4, 1fr);
+    gap: 25px;
+    position: absolute;
+    z-index: 13;
+    top: 60px;
+    left: 200px
+}
+
+.search-box .item-search-box {
+    border-radius: 3px;
+    background: #858b8b;
+    color: #f4f3f8;
+    font-family: "iranbold";
+    font-size: 28px;
+    display: flex;
+    flex: calc(50% - 10px);
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 25px 15px 20px -10px rgba(0, 0, 0, .1);
+    width: 0px;
+    transform: translate(15px, 15px);
+    height: 46px;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: .3s
+}
+
+.search-box .item-search-box:hover {
+    background: #0b2836
+}
+
+.search-box .item-search-box span {
+    transform: translateY(50px);
+    font-size: 25px
+}
+
+.search-box .item-search-box1 {
+    animation: .5s ease-out 1s forwards animating1-tabs, .5s ease-out 1.4s forwards animating2-tabs
+}
+
+.search-box .item-search-box1 span {
+    animation: .3s ease-out 1.5s forwards animating-tabs-span
+}
+
+.search-box .item-search-box2 {
+    animation: .5s ease-out 1.3s forwards animating1-tabs, .5s ease-out 1.7s forwards animating2-tabs
+}
+
+.search-box .item-search-box2 span {
+    animation: .3s ease-out 1.8s forwards animating-tabs-span
+}
+
+.search-box .item-search-box3 {
+    animation: .3s ease-out 1.5s forwards animating1-tabs, .3s ease-out 1.9s forwards animating2-tabs
+}
+
+.search-box .item-search-box3 span {
+    animation: .4s ease-out 2s forwards animating-tabs-span
+}
+
+.search-box .item-search-box4 {
+    animation: .3s ease-out 1.6s forwards animating1-tabs, .3s ease-out 2s forwards animating2-tabs
+}
+
+.search-box .item-search-box4 span {
+    animation: .4s ease-out 2.1s forwards animating-tabs-span
+}
+
+.search-box .item-search-box5 {
+    animation: .3s ease-out 1.7s forwards animating1-tabs, .3s ease-out 2.1s forwards animating2-tabs
+}
+
+.search-box .item-search-box5 span {
+    animation: .4s ease-out 2.2s forwards animating-tabs-span
+}
+
+.search-box .item-search-box6 {
+    animation: .3s ease-out 1.8s forwards animating1-tabs, .3s ease-out 2.2s forwards animating2-tabs
+}
+
+.search-box .item-search-box6 span {
+    animation: .4s ease-out 2.3s forwards animating-tabs-span
+}
+
+.search-box .item-search-box7 {
+    animation: .3s ease-out 1.9s forwards animating1-tabs, .3s ease-out 2.3s forwards animating2-tabs
+}
+
+.search-box .item-search-box7 span {
+    animation: .4s ease-out 2.4s forwards animating-tabs-span
+}
+
+.search-box .item-search-box8 {
+    animation: .3s ease-out 2s forwards animating1-tabs, .3s ease-out 2.4s forwards animating2-tabs
+}
+
+.search-box .item-search-box8 span {
+    animation: .4s ease-out 2.5s forwards animating-tabs-span
+}
+
+@keyframes animating1-tabs {
+    from {
+        width: 0
+    }
+    to {
+        width: 200px
+    }
+}
+
+@keyframes animating2-tabs {
+    from {
+        transform: translate(15px, 15px)
+    }
+    to {
+        transform: translate(0, 0)
+    }
+}
+
+@keyframes animating-tabs-span {
+    from {
+        transform: translateY(50px)
+    }
+    to {
+        transform: translateY(0)
+    }
+}
+
+@media (max-width: 576px) {
+    @keyframes animating1-tabs {
+        from {
+            width: 0
+        }
+        to {
+            width: 180px
+        }
+    }
+}
+
+.search_box {
+    margin-bottom: 80px;
+    width: 100%
+}
+
+.seub-btn {
+    color: #fff
+}
+
+.seub-btn:hover {
+    color: #fff;
+    background: rgba(158, 200, 186, 0.5098039216) !important
+}
+
+@media (max-width: 576px) {
+    .search_box {
+        margin: 50px 0
+    }
+}
+
+.banner-ads a {
+    width: 100%;
+    display: flex;
+    margin-top: -120px;
+    position: relative;
+    z-index: 100
+}
+
+.banner-ads a img {
+    width: 100%;
+    padding: 0 90px
+}
+
+@media (max-width: 992px) {
+    .banner-ads a {
+        margin-top: -100px
+    }
+
+    .banner-ads a img {
+        width: 100%;
+        padding: 0 0
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-ads a {
+        margin-top: -80px
+    }
+}
+
+.cars {
+    margin-bottom: 60px
+}
+
+.cars .searchBoxContentRent {
+    min-height: 108px;
+    width: 100%;
+    box-shadow: 0 12px 24px 0 rgba(88, 114, 195, .2);
+    background: rgba(0, 0, 0, .51);
+    border-radius: 60px;
+    transition: all cubic-bezier(1, 0, 0, 1) .8s;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.cars .searchBoxContentRent .form-group {
+    width: 100%
+}
+
+.cars .searchBoxContentRent .form-group:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(158, 200, 186, 0.5098039216);
+    right: 0;
+    bottom: 0;
+    border-radius: 8px
+}
+
+.cars .searchBoxContentRent .theme-btn {
+    height: 50px !important
+}
+
+.cars .searchBoxContentRent input::placeholder {
+    color: #fff !important;
+    font-size: 16px
+}
+
+.cars .searchBoxContentRent .select2-container--default .select2-selection--single .select2-selection__arrow {
+    opacity: 1
+}
+
+.cars .searchBoxContentRent > div:first-child {
+    padding: 30px 30px
+}
+
+.cars .searchBoxContentRent > .tab-pane {
+    position: relative
+}
+
+.cars .project {
+    border-radius: 8px;
+    position: relative;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    z-index: 0
+}
+
+.cars .project .img {
+    position: relative;
+    overflow: hidden;
+    -webkit-border-radius: 8px 8px 0 0;
+    -moz-border-radius: 8px 8px 0 0;
+    -ms-border-radius: 8px 8px 0 0;
+    border-radius: 8px 8px 0 0
+}
+
+.cars .project img {
+    width: 100%;
+    z-index: -1;
+    -moz-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -o-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -webkit-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -ms-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    height: 100%;
+    border-radius: 8px 8px 0 0;
+    object-fit: cover
+}
+
+.cars .project .text {
+    width: 100%;
+    align-items: center;
+    color: #1ec6b6;
+    padding: 10px;
+    padding-top: 0;
+    position: relative;
+    -moz-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -o-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -webkit-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -ms-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s
+}
+
+.cars .project .text h4.price {
+    padding: 0;
+    margin-left: auto;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: "iransans";
+    margin-bottom: 0;
+    color: #16ae01
+}
+
+.cars .project .text h4.price i {
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    font-style: normal;
+    margin-left: 3px;
+    font-size: 1rem;
+    margin: 0
+}
+
+.cars .project .text h4.price span {
+    color: #333
+}
+
+.cars .project .text > span {
+    font-family: "iransans";
+    font-weight: 500;
+    font-size: 1rem;
+    text-transform: uppercase;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    color: #555
+}
+
+.cars .project .text h3 {
+    font-size: 26px;
+    text-align: center;
+    font-family: "iransans";
+    color: #333;
+    border-bottom: 1px solid #eee;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.cars .project .text h3 a {
+    font-family: "iransans";
+    color: #333
+}
+
+.cars .project .text .star span {
+    color: #ffb400
+}
+
+.cars .project .text .star .rate a {
+    color: rgba(0, 0, 0, .3)
+}
+
+.cars .project .icon {
+    position: absolute;
+    top: -50px;
+    right: .5em;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #fff;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    -moz-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -o-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -webkit-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    -ms-transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    opacity: 0;
+    z-index: 2
+}
+
+.cars .project .icon span {
+    color: #fff;
+    font-size: 20px
+}
+
+.cars .more_tour {
+    justify-content: left;
+    font-size: 12px;
+    align-items: center
+}
+
+.cars .more_tour a {
+    background: #092634;
+    padding: 10px;
+    color: #fff;
+    border-radius: 8px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s
+}
+
+.cars .more_tour .more_tour_btn {
+    background: #092634;
+    padding: 7px;
+    color: #fff;
+    border-radius: 8px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    color: #fff !important;
+    position: relative;
+    font-family: "iransans";
+    font-size: 18px
+}
+
+.cars .more_tour .more_tour_btn:hover {
+    background-color: #9ec8ba
+}
+
+.cars .more_tour a::before {
+    content: "";
+    background-color: #092634;
+    width: 0;
+    bottom: -10px;
+    top: -10px;
+    position: absolute;
+    left: 0;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s
+}
+
+.cars .more_tour a:hover {
+    opacity: .7
+}
+
+.cars .more_tour a span {
+    color: #fff !important;
+    position: relative;
+    font-family: "yekanbakhBold";
+    font-size: 13px
+}
+
+.cars #pills-tab-tour {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 0
+}
+
+.cars #pills-tab-tour .nav-link {
+    border: 1px solid #092634;
+    color: #092634;
+    padding: 12px 30px;
+    border-radius: 8px;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    font-size: 18px;
+    font-family: "yekanbakhBold";
+    background: rgba(0, 0, 0, 0)
+}
+
+.cars #pills-tab-tour .nav-link.active {
+    background: #092634;
+    color: #fff
+}
+
+@media (max-width: 991px) {
+    .cars #pills-tab-tour .nav-link {
+        padding: 10px 20px !important
+    }
+}
+
+.ftour {
+    margin-bottom: 60px
+}
+
+.ftour .bg-ftour {
+    background-color: #fff;
+    border-radius: 8px;
+    height: calc(100% - 39px)
+}
+
+@media (max-width: 992px) {
+    .ftour .bg-ftour {
+        height: 100%;
+        min-height: 220px
+    }
+}
+
+.ftour .bg-ftour .parent-ftour {
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    border-radius: 8px;
+    padding: 16px 4px;
+    max-height: 422px;
+    border-radius: 8px;
+    height: 100%
+}
+
+@media (max-width: 768px) {
+    .ftour .bg-ftour .parent-ftour {
+        grid-template-columns:1fr 1fr
+    }
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour {
+    overflow: hidden;
+    padding: 0 12px;
+    border-left: 2px solid #e7eaee;
+    max-height: 390px
+}
+
+@media (max-width: 768px) {
+    .ftour .bg-ftour .parent-ftour .col-ftour:last-child {
+        display: none
+    }
+}
+
+@media (max-width: 576px) {
+    .ftour .bg-ftour .parent-ftour .col-ftour {
+        padding: 0 6px
+    }
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .back-ftour {
+    display: flex;
+    justify-content: start;
+    gap: 8px;
+    right: 100%;
+    transition: .5s;
+    align-items: center;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    z-index: 100;
+    font-size: 16px
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .back-ftour:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .back-ftour > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    transform: rotate(180deg);
+    fill: #092634
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .click-back-ftour {
+    right: 0 !important
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    max-height: 390px;
+    scrollbar-width: thin;
+    scrollbar-color: #7e7e7e #fff;
+    padding-left: 10px;
+    height: 100%
+}
+
+@media (max-width: 576px) {
+    .ftour .bg-ftour .parent-ftour .col-ftour .list-ftour {
+        padding-left: 0px
+    }
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour:last-child {
+    margin: 0
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .country-ftour {
+    display: flex;
+    justify-content: start;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    font-family: "iransans"
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .country-ftour img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    fill: #092634
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour {
+    transition: .3s;
+    position: absolute;
+    right: 100%;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .all-tours {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    color: #092634;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 9px
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .all-tours:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .all-tours > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    fill: #092634
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .title {
+    display: flex;
+    justify-content: start;
+    gap: 8px;
+    align-items: center;
+    padding: 5px;
+    font-size: 18px;
+    font-family: "iranbold";
+    white-space: nowrap
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .title img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .city-ftour {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 5px;
+    color: #333;
+    font-size: 14px
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .city-ftour:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .city-ftour > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    fill: #092634
+}
+
+.ftour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .click-item-cnt-ftour {
+    right: 0 !important
+}
+
+@media (max-width: 992px) {
+    .ftour .tour-salam {
+        margin-top: 16px
+    }
+}
+
+.ftour .tour-salam .title-center {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 30px
+}
+
+.ftour .tour-salam .title-center h4 {
+    font-size: 20px;
+    margin-bottom: 0;
+    color: #092634
+}
+
+.ftour .tour-salam .title-center h2 {
+    margin-bottom: 0;
+    color: #333;
+    font-family: "iransans"
+}
+
+.ftour .tour-salam .item {
+    margin: 1px
+}
+
+.ftour .tour-salam .parent-tour-gisoo {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px
+}
+
+.ftour .tour-salam .parent-ul-tour {
+    margin-bottom: 30px;
+    margin-top: 40px
+}
+
+.ftour .tour-salam .parent-ul-tour #pills-tab {
+    padding-right: 0;
+    gap: 20px
+}
+
+.ftour .tour-salam .parent-ul-tour #pills-tab .nav-link {
+    border: 1px solid #092634;
+    color: #092634;
+    padding: 12px 30px;
+    border-radius: 8px;
+    transition: all .3s;
+    font-size: 20px;
+    font-family: "iransans";
+    background: rgba(0, 0, 0, 0)
+}
+
+.ftour .tour-salam .parent-ul-tour #pills-tab .nav-link.active {
+    background: #092634;
+    color: #fff;
+    border-color: #092634
+}
+
+.ftour .tour-salam .link-parent {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transition: all .3s;
+    padding: 10px;
+    gap: 17px
+}
+
+.ftour .tour-salam .link-parent:hover {
+    text-decoration: none
+}
+
+.ftour .tour-salam .link-parent:hover .btn-tour-tab {
+    background: #092634 !important
+}
+
+.ftour .tour-salam .link-parent:hover .btn-tour-tab svg {
+    fill: #fff !important
+}
+
+.ftour .tour-salam .link-parent:hover .parent-img-tour img {
+    transform: scale(1.1)
+}
+
+.ftour .tour-salam .link-parent .parent-img-tour {
+    width: 100%;
+    height: 165px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px
+}
+
+.ftour .tour-salam .link-parent .parent-img-tour img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(85%);
+    transition: all .3s
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 14px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .money-tour {
+    font-size: 16px;
+    color: #333;
+    font-family: "iransans"
+}
+
+@media (min-width: 768px)and (max-width: 992px) {
+    .ftour .tour-salam .link-parent .parent-text-owl .money-tour {
+        font-size: 14px
+    }
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .money-tour span {
+    color: #16ae01;
+    font-size: 18px
+}
+
+@media (min-width: 768px)and (max-width: 992px) {
+    .ftour .tour-salam .link-parent .parent-text-owl .money-tour span {
+        font-size: 16px
+    }
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .rating-stars {
+    display: flex;
+    align-items: center
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .rating-stars svg {
+    width: 16px;
+    fill: #ffa700
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .title-tour-tab {
+    color: #333;
+    margin-bottom: 0;
+    font-size: 18px;
+    font-family: "iransans", sans-serif;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    transition: all .3s;
+    text-align: center;
+    background: #f4f4f9;
+    padding: 15px 0;
+    border-radius: 8px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .money-calendar-tab {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #eef1f5;
+    font-size: 15px;
+    font-weight: 500;
+    color: #677283;
+    padding: 4px 5px;
+    border-radius: 24px;
+    width: max-content
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .money-calendar-tab i {
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .money-calendar-tab i svg {
+    fill: #677283;
+    width: 11px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .money-calendar-tab span {
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-night-location {
+    display: flex;
+    align-items: center;
+    gap: 7px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-night-location .location {
+    display: flex;
+    align-items: center;
+    background: #eef1f5;
+    font-size: 14px;
+    font-weight: 500;
+    color: #677283;
+    padding: 4px 5px;
+    border-radius: 24px;
+    gap: 7px;
+    min-width: 70px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-night-location .location i {
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-night-location .location i svg {
+    fill: #677283;
+    width: 11px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-night-location .night {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #eef1f5;
+    font-size: 14px;
+    font-weight: 500;
+    color: #677283;
+    padding: 4px 5px;
+    border-radius: 24px;
+    min-width: 70px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-night-location .night i {
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-night-location .night i svg {
+    fill: #677283;
+    width: 11px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-btn-tour {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 15px;
+    border-top: 2px solid #e9e9e9;
+    margin-top: 17px;
+    flex-direction: row-reverse
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-btn-tour img {
+    width: 30px;
+    height: 30px
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-btn-tour .btn-tour-tab {
+    background: rgba(0, 0, 0, 0);
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    border-radius: 50%;
+    transition: all .3s;
+    outline: none;
+    box-shadow: none;
+    border: 2px solid #092634;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-btn-tour .btn-tour-tab:hover {
+    text-decoration: none
+}
+
+.ftour .tour-salam .link-parent .parent-text-owl .parent-btn-tour .btn-tour-tab svg {
+    width: 17px;
+    transition: all .3s;
+    fill: #092634;
+    transform: rotate(180deg)
+}
+
+.itour .bg-ftour {
+    background-color: #fff;
+    border-radius: 8px;
+    height: calc(100% - 39px)
+}
+
+@media (max-width: 992px) {
+    .itour .bg-ftour {
+        height: 100%;
+        min-height: 220px
+    }
+}
+
+.itour .bg-ftour .parent-ftour {
+    display: grid;
+    grid-template-columns:2fr 1fr 1fr;
+    border-radius: 8px;
+    padding: 16px 4px;
+    max-height: 422px;
+    border-radius: 8px;
+    height: 100%
+}
+
+@media (max-width: 768px) {
+    .itour .bg-ftour .parent-ftour {
+        grid-template-columns:2fr 1fr
+    }
+}
+
+@media (max-width: 576px) {
+    .itour .bg-ftour .parent-ftour {
+        grid-template-columns:1fr;
+        gap: 15px;
+        max-height: unset
+    }
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour {
+    overflow: hidden;
+    padding: 0 12px;
+    border-left: 2px solid #e7eaee;
+    max-height: 390px
+}
+
+@media (max-width: 768px) {
+    .itour .bg-ftour .parent-ftour .col-ftour:last-child {
+        display: none
+    }
+}
+
+@media (max-width: 576px) {
+    .itour .bg-ftour .parent-ftour .col-ftour {
+        padding: 0 6px;
+        border-left: none
+    }
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .itour-category {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    background-color: #f9f9f9;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    gap: 11px
+}
+
+@media (max-width: 1200px) {
+    .itour .bg-ftour .parent-ftour .col-ftour .itour-category {
+        display: flex;
+        flex-direction: column
+    }
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .itour-category a {
+    display: flex;
+    justify-content: start;
+    gap: 15px;
+    color: #333;
+    font-size: 17px;
+    align-items: center;
+    font-family: "iransans";
+    border-radius: 8px;
+    transition: background-color .3s ease, height cubic-bezier(1, 0, 0, 1) .8s
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .itour-category a:hover {
+    background: rgba(9, 38, 52, .1882352941)
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .itour-category a img {
+    border-radius: 8px;
+    width: 72px;
+    height: 72px
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .back-ftour {
+    display: flex;
+    justify-content: start;
+    gap: 8px;
+    right: 100%;
+    transition: .5s;
+    align-items: center;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    z-index: 100;
+    font-size: 16px
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .back-ftour:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .back-ftour > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    transform: rotate(180deg);
+    fill: #092634
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .click-back-ftour {
+    right: 0 !important
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    max-height: 390px;
+    scrollbar-width: thin;
+    scrollbar-color: #7e7e7e #fff;
+    padding-left: 10px;
+    height: 100%
+}
+
+@media (max-width: 576px) {
+    .itour .bg-ftour .parent-ftour .col-ftour .list-ftour {
+        padding-left: 0;
+        min-height: 150px
+    }
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    height: 32px
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour:last-child {
+    margin: 0
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .country-ftour {
+    display: flex;
+    justify-content: start;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    font-family: "iransans"
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .country-ftour img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    fill: #092634
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour {
+    transition: .3s;
+    position: absolute;
+    right: 100%;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .all-tours {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    color: #092634;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 9px;
+    font-family: "iransans"
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .all-tours:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .all-tours > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    fill: #092634
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .title {
+    display: flex;
+    justify-content: start;
+    gap: 8px;
+    align-items: center;
+    padding: 5px;
+    font-size: 16px;
+    font-family: "iranbold";
+    white-space: nowrap
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .title img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .city-ftour {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 5px;
+    color: #333;
+    font-size: 14px
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .city-ftour:hover > svg {
+    background: #082431;
+    fill: #fff
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .item-cnt-ftour .city-ftour > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    fill: #092634
+}
+
+.itour .bg-ftour .parent-ftour .col-ftour .list-ftour .item-ftour .click-item-cnt-ftour {
+    right: 0 !important
+}
+
+@media (max-width: 992px) {
+    .itour .tour-salam {
+        margin-top: 16px
+    }
+}
+
+.itour .tour-salam .title-center {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 30px
+}
+
+.itour .tour-salam .title-center h4 {
+    font-size: 20px;
+    margin-bottom: 0;
+    color: #092634
+}
+
+.itour .tour-salam .title-center h2 {
+    margin-bottom: 0;
+    color: #333;
+    font-family: "iransans"
+}
+
+.itour .tour-salam .item {
+    margin: 1px
+}
+
+.itour .tour-salam .parent-tour-gisoo {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px
+}
+
+.itour .tour-salam .parent-ul-tour {
+    margin-bottom: 30px;
+    margin-top: 40px
+}
+
+.itour .tour-salam .parent-ul-tour #pills-tab {
+    padding-right: 0;
+    gap: 20px
+}
+
+.itour .tour-salam .parent-ul-tour #pills-tab .nav-link {
+    border: 1px solid #092634;
+    color: #092634;
+    padding: 12px 30px;
+    border-radius: 8px;
+    transition: all .3s;
+    font-size: 20px;
+    font-family: "iransans";
+    background: rgba(0, 0, 0, 0)
+}
+
+.itour .tour-salam .parent-ul-tour #pills-tab .nav-link.active {
+    background: #092634;
+    color: #fff;
+    border-color: #092634
+}
+
+.itour .tour-salam .link-parent {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transition: all .3s;
+    padding: 10px;
+    gap: 17px
+}
+
+.itour .tour-salam .link-parent:hover {
+    text-decoration: none
+}
+
+.itour .tour-salam .link-parent:hover .btn-tour-tab {
+    background: #092634 !important
+}
+
+.itour .tour-salam .link-parent:hover .btn-tour-tab svg {
+    fill: #fff !important
+}
+
+.itour .tour-salam .link-parent:hover .parent-img-tour img {
+    transform: scale(1.1)
+}
+
+.itour .tour-salam .link-parent .parent-img-tour {
+    width: 100%;
+    height: 165px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px
+}
+
+.itour .tour-salam .link-parent .parent-img-tour img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(85%);
+    transition: all .3s
+}
+
+.itour .tour-salam .link-parent .parent-text-owl {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 14px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .money-tour {
+    font-size: 16px;
+    color: #333;
+    font-family: "iransans"
+}
+
+@media (min-width: 768px)and (max-width: 992px) {
+    .itour .tour-salam .link-parent .parent-text-owl .money-tour {
+        font-size: 14px
+    }
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .money-tour span {
+    color: #16ae01;
+    font-size: 18px
+}
+
+@media (min-width: 768px)and (max-width: 992px) {
+    .itour .tour-salam .link-parent .parent-text-owl .money-tour span {
+        font-size: 16px
+    }
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .rating-stars {
+    display: flex;
+    align-items: center
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .rating-stars svg {
+    width: 16px;
+    fill: #ffa700
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .title-tour-tab {
+    color: #333;
+    margin-bottom: 0;
+    font-size: 22px;
+    font-family: "iransans", sans-serif;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    transition: all .3s;
+    text-align: center;
+    background: #f4f4f9;
+    padding: 15px 0;
+    border-radius: 8px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .money-calendar-tab {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #eef1f5;
+    font-size: 15px;
+    font-weight: 500;
+    color: #677283;
+    padding: 4px 5px;
+    border-radius: 24px;
+    width: max-content
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .money-calendar-tab i {
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .money-calendar-tab i svg {
+    fill: #677283;
+    width: 11px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .money-calendar-tab span {
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-night-location {
+    display: flex;
+    align-items: center;
+    gap: 7px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-night-location .location {
+    display: flex;
+    align-items: center;
+    background: #eef1f5;
+    font-size: 14px;
+    font-weight: 500;
+    color: #677283;
+    padding: 4px 5px;
+    border-radius: 24px;
+    gap: 7px;
+    min-width: 70px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-night-location .location i {
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-night-location .location i svg {
+    fill: #677283;
+    width: 11px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-night-location .night {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #eef1f5;
+    font-size: 14px;
+    font-weight: 500;
+    color: #677283;
+    padding: 4px 5px;
+    border-radius: 24px;
+    min-width: 70px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-night-location .night i {
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-night-location .night i svg {
+    fill: #677283;
+    width: 11px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-btn-tour {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 15px;
+    border-top: 2px solid #e9e9e9;
+    margin-top: 17px;
+    flex-direction: row-reverse
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-btn-tour img {
+    width: 30px;
+    height: 30px
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-btn-tour .btn-tour-tab {
+    background: rgba(0, 0, 0, 0);
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    border-radius: 50%;
+    transition: all .3s;
+    outline: none;
+    box-shadow: none;
+    border: 2px solid #092634;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-btn-tour .btn-tour-tab:hover {
+    text-decoration: none
+}
+
+.itour .tour-salam .link-parent .parent-text-owl .parent-btn-tour .btn-tour-tab svg {
+    width: 17px;
+    transition: all .3s;
+    fill: #092634;
+    transform: rotate(180deg)
+}
+
+.blog-kharazmi .parent-special-tours-paeiz {
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 30px
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz {
+    position: relative;
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    padding: 20px 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all .3s;
+    height: 190px
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz:hover {
+    text-decoration: none
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz:hover img {
+    transform: scale(1.1)
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz::after {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(100%, transparent), to(rgba(15, 15, 15, 0.75)));
+    background: -webkit-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.99) 100%);
+    background: -o-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    background: linear-gradient(top bottom, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    position: absolute;
+    height: 150%;
+    width: 100%;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+    content: "";
+    transition: all ease .5s
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transition: all .3s
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    z-index: 2
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text p {
+    color: #fff;
+    text-align: justify;
+    line-height: 23px;
+    font-size: 14px;
+    margin-bottom: 0;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    transition: all ease .5s;
+    display: none
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog {
+    display: flex;
+    align-items: center;
+    gap: 7px
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog svg {
+    width: 14px;
+    fill: #fff
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog span {
+    font-size: 14px;
+    color: #fff
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 0;
+    font-family: "iranbold";
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box
+}
+
+.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h4 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 0
+}
+
+.blog-kharazmi .parent-special-tours2 {
+    display: grid;
+    grid-template-columns:repeat(1, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 30px
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 {
+    position: relative;
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all .3s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2:hover {
+    text-decoration: none
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2:hover img {
+    transform: scale(1.1)
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2::after {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(100%, transparent), to(rgba(15, 15, 15, 0.75)));
+    background: -webkit-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.99) 100%);
+    background: -o-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    background: linear-gradient(top bottom, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
+    position: absolute;
+    height: 200%;
+    width: 100%;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+    content: "";
+    transition: all ease .5s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transition: all .3s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    z-index: 2
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text p {
+    color: #fff;
+    text-align: justify;
+    line-height: 23px;
+    font-size: 14px;
+    margin-bottom: 0;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    transition: all ease .5s
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog {
+    display: flex;
+    align-items: center;
+    gap: 7px
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog svg {
+    width: 14px;
+    fill: #fff
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog span {
+    font-size: 14px;
+    color: #fff
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text h2 {
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 0;
+    font-family: "iranbold"
+}
+
+.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text h4 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 0
+}
+
+@media (max-width: 1200px) {
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 280px !important
+    }
+}
+
+@media (max-width: 991px) {
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz {
+        height: 250px
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz2 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz1 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz3 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz4 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz5 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz6 {
+        grid-area: unset !important
+    }
+
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 300px !important
+    }
+
+    .blog-kharazmi .parent-special-tours-paeiz {
+        grid-template-columns:repeat(2, 1fr)
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 230px !important
+    }
+
+    .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
+        font-size: 18px
+    }
+}
+
+@media (max-width: 576px) {
+    .blog-kharazmi .parent-special-tours-paeiz {
+        grid-template-columns:1fr
+    }
+
+    .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
+        font-size: 17px
+    }
+
+    .blog-kharazmi .items-special-tours-paeiz {
+        height: 320px !important
+    }
+
+    .blog-kharazmi .items-special-tours-paeiz4, .blog-kharazmi .items-special-tours-paeiz5, .blog-kharazmi .items-special-tours-paeiz6 {
+        display: none !important
+    }
+}
+
+.top-footer {
+    padding: 3rem 0;
+    border-top: 1px solid #e2e6e9
+}
+
+.top-footer .parent-top-footer {
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-column-gap: 60px;
+    grid-row-gap: 20px
+}
+
+.top-footer .parent-top-footer .item-box-top-footer {
+    display: flex;
+    align-items: center;
+    gap: 16px
+}
+
+.top-footer .parent-top-footer .item-box-top-footer img {
+    width: 89px;
+    height: 89px
+}
+
+.top-footer .parent-top-footer .item-box-top-footer .text-top-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 7px
+}
+
+.top-footer .parent-top-footer .item-box-top-footer .text-top-footer h3 {
+    font-family: "iransans";
+    margin-bottom: 0;
+    color: #4b5259;
+    font-size: 20px
+}
+
+.top-footer .parent-top-footer .item-box-top-footer .text-top-footer span {
+    font-size: 16px !important;
+    color: #6c7680 !important
+}
+
+.top-footer .my-footer-icon2 {
+    display: none !important
+}
+
+.top-footer i {
+    --fa-primary-color: #0b7f8c;
+    --fa-secondary-color: #0b7f8ce5;
+    font-size: 50px
+}
+
+.bg-btn-karvan {
+    border-radius: 8px;
+    background-color: #ccc;
+    width: 150px;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    margin-top: auto
+}
+
+.bg-btn-karvan:hover {
+    background-color: rgba(225, 25, 36, .2901960784)
+}
+
+.bg-btn-karvan:hover .btn-karvan {
+    background-color: #9ec8ba;
+    color: #fff;
+    transform: translateY(0)
+}
+
+.bg-btn-karvan .btn-karvan {
+    background: #092634;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    font-size: 18px;
+    color: #fff;
+    border-radius: 8px;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    padding: 5px;
+    cursor: pointer;
+    width: 100%;
+    transform: translateY(-5px);
+    transition: all cubic-bezier(1, 0, 0, 1) .3s
+}
+
+@media (max-width: 1200px) {
+    .bg-btn-karvan {
+        margin-top: unset
+    }
+}
+
+@media (max-width: 991px) {
+    .bg-btn-karvan {
+        margin-top: 20px
+    }
+}
+
+@media (max-width: 769px) {
+    .bg-btn-karvan {
+        width: 150px
+    }
+
+    .bg-btn-karvan .btn-karvan {
+        padding: 5px;
+        font-size: 17px;
+        height: 45px
+    }
+}
+
+@media (max-width: 991px) {
+    .parent-top-footer {
+        grid-template-columns:repeat(2, 1fr) !important;
+        grid-row-gap: 30px !important
+    }
+}
+
+@media (max-width: 576px) {
+    .text-title-safiran p {
+        display: none
+    }
+
+    .title-safiran {
+        align-items: center !important
+    }
+
+    .more-title-safiran span {
+        font-size: 18px
+    }
+
+    .more-title-safiran svg {
+        width: 8px
+    }
+
+    .title-safiran {
+        margin-bottom: 20px !important
+    }
+
+    .parent-ul-tour {
+        margin-top: 0 !important
+    }
+
+    .tour-safiran .items-tour .text-bottom-tour h2 {
+        font-size: 22px !important
+    }
+
+    .tour-safiran .items-tour .text-bottom-tour .parent-info-tour-avan .info-right .cost {
+        font-size: 16px !important
+    }
+
+    .tour-safiran .items-tour .text-bottom-tour .parent-info-tour-avan .info-left .rating-text {
+        font-size: 16px !important
+    }
+
+    .blog-safiran .link-blog .parent-text-blog p {
+        font-size: 14px !important
+    }
+
+    .blog-safiran .link-blog .parent-text-blog button {
+        font-size: 14px !important
+    }
+
+    .blog-safiran .link-blog .parent-img-blog .parent-comment-star .data-blog {
+        font-size: 14px !important
+    }
+
+    .newsletters .newsletterMain .text_newsletter .parent-svg-newsletters svg {
+        width: 100px !important
+    }
+
+    .newsletters .newsletterMain .text_newsletter div h2 {
+        font-size: 20px !important
+    }
+
+    .newsletters .newsletterMain .text_newsletter div p {
+        font-size: 14px
+    }
+
+    .newsletters .newsletterMain input {
+        font-size: 14px !important
+    }
+
+    .blog-safiran {
+        padding: 0 0 50px
+    }
+
+    .tour-safiran {
+        padding: 0 0 50px
+    }
+
+    .parent-top-footer {
+        grid-template-columns:repeat(1, 1fr) !important
+    }
+
+    .top-footer .parent-top-footer .item-box-top-footer img {
+        width: 70px;
+        height: 70px
+    }
+
+    .top-footer .parent-top-footer .item-box-top-footer .text-top-footer h3 {
+        font-size: 18px !important
+    }
+
+    .my-footer-icon2 {
+        display: flex !important
+    }
+}
+
+.back-click {
+    left: 50px !important;
+    display: flex !important
+}
+
+.back, .res-back, .mob-back {
+    display: flex;
+    border-radius: 12px;
+    padding: 10px;
+    justify-content: center;
+    opacity: 0;
+    align-items: center;
+    background: hsl(199.5, 70.5%, 12%);
+    position: absolute;
+    top: 50px;
+    left: 90px;
+    z-index: 1001;
+    cursor: pointer;
+    color: #fff;
+    transition: all cubic-bezier(1, 0, 0, 1) .8s
+}
+
+@media (max-width: 576px) {
+    .back, .res-back, .mob-back {
+        top: 45px;
+        left: 25px
+    }
+}
+
+.title-search-box {
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: hsl(199.5, 70.5%, 12%);
+    position: absolute;
+    top: 15px;
+    left: 550px;
+    z-index: 1001;
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    cursor: pointer;
+    color: #fff;
+    font-family: "iranbold";
+    width: 0;
+    min-height: 60px;
+    box-shadow: 25px 15px 20px -10px rgba(9, 39, 52, .3);
+    font-size: 18px;
+    overflow: hidden;
+    transform: translate(15px, 15px)
+}
+
+.title-search-box div {
+    transform: translateY(40px);
+    transition: all cubic-bezier(1, 0, 0, 1) .3s;
+    white-space: nowrap
+}
+
+@media (max-width: 768px) {
+    .title-search-box {
+        left: 477px
+    }
+}
+
+@media (max-width: 576px) {
+    .title-search-box {
+        left: unset;
+        right: 25px
+    }
+}
+
+.input-mobile::placeholder {
+    color: #333 !important
+}
+
+.bg-light-blue {
+    background-color: #b7b7b7 !important
+}
+
+.tour-more-data-new .parent-title-data-count {
+    background: linear-gradient(135deg, #858585, #9EC8B9) !important
+}
+
+.parent-date-link.active .parent-title-data-count {
+    background: var(--mainColor) !important
+}
+
+.content-whatever-special-pages {
+    border: 0px !important;
+    box-shadow: 0 0px 0px !important;
+    background: rgba(0, 0, 0, 0) !important
+}
+
+/*# sourceMappingURL=style.css.map */

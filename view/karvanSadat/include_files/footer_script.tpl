@@ -4,7 +4,6 @@
 {if $smarty.const.GDS_SWITCH eq 'mainPage' || $smarty.const.GDS_SWITCH eq 'page'}
     <script src="assets/all-js/owl.carousel.min.js"></script>
     <script src="project_files/js/jquery.easing.1.3.js"></script>
-    <script src="project_files/js/camera.min.js"></script>
     <script src="project_files/js/searchBox.js"></script>
     <script src="assets/js/jquery-confirm.min.js" type="text/javascript"></script>
 {else}

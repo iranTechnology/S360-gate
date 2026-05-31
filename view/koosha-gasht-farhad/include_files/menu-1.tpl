@@ -8,7 +8,7 @@
                         <img alt="{$obj->Title_head()}" src="project_files/images/logo.png"/>
                          <div class="text-nav-brand">
                                                     <h1>کوشا گشت فرهاد</h1>
-                                                    <h2>شـرکـت خـدمـاتی مـسـافـرتـی</h2>
+                                                    <h2>خدمات مسافرت هوایی جهانگردی و زیارتی</h2>
                          </div>
                     </a>
                 </div>
