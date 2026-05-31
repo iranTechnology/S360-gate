@@ -15,7 +15,7 @@
   <Phonenumber>номер телефона</Phonenumber>
   <FlightRepetition>Устранить дублирующие рейсы</FlightRepetition>
   <FlightRepetitionCount>Дубликат рейса добавлен в результаты поиска</FlightRepetitionCount>
-
+  <PleaseselectthedesiredpassengerCancel>Пожалуйста, выберите пассажира, чью покупку вы хотите отменить.</PleaseselectthedesiredpassengerCancel>
   <PhonenumberTraveler>номер мобильного телефона путешественника </PhonenumberTraveler>
   <Telephonhome>домашный  телефон</Telephonhome>
   <Telephonwork>рабочий телефон</Telephonwork>
@@ -926,6 +926,7 @@
   <SecuritycodeDept>Код безопасности рейса утерян</SecuritycodeDept>
   <SecuritycodeReturn>Код безопасности рейса возвращен</SecuritycodeReturn>
   <Visa>Visa</Visa>
+  <Cip>Cip</Cip>
   <Bugpasswordrecoveryprocess>Ошибка в процессе восстановления пароля</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>Чтобы восстановить пароль, повторите запрос</Requestnewpasswordpassword>
   <expireddeadlinerequest>Извините, срок подачи вашего запроса истек</expireddeadlinerequest>
