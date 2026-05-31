@@ -690,7 +690,6 @@ class bookshowTest extends clientAuth {
             }
             $sql .= "  GROUP BY request_number ORDER BY creation_date_int DESC,id DESC ";
 
-
             /** @var partner $client_controller */
             $client_controller = Load::controller('partner');
             $sub_clients = $client_controller->subClient(CLIENT_ID) ;
@@ -3422,15 +3421,20 @@ class bookshowTest extends clientAuth {
                 $totalQty = ( $flightBook['adt_qty_f'] + $flightBook['chd_qty_f'] + $flightBook['inf_qty_f'] ) + $totalQty;
             }
 
-            $DataFlightType = dateTimeSetting::jdate( 'Y-m-d (H:i:s)', $flightBook['creation_date_int'] ) . "<hr style='margin:3px'><span class='FontBold'>" . $flightBook['request_number'] . "</span> <hr style='margin:3px'><span class='FontBold'> " . $flightBook['factor_number'] . "</span> <hr style='margin:3px'>";
+            if(LANG_PANEL_ADMIN=='fa')
+                $DataFlightType = dateTimeSetting::jdate( 'Y-m-d (H:i:s)', $flightBook['creation_date_int'] ) ;
+            else
+                $DataFlightType = date('Y-m-d (H:i:s)', $flightBook['creation_date_int']);
+
+            $DataFlightType .="<hr style='margin:3px'><span class='FontBold'>" . $flightBook['request_number'] . "</span> <hr style='margin:3px'><span class='FontBold'> " . $flightBook['factor_number'] . "</span> <hr style='margin:3px'>";
             if ( $flightBook['flight_type'] == "charter" ) {
-                $DataFlightType .= "چارتری <hr style='margin:3px'> چارتر" . ( $flightBook['pid_private'] == '1' ? "اختصاصی" : "اشتراکی" );
+                $DataFlightType .= functions::Xmlinformation('Charter')." <hr style='margin:3px'>".functions::Xmlinformation('CharterType').' '.( $flightBook['pid_private'] == '1' ? functions::Xmlinformation('Exclusive') : functions::Xmlinformation('Shared') );
             } elseif ( $flightBook['flight_type'] == "system" ) {
-                $DataFlightType .= "سیستمی <hr style='margin:3px'>" . ( $flightBook['pid_private'] == '1' ? "پیداختصاصی" : "پید اشتراکی" );
+                $DataFlightType .= functions::Xmlinformation('SystemType')." <hr style='margin:3px'>" . ( $flightBook['pid_private'] == '1' ? functions::Xmlinformation('PrivatePad') : functions::Xmlinformation('SharedPad') );
             } elseif ( $flightBook['flight_type'] == "charterPrivate" ) {
-                $DataFlightType .= "چارتری <hr style='margin:3px'> رزرواسیون اختصاصی";
+                $DataFlightType .= functions::Xmlinformation('ExclusiveReservation')." <hr style='margin:3px'>".functions::Xmlinformation('CharterType');
             } else {
-                $DataFlightType .= "نامشخص";
+                $DataFlightType .= functions::Xmlinformation('Unknown');
             }
 
             if (TYPE_ADMIN == '1') {
@@ -3494,7 +3498,11 @@ class bookshowTest extends clientAuth {
 
 
             if ( $flightBook['origin_city'] != '' && $flightBook['desti_city'] != '' ) {
-                $DataFlightInformation = $flightBook['origin_city'] . "(" . $flightBook['origin_airport_iata'] . ") <hr style='margin:3px'>" . $flightBook['desti_city'] . "(" . $flightBook['desti_airport_iata'] . ")";
+                if(LANG_PANEL_ADMIN=='fa')
+                    $DataFlightInformation = $flightBook['origin_city'] . "(" . $flightBook['origin_airport_iata'] . ") <hr style='margin:3px'>" . $flightBook['desti_city'] . "(" . $flightBook['desti_airport_iata'] . ")";
+                else
+                    $DataFlightInformation = $flightBook['origin_airport_iata'] . " - " . $flightBook['desti_airport_iata'];
+
             } else {
                 $DataFlightCityNameOrigin      = functions::NameCityForeign( $flightBook['origin_airport_iata'] );
                 $DataFlightCityNameDestination = functions::NameCityForeign( $flightBook['desti_airport_iata'] );
@@ -3512,9 +3520,9 @@ class bookshowTest extends clientAuth {
 
             if ( $DataFlightInfoMember['is_member'] == '0' ) {
                 //                $DataFlightCounterType=" کاربر مهمان <hr style='margin:3px'>".$flightBook['email_buyer'];
-                $DataFlightCounterType = " کاربر مهمان ";
+                $DataFlightCounterType = functions::Xmlinformation('GuestUser');
             } else {
-                $DataFlightCounterType = $flightBook['member_name'] . "<hr style='margin:3px'> کاربراصلی";
+                $DataFlightCounterType = $flightBook['member_name'] . "<hr style='margin:3px'> ".functions::Xmlinformation('MainUser');
             }
             $DataFlightCounterType .= "<hr style='margin:3px'>" . $this->info_flight( $flightBook['request_number'], $flightBook['member_email'] );
 
@@ -3528,8 +3536,9 @@ class bookshowTest extends clientAuth {
             }
             $DataFlightCounterType .= "<hr style='margin:3px'>";
             if ( $DataFlightInfoMember['is_member'] == '1' ) {
-                $DataFlightCounterType .= ( @$flightBook['fk_counter_type_id'] == '5' ? "مسافر" : "کانتر" );
-                $DataFlightCounterType .= $flightBook['percent_discount'] . " %ای";
+                $DataFlightCounterType .= ( @$flightBook['fk_counter_type_id'] == '5' ? functions::Xmlinformation('Passenger') : functions::Xmlinformation('Counter') );
+                $DataFlightCounterType .= $flightBook['percent_discount'] . " %";
+                if(LANG_PANEL_ADMIN=='fa') $DataFlightCounterType .='ای';
             }
             if ( $flightBook['agency_id'] > '0' ) {
                 $DataFlightCounterType .= "<hr style='margin:3px'>" . $flightBook['agency_name'];
@@ -3555,9 +3564,9 @@ class bookshowTest extends clientAuth {
 
 
                     if ( $flightBook['type_app'] == 'Web' ) {
-                        $DataFlightCounterType .= 'وب سایت';
+                        $DataFlightCounterType .= functions::Xmlinformation('Website');
                     } elseif ( $flightBook['type_app'] == 'Application' ) {
-                        $DataFlightCounterType .= 'اپلیکیشن';
+                        $DataFlightCounterType .= functions::Xmlinformation('ApplicationWord');
                     } elseif ( $flightBook['type_app'] == 'Api' ) {
                         $DataFlightCounterType .= 'Api';
                     }
@@ -3805,44 +3814,43 @@ class bookshowTest extends clientAuth {
                 if ( $flightBook['successfull'] == 'nothing' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;"
                                                class="btn btn-default cursor-default popoverBox  popover-default w-90" 
-                                               data-toggle="popover" title="انصراف از خرید" data-placement="right"
-                                               data-content="مسافر از تایید نهایی استفاده نکرده است"> انصراف از
-                                                خرید </a>';
+                                               data-toggle="popover" title="'.functions::Xmlinformation('CancelingPurchase').'" data-placement="right"
+                                               data-content="'.functions::Xmlinformation('FinalConfirmationStatus').'"> '.functions::Xmlinformation('CancelingPurchase').' </a>';
                 } elseif ( $flightBook['successfull'] == 'error') {
                     $DataFlightAgencyShare .= $this->btnErrorFlight($flightBook);
                 } elseif ( $flightBook['successfull'] == 'prereserve' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-warning cursor-default w-90" >
-                                                پیش رزرو
+                                                '.functions::Xmlinformation('Prereservation').'
                                                <div style="display: none;" class="parent-ld">
-    در حال صدور
+    '.functions::Xmlinformation('pendingPrintFlight').'
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                  </a>';
                 } elseif ( $flightBook['successfull'] == 'bank' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;"
                                                class="btn btn-primary cursor-default popoverBox  popover-primary w-90"
-                                               data-toggle="popover" title="هدایت به درگاه" data-placement="right"
-                                               data-content="مسافر به درگاه بانکی منتقل شده است و سیستم در انتظار بازگشت از بانک است ،این خرید فقط در صورتی که بانک به سیستم کد تایید پرداخت را بدهد تکمیل میشود">
-                                                هدایت به درگاه
+                                               data-toggle="popover" title="'.functions::Xmlinformation('NavigateToPort').'" data-placement="right"
+                                               data-content="'.functions::Xmlinformation('PaymentWaitingStatus').'">
+                                                '.functions::Xmlinformation('NavigateToPort').'
                                                  <div style="display: none;" class="parent-ld">
-    در حال صدور
+    '.functions::Xmlinformation('pendingPrintFlight').'
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                  </a>';
                 } elseif ( $flightBook['successfull'] == 'credit' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-default cursor-default w-90" >
-                                                انتخاب گزینه اعتباری
+                                                '.functions::Xmlinformation('CreditPaymentSelection').'
                                                  <div style="display: none;" class="parent-ld">
-    در حال صدور
+    '.functions::Xmlinformation('pendingPrintFlight').'
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                  </a>';
                 } elseif ( $flightBook['successfull'] == 'processing' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-primary w-90" >در حال پردازش</a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-primary w-90" >'.functions::Xmlinformation('processingPrintFlight').'</a>';
                 }elseif ( $flightBook['successfull'] == 'pending' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-print cursor-warning w-90 ">در حال صدور</a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-print cursor-warning w-90 ">'.functions::Xmlinformation('pendingPrintFlight').'</a>';
                 } elseif ( $flightBook['successfull'] == 'private_reserve' && $flightBook['pid_private'] == '1') {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-info cursor-default w-90">رزرو اختصاصی <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a>';
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-info cursor-default w-90">'.functions::Xmlinformation('ExclusiveBooking').'<p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a>';
                 }
 //                elseif ( $flightBook['successfull'] == 'private_reserve' && $flightBook['private_m4'] == '1' && $flightBook['IsInternal'] == '0' && $flightBook['api_id'] == '10' ) {
 //                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-default">رزرو
@@ -3897,9 +3905,9 @@ class bookshowTest extends clientAuth {
 //                }
                 elseif ( $flightBook['successfull'] == 'book' ) {
                     if ( $flightBook['request_cancel'] == 'confirm' ) {
-                        $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;">کنسل شده</a>';
+                        $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation('Canceled').'</a>';
                     } else {
-                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;"> رزرو قطعی <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
+                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation('Definitivereservation').' <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
                     }
                 }
                 if(TYPE_ADMIN !='1')
@@ -3921,7 +3929,7 @@ class bookshowTest extends clientAuth {
                                                    target="_blank">
                                                     <i class="fcbtn btn btn-outline btn-info btn-1c  tooltip-info fa fa-shopping-cart"
                                                        data-toggle="tooltip" data-placement="right" title=""
-                                                       data-original-title="برای ادامه خرید از سرور 5 کلیک نمائید"
+                                                       data-original-title="'.functions::Xmlinformation('ServerRedirectLink').'"
                                                        id="i_Jump2Step' . $flightBook['request_number'] . '"></i></a>';
                     } elseif ( $flightBook['is_done_private'] == '2' && $flightBook['pid_private'] == '1' && $flightBook['successfull'] == 'private_reserve' ) {
                         $DataFlightAgencyShare .= '<hr style="margin:3px">
@@ -3931,7 +3939,7 @@ class bookshowTest extends clientAuth {
                                                    target="_blank">
                                                     <i class="fcbtn btn btn-outline btn-danger btn-1c  tooltip-danger fa fa-refresh"
                                                        data-toggle="tooltip" data-placement="right" title=""
-                                                       data-original-title="در حال رزرو"></i></a>';
+                                                       data-original-title="'.functions::Xmlinformation('BookingInProgress').'"></i></a>';
                     }
                     if ( $flightBook['pid_private'] == '1' && $flightBook['private_m4'] == '1' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) && ( TYPE_ADMIN == '1' ) ) {
                         $DataFlightAgencyShare .= '<a id="Jump2StepSourceFour' . $flightBook['request_number'] . '"
@@ -3996,39 +4004,39 @@ class bookshowTest extends clientAuth {
 
                 }
 
-                $flightBook['sub_agency'] ? $DataFlightAgencyShare .= ' <hr style="margin:3px"> آژانس همکار:'.$flightBook['NameAgency'] .'<hr style="margin:3px">' : '';
+                $flightBook['sub_agency'] ? $DataFlightAgencyShare .= ' <hr style="margin:3px">'.functions::Xmlinformation('PartnerAgency').' : '.$flightBook['NameAgency'] .'<hr style="margin:3px">' : '';
             }
             else {
 
                 if ( $flightBook['successfull'] == 'book' ) {
                     if ( $flightBook['request_cancel'] == 'confirm' ) {
-                        $DataFlightCondition = '<a class="btn btn-danger cursor-default" onclick="return false;">کنسل شده</a>';
+                        $DataFlightCondition = '<a class="btn btn-danger cursor-default" onclick="return false;">'.functions::Xmlinformation('Canceled').'</a>';
                     } else {
-                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;"> رزرو قطعی <p style="margin: 0;cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
+                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation('Definitivereservation').' <p style="margin: 0;cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
 
                     }
                 } elseif ( $flightBook['successfull'] == 'prereserve' ) {
                     $DataFlightAgencyShare .= '<a class="btn btn-warning cursor-default w-90" onclick="return false;" >
-پیش رزرو
-<div style="display: none;" class="parent-ld">
-    در حال صدور
-  <div class="ld ld-ring ld-spin"></div>
-    </div>
-</a>';
+                                                '.functions::Xmlinformation('Prereservation').'
+                                                <div style="display: none;" class="parent-ld">
+                                                    '.functions::Xmlinformation('pendingPrintFlight').'
+                                                  <div class="ld ld-ring ld-spin"></div>
+                                                    </div>
+                                                </a>';
                 } elseif ( $flightBook['successfull'] == '' ) {
-                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >نامشخص</a>';
+                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >'.functions::Xmlinformation('Unknown').'</a>';
                 } elseif ( $flightBook['successfull'] == 'bank' ) {
-                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >هدایت به درگاه
-<div style="display: none;" class="parent-ld">
-    در حال صدور
-  <div class="ld ld-ring ld-spin"></div>
-    </div>
-
-</a>';
+                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >'.functions::Xmlinformation('NavigateToPort').'
+                                                <div style="display: none;" class="parent-ld">
+                                                    '.functions::Xmlinformation('pendingPrintFlight').'
+                                                  <div class="ld ld-ring ld-spin"></div>
+                                                    </div>
+                                                
+                                                </a>';
                 } else {
-                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >نامشخص</a>';
+                    $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;" >'.functions::Xmlinformation('Unknown').'</a>';
                 }
-                $DataFlightAgencyShare .= '<hr style="margin:3px">بلیط رزرواسیون';
+                $DataFlightAgencyShare .= '<hr style="margin:3px">'.functions::Xmlinformation('ReservationTicket');
             }
 
             if ( TYPE_ADMIN == '1' ) {
@@ -4209,7 +4217,7 @@ class bookshowTest extends clientAuth {
                                                            title=""
                                                            data-original-title="برای ارسال پیام کلیک کنید"></i>
                                                     </a>';
-                        $DataFlightAgencyShare .= '</div>';
+                            $DataFlightAgencyShare .= '</div>';
 
                         }
                         if($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve'){
@@ -4300,60 +4308,60 @@ class bookshowTest extends clientAuth {
     
                                                         <button aria-expanded="false" data-toggle="dropdown"
                                                                 class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light"
-                                                                type="button"> عملیات <span class="caret"></span></button>
+                                                                type="button">'.functions::Xmlinformation('Action').'<span class="caret"></span></button>
     
                                                         <ul role="menu" class="dropdown-menu animated flipInY mainTicketHistory-operation">
                                                             <li>
-                                                                <div class="pull-left">
-                                                                    <div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] != 'nothing' ) {
+                                                                <div class="pull-left">';
+                        if ( $flightBook['successfull'] != 'nothing'  && LANG_PANEL_ADMIN=='fa') {
 
-                            $DataFlightAgencyShare .= '<a onclick="ModalShowBook(' . "'" . $flightBook['request_number'] . "'" . ');return false"
-                                                                           data-toggle="modal"
-                                                                           data-target="#ModalPublic">
-                                                                            <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye"
-                                                                               data-toggle="tooltip"
-                                                                               data-placement="top"
-                                                                               title=""
-                                                                               data-original-title="مشاهده خرید"></i>
-                                                                        </a>';
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                            <a onclick="ModalShowBook(' . "'" . $flightBook['request_number'] . "'" . ');return false"
+                                                               data-toggle="modal"
+                                                               data-target="#ModalPublic">
+                                                                <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye"
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="top"
+                                                                   title=""
+                                                                   data-original-title="مشاهده خرید"></i>
+                                                            </a></div>';
                         }
-                        $DataFlightAgencyShare .= ' </div>
 
-                                                                <div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightAgencyShare .= ' <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=boxCheck&id=' . $flightBook['request_number'] . '"
-                                                                           target="_blank">
-                                                                            <i class="fcbtn btn btn-outline btn-warning btn-1c  tooltip-warning fa fa-money "
-                                                                               data-toggle="tooltip"
-                                                                               data-placement="top"
-                                                                               title=""
-                                                                               data-original-title=" قبض صندوق"></i>
-                                                                        </a>';
+                        if ((
+                                $flightBook['successfull'] == 'book' ||
+                                ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' )
+                            ) && LANG_PANEL_ADMIN=='fa' ) {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                        <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=boxCheck&id=' . $flightBook['request_number'] . '"
+                                                                       target="_blank">
+                                                                        <i class="fcbtn btn btn-outline btn-warning btn-1c  tooltip-warning fa fa-money "
+                                                                           data-toggle="tooltip"
+                                                                           data-placement="top"
+                                                                           title=""
+                                                                           data-original-title=" قبض صندوق"></i>
+                                                            </a>
+                                                       </div>';
                         }
-                        $DataFlightAgencyShare .= ' </div>
- 
- 
 
-                                                                <div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightAgencyShare .= ' <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=boxCheckCostumer&id=' . $flightBook['request_number'] . '"
+                        if ( (
+                                $flightBook['successfull'] == 'book' ||
+                                ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' )
+                            ) && LANG_PANEL_ADMIN=='fa' ) {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                            <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=boxCheckCostumer&id=' . $flightBook['request_number'] . '"
                                                                            target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c  tooltip-primary fa fa-money "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top"
                                                                                title=""
                                                                                data-original-title=" قبض صندوق به تفکیک مشتریان"></i>
-                                                                        </a>';
+                                                                        </a>
+                                                         </div>';
                         }
-                        $DataFlightAgencyShare .= ' </div>
 
-                                                                ';
-                        if ( $flightBook['successfull'] == 'book' && CLIENT_ID == 271 ) {
-                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">';
-
-
-                            $DataFlightAgencyShare .= ' <a onclick="ModalUploadProof(' . "'" . $flightBook['request_number'] . "'" .  ",'" ."Flight'"  . ');return false"
+                        if ( $flightBook['successfull'] == 'book' && CLIENT_ID == 271 && LANG_PANEL_ADMIN=='fa') {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                        <a onclick="ModalUploadProof(' . "'" . $flightBook['request_number'] . "'" .  ",'" ."Flight'"  . ');return false"
                                                        id="uploadProof' . $flightBook['request_number'] . '"
                                                        target="_blank"
                                                        data-toggle="modal"
@@ -4363,122 +4371,122 @@ class bookshowTest extends clientAuth {
                                                            data-placement="top"
                                                            title=""
                                                            data-original-title="آپلود فاکتور"></i>
-                                                    </a>';
-                            $DataFlightAgencyShare .= '</div>';
+                                                    </a></div>';
                         }
 
-                        if ( ( $flightBook['IsInternal'] == '1' && $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightAgencyShare .= '<div class="pull-left margin-10"> <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=fa"
+                        if ( (
+                                ( $flightBook['IsInternal'] == '1' && $flightBook['successfull'] == 'book' ) ||
+                                ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' )
+                            ) && LANG_PANEL_ADMIN=='fa') {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10"> 
+                                                            <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=fa"
                                                                            target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top"
                                                                                title=""
                                                                                data-original-title=" بلیط پارسی "></i>
-                                                                        </a></div>';
+                                                       </a></div>';
                         }
 
-
-
-
-                        $DataFlightAgencyShare .= ' <div class="pull-left margin-10">';
                         if ( $flightBook['IsInternal'] == '1' ) {
                             if ( ( $flightBook['IsInternal'] == '1' && $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                                $DataFlightAgencyShare .= ' <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=en"
+                                $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                            <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=en"
                                                                                target="_blank">
                                                                                 <i class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-file-pdf-o"
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="top"
                                                                                    title=""
-                                                                                   data-original-title=" بلیط انگلیسی "></i>
-                                                                            </a>';
+                                                                                   data-original-title=" '.functions::Xmlinformation('EnglishTicket').' "></i>
+                                                                            </a></div>';
                             }
                         } else {
                             if ( ( $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-
-                                $DataFlightAgencyShare .= ' <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=ticketForeign&id=' . $flightBook['request_number'] . '"
+                                $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                                <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=ticketForeign&id=' . $flightBook['request_number'] . '"
                                                                                target="_blank">
                                                                                 <i class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-file-pdf-o"
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="top"
                                                                                    title=""
-                                                                                   data-original-title=" بلیط انگلیسی "></i>
-                                                                            </a>';
+                                                                                   data-original-title=" '.functions::Xmlinformation('EnglishTicket').' "></i>
+                                                           </a></div>';
                             }
                         }
 
-                        $DataFlightAgencyShare .= ' </div>';
-
-                        $DataFlightAgencyShare .= ' <div class="pull-left margin-10">';
                         if ( $flightBook['IsInternal'] == '1' ) {
                             if ( ( $flightBook['IsInternal'] == '1' && $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                                $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=bookshow&id=" . $flightBook['request_number'] . "&cash=no'
+                                $DataFlightAgencyShare .= "<div class='pull-left margin-10'>
+                                                            <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=bookshow&id=" . $flightBook['request_number'] . "&cash=no'
                                                                            target='_blank'>
                                                                             <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-ticket '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title=' بلیط انگلیسی بدون قیمت '></i></a>";
+                                                                               data-original-title=' ".functions::Xmlinformation('EnglishTicketNoPrice')." '></i>
+                                                            </a></div>";
                             }
                         } else {
                             if ( ( $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                                $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=ticketForeign&id=" . $flightBook['request_number'] . "&cash=no'
+                                $DataFlightAgencyShare .= "<div class='pull-left margin-10'>
+                                                            <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=ticketForeign&id=" . $flightBook['request_number'] . "&cash=no'
                                                                            target='_blank'>
                                                                             <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-ticket '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title=' بلیط انگلیسی بدون قیمت '></i></a>";
+                                                                               data-original-title=' ".functions::Xmlinformation('EnglishTicketNoPrice')." '></i>
+                                                            </a></div>";
                             }
                         }
 
-                        $DataFlightAgencyShare .= ' </div>';
-
-                        $DataFlightAgencyShare .= '<div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightAgencyShare .= ' <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&cash=no"
+                        $DataFlightAgencyShare .= '';
+                        if ( (
+                                $flightBook['successfull'] == 'book' ||
+                                ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' )
+                            ) && LANG_PANEL_ADMIN=='fa' ) {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                      <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&cash=no"
                                                        target="_blank">
                                                         <i class="fcbtn btn btn-outline btn-default btn-1c tooltip-default fa fa-ticket "
                                                            data-toggle="tooltip"
                                                            data-placement="top"
                                                            title=""
                                                            data-original-title=" بلیط بدون قیمت "></i>
-                                                    </a>';
+                                                    </a></div>';
                         }
-                        $DataFlightAgencyShare .= ' </div>
 
-                                                                <div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightAgencyShare .= ' <a 
-                                                       onclick="ModalCancelFlightAdmin(' . "'" . $flightBook['request_number'] . "'" .  ",'" ."flight'"  . '); return false ;"
+                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && (TYPE_ADMIN == '1'  )) ) {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                       <a onclick="ModalCancelFlightAdmin(' . "'" . $flightBook['request_number'] . "'" .  ",'" ."flight'"  . '); return false ;"
                                                        target="_blank"
                                                        data-toggle="modal"
-                                                       data-target="#ModalPublic"
-                                                       >
+                                                       data-target="#ModalPublic">
                                                         <i class="fcbtn btn btn-outline btn-danger btn-1c tooltip-danger mdi mdi-close"
                                                            data-toggle="tooltip"
                                                            data-placement="top"
                                                            title=""
-                                                           data-original-title="استرداد"
+                                                           data-original-title=" '.functions::Xmlinformation('OsafarRefund').' "
                                                            ></i>
-                                                    </a>';
-                        }
-                        $DataFlightAgencyShare .= ' </div>
-
-                                                                <div class="pull-left margin-10">';
-                        if ( TYPE_ADMIN == '1' ) {
-                            $DataFlightAgencyShare .= ' <a onclick="ModalSendSms(' . "'" . $flightBook['request_number'] . "'" . ');return false"
-                                                       id="SmsSend' . $flightBook['request_number'] . '"
-                                                       data-toggle="modal"
-                                                       data-target="#ModalPublic">
-                                                        <i class="fcbtn btn btn-outline btn-primary btn-1c  tooltip-primary fa fa-envelope-o"
-                                                           data-toggle="tooltip"
-                                                           data-placement="top"
-                                                           title=""
-                                                           data-original-title="برای ارسال پیام کلیک کنید"></i>
-                                                    </a>';
+                                                    </a></div>';
                         }
 
-                        if ( $flightBook['successfull'] == 'book' ){
-                            $DataFlightAgencyShare .= '<a id="SendEmail' . $flightBook['request_number'] . '"
+                        if ( TYPE_ADMIN == '1' && LANG_PANEL_ADMIN=='fa' ) {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                        <a onclick="ModalSendSms(' . "'" . $flightBook['request_number'] . "'" . ');return false"
+                                                               id="SmsSend' . $flightBook['request_number'] . '"
+                                                               data-toggle="modal"
+                                                               data-target="#ModalPublic">
+                                                                <i class="fcbtn btn btn-outline btn-primary btn-1c  tooltip-primary fa fa-envelope-o"
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="top"
+                                                                   title=""
+                                                                   data-original-title="برای ارسال پیام کلیک کنید"></i>
+                                                            </a></div>';
+                        }
+
+                        if ( $flightBook['successfull'] == 'book' && LANG_PANEL_ADMIN=='fa'){
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                         <a id="SendEmail' . $flightBook['request_number'] . '"
                                                                        onclick="ModalSenEmailForOther(' . "'" . $flightBook['request_number'] . "'" . ( $flightBook['client_id'] != '' ? ",'" . $flightBook['client_id'] . "'" : "" ) . ');return false"
                                                                        data-toggle="modal" data-target="#ModalPublic">
                                                                         <i class="fcbtn btn btn-outline btn-info btn-1c  tooltip-info fa fa-envelope"
@@ -4486,11 +4494,11 @@ class bookshowTest extends clientAuth {
                                                                            title=""
                                                                            data-original-title="برای ارسال ایمیل کلیک کنید"></i>
                                                                     </a>
-                                                                </div></div>';
+                                                                </div>';
                         }
 
 
-                        $DataFlightAgencyShare .= "<hr style='margin:3px'>";
+                        $DataFlightAgencyShare .= "</div> </li> </ul> </div> <hr style='margin:3px'>";
 
                         functions::DetectDirection( $flightBook['factor_number'], $flightBook['request_number'] );
 
@@ -4501,15 +4509,13 @@ class bookshowTest extends clientAuth {
 
                                                     <button aria-expanded="false" data-toggle="dropdown"
                                                             class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light"
-                                                            type="button"> عملیات <span class="caret"></span></button>
+                                                            type="button"> '.functions::Xmlinformation('Action').' <span class="caret"></span></button>
 
                                                     <ul role="menu" class="dropdown-menu animated flipInY mainTicketHistory-operation">
                                                         <li>
-                                                            <div class="pull-left">
+                                                            <div class="pull-left">';
 
-                                                                <div class="pull-left margin-10">';
-
-                        if ( $flightBook['successfull'] !== 'nothing' && $flightBook['successfull'] !== 'error' ) {
+                        if ( $flightBook['successfull'] !== 'nothing' && $flightBook['successfull'] !== 'error' && LANG_PANEL_ADMIN=='fa') {
                             $DataFlightAgencyShare .= '<a onclick="ModalShowBook(' . "'" . $flightBook['request_number'] . "'" . ');return false"
                                                                            data-toggle="modal"
                                                                            data-target="#ModalPublic">
@@ -4529,46 +4535,50 @@ class bookshowTest extends clientAuth {
                                                                         </a>';
                         }
                         $DataFlightAgencyShare .= '</div> <div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' ) {
-                            $DataFlightAgencyShare .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/eReservationTicket&num=' . $flightBook['request_number'] . '"
+                        if ( $flightBook['successfull'] == 'book' && LANG_PANEL_ADMIN=='fa') {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                        <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/eReservationTicket&num=' . $flightBook['request_number'] . '"
                                                                            target="_blank"
                                                                            title="مشاهده اطلاعات خرید">
                                                                             <i class="fcbtn btn btn-outline btn-danger btn-1c  tooltip-danger fa fa-print "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top" title=""
                                                                                data-original-title="مشاهده اطلاعات خرید"></i>
-                                                                        </a>';
+                                                                        </a></div>';
                         }
-                        $DataFlightAgencyShare .= '</div> <div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' ) {
-                            $DataFlightAgencyShare .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
+                        if ( $flightBook['successfull'] == 'book' && LANG_PANEL_ADMIN=='fa') {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                        <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
                                                                            target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top" title=""
                                                                                data-original-title=" بلیط پارسی "></i>
-                                                                        </a>';
+                                                                        </a></div>';
                         }
-                        $DataFlightAgencyShare .= '</div> <div class="pull-left margin-10">';
-                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightAgencyShare .= '<a onclick="ModalCancelAdmin(' . "'flight'," . "'" . $flightBook['request_number'] . "'" . ');return false"
+                        if ( (
+                                $flightBook['successfull'] == 'book' ||
+                                ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' )
+                            ) && LANG_PANEL_ADMIN=='fa' ) {
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                        <a onclick="ModalCancelAdmin(' . "'flight'," . "'" . $flightBook['request_number'] . "'" . ');return false"
                                                                        target="_blank"  data-toggle="modal"
                                                                        data-target="#ModalPublic">
                                                                         <i class="fcbtn btn btn-outline btn-danger btn-1c  tooltip-danger fa fa-times "
                                                                            data-toggle="tooltip"
                                                                            data-placement="top" title=""
                                                                            data-original-title=" ثبت درخواست کنسلی پرواز"></i>
-                                                                    </a>';
+                                                                    </a></div>';
                         }
-                        $DataFlightAgencyShare .= '</div> </div> </li> </ul> </div>';
+                        $DataFlightAgencyShare .= '</div> </li> </ul> </div>';
 
 
                     }
 
-                    $DataFlightAgencyShare .= '</div> </div> </li> </ul> </div> <hr style="margin:3px">';
+                    //$DataFlightAgencyShare .= '</div> </li> </ul> </div> <hr style="margin:3px">';
                 }
             }
-            if ($flightBook['successfull']) {
+            if ($flightBook['successfull'] && LANG_PANEL_ADMIN=='fa') {
 
                 // unread badge for chat
                 $obj = Load::controller('bookshow');
@@ -4614,7 +4624,9 @@ class bookshowTest extends clientAuth {
 
 
 // دکمه یادداشت کنار هم با دکمه چت
-            if ($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve') {
+            if (
+                ($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve')
+                && LANG_PANEL_ADMIN=='fa') {
 
                 $objBookShow = Load::controller('bookshow');
                 $result = $objBookShow->getAgencyNote($flightBook['request_number']);
@@ -4629,7 +4641,7 @@ class bookshowTest extends clientAuth {
                     data-toggle="modal"
                     data-target="#ModalPublic"
                     style="width: 55px; height: 36px; display:flex; align-items:center; justify-content:center;"
-                    title="مشاهده یادداشت‌ها">
+                    title="'.functions::Xmlinformation('ViewNotes').'">
                 <i class="fa fa-sticky-note"></i>
             </button>
         ';
@@ -4644,10 +4656,10 @@ class bookshowTest extends clientAuth {
 
             if ( $flightBook['payment_type'] == 'cash' || $flightBook['payment_type'] == 'member_credit' ) {
                 if ( $flightBook['payment_type'] == 'cash' ) {
-                    $DataFlightType .= 'نقدی';
+                    $DataFlightType .= functions::Xmlinformation('Cash');
                 }
                 else {
-                    $DataFlightType .= 'اعتباری';
+                    $DataFlightType .= functions::Xmlinformation('Credit');
                 }
                 if ( $flightBook['number_bank_port'] == '379918' ) {
                     if ( $flightBook['flight_type'] == 'charter' && $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -4664,7 +4676,7 @@ class bookshowTest extends clientAuth {
                 }
             }
             elseif ( $flightBook['payment_type'] == 'credit' ) {
-                $DataFlightType .= 'اعتباری';
+                $DataFlightType .= functions::Xmlinformation('Credit');
                 if ( $flightBook['flight_type'] == 'charter' && $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                     $CreditTotal += ( $flightBook['agency_commission'] + $flightBook['irantech_commission'] + $flightBook['supplier_commission'] );
                 } elseif ( $flightBook['flight_type'] == 'system' && $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -4673,13 +4685,13 @@ class bookshowTest extends clientAuth {
 
             }
             elseif ( $flightBook['payment_type'] == 'nothing' ) {
-                $DataFlightType .= 'نا مشخص';
+                $DataFlightType .= functions::Xmlinformation('Unknow');
             }
             if ( $flightBook['name_bank_port'] != '' ) {
                 if (in_array($flightBook['number_bank_port'],$GetWayIranTech) || $flightBook['number_bank_port'] == '5b8c0bc6-7f26-11ea-b1af-000c295eb8fc' || $flightBook['number_bank_port'] == '379918' ) {
-                    $DataFlightType .= "درگاه سفر360";
+                    $DataFlightType .= functions::Xmlinformation('TravelGateway');
                 } else {
-                    $DataFlightType .= " - درگاه خودش";
+                    $DataFlightType .= functions::Xmlinformation('OwnGateway');
                 }
             }
 
@@ -4701,14 +4713,14 @@ class bookshowTest extends clientAuth {
                 $TitleNameAgency='نام <br> آژانس';
             }
             else {
-                $TitleAgencyShare='<br> سود شما <br> وضعیت <br> pnr';
-                $TitleBuyFromIt='<span> خرید از سفر360 </span>';
-                $TitlePayment='فروش';
-                $TitleMarkCounter='مارک کانتر';
-                $TitleMarkAgency='مارک آژانس';
-                $TitleComAgency='کمیسیون';
-                $TitleComAgencyProvider='کمیسیون پرووایدر';
-                $TitleNameAgency='عملیات';
+                $TitleAgencyShare=functions::Xmlinformation('PA_BUY_Yourprofit').'<br>'.functions::Xmlinformation('Status').'<br> pnr';
+                $TitleBuyFromIt='<span>'.functions::Xmlinformation("PA_BUYFrom").' <br> '. functions::Xmlinformation("Safar360") .'</span>';
+                $TitlePayment=functions::Xmlinformation('Sale');
+                $TitleMarkCounter=functions::Xmlinformation('PA_BUY_MarkCOUNTER');
+                $TitleMarkAgency=functions::Xmlinformation('PA_BUY_MarkAgency');
+                $TitleComAgency=functions::Xmlinformation('PA_BUY_Commission');
+                $TitleComAgencyProvider=functions::Xmlinformation('PA_BUY_CommissionProvider');
+                $TitleNameAgency=functions::Xmlinformation('Action');
             }
 
             $ColorTr='';
@@ -4727,39 +4739,38 @@ class bookshowTest extends clientAuth {
                     $ColorTr='#f7c2c2';//قرمز
                 }
             }
+            $titleColumn1=functions::Xmlinformation('Row');
+            $titleColumn2=functions::Xmlinformation('PA_BUY_Pid').'<br/>';
+            $titleColumn2.=functions::Xmlinformation('Ticket').'<br/>';
+            $titleColumn2.=functions::Xmlinformation('WachterNumber').'<br/>';
+            $titleColumn2.=functions::Xmlinformation('Buydate');
+            $titleColumn3=functions::Xmlinformation('Informationflight');
+            $titleColumn4=functions::Xmlinformation('Namepassenger').'<br/>';
+            $titleColumn4.=functions::Xmlinformation('GuestPassenger').'<br/>';
+            $titleColumn4.=functions::Xmlinformation('Count').'<br/>';
+            $titleColumn4.=functions::Xmlinformation('PA_BUY_USER');
+            $titleColumn4.=functions::Xmlinformation('Customername');
+            $titleColumn5=functions::Xmlinformation('PA_BUY_Provider');
 
 
-            $FlightData[ $FlightDataNewest ][ $key ]["رنگ"]                                                 = $ColorTr;
-            $FlightData[ $FlightDataNewest ][ $key ]["ردیف"]                                                = $CountTicket ++;
-            $FlightData[ $FlightDataNewest ][ $key ]["تاریخ خرید<br/>واچر<br/>بلیط<br/>پید"]                = $DataFlightType;
-            $FlightData[ $FlightDataNewest ][ $key ]["اطلاعات پرواز"]                                        = $DataFlightInformation;
-            $FlightData[ $FlightDataNewest ][ $key ]["نام خریدار <br/> نوع کاربر<br/>تعداد<br/>نوع کانتر <br/> نام مسافر"]  = $DataFlightCounterType;
-            $FlightData[ $FlightDataNewest ][ $key ]["total"]                        = $DataFlightTotal;
-            $FlightData[ $FlightDataNewest ][ $key ]["fare"]                        = $DataFlightFare;
-            ( TYPE_ADMIN == '1' ? $FlightData[ $FlightDataNewest ][ $key ]["خرید از پرووایدر"]                        = $DataFlightProvider : "" );
+            $FlightData[ $FlightDataNewest ][ $key ]["رنگ"]                        = $ColorTr;
+            $FlightData[ $FlightDataNewest ][ $key ][$titleColumn1.' ']                = $CountTicket ++;
+            $FlightData[ $FlightDataNewest ][ $key ][$titleColumn2]                = $DataFlightType;
+            $FlightData[ $FlightDataNewest ][ $key ][$titleColumn3]                = $DataFlightInformation;
+            $FlightData[ $FlightDataNewest ][ $key ][$titleColumn4]                = $DataFlightCounterType;
+            $FlightData[ $FlightDataNewest ][ $key ]["total"]                      = $DataFlightTotal;
+            $FlightData[ $FlightDataNewest ][ $key ]["fare"]                       = $DataFlightFare;
+            ( TYPE_ADMIN == '1' ? $FlightData[ $FlightDataNewest ][ $key ][$titleColumn5]                   = $DataFlightProvider : "" );
             ( TYPE_ADMIN == '1' ? $FlightData[ $FlightDataNewest ][ $key ]["it com"]                        = $DataFlightitCom : "" );
-            $FlightData[ $FlightDataNewest ][ $key ][$TitleComAgency]                        = $DataFlightitAgencyCommission;
-            $FlightData[ $FlightDataNewest ][ $key ][$TitleComAgencyProvider]                        = $DataFlightitAgencyCommissionProvider;
-            $FlightData[ $FlightDataNewest ][ $key ][$TitleBuyFromIt]                                       = $DataFlightTotalFree;
+            $FlightData[ $FlightDataNewest ][ $key ][$TitleComAgency]                               = $DataFlightitAgencyCommission;
+            $FlightData[ $FlightDataNewest ][ $key ][$TitleComAgencyProvider]                       = $DataFlightitAgencyCommissionProvider;
+            $FlightData[ $FlightDataNewest ][ $key ][$TitleBuyFromIt]                               = $DataFlightTotalFree;
             ( TYPE_ADMIN == '1' ? $FlightData[ $FlightDataNewest ][ $key ]["سهم ما"]                        = $DataFlightIranTechCommission : "" );
-            $FlightData[ $FlightDataNewest ][ $key ][$TitleMarkAgency]                                         = $DataFlightPassengerPayData1;
-            $FlightData[ $FlightDataNewest ][ $key ][$TitleMarkCounter]                                         = $DataFlightPassengerPayData2 ;
+            $FlightData[ $FlightDataNewest ][ $key ][$TitleMarkAgency]                                      = $DataFlightPassengerPayData1;
+            $FlightData[ $FlightDataNewest ][ $key ][$TitleMarkCounter]                                     = $DataFlightPassengerPayData2 ;
             $FlightData[ $FlightDataNewest ][ $key ][$TitlePayment]                                         = $DataFlightPassengerPayData;
             $FlightData[ $FlightDataNewest ][ $key ][$TitleAgencyShare]                                     = $DataFlightAgencyShare;
 
-
-//            $DataFlightType               = '';
-//            $DataFlightInformation        = '';
-//            $DataFlightCounterType        = '';
-//            $DataFlightTotal        = '';
-//            $DataFlightFare        = '';
-//            $DataFlightProvider        = '';
-//            $DataFlightitCom        = '';
-//            $DataFlightIranTechCommission = '';
-//            $DataFlightPassengerPayData1        = '';
-//            $DataFlightPassengerPayData2        = '';
-//            $DataFlightPassengerPayData   = '';
-//            $DataFlightAgencyShare        = '';
         }
 
         $FooterData0 = '<th colspan="2"></th>';
@@ -5785,17 +5796,18 @@ class bookshowTest extends clientAuth {
             if ( $hotel['services_discount'] != '' && $infoMember['is_member'] == '1' ) {
                 $DataEnterInformation .= "<hr style='margin:3px'>";
                 if ( $infoMember['fk_counter_type_id'] == '5' ) {
-                    $DataEnterInformation .= 'مسافر';
+                    $DataEnterInformation .= functions::Xmlinformation("Passenger");
                 } else {
-                    $DataEnterInformation .= 'کانتر';
+                    $DataEnterInformation .= functions::Xmlinformation("Counter");
                 }
-                $DataEnterInformation .= '<code>'. floatval($hotel['services_discount']).'%</code> ای';
+                $DataEnterInformation .= '<code>'. floatval($hotel['services_discount']).'%</code> ';
+                if(LANG_PANEL_ADMIN=='fa')$DataEnterInformation .= ' ای ';
             }
             $DataExitInformation = $hotel['start_date'];
             $DataExitInformation .= '<hr style="margin:3px">';
             $DataExitInformation .= $hotel['end_date'];
             $DataExitInformation .= '<hr style="margin:3px">';
-            $DataExitInformation .= $hotel['number_night'] . ' شب';
+            $DataExitInformation .= $hotel['number_night'] . ' '.functions::Xmlinformation("Night");
 
             $DataFactorInformation = $hotel['type_application_fa'];
             $DataFactorInformation .= '<hr style="margin:3px">';
@@ -5809,7 +5821,7 @@ class bookshowTest extends clientAuth {
                                     <button type="button" class="btn btn-default btn-outline"
                                             title="" data-toggle="popover"
                                             data-placement="top" data-content="' . $hotel['room'] . '"
-                                            data-original-title="اتاق های رزرو شده">' . $hotel['room_count'] . ' باب اتاق</button>
+                                            data-original-title="'.functions::Xmlinformation("ReservedRooms").'">' . $hotel['room_count'] . '</button>'.functions::Xmlinformation("RoomCount").'
                                 </div>';
             $BuyFromIt=0;
             $this->colorTrByStatusCreditBlak='';
@@ -5880,12 +5892,12 @@ class bookshowTest extends clientAuth {
             }
             $DataAction = '<div class="btn-group m-r-10">
 
-                                    <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  عملیات <span class="caret"></span></button>
+                                    <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  '.functions::Xmlinformation("Action").' <span class="caret"></span></button>
 
                                     <ul role="menu" class="dropdown-menu animated flipInY mainTicketHistory-operation">
                                         <li>
                                             <div class="pull-left">';
-            if ( $hotel['type_application'] == 'reservation' ) {
+            if ( $hotel['type_application'] == 'reservation' && LANG_PANEL_ADMIN=='fa' ) {
                 $BookHotelController->getEditHotelBookingReport( $hotel['factor_number'] );
                 if ( $BookHotelController->editHotelBooking == 'True' ) {
                     $DataAction .= '<div class="pull-left margin-10">
@@ -5906,36 +5918,33 @@ class bookshowTest extends clientAuth {
                                                         </div>';
                 }
             }
-            $DataAction .= '<div class="pull-left margin-10">
-                                                    <a onclick="ModalShowBookForHotel('."'" . $hotel['factor_number']."'".');return false" data-toggle="modal" data-target="#ModalPublic">
+            if(LANG_PANEL_ADMIN=='fa') {
+                $DataAction .= '<div class="pull-left margin-10">
+                                                    <a onclick="ModalShowBookForHotel(' . "'" . $hotel['factor_number'] . "'" . ');return false" data-toggle="modal" data-target="#ModalPublic">
                                                         <i style="margin: 5px auto;"  class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye"
                                                            data-toggle="tooltip" data-placement="top" title=""
                                                            data-original-title="مشاهده خرید"></i>
                                                     </a>
                                                 </div>';
 
-
-            $DataAction .= '<div class="pull-left margin-10">';
-            if ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataAction .= '<a href="' . SERVER_HTTP . $addressClient . '/gds/' . $linkView . '&num=' . $hotel['factor_number'] . '"
+                if ($hotel['status'] == 'BookedSuccessfully') {
+                    $DataAction .= '<div class="pull-left margin-10"><a href="' . SERVER_HTTP . $addressClient . '/gds/' . $linkView . '&num=' . $hotel['factor_number'] . '"
                                                            target="_blank"
                                                            title="مشاهده اطلاعات خرید" >
                                                             <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-danger btn-1c tooltip-danger fa fa-print "
                                                                data-toggle="tooltip" data-placement="top" title=""
                                                                data-original-title="مشاهده اطلاعات خرید"></i>
-                                                        </a>';
-                $DataAction .= '</div><div class="pull-left margin-10">';
-            }
-            if ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataAction .= '<a href="' . SERVER_HTTP . $addressClient . '/gds/pdf&target=' . $linkPDF . '&id=' . $hotel['factor_number'] . '"
+                                                        </a></div>';
+                }
+                if ($hotel['status'] == 'BookedSuccessfully') {
+                    $DataAction .= '<div class="pull-left margin-10"><a href="' . SERVER_HTTP . $addressClient . '/gds/pdf&target=' . $linkPDF . '&id=' . $hotel['factor_number'] . '"
                                                        target="_blank">
                                                         <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                            data-toggle="tooltip" data-placement="top" title=""
                                                            data-original-title=" رزرو هتل پارسی "></i>
-                                                    </a>';
-                $DataAction .= '</div><div class="pull-left margin-10">';
-                $DataAction .= '
-                <a onclick="ModalCancelHotelAdmin(' . "'" . $hotel['factor_number'] . "'" .  ",'" ."hotel'"  . '); return false ;"
+                                                    </a></div>';
+                    $DataAction .= '<div class="pull-left margin-10">
+                <a onclick="ModalCancelHotelAdmin(' . "'" . $hotel['factor_number'] . "'" . ",'" . "hotel'" . '); return false ;"
                    target="_blank"
                    data-toggle="modal"
                    data-target="#ModalPublic"
@@ -5947,37 +5956,33 @@ class bookshowTest extends clientAuth {
                        data-original-title="استرداد"
                        >
                     </i>
-                </a>
-                ';
-                $DataAction .= '</div><div class="pull-left margin-10">';
-            }
-
+                </a></div>';
+                }
+            }//end if fa
             if ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataAction .= '<a href="' . SERVER_HTTP . $addressClient . '/gds/pdf&lang=en&target=bookhotelshow&id=' . $hotel['factor_number'] . '"
+                $DataAction .= '<div class="pull-left margin-10"><a href="' . SERVER_HTTP . $addressClient . '/gds/pdf&lang=en&target=bookhotelshow&id=' . $hotel['factor_number'] . '"
                                    target="_blank">
                                     <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-file-pdf-o"
                                        data-toggle="tooltip" data-placement="top" title=""
-                                       data-original-title=" رزرو هتل انگلیسی "></i>
-                                </a>';
-                $DataAction .= '</div><div class="pull-left margin-10">';
+                                       data-original-title=" '.functions::Xmlinformation("HotelBooking").' "></i>
+                                </a></div>';
             }
-            if ( $hotel['status'] == 'BookedSuccessfully' &&  ( CLIENT_ID == 317 ) ) {
-                $DataAction .= '<a href="' . SERVER_HTTP . $addressClient . '/gds/pdf&lang=en&target=bookNewhotelshow&id=' . $hotel['factor_number'] . '"
+            if ( $hotel['status'] == 'BookedSuccessfully' &&  ( CLIENT_ID == 317 ) && LANG_PANEL_ADMIN=='fa' ) {
+                $DataAction .= '<div class="pull-left margin-10">
+                                    <a href="' . SERVER_HTTP . $addressClient . '/gds/pdf&lang=en&target=bookNewhotelshow&id=' . $hotel['factor_number'] . '"
                                    target="_blank">
                                     <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-file-pdf-o"
                                        data-toggle="tooltip" data-placement="top" title=""
                                        data-original-title=" بلیط انگلیسی هتل "></i>
-                                </a>';
-                $DataAction .= '</div><div class="pull-left margin-10">';
+                                </a></div>';
             }
-            if ( $hotel['status'] == 'BookedSuccessfully' && CLIENT_ID == 271 ) {
-
-                $DataAction .= ' <a onclick="ModalUploadProof(' . "'" . $hotel['factor_number'] . "'" .  ",'" ."Hotel'"  . ');return false" data-toggle="modal" data-target="#ModalPublic">
+            if ( $hotel['status'] == 'BookedSuccessfully' && CLIENT_ID == 271 && LANG_PANEL_ADMIN=='fa') {
+                $DataAction .= '<div class="pull-left margin-10">
+                                    <a onclick="ModalUploadProof(' . "'" . $hotel['factor_number'] . "'" .  ",'" ."Hotel'"  . ');return false" data-toggle="modal" data-target="#ModalPublic">
                                     <i style="margin: 5px auto;"  class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-upload"
                                        data-toggle="tooltip" data-placement="top" title=""
                                        data-original-title="آپلود فاکتور"></i>
-                                </a>';
-                $DataAction .= '</div><div class="pull-left margin-10">';
+                                </a></div>';
             }
             if ( in_array($hotel['status'], ['BookedSuccessfully','Cancelled','bank','credit','NoReserve']) && TYPE_ADMIN == '1') {
                 $DataAction .= '<button data-factor-number="' . $hotel['factor_number'] . '" style="margin: 5px auto;" class="hotel-change-status fcbtn btn btn-outline btn-warning btn-1c tooltip-warning fa fa-undo"
@@ -5987,12 +5992,15 @@ class bookshowTest extends clientAuth {
             }
 
             if (($hotel['status'] == 'bank' &&  TYPE_ADMIN == '1') || ($hotel['status'] == 'credit' &&  TYPE_ADMIN == '1') ) {
+                $DataAction .='<div class="pull-left margin-10">';
                 $DataAction .= "<a onclick='insertHotelPnr(" . '"' . $hotel['request_number'] . '"' . "," . '"' . $hotel['client_id'] . '"' . "); return false ;'
-                                                                           id='sendSms" . $hotel['request_number'] . "' target='_blank' data-toggle='modal' data-target='#ModalPublic'>
-                                                                            <i class='fcbtn btn btn-outline btn-info btn-1c  tooltip-info fa fa-book'
-                                                                               data-toggle='tooltip'
-                                                                               data-placement='top' title=''
-                                                                               data-original-title='برای قطعی کردن و وارد کردن pnr کلیک کنید'></i></a>";
+                                   id='sendSms" . $hotel['request_number'] . "' target='_blank' data-toggle='modal' data-target='#ModalPublic'>
+                                    <i class='fcbtn btn btn-outline btn-info btn-1c  tooltip-info fa fa-book'
+                                       data-toggle='tooltip'
+                                       data-placement='top' title=''
+                                       data-original-title='برای قطعی کردن و وارد کردن pnr کلیک کنید'></i>
+                                  </a>
+                                </div>";
             }
             if (TYPE_ADMIN == '1' && $BuyFromIt == 0 && $hotel['status'] == 'BookedSuccessfully' && $hotel['service_type']=='اشتراکی') {
                 $DataAction .= '<button data-factor-number="' . $hotel['factor_number'] . '" data-service="hotel"
@@ -6000,7 +6008,6 @@ class bookshowTest extends clientAuth {
                                        data-toggle="tooltip" data-placement="top" title="ثبت تراکنش"
                                        data-original-title="ثبت تراکنش">
                                 </button>';
-                $DataAction .= '</div><div class="pull-left margin-10">';
             }
             $DataAction .= '</div></div></li></ul></div>';
 
@@ -6022,67 +6029,68 @@ class bookshowTest extends clientAuth {
                 $badge = '';
                 if ($unreadCount > 0) {
                     $badge = '
-            <span style="
-                position: absolute;
-                top: -6px;
-                right: -6px;
-                background: #ff3b30;
-                color: white;
-                padding: 2px 6px;
-                font-size: 11px;
-                border-radius: 50%;
-                font-weight: bold;
-                box-shadow: 0 0 3px rgba(0,0,0,0.3);
-            ">
-                '.$unreadCount.'
-            </span>
-        ';
+                    <span style="
+                        position: absolute;
+                        top: -6px;
+                        right: -6px;
+                        background: #ff3b30;
+                        color: white;
+                        padding: 2px 6px;
+                        font-size: 11px;
+                        border-radius: 50%;
+                        font-weight: bold;
+                        box-shadow: 0 0 3px rgba(0,0,0,0.3);
+                    ">
+                        '.$unreadCount.'
+                    </span>
+                    ';
                 }
-                $DataAction .= "<hr style='margin:3px'>";
-                $DataAction .= '
-        <div style="position: relative; display: inline-block;">
-            <button type="button"
-                    id="ChatBtn' . $hotel['factor_number'] . '"
-                    class="fcbtn btn btn-outline btn-info btn-1c"
-                    onclick="OpenChat(\'' . $hotel['factor_number'] . '\', \'hotel\',\'' . $current_client_id . '\');"
-                    data-toggle="modal"
-                    data-target="#ModalPublic"
-                    style="width: 80px;margin-top:3px;"
-                    title="چت">
-
-                <i class="fa fa-comments"></i>
-            </button>
-
-            '.$badge.'
-        </div>
-    ';
+                if(LANG_PANEL_ADMIN=='fa') {
+                    $DataAction .= "<hr style='margin:3px'>";
+                    $DataAction .= '
+                                <div style="position: relative; display: inline-block;">
+                                    <button type="button"
+                                            id="ChatBtn' . $hotel['factor_number'] . '"
+                                            class="fcbtn btn btn-outline btn-info btn-1c"
+                                            onclick="OpenChat(\'' . $hotel['factor_number'] . '\', \'hotel\',\'' . $current_client_id . '\');"
+                                            data-toggle="modal"
+                                            data-target="#ModalPublic"
+                                            style="width: 80px;margin-top:3px;"
+                                            title="چت">
+                                             <i class="fa fa-comments"></i>
+                                    </button>
+                        
+                                    ' . $badge . '
+                                </div>
+                    ';
+                }//end if fa
             }
 
             if ($hotel['status'] == 'Requested') {
-                $DataActivity = ' <a class="btn btn-warning cursor-default w-90" onclick="return false;" onclick="return false;">درخواست شده(پیش پرداخت)</a>';
+                $DataActivity = ' <a class="btn btn-warning cursor-default w-90" onclick="return false;" onclick="return false;">'.functions::Xmlinformation("Requested").'('.functions::Xmlinformation("PrePrice").')</a>';
             }
             elseif  ($hotel['status'] == 'RequestRejected') {
-                $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;"> درخواست رد شده</a>';
+                $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;"> '.functions::Xmlinformation("RequestRejected").'</a>';
             }
             elseif  ($hotel['status'] == 'RequestAccepted') {
-                $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;"> درخواست تایید شده</a>';
+                $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("RequestAccepted").'</a>';
             }
             elseif ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataActivity = '<a class="btn btn-success cursor-default w-90" onclick="return false;"> رزرو قطعی</a>';
+                $DataActivity = '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Definitivereservation").'</a>';
             } elseif ( $hotel['status'] == 'PreReserve' ) {
-                $DataActivity = '<a class="btn btn-warning cursor-default w-90" onclick="return false;">پیش رزرو</a>';
+                $DataActivity = '<a class="btn btn-warning cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Prereservation").'</a>';
             } elseif ( $hotel['status'] == '' ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">نامشخص</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Unknown").'</a>';
             } elseif ( $hotel['status'] == 'bank' ) {
-                $DataActivity = '<a class="btn btn-primary cursor-default w-90" onclick="return false;">هدایت به درگاه</a>';
+                $DataActivity = '<a class="btn btn-primary cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("NavigateToPort").'</a>';
             } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 0 ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">لغو درخواست</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Cancelrequest").'</a>';
             } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 1 ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">کنسل شده</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Canceled").'</a>';
             } elseif ( $hotel['status'] == 'OnRequest' ) {
-                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">هتل استعلامی</a>';
+                $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("InquiryHotel").'</a>';
             } elseif ( $hotel['status'] == 'pending' ) {
-                $DataActivity = '<a class="btn btn-print cursor-warning w-90" onclick="return false;">در حال صدور</a>';
+                $DataActivity = '<a class="btn btn-print cursor-warning w-90" onclick="return false;">'.functions::Xmlinformation("pendingPrintFlight").'</a>';
 
             }else {
 
@@ -6121,10 +6129,10 @@ class bookshowTest extends clientAuth {
                 $TitleNameAgency='نام آژانس';
             }
             else {
-                $TitleAgencyShare='سود شما';
-                $TitleBuyFromIt='<span> خرید از <br>  سفر360 </span>';
-                $TitlePayment=' فروش به مسافر<br/><del>تخفیف</del>';
-                $TitleNameAgency='عملیات';
+                $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit");
+                $TitleBuyFromIt='<span> '.functions::Xmlinformation("PA_BUYFrom").' <br>  '.functions::Xmlinformation("Safar360").' </span>';
+                $TitlePayment=functions::Xmlinformation("Discount").'<br/><del>'.functions::Xmlinformation("PassengerSale").'</del>';
+                $TitleNameAgency=functions::Xmlinformation("Action");
             }
             $ColorTr='';
             if($hotel['status'] == 'BookedSuccessfully' && $hotel['service_type']=='اشتراکی'){//رزرو قطعی از مدل اشتراکی باشد
@@ -6139,12 +6147,20 @@ class bookshowTest extends clientAuth {
                 }
             }
 
-            $HotelData['data'][ $key ]["رنگ"]                                     = $ColorTr;
-            $HotelData['data'][ $key ]["ردیف"]                                     = $key + 1;
-            $HotelData['data'][ $key ][" شهر<br/>هتل"]                             = $DataCityHotel;
-            $HotelData['data'][ $key ][" تاریخ خرید<br> ساعت خرید<br>نام خریدار"]  = $DataEnterInformation;
-            $HotelData['data'][ $key ]["ورود<br>خروج<br> مدت اقامت"]               = $DataExitInformation;
-            $HotelData['data'][ $key ]["شماره فاکتور"]                             = $DataFactorInformation.$DataRoomInformation;
+            $titleColumn1=functions::Xmlinformation('Row');
+            $titleColumn2=functions::Xmlinformation('Hotel').'<br/>'.functions::Xmlinformation('City');
+            $titleColumn3=functions::Xmlinformation('Customername').'<br/>'.functions::Xmlinformation('Buytime').'<br/>'.functions::Xmlinformation('Buydate');
+            $titleColumn4=functions::Xmlinformation('Stayigtime').'<br/>'.functions::Xmlinformation('Exit').'<br/>'.functions::Xmlinformation('OsafarLogin');
+            $titleColumn5=functions::Xmlinformation('messagePrepairFlight_button');
+            $titleColumn6=functions::Xmlinformation('Status');
+
+
+            $HotelData['data'][ $key ]["رنگ"]                                      = $ColorTr;
+            $HotelData['data'][ $key ][$titleColumn1.' ']                          = $key + 1;
+            $HotelData['data'][ $key ][$titleColumn2]                              = $DataCityHotel;
+            $HotelData['data'][ $key ][$titleColumn3]                              = $DataEnterInformation;
+            $HotelData['data'][ $key ][$titleColumn4]                              = $DataExitInformation;
+            $HotelData['data'][ $key ][$titleColumn5]                              = $DataFactorInformation.$DataRoomInformation;
             $HotelData['data'][ $key ][$TitleBuyFromIt]                            = $DataPrice;
             if(TYPE_ADMIN == 1){
                 $HotelData['data'][ $key ]["سهم ما"]                               = $DataIranTechCommission;
@@ -6152,7 +6168,7 @@ class bookshowTest extends clientAuth {
             $HotelData['data'][ $key ][$TitlePayment]                              = $DataAllPrice;
             $HotelData['data'][ $key ][$TitleAgencyShare]                          = $final_agency_commission;
             $HotelData['data'][ $key ][$TitleNameAgency]                           = $DataAction;
-            $HotelData['data'][ $key ]["وضعیت"]                                    = $DataActivity;
+            $HotelData['data'][ $key ][$titleColumn6.' ']                          = $DataActivity;
 
             unset( $DataCityHotel, $DataEnterInformation, $DataExitInformation, $DataFactorInformation, $DataRoomInformation, $DataAgencyCommission, $DataPrice, $DataIranTechCommission, $DataAllPrice, $DataAction, $DataActivity );
         }
@@ -6179,6 +6195,7 @@ class bookshowTest extends clientAuth {
 
         return $HotelData;
     }
+
     public function MainHotelHistoryWebService( $param ) {
 
         /** @var bookhotelshow $BookHotelController */
@@ -9404,12 +9421,13 @@ class bookshowTest extends clientAuth {
             }
             $DataCounter .= $bus['MemberName'] . "<hr style='margin:3px'>";
             if ( $infoMember['fk_counter_type_id'] == '5' ) {
-                $DataCounter .= "مسافر";
+                $DataCounter .= functions::Xmlinformation("Passenger");
             } else {
-                $DataCounter .= "کانتر";
+                $DataCounter .= functions::Xmlinformation("Counter");
             }
             if ( $bus['ServicesDiscount'] != '' && $infoMember['is_member'] == '1' ) {
-                $DataCounter .= $bus['ServicesDiscount'] . " %ای";
+                $DataCounter .= $bus['ServicesDiscount'] . " % ";
+                if(LANG_PANEL_ADMIN=='fa') $DataCounter .='ای';
             }
             $DataDestination        = $bus['OriginName'] . '<hr style="margin:3px">' . $bus['DestinationCity'].'<hr style="margin:3px">'.$bus['PassengerName'] . '<hr style="margin:3px">' . $bus['PassengerMobile'];
             $DataMoveOnTime         = $bus['DateMove'] . '<hr style="margin:3px">' . $bus['TimeMove'];
@@ -9444,11 +9462,12 @@ class bookshowTest extends clientAuth {
             }
             if ( $bus['Status'] != 'nothing' ) {
                 $DataAction = '<div class="btn-group m-r-10">
-                                            <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  عملیات <span class="caret"></span></button>
+                                            <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  '.functions::Xmlinformation("Action").' <span class="caret"></span></button>
 
                                             <ul role="menu" class="dropdown-menu animated flipInY mainTicketHistory-operation-bus">
-                                                <li>
-                                                    <div class="pull-left margin-10">
+                                                <li>';
+                if(LANG_PANEL_ADMIN=='fa') {
+                    $DataAction .= '<div class="pull-left margin-10">
                                                         <a onclick="ModalShowBookForBus(' . "'" . $bus['FactorNumber'] . "'" . ');return false"
                                                            data-toggle="modal" data-target="#ModalPublic">
                                                             <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye"
@@ -9456,8 +9475,10 @@ class bookshowTest extends clientAuth {
                                                                data-original-title="مشاهده خرید"></i>
                                                         </a>
                                                     </div>';
-                if ( $bus['Status'] == 'book' ) {
-                    $DataAction .= '<div class="pull-left margin-10">
+                }
+                if ( $bus['Status'] == 'book') {
+                    if(LANG_PANEL_ADMIN=='fa') {
+                        $DataAction .= '<div class="pull-left margin-10">
                                         <a href="' . ROOT_ADDRESS_WITHOUT_LANG . '/eBusTicket&num=' . $bus['FactorNumber'] . '"
                                            target="_blank"
                                            title="مشاهده اطلاعات خرید" >
@@ -9476,7 +9497,7 @@ class bookshowTest extends clientAuth {
                                         </a>
                                     </div>
                                      <div class="pull-left margin-10">
-                                        <a href="' . ROOT_ADDRESS_WITHOUT_LANG. '/pdf&target=bookingBusShow&id=' . $bus['FactorNumber'] . '"
+                                        <a href="' . ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookingBusShow&id=' . $bus['FactorNumber'] . '"
                                            target="_blank"
                                            title="مشاهده اطلاعات خرید" >
                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o"
@@ -9487,24 +9508,26 @@ class bookshowTest extends clientAuth {
                                     <div class="pull-left margin-10">
                                         <a href="' . ROOT_ADDRESS_WITHOUT_LANG. '/pdf&target=bookingBusShow&id=' . $bus['FactorNumber'] . '&cash=no"
                                            target="_blank"
-                                           title="بلیط بدون قیمت" >
+                                           title="'.functions::Xmlinformation("Freeticket").'" >
                                             <i class="fcbtn btn btn-outline btn-default btn-1c tooltip-default fa fa-ticket"
                                                data-toggle="tooltip" data-placement="top" title=""
-                                               data-original-title="بلیط بدون قیمت"></i>
+                                               data-original-title="'.functions::Xmlinformation("Freeticket").'"></i>
                                         </a>
-                                    </div>
+                                    </div>';
+                    }
+                    $DataAction .= '
                                     <div class="pull-left margin-10">
                                         <a href="' . ROOT_ADDRESS_WITHOUT_LANG. '/pdf&target=bookingBusForeign&id=' . $bus['FactorNumber'] . '"
                                            target="_blank"
-                                           title="بلیط خارجی" >
+                                           title="'.functions::Xmlinformation("EnglishTicket").'" >
                                             <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-default fa fa-file-pdf-o"
                                                data-toggle="tooltip" data-placement="top" title=""
-                                               data-original-title="بلیط خارجی"></i>
+                                               data-original-title="'.functions::Xmlinformation("EnglishTicket").'"></i>
                                         </a>
                                     </div>
                                     <div class="pull-left margin-10">
                                         <a 
-                                           title="استرداد" 
+                                           title="'.functions::Xmlinformation("OsafarRefund").'"
                                            onclick="ModalCancelFlightAdmin(' . "'" . $bus['OrderCode'] . "'" .  ",'" ."bus'"  . '); return false ;"
                                            target="_blank"
                                            data-toggle="modal"
@@ -9512,7 +9535,7 @@ class bookshowTest extends clientAuth {
                                            >
                                             <i class="fcbtn btn btn-outline btn-danger btn-1c tooltip-danger mdi mdi-close"
                                                data-toggle="tooltip" data-placement="top" title=""
-                                               data-original-title="استرداد"></i>
+                                               data-original-title="'.functions::Xmlinformation("OsafarRefund").'"></i>
                                         </a>
                                     </div>  
                                     ';
@@ -9526,32 +9549,31 @@ class bookshowTest extends clientAuth {
                     }
                 }
                 if ( $bus['Status'] == 'book'  && CLIENT_ID == 271) {
-
                     $DataAction .= '<div class="pull-left margin-10">
                                        <a onclick="ModalUploadProof(' . "'" . $bus['OrderCode'] . "'" .  ",'" ."Bus'"  . ');return false" data-toggle="modal" data-target="#ModalPublic">
                                             <i style="margin: 5px auto;"  class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-upload"
                                                data-toggle="tooltip" data-placement="top" title=""
-                                               data-original-title="آپلود فاکتور"></i>
+                                               data-original-title="'.functions::Xmlinformation("UploadInvoice").'"></i>
                                         </a>
                                     </div>';
                 }
                 if ( TYPE_ADMIN == '1' && ( $bus['Status'] == 'temporaryReservation' || $bus['Status'] == 'prereserve' || $bus['Status'] == 'book' ) ) {
                     /*$DataAction.='<div class="pull-left margin-10">
-                                                            <a onclick="checkInquireBusTicket('."'".$bus['FactorNumber']."'".');return false"
-                                                               data-toggle="modal" data-target="#ModalPublic">
-                                                                <i class="fcbtn btn btn-warning btn-outline btn-1c tooltip-warning fa fa-check"
-                                                                   data-toggle="tooltip" data-placement="top" title=""
-                                                                   data-original-title="پیگیری رزرو از وب سرویس"></i>
-                                                            </a>
-                                                        </div>';*/
+                        <a onclick="checkInquireBusTicket('."'".$bus['FactorNumber']."'".');return false"
+                           data-toggle="modal" data-target="#ModalPublic">
+                            <i class="fcbtn btn btn-warning btn-outline btn-1c tooltip-warning fa fa-check"
+                               data-toggle="tooltip" data-placement="top" title=""
+                               data-original-title="پیگیری رزرو از وب سرویس"></i>
+                        </a>
+                    </div>';*/
                 }
                 $DataAction .= "</li>
                                 </ul>
                                 <hr style='margin:3px'>";
                 if ( $bus['payment_type'] == 'cash' ) {
-                    $DataAction .= "نقدی";
+                    $DataAction .= functions::Xmlinformation("Cash");
                 } elseif ( $bus['payment_type'] == 'credit' || $bus['payment_type'] == 'member_credit' ) {
-                    $DataAction .= "اعتباری";
+                    $DataAction .= functions::Xmlinformation("Credit");
                 }
                 if ( TYPE_ADMIN == '1' && $bus['payment_type'] == 'cash' ) {
                     $DataAction .= "<hr style='margin:3px'>
@@ -9598,10 +9620,10 @@ class bookshowTest extends clientAuth {
                 $TitleNameAgency='نام آژانس';
             }
             else {
-                $TitleAgencyShare='سود شما';
-                $TitleBuyFromIt='<span> خرید از <br>  سفر360 </span>';
-                $TitlePayment=' فروش به مسافر';
-                $TitleNameAgency='عملیات';
+                $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit");
+                $TitleBuyFromIt='<span>'.functions::Xmlinformation("PA_BUYFrom").' <br> '. functions::Xmlinformation("Safar360") .'</span>';
+                $TitlePayment=functions::Xmlinformation("PassengerSale");
+                $TitleNameAgency=functions::Xmlinformation("Action");
             }
 
             $ColorTr='';
@@ -9617,20 +9639,27 @@ class bookshowTest extends clientAuth {
                 }
             }
 
+            $titleColumn1=functions::Xmlinformation('Row');
+            $titleColumn2=functions::Xmlinformation('Typecounter').'<br/>'.functions::Xmlinformation('Customername').'<br/>'.functions::Xmlinformation('DateAndTime').' '.functions::Xmlinformation('Buy');
+            $titleColumn3=functions::Xmlinformation('Origin').'<br/>'.functions::Xmlinformation('Destination').'<br>'.functions::Xmlinformation('Namepassenger').'<br/>'.  functions::Xmlinformation('PhonenumberTraveler');
+            $titleColumn4=functions::Xmlinformation('dateMove').'<br/>'.functions::Xmlinformation('timeMove');
+            $titleColumn5=functions::Xmlinformation('Passengercompany').'<br/>'.functions::Xmlinformation('Bustype');
+            $titleColumn6=functions::Xmlinformation('messagePrepairFlight_button').'<br/>'.functions::Xmlinformation('Ticketnumber').'<br>'.functions::Xmlinformation('SeatNumber').'<br/>'.  functions::Xmlinformation('SeatCount');
+            $titleColumn7=functions::Xmlinformation('Status');
+
 
             $DataTable['data'][ $key ]["رنگ"]                                             = $ColorTr;
-            $DataTable['data'][ $key ]["ردیف"]                                            = $bus['NumberColumn'];
-            $DataTable['data'][ $key ][" تاریخ و ساعت خرید<br/>نام خریدار<br/>نوع کانتر"] = $DataCounter;
-            $DataTable['data'][ $key ]["مبدا<br>مقصد <br> نام مسافر<br/>شماره موبایل"]    = $DataDestination;
-            $DataTable['data'][ $key ]["تاریخ حرکت<br/>ساعت حرکت"]                        = $DataMoveOnTime;
-            $DataTable['data'][ $key ]["شرکت مسافربری<br/>اتوبوس"]                        = $DataBus;
-            $DataTable['data'][ $key ]["شماره فاکتور<br>شماره بلیط<br/>شماره صندلی</br>تعداد صندلی"]      = $DataSeat;
+            $DataTable['data'][ $key ][$titleColumn1.' ']                                     = $bus['NumberColumn'];
+            $DataTable['data'][ $key ][$titleColumn2]                                     = $DataCounter;
+            $DataTable['data'][ $key ][$titleColumn3]                                     = $DataDestination;
+            $DataTable['data'][ $key ][$titleColumn4]                                     = $DataMoveOnTime;
+            $DataTable['data'][ $key ][$titleColumn5]                                     = $DataBus;
+            $DataTable['data'][ $key ][$titleColumn6]                                     = $DataSeat;
             $DataTable['data'][ $key ][$TitleBuyFromIt]                                   = $DataBuyFromIt;
-            ( TYPE_ADMIN == '1' ? $DataTable['data'][ $key ]["سهم ما"] = $DataIrantechCommission : "" );
+            ( TYPE_ADMIN == '1' ? $DataTable['data'][ $key ]["سهم ما"]                    = $DataIrantechCommission : "" );
             $DataTable['data'][ $key ][$TitlePayment]                                     = $DataTotalPrice;
             $DataTable['data'][ $key ][$TitleAgencyShare]                                 = $DataAgencyCommission;
-            $DataTable['data'][ $key ][$TitleNameAgency]                                  = $DataAction;
-            $DataTable['data'][ $key ]["وضعیت"]                                           = $DataStatus;
+            $DataTable['data'][ $key ][$TitleNameAgency]                                  = $DataStatus.$DataAction;
         }
 
         $FooterData0 = '<th colspan="6"></th>';
@@ -10211,14 +10240,40 @@ class bookshowTest extends clientAuth {
     }
 
     public function MainTicketHistory( $param ) {
-
         if ( $param['target'] == 'flight' ) {
             parse_str( $param['filter'], $param );
             $_POST     = $param;
+
+            // چک کردن زبان
+            if (isset($_SESSION['lang_panel_admin']) && ($_SESSION['lang_panel_admin'] == 'ar' || $_SESSION['lang_panel_admin'] == 'en')) {
+                // تبدیل تاریخ میلادی به شمسی
+                if (isset($param['date_of'])) {
+                    // فرض: تابعی برای تبدیل میلادی به شمسی داریم
+                    $_POST['date_of'] =$param['date_of'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['date_of']), '', '', 'en');
+                }
+                if (isset($param['to_date'])) {
+                    // تبدیل به شمسی
+                    $_POST['to_date'] =$param['to_date'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['to_date']), '', '', 'en');
+                }
+            }
+
             $DataTable = $this->MainFlightTicketHistory( $param );
         } elseif ( $param['target'] == 'hotel' ) {
             parse_str( $param['filter'], $param );
             $_POST     = $param;
+
+            // چک کردن زبان
+            if (isset($_SESSION['lang_panel_admin']) && ($_SESSION['lang_panel_admin'] == 'ar' || $_SESSION['lang_panel_admin'] == 'en')) {
+                // تبدیل تاریخ میلادی به شمسی
+                if (isset($param['date_of'])) {
+                    // فرض: تابعی برای تبدیل میلادی به شمسی داریم
+                    $_POST['date_of'] =$param['date_of'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['date_of']), '', '', 'en');
+                }
+                if (isset($param['to_date'])) {
+                    // تبدیل به شمسی
+                    $_POST['to_date'] =$param['to_date'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['to_date']), '', '', 'en');
+                }
+            }
 
             $DataTable = $this->MainHotelHistory( $param );
         } elseif ( $param['target'] == 'insurance' ) {
@@ -10240,6 +10295,20 @@ class bookshowTest extends clientAuth {
         } elseif ( $param['target'] == 'bus' ) {
             parse_str( $param['filter'], $param );
             $_POST     = $param;
+
+            // چک کردن زبان
+            if (isset($_SESSION['lang_panel_admin']) && ($_SESSION['lang_panel_admin'] == 'ar' || $_SESSION['lang_panel_admin'] == 'en')) {
+                // تبدیل تاریخ میلادی به شمسی
+                if (isset($param['date_of'])) {
+                    // فرض: تابعی برای تبدیل میلادی به شمسی داریم
+                    $_POST['date_of'] =$param['date_of'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['date_of']), '', '', 'en');
+                }
+                if (isset($param['to_date'])) {
+                    // تبدیل به شمسی
+                    $_POST['to_date'] =$param['to_date'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['to_date']), '', '', 'en');
+                }
+            }
+
             $DataTable = $this->MainBusHistory( $param );
         } elseif ( $param['target'] == 'train' ) {
             parse_str( $param['filter'], $param );
@@ -10257,11 +10326,295 @@ class bookshowTest extends clientAuth {
             parse_str( $param['filter'], $param );
             $_POST     = $param;
             $DataTable = $this->MainCipHistory( $param );
+        }elseif( $param['target'] == 'allTicket' ){
+            parse_str( $param['filter'], $param );
+            $_POST     = $param;
+            $DataTable = $this->MainAllTicketHistory( $param );
         }
 
         return json_encode( $DataTable );
     }
     #endregion
+
+    public function MainAllTicketHistory( $param ) {
+        $AllBookings = [];
+        $CountRow = 1;
+
+        // دریافت تراکنش‌ها برای همه نوع سرویس‌ها
+        $transactions = $this->getTransactionsByDateRange(
+            $param['date_of'],
+            $param['to_date'],
+            $param['pnr'],
+            $param['factor_number'],
+            $param['request_number'],
+            $param['passenger_name'],
+            $param['passenger_family']
+        );
+
+        // =============================================
+        // 1. دریافت اطلاعات پروازها (Ticket) - بدون شرط وضعیت
+        // =============================================
+        if ( ! empty( $param['member_id'] ) ) {
+            $intendedUser = [
+                "member_id" => $param['member_id'],
+                "agency_id" => @$param['agency_id']
+            ];
+            $ListBookLocal = $this->listBookLocal( $intendedUser );
+        } else {
+            $ListBookLocal = $this->listBookLocal( $param );
+        }
+
+        foreach ( $ListBookLocal as $flightBook ) {
+            // حذف شرط - همه پروازها را می‌آورد
+            $passengerName = trim($flightBook['passenger_name_en'] . ' ' . $flightBook['passenger_family_en']);
+            if (empty($passengerName)) {
+                $passengerName = $flightBook['member_name'] ?? functions::Xmlinformation("Unknow");
+            }
+
+            $agencyName = $flightBook['NameAgency'] ?? $flightBook['agency_name'] ?? functions::Xmlinformation("Unknow");
+            $statusText = $this->getFlightStatusText($flightBook);
+
+            $AllBookings[] = [
+                "id" => $CountRow++,
+                "service_type" => functions::Xmlinformation("GoharFlight"),
+                "request_number" => $flightBook['request_number'],
+                "factor_number" => $flightBook['factor_number'],
+                "passenger_name" => $passengerName,
+                "agency_name" => $agencyName,
+                "status" => $statusText,
+                "request_time" => dateTimeSetting::jdate('H:i:s', $flightBook['creation_date_int']),
+            ];
+        }
+
+        // =============================================
+        // 2. دریافت اطلاعات هتل‌ها (Hotel) - بدون شرط وضعیت
+        // =============================================
+        $BookHotelController = Load::controller('bookhotelshow');
+
+        if ( ! empty( $param['member_id'] ) ) {
+            $intendedUser = [
+                "member_id" => $param['member_id'],
+                "agency_id" => @$param['agency_id']
+            ];
+            $ListBookHotelLocal = $BookHotelController->listBookHotelLocal(null, $intendedUser);
+        } else {
+            $ListBookHotelLocal = $BookHotelController->listBookHotelLocal();
+        }
+
+        foreach ( $ListBookHotelLocal as $hotel ) {
+            // حذف شرط - همه هتل‌ها را می‌آورد
+//            $passengerName = $hotel['passenger_name'] ;
+            if (!empty($hotel['passenger_name'])) {
+                $passengerName = $hotel['passenger_name'];
+            }
+
+//            functions::insertLog(josn_encode($hotel) , '000shojaee');
+//            functions::insertLog(  json_encode( $hotel ), '000shojaee' );
+
+            $agencyName = $hotel['agency_name'] ?? functions::ClientName($hotel['client_id']) ?? 'نامشخص';
+            $statusText = $this->getHotelStatusText($hotel);
+
+            $AllBookings[] = [
+                "id" => $CountRow++,
+                "service_type" => functions::Xmlinformation("Hotel"),
+                "request_number" => $hotel['request_number'],
+                "factor_number" => $hotel['factor_number'],
+                "passenger_name" => $hotel['passenger_name'],
+                "agency_name" => $agencyName,
+                "status" => $statusText,
+                "request_time" => dateTimeSetting::jdate('H:i:s', $hotel['creation_date_int'] ?? time()),
+            ];
+        }
+
+        // =============================================
+        // 3. دریافت اطلاعات بیمه (Insurance) - بدون شرط وضعیت
+        // =============================================
+        $BookInsuranceController = Load::controller('bookingInsurance');
+
+        if ( ! empty( $param['member_id'] ) ) {
+            $intendedUser = [
+                "member_id" => $param['member_id'],
+                "agency_id" => @$param['agency_id']
+            ];
+            $ListBookInsurance = $BookInsuranceController->bookList(null, $intendedUser);
+        } else {
+            $ListBookInsurance = $BookInsuranceController->bookList();
+        }
+
+        foreach ( $ListBookInsurance as $insurance ) {
+            // حذف شرط - همه بیمه‌ها را می‌آورد
+            $passengerName = trim(($insurance['passenger_name'] ?? '') . ' ' . ($insurance['passenger_family'] ?? ''));
+            if (empty($passengerName)) {
+                $passengerName = $insurance['member_name'] ?? functions::Xmlinformation("Unknown");
+            }
+
+            $agencyName = $insurance['NameAgency'] ?? $insurance['agency_name'] ?? functions::Xmlinformation("Unknown");
+            $statusText = $this->getInsuranceStatusText($insurance);
+
+            $AllBookings[] = [
+                "id" => $CountRow++,
+                "service_type" => functions::Xmlinformation("Insurance"),
+                "request_number" => $insurance['factor_number'],
+                "factor_number" => $insurance['factor_number'],
+                "passenger_name" => $passengerName,
+                "agency_name" => $agencyName,
+                "status" => $statusText,
+                "request_time" => dateTimeSetting::jdate('H:i:s', $insurance['creation_date_int'] ?? time()),
+            ];
+        }
+
+        // =============================================
+        // 4. دریافت اطلاعات اتوبوس (Bus) - بدون شرط وضعیت
+        // =============================================
+        $BookBusController = Load::controller('bookingBusShow');
+
+        if ( ! empty( $param['member_id'] ) ) {
+            $intendedUser = [
+                "member_id" => $param['member_id'],
+                "agency_id" => @$param['agency_id']
+            ];
+            $ListBookBus = $BookBusController->listBookBusTicket(null, $intendedUser);
+        } else {
+            $ListBookBus = $BookBusController->listBookBusTicket();
+        }
+
+        foreach ( $ListBookBus as $bus ) {
+            // حذف شرط - همه اتوبوس‌ها را می‌آورد
+            $passengerName = $bus['PassengerName'] ;
+            $agencyName = $bus['AgencyName'] ?? functions::ClientName($bus['client_id']) ?? 'نامشخص';
+            $statusText = $this->getBusStatusText($bus);
+
+            $AllBookings[] = [
+                "id" => $CountRow++,
+                "service_type" => functions::Xmlinformation("Bus"),
+                "request_number" => $bus['FactorNumber'] ?? $bus['factor_number'] ?? '',
+                "factor_number" => $bus['FactorNumber'] ?? $bus['factor_number'] ?? '',
+                "passenger_name" => $passengerName,
+                "agency_name" => $agencyName,
+                "status" => $statusText,
+                "request_time" => dateTimeSetting::jdate('H:i:s', strtotime($bus['PaymentDate'] ?? 'now')),
+            ];
+        }
+
+        // مرتب‌سازی بر اساس تاریخ ثبت (جدیدترین در بالا)
+        if (!empty($AllBookings)) {
+            usort($AllBookings, function($a, $b) {
+                return strcmp($b['request_date'] ?? '', $a['request_date'] ?? '');
+            });
+
+            // بازنشانی شماره ردیف‌ها بعد از مرتب‌سازی
+            foreach ($AllBookings as $index => &$booking) {
+                $booking["id"] = $index + 1;
+            }
+        }
+
+        // برگرداندن نتیجه (حتی اگر خالی باشد، آرایه خالی برگردانید نه null)
+        $result = [];
+        if (!empty($AllBookings)) {
+            $result['data'] = $AllBookings;
+            $result['footer'] = [
+                '<th colspan="7">'.functions::Xmlinformation("TotalRecords").' : ' . count($AllBookings) . '</th>'
+            ];
+        } else {
+            // اگر هیچ دیتایی نیست، یک آرایه خالی با پیغام برگردانید
+            $result['data'] = [];
+            $result['footer'] = [
+                '<th colspan="7">'.functions::Xmlinformation("NoRecordsFound").'</th>'
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * دریافت متن وضعیت پرواز (تمام حالت‌ها)
+     */
+    private function getFlightStatusText($flightBook) {
+        $status = $flightBook['successfull'] ?? functions::Xmlinformation("Unknown");
+
+        if ($flightBook['request_cancel'] == 'confirm') {
+            return functions::Xmlinformation("Canceled");
+        }
+
+        $statusMap = [
+            'book' => functions::Xmlinformation("Definitivereservation"),
+            'private_reserve' => functions::Xmlinformation("ExclusiveBooking"),
+            'prereserve' => functions::Xmlinformation("Prereservation"),
+            'bank' => functions::Xmlinformation("NavigateToPort"),
+            'credit' => functions::Xmlinformation("CreditSelection"),
+            'processing' => functions::Xmlinformation("processingPrintFlight"),
+            'pending' => functions::Xmlinformation("pendingPrintFlight"),
+            'error' => functions::Xmlinformation("reserveError"),
+            'nothing' => functions::Xmlinformation("NoStatus"),
+            '' => functions::Xmlinformation("Unknown")
+        ];
+
+        return $statusMap[$status] ?? $status;
+    }
+
+    /**
+     * دریافت متن وضعیت هتل (تمام حالت‌ها)
+     */
+    private function getHotelStatusText($hotel) {
+        $status = $hotel['status'] ?? 'نامشخص';
+
+        $statusMap = [
+            'BookedSuccessfully' => functions::Xmlinformation("Definitivereservation"),
+            'PreReserve' => functions::Xmlinformation("Prereservation"),
+            'Requested' => functions::Xmlinformation("Requested"),
+            'RequestAccepted' => functions::Xmlinformation("RequestAccepted"),
+            'RequestRejected' => functions::Xmlinformation("RequestRejected"),
+            'Cancelled' => functions::Xmlinformation("Canceled"),
+            'bank' => functions::Xmlinformation("NavigateToPort"),
+            'credit' => functions::Xmlinformation("CreditSelection"),
+            'pending' => functions::Xmlinformation("pendingPrintFlight"),
+            'OnRequest' => functions::Xmlinformation("InquiryHotel"),
+            'NoReserve' => functions::Xmlinformation("NoReservation"),
+            '' => functions::Xmlinformation("Unknown")
+        ];
+
+        return $statusMap[$status] ?? $status;
+    }
+
+    /**
+     * دریافت متن وضعیت بیمه (تمام حالت‌ها)
+     */
+    private function getInsuranceStatusText($insurance) {
+        $status = $insurance['status'] ?? 'نامشخص';
+
+        $statusMap = [
+            'book' => 'رزرو قطعی',
+            'prereserve' => 'پیش رزرو',
+            'bank' => 'هدایت به درگاه',
+            'credit' => 'انتخاب اعتباری',
+            'nothing' => 'بدون وضعیت',
+            'pending' => 'در حال صدور',
+            '' => 'نامشخص'
+        ];
+
+        return $statusMap[$status] ?? $status;
+    }
+
+    /**
+     * دریافت متن وضعیت اتوبوس (تمام حالت‌ها)
+     */
+    private function getBusStatusText($bus) {
+        $status = $bus['Status'] ?? functions::Xmlinformation("Unknown");
+        $statusFa = $bus['StatusFa'] ?? '';
+
+        $statusMap = [
+            'book' => functions::Xmlinformation("Definitivereservation"),
+            'temporaryReservation' => functions::Xmlinformation("Temporaryreservation"),
+            'prereserve' => functions::Xmlinformation("TemporaryPreReserve"),
+            'bank' => functions::Xmlinformation("NavigateToPort"),
+            'credit' => functions::Xmlinformation("CreditSelection"),
+            'cancel' => functions::Xmlinformation("Canceled"),
+            'pending' => functions::Xmlinformation("pendingPrintFlight"),
+            '' => functions::Xmlinformation("Unknown")
+        ];
+
+        return $statusMap[$status] ?? ($statusFa ?: $status);
+    }
 
     public function historyTestWebService( $param ) {
         if ( $param['target'] == 'flight' ) {
@@ -10297,7 +10650,7 @@ class bookshowTest extends clientAuth {
 
 
         if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_flight['pid_private'] =='0'){
-            $content_btn = 'خطای پروایدر';
+            $content_btn = functions::Xmlinformation('providerError');
         }else{
             $content_btn = $data_error['text_message'];
         }
@@ -10307,7 +10660,7 @@ class bookshowTest extends clientAuth {
                                                data-toggle="popover" title="'.$text_btn.'" data-placement="right"
                                                data-content="'. $content_btn .'">'. $text_btn .'
                                                <div style="display: none;" class="parent-ld">
-    در حال صدور
+    '.functions::Xmlinformation('pendingPrintFlight').'
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                </a>';
@@ -10319,29 +10672,29 @@ class bookshowTest extends clientAuth {
         if(in_array($data_error['messageCode'],$this->getCodeSpecialError())){
 
             if(($data_error['messageCode']=='Err0111006' && $data_flight['pid_private'] =='1' && $data_flight['api_id'] == '14') || ($data_error['messageCode']=='-506' && $data_flight['pid_private'] =='1')){
-                return  ' اعتبار کافی نیست';
+                return  functions::Xmlinformation( "InsufficientCredit" );
             }elseif($data_error['messageCode']=='-411') {
-                return ' خطای کد امنیتی';
+                return functions::Xmlinformation( "SecurityCodeError" );
             }elseif($data_error['messageCode']=='-404'){
-                return  'خطای شماره همراه';
+                return  functions::Xmlinformation( "MobileNumberError" );
             }elseif($data_error['messageCode']=='-418'){
-                return  'خطای کد ملی';
+                return  functions::Xmlinformation( "NationalIdError" );
             }elseif($data_error['messageCode']=='ERROR113'){
-                return  'خطای تکرار درخواست';
+                return  functions::Xmlinformation( "DuplicateRequestError" );
             }elseif($data_error['messageCode']=='Err0107038'){
-                return  'خطای ملیت مسافر';
+                return  functions::Xmlinformation( "PassengerNationalityError" );
             }elseif(in_array($data_error['messageCode'],$this->errorCodePassport())){
                 if($data_error['messageCode']=='Err0107011' || $data_error['messageCode']=='-420'){
-                    return 'خطای انقضاء پاسپورت';
+                    return functions::Xmlinformation( "PassportExpiryError" );
                 }else{
-                    return 'خطای پاسپورت';
+                    return functions::Xmlinformation( "PassportError" );
                 }
             }
             else{
-                return ($data_flight=='charter') ? 'خطای چارتر کننده':'خطای ایرلاین';
+                return ($data_flight=='charter') ? functions::Xmlinformation( "ErrorCharter" ):functions::Xmlinformation( "ErrorAirline" );
             }
         }else{
-            return ($data_flight=='charter') ? 'خطای چارتر کننده':'خطای ایرلاین';
+            return ($data_flight=='charter') ? functions::Xmlinformation( "ErrorAirline" ):functions::Xmlinformation( "ErrorAirline" );
         }
     }
 
@@ -10356,7 +10709,7 @@ class bookshowTest extends clientAuth {
             $classes =  in_array($data_error['messageCode'],$this->getHotelCodeSpecialError()) ? 'colorSpecialError' : '';
             $text_btn = $this->titleBtnHotelError($data_error,$data_hotel);
             if(!$status_admin && ($data_error['messageCode'] == 'BK-426' || $data_error['messageCode'] == 'Err0111006') ) {
-                $content_btn = 'خطا';
+                $content_btn = functions::Xmlinformation("reserveError");
             }else{
                 $content_btn = $data_error['text_message'];
             }
@@ -10366,7 +10719,7 @@ class bookshowTest extends clientAuth {
                                                data-toggle="popover" title="'.$text_btn.'" data-placement="right"
                                                data-content="'. $content_btn .'">'. $text_btn .'</a>';
         }else {
-            return '<a class="btn btn-danger cursor-default" style="width: 90%;" onclick="return false;">خطا</a>';
+            return '<a class="btn btn-danger cursor-default" style="width: 90%;" onclick="return false;">'.functions::Xmlinformation("reserveError").'</a>';
 
         }
 
@@ -10378,18 +10731,18 @@ class bookshowTest extends clientAuth {
         if(in_array($data_error['messageCode'],$this->getHotelCodeSpecialError())){
 
             if($data_error['messageCode']=='Err0111006' ||  $data_error['messageCode']=='BK-426' ){
-                return  ' اعتبار کافی نیست';
+                return  functions::Xmlinformation("InsufficientCredit");
             }elseif($data_error['messageCode']=='Bk-406' || $data_error['messageCode']=='HotelReserve-406' ) {
-                return ' خطای درخواست تکراری';
+                return functions::Xmlinformation("DuplicateErrorRequest");
             }elseif($data_error['messageCode']=='Bk-400' || $data_error['messageCode']=='HotelReserve-400'){
-                return  'خطای درخواست اشتباه';
+                return  functions::Xmlinformation("BadRequestError");
             }elseif($data_error['messageCode']=='ERROR113'){
-                return  'خطای تکرار درخواست';
+                return  functions::Xmlinformation("DuplicateRequestError");
             }else{
-                return 'خطای پروایدر';
+                return functions::Xmlinformation("providerError");
             }
         }else{
-            return 'خطای پروایدر';
+            return functions::Xmlinformation("providerError");
         }
     }
 

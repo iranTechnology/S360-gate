@@ -701,20 +701,21 @@ function internalHotelSearchDetails() {
             },
          })
       }
-      let generateMap = function(latitude, longitude, mapDiv = 'mapDiv') {
-         if (typeof L === 'undefined') {
-            console.error('Leaflet library (L) is not loaded.');
-            return;
-         }
-         map = L.map(mapDiv).setView([latitude, longitude], 16)
-         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: 'Map data &copy; <a href="https://www.iran-tech.com/">Iran Technology</a> contributors',
-            // maxZoom: 18,
-            // minZoom: 11,
-         }).addTo(map)
-         marker = L.marker([latitude, longitude]).addTo(map)
 
-      }
+          let generateMap = function(latitude, longitude, mapDiv = 'mapDiv') {
+              if (typeof L === 'undefined') {
+                  console.error('Leaflet library (L) is not loaded.');
+                  return;
+              }
+              map = L.map(mapDiv).setView([latitude, longitude], 16)
+              L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: 'Map data &copy; <a href="https://www.iran-tech.com/">Iran Technology</a> contributors',
+                  // maxZoom: 18,
+                  // minZoom: 11,
+              }).addTo(map)
+              marker = L.marker([latitude, longitude]).addTo(map)
+
+          }
       let generateHtmlForSearchHotel = function(data, parseJson) {
 
 
@@ -792,8 +793,8 @@ function internalHotelSearchDetails() {
                 </svg> `;
                if (window.innerWidth < 576) {
                   galleryHtml += `
-                       <span></span>
-        ${useXmltag('NasimBeheshtGallery')}
+                       <span>${value.Pictures.length}</span>
+        ${useXmltag('moreImage')}
                `;
                } else {
                   galleryHtml += `

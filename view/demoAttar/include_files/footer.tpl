@@ -78,40 +78,30 @@
                                 </h3>
                                 <ul>
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">
+                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/flight-attar">
                                             بلیط
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/eghamat">
+                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/Residence-attar">
                                             اقامت
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">
+                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/tour-attar">
                                             تور
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/entertainment">
+                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/entertainment-attar">
                                             تفریحات
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/Europcar">
+                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/Europcar-attar">
                                             خودرو
                                         </a>
                                     </li>
-{*                                    <li>*}
-{*                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/package">*}
-{*                                            پرواز + هتل*}
-{*                                        </a>*}
-{*                                    </li>*}
-{*                                    <li>*}
-{*                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/insurance">*}
-{*                                            بیمه*}
-{*                                        </a>*}
-{*                                    </li>*}
                                 </ul>
                             </div>
                         </div>
@@ -122,7 +112,7 @@
                                 </h3>
                                 <ul>
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/authenticate">
+                                        <a href="{$smarty.const.ROOT_ADDRESS}/club">
                                             باشگاه مشتریان
                                         </a>
                                     </li>

@@ -200,7 +200,7 @@
     cursor: pointer;
 }
 .other .item .icon {
-    background: #b61b1b40;
+    background: #fd320a54;
     padding: 10px;
     height: 50px;
     width: 50px;
@@ -1098,7 +1098,7 @@
 }
 
 .box-airline-img-tour img {
-    width: 68px !important;
+    width: 45px !important;
 }
 
 .tour-item-link:hover {
@@ -1170,7 +1170,7 @@
 
 .parent-title-new-social i {
     font-size: 34px;
-    color: #b71c1c;
+    color: var(--mainColor);
 }
 
 .title-new-social {

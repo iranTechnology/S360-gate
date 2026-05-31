@@ -6,7 +6,6 @@
                 <div class="nav-header">
                     <a class="nav-brand" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
                         <img alt="{$obj->Title_head()}" class="__logo_class__ logo-img" src="project_files/images/logo.png"/>
-                        <span class="respect">بر مدار احترام</span>
                         <div class='bg-img-logo'></div>
                     </a>
                 </div>
@@ -51,7 +50,7 @@
                         <li>
                             <a href="javascript:">مسافران</a>
                             <ul class="nav-dropdown nav-submenu">
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/authenticate">باشگاه مسافران</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/club">باشگاه مسافران</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/vote">نظرسنجی</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">انتقادات و پیشنهادات</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/pay">پرداخت آنلاین</a></li>
@@ -100,13 +99,13 @@
                 <div class="parent-btn-header">
                     <a class="__phone_class__ button btn-phone btn-style" href="tel:{$smarty.const.CLIENT_PHONE}">
                         <span>{$smarty.const.CLIENT_PHONE}</span>
-                        <i class="fa-light fa-phone my-phone"></i>
+                        <i class="fa-regular fa-phone my-phone"></i>
                     </a>
 
                     <a class="__login_register_class__ button btn-user btn-style {if $obj_main_page->isLogin()}show-box-login-js main-navigation__button2{else}main-navigation__button1{/if}"
                        href="{if $obj_main_page->isLogin()}javascript:{else}{$smarty.const.ROOT_ADDRESS}/authenticate{/if}">
                         <span>{include file="../../include/signIn/topBarName.tpl"}</span>
-                        <i class="fa-light fa-user my-user"></i>
+                        <i class="fa-regular fa-user my-user"></i>
                     </a>
                     <div class="main-navigation__sub-menu2 arrow-up show-content-box-login-js" style="display: none">
                         {include file="../../include/signIn/topBar.tpl"}
@@ -115,7 +114,7 @@
 
                         پیگیری خرید
 
-                        <i class="fa-light fa-memo-circle-check"></i>
+                        <i class="fa-regular fa-memo-circle-check"></i>
                     </a>
                 </div>
                 <div class="nav-toggle"></div>

@@ -20,6 +20,24 @@
     font-style: normal
 }
 
+:root {
+    --fontFamilyfontFamily: 'yekanbakhmedium';
+    --fontFamilyBold: "iranbold";
+    --fontFamilyBold2: "yekanbakhBold";
+    --fontTitle: 'iranbold';
+    --rounded: 16px;
+    --mainColor: #c50021;
+    --secondColor: #000;
+    --hoverColor: #000;
+    --transition: all .3s;
+}
+
+.main-navigation__sub-menu2 {
+    right: unset !important;
+    left: 60px;
+    top: 100% !important;
+}
+
 .box_button_header {
     display: flex;
     gap: 10px;
@@ -31,11 +49,11 @@
 }
 
 .button_header {
-    border: 1px solid #c50021;
+    border: 1px solid var(--mainColor);
     padding: 10px 17px;
     border-radius: 999px;
-    background: #c50021;
-    font-family: "yekanbakhBold";
+    background: var(--mainColor);
+    font-family: var(--fontFamilyBold2);
     color: #fff;
     font-size: 14px;
     transition: all .3s;
@@ -49,12 +67,35 @@
 }
 
 .fixicone:hover {
-    color: #8d8d8d
+    color: var(--secondColor);
 }
 
 .button_header:hover {
-    background: #f1f1f1;
-    color: #666
+    background: var(--secondColor);
+    color: #fff;
+    border-color: var(--secondColor);
+}
+
+.my-breadcrumbs:has(+ .banner-slider-display) {
+    left: 0;
+    position: absolute !important;
+    top: 110px !important;
+}
+
+.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item a ,
+.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item h1,
+.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item.active h1 {
+    color: #fff !important;
+    font-size: 15px !important;
+}
+
+.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item + .breadcrumb-item::before {
+    content: '\f053' !important;
+    color: #fff;
+    font-family: "Font Awesome 6 Pro", "FontAwesome", sans-serif;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
 }
 
 .header_area {
@@ -70,7 +111,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    height: 95px
+    padding: 10px 0;
 }
 
 .nav-menus-wrapper {
@@ -96,9 +137,9 @@
     justify-content: center;
     align-items: center;
     padding: 7px;
-    border: 1px solid #c50021;
+    border: 1px solid var(--mainColor);
     border-radius: 999px;
-    background: #c50021;
+    background: var(--mainColor);
     color: #666;
     font-size: 14px;
     transition: all .3s;
@@ -189,8 +230,8 @@
 }
 
 .nav-menu > li:hover > a, .nav-menu > li:hover > a > .submenu-indicator > svg {
-    color: #c50021;
-    fill: #c50021
+    color: var(--mainColor);
+    fill: var(--mainColor)
 }
 
 .nav-menu > li > a {
@@ -206,7 +247,7 @@
     font-size: 16px;
     padding: 15px;
     height: 95px;
-    font-family: "yekanbakhBold"
+    font-family: var(--fontFamilyBold2)
 }
 
 .navigation-portrait .nav-menu > li > a {
@@ -301,7 +342,7 @@
     text-decoration: none;
     font-size: 13px;
     color: #555;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     text-align: right;
     display: flex;
     justify-content: space-between;
@@ -312,7 +353,7 @@
 }
 
 .nav-dropdown > li.focus > a, .nav-dropdown > li:hover > a {
-    background: #c50021;
+    background: var(--mainColor);
     color: #fff !important
 }
 
@@ -420,7 +461,7 @@
 }
 
 .text-nav-brand h1 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #fff;
     font-size: 1.3rem;
     padding: 0;
@@ -428,7 +469,7 @@
 }
 
 .text-nav-brand h2 {
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     color: #fff;
     font-size: 12px;
     padding: 0;
@@ -507,7 +548,6 @@
     #navbar {
         position: static;
         border-bottom: none;
-        border-top: 1px solid #bfbfc5
     }
 
     .nav-dropdown > li {
@@ -518,7 +558,6 @@
         width: 42px;
         height: 42px;
         padding: 0;
-        border-radius: 16px !important
     }
 
     .logIn svg {
@@ -528,7 +567,7 @@
     }
 
     .logIn:hover {
-        background: #c50021
+        background: var(--mainColor)
     }
 
     .logIn > i {
@@ -607,7 +646,7 @@
 .text-logo-footer h4 {
     color: #000;
     font-size: 18px;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     margin-bottom: 0
 }
 
@@ -635,7 +674,7 @@
 }
 
 .child-item-footer a:hover {
-    color: #c50021;
+    color: var(--mainColor);
     text-decoration: none
 }
 
@@ -659,7 +698,7 @@
 
 .footer-icon a:hover {
     text-decoration: none;
-    color: #c50021
+    color: var(--mainColor)
 }
 
 .footer_instagram:hover {
@@ -672,7 +711,7 @@
 
 .box-item-footer h3 {
     color: #333;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     margin-bottom: 27px;
     font-size: 23px
 }
@@ -695,7 +734,7 @@
 }
 
 .box-item-footer ul li a:hover {
-    color: #c50021;
+    color: var(--mainColor);
     text-decoration: none
 }
 
@@ -732,18 +771,18 @@
 }
 
 .last_text a {
-    color: #666;
+    color: #fff;
     transition: all .3s
 }
 
 .last_text p {
     margin: 0;
-    color: #333;
+    color: #fff;
     margin-right: 3px
 }
 
 .last_text a:hover {
-    color: #c50021;
+    color: var(--mainColor);
     text-decoration: none
 }
 
@@ -754,7 +793,7 @@
     font-size: 14px;
     padding: 10px 0;
     align-items: center;
-    background: #ececec
+    background: var(--secondColor);
 }
 
 .footer-gisoo {
@@ -769,7 +808,7 @@
 
 .parent-namad h3 {
     color: #333;
-    font-family: "yekanbakhBold";
+    font-family: var(--fontFamilyBold2);
     margin-bottom: 27px;
     font-size: 23px
 }
@@ -784,7 +823,7 @@
     bottom: 30px;
     position: fixed;
     right: 20px;
-    color: #c50021;
+    color: var(--mainColor);
     animation: bounce 3000ms infinite
 }
 

@@ -39,10 +39,6 @@
     {/if}
 
 
-    <title>ferdosi</title>
-
-
-
 
     <base href="{$smarty.const.CLIENT_DOMAIN}"/>
 <link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>

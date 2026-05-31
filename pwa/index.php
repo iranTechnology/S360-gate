@@ -43,10 +43,7 @@ if (!Session::IsLogin() && isset($_COOKIE['Login']) && $_COOKIE['Login'] == 'suc
   }
 </style>
 <body dir='<?php if(SOFTWARE_LANG == 'fa') echo 'rtl'; else  echo 'ltr' ;?>'>
-<script
-        src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
-        crossorigin="anonymous"></script>
+<script src="view/client/assets/all-js/jquery-3.4.1.min.js"></script>
 <script src="<?php echo SERVER_HTTP . CLIENT_DOMAIN?>/gds/pwa/bootstrap.bundle.js"></script>
 
 <script src="<?php echo SERVER_HTTP.CLIENT_DOMAIN?>/gds/pwa/javascript.js"></script>
