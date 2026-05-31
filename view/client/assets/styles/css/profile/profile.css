@@ -304,14 +304,66 @@ body > .select2-container {
 .details_box .details_box_footer a:hover, .details_box .details_box_footer button:hover {
     background: rgba(68, 68, 68, .2666666667)
 }
+/* ============================= */
+/* Refund Button Colors */
+/* ============================= */
 
-.details_box .details_box_footer .recovery-btn {
-    border: 1px solid var(--mainColor);
-    color: var(--mainColor)
+.recovery-btn{
+    background-color: #e53935;
+    border-color: #e53935;
+    color: #fff;
 }
 
-.details_box .details_box_footer .recovery-btn:hover {
-    background: rgba(214, 214, 214, .22)
+.recovery-btn:hover{
+    background-color: #c62828;
+    border-color: #c62828;
+}
+
+.refund-closed-btn{
+    background-color: #ff9800;
+    border-color: #ff9800;
+    color: #fff;
+}
+
+.refund-closed-btn:hover{
+    background-color: #e68900;
+    border-color: #e68900;
+}
+
+.refund-pending-btn{
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #000;
+}
+
+.refund-pending-btn:hover{
+    background-color: #e0a800;
+    border-color: #e0a800;
+}
+/* ============================= */
+/* Refund Buttons Override */
+/* ============================= */
+
+.details_box .details_box_footer .recovery-btn{
+    background-color: #e53935 !important;
+    border-color: #e53935 !important;
+    color: #fff !important;
+}
+
+.details_box .details_box_footer .recovery-btn:hover{
+    background-color: #c62828 !important;
+}
+
+.details_box .details_box_footer .refund-closed-btn{
+    background-color: #ff9800 !important;
+    border-color: #ff9800 !important;
+    color: #fff !important;
+}
+
+.details_box .details_box_footer .refund-pending-btn{
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #000 !important;
 }
 
 .reserves_card .reserves_header {

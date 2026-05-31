@@ -1,5 +1,10 @@
 <?php
 
+//error_reporting(1);
+//error_reporting(E_ALL | E_STRICT);
+//@ini_set('display_errors', 1);
+//@ini_set('display_errors', 'on');
+
 class functions {
 
 
@@ -19,8 +24,8 @@ class functions {
         $apiAddress = '';
         $isTest     = self::isTestServer();
         $apiAddress = 'http://safar360.com/Core/V-1/';
-        if ( $isTest ) {//local
 
+        if ( $isTest ) {//local
 //            $apiAddress = 'http://safar360.com/CoreTestDeveloper/V-1/';
             $apiAddress = 'http://192.168.1.100/CoreTestDeveloper/V-1/';
         }
@@ -343,13 +348,11 @@ class functions {
                                  PaymentStatus = 'success'
                                  ".$command_FactorNumber."
                              ";
-        $charge = $admin->ConectDbClient($sql_charge, $id, "Select", "", "", "");
-        $TotalCharge=0;
+              $charge = $admin->ConectDbClient($sql_charge, $id, "Select", "", "", "");
+              $TotalCharge=0;
               $total_buy=0;
-        if($charge){
-
-
-        $total_charge = $charge['total_charge'];
+              if($charge){
+                 $total_charge = $charge['total_charge'];
 
                  $sql_buy = "SELECT SUM(Price) AS total_buy 
                              FROM transaction_tb 
@@ -361,11 +364,11 @@ class functions {
                                   )
                                   ".$command_FactorNumber."
                              ";
-        $buy = $admin->ConectDbClient($sql_buy, $id, "Select", "", "", "");
-        $total_buy = $buy['total_buy'];
+                 $buy = $admin->ConectDbClient($sql_buy, $id, "Select", "", "", "");
+                 $total_buy = $buy['total_buy'];
 
-        $TotalCharge = $total_charge - $total_buy;
-        }
+                 $TotalCharge = $total_charge - $total_buy;
+              }
         }//end else $numberFactor
         return $TotalCharge;
     }
@@ -7456,8 +7459,7 @@ class functions {
     #region info_train_client
 
     public static function checkIncreasePrice( $newPrice, $OldPrice, $type, $currencyCode, $flightType, $direction ) {
-
-
+       
         $direction           = ( $direction == 'dept' ) ? self::Xmlinformation( 'routewent' ) : self::Xmlinformation( 'Wayback' );
         $changePrice         = intval( $newPrice ) - intval( $OldPrice );
         $changePriceCurrency = self::CurrencyCalculate( $changePrice, $currencyCode );
@@ -9233,7 +9235,7 @@ class functions {
      * @return bool
      */
     public static function isTestServer( $host = '' ) {
-        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir');
+        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir','localhost');
         $res     = false;
         if ( ! empty( $host ) ) {
             if ( is_array( $host ) ) {
@@ -10467,7 +10469,7 @@ class functions {
      *
      * @return array
      */
-    public static function separateFiles( $file_name ) {
+    public static function separateFiles($file_name) {
         $file_indexes = array(
             'name',
             'type',
@@ -10475,7 +10477,8 @@ class functions {
             'error',
             'size',
         );
-        $file         = array();
+
+        $file = array();
 
         // اگر فقط یک فایل آپلود شده است
         if (!is_array($_FILES[$file_name]['name'])) {
@@ -10486,9 +10489,9 @@ class functions {
         }
 
         // اگر چند فایل آپلود شده است
-        for ( $j = 0; $j < count( $_FILES[ $file_name ]['name'] ); $j ++ ) {
-            foreach ( $file_indexes as $index ) {
-                $file[ $j ][ $index ] = $_FILES[ $file_name ][ $index ][ $j ];
+        for ($j = 0; $j < count($_FILES[$file_name]['name']); $j++) {
+            foreach ($file_indexes as $index) {
+                $file[$j][$index] = $_FILES[$file_name][$index][$j];
             }
         }
 
