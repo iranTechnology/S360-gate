@@ -5872,7 +5872,8 @@ class bookshowTest extends clientAuth {
                 $price_with_change = $this->getController('BookingHotelNew')->getPriceWithChange($hotel['factor_number']);
                 $DataAllPrice = '<span style="text-decoration: line-through;">'.  number_format($price_with_change) .'</span><br/>';
             }
-            $DataAllPrice .=  number_format( $hotel['total_price']);
+            $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_amount']);
+            functions::insertLog('$hotel: ' . json_encode($hotel) , '0abbasi');
             $DataAllPriceFor = $hotel['total_price'];
 
 

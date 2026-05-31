@@ -139,9 +139,8 @@
        <a href="https://www.aira.ir/">
         <img alt="namad-2" src="project_files/images/certificate3.png"/>
        </a>
-       <a href="javascript:">
-        <img alt="namad-2" src="project_files/images/enamad.png"/>
-       </a>
+       <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=736430&Code=uhZmdFb9N2EtNIxHYiKGLSXAxp1z1nyT'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=736430&Code=uhZmdFb9N2EtNIxHYiKGLSXAxp1z1nyT' alt='' style='cursor:pointer' code='uhZmdFb9N2EtNIxHYiKGLSXAxp1z1nyT'></a>
+
       </div>
      </div>
      <div class="item-footer item-footer7">
