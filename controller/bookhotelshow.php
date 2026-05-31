@@ -230,54 +230,69 @@ class bookhotelshow extends baseController
         //$tableName = (TYPE_ADMIN == '1') ? 'report_hotel_tb' : 'book_hotel_local_tb';
         $sql = "
             SELECT
-                   id,
-                passenger_name,
-                passenger_family,
-                city_name,
-                hotel_id,
-                hotel_name,
-                payment_date,
-                agency_name,
-                number_night,
-                start_date,
-                end_date,
-                factor_number,
-                type_application,
-                passenger_leader_room_fullName,
-                `status`,
-                request_number,
-                pnr,
-                payment_type,
-                tracking_code_bank,
-                total_price,
-                total_price_api,
-                client_id,
-                member_name,
-                passenger_leader_room_fullName,
-                member_mobile,
-                member_id,
-                agency_commission,
-                type_of_price_change,
-                agency_commission_price_type,
-                irantech_commission,
-                services_discount,
-                serviceTitle,
-                request_from,
-                manual_book,
-                hotel_payments_price,
-                dcu.discountCode,
-                dct.amount AS discount_amount
+                   {$tableName}.id,
+                {$tableName}.passenger_name,
+                {$tableName}.passenger_family,
+                {$tableName}.city_name,
+                {$tableName}.hotel_id,
+                {$tableName}.hotel_name,
+                {$tableName}.payment_date,
+                {$tableName}.agency_name,
+                {$tableName}.number_night,
+                {$tableName}.start_date,
+                {$tableName}.end_date,
+                {$tableName}.factor_number,
+                {$tableName}.type_application,
+                {$tableName}.passenger_leader_room_fullName,
+                {$tableName}.`status`,
+                {$tableName}.request_number,
+                {$tableName}.pnr,
+                {$tableName}.payment_type,
+                {$tableName}.tracking_code_bank,
+                {$tableName}.total_price,
+                {$tableName}.total_price_api,
+                {$tableName}.client_id,
+                {$tableName}.member_name,
+                {$tableName}.passenger_leader_room_fullName,
+                {$tableName}.member_mobile,
+                {$tableName}.member_id,
+                {$tableName}.agency_commission,
+                {$tableName}.type_of_price_change,
+                {$tableName}.agency_commission_price_type,
+                {$tableName}.irantech_commission,
+                {$tableName}.services_discount,
+                {$tableName}.serviceTitle,
+                {$tableName}.request_from,
+                {$tableName}.manual_book,
+                {$tableName}.hotel_payments_price,
+
+            ";
+
+        if (TYPE_ADMIN != '1') {
+            $sql .= "
+                MAX(dcu.discountCode) AS discountCode,
+                MAX(dct.amount) AS discount_amount,
+            ";
+        }
+
+        $sql .= "
                 {$FiledExtera}
             FROM
                 {$tableName}
-            
-            LEFT JOIN discount_codes_used_tb dcu
-            ON dcu.factorNumber = {$tableName}.factor_number
-            AND dcu.status = 'success'
+            ";
+
+        if (TYPE_ADMIN != '1') {
+            $sql .= "
+                        LEFT JOIN discount_codes_used_tb dcu
+ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
+       AND dcu.status = 'success'
 
             LEFT JOIN discount_codes_tb dct
             ON dct.code = dcu.discountCode
-            
+            ";
+        }
+
+        $sql .= "
             WHERE
                 1 = 1 
             ";
@@ -573,6 +588,9 @@ class bookhotelshow extends baseController
             $dataRows[$k]['type_application_fa'] = $type_application;
             $dataRows[$k]['manual_book'] = $book['manual_book'];
             $dataRows[$k]['status_fa'] = $status;
+            if (TYPE_ADMIN != '1') {
+                $dataRows[$k]['discount_amount'] = $book['discount_amount'];
+            }
 
 
             if (!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel == 'no')) {
