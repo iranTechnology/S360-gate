@@ -239,12 +239,7 @@
         {/if}
         <div class="Clr"></div>
         <div class="s-u-passenger-wrapper-change s-u-passenger-wrapper ">
-            <div class="d-flex gap-5 justify-content-center align-items-center wayticket_passengers-type-class bg-white" style="top:12px">
-                <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{$objDetail->SeatClass[$direction]}</a>
 
-                <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</a>
-
-            </div>
             <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color site-border-main-color">
             <i class="zmdi zmdi-account-box-mail zmdi-hc-fw mart10"></i> ##Invoice##
         </span>
@@ -256,7 +251,13 @@
                 <ul>
                     {foreach $FlightSelected as $direction=>$item}
                     {assign var="FlightisInternal" value=$item[0]['IsInternal']}
-                    <li class="s-u-result-item s-u-result-item-change blit-flight-passenger2 wow fadeInDown">
+                    <li class="s-u-result-item s-u-result-item-change blit-flight-passenger2 wow fadeInDown mt-0 mt-md-4">
+            <div class="d-flex gap-5 justify-content-center align-items-center wayticket_passengers-type-class bg-white">
+                <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{$objDetail->SeatClass[$direction]}</a>
+
+                <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</a>
+
+            </div>
                         <div class="blite-rafto-bargasht-text raft-blit"><span>##Onewayticket##</span></div>
                         {if $smarty.post.ZoneFlight eq 'Local'}
                         <div class="s-u-result-item-div s-u-result-item-div-change col-xs-3 col-sm-2 s-u-result-item-div-width">
@@ -274,6 +275,8 @@
 
                                 <div class="s-u-result-raft first-row-change">
                                     <div class="s-u-result-item-div-p right-Cell-change custom-width-100">
+                                            {assign var="NewFormatDate" value=$objFunctions->NewFormatDate({$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objDetail->Date[$direction])})}
+                                            {assign var="NewFormatDateArrival" value=$objFunctions->NewFormatDate({$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objFunctions->Date_arrival($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction], $objDetail->Time[$direction], $objFunctions->ConvertToMiladi($objDetail->Date[$direction], '/')))})}
 
                                         <div class="s-u-result-item-div s-u-result-items-div-change ">
                                             {*                                                <span class="iranB">{$item[0]['desti_airport_iata']}</span>*}
@@ -285,8 +288,10 @@
                                                      {/if}
                                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Departure_City')]}
                                                 </span>
-                                            <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">
-                                                    {$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$item[0]['date_flight'],'/','jalali',true)}</span>
+{*                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">*}
+{*                                                    {$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$item[0]['date_flight'],'/','jalali',true)}</span>*}
+                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$NewFormatDate['day']}
+                                                    ,{$NewFormatDate['date_now']}</span>
                                             <span class="s-u-bozorg "> {$objFunctions->format_hour($item[0]['time_flight'])}</span>
                                         </div>
 
@@ -300,7 +305,9 @@
                                                      {/if}
                                                 {$DestinationCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Departure_City')]}
                                                 </span>
-                                            <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">{$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objFunctions->Date_arrival($item[0]['origin_airport_iata'], $item[0]['desti_airport_iata'], $item[0]['time_flight'],$item[0]['date_flight']),'/')}</span>
+{*                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">{$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objFunctions->Date_arrival($item[0]['origin_airport_iata'], $item[0]['desti_airport_iata'], $item[0]['time_flight'],$item[0]['date_flight']),'/')}</span>*}
+                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$NewFormatDateArrival['day']}
+                                                    ,{$NewFormatDateArrival['date_now']}</span>
                                             <span class="s-u-bozorg "> {$objDetail->format_hour_arrival($item[0]['origin_airport_iata'], $item[0]['desti_airport_iata'], $item[0]['time_flight'])}</span>
                                             <!--<span class="s-u-result-item-date-format miladi">{$objDetail->DeptDateJalali[$direction]}</span>-->
                                         </div>
@@ -317,7 +324,20 @@
                                                 {*                                                        {$objDetail->LongTimeFlightHours($objDetail->OriginAirportIata[$direction],*}
                                                 {*                                                        $objDetail->DestiAirportIata[$direction])}*}
                                                 {*                                                    </i>*}
-                                                    <span class="displayib-change d-block flight-class--new"> {if $item[0]['flight_type'] eq 'charter'}##CharterType##{else}##SystemType##{/if}</span>
+                                                     <div class="s-u-bozorg s-u-bozorg-change font12 d-flex align-items-center justify-content-center Flighttime">
+{*                                                        <span>  ##Flighttime## :</span>*}
+                                                        <div class="d-flex">
+                                                            {assign var="flightHours" value=$objDetail->LongTimeFlightHours($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
+                                                            {assign var="flightMinutes" value=$objDetail->LongTimeFlightMinutes($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
+
+                                                            <i class="font-chanhe">
+                                                                {if $flightHours > 0}{$flightHours} ##Hour## {/if}
+                                                                {if $flightMinutes > 0}{$flightMinutes} ##Minutes##{/if}
+                                                            </i>
+
+                                                        </div>
+                                                    </div>
+                                                    <span class=" flight-class--new" style="display:none !important"> {if $item[0]['flight_type'] eq 'charter'}##CharterType##{else}##SystemType##{/if}</span>
                                                 </span>
                                         </div>
 
@@ -1686,7 +1706,7 @@
     </div>
 
 </div>
-{if $objFunctions->TypeUser($objSession->getUserId()) eq 'Counter' && $smarty.const.SOFTWARE_LANG == 'fa' && $Access[0]['enable'] eq 0 }
+{if $objFunctions->TypeUser($objSession->getUserId()) eq 'Counter' && $smarty.const.SOFTWARE_LANG == 'fa' && $Access[0]['enable'] eq 1 }
     <div class="return-bank-box">
         <div class="row">
             <div class="col-md-12 mr-auto ml-auto">

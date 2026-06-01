@@ -1,9 +1,6 @@
 <?php
 
-//error_reporting(1);
-//error_reporting(E_ALL | E_STRICT);
-//@ini_set('display_errors', 1);
-//@ini_set('display_errors', 'on');
+
 class airLineFineController extends clientAuth
 {
     protected $Model;
@@ -202,9 +199,9 @@ class airLineFineController extends clientAuth
                 $rangeKey = sprintf(
                     "%d-%d-%d-%d",
                     (int)$fp['from_day'],
-                    (int)$fp['from_hour'],
+                    (float)$fp['from_hour'],
                     (int)$fp['until_day'],
-                    (int)$fp['until_hour']
+                    (float)$fp['until_hour']
                 );
 
                 if (!isset($seen[$rangeKey])) {
@@ -304,64 +301,136 @@ class airLineFineController extends clientAuth
             $i += $colspan;
         }
 
-        return $merged;
+        return $merged; 
     }
-    private function buildFineRangeTitle($FD, $FH, $UD, $UH,$FIH,$lang)
+    private function buildFineRangeTitle($FD, $FH, $UD, $UH, $FIH, $lang)
     {
-        $FD = (int)$FD;
-        $FH = (int)$FH;
-        $UD = (int)$UD;
-        $UH = (int)$UH;
-        if($lang == 'fa'){
+        $FD  = (is_numeric($FD)  && $FD  > 0) ? (int)$FD   : null;
+        $FH  = (is_numeric($FH)  && $FH  > 0) ? (float)$FH : null;
+        $UD  = (is_numeric($UD)  && $UD  > 0) ? (int)$UD   : null;
+        $UH  = (is_numeric($UH)  && $UH  > 0) ? (float)$UH : null;
+        $FIH = (is_numeric($FIH) && $FIH > 0) ? (float)$FIH: null;
+
+        $FHFormatted  = $this->formatHourValue($FH, $lang, true);
+        $UHFormatted  = $this->formatHourValue($UH, $lang, true);
+        $FIHFormatted = $this->formatHourValue($FIH, $lang, false);
+
+        if ($lang == 'fa') {
+
             if ($FD && $FH && $UD && $UH) {
-                return "از ساعت {$FH} ، {$FD} روز قبل از پرواز تا ساعت {$UH} ، {$UD} روز قبل از پرواز";
-            } elseif ($FD && $FH && !$UD && $UH) {
-                return "از ساعت {$FH} ، {$FD} روز قبل از پرواز تا {$UH} ساعت قبل از پرواز";
-            } elseif (!$FD && $FH && !$UD && $UH) {
-                return "از {$FH} ساعت مانده به پرواز تا {$UH} ساعت مانده به پرواز";
-            } elseif (!$FD && !$FH && $UD && $UH) {
-                return "تا ساعت {$UH} ، {$UD} روز قبل از پرواز";
-            } elseif (!$FD && !$FH && !$UD && $UH) {
-                return "تا {$UH} ساعت مانده به پرواز";
-            } elseif ($FD && $FH && !$UD && !$UH) {
-                return "از ساعت {$FH} ، {$FD} روز مانده به پرواز";
-            } elseif (!$FD && $FH && !$UD && !$UH) {
-                return "از {$FH} ساعت مانده به پرواز به بعد";
-            } elseif (!$FD && !$FH && !$UD && !$UH && !$FIH) {
-                return "بعد از پرواز (no show)";
-            } elseif($FIH){
-                return "از صدور تا {$FIH} ساعت پس از صدور";
-            }else{
-                return "بازده نامشخص";
-            }
-        }
-        if($lang == 'en'){
-            if ($FD && $FH && $UD && $UH) {
-                return "From {$FH}:00, {$FD} days before the flight until {$UH}:00, {$UD} days before the flight";
-            } elseif ($FD && $FH && !$UD && $UH) {
-                return "From {$FH}:00, {$FD} days before the flight until {$UH} hours before the flight";
-            } elseif (!$FD && $FH && !$UD && $UH) {
-                return "From {$FH} hours before the flight until {$UH} hours before the flight";
-            } elseif (!$FD && !$FH && $UD && $UH) {
-                return "Until {$UH}:00, {$UD} days before the flight";
-            } elseif (!$FD && !$FH && !$UD && $UH) {
-                return "Until {$UH} hours before the flight";
-            } elseif ($FD && $FH && !$UD && !$UH) {
-                return "From {$FH}:00, {$FD} days before the flight";
-            } elseif (!$FD && $FH && !$UD && !$UH) {
-                return "From {$FH} hours before the flight onwards";
-            } elseif (!$FD && !$FH && !$UD && !$UH && $FIH) {
-                return "After the flight (No-show)";
-            }elseif($FIH){
-                return "From issuance until {$FIH} hours after issuance";
-            }
-            else{
-                return "Unknown range";
+                return "از {$FHFormatted} ، {$FD} روز قبل از پرواز تا {$UHFormatted} ، {$UD} روز قبل از پرواز";
             }
 
+            if ($FD && $FH && !$UD && $UH) {
+                return "از {$FHFormatted} ، {$FD} روز قبل از پرواز تا {$UHFormatted} مانده به پرواز";
+            }
+
+            if (!$FD && $FH && !$UD && $UH) {
+                return "از {$FHFormatted} مانده به پرواز تا {$UHFormatted} مانده به پرواز";
+            }
+
+            if (!$FD && !$FH && $UD && $UH) {
+                return "تا {$UHFormatted} ، {$UD} روز قبل از پرواز";
+            }
+
+            if (!$FD && !$FH && !$UD && $UH) {
+                return "تا {$UHFormatted} مانده به پرواز";
+            }
+
+            if ($FD && $FH && !$UD && !$UH) {
+                return "از {$FHFormatted} ، {$FD} روز قبل از پرواز";
+            }
+
+            if (!$FD && $FH && !$UD && !$UH) {
+                return "از {$FHFormatted} مانده به پرواز به بعد";
+            }
+
+            if (!$FD && !$FH && !$UD && !$UH && !$FIH) {
+                return "بعد از پرواز (No-show)";
+            }
+
+            if ($FIH) {
+                return "از زمان صدور تا {$FIHFormatted} پس از صدور";
+            }
+
+            return "بازه نامشخص";
+        }
+
+        if ($lang == 'en') {
+
+            if ($FD && $FH && $UD && $UH) {
+                return "From {$FHFormatted}, {$FD} days before the flight until {$UHFormatted}, {$UD} days before the flight";
+            }
+
+            if ($FD && $FH && !$UD && $UH) {
+                return "From {$FHFormatted}, {$FD} days before the flight until {$UHFormatted} before the flight";
+            }
+
+            if (!$FD && $FH && !$UD && $UH) {
+                return "From {$FHFormatted} before the flight until {$UHFormatted} before the flight";
+            }
+
+            if (!$FD && !$FH && $UD && $UH) {
+                return "Until {$UHFormatted}, {$UD} days before the flight";
+            }
+
+            if (!$FD && !$FH && !$UD && $UH) {
+                return "Until {$UHFormatted} before the flight";
+            }
+
+            if ($FD && $FH && !$UD && !$UH) {
+                return "From {$FHFormatted}, {$FD} days before the flight";
+            }
+
+            if (!$FD && $FH && !$UD && !$UH) {
+                return "From {$FHFormatted} onwards";
+            }
+
+            if (!$FD && !$FH && !$UD && !$UH && !$FIH) {
+                return "After the flight (No-show)";
+            }
+
+            if ($FIH) {
+                return "From issuance until {$FIHFormatted} after issuance";
+            }
+
+            return "Unknown range";
         }
 
         return false;
+    }
+    private function formatHourValue($value, $lang, $isClockContext = false)
+    {
+        if ($value === null || $value <= 0) {
+            return null;
+        }
+
+        $value = (float)$value;
+
+        // کمتر از یک ساعت ولی بزرگتر از صفر → دقیقه
+        if ($value < 1) {
+            $minutes = (int)round($value * 60);
+
+            return $lang == 'fa'
+                ? "{$minutes} دقیقه"
+                : "{$minutes} minutes";
+        }
+
+        // یک ساعت یا بیشتر
+        if ($isClockContext) {
+
+            if ($lang == 'fa') {
+                return "{$value} ساعت";
+            }
+
+            if ($lang == 'en') {
+                return "{$value}:00";
+            }
+        }
+
+        return $lang == 'fa'
+            ? "{$value} ساعت"
+            : "{$value} hours";
     }
     private function buildFineText($finePercentage,$description, $isTaxRefund = false,$lang)
     {
@@ -405,10 +474,10 @@ class airLineFineController extends clientAuth
     public function normalizeFineRow($row)
     {
         $FD = isset($row['from_day_date']) ? (int)$row['from_day_date'] : 0;
-        $FH = isset($row['from_hour_date']) ? (int)$row['from_hour_date'] : 0;
+        $FH = isset($row['from_hour_date']) ? (float)$row['from_hour_date'] : 0;
         $UD = isset($row['until_day_date']) ? (int)$row['until_day_date'] : 0;
-        $UH = isset($row['until_hour_date']) ? (int)$row['until_hour_date'] : 0;
-        $FIH = isset($row['from_issuance_hour']) ? (int)$row['from_issuance_hour'] : 0;
+        $UH = isset($row['until_hour_date']) ? (float)$row['until_hour_date'] : 0;
+        $FIH = isset($row['from_issuance_hour']) ? (float)$row['from_issuance_hour'] : 0;
         $FP = isset($row['fine_percentage']) ? $row['fine_percentage'] : null;
         $FDES = isset($row['fine_description']) ? (string)$row['fine_description'] : null;
         $FDESEN = isset($row['fine_description_en']) ? (string)$row['fine_description_en'] : null;

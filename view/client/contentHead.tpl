@@ -1,4 +1,6 @@
 <link href="assets/plugins/switchery/dist/switchery.min.css" rel="stylesheet"/>
+<link href="assets/plugins/camera/camera.min.css" rel="stylesheet"/>
+
 
 {if $smarty.const.SOFTWARE_LANG eq 'en' ||  $smarty.const.SOFTWARE_LANG eq 'ru'}
     {assign var='fileCss' value="/style-en"}
@@ -107,7 +109,6 @@ in_array($smarty.const.GDS_SWITCH ,[
     'listTourDates' ,
     'entertainmentPanel' ,
     'editTour' ,
-    'aboutUs',
     'rules',
     'loginAgency',
     'agencyProfile',
@@ -119,7 +120,6 @@ in_array($smarty.const.GDS_SWITCH ,[
     'agencyPassengers',
     'listTransactionUser',
     'reportCreditAgency',
-    'contactUs' ,
     'feedback'
     ])
 }
@@ -472,3 +472,4 @@ in_array($smarty.const.GDS_SWITCH,[
     <script type="text/javascript" src="assets/js/ckeditor/ckeditor.js"></script>
 
 {/if}
+

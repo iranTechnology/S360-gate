@@ -1542,9 +1542,9 @@ class accountcharge extends clientAuth
                     case 'buy_package':
                         $ReasonFa = 'پرواز+ هتل';
                         break;
-                        case 'buy_cip':
-                    $ReasonFa = 'تشریفات فرودگاه';
-                    break;
+                    case 'buy_cip':
+                        $ReasonFa = 'تشریفات فرودگاه';
+                        break;
                     default:
                         $ReasonFa = 'ـــــــ';
                         break;

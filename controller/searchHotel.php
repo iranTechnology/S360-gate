@@ -273,6 +273,10 @@ class searchHotel extends ApiHotelCore {
 
                 http_response_code(200);
                 $sql = "SELECT * FROM hotel_cities_tb WHERE id='{$param['city_id']}'";
+
+
+
+
                 $cityName = $this->modelBase->load($sql);
                 $dataSearch['city'] = strtoupper($cityName['city_name_en']);
                 $dataSearch['startDate'] = $param['startDate'];
@@ -304,16 +308,21 @@ class searchHotel extends ApiHotelCore {
 
                     $resultHotelApi = json_decode($this->hotelList($dataSearch), true);
 
-                    $this->requestNumber = $resultHotelApi['RequestNumber'];
 
                     if (!empty($resultHotelApi['Result'])) {
                         $t2 = microtime(true);
                         $final_result_search = $this->excludeWebserviceHotel($resultHotelApi['Result']);
                         foreach ($final_result_search as $Hotel) {
+                            
+
+                            functions::insertLog(json_encode($Hotel) , '000shojaee');
 
                             $index++;
                             // اضافه کردن کمسیون آژانس به قیمت اتاق
 //                        $Hotel['']
+
+
+//                            functions::insertLog(json_encode($Hotel) , '000shojaee');
 
                             $priceWithoutDiscount = $priceFieldWithoutDiscount = isset($Hotel['DailyMinPrice']) ? $Hotel['DailyMinPrice'] : $Hotel['MinPrice'];
                             $hotel_price = $price = $Hotel['MinPrice'] = isset($Hotel['MinPrice']) ? $Hotel['MinPrice'] : $Hotel['DailyMinPrice'];
@@ -365,8 +374,10 @@ class searchHotel extends ApiHotelCore {
 //								'price'       => $minPrice,
                             );
                             $pointClub      = functions::CalculatePoint( $paramPointClub );
+//                            $feature_pic = $Hotel['FeaturedPicture'];
                             $feature_pic = $Hotel['FeaturedPicture'];
 
+                            functions::insertLog(json_encode($Hotel),'0000shojaee');
 
                             $this->Hotel[$Hotel['HotelIndex'] . $index]['pic'] = $feature_pic;
 //						$this->Hotel[ $Hotel['HotelIndex'] . $index ]['ind']                 = $Hotel['ind'];

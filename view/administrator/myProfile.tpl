@@ -103,6 +103,11 @@
                     </div>
 
                     <div class="form-group col-sm-6">
+                        <label for="Favicon" class="control-label">آیکون</label>
+                        <input type="file" name="Favicon" id="Favicon" class="dropify" data-height="100"
+                               data-default-file="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/{$objPartner->list['Favicon']}" >
+                    </div>
+                    <div class="form-group col-sm-12">
                         <label for="Mobile" class="control-label">تلفن همراه  </label>
                         <br/>
                         <small class="blink_me">(تمام اطلاع رسانی های سیستم در موارد کنسلی پرواز ها ،تاخیر ها و تعجیل ها به این شماره موبایل پیامک میشود، لطفا دقت فرمائید، پیامک تبلیغاتی این شماره مسدود نباشد)</small>

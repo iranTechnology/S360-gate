@@ -68,8 +68,8 @@ const origin_multi_way = $('.origin-multi-way-js')
 // multi_way
 const numberOfMonthsResponsive = $(window).width() > 768 ? 2 : 1
 
-const nothing_found  = useXmltag("NothingFound");
-const threeLetters  = useXmltag("EnterThreeLettersAtLeast");
+// const nothing_found  = useXmltag("NothingFound");
+// const threeLetters  = useXmltag("EnterThreeLettersAtLeast");
 let Loading_flight = `<div class='flight_loading'>
                                 <ul>
                                   <li> 
@@ -103,7 +103,7 @@ let error_flight = `<div class='flight_error'>
                                   <li> 
                                     <div class='flight_error_div'>
                                         <i class="svg_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 351.1C218.8 351.1 192.8 369.5 177.6 385.9C168.7 395.6 153.5 396.3 143.7 387.3C133.1 378.3 133.4 363.1 142.4 353.4C164.3 329.5 202.3 303.1 256 303.1C309.7 303.1 347.7 329.5 369.6 353.4C378.6 363.1 378 378.3 368.3 387.3C358.5 396.3 343.3 395.6 334.4 385.9C319.2 369.5 293.2 351.1 256 351.1V351.1zM208.4 208C208.4 225.7 194 240 176.4 240C158.7 240 144.4 225.7 144.4 208C144.4 190.3 158.7 176 176.4 176C194 176 208.4 190.3 208.4 208zM304.4 208C304.4 190.3 318.7 176 336.4 176C354 176 368.4 190.3 368.4 208C368.4 225.7 354 240 336.4 240C318.7 240 304.4 225.7 304.4 208zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/></svg></i>
-                                        <div class='error-line'>${nothing_found} !</div>
+                                        <div class='error-line'>${useXmltag("NothingFound")} !</div>
                                     </div>
                                   </li>
                                 </ul>
@@ -113,7 +113,7 @@ let error_flight_text = `<div class='flight_error_text'>
                                   <li> 
                                     <div class='flight_error_text_div'>
                                         <i class="svg_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M81.84 152.1C77.43 156.9 71.21 159.8 64.63 159.1C58.05 160.2 51.69 157.6 47.03 152.1L7.029 112.1C-2.343 103.6-2.343 88.4 7.029 79.03C16.4 69.66 31.6 69.66 40.97 79.03L63.08 101.1L118.2 39.94C127 30.09 142.2 29.29 152.1 38.16C161.9 47.03 162.7 62.2 153.8 72.06L81.84 152.1zM81.84 312.1C77.43 316.9 71.21 319.8 64.63 319.1C58.05 320.2 51.69 317.6 47.03 312.1L7.029 272.1C-2.343 263.6-2.343 248.4 7.029 239C16.4 229.7 31.6 229.7 40.97 239L63.08 261.1L118.2 199.9C127 190.1 142.2 189.3 152.1 198.2C161.9 207 162.7 222.2 153.8 232.1L81.84 312.1zM216 120C202.7 120 192 109.3 192 96C192 82.75 202.7 72 216 72H488C501.3 72 512 82.75 512 96C512 109.3 501.3 120 488 120H216zM192 256C192 242.7 202.7 232 216 232H488C501.3 232 512 242.7 512 256C512 269.3 501.3 280 488 280H216C202.7 280 192 269.3 192 256zM160 416C160 402.7 170.7 392 184 392H488C501.3 392 512 402.7 512 416C512 429.3 501.3 440 488 440H184C170.7 440 160 429.3 160 416zM64 448C46.33 448 32 433.7 32 416C32 398.3 46.33 384 64 384C81.67 384 96 398.3 96 416C96 433.7 81.67 448 64 448z"/></svg></i>
-                                        <div class='error_text-line'>${threeLetters} !</div>
+                                        <div class='error_text-line'>${useXmltag("EnterThreeLettersAtLeast")} !</div>
                                     </div>
                                   </li>
                                 </ul>
@@ -532,7 +532,9 @@ function renderMobilePopularInternalCities(type) {
       is_group: true,
       limit: 12,
     }),
-
+    beforeSend: function () {
+      container.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
+    },
     success: function(response) {
       const popular_cities = response.data;
       let html_output = '';
@@ -660,7 +662,9 @@ function renderMobilePopularInternationalCities(type) {
       limit: 5,
       self_Db: true,
     }),
-
+    beforeSend: function () {
+      container.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
+    },
     success: function(response) {
       const popular_cities = response.data;
       let html_output = '';
@@ -759,6 +763,7 @@ function handleMobileSearch(keyword, type , search_type) {
   }
 
   if(search_type == 'internal'){
+
     $.ajax({
       type: 'POST',
       url: amadeusPath + 'ajax',
@@ -773,6 +778,7 @@ function handleMobileSearch(keyword, type , search_type) {
       }),
       beforeSend: function () {
         listContainer.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
+
       },
       success: function (response) {
 

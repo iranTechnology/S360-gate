@@ -1,4 +1,6 @@
 {load_presentation_object filename="partner" assign="objPartner"}
+{load_presentation_object filename='selectColor' assign='objColor'}
+{assign var='colorInfo' value=$objColor->InfoColor($smarty.get.id)}
 
 {if $smarty.get.id !=""}
     <style>
@@ -175,7 +177,7 @@
                             <input type="text" class="form-control" id="UrlRuls" name="UrlRuls"
                                    placeholder="لینک قوانین  را وارد نمائید" value="{$objPartner->list['UrlRuls']}">
                         </div>
-                        <div class="form-group col-sm-12">
+                        <div class="form-group col-sm-6">
                             <label for="isIframe" class="control-label">این مشتری آیفریم است ؟ </label>
                             <select name="isIframe" id="isIframe" class="form-control">
                                 <option value="">انتخاب کنید</option>
@@ -183,7 +185,15 @@
                                 <option value="0" {if $objPartner->list['isIframe'] == 0} selected {/if}>خیر</option>
                             </select>
                         </div>
-
+                    <div class="form-group col-sm-6">
+                        <label for="default_lang_admin" class="control-label">زبان پیش فرض بخش ادمین </label>
+                        <select name="default_lang_admin" id="default_lang_admin" class="form-control">
+                            <option value="fa" {if {$objPartner->list['default_lang_admin']} eq 'fa'}selected="selected"{/if}>فارسی</option>
+                            <option value="ar" {if {$objPartner->list['default_lang_admin']} eq 'ar'}selected="selected"{/if}>عربی</option>
+                            <option value="en" {if {$objPartner->list['default_lang_admin']} eq 'en'}selected="selected"{/if}>انگلیسی</option>
+                            <option value="ru" {if {$objPartner->list['default_lang_admin']} eq 'ru'}selected="selected"{/if}>روسی</option>
+                        </select>
+                    </div>
                     <div class="form-group col-sm-6">
                         <label for="default_language" class="control-label">زبان پیش فرض</label>
                         <select name="default_language" id="default_language" class="form-control">
@@ -220,7 +230,17 @@
                             <option value="0" {if {$objPartner->list['IsCurrency']} eq '0'}selected="selected"{/if}>ندارد</option>
                         </select>
                     </div>
-
+                    <div class="form-group col-sm-6">
+                        <label for="mainColor" class="control-label">رنگ اولیه</label>
+                        <input type="text" class="form-control" id="mainColor" name="mainColor"
+                               placeholder="رنگ اولیه را وارد نمائید" value="{$colorInfo['ColorMainBg']}">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="secondColor" class="control-label">رنگ ثانویه</label>
+                        <input type="text" class="form-control" id="secondColor" name="secondColor"
+                               placeholder="رنگ ثانویه را وارد نمائید" value="{$colorInfo['ColorMainBgHover']}">
+                    </div>
+{* 
                     <div class="form-group col-sm-6">
                         <label for="AllowSendSms" class="control-label"> اجازه ارسال پیامک </label>
                         <select name="AllowSendSms" id="AllowSendSms" class="form-control">
@@ -242,6 +262,7 @@
                         <input type="text" class="form-control" id="PasswordSms" name="PasswordSms"
                                placeholder="کلمه عبور پنل پیامک را وارد نمائید" value="{$objPartner->list['PasswordSms']}">
                     </div>
+                    *}
 
   {*                  <div class="form-group col-sm-6">
                         <label for="PasswordSms" class="control-label">درخواست تلفنی فعال شود </label>

@@ -706,6 +706,14 @@ Reservation
     width: 75% !important
 }
 
+.w-90 {
+    width: 90% !important
+}
+
+.w-95 {
+    width: 90% !important
+}
+
 .w-100 {
     width: 100% !important
 }
@@ -1180,6 +1188,9 @@ Reservation
 }
 .border-white {
     border-color: #fff!important;
+}
+.border-ccc{
+    border-color: #ccc !important;
 }
 .box-shadow-light{
     box-shadow: 0px 5px 5px 1px #00000036;

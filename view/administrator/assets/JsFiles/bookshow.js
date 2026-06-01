@@ -1221,6 +1221,8 @@ function fadeBG(Target) {
 function ExecuteHistoryFilter(target) {
     $('[data-info="filter-div"]').addClass('d-none').find('input, select, textarea').prop("disabled", true);
     $('[data-info="filter-div"][data-target="' + target + '"]').removeClass('d-none').find('input, select, textarea').prop("disabled", false);
+	if(LANG_PANEL_ADMIN!='fa')
+        $('#DivBoxSearch').addClass('d-none');
 
     var filterData = $('#FormExecuteHistoryFilter').serialize();
     var thiss = $("a[data-target=" + target + "][data-info=pendingBtn]");
@@ -1244,7 +1246,6 @@ function ExecuteHistoryFilter(target) {
         var DataTarget = thiss.attr('data-target');
         var bussy = false;
         var TableDivision = $('table' + TableName);
-
 
         if(bussy === false){
             bussy = true;
@@ -1356,8 +1357,68 @@ function ExecuteHistoryFilter(target) {
                         }
 
                         // فقط اگر جدول header داشت، DataTable را initialize کن
-                        if($('#mainTicketHistory thead tr th').length > 0){
+                       if($('#mainTicketHistory thead tr th').length > 0){
                             DataTableMaker('#mainTicketHistory');
+                            setTimeout(function () {
+                                var searchText = 'جستجو';
+                                var lengthText = 'نمایش';
+                                var resultText = 'نتیجه';
+                                var prevText = 'قبلی';
+                                var nextText = 'بعدی';
+                                var infoText = 'Showing _START_ to _END_ of _TOTAL_ entries';
+
+                                if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
+                                    if (xmlDoc.getElementsByTagName("Search").length > 0)
+                                        searchText = xmlDoc.getElementsByTagName("Search")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_RESULTTABLE2").length > 0)
+                                        lengthText = xmlDoc.getElementsByTagName("PA_CO_RESULTTABLE2")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("Result").length > 0)
+                                        resultText = xmlDoc.getElementsByTagName("Result")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_DT_PREVIOUS").length > 0)
+                                        prevText = xmlDoc.getElementsByTagName("PA_CO_DT_PREVIOUS")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_DT_NEXT").length > 0)
+                                        nextText = xmlDoc.getElementsByTagName("PA_CO_DT_NEXT")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_DT_INFO").length > 0)
+                                        infoText = xmlDoc.getElementsByTagName("PA_CO_DT_INFO")[0].textContent;
+                                }
+
+                                // ۱. جستجو (Search) - پاکسازی کامل برای حذف کلمه Search انگلیسی
+                                var $searchLabel = $('#mainTicketHistory_filter label');
+                                var $searchInput = $searchLabel.find('input').first();
+                                $searchLabel.empty().append(document.createTextNode(searchText + ' ')).append($searchInput);
+
+                                // ۲. تعداد نمایش (Length) - پاکسازی کامل برای حذف کلمه Show انگلیسی
+                                var $lenLabel = $('#mainTicketHistory_length label');
+                                var $lenSelect = $lenLabel.find('select').first();
+                                $lenLabel.empty().append(document.createTextNode(lengthText + ' ')).append($lenSelect).append(document.createTextNode(' ' + resultText));
+
+                                // ۳. آمار پایین جدول (Info) - جایگزینی متن Showing... با متن XML
+                                var $infoDiv = $('#mainTicketHistory_info');
+                                if ($infoDiv.length > 0) {
+                                    // چون DataTable خودش اعداد را جایگزین کرده، ما باید فرمت کلی را از XML بگیریم
+                                    // اما برای اینکه کار راحت شود، فقط اگر متن انگلیسی بود آن را با متن درست جایگزین می‌کنیم
+                                    var currentInfo = $infoDiv.text();
+                                    // اگر دیتاتیبل قبلاً اعداد را چیده، ما فقط متن را جایگزین می‌کنیم
+                                    // راه ساده‌تر: تنظیم مستقیم متن info از روی مقادیر موجود
+                                    var table = $('#mainTicketHistory').DataTable();
+                                    var pageInfo = table.page.info();
+                                    var finalInfo = infoText
+                                        .replace('_START_', pageInfo.start + 1)
+                                        .replace('_END_', pageInfo.end)
+                                        .replace('_TOTAL_', pageInfo.recordsTotal);
+                                    $infoDiv.text(finalInfo);
+                                }
+
+                                // ۴. دکمه‌های قبلی و بعدی (Pagination)
+                                $('#mainTicketHistory_previous').text(prevText);
+                                $('#mainTicketHistory_next').text(nextText);
+
+                            }, 200); // زمان را کمی بیشتر کردیم (200ms) تا مطمئن شویم جدول کاملاً رندر شده
                         }
                         $(".popoverBox").popover({trigger: "hover"});
                         $('[data-toggle="tooltip"]').tooltip();
@@ -1374,7 +1435,18 @@ function ExecuteHistoryFilter(target) {
                         fadeBG($('.HotTag'));
 
                     } else {
-                        TableDivision.html('موردی یافت نشد');
+                  		 var Result='موردی یافت نشد';
+                        // بررسی وجود xmlDoc و نبود خطا در پارس کردن
+                        if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
+                            var tags = xmlDoc.getElementsByTagName("NothingFound");
+
+                            // چک کردن اینکه آیا تگ در فایل XML اصلا وجود دارد؟
+                            if (tags.length > 0) {
+                                Result = tags[0].textContent;
+                            }
+                        }
+                        TableDivision.html(Result);   
+
                         bussy = false;
                         $('.table-responsive').removeClass('running ld-over'); // حذف loading overlay
                         $('.table-responsive .ld.ld-ring.ld-spin').hide(); // مخفی کردن loader داخل table
@@ -1390,7 +1462,16 @@ function ExecuteHistoryFilter(target) {
                 error: function(xhr, status, error) {
                     console.error('AJAX Error:', status, error);
                     console.error('Response:', xhr.responseText);
-                    TableDivision.html('خطا در دریافت اطلاعات: ' + error);
+                     var ResultCom='خطا در دریافت اطلاعات';
+                    if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
+                        var tags = xmlDoc.getElementsByTagName("ReceiveInfoError");
+
+                        // چک کردن اینکه آیا تگ در فایل XML اصلا وجود دارد؟
+                        if (tags.length > 0) {
+                            ResultCom = tags[0].textContent;
+                        }
+                    }
+                    TableDivision.html(ResultCom+ ' : ' + error);
                     bussy = false;
                     $('.table-responsive').removeClass('running ld-over'); // حذف loading overlay
                     $('.table-responsive .ld.ld-ring.ld-spin').hide(); // مخفی کردن loader داخل table
@@ -1406,6 +1487,408 @@ function ExecuteHistoryFilter(target) {
             CheckReserveHotelTab();
         }
     }
+}
+// تابع تبدیل تاریخ میلادی به شمسی با فرمت (yyyy-mm-dd) - نسخه دستی بدون وابستگی
+function convertToJalali(miladiDate) {
+    try {
+        let date = new Date(miladiDate);
+
+        // اگر تاریخ نامعتبر است
+        if(isNaN(date.getTime())) {
+            console.error('تاریخ نامعتبر:', miladiDate);
+            return '';
+        }
+
+        // الگوریتم تبدیل میلادی به شمسی (دستی)
+        function gregorianToJalali(gy, gm, gd) {
+            var g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+            var jy = (gy <= 1600) ? 0 : 979;
+            gy -= (gy <= 1600) ? 621 : 1600;
+            var gy2 = (gm > 2) ? (gy + 1) : gy;
+            var days = (365 * gy) + (parseInt((gy + 3) / 4)) - (parseInt((gy + 99) / 100)) + (parseInt((gy + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
+            jy += 33 * (parseInt(days / 12053));
+            days %= 12053;
+            jy += 4 * (parseInt(days / 1461));
+            days %= 1461;
+            if (days > 365) {
+                jy += parseInt((days - 1) / 365);
+                days = (days - 1) % 365;
+            }
+            var jm = (days < 186) ? 1 + parseInt(days / 31) : 7 + parseInt((days - 186) / 30);
+            var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+            return [jy, jm, jd];
+        }
+
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+
+        let jalali = gregorianToJalali(year, month, day);
+
+        let jy = jalali[0];
+        let jm = String(jalali[1]).padStart(2, '0');
+        let jd = String(jalali[2]).padStart(2, '0');
+
+        let result = jy + '-' + jm + '-' + jd;
+
+
+        return result;
+    } catch(e) {
+        console.error('خطا در تبدیل تاریخ:', e);
+        return '';
+    }
+}
+
+// تابع محاسبه تاریخ میلادی بر اساس تعداد روز قبل
+function getDateByDaysAgo(days) {
+    let date = new Date();
+    date.setDate(date.getDate() - days);
+
+    let year = date.getFullYear();
+    let month = String(date.getMonth() + 1).padStart(2, '0');
+    let day = String(date.getDate()).padStart(2, '0');
+
+
+
+    return date;
+}
+
+// دریافت تاریخ شمسی به صورت رشته (فرمت: yyyy-mm-dd)
+function getJalaliDateByDaysAgo(days) {
+    let miladiDate = getDateByDaysAgo(days);
+    let result = convertToJalali(miladiDate);
+
+    return result;
+}
+
+// دریافت تاریخ شمسی به صورت نمایشی (فرمت: dd/mm/yyyy)
+function getJalaliDisplayDateByDaysAgo(days) {
+    let miladiDate = getDateByDaysAgo(days);
+    try {
+        function gregorianToJalali(gy, gm, gd) {
+            var g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+            var jy = (gy <= 1600) ? 0 : 979;
+            gy -= (gy <= 1600) ? 621 : 1600;
+            var gy2 = (gm > 2) ? (gy + 1) : gy;
+            var days = (365 * gy) + (parseInt((gy + 3) / 4)) - (parseInt((gy + 99) / 100)) + (parseInt((gy + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
+            jy += 33 * (parseInt(days / 12053));
+            days %= 12053;
+            jy += 4 * (parseInt(days / 1461));
+            days %= 1461;
+            if (days > 365) {
+                jy += parseInt((days - 1) / 365);
+                days = (days - 1) % 365;
+            }
+            var jm = (days < 186) ? 1 + parseInt(days / 31) : 7 + parseInt((days - 186) / 30);
+            var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+            return [jy, jm, jd];
+        }
+
+        let date = new Date(miladiDate);
+        let jalali = gregorianToJalali(date.getFullYear(), date.getMonth() + 1, date.getDate());
+
+        let day = String(jalali[2]).padStart(2, '0');
+        let month = String(jalali[1]).padStart(2, '0');
+        let year = jalali[0];
+
+        return  year +  '/' + month + '/' + day ;
+    } catch(e) {
+        console.error('خطا در تبدیل تاریخ نمایشی:', e);
+        return '';
+    }
+}
+
+// مقداردهی اولیه تاریخ‌ها در دکمه‌ها (نمایشی)
+function initializeDates() {
+    const todayElement = document.getElementById('todayDate');
+    if (todayElement) todayElement.innerText = getJalaliDisplayDateByDaysAgo(0);
+
+    const yesterdayElement = document.getElementById('yesterdayDate');
+    if (yesterdayElement) yesterdayElement.innerText = getJalaliDisplayDateByDaysAgo(1);
+
+    const twoDaysElement = document.getElementById('twoDaysAgoDate');
+    if (twoDaysElement) twoDaysElement.innerText = getJalaliDisplayDateByDaysAgo(2);
+
+    const threeDaysElement = document.getElementById('threeDaysAgoDate');
+    if (threeDaysElement) threeDaysElement.innerText = getJalaliDisplayDateByDaysAgo(3);
+}
+// function initializeDates() {
+//     document.getElementById('todayDate').innerText = getJalaliDisplayDateByDaysAgo(0);
+//     document.getElementById('yesterdayDate').innerText = getJalaliDisplayDateByDaysAgo(1);
+//     document.getElementById('twoDaysAgoDate').innerText = getJalaliDisplayDateByDaysAgo(2);
+//     document.getElementById('threeDaysAgoDate').innerText = getJalaliDisplayDateByDaysAgo(3);
+// }
+
+// مدیریت کلاس active روی دکمه‌های تاریخ
+function setActiveDateButton(activeButton) {
+    // حذف کلاس active از همه دکمه‌های تاریخ
+    const allDateButtons = document.querySelectorAll('.btn-filter-date');
+    if(allDateButtons){
+        allDateButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+    }
+    activeButton.classList.add('active');
+
+}
+// فیلتر بر اساس تعداد روز قبل
+function filterByDays(days , event) {
+    if (event && event.currentTarget) {
+        setActiveDateButton(event.currentTarget);
+    } else {
+        // اگر event ارسال نشد، با استفاده از selector دکمه مناسب را پیدا کن
+        const buttons = document.querySelectorAll('.btn-filter-date');
+        buttons.forEach(button => {
+            const onclickAttr = button.getAttribute('onclick');
+            if (onclickAttr && onclickAttr.includes(`filterByDays(${days})`)) {
+                setActiveDateButton(button);
+            }
+        });
+    }
+
+    // دریافت تاریخ شمسی (فرمت: yyyy-mm-dd) برای ارسال به سرور
+    let jalaliDate = getJalaliDateByDaysAgo(days);
+
+
+
+    if(jalaliDate === '' || !jalaliDate) {
+        console.error('تاریخ شمسی محاسبه نشد!');
+        return false;
+    }
+
+    // تنظیم تاریخ شمسی در فیلدهای جستجو
+    if ($('#date_of').length) {
+        $('#date_of').val(jalaliDate);
+    } else {
+        console.error('عنصر date_of یافت نشد!');
+    }
+
+    if ($('#to_date').length) {
+        $('#to_date').val(jalaliDate);
+    } else {
+        console.error('عنصر to_date یافت نشد!');
+    }
+
+    // بررسی مجدد مقادیر قبل از ارسال
+    let checkDateFrom = $('#date_of').val();
+    let checkDateTo = $('#to_date').val();
+
+    // اجرای جستجو
+    RenderBookingsAsCards('allTicket');
+}
+
+// تابع اصلاح شده RenderBookingsAsCards
+function RenderBookingsAsCards(target) {
+    // گرفتن تاریخ شمسی از فیلدها
+    let dateFrom = $('#date_of').val() || '';
+    let dateTo = $('#to_date').val() || '';
+
+
+    // ساخت filterData با تاریخ شمسی
+    let filterData = {
+        date_of: dateFrom,
+        to_date: dateTo
+    };
+
+
+    var thiss = $("a[data-target=" + target + "][data-info=pendingBtn]");
+
+    if(thiss.hasClass('running')){
+        return false;
+    } else {
+        $('a[data-info="pendingBtn"]').prop('disabled', true);
+        $('a[data-info="pendingBtn"]').addClass('btn-default');
+
+        thiss.removeClass(function (index, className) {
+            return (className.match(/(^|\s)btn-\S+/g) || []).join(' ');
+        });
+        thiss.addClass('running btn-warning');
+        thiss.find('.ld').show();
+
+        $('#bookingsContainer').html('<div class="card-loading"><div class="card-spinner"></div><p>در حال بارگذاری...</p></div>');
+
+        $.ajax({
+            url: amadeusPath + 'user_ajax.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                filter: $.param(filterData),
+                target: target,
+                flag: 'mainTicketHistory'
+            },
+            success: function (data) {
+
+                console.log(data)
+
+                thiss.removeClass('running btn-warning').addClass('btn-success');
+
+                var JsonData = data;
+
+                if(JsonData !== null && typeof JsonData === 'object' && (typeof JsonData.new !== "undefined" || typeof JsonData.data !== "undefined")){
+
+                    let allBookings = [];
+
+                    if(typeof JsonData.new !== "undefined"){
+                        allBookings = allBookings.concat(JsonData.new);
+                    }
+                    if(typeof JsonData.data !== "undefined"){
+                        allBookings = allBookings.concat(JsonData.data);
+                    }
+
+                    // ========== اضافه کردن مرتب سازی DESC ==========
+                    allBookings.sort(function(a, b) {
+                        // مقایسه رشته‌ای به صورت نزولی (ساعت بزرگتر اول بیاد)
+                        if (a.request_time > b.request_time) return -1;
+                        if (a.request_time < b.request_time) return 1;
+                        return 0;
+                    });
+                    // =============================================
+                    renderBookingCardsSimple(allBookings);
+
+                    let resultText = allBookings.length + ' رکورد';
+
+                    if (dateFrom && dateTo && dateFrom !== dateTo) {
+                        resultText += ' - بازه: ' + dateFrom + ' تا ' + dateTo;
+                    } else if (dateFrom) {
+                        let parts = dateFrom.split('-');
+                        if (parts.length === 3) {
+                            resultText += ' - تاریخ: ' + parts[2] + '/' + parts[1] + '/' + parts[0];
+                        } else {
+                            resultText += ' - تاریخ: ' + dateFrom;
+                        }
+                    }
+
+                    thiss.removeClass('running btn-warning');
+                    $('a[data-info="pendingBtn"]').find('.ld.ld-ring.ld-spin').hide();
+                    $('a[data-info="pendingBtn"]').prop('disabled', false);
+                    $('a[data-info="pendingBtn"]').removeClass('running');
+
+                } else {
+                    $('#bookingsContainer').html('<div class="card-empty">📭 موردی یافت نشد</div>');
+                    // if ($('#resultCount').length) $('#resultCount').text('0 رکورد');
+                    thiss.removeClass('running').addClass('btn-danger');
+                    $('a[data-info="pendingBtn"]').find('.ld.ld-ring.ld-spin').hide();
+                    $('a[data-info="pendingBtn"]').prop('disabled', false);
+                    $('a[data-info="pendingBtn"]').removeClass('running');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+                $('#bookingsContainer').html('<div class="card-empty">⚠️ خطا در دریافت اطلاعات</div>');
+                thiss.removeClass('running').addClass('btn-danger');
+                $('a[data-info="pendingBtn"]').find('.ld.ld-ring.ld-spin').hide();
+                $('a[data-info="pendingBtn"]').prop('disabled', false);
+                $('a[data-info="pendingBtn"]').removeClass('running');
+            }
+        });
+    }
+}
+
+// اجرا هنگام بارگذاری صفحه
+$(document).ready(function() {
+    initializeDates();
+
+
+});
+// تابع رندر کارت‌ها بدون عملیات
+function renderBookingCardsSimple(bookings) {
+    const container = $('#bookingsContainer');
+
+    if (!bookings || bookings.length === 0) {
+        container.html('<div class="card-empty">📭 هیچ رکوردی یافت نشد</div>');
+        return;
+    }
+
+    let html = '';
+
+    for (let i = 0; i < bookings.length; i++) {
+        const booking = bookings[i];
+        const serviceType = Object.values(booking['service_type'])[0] || 'سایر';
+        const serviceClass = getCardServiceClass(serviceType);
+        const serviceIcon = getCardServiceIcon(serviceType);
+        const statusClass = getCardStatusClass(Object.values(booking['status'])[0]);
+
+        html += `
+            <div class="booking-card">
+                <div class="card-header-service ${serviceClass}">
+                    <div>
+                        <span class="service-icon">${serviceIcon}</span>
+                        <span class="service-name">${serviceType}</span>
+                    </div>
+                     <div class="">
+                        <div class="info-value">
+                            <span class="status-badge ${statusClass}">${escapeCardHtml(booking['status'][0] || 'نامشخص')}</span>
+                        </div>
+                    </div>
+                    <span class="card-badge">#${booking['id'] || (i+1)}</span>
+                </div>
+                
+                <div class="card-body">
+                    <div class="info-item">
+                        <div class="info-label">شماره درخواست:</div>
+                        <div class="info-value"><strong>${escapeCardHtml(booking['request_number'] || '-')}</strong> (${escapeCardHtml(booking['request_time'] || '-')})</div>
+                    </div>
+             
+                    
+                    <div class="info-item">
+                        <div class="info-label">نام مسافر:</div>
+                        <div class="info-value">${escapeCardHtml(booking['passenger_name'] || '-')}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">نام آژانس:</div>
+                        <div class="info-value">${escapeCardHtml(booking['agency_name'] || '-')}</div>
+                    </div>
+                    
+                   
+                    
+                   
+                </div>
+            </div>
+        `;
+    }
+
+    container.html(html);
+}
+// توابع کمکی
+function getCardServiceClass(serviceType) {
+    const map = {
+        'پرواز': 'service-flight',
+        'هتل': 'service-hotel',
+        'بیمه': 'service-insurance',
+        'اتوبوس': 'service-bus'
+    };
+    return map[serviceType] || 'service-other';
+}
+
+function getCardServiceIcon(serviceType) {
+    const map = {
+        'پرواز': '<i class="fa fa-plane"></i>',
+        'هتل': '<i class="fa fa-hotel"></i>',
+        'بیمه': '<i class="fa fa-shield-alt"></i>',
+        'اتوبوس': '<i class="fa fa-bus"></i>'
+    };
+    return map[serviceType] || '<i class="fa fa-ticket-alt"></i>';
+}
+function getCardStatusClass(status) {
+
+    if (!status) return 'status-secondary';
+    if (status.includes('قطعی') || status.includes('موفق') || status.includes('اختصاصی')) return 'status-success';
+    if (status.includes('پیش') || status.includes('در حال')) return 'status-warning';
+    if (status.includes('کنسل')) return 'status-secondary';
+    if (status.includes('درگاه')) return 'status-info';
+    if (status.includes('خطا')) return 'status-danger';
+    return 'status-secondary';
+}
+
+function escapeCardHtml(text) {
+    if (!text) return '';
+    return String(text).replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    });
 }
 
 function ExecuteExcelFilter(thiss) {

@@ -75,6 +75,7 @@ class bookTicketFlight extends apiLocal
      */
     public function bookFlight($dataBooked) {
 
+
         functions::insertLog('params==>' . json_encode($dataBooked, 256), 'newBookTicket');
 
         $factorNumber = $dataBooked['factorNumber'];

@@ -1048,6 +1048,32 @@ class user extends baseController
         return $this->Model->select($sql);
     }
 
+      private function getInfoTicketCipCancel($RequestNumber)
+    {
+        $sql = "SELECT  "
+            . " book.id,"
+            . " book.passenger_name, "
+            . " book.passenger_family, "
+            . " book.passenger_birthday, "
+            . " book.passenger_national_code, "
+            . " book.passportNumber, "
+            . " book.factor_number, "
+            . " book.member_id , "
+            . " book.request_number , "
+            . " book.passenger_age , "
+            . " ( SELECT Cancel.NationalCode  FROM cancel_ticket_tb As Cancel"
+            . " INNER JOIN cancel_ticket_details_tb AS detailCancel ON detailCancel.id=Cancel.IdDetail"
+            . " WHERE (book.passenger_national_code=Cancel.NationalCode OR book.passportNumber=Cancel.NationalCode)  AND detailCancel.RequestNumber='{$RequestNumber}') AS NationalCode,"
+            . " ( SELECT detailCancel.`Status` FROM cancel_ticket_tb As Cancel"
+            . "  INNER JOIN cancel_ticket_details_tb AS detailCancel ON detailCancel.id=Cancel.IdDetail"
+            . "  WHERE (book.passenger_national_code=Cancel.NationalCode OR book.passportNumber=Cancel.NationalCode) AND detailCancel.RequestNumber='{$RequestNumber}') AS Status"
+            . " FROM book_cip_tb AS book "
+            . " WHERE book.request_number ='{$RequestNumber}'"
+            . " GROUP BY book.id ";
+        return $this->Model->select($sql);
+    }
+
+
     public function getInfoTicketBusCancel($order_code,$ClientId=CLIENT_ID)
     {
         $sql = "SELECT
@@ -1563,7 +1589,7 @@ class user extends baseController
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
-            $sql .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
+            $sql .= " AND b.creation_date_int >= '{$date_of_int}' AND b.creation_date_int  <= '{$date_to_int}'";
 
         }
 
@@ -1583,6 +1609,7 @@ class user extends baseController
                 ORDER BY b.creation_date_int DESC ";
 //echo $sql; die();
         $bookList = $Model->select($sql);
+        var_dump($bookList);
         $result = [] ;
         foreach ($bookList as  $key => $item ){
             $amount_buy = functions::CalculateDiscount($item['request_number']) ;
@@ -1700,11 +1727,11 @@ class user extends baseController
 
                 }
                 //list button 1401/12/02
-               if (
-                   $item['StatusCancel'] !== 'close' && $item['StatusCancel'] !== 'ConfirmCancel' &&
-                   $item['StatusCancel'] !== '' && $item['StatusCancel'] !== NULL
-               )
-               {
+                if (
+                    $item['StatusCancel'] !== 'close' && $item['StatusCancel'] !== 'ConfirmCancel' &&
+                    $item['StatusCancel'] !== '' && $item['StatusCancel'] !== NULL
+                )
+                {
                     // درخواست در حال بررسی
                     $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('OsafarRefundPending')->__toString(),
@@ -1712,23 +1739,23 @@ class user extends baseController
                         'function' => ""
                     ];
 
-                   $result[$key]['button_list'][] =
-                       [
-                           'title' => functions::Xmlinformation('OsafarRefundother')->__toString(),
-                           'type' => 'button',
-                           'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
+                    $result[$key]['button_list'][] =
+                        [
+                            'title' => functions::Xmlinformation('OsafarRefundother')->__toString(),
+                            'type' => 'button',
+                            'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
 
-                       ];
+                        ];
 
                 }
-               else if ($item['StatusCancel'] === 'ConfirmCancel') {
+                else if ($item['StatusCancel'] === 'ConfirmCancel') {
                     $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
                         'type' => 'link',
                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] . '&cancelStatus=confirm',
                     ];
                 }
-               else if ($item['StatusCancel'] === '' || $item['StatusCancel'] === NULL || $item['StatusCancel'] === 'close') {
+                else if ($item['StatusCancel'] === '' || $item['StatusCancel'] === NULL || $item['StatusCancel'] === 'close') {
 
                     $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
@@ -1768,8 +1795,7 @@ class user extends baseController
                     if ($item['StatusCancel'] === 'close') {
                         $result[$key]['button_list'][] = [
                             'title' => functions::Xmlinformation('OsafarRefundClosed')->__toString(),
-                            'type' => 'button',
-                            'function' => ""
+                            'type' => 'text'
                         ];
                     }
 
@@ -1785,7 +1811,9 @@ class user extends baseController
                     }
                 }
 
-               if(CLIENT_ID == 271){
+
+
+                if(CLIENT_ID == 271){
                     $reservation_proof = Load::controller('reservationProof');
                     $file = $reservation_proof->getProofFile($item['request_number'] , 'Flight');
                     if($file && isset($file) && !empty($file)) {
@@ -1803,7 +1831,7 @@ class user extends baseController
 
             }
         }
-      return $result;
+        return $result;
     }
 
     public function getBookAllExclusiveTour($param = '') {
@@ -1875,8 +1903,9 @@ class user extends baseController
         $bookList = $Model->select($sql);
 
         $result = [];
-
         foreach ($bookList as $key => $item) {
+
+
             $price_final = number_format($item['total_price']);
             //        ============================EntertainmentData============================
             $entertainmentSection = null;
@@ -1988,18 +2017,18 @@ class user extends baseController
             $bookList[$key]['reservationProofVersa'] = '';
             if ($item['successfull'] == 'book') {
                 if ($item['IsInternal'] == '0') {
-                    $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=ticketForeign&id=' . $item['request_number'];
+                    $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=ticketForeign&id=' . $item['factor_number'];
                 } else {
-                    if (SOFTWARE_LANG != 'fa') {
-                        $pagefinal = 'bookshow';
-                    }else{
-                        $pagefinal = 'parvazBookingLocal';
-                    }
-                    $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&lang=fa';
+//                    if (SOFTWARE_LANG != 'fa') {
+//                        $pagefinal = 'bookshow';
+//                    }else{
+//                        $pagefinal = 'parvazBookingLocal';
+//                    }
+                    $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&lang=fa';
                     $type_member = functions::TypeUser(session::getUserId());
                     if ($type_member == 'Counter') {
-                        /*$bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
-                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&cash=no';*/
+                 $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'].'&lang=fa';
+                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
                     }
 
                 }
@@ -2012,12 +2041,12 @@ class user extends baseController
                     [
                         'title' => functions::Xmlinformation('GetTicket')->__toString(),
                         'type' => 'link',
-//                        'link' => $bookList[$key]['dataBtnPdf'],
+                        'link' => $bookList[$key]['dataBtnPdf'],
                     ],
                     [
                         'title' => functions::Xmlinformation('Viewbill')->__toString(),
                         'type' => 'link',
-//                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
+                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
                     ],
 
                 ];
@@ -2878,7 +2907,7 @@ class user extends baseController
                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/gds/pdf&target=BookingHotelLocal&id=' . $item['factor_number'] .'&cancelStatus=confirm',
                     ];
             }else{
-                if ($item['status'] != 'Requested' && $item['status'] != 'RequestRejected' && $item['status'] != 'RequestAccepted') {
+                if ($item['status'] != 'Requested' && $item['status'] != 'RequestRejected' && $item['status'] != 'RequestAccepted' && $item['status'] != 'Cancelled') {
                     $result[$key]['button_list'][] =
                         [
                             'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
@@ -3441,10 +3470,8 @@ class user extends baseController
 
         $conditions = '';
         $conditions_flight = '';
-        $factor_number_flight= '';
         $factor_number = '';
         $passenger_factor_num = '';
-        $successfull_flight= '';
         $successfull = '';
         $status = '';
         if (!empty($param['startDate']) && !empty($param['endDate'])) {
@@ -3453,25 +3480,22 @@ class user extends baseController
             $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
             $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             $conditions .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
-            $conditions_flight .= " AND b.creation_date_int >= '{$date_of_int}' AND b.creation_date_int  <= '{$date_to_int}'";
+            $conditions_flight .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
         }
         if (isset($param['factorNumber']) && $param['factorNumber'] != '') {
-            $factor_number_flight .= " AND (b.factor_number  LIKE '%{$param['factorNumber']}%') ";
             $factor_number .= " AND (factor_number  LIKE '%{$param['factorNumber']}%') ";
             $passenger_factor_num .= " AND (passenger_factor_num LIKE '%{$param['factorNumber']}%') ";
         }
         if (isset($param['statusGroup']) && $param['statusGroup'] == 'cancel') {
-            $successfull_flight .= " AND b.successfull = 'book' AND b.request_cancel = 'confirm' ";
             $successfull .= " AND successfull = 'book' AND request_cancel = 'confirm' ";
             $status .= " AND (status = 'book' || status = 'BookedSuccessfully') AND request_cancel = 'confirm'  ";
         }elseif(isset($param['statusGroup']) && $param['statusGroup'] != '') {
-            $successfull_flight .= " AND (b.successfull LIKE '%{$param['statusGroup']}%') ";
             $successfull .= " AND (successfull LIKE '%{$param['statusGroup']}%') ";
             $status .= " AND (status LIKE '%{$param['statusGroup']}%') ";
         }
         if (isset($param['passengerName']) && $param['passengerName'] != '') {
             $conditions .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%'))";
-            $conditions_flight .= " AND ((concat(b.passenger_name,' ',b.passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(b.passenger_name,b.passenger_family) LIKE '%{$param['passengerName']}%') OR (concat(b.passenger_name_en,' ',b.passenger_family_en) LIKE '%{$param['passengerName']}%')  OR (concat(b.passenger_name_en,b.passenger_family_en) LIKE '%{$param['passengerName']}%'))";
+            $conditions_flight .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%') OR (concat(passenger_name_en,' ',passenger_family_en) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name_en,passenger_family_en) LIKE '%{$param['passengerName']}%'))";
         }
         $tableNameFlight = 'book_local_tb';
         $tableNameBus = 'book_bus_tb';
@@ -3488,20 +3512,20 @@ class user extends baseController
         $sql = "
             SELECT
                  'flight' As moduleTitle,                 
-                  b.passenger_name AS passenger_name,
-                  b.passenger_family AS passenger_family,     
-                  b.passenger_name_en AS passenger_name_en,
-                  b.passenger_family_en AS passenger_family_en,
+                  passenger_name AS passenger_name,
+                  passenger_family AS passenger_family,     
+                  passenger_name_en AS passenger_name_en,
+                  passenger_family_en AS passenger_family_en,
                   '' AS passenger_serviceRequestType,
                   '' AS passenger_serviceName,
                   '' AS passenger_serviceCityName,
                   '' AS passenger_number,
-                  b.total_price AS total_price,
-                  b.factor_number AS factor_number,
+                  total_price AS total_price,
+                  factor_number AS factor_number,
                   '' AS entertainment_data_json,
-                  b.creation_date_int AS  creation_date_int,
-                  b.successfull AS statusBook, 
-                  b.request_cancel AS request_cancel, 
+                  creation_date_int AS  creation_date_int,
+                  successfull AS statusBook, 
+                  request_cancel AS request_cancel, 
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3532,14 +3556,14 @@ class user extends baseController
                   '' AS passengers_file_tour,    
                   '' AS passenger_factor_num,
                   '' AS order_code,
-                  b.request_number AS request_number,
-                  b.airline_name AS airline_name,
-                  b.time_flight AS time_flight,
-                  b.flight_type AS flight_type,
-                  b.date_flight AS date_flight,
-                  b.IsInternal AS IsInternal,
-                  b.flight_number AS flight_number,
-                  b.eticket_number AS eticket_number,
+                  request_number AS request_number,
+                  airline_name AS airline_name,
+                  time_flight AS time_flight,
+                  flight_type AS flight_type,
+                  date_flight AS date_flight,
+                  IsInternal AS IsInternal,
+                  flight_number AS flight_number,
+                  eticket_number AS eticket_number,
                   '' AS DateMove,
                   '' AS TimeMove,
                   '' AS BaseCompany,
@@ -3547,30 +3571,22 @@ class user extends baseController
                   '' AS chairs,
                   '' AS passenger_birthday_en,
                   '' AS passenger_birthday,
-                  b.origin_city AS origin_city,
-                  b.desti_city AS desti_city,
+                  origin_city AS origin_city,
+                  desti_city AS desti_city,
                   ''  AS ExitDate,
                   ''  AS ExitTime,
                   ''  AS CompanyName,
                   ''  AS WagonName,
-                  b.direction  AS direction,
+                  direction  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber,
-                  c.Status AS StatusCancel
+                  ''  AS TrainNumber
             FROM
-                {$tableNameFlight}  as b
-                 LEFT JOIN cancel_ticket_details_tb c 
-                    ON b.factor_number = c.FactorNumber
-                    AND c.RequestNumber = (
-                        SELECT MAX(c2.RequestNumber)
-                        FROM cancel_ticket_details_tb c2
-                        WHERE c2.FactorNumber = b.factor_number
-                    )
+                {$tableNameFlight}
             WHERE
-                b.member_id = '{$memberId}'
-                {$conditions_flight} {$factor_number_flight} {$successfull_flight}
+                member_id = '{$memberId}'
+                {$conditions_flight} {$factor_number} {$successfull}
             GROUP BY 
-                b.request_number 
+                request_number 
              UNION
             SELECT
                  'bus' As moduleTitle,
@@ -3641,8 +3657,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber,
-                  ''  AS StatusCancel
+                  ''  AS TrainNumber
             FROM
                 {$tableNameBus} 
             WHERE
@@ -3720,8 +3735,7 @@ class user extends baseController
                   WagonName  AS WagonName,
                   ''  AS direction,
                   TicketNumber  AS TicketNumber,
-                  TrainNumber  AS TrainNumber,
-                  ''  AS StatusCancel
+                  TrainNumber  AS TrainNumber
             FROM
                 {$tableNameTrain} 
             WHERE
@@ -3800,8 +3814,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber,
-                  ''  AS StatusCancel
+                  ''  AS TrainNumber
             FROM
                 {$tableNameGasht} 
             WHERE
@@ -3880,8 +3893,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber,
-                  ''  AS StatusCancel
+                  '' AS TrainNumber
             FROM
                 {$tableNameTour} 
             WHERE
@@ -3959,8 +3971,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber,
-                  ''  AS StatusCancel
+                  '' AS TrainNumber
             FROM
                 {$tableNameHotel} 
             WHERE
@@ -4038,8 +4049,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber,
-                  ''  AS StatusCancel
+                  '' AS TrainNumber
             FROM
                 {$tableNameInsurance} 
             WHERE
@@ -4118,8 +4128,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber,
-                  ''  AS StatusCancel
+                  '' AS TrainNumber
             FROM
                 {$tableNameVisa} 
             WHERE
@@ -4197,8 +4206,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber,
-                  ''  AS StatusCancel
+                  '' AS TrainNumber
             FROM
                 {$tableNameEntertainment} 
             WHERE
@@ -4277,8 +4285,7 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber,
-                  ''  AS StatusCancel
+                  '' AS TrainNumber
             FROM
                 {$tableNameEuropcar} 
             WHERE
@@ -4356,8 +4363,7 @@ class user extends baseController
               '' AS WagonName,
               '' AS direction,
               '' AS TicketNumber,
-              '' AS TrainNumber,
-              ''  AS StatusCancel
+              '' AS TrainNumber
         FROM {$tableNameExclusiveTour}
         WHERE member_id = '{$memberId}' AND request_number > '0'
         GROUP BY request_number
@@ -4494,6 +4500,15 @@ class user extends baseController
                         'value' =>  $bookList[$key]['price_final']
                     ]
                 ];
+                $type_member = functions::TypeUser(session::getUserId());
+                if ($type_member == 'Counter') {
+                    $result[$key]['info_list'][] = [
+                        'title' => functions::Xmlinformation('Action')->__toString(),
+                        'value' => '<button type="button" class="btn btn-info btn-sm" onclick="modalInfoDetails(event.currentTarget, \'' . $item['request_number'] . '\')">
+            <i class="fa fa-eye"></i>
+        </button>'
+                    ];
+                }
 
                 if ($item['statusBook'] == 'book') {
                     if ($item['IsInternal'] == '0') {
@@ -4505,7 +4520,7 @@ class user extends baseController
                             $pagefinal = 'parvazBookingLocal';
                         }
                         $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
-                        $type_member = functions::TypeUser(session::getUserId());
+
                         if ($type_member == 'Counter') {
                             $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
 
@@ -4514,8 +4529,6 @@ class user extends baseController
 
                     }
 
-
-                    /*
                     $result[$key]['button_list'] = [
                         [
                             'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
@@ -4560,95 +4573,6 @@ class user extends baseController
                                 ];
                         }
                     }
-*/
-
-                    //list button   1401/12/03
-                    if (
-                        $item['StatusCancel'] !== 'close' && $item['StatusCancel'] !== 'ConfirmCancel' &&
-                        $item['StatusCancel'] !== '' && $item['StatusCancel'] !== NULL
-                    )
-                    {
-                        // درخواست در حال بررسی
-                        $result[$key]['button_list'][] = [
-                            'title' => functions::Xmlinformation('OsafarRefundPending')->__toString(),
-                            'type' => 'button',
-                            'function' => ""
-                        ];
-
-                        $result[$key]['button_list'][] =
-                            [
-                                'title' => functions::Xmlinformation('OsafarRefundother')->__toString(),
-                                'type' => 'button',
-                                'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
-
-                            ];
-
-                    }
-                    else if ($item['StatusCancel'] === 'ConfirmCancel') {
-                        $result[$key]['button_list'][] = [
-                            'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
-                            'type' => 'link',
-                            'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] . '&cancelStatus=confirm',
-                        ];
-                    }
-                    else if ($item['StatusCancel'] === '' || $item['StatusCancel'] === NULL || $item['StatusCancel'] === 'close') {
-
-                        $result[$key]['button_list'][] = [
-                            'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
-                            'type' => 'button',
-                            'function' => "modalPassengerDetails(event.currentTarget, " . $item['factor_number'] . ",'flight')",
-                        ];
-
-                        $result[$key]['button_list'][] = [
-                            'title' => functions::Xmlinformation('GetTicket')->__toString(),
-                            'type' => 'link',
-                            'link' => $bookList[$key]['dataBtnPdf'],
-                        ];
-
-                        $result[$key]['button_list'][] = [
-                            'title' => functions::Xmlinformation('Viewbill')->__toString(),
-                            'type' => 'link',
-                            'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
-                        ];
-
-                        if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm') {//esterdad
-                            $result[$key]['button_list'][] =
-                                [
-                                    'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
-                                    'type' => 'link',
-                                    'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=parvazBookingLocal&id=' . $item['request_number'] . '&cancelStatus=confirm',
-                                ];
-                        } else {
-                            $result[$key]['button_list'][] =
-                                [
-                                    'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
-                                    'type' => 'button',
-                                    'function' => "ModalCancelUserProfile(event.currentTarget ,'flight' , '" . $item['request_number'] . "')",
-
-                                ];
-                        }
-
-                        if ($item['StatusCancel'] === 'close') {
-                            $result[$key]['button_list'][] = [
-                                'title' => functions::Xmlinformation('OsafarRefundClosed')->__toString(),
-                                'type' => 'button',
-                                'function' => ""
-                            ];
-                        }
-
-                        if ($item['successfull'] == 'book') {//bedone bilit
-                            if ($item['IsInternal'] != '0') {
-                                $result[$key]['button_list'][] =
-                                    [
-                                        'title' => functions::Xmlinformation('Freeticket')->__toString(),
-                                        'type' => 'link',
-                                        'link' => $bookList[$key]['dataBtnPdfFreeLink'],
-                                    ];
-                            }
-                        }
-                    }
-
-
                     if(CLIENT_ID == 271){
                         $reservation_proof = Load::controller('reservationProof');
                         $file = $reservation_proof->getProofFile($item['request_number'] , 'Flight');
@@ -5198,7 +5122,7 @@ class user extends baseController
                             'link' => ROOT_ADDRESS_WITHOUT_LANG . '/gds/pdf&target=BookingHotelLocal&id=' . $item['factor_number'] .'&cancelStatus=confirm',
                         ];
                 }else{
-                    if ($item['statusBook'] != 'Requested' && $item['statusBook'] != 'RequestRejected' && $item['statusBook'] != 'RequestAccepted'){
+                    if ($item['statusBook'] != 'Requested' && $item['statusBook'] != 'RequestRejected' && $item['statusBook'] != 'RequestAccepted' && $item['statusBook'] != 'Cancelled') {
                         $result[$key]['button_list'][] =
                             [
                                 'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
@@ -5524,6 +5448,7 @@ class user extends baseController
                 }
             }
             elseif ($item['moduleTitle'] == 'exclusivetour'){
+
                 //        ============================EntertainmentData============================
                 $entertainmentSection = null;
                 if (!empty($item['entertainment_data_json'])) {
@@ -5633,18 +5558,18 @@ class user extends baseController
                 $bookList[$key]['reservationProofVersa'] = '';
                 if ($item['statusBook'] == 'book') {
                     if ($item['IsInternal'] == '0') {
-                        $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=ticketForeign&id=' . $item['request_number'];
+                        $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=ticketForeign&id=' . $item['factor_number'];
                     } else {
-                        if (SOFTWARE_LANG != 'fa') {
-                            $pagefinal = 'bookshow';
-                        }else{
-                            $pagefinal = 'parvazBookingLocal';
-                        }
-                        $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&lang=fa';
+//                        if (SOFTWARE_LANG != 'fa') {
+//                            $pagefinal = 'bookshow';
+//                        }else{
+//                            $pagefinal = 'parvazBookingLocal';
+//                        }
+                        $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&lang=fa';
                         $type_member = functions::TypeUser(session::getUserId());
                         if ($type_member == 'Counter') {
-                            /*$bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
-                            $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&cash=no';*/
+                            $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'].'&lang=fa';
+                            $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
                         }
 
                     }
@@ -5657,7 +5582,7 @@ class user extends baseController
                         [
                             'title' => functions::Xmlinformation('GetTicket')->__toString(),
                             'type' => 'link',
-//                        'link' => $bookList[$key]['dataBtnPdf'],
+                        'link' => $bookList[$key]['dataBtnPdf'],
                         ],
                         [
                             'title' => functions::Xmlinformation('Viewbill')->__toString(),
@@ -5859,6 +5784,9 @@ class user extends baseController
     public function infoModalUserList($request_number, $type){
         if($type == 'flight') {
             $result =  $this->getInfoTicketFlightCancel($request_number);
+        }
+        if($type == 'cip'){
+             $result =  $this->getInfoTicketCipCancel($request_number);
         }
         return $result;
     }

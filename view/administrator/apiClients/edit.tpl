@@ -1,12 +1,10 @@
 {if $smarty.const.TYPE_ADMIN eq 1}
-
 {load_presentation_object filename="apiClients" assign="objapiClients"}
-
 {assign var="apiClient" value=$objapiClients->getApiClientById($smarty.get.id)}
-
-
+{load_presentation_object filename="clients" assign="objClients"}
+{assign var="listClient" value=$objClients->listClientsForApi()}
 <div class="container-fluid">
-    <div class="row bg-title">
+  <div class="row bg-title">
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
             <ol class="breadcrumb FloatRight">
 
@@ -49,10 +47,22 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
-                            <div class="form-group  pull-right">
+                        <div class="form-group col-sm-6">
+                            <label for="keyTabdol" class="control-label">نام آژانس</label>
+                            <select name="id_client" id="id_client" class="form-control input-sm select2" >
+                                <option value="299">تست کردن</option>
+                                <option value="">-------------</option>
+                                {assign var="idClientNow" value={$apiClient['clientId']}}
+                                {foreach $listClient as $client}
+
+                                    <option value="{$client.id}" data-type="international" {if $idClientNow==$client.id}selected{/if}>
+                                        {$client.AgencyName}
+                                    </option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
                                 <button type="submit" class="btn btn-primary">ارسال اطلاعات</button>
-                            </div>
                         </div>
                     </div>
                 </form>

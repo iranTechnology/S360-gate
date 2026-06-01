@@ -522,7 +522,7 @@ class reportBuyFromIt extends clientAuth
             ->where('Status', 1)
             ->openParentheses()   // successfull شرط
                 ->where('PriceDate', '2025-03-21 00:00:00','>=')//az sale 1404/01/01
-                ->orWhere('PriceDate', null)
+                ->orWhere('PriceDate', '')
             ->closeParentheses()
             ->whereIn('clientID', $ListClientId)
             ->orderby('FactorNumber')

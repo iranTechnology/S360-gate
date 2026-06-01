@@ -36,6 +36,7 @@ class bookingBusForeign extends clientAuth
     public function createPdfContent($factorNumber, $cash, $cancelStatus)
     {
         $function = Load::library('functions');
+        $subAgencyInfo = $this->getController('agency');
         $data = $this->getBookReportBusTicket($factorNumber);
         $find_name_en_Origin = $this->findNameEnByNameFa($data['OriginCity']);
         $find_name_en_destination = $this->findNameEnByNameFa($data['DestinationCity']);
@@ -52,6 +53,8 @@ class bookingBusForeign extends clientAuth
             /** @var agency $agencyController */
             $agencyController = Load::controller('agency');
             $agencyInfo = $agencyController->infoAgency($data['agency_id'],CLIENT_ID);
+            $getSubAgencyInfo = $subAgencyInfo->AgencyInfoByIdMember($data[0]['member_id']);
+            $subAgencyName = !empty($getSubAgencyInfo['name_en']) ? $getSubAgencyInfo['name_en'] : CLIENT_NAME;
             if($agencyInfo['hasSite'])
             {
                 $logo = ROOT_ADDRESS_WITHOUT_LANG . '/pic/agencyPartner/' .CLIENT_ID.'/logo/'. CLIENT_LOGO;
@@ -167,7 +170,7 @@ class bookingBusForeign extends clientAuth
             
             <table width="100%" align="center" cellpadding="0" cellspacing="0" class="rtl">
                 <tr>
-                    <td width="33%"><img src="' . $logo . '" height="100" /></td>
+                    <td width="33%"><img src="' . $logo . '" height="100" /><span>'. $subAgencyName . '</span></td>
                     <td width="34%" align="center" class="title">Bus ticket from ' . $data['OriginCity'] . ' to ' . $data['DestinationCity'] . '</td>
                     <td width="33%"></td>
                 </tr>
@@ -328,16 +331,17 @@ class bookingBusForeign extends clientAuth
                 ';
             }
 
-
+            $phone = !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : CLIENT_PHONE ;
+            $address =  !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : CLIENT_ADDRESS;
 
             $pdfContent .= '
             <div class="footer">
                 <table width="100%" align="center" cellpadding="0" cellspacing="0" class="rtl">
                     <tr>
-                        <td align="center" colspan="2"><p>Address: ' . CLIENT_ADDRESS . '</p></td>
+                        <td align="center" colspan="2"><p>Address: ' . $address . '</p></td>
                     </tr>
                     <tr>
-                        <td align="center"><p>Phone support: ' . CLIENT_PHONE . '</p></td>
+                        <td align="center"><p>Phone support: ' . $phone . '</p></td>
                         <td align="center"><p>Web site: ' . CLIENT_MAIN_DOMAIN . '</p></td>
                     </tr>
                 </table>

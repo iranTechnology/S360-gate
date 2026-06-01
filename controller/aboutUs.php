@@ -86,6 +86,8 @@ class aboutUs extends clientAuth {
             'language'=>$params['lang'],
             'video_link'=>$params['video_link'],
             'body'=>$params['body'],
+            'enamad_code'=>$params['enamad_code'],
+            'enamad_id'=>$params['enamad_id'],
             'about_title_customer_club'=>$params['about_title_customer_club'],
             'about_customer_club'=>$params['about_customer_club'],
             'updated_at'=>date('Y-m-d H:i:s', time()),

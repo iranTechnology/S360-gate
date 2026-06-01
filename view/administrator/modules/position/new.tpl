@@ -1,5 +1,3 @@
-
-
 <div data-name='service' class="bg-white d-flex flex-wrap rounded w-100 ">
     <div class='d-flex justify-content-between align-content-center flex-wrap w-100'>
         <h4 class='align-items-center d-flex flex-wrap font-bold gap-10 m-0 px-4 py-3'>

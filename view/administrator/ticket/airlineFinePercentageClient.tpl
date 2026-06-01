@@ -95,6 +95,34 @@
         border-bottom: none;
         margin-bottom: 0;
     }
+    .fine-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* مهم */
+    }
+
+    /* ستون ایرلاین */
+    .fine-table th:nth-child(1),
+    .fine-table td:nth-child(1) {
+        width: 63px;
+        min-width: 63px;
+        max-width: 70px;
+    }
+
+    /* ستون شناسه نرخی */
+    .fine-table th:nth-child(2),
+    .fine-table td:nth-child(2) {
+        width: 200px;
+        min-width: 198px;
+        max-width: 200px;
+    }
+
+    /* جلوگیری از شکستن ساختار با متن طولانی */
+    .fine-table td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+    }
 </style>
 
 

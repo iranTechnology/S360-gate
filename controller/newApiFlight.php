@@ -3948,11 +3948,19 @@ class newApiFlight extends clientAuth
                         'description' => $flight['Description'],
                         'seat_class' => (
                         ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'C4' || $flight['OutputRoutes'][0]['CabinType'] == 'C5' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? $seatClassBusinessText :
-                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R' || $flight['OutputRoutes'][0]['CabinType'] == 'CH' || $flight['OutputRoutes'][0]['CabinType'] == 'EP' || $flight['OutputRoutes'][0]['CabinType'] == 'PE') ? 'پریمیوم' : $seatClassEconomyText)
+                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'CH' || $flight['OutputRoutes'][0]['CabinType'] == 'EP' || $flight['OutputRoutes'][0]['CabinType'] == 'PE') ? 'پریمیوم' : $seatClassEconomyText)
                         ),
+//                        'seat_class' => (
+//                        ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'C4' || $flight['OutputRoutes'][0]['CabinType'] == 'C5' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? $seatClassBusinessText :
+//                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R' || $flight['OutputRoutes'][0]['CabinType'] == 'CH' || $flight['OutputRoutes'][0]['CabinType'] == 'EP' || $flight['OutputRoutes'][0]['CabinType'] == 'PE') ? 'پریمیوم' : $seatClassEconomyText)
+//                        ),
+//                        'seat_class_en' => (
+//                        ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? 'business' :
+//                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R') ? 'premium_economy' : 'economy')
+//                        ),
                         'seat_class_en' => (
                         ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? 'business' :
-                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R') ? 'premium_economy' : 'economy')
+                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P') ? 'premium_economy' : 'economy')
                         ),
                         'cabin_type' => $flight['OutputRoutes'][0]['CabinType'],
                         'capacity' => ($flight['Capacity'] > 10) ? 9 : $flight['Capacity'],
@@ -5003,6 +5011,17 @@ class newApiFlight extends clientAuth
         return functions::withError($data_lowest, 400, 'data not found');
     }
 
+    public function getProfile( $param ) {
+//        if ( $this->auth == 'True' ) {
+        $url =   "https://safar360.com/Core/V-1/Flight/getCredit/" . $param ;
+        $JsonArray = array();
+            $resultCredit = functions::curlExecution( $url, $JsonArray ,  array(
+                'Content-Type: application/json',
+            ) );
+            return $resultCredit;
+//        }
+//        return $this->showError( 'شما دسترسی لازم به این صفحه را ندارید', 403 );
+    }
 }
 
 

@@ -561,7 +561,7 @@
                                                     جریمه مشخص شد / منتظر تایید آژانس
 
                                                 </div>
-                                            {elseif $item.Status eq 'ConfirmClient' && !empty($item.IdPFE)}
+                                            {elseif  !empty($item.IdPFE)}
                                                 <div id="ConfirmClientStatus-{$item.id}"
                                                      class="btn btn-success-excel cursor-default"
                                                      disabled="disabled">

@@ -148,9 +148,8 @@
        <a href="https://www.aira.ir/">
         <img alt="namad-2" src="project_files/images/certificate3.png"/>
        </a>
-       <a href="javascript:">
-        <img alt="namad-2" src="project_files/images/enamad.png"/>
-       </a>
+       <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=58958&Code=vLIyznMqfR0LGspP6RKX'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=58958&Code=vLIyznMqfR0LGspP6RKX' alt='' style='cursor:pointer' code='vLIyznMqfR0LGspP6RKX'></a>
+
       </div>
      </div>
      <div class="item-footer item-footer7">
@@ -201,9 +200,7 @@
      <a href="https://www.aira.ir/">
       <img alt="namad-2" src="project_files/images/certificate3.png"/>
      </a>
-     <a href="javascript:">
-      <img alt="namad-2" src="project_files/images/enamad.png"/>
-     </a>
+     <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=58958&Code=vLIyznMqfR0LGspP6RKX'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=58958&Code=vLIyznMqfR0LGspP6RKX' alt='' style='cursor:pointer' code='vLIyznMqfR0LGspP6RKX'></a>
     </div>
     <div class="contactusmobile">
      <div class="d-flex email-mob">
