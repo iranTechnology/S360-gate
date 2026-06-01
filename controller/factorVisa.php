@@ -63,8 +63,6 @@ class factorVisa
     public function registerBooks($_POSTt)
     {
 
-
-
         if($this->check_exist_doubtful){
             $this->error = true;
             $this->errorMessage = functions::Xmlinformation('doubtCharacter');
@@ -191,12 +189,10 @@ class factorVisa
                         $data['passenger_name_en'] = $_POSTt["nameEnA" . $i];
                         $data['passenger_family'] = $_POSTt["familyFaA" . $i];
                         $data['passenger_family_en'] = $_POSTt["familyEnA" . $i];
-                        if ($_POSTt["passengerNationalityA" . $i] == '0') {
+             
                             $data['passenger_birthday'] = $_POSTt["birthdayA" . $i];
-                        } else {
-                            $data['passenger_birthday_en'] = $_POSTt["birthdayEnA" . $i];
-                            $data['passenger_country'] = $_POSTt["passportCountryA" . $i];
-                        }
+                           
+                        
                         $data['passenger_national_code'] = $_POSTt["NationalCodeA" . $i];
                         $data['passport_number'] = $_POSTt["passportNumberA" . $i];
                         $data['passport_expire'] = $_POSTt["passportExpireA" . $i];
@@ -225,7 +221,6 @@ class factorVisa
                                 'passengerNationality' => $_POSTt["passengerNationalityA" . $i]
                             );
                            $ress= $passengerController->insert($passengerAddArray);
-                            functions::insertLog('$ress: ' . json_encode($ress) , '000shojaee');
 
                         }
 
@@ -263,12 +258,8 @@ class factorVisa
                         $data['passenger_name_en'] = $_POSTt["nameEnC" . $i];
                         $data['passenger_family'] = $_POSTt["familyFaC" . $i];
                         $data['passenger_family_en'] = $_POSTt["familyEnC" . $i];
-                        if ($_POSTt["passengerNationalityC" . $i] == '0') {
-                            $data['passenger_birthday'] = $_POSTt["birthdayC" . $i];
-                        } else {
-                            $data['passenger_birthday_en'] = $_POSTt["birthdayEnC" . $i];
-                            $data['passenger_country'] = $_POSTt["passportCountryC" . $i];
-                        }
+                       $data['passenger_birthday'] = $_POSTt["birthdayC" . $i];
+                      
                         $data['passenger_national_code'] = $_POSTt["NationalCodeC" . $i];
                         $data['passport_number'] = $_POSTt["passportNumberC" . $i];
                         $data['passport_expire'] = $_POSTt["passportExpireC" . $i];
@@ -454,22 +445,24 @@ class factorVisa
                 foreach ($this->bookInfo['passengers'] as $passenger_key => $eachPassenger) {
 
                     $result_custom_file_fields = array();
-                    $custom_file_field_name = json_decode($visaInfo['custom_file_fields'],true);
 
                     /* ================= FILE A ================= */
                     $inputA = 'custom_file_fields_A_' . ($passenger_key + 1);
+                    $custom_file_field_name = json_decode($visaInfo['custom_file_fields'],true);
 
                     if ($this->hasUploadFile($inputA)) {
 
                         $filesA = functions::separateFiles($inputA);
 
                         foreach ($filesA as $key => $file) {
+
                             $_FILES[$inputA] = $file;
 
                             $success = $config->UploadFile("pic", $inputA, "2097152");
 
 
                             $exp = explode(':', $success);
+
                             if ($exp[0] === 'done') {
                                 $result_custom_file_fields[] = array(
                                     $custom_file_field_name[$key] => $exp[1]

@@ -1,4 +1,3 @@
-
 {if $item['positions']}
     {assign var="service_count" value=0}
     {foreach $item['positions'] as $service_key=>$positions}
@@ -137,14 +136,9 @@
         </div>
         {assign var="service_count" value=$service_count+1}
     {/foreach}
-{*{include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/position/new.tpl"*}
-{*getServices=$object->getServices() object=$object}*}
+{else}
 
-{*<div data-name='add-more-service'*}
-{*     class="align-items-center   border-primary d-flex flex-wrap font-bold gap-10 justify-content-center rounded w-100 h-160">*}
-{*    <button onclick='addMoreService($(this))' type='button'*}
-{*            class='btn btn-default rounded d-flex flex-wrap gap-8 btn-new-style'>*}
-{*        <span class='fa fa-plus-circle font20'></span>*}
-{*        مکان نمایش جدید*}
-{*    </button>*}
-{*</div>*}
+    {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/position/new.tpl"
+    getServices=$object->getServices() object=$object}
+
+{/if}

@@ -244,12 +244,12 @@
                                 <span>تغییر کلمه عبور</span></a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/transactionUser"><i
                                         class="fa fa-money fa-fw"></i><span>جزئیات اعتبار</span> </a></li>
-                        {if $smarty.const.TYPE_ADMIN neq '1'}
-                            <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/messageBox"><i class="mdi mdi-email-outline fa-fw"></i>
-                                    <span>صندوق پیام ها</span></a></li>
-                        {/if}
-                        <li><a href="http://www.safarbank.ir/irantech" target="_blank"><i class="mdi mdi-bell-ring"></i>
-                                <span>اخبار </span></a></li>
+{*                        {if $smarty.const.TYPE_ADMIN neq '1'}*}
+{*                            <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/messageBox"><i class="mdi mdi-email-outline fa-fw"></i>*}
+{*                                    <span>صندوق پیام ها</span></a></li>*}
+{*                        {/if}*}
+{*                        <li><a href="http://www.safarbank.ir/irantech" target="_blank"><i class="mdi mdi-bell-ring"></i>*}
+{*                                <span>اخبار </span></a></li>*}
                         <li role="separator" class="divider"></li>
                         <li><a href="#" onclick="logoute(); return false;" class="colorExit"><i
                                         class="fa fa-power-off fa-fw"></i>

@@ -47,6 +47,7 @@
                                         <fieldset>
                                             {assign var="arrayServices" value=Functions::getServicesAgency()}
                                             {assign var="checkedForFirst" value="0"}
+                                            
                                             {foreach $arrayServices as $k=>$services}
                                                 {assign var="servicesByLanguage" value=Functions::ConvertArrayByLanguage($k)}
                                                 {$checkedForFirst = $checkedForFirst+ 1}

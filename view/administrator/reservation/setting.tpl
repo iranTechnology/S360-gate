@@ -1,3 +1,4 @@
+{load_presentation_object filename="reservationTour" assign="ObjResult"}
 {load_presentation_object filename="reservationSetting" assign="ObjSetting"}
 {assign var="settingList" value=$ObjSetting->getReservationSetting()}
 <div class="container-fluid">

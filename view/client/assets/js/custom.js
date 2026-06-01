@@ -8330,8 +8330,6 @@ function setDiscountCode(serviceType, currencyCode) {
                 // $(".item-discount__label").html(useXmltag("AmountPayableAfterApplyingDiscountCode"));
                 $(".price-after-discount-code").html(number_format(price_after_discount));
 
-
-
             } else {
                 $(".discount-code-error").html(data.result_message);
                 $(".item-discount__label").html(useXmltag("Amountpayable") + ':');

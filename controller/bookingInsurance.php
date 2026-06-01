@@ -680,13 +680,16 @@ class bookingInsurance extends insurance
                 " SUM(paid_price) AS totalPriceIncreased " .
                 " FROM book_insurance_tb " .
                 " WHERE 1 = 1 {$conditions} ";
+
+                        /*1405_2_30 غیرفعال شد
                         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
                         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
                             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
                             $sql .= " AND serviceTitle IN ({$check_access})";
-                        }
+                        }*/
+
                 $sql .= " GROUP BY factor_number " .
                 " ORDER BY creation_date_int DESC ";
            

@@ -893,6 +893,41 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
     if( !$('#gallery_files_temporary').length){
         $('#gallery_files').after('<input type="file" class="d-none" id="gallery_files_temporary"/>')
     }
+    let existingImageCount = 0;
+    let imageElements = $('#preview-gallery .image-count, .image-thumb, img.image-count');
+    let hasExistingFiles = $('#preview-gallery .dropzone-parent-box').length > 0;
+    if (imageElements.length > 0) {
+        existingImageCount = parseInt(imageElements.first().data('count')) || 0;
+    }
+    let isChecked = false;
+
+    if (bannerValue == '1') {
+
+        if(existingImageCount  >= 1 ){
+            $.alert({
+                title: 'خطا در آپلود',
+                icon: 'fa fa-warning',
+                content: 'تعداد تصاویر نمی‌تواند بیشتر از ۱ باشد. ابتدا تصویر قبلی را حذف کنید.',
+                rtl: true,
+                type: 'red'
+            });
+            return false;
+        }
+        // بررسی اگر بیش از یک فایل انتخاب شده
+        if (hasExistingFiles) {
+            $.alert({
+                title: 'خطا در آپلود',
+                icon: 'fa fa-warning',
+                content: 'فقط می‌توانید یک عکس آپلود کنید',
+                rtl: true,
+                type: 'red'
+            });
+            fileInput.value = '';
+            return false;
+        }
+    }
+
+
 
     let temporaryFileInput = document.getElementById('gallery_files_temporary');
 
@@ -931,22 +966,26 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
                         var img_url = `${amadeusPath}/pic/ext-icons/${ext}.png` ;
 
                     }
-
+                    if(bannerValue == '1'){
+                        isChecked = true;
+                        setAsSelectedGallery(reader.result);
+                    }
                     var tags="<div class=\"align-items-center flex-wrap dropzone-parent-box  d-flex justify-content-between p-3 pip rounded-xl w-100 \" xmlns='http://www.w3.org/1999/html'>" +
                       "<img class=\"border d-flex imageThumb rounded-xl w-25\" src=\"" + img_url + "\" title=\"" + file.name + "\"/>" +
                       "<div class='dropzone-parent-trash-shakkhes'>" +
                       "<button type='button' class='dropzone-btn-trash' onclick='removeFromGallery($(this))' data-index='" + i + "' class=\"remove text-danger\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i> حذف</button>" +
-                      "<div class='dropzone-radio-shakhes'>";
+                      "<div class='dropzone-radio-shakhes " + (isChecked ? "d-none" : "") + "'>";
 
 
 
 
                     if(selected){
+                       
                         tags=tags+
                           "<label for='gallery_selected" + i + "'>" +
                           "تنظیم بعنوان شاخص" +
                           "</label>" +
-                          "<input onchange='setAsSelectedGallery(\"" + reader.result + "\")' name='gallery_selected' id='gallery_selected" + i + "' value='" + i + "' type='radio'/>";
+                          "<input " + (isChecked ? "checked" : "") + "  onchange='setAsSelectedGallery(\"" + reader.result + "\")' name='gallery_selected' id='gallery_selected" + i + "' value='" + i + "' type='radio'/>";
                     }
 
                     tags=tags+"</div>"+
@@ -969,6 +1008,8 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
                       "</div>";
 
                     return $("#preview-gallery").append(tags);
+
+
 
                 }
                 }
@@ -1033,18 +1074,27 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
                     var img_url = `${amadeusPath}/pic/ext-icons/${ext}.png` ;
 
                 }
+
+                if(bannerValue == '1'){
+                    isChecked = true;
+                    setAsSelectedGallery(reader.result);
+                }
                 var tags="<div class=\"align-items-center flex-wrap dropzone-parent-box  d-flex justify-content-between p-3 pip rounded-xl w-100 \" xmlns='http://www.w3.org/1999/html'>" +
                   "<img class=\"border d-flex imageThumb rounded-xl w-25\" src=\"" + img_url + "\" title=\"" + file.name + "\"/>" +
                   "<div class='dropzone-parent-trash-shakkhes'>" +
                   "<button type='button' class='dropzone-btn-trash' onclick='removeFromGallery($(this))' data-index='" + i + "' class=\"remove text-danger\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i> حذف</button>" +
-                  "<div class='dropzone-radio-shakhes'>";
+                    "<div class='dropzone-radio-shakhes " + (isChecked ? "d-none" : "") + "'>"
+
 
                 if(selected){
+                    
                     tags=tags+
                       "<label for='gallery_selected" + i + "'>" +
                       "تنظیم بعنوان شاخص" +
                       "</label>" +
-                      "<input onchange='setAsSelectedGallery(\"" + reader.result + "\")' name='gallery_selected' id='gallery_selected" + i + "' value='" + i + "' type='radio'/>";
+                        "<input " + (isChecked ? "checked" : "") + "   onchange='setAsSelectedGallery(\"" + reader.result + "\")' name='gallery_selected' id='gallery_selected" + i + "' value='" + i + "' type='radio'/>";
+                    // "<input " + (isChecked ? "checked" : "") + " onchange='setAsSelectedGallery(\"" + reader.result + "\")' name='gallery_selected' id='gallery_selected" + i + "' value='" + i + "' type='radio'/>";
+
                 }
 
                 if(hasAlt) {
@@ -1053,7 +1103,7 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
                       "<label for='gallery_file_alts[" + i + "]'>" +
                       "alt" +
                       "</label>" +
-                      "<input placeholder='alt' name='gallery_file_alts[" + i + "]' value='" + file.name + "' class='pb-2 small text-center form-control text-muted w-100 rounded'/>";
+                      "<input checked placeholder='alt' name='gallery_file_alts[" + i + "]' value='" + file.name + "' class='pb-2 small text-center form-control text-muted w-100 rounded'/>";
                 }else{
                     tags=tags+
                       "<div class='d-flex w-100 flex-wrap mt-3'>" +
@@ -1063,6 +1113,7 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
                   "</div>" +
                   "</div>";
                 return $("#preview-gallery").append(tags);
+
 
             }
             }
@@ -1074,6 +1125,7 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
     }
 
 }
+
 function setAsSelectedGallery(src) {
 $('.selected_image').find('.dropify-render img')
       .attr('src', src)
@@ -1132,4 +1184,28 @@ async function removeFromGallery(_this) {
     fileInput.files = dt.files;
     temporaryFileInput.files = dt.files;
 
+}
+
+function  funSetLangPanelAdmin(lang){
+    $.ajax({
+        type: 'post',
+        url: amadeusPath + "user_ajax.php",
+        data: {
+            lang: lang,
+            flag: 'setLangPanelAdmin'
+        },
+        success: function (data) {
+            $.toast({
+                heading: 'مدیریت زبان',
+                text: 'با موفقیت زبان پنل مدیریت تغییر کرد',
+                position: 'top-right',
+                loaderBg: '#fff',
+                icon: 'success',
+                hideAfter: 2500,
+                textAlign: 'right',
+                stack: 6
+            });
+            window.location.href = amadeusPath + 'itadmin/admin';
+        }
+    });
 }

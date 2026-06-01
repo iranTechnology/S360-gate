@@ -12,6 +12,7 @@
 'package-saadi' =>'specialPackagePic',
 'rentCar-saadi' =>'specialCarPic',
 'entertainment-saadi' =>'specialEntertainmentPic',
+'cip-saadi' =>'specialCipPic',
 'mainPage' =>'MainPagePic']}
 {foreach $searchServices as $key => $val}
     {assign var="homePage" value=$objSpecialPages->unSlugPage($key)}
@@ -89,6 +90,11 @@
         {if $specialEntertainmentPic}
         {literal}
         $('.Entertainment-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialEntertainmentPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialCipPic}
+        {literal}
+        $('.Cip-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialCipPic}{literal}")')});
         {/literal}
         {/if}
         {literal}

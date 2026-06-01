@@ -75,7 +75,6 @@
                 {load_presentation_object filename="currency" assign="objCurrencyVisa"}
 
 
-
                 {assign var="visaInfo" value=$objVisa->getVisaByID($smarty.post.visaID)}
                 {assign var="visaDetail" value=$objVisa->getVisaDetailById($smarty.post.visa_detail)}
                 {assign var="countryInfo" value=$objCountry->getCountryByCode($visaInfo.countryCode)}

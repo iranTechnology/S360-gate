@@ -4739,22 +4739,22 @@ class bookshowTest extends clientAuth {
                     $ColorTr='#f7c2c2';//قرمز
                 }
             }
-            $titleColumn1=functions::Xmlinformation('Row');
+            $titleColumn1=functions::Xmlinformation('Row').' ';
             $titleColumn2=functions::Xmlinformation('PA_BUY_Pid').'<br/>';
             $titleColumn2.=functions::Xmlinformation('Ticket').'<br/>';
             $titleColumn2.=functions::Xmlinformation('WachterNumber').'<br/>';
             $titleColumn2.=functions::Xmlinformation('Buydate');
-            $titleColumn3=functions::Xmlinformation('Informationflight');
+            $titleColumn3=functions::Xmlinformation('Informationflight').' ';
             $titleColumn4=functions::Xmlinformation('Namepassenger').'<br/>';
             $titleColumn4.=functions::Xmlinformation('GuestPassenger').'<br/>';
             $titleColumn4.=functions::Xmlinformation('Count').'<br/>';
             $titleColumn4.=functions::Xmlinformation('PA_BUY_USER');
             $titleColumn4.=functions::Xmlinformation('Customername');
-            $titleColumn5=functions::Xmlinformation('PA_BUY_Provider');
+            $titleColumn5=functions::Xmlinformation('PA_BUY_Provider').' ';
 
 
             $FlightData[ $FlightDataNewest ][ $key ]["رنگ"]                        = $ColorTr;
-            $FlightData[ $FlightDataNewest ][ $key ][$titleColumn1.' ']                = $CountTicket ++;
+            $FlightData[ $FlightDataNewest ][ $key ][$titleColumn1]                = $CountTicket ++;
             $FlightData[ $FlightDataNewest ][ $key ][$titleColumn2]                = $DataFlightType;
             $FlightData[ $FlightDataNewest ][ $key ][$titleColumn3]                = $DataFlightInformation;
             $FlightData[ $FlightDataNewest ][ $key ][$titleColumn4]                = $DataFlightCounterType;
@@ -6148,16 +6148,16 @@ class bookshowTest extends clientAuth {
                 }
             }
 
-            $titleColumn1=functions::Xmlinformation('Row');
+            $titleColumn1=functions::Xmlinformation('Row').' ';
             $titleColumn2=functions::Xmlinformation('Hotel').'<br/>'.functions::Xmlinformation('City');
-            $titleColumn3=functions::Xmlinformation('Customername').'<br/>'.functions::Xmlinformation('Buytime').'<br/>'.functions::Xmlinformation('Buydate');
-            $titleColumn4=functions::Xmlinformation('Stayigtime').'<br/>'.functions::Xmlinformation('Exit').'<br/>'.functions::Xmlinformation('OsafarLogin');
-            $titleColumn5=functions::Xmlinformation('messagePrepairFlight_button');
-            $titleColumn6=functions::Xmlinformation('Status');
+            $titleColumn3=functions::Xmlinformation('Customername').'<br/>'.functions::Xmlinformation('Buytime').'<br/>'.functions::Xmlinformation('Buydate').' ';
+            $titleColumn4=functions::Xmlinformation('Stayigtime').'<br/>'.functions::Xmlinformation('Exit').'<br/>'.functions::Xmlinformation('OsafarLogin').' ';
+            $titleColumn5=functions::Xmlinformation('messagePrepairFlight_button').' ';
+            $titleColumn6=functions::Xmlinformation('Status').' ';
 
 
             $HotelData['data'][ $key ]["رنگ"]                                      = $ColorTr;
-            $HotelData['data'][ $key ][$titleColumn1.' ']                          = $key + 1;
+            $HotelData['data'][ $key ][$titleColumn1]                              = $key + 1;
             $HotelData['data'][ $key ][$titleColumn2]                              = $DataCityHotel;
             $HotelData['data'][ $key ][$titleColumn3]                              = $DataEnterInformation;
             $HotelData['data'][ $key ][$titleColumn4]                              = $DataExitInformation;
@@ -9640,17 +9640,17 @@ class bookshowTest extends clientAuth {
                 }
             }
 
-            $titleColumn1=functions::Xmlinformation('Row');
-            $titleColumn2=functions::Xmlinformation('Typecounter').'<br/>'.functions::Xmlinformation('Customername').'<br/>'.functions::Xmlinformation('DateAndTime').' '.functions::Xmlinformation('Buy');
-            $titleColumn3=functions::Xmlinformation('Origin').'<br/>'.functions::Xmlinformation('Destination').'<br>'.functions::Xmlinformation('Namepassenger').'<br/>'.  functions::Xmlinformation('PhonenumberTraveler');
-            $titleColumn4=functions::Xmlinformation('dateMove').'<br/>'.functions::Xmlinformation('timeMove');
-            $titleColumn5=functions::Xmlinformation('Passengercompany').'<br/>'.functions::Xmlinformation('Bustype');
-            $titleColumn6=functions::Xmlinformation('messagePrepairFlight_button').'<br/>'.functions::Xmlinformation('Ticketnumber').'<br>'.functions::Xmlinformation('SeatNumber').'<br/>'.  functions::Xmlinformation('SeatCount');
-            $titleColumn7=functions::Xmlinformation('Status');
+            $titleColumn1=functions::Xmlinformation('Row').' ';
+            $titleColumn2=functions::Xmlinformation('Typecounter').'<br/>'.functions::Xmlinformation('Customername').'<br/>'.functions::Xmlinformation('DateAndTime').' '.functions::Xmlinformation('Buy').' ';
+            $titleColumn3=functions::Xmlinformation('Origin').'<br/>'.functions::Xmlinformation('Destination').'<br>'.functions::Xmlinformation('Namepassenger').'<br/>'.  functions::Xmlinformation('PhonenumberTraveler').' ';
+            $titleColumn4=functions::Xmlinformation('dateMove').'<br/>'.functions::Xmlinformation('timeMove').' ';
+            $titleColumn5=functions::Xmlinformation('Passengercompany').'<br/>'.functions::Xmlinformation('Bustype').' ';
+            $titleColumn6=functions::Xmlinformation('messagePrepairFlight_button').'<br/>'.functions::Xmlinformation('Ticketnumber').'<br>'.functions::Xmlinformation('SeatNumber').'<br/>'.  functions::Xmlinformation('SeatCount').' ';
+            $titleColumn7=functions::Xmlinformation('Status').' ';
 
 
             $DataTable['data'][ $key ]["رنگ"]                                             = $ColorTr;
-            $DataTable['data'][ $key ][$titleColumn1.' ']                                     = $bus['NumberColumn'];
+            $DataTable['data'][ $key ][$titleColumn1]                                     = $bus['NumberColumn'];
             $DataTable['data'][ $key ][$titleColumn2]                                     = $DataCounter;
             $DataTable['data'][ $key ][$titleColumn3]                                     = $DataDestination;
             $DataTable['data'][ $key ][$titleColumn4]                                     = $DataMoveOnTime;

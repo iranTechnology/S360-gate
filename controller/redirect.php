@@ -84,6 +84,7 @@ class redirect extends clientAuth
             $result[$key]['created_at'] = dateTimeSetting::jdate("j F Y", $time_date);
             $result[$key]['is_active'] = "{$item['is_active']}";
             $result[$key]['title'] = "{$item['title']}";
+
         }
         return $result;
     }

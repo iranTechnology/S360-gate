@@ -796,8 +796,8 @@ function searchInternationalHotel() {
    const form = document.getElementById('international_hotel_form');
    const is_new_tab = form?.target === '_blank';
 
-   let check_in_date = $(".check-in-date-international-js")
-   let check_out_date_js = $(".check-out-date-international-js")
+   let check_in_date = $("#Hotel .check-in-date-international-js")
+   let check_out_date_js = $("#Hotel .check-out-date-international-js")
    let nights_hotel = $(".nights-hotel-js")
    let destination_country = $(".destination-country-js")
    const destination_city = $(".destination-city-js").val()
@@ -900,6 +900,26 @@ function searchResidence(is_new_tab = false) {
    openLink(url, is_new_tab)
 }
 
+function getRulesHTML(rules) {
+   // if (rules && rules.length > 0) {
+   //
+   //    return `
+   //          <ul class="hotel-rules-list">
+   //              ${rules}
+   //          </ul>
+   //      `;
+   // } else {
+      return `
+            <ul class="hotel-rules-list">
+                <li><strong>ساعت ورود:</strong> ۱۴:۰۰ (۲:۰۰ بعد از ظهر)</li>
+                <li><strong>ساعت خروج:</strong> ۱۲:۰۰ (ظهر)</li>
+                <li>کودکان زیر دو سال میتوانند در صورت عدم استفاده از سرویس خواب اضافه به صورت رایگان به همراه والدین در هتل اقامت داشته باشند.</li>
+                <li>ورود حیوانات خانگی در هتل، ممنوع است.</li>
+                <li class="text-warning"><strong>*قوانین کنسلی*</strong> - قوانین کنسلی ممکن است بر اساس نوع اتاق متفاوت باشد. این قوانین در زمان کنسلی و از طرف هتل مشخص میشود.</li>
+            </ul>
+        `;
+   // }
+}
 (function($) {
    jQuery(document).ready(function($) {
       let response_valueInternal;
@@ -2241,7 +2261,7 @@ function handleMobileHotelSearch(keyword, search_type) {
 function renderMobileHotelPopularInternalCities(type) {
 
    const container = $('#mobilePopularDestinationsHotel');
-   container.html('');
+   container.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
 
    $.post(amadeusPath + 'hotel_ajax.php', {
       flag: 'popularCityForInternalHotel',
@@ -2317,8 +2337,7 @@ function renderMobileHotelPopularInternalCities(type) {
 function renderMobileHotelPopularExternalCities(type) {
 
    const container = $('#mobilePopularDestinationsHotel');
-   container.html('');
-
+   container.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
    $.post(amadeusPath + 'hotel_ajax.php', {
       flag: 'flightExternalRoutesDefault',
       self_Db: true,

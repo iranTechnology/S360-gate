@@ -28,8 +28,10 @@ $(document).ready(function () {
             IsCurrency: "required",
             Logo: "required",
             IsEnableClub: "required",
+            default_lang_admin: "required",
             default_language: "required",
             isIframe: "required",
+            usedDemo: "required",
             UsernameSms: {
                 required: {
                     depends: function (element) {
@@ -97,10 +99,10 @@ $(document).ready(function () {
                     required: "ارسال تصویر مهر الزامی می باشد"
                 }
         },
-        normalizer: function(value) {
-            // حذف فاصله‌ها از ابتدا و انتها + تبدیل فاصله‌های متوالی به یک فاصله
-            return $.trim(value).replace(/\s+/g, ' ');
-        },
+       normalizer: function(value) {
+          // حذف فاصله‌ها از ابتدا و انتها + تبدیل فاصله‌های متوالی به یک فاصله
+          return $.trim(value).replace(/\s+/g, ' ');
+       },
         errorElement: "em",
         errorPlacement: function (error, element) {
             // Add the `help-block` class to the error element
@@ -115,9 +117,8 @@ $(document).ready(function () {
         submitHandler: function (form) {
 
             $("#btnAddClient")
-                .prop("disabled", true)
-                .html('<i class="fa fa-spinner fa-spin"></i> اطلاعات با موفقیت ثبت شد. در حال ایجاد دیتابیس ...');
-
+               .prop("disabled", true)
+               .html('<i class="fa fa-spinner fa-spin"></i> اطلاعات با موفقیت ثبت شد. در حال ایجاد دیتابیس ...');
 
 
             $(form).ajaxSubmit({
@@ -125,8 +126,8 @@ $(document).ready(function () {
                 type: "post",
                 success: function (response) {
                     $("#btnAddClient")
-                        .prop("disabled", false)
-                        .html('ارسال اطلاعات');
+                       .prop("disabled", false)
+                       .html('ارسال اطلاعات');
                     var res = response.split(':');
 
                     if (response.indexOf('success') > -1) {
@@ -200,6 +201,7 @@ $(document).ready(function () {
             IsEnableTicketHTC: "required",
             AllowSendSms: "required",
             IsEnableClub: "required",
+            default_lang_admin: "required",
             default_language: "required",
             id_whmcs: {
                 required: {
@@ -467,7 +469,7 @@ $(document).ready(function () {
 
                     setTimeout(function () {
 
-                        location.href = "listClientCommission&id=" + client_id_parent
+                      location.href = "listClientCommission&id=" + client_id_parent
                     },1000);
 
                 },
@@ -514,7 +516,7 @@ $(document).ready(function () {
 
 function SelectAllowPanel(obj) {
 
-
+    
     if ($(obj).val() === '1') {
         $('.smsPanel').show();
     }else{
@@ -582,10 +584,10 @@ function selectDetailService(){
         url: amadeusPath + 'ajax',
         dataType:'json',
         data:JSON.stringify({
-            method: 'servicesListClient',
-            className: 'services',
-            type: mainService
-        }),
+                method: 'servicesListClient',
+                className: 'services',
+                type: mainService
+            }),
         success: function (response) {
             console.log(response);
 
@@ -619,10 +621,10 @@ function deletedCommission(id){
         url: amadeusPath + 'ajax',
         dataType:'json',
         data:JSON.stringify({
-            method: 'deletedCommission',
-            className: 'clientWhiteCommission',
-            id: id
-        }),
+                method: 'deletedCommission',
+                className: 'clientWhiteCommission',
+                id: id
+            }),
         success: function (response) {
             $.toast({
                 heading: 'حذف کمیسیون مشتریان در وایت لیبل ',
@@ -676,8 +678,8 @@ function AddAdditionalData() {
         // تمام input و selectهای داخل هر گروه را پیمایش کن
         $(this).find('[data-parent="AdditionalDataValues"]').each(function () {
             $(this).attr(
-                "name",
-                "AdditionalData[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+               "name",
+               "AdditionalData[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
             );
         });
 
@@ -687,30 +689,30 @@ function AddAdditionalData() {
 }
 function RemoveAdditionalData(thiss) {
     if (
-        thiss
-            .parent()
-            .parent()
-            .parent()
-            .parent()
-            .find('div[data-target="BaseAdditionalDataDiv"]').length > 1
+      thiss
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .find('div[data-target="BaseAdditionalDataDiv"]').length > 1
     ) {
         thiss.parent().parent().parent().remove()
 
         var CountDivInEach = 0
         $('.DynamicAdditionalData input[data-parent="AdditionalDataValues"]').each(
-            function () {
-                $(this).attr(
-                    "name",
-                    "AdditionalData[" +
-                    CountDivInEach +
-                    "][" +
-                    $(this).attr("data-target") +
-                    "]"
-                )
-                if ($(this).attr("data-target") == "body") {
-                    CountDivInEach = CountDivInEach + 1
-                }
-            }
+          function () {
+              $(this).attr(
+                "name",
+                "AdditionalData[" +
+                CountDivInEach +
+                "][" +
+                $(this).attr("data-target") +
+                "]"
+              )
+              if ($(this).attr("data-target") == "body") {
+                  CountDivInEach = CountDivInEach + 1
+              }
+          }
         )
     }
 }

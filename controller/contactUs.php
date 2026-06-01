@@ -80,7 +80,7 @@ class contactUs extends clientAuth
 //        var_dump($msg);
         if ($data == true) {
 
-        return self::returnJson(true, $msg);
+            return self::returnJson(true, $msg);
         } else {
             return self::returnJson(false, functions::Xmlinformation('Errorrecordinginformation'), null, 500);
         }
@@ -105,13 +105,13 @@ class contactUs extends clientAuth
             $request_service_table . '.id AS sId',
         ] ,true)
             ->join($request_service_table, 'module_id', 'id');
-            $contactUs = $contactUs->where($request_service_table . '.module_title' , contactUs);
-            if ($type) {
-                $contactUs = $contactUs->where($contact_table . '.type' , $type);
-            } else {
-                $contactUs = $contactUs->where($contact_table . '.type' , 'contactUs' );
-            }
-            $contactUs = $contactUs->orderBy('cId' , 'DESC')->all(false);
+        $contactUs = $contactUs->where($request_service_table . '.module_title' , contactUs);
+        if ($type) {
+            $contactUs = $contactUs->where($contact_table . '.type' , $type);
+        } else {
+            $contactUs = $contactUs->where($contact_table . '.type' , 'contactUs' );
+        }
+        $contactUs = $contactUs->orderBy('cId' , 'DESC')->all(false);
 
         return $contactUs;
     }
@@ -210,13 +210,13 @@ class contactUs extends clientAuth
             }elseif ($contactUs['status'] == 'reject') {
                 $result .= "<p class='text-order bg-danger' style='margin: 20px;padding: 15px;' >".functions::Xmlinformation('RejectUserRequest')->__toString()."</p>";
             }
-    $result .= '<hr>';
-    if ($contactUs['admin_response'] != ''){
-        $result .= '<p class=" ml-2" style=\'margin: 20px;\' >'.functions::Xmlinformation('AdminResponseToYourRequest')->__toString().' :</p>';
-        $result .= '<p class="font-20" style=\'margin: 20px;\' >' . $contactUs['admin_response'] . '</p>';
-    }
-    $result .= '<br>';
-    $result .= '<br>';
+            $result .= '<hr>';
+            if ($contactUs['admin_response'] != ''){
+                $result .= '<p class=" ml-2" style=\'margin: 20px;\' >'.functions::Xmlinformation('AdminResponseToYourRequest')->__toString().' :</p>';
+                $result .= '<p class="font-20" style=\'margin: 20px;\' >' . $contactUs['admin_response'] . '</p>';
+            }
+            $result .= '<br>';
+            $result .= '<br>';
             $result .= '';
             return $result;
 

@@ -48,6 +48,14 @@ class clients extends clientAuth {
         $list = $clientList->all();
         return  $this->clientsIndexes($list);
     }
+    public function listClientsForApi() {
+        $clientList = $this->getModel('clientsModel')
+            ->get(['id','AgencyName'])
+            ->where('id', '299','!=')
+            ->where('archived_at', NULL, 'IS')
+            ->all();
+        return $clientList;
+    }
     public function listClosedClients() {
         $clientList = $this->getModel('clientsModel')
             ->get(['id','AgencyName','MainDomain','status_factor_user'])

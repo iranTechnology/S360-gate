@@ -1,9 +1,9 @@
 <?php
 
 error_reporting(0);
-//error_reporting(E_ALL | E_STRICT);
-//@ini_set('display_errors', 1);
-//@ini_set('display_errors', 'on');
+    //error_reporting(E_ALL | E_STRICT);
+    //@ini_set('display_errors', 1);
+    //@ini_set('display_errors', 'on');
 
 class BookingHotelNew extends clientAuth
 {
@@ -1082,6 +1082,9 @@ class BookingHotelNew extends clientAuth
         $Model = Load::library('Model');
         $tableName = 'book_hotel_local_tb';
         $info_hotel = $this->getModel('bookHotelLocalModel')->get()->where('factor_number',$factorNumber);
+        $subAgencyInfo = $this->getController('agency');
+
+
         if (TYPE_ADMIN == '1') {
             $Model = Load::library('ModelBase');
             $tableName = 'report_hotel_tb';
@@ -1093,6 +1096,7 @@ class BookingHotelNew extends clientAuth
         }
         $info_hotel = $info_hotel->all();
 
+        $getSubAgencyInfo = $subAgencyInfo->AgencyInfoByIdMember($info_hotel[0]['member_id']);
         if (empty($info_hotel)) {
             return '<div style="text-align:center; font-size:20px; font-family: yekanbakh;">اطلاعات مورد نظر موجود نمی باشد</div>';
         }
@@ -1512,13 +1516,18 @@ class BookingHotelNew extends clientAuth
 <body style=" font-family: yekanbakh;">
     <div class="container">';
 
+        $agencyName = !empty($getSubAgencyInfo['name_fa']) ? $getSubAgencyInfo['name_fa'] : CLIENT_NAME;
+        $image = !empty($getSubAgencyInfo['logo']) ? ROOT_ADDRESS_WITHOUT_LANG . '/pic/' .'agencyPartner/' . CLIENT_ID . '/logo/'. $getSubAgencyInfo['logo'] : ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO ;
         // Header با لوگو و بارکد
         $html .= '
         <div class="header">
             <table>
                 <tr>
                     <td class="header-logo">
-                        <img src="' . ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO . '" alt="Logo" style="max-width: 80px; min-height: 50px">
+                        <img src="' . $image . '" alt="Logo" style="max-width: 80px; min-height: 50px">
+                        <span style="font-family: yekanbakh;">
+                        '. $agencyName . '
+                </span>
                     </td>
                     <td class="header-barcode">
                         <img class="barcode" src="https://safar360.com/gds/library/barcode/barcode_creator.php?barcode=' . trim($info_hotel[0]["pnr"]) . '" alt="Barcode"  >
@@ -1860,7 +1869,8 @@ class BookingHotelNew extends clientAuth
             }
         }
 
-
+        $phone = !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : CLIENT_PHONE ;
+    $address =  !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : CLIENT_ADDRESS;
 
         // Footer
         $html .= '
@@ -1874,11 +1884,11 @@ class BookingHotelNew extends clientAuth
                 </td>
                 <td style="border:none;">
                     <span>تلفن:</span>
-                    <span dir="ltr">'.CLIENT_PHONE.'</span>
+                    <span dir="ltr">'.$phone.'</span>
                 </td>
                 <td style="border:none;">
                     <span>آدرس:</span>
-                    <span>'.CLIENT_ADDRESS.'</span>
+                    <span>'.$address .'</span>
                 </td>
             </tr>
         </table>

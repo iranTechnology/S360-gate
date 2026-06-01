@@ -1,14 +1,22 @@
 <?php
+
+
+    //    error_reporting(1);
+    //    error_reporting(E_ALL | E_STRICT);
+    //    @ini_set('display_errors', 1);
+    //    @ini_set('display_errors', 'on');
 /**
  * Class smsPanel
  * @property smsPanel $smsPanel
  */
-class smsPanel
+class smsPanel extends Model
 {
     #region cunstruct
+     private $services;
+
     public function __construct()
     {
-
+        $this->services = Load::controller('services');
     }
     #endregion
 
@@ -16,7 +24,7 @@ class smsPanel
     public function getAllSmsServices()
     {
         $ModelBase = Load::library('ModelBase');
-
+     
         $sqlSelect = "SELECT * FROM sms_services_tb";
         return $ModelBase->select($sqlSelect);
     }
@@ -40,14 +48,23 @@ class smsPanel
 
             $result = $this->getSmsService($clientID);
             $admin = Load::controller('admin');
-
+            Load::autoload("ModelBase");
+            $ModelBase = new ModelBase();
+            $dataUpdate = [
+            'UsernameSms' => $data['smsUsername'],
+            'PasswordSms' =>$data['smsPassword'] ,
+            'AllowSendSms'=> 1,
+            'PanelSms' => $data['smsService'],
+            'NumberSms' => $data['smsNumber']
+            ];
             if(!empty($result)){
 
                 $data['lastEditInt'] = time();
                 $condition = "id='{$result['id']}'";
                 $resultInsert = $admin->ConectDbClient('', $clientID, 'Update', $data, 'sms_service_info_tb', $condition);
-
-                if ($resultInsert) {
+                $updateClient = $ModelBase->updateWithBind($dataUpdate, ['id' => $clientID] ,'clients_tb');
+        
+                if ($resultInsert || $updateClient) {
                     $output['result_status'] = 'success';
                     $output['result_message'] = 'ویرایش سرویس پیامک با موفقیت انجام شد';
                 } else {
@@ -58,7 +75,8 @@ class smsPanel
             } else{
                 $data['creationDateInt'] = time();
                 $resultInsert = $admin->ConectDbClient('', $clientID, 'Insert', $data, 'sms_service_info_tb', '');
-                if ($resultInsert) {
+                $updateClient = $ModelBase->updateWithBind($dataUpdate, ['id' => $clientID] , 'clients_tb');
+                if ($resultInsert || $updateClient) {
                     $output['result_status'] = 'success';
                     $output['result_message'] = 'افزودن سرویس پیامک با موفقیت انجام شد';
                 } else {

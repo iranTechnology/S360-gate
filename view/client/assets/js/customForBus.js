@@ -317,7 +317,7 @@ function  getResultBusSearch(cityOrigin, cityDestination, dateMove,lang) {
             $("#resultBusSearch").html(data.resultBuses);
             $("#requestNumber").val(data.requestNumber);
             $('.requestNumber').text(data.requestNumber);
-
+            
             $('.f-loader-check').hide();
             // sortBuses('min_time_move');
             $('#resultBusSearch').fadeIn();

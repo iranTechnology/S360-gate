@@ -64,7 +64,7 @@ class resultExternalHotel extends apiExternalHotel {
 	public function searchCity( $inputSearchValue , $json = false) {
 
 		$ModelBase = Load::library( 'ModelBase' );
-		$sql       = " SELECT 
+        $sql = " SELECT 
         external_hotel_city_tb.city_name_en as DepartureCityEn,
         external_hotel_city_tb.city_name_fa as DepartureCityFa,
         external_hotel_city_tb.country_name_en as CountryTitleEn,
@@ -72,20 +72,32 @@ class resultExternalHotel extends apiExternalHotel {
         country_codes_tb.titleEn AS  CountryEn,
         country_codes_tb.titleFa AS  CountryFa
         FROM external_hotel_city_tb 
- LEFT JOIN country_codes_tb ON external_hotel_city_tb.country_id = country_codes_tb.id
-                  WHERE
-                    external_hotel_city_tb.country_name_en != 'iran'
-                    AND (
-                    external_hotel_city_tb.country_name_en LIKE '{$inputSearchValue}%'
-                    OR external_hotel_city_tb.country_name_fa LIKE '{$inputSearchValue}%'
-                    OR external_hotel_city_tb.city_name_en LIKE '{$inputSearchValue}%'
-                    OR external_hotel_city_tb.city_name_fa LIKE '{$inputSearchValue}%'
-                    ) limit 0,20
-                    ";
-//        		if(  $_SERVER['REMOTE_ADDR']=='84.241.4.20'  ) {
-//					var_dump($sql);
-//					die;
-//				}
+        LEFT JOIN country_codes_tb ON external_hotel_city_tb.country_id = country_codes_tb.id
+        WHERE
+            external_hotel_city_tb.country_name_en != 'iran'
+            AND (
+            external_hotel_city_tb.country_name_en LIKE '{$inputSearchValue}%'
+            OR external_hotel_city_tb.country_name_fa LIKE '{$inputSearchValue}%'
+            OR external_hotel_city_tb.city_name_en LIKE '{$inputSearchValue}%'
+            OR external_hotel_city_tb.city_name_fa LIKE '{$inputSearchValue}%'
+            ) 
+        ORDER BY
+            CASE 
+                -- اولویت 1: تطابق دقیق با نام شهر (فارسی یا انگلیسی)
+                WHEN external_hotel_city_tb.city_name_fa = '{$inputSearchValue}' THEN 1
+                WHEN external_hotel_city_tb.city_name_en = '{$inputSearchValue}' THEN 2
+                -- اولویت 2: شروع شدن با عبارت سرچ شده در نام شهر
+                WHEN external_hotel_city_tb.city_name_fa LIKE '{$inputSearchValue}%' THEN 3
+                WHEN external_hotel_city_tb.city_name_en LIKE '{$inputSearchValue}%' THEN 4
+                -- اولویت 3: تطابق با نام کشور
+                WHEN external_hotel_city_tb.country_name_fa LIKE '{$inputSearchValue}%' THEN 5
+                ELSE 6
+            END ASC,
+            -- در صورت برابر بودن اولویت‌ها، شهرهایی که نام کوتاه‌تری دارند (به تطابق دقیق نزدیک‌ترند) بالاتر قرار می‌گیرند
+            LENGTH(external_hotel_city_tb.city_name_fa) ASC
+        LIMIT 0,20
+        ";
+
 		$cities    = $ModelBase->select( $sql );
         if($json) {
 
@@ -155,14 +167,14 @@ $city_name_fa
                     GROUP BY country_name_en,city_name_en
                     LIMIT 0,20
                     ";
-       
+
         //		return json_encode($clientSql);
 
 
         return json_encode( $ModelBase->select( $clientSql ) );
     }
     public function externalHotelCityList( $limit = 6 ) {
-       
+
         $sDate = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
         $model = Load::library('Model');
         $sql = "
@@ -403,9 +415,10 @@ $city_name_fa
                     AND LOWER( reservationCity.name_en ) = '" . $cityNameEn . "' 
                     AND reservationHotel.is_del = 'no'
                 ";
-               
 
-			} elseif ( strpos( CLIENT_SERVICES, 'HotelPortal' ) !== false ) {
+
+			}
+            elseif ( strpos( CLIENT_SERVICES, 'HotelPortal' ) !== false ) {
 
 				$model = Load::library( 'ModelBase' );
 				$sql   = "
@@ -440,7 +453,9 @@ $city_name_fa
                         AND apiHotel.hotel_name != '' 
                   ";
 
-			} elseif ( strpos( CLIENT_SERVICES, 'HotelReserveLocal' ) !== false ) {
+			}
+            elseif ( strpos( CLIENT_SERVICES, 'HotelReserveLocal' ) !== false ) {
+
                 $passenger_condition = '' ;
 
                if(isset($searched_rooms) && !empty($searched_rooms)){
@@ -453,106 +468,76 @@ $city_name_fa
 
                }
 				$model = Load::library( 'Model' );
-				$sql   = "
-                    SELECT
-                        'reservation' AS type_app,
-                        reservationHotel.city AS place_id,
-                        reservationCountry.`name` AS country_persian_name,
-	                    reservationCity.`name` AS city_persian_name,
-	                    reservationCity.id AS city_id,
-                        reservationHotel.id AS hotel_index,
-                        reservationHotel.NAME AS hotel_persian_name,
-                        reservationHotel.name_en AS hotel_name,
-                        CONCAT( '" . ROOT_ADDRESS_WITHOUT_LANG . "/pic/', reservationHotel.logo ) AS image_url,
-                        reservationHotel.`comment` AS breifing_description,
-                        reservationHotel.star_code AS hotel_stars,
-                        reservationHotel.address AS hotel_address,
-                        reservationHotel.longitude AS longitude,
-                        reservationHotel.latitude AS latitude,
-                        reservationHotel.flag_special,
-                        (
-                    SELECT
-                        reservationHotelPrice.online_price /* " . $nights . "*/  
-                    FROM
-                        reservation_hotel_room_prices_tb AS reservationHotelPrice 
-                    WHERE
-                        reservationHotelPrice.id_hotel = reservationHotel.id 
-                        AND reservationHotelPrice.date = '" . $sDatePersian . "' 
-                        AND reservationHotelPrice.user_type = '" . $this->counterId . "' 
-                        AND reservationHotelPrice.flat_type = 'DBL' 
-                        AND reservationHotelPrice.is_del = 'no' 
-                        LIMIT 1 
-                        ) AS minimum_room_price,
-                       
-                 
+                $sql = "
+SELECT
+    'reservation'                    AS type_app,
+    reservationCountry.`name`        AS country_persian_name,
+    reservationCity.`name`           AS city_persian_name,
+    reservationHotel.id              AS hotel_index,
+    reservationHotel.NAME            AS hotel_persian_name,
+    reservationHotel.name_en         AS hotel_name,
+    CONCAT( '" . ROOT_ADDRESS_WITHOUT_LANG . "/pic/', reservationHotel.logo ) AS image_url,
+    reservationHotel.star_code       AS hotel_stars,
+    reservationHotel.address         AS hotel_address,
+    reservationHotel.longitude       AS longitude,
+    reservationHotel.latitude        AS latitude,
+    reservationHotel.flag_special,
+
+    rp.online_price                  AS minimum_room_price,
+    rp.currency_type                 AS currency_type,
+    rp.currency_price                AS currency_price,
+    rp.discount                      AS commissionDiscount,
+
+    fb.free_breakfast                AS free_breakfast,
+
+    (
+        SELECT GROUP_CONCAT(reservationFacilities.title SEPARATOR '|')
+        FROM reservation_hotel_facilities_tb AS reservationHotelFacilities
+        INNER JOIN reservation_facilities_tb AS reservationFacilities
+            ON reservationHotelFacilities.id_facilities = reservationFacilities.id
+        WHERE reservationHotelFacilities.id_hotel = reservationHotel.id
+          AND reservationHotelFacilities.is_del = 'no'
+    ) AS facilities
+
+FROM reservation_hotel_tb AS reservationHotel
+
+INNER JOIN reservation_city_tb AS reservationCity
+    ON reservationHotel.city = reservationCity.id
+
+INNER JOIN reservation_country_tb AS reservationCountry
+    ON reservationHotel.country = reservationCountry.id
+
+LEFT JOIN reservation_hotel_room_prices_tb AS rp
+    ON  rp.id_hotel  = reservationHotel.id
+    AND rp.date      = '" . $sDatePersian . "'
+    AND rp.user_type = '" . $this->counterId . "'
+    AND rp.flat_type = 'DBL'
+    AND rp.is_del    = 'no'
+
+LEFT JOIN (
+    SELECT
+        id_hotel,
+        GROUP_CONCAT(DISTINCT breakfast SEPARATOR '|') AS free_breakfast
+    FROM reservation_hotel_room_prices_tb
+    WHERE date      = '" . $sDatePersian . "'
+      AND user_type = '" . $this->counterId . "'
+      AND is_del    = 'no'
+    GROUP BY id_hotel
+) AS fb ON fb.id_hotel = reservationHotel.id
+
+WHERE
+    reservationHotel.country != '1'
+    AND LOWER( reservationCountry.name_en ) = '" . $countryNameEn . "'
+    AND LOWER( reservationCity.name_en )    = '" . $cityNameEn . "'
+    AND reservationHotel.is_del = 'no'
+    " . $passenger_condition . "
+
+GROUP BY reservationHotel.id
+";
 
 
-
-
-
-
-                         (
-                SELECT
-                    reservationHotelPrice.currency_type /* " . $nights . "*/ 
-                FROM
-                    " . DB_DATABASE . ".reservation_hotel_room_prices_tb AS reservationHotelPrice 
-                WHERE
-                    reservationHotelPrice.id_hotel = reservationHotel.id 
-                    AND reservationHotelPrice.date = '" . $sDatePersian . "' 
-                    AND reservationHotelPrice.user_type = '" . $this->counterId . "' 
-                    AND reservationHotelPrice.flat_type = 'DBL' 
-                    AND reservationHotelPrice.is_del = 'no' 
-                    LIMIT 1 
-                    ) AS currency_type,
-                     (
-                SELECT
-                    reservationHotelPrice.currency_price /* " . $nights . "*/ 
-                FROM
-                    " . DB_DATABASE . ".reservation_hotel_room_prices_tb AS reservationHotelPrice 
-                WHERE
-                    reservationHotelPrice.id_hotel = reservationHotel.id 
-                    AND reservationHotelPrice.date = '" . $sDatePersian . "' 
-                    AND reservationHotelPrice.user_type = '" . $this->counterId . "' 
-                    AND reservationHotelPrice.flat_type = 'DBL' 
-                    AND reservationHotelPrice.is_del = 'no' 
-                    LIMIT 1 
-                    ) AS currency_price,
-                    (
-                            SELECT
-                                reservationHotelPrice.discount
-                            FROM
-                                reservation_hotel_room_prices_tb AS reservationHotelPrice
-                            WHERE
-                                reservationHotelPrice.id_hotel = reservationHotel.id
-                                AND reservationHotelPrice.date = '" . $sDatePersian . "'
-                                AND reservationHotelPrice.user_type = '" . $this->counterId . "'
-                                AND reservationHotelPrice.flat_type = 'DBL'
-                                AND reservationHotelPrice.is_del = 'no'
-                            LIMIT 1
-                        ) AS commissionDiscount,
-                        ( SELECT GROUP_CONCAT( reservationHotelRoom.breakfast SEPARATOR '|' ) FROM reservation_hotel_room_prices_tb AS reservationHotelRoom WHERE reservationHotel.id = reservationHotelRoom.id_hotel ) AS free_breakfast,
-                        (
-                    SELECT
-                        GROUP_CONCAT( reservationFacilities.title SEPARATOR '|' ) 
-                    FROM
-                        reservation_hotel_facilities_tb AS reservationHotelFacilities
-                        INNER JOIN reservation_facilities_tb AS reservationFacilities ON reservationHotelFacilities.id_facilities = reservationFacilities.id 
-                    WHERE
-                        reservationHotel.id = reservationHotelFacilities.id_hotel 
-                        AND reservationHotelFacilities.is_del = 'no'
-                        ) AS facilities 
-                    FROM
-                        reservation_hotel_tb AS reservationHotel
-                        INNER JOIN reservation_city_tb AS reservationCity ON reservationHotel.city = reservationCity.id
-                        INNER JOIN reservation_country_tb AS reservationCountry ON reservationHotel.country = reservationCountry.id 
-                    WHERE
-                        reservationHotel.country != '1' 
-                        AND LOWER( reservationCountry.name_en ) = '" . $countryNameEn . "' 
-                        AND LOWER( reservationCity.name_en ) = '" . $cityNameEn . "' 
-                        " . $passenger_condition. "
-                        AND reservationHotel.is_del = 'no' 
-                    ";
-            } else {
+            }
+            else {
 //				functions::insertLog( 'end getHotelsFromDB', '00000-checkExternalHotel', 'yes' );
                 $this->error        = true;
                 $this->errorMessage = functions::Xmlinformation( 'Noaccesstihspage' );

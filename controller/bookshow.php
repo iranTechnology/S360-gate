@@ -2931,7 +2931,7 @@ class bookshow extends clientAuth
         $Sql = "SELECT * FROM book_local_tb WHERE  factor_number='{$factorNumber}'";
 
         $res = $Model->select($Sql);
-
+        
         return $res;
 
 

@@ -122,23 +122,49 @@ functions::insertLog(json_encode($infoAirline) , '000shojaee');
         <body>
 
             <?php
+            $type_member = functions::TypeUser(session::getUserId());
 
             foreach ($info_ticket as $info) {
 
-                ?>
-                <table width="100%" align="center" style="margin: 10px 100px " cellpadding="0" cellspacing="0"
-                       class="page">
 
-                    <tr>
-                        <td style="padding: 5px; ">
-                            <img src="<?php echo $LogoAgency; ?>" style="max-width: 150px">
-                        </td>
-                    </tr>
+                if ($info['flight_type'] == 'system' && $info['successfull'] == 'private_reserve') {
+                    $DataFlightitAgencyCommission ='<span class="" style="direction:ltr;">'.number_format(0).'</span>';//پرداخت مسافر - خرید از ما
+                } else {
+                    $DataFlightitAgencyCommission ='<span class="" style="direction:ltr;">'.number_format($info['system_flight_commission']).'</span>';//پرداخت مسافر - خرید از ما
+                }
+                $DataFlightPassengerPayData2 = number_format($info['amount_added']);
+
+                if ( $info['flight_type'] != 'charterPrivate' ) {
+                    $DataFlightTotal = number_format($info['provider_adt_price'] + $info['provider_chd_price'] + $info['provider_inf_price']);
+                    $DataFlightFare = $info['flight_type'] == 'system' ? number_format($info['adt_fare'] + $info['chd_fare'] + $info['inf_fare']) : '_';
+                }
+                else {
+                    $DataFlightTotal = '_';
+                    $DataFlightFare = '_';
+                }
+
+
+                ?>
+            <div style="width: 100%; overflow: hidden;">
+                <table width="100%" align="center" style="margin: 0px 100px  " cellpadding="0" cellspacing="0"
+                       class="page">
+                <tr>
+                    <td style="padding: 5px; ">
+                        <img src="<?php echo $LogoAgency; ?>" style="max-width: 150px">
+                    </td>
+                </tr>
                     <tr style="background-color: #CCC; ">
                         <td style="padding: 5px;" colspan="2" align="left">
                             Electronic Ticket - pnr : <?php echo $info['pnr'] ?>
                         </td>
                     </tr>
+                </table>
+                <div style="width: 48%; float: left;">
+                <table width="100%" align="center" style="margin: 10px 110px " cellpadding="0" cellspacing="0"
+                       class="page">
+
+
+
                     <tr>
                         <td style="padding: 5px;" align="left" width="80%">
                             <?php echo $info['passenger_name_en'] . ' ' . $info['passenger_family_en'] ?>
@@ -229,6 +255,52 @@ functions::insertLog(json_encode($infoAirline) , '000shojaee');
 
 
                 </table>
+                </div>
+                <?php if ($type_member == 'Counter') {?>
+                <div style="width: 48%; float: right;">
+                    <table width="100%" align="center" style="margin: 10px 100px " cellpadding="0" cellspacing="0"
+                           class="page">
+
+<!--                        <tr>-->
+<!--                            <td style="padding: 5px; height: 20px;">-->
+<!--                                <div style="max-width: 150px; height: 20px;">&nbsp;</div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+                        <tr>
+                            <td style="padding: 5px;" colspan="2" align="left">
+                                Total : <?php echo 'IRR ' . $DataFlightTotal ?>
+                            </td>
+                        </tr>
+                        <tr style="">
+                            <td style="padding: 5px;direction: ltr" colspan="2" align="left">
+                                Fare : <?php echo $DataFlightFare ?>
+                            </td>
+                        </tr>
+                        <tr style="">
+                            <td style="padding: 5px;" colspan="2" align="left">
+                                Commission : <?php echo 'IRR ' . $DataFlightitAgencyCommission ?>
+                            </td>
+                        </tr>
+                        <tr style="">
+                            <td style="padding: 5px;" colspan="2" align="left">
+                                Counter Mark : <?php echo 'IRR ' . $DataFlightPassengerPayData2 ?>
+                            </td>
+                        </tr>
+
+
+
+
+
+
+
+
+
+
+
+                    </table>
+                </div>
+                <?php } ?>
+            </div>
 
                 <table width="100%" align="left" style="margin: 10px 100px " cellpadding="0" cellspacing="0"
                        class="page">

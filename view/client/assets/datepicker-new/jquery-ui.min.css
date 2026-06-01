@@ -34,6 +34,7 @@
 #ui-datepicker-div{
 	height : 23em !important;
 	width  : 67.5em !important;
+	z-index:2000 !important;
 }
 
 #ui-datepicker-div .ui-corner-all[title="Next"] .ui-icon,
