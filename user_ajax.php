@@ -2334,8 +2334,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     $factorNumber    = trim( $_POST['factorNumber'] );
     $typeApplication = trim( $_POST['typeApplication'] );
 
-    functions::insertLog('$_POST: ' . json_encode($_POST) , '0abbasi');
-
     /** @var members $objMember */
     /** @var transaction $objTransaction */
     $objMember      = Load::controller( 'members' );
@@ -2365,15 +2363,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
 
     $memberId = Session::getUserId();
 
-    functions::insertLog('$amount: ' . json_encode($amount) , '0abbasi');
-    functions::insertLog('$factorNumber: ' . json_encode($factorNumber) , '0abbasi');
-    functions::insertLog('$memberId: ' . json_encode($memberId) , '0abbasi');
-    functions::insertLog('discount-code: ' . json_encode($_POST['discountCode']) , '0abbasi');
-    functions::insertLog('serviceType: ' . json_encode($_POST['serviceType']) , '0abbasi');
-
     $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $_POST['discountCode'], $_POST['serviceType'] );
-
-    functions::insertLog('$amount$objDiscountCodes: ' . json_encode($amount) , '0abbasi');
 
     if ( $_POST['paymentStatus'] == 'prePayment' ) {
         $comment = ' پیش رزرو هتل ';

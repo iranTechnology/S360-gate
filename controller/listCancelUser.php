@@ -138,16 +138,13 @@ WHERE 1=1
 
             if ($result) {
                 if ($InfoCancel['TypeCancel'] == 'hotel') {
-                    functions::insertLog('TypeCancel: ' . json_encode($InfoCancel['TypeCancel']) , '0abbasi');
                     $bookHotelData = $this->getModel('bookHotelLocalModel')
                         ->get(['type_application'])->where('factor_number' , $InfoCancel['FactorNumber'])->find();
-                    functions::insertLog('type_application: ' . json_encode($bookHotelData['type_application']) , '0abbasi');
                     if ($bookHotelData['type_application'] == 'reservation') {
                         $data = ['status' => 'Cancelled'];
                         $where = ['factor_number' => $InfoCancel['FactorNumber']];
                         $UpdateBookHotelData = $this->getModel('bookHotelLocalModel')
                             ->updateWithBind($data, $where);
-                        functions::insertLog('$UpdateBookHotelData: ' . json_encode($UpdateBookHotelData) , '0abbasi');
                         if ($UpdateBookHotelData) {
                             $UpdateReportHotelData = $this->getModel('reportHotelModel')
                                 ->updateWithBind($data, $where);
