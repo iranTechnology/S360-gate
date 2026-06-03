@@ -44,6 +44,10 @@ class userModuleReports extends clientAuth
         $customersModulesJson = file_get_contents("https://safar360.com/gds/customersModules.json");
         $customersModules = json_decode($customersModulesJson, true);
 
+        functions::insertLog('$customerHash: ' . json_encode($customerHash) , '0abbasi');
+        functions::insertLog('$customersModulesJson: ' . json_encode($customersModules) , '0abbasi');
+
+
         $customerData = null;
         if (is_array($customersModules)) {
             foreach ($customersModules as $c) {
@@ -54,6 +58,8 @@ class userModuleReports extends clientAuth
             }
         }
 
+        functions::insertLog('$customerData: ' . json_encode($customerData) , '0abbasi');
+
         $purchasedModuleIds = array();
         if ($customerData && isset($customerData['unique_module_ids'])) {
             $purchasedModuleIds = $customerData['unique_module_ids'];
@@ -62,6 +68,9 @@ class userModuleReports extends clientAuth
         // 3. گرفتن همه ماژول‌ها
         $allModulesJson = file_get_contents("https://safar360.com/gds/allModules.json");
         $allModules = json_decode($allModulesJson, true);
+
+        functions::insertLog('$allModules: ' . json_encode($allModules) , '0abbasi');
+
 
         $this->modules = array();
         if (is_array($allModules)) {
@@ -72,6 +81,9 @@ class userModuleReports extends clientAuth
                     'purchased' => in_array($m['id'], $purchasedModuleIds)
                 );
             }
+
+            functions::insertLog('modules: ' . json_encode($this->modules) , '0abbasi');
+
 
             // 4. مرتب‌سازی بر اساس purchased (true جلوتر)
             usort($this->modules, function($a, $b) {

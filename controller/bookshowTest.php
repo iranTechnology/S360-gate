@@ -38,11 +38,11 @@ class bookshowTest extends clientAuth {
         if($pnr=='' && $factor_number=='' && $request_number=='' && $passenger_name==''){
             $ReturnDate=functions::ChangeDateForTransactions($date_of,$to_date);
         }
-        else{//3ماه قبل را واکشی کند
+        else{//7ماه قبل را واکشی کند
             // امروز میلادی
             $todayGregorian = date('Y-m-d');
             // 3 ماه قبل (میلادی)
-            $threeMonthAgoGregorian = date('Y-m-d', strtotime('-3 months'));
+            $threeMonthAgoGregorian = date('Y-m-d', strtotime('-7 months'));
             // تبدیل به شمسی
             $todayJalali = dateTimeSetting::jdate('Y-m-d', strtotime($todayGregorian));
             $threeMonthAgoJalali = dateTimeSetting::jdate('Y-m-d', strtotime($threeMonthAgoGregorian));
@@ -10537,6 +10537,13 @@ class bookshowTest extends clientAuth {
             return functions::Xmlinformation("Canceled");
         }
 
+
+        if($flightBook['successfull'] === 'error'){
+            $errorsController = Load::controller('errors');
+            $errors = $errorsController->showAllErrors('flight');
+            functions::insertLog(json_encode($errors),'00000000000000000shojaee');
+        }
+
         $statusMap = [
             'book' => functions::Xmlinformation("Definitivereservation"),
             'private_reserve' => functions::Xmlinformation("ExclusiveBooking"),
@@ -10583,14 +10590,23 @@ class bookshowTest extends clientAuth {
     private function getInsuranceStatusText($insurance) {
         $status = $insurance['status'] ?? 'نامشخص';
 
+//        $statusMap = [
+//            'book' => 'رزرو قطعی',
+//            'prereserve' => 'پیش رزرو',
+//            'bank' => 'هدایت به درگاه',
+//            'credit' => 'انتخاب اعتباری',
+//            'nothing' => 'بدون وضعیت',
+//            'pending' => 'در حال صدور',
+//            '' => 'نامشخص'
+//        ];
         $statusMap = [
-            'book' => 'رزرو قطعی',
-            'prereserve' => 'پیش رزرو',
-            'bank' => 'هدایت به درگاه',
-            'credit' => 'انتخاب اعتباری',
-            'nothing' => 'بدون وضعیت',
-            'pending' => 'در حال صدور',
-            '' => 'نامشخص'
+            'book' =>functions::Xmlinformation("Definitivereservation"),
+            'prereserve' => functions::Xmlinformation("Prereservation"),
+            'bank' =>  functions::Xmlinformation("NavigateToPort"),
+            'credit' => functions::Xmlinformation("CreditSelection"),
+            'nothing' =>functions::Xmlinformation("NoStatus"),
+            'pending' =>functions::Xmlinformation("pendingPrintFlight"),
+            '' => functions::Xmlinformation("Unknown")
         ];
 
         return $statusMap[$status] ?? $status;

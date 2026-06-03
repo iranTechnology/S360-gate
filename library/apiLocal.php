@@ -1696,20 +1696,20 @@ class apiLocal extends clientAuth
                 foreach ($book['Result']['Request']['RequestFares'] as $RequestFares) {
                     if ( (in_array($sourceId,$source_rial))) {
                         if (strtolower($RequestFares['PassengerType']) == "adt") {
-                            $Price['Adt']     =   $RequestFares['TotalFare'] + 1000;
+                            $Price['Adt']     =   $RequestFares['TotalFare'];
                             $PriceFare['Adt'] =   $RequestFares['BaseFare'] ;
                             $PriceTax['Adt']  =   $RequestFares['Tax'];
                             $PriceCom['Adt']  =   $RequestFares['Commision'];
                         }
                         if (strtolower($RequestFares['PassengerType']) == "chd") {
-                            $Price['Chd']     =   $RequestFares['TotalFare'] + 1000;
+                            $Price['Chd']     =   $RequestFares['TotalFare'];
                             $PriceFare['Chd'] =   $RequestFares['BaseFare'] ;
                             $PriceTax['Chd']  =   $RequestFares['Tax'];
                             $PriceCom['Chd']  =   $RequestFares['Commision'];
 
                         }
                         if (strtolower($RequestFares['PassengerType']) == "inf") {
-                            $Price['Inf']     =  $RequestFares['TotalFare'] + 1000;
+                            $Price['Inf']     =  $RequestFares['TotalFare'];
                             $PriceFare['Inf'] =  $RequestFares['BaseFare'] ;
                             $PriceTax['Inf']  =  $RequestFares['Tax'];
                             $PriceCom['Inf']  =  $RequestFares['Commision'];

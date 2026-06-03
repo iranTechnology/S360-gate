@@ -19,6 +19,7 @@
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`content-main-page-footer.tpl" info_access_client_to_service=$info_access_client_to_service}
 {/if}
 
+{if $smarty.const.GDS_SWITCH eq 'mainPage'}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var searchBoxTabs = document.getElementById("searchBoxTabs");
@@ -37,3 +38,4 @@
         }
     });
 </script>
+{/if}
