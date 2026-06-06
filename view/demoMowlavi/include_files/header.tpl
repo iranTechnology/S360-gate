@@ -4,6 +4,8 @@
 {load_presentation_object filename="functions" assign="objFunctions"}
 {load_presentation_object filename="frontMaster" assign="obj"}
 {load_presentation_object filename="dateTimeSetting" assign="objDate"}
+{load_presentation_object filename="partner" assign="objPartner"}
+{assign var="favicon" value=$objPartner->getFavicon() scope=parent}
 {assign var="objFunctions" value=$objFunctions scope=parent}
 {assign var="obj" value=$obj scope=parent}
 {assign var="objDate" value=$objDate scope=parent}
@@ -37,13 +39,13 @@
             {/if}
         {/foreach}
     {/if}
-
-    <title>karvan sadat</title>
-
-
+    
+    {if $smarty.const.GDS_SWITCH eq 'mainPage' }
+        {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHeadMain.tpl"}
+    {/if}
 
     <base href="{$smarty.const.CLIENT_DOMAIN}"/>
-<link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+    <link href="{$favicon}" rel="shortcut icon" type="image/x-icon"/>
 
 
     {* todo: this use in all page and all of them are necessary*}
@@ -51,6 +53,7 @@
 
     <link rel="stylesheet" href="project_files/css/bootstrap.min.css">
     <link rel="stylesheet" href="project_files/css/header.css">
+  
 
 
 
@@ -60,7 +63,7 @@
 
     {if $smarty.const.GDS_SWITCH eq 'mainPage' || $smarty.const.GDS_SWITCH eq 'page'}
         <link href="assets/main-asset/css/main.css" rel="stylesheet"/>
-<link rel="stylesheet" href="project_files/css/owl.carousel.min.css"><link rel="stylesheet" href="project_files/css/camera.css">
+<link rel="stylesheet" href="project_files/css/owl.carousel.min.css">
 <link href="assets/css/jquery-confirm.min.css" rel="stylesheet">
 <link href="assets/datepicker/jquery-ui.min.css" rel="stylesheet" type="text/css">
 <link href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen" rel="stylesheet" type="text/css"/>

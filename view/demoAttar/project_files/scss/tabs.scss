@@ -31,22 +31,21 @@
     justify-content: center;
     cursor: pointer;
     z-index: 10;
+    border: none;
     color: #555;
     font-size: 11px;
     transition: all ease .4s;
     top: 50%;
     transform: translateY(-50%);
-    background: #e5e5e5;
-    border: 1px solid #ccc;
+    background: #f8fafb;
 }
 .switch_routs svg{
     width: 12px;
     fill: #444;
 }
 .switch_routs:hover {
-    background: $mainColor;
-    color: #fff;
-    border-color: $mainColor;
+    background: $secondColor;
+    color: $mainColor;
 
     svg {
         fill: #fff;
@@ -91,10 +90,6 @@
     padding: 20px;
 }
 
-#searchBoxContent .fal.fa-calendar-alt {
-   display: none;
-}
-
 #searchBoxContent > div {
     width: 100%;
 }
@@ -105,110 +100,19 @@
 
 #searchBoxTabs {
     display: grid;
-    grid-template-columns: repeat(11, 1fr);
+    grid-template-columns: repeat(9, 1fr);
     grid-template-rows: 1fr;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     position: relative;
     padding: 5px 0;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
     border-bottom: 1px solid rgba(0,0,0,.12) ;
 }
 
 .search_box{
     margin-top: -89px;
-}
-
-.dropdown-insurance {
-    position: relative;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    height:46px
-}
-
-.dropdown-toggle-insurance {
-    width: 100%;
-    padding-right: 8px;
-    cursor: pointer;
-    text-align: right;
-    font-size: 14px;
-    color: #4e4e4e;
-    margin-top:13px
-}
-
-.dropdown-menu-insurance {
-    display: none;
-    position: absolute;
-    width: 100%;
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    text-align: right;
-    z-index: 10;
-    top:49px
-}
-
-.dropdown-menu-insurance:last-child {
-    text-align: center
-}
-
-.title-dropdown-item-insurance {
-    padding: 10px 10px 0;
-    display: grid;
-    grid-template-columns:repeat(2, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
-    font-size: 11px
-}
-
-.dropdown-item-insurance {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee
-}
-
-.dropdown-item-insurance:last-child {
-    border-bottom: none
-}
-
-.counter-insurance {
-    display: flex;
-    align-items: center
-}
-
-.counter-insurance button {
-    width: 25px;
-    height: 25px;
-    border: none;
-    background-color: var(--mainColor);
-    cursor: pointer;
-    border-radius: 7px;
-    transition: all ease .5s;
-    display: flex;
-    align-items: center;
-    justify-content: center
-}
-
-.counter-insurance button:hover {
-    background: #190606
-}
-
-.counter-insurance button svg {
-    fill: #fff;
-    width: 14px;
-    height: 14px
-}
-
-.counter-insurance span {
-    margin: 0 10px;
-    min-width: 20px;
-    text-align: center;
-    font-size: 18px;
-    color: #333
 }
 
 
@@ -318,10 +222,6 @@
     width: 50%;
     margin: 0;
     position: relative;
-}
-
-#Cip .date_search .form-group {
-    width: 100%;
 }
 
 .date_search i.fal, .search_col i.fal {
@@ -644,7 +544,7 @@
     z-index: 1;
 }
 .fa-caret-down::before {
-    color: #737373;
+    color: #fff;
 }
 .form-group{
     margin-bottom: 0 !important;
@@ -661,12 +561,11 @@
 }
 
 .text-count-passenger {
-    color: #4e4e4e !important;
+    color: #444 !important;
     top: 0;
     right: 5px;
     font-size: 14px;
     text-align: right;
-    line-height: 19px;
 }
 
 .cbox-count-passenger {
@@ -1004,7 +903,7 @@
     align-items: center;
     display: flex;
     height: 36px;
-    margin-bottom: 9px;
+    margin-bottom: 6px;
 }
 .btn_close_box{
     display: flex;
@@ -1043,6 +942,7 @@
 #Train {
     text-align: center;
     font-size: 24px;
+    margin: auto;
 
     .train-banner {
         width: 100%;
@@ -1408,7 +1308,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     padding: 5px 3px;
     position: absolute;
     top: -43px;
-    right: 230px;
+    right: 1px;
 }
 
 .btn-radio {
@@ -1491,7 +1391,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    color: #4e4e4e !important;
+    color: #000 !important;
 }
 
 .hotel_passenger_picker, .package_passenger_picker, .hotel_local_passenger_picker {
@@ -1502,7 +1402,6 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     align-items: center;
     padding: 10px 15px 10px 5px;
     background: #fff;
-    border: 1px solid #ddd;
 }
 
 .package_passenger_picker {
@@ -1537,7 +1436,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 }
 .hotel_passenger_picker ul li, .hotel_local_passenger_picker ul li, .package_passenger_picker ul li {
     font-size: 14px;
-    color: #4e4e4e;
+    color: #444;
     text-align: revert;
 }
 .search_box_div .select2-container--default .select2-selection--single {
@@ -1548,10 +1447,10 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     background-color: #fff;
 }
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
-    color: #4e4e4e !important;
+    color: #000 !important;
 }
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
-    border-color: #737373 rgba(0,0,0,0) rgba(0,0,0,0) rgba(0,0,0,0) !important;
+    border-color: #fff rgba(0,0,0,0) rgba(0,0,0,0) rgba(0,0,0,0) !important;
 }
 //.select2-container--default .select2-selection--single {
 //    border: none !important;
@@ -1800,16 +1699,11 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
         font-size: 16px;
     }
     #searchBoxTabs .nav-link {
+        width: 98px;
         height: 75px;
     }
     .search_box {
         margin-top: -96px;
-    }
-    #searchBoxTabs .nav-item {
-        min-width: 65px;
-    }
-    #searchBoxTabs .nav-link i {
-        font-size: 28px;
     }
 }
 
@@ -1863,7 +1757,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
         margin-top: 9px !important;
     }
     #searchBoxTabs .nav-link {
-        width: 84px;
+        width: 100px;
         height: 80px;
     }
     #searchBoxTabs .nav-link svg {

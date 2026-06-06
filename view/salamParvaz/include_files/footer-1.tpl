@@ -176,9 +176,7 @@
          <a href="javascript:">
           <img alt="namad-2" src="project_files/images/certificate3.png"/>
          </a>
-         <a href="javascript:">
-          <img alt="namad-2" src="project_files/images/enamad.png"/>
-         </a>
+         <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=92574&Code=hdxHMBXNbXSUIR1ZdSV2'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=92574&Code=hdxHMBXNbXSUIR1ZdSV2' alt='' style='cursor:pointer' code='hdxHMBXNbXSUIR1ZdSV2'></a>
 {*         <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=643555&Code=OzKoNcBdA3d0Mi6jycMayk83o867uRGX'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=643555&Code=OzKoNcBdA3d0Mi6jycMayk83o867uRGX' alt='' style='cursor:pointer' code='OzKoNcBdA3d0Mi6jycMayk83o867uRGX'></a>*}
 
 {*         <a href="javascript:">*}

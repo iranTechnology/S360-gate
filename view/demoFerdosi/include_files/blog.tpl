@@ -18,7 +18,7 @@
     <section class="i_modular_blog blog">
         <div class="container">
             <div class="title">
-                <h2>مجله فردوسی</h2>
+                <h2>مجله سفر 360</h2>
                 <p>
 
                     آخرین وبلاگ و مقالات و اخبار مهاجرتی، گردشگری , علمی ، فرهنگی ، هنری و ورزشی.

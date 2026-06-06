@@ -1,30 +1,104 @@
-{assign var="type_data" value=['is_active'=>1 , 'limit' =>10 , 'order' => 'ASC']}
-{assign var='banners' value=$obj_main_page->galleryBannerMain($type_data)}
+{load_presentation_object filename="specialPages" assign="objSpecialPages"}
 
-{*{if $banners}*}
+{assign var="searchServices" value=[
+'flight-foroogh'=>'specialFlightPic',
+'hotel-foroogh'=> 'specialHotelPic',
+'train-foroogh' => 'specialTrainPic',
+'bus-foroogh' =>'specialBusPic',
+'tour-foroogh' =>'specialTourPic',
+'insurance-foroogh' =>'specialInsurancePic',
+'visa-foroogh' =>'specialVisaPic',
+'gasht-foroogh' =>'specialGashtPic',
+'package-foroogh' =>'specialPackagePic',
+'rentCar-foroogh' =>'specialCarPic',
+'entertainment-foroogh' =>'specialEntertainmentPic',
+'cip-foroogh' =>'specialCipPic',
+'mainPage' =>'MainPagePic']}
+{foreach $searchServices as $key => $val}
+    {assign var="homePage" value=$objSpecialPages->unSlugPage($key)}
+    {if $homePage}
+        {assign var=$val value=$homePage.files.main_file.src}
+    {/if}
+    {assign var="homePage" value=""}
+{/foreach}
 
-<section class="i_modular_banner_gallery banner-gallery">
-    <div class="owl-carousel owl-banner owl-theme">
-{*        {foreach $banners as $key => $banner}*}
+<style>
+    .banner-demo {
+    {if $page.files.main_file.src && $smarty.const.GDS_SWITCH eq 'page'}
+        background-image: url("{$page.files.main_file.src}");
+    {else}
+        background-image: url("{$specialFlightPic}");
+    {/if}
+    }
+</style>
 
-{*        <div class="item">*}
-{*            <img src="{$banner['pic']}" alt="{$banner['title']}">            <div class="container">*}
-{*                <div class="textBanner">*}
-{*                    <h2>رزرو هتل</h2>*}
-{*                    <p>{$banner['title']}</p>*}
-{*                </div>*}
-{*            </div>*}
-{*        </div>*}
-{*        {/foreach}*}
+<script>
+    {literal}
+    if($(window).width() > 576){
+        {/literal}
+        {if $specialFlightPic}
+        {literal}
+        $('.Flight-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialFlightPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialHotelPic}
+        {literal}
+        $('.Hotel-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialHotelPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialTrainPic}
+        {literal}
+        $('.Train-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialTrainPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialBusPic}
+        {literal}
+        $('.Bus-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialBusPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialTourPic}
+        {literal}
+        $('.Tour-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialTourPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialInsurancePic}
+        {literal}
+        $('.Insurance-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialInsurancePic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialVisaPic}
+        {literal}
+        $('.Visa-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialVisaPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialGashtPic}
+        {literal}
+        $('.GashtTransfer-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialGashtPic}{literal}")')});
+        {/literal}
+        {/if}
 
-        <div class="item">
-            <img src="project_files/images/ad3.jpg" alt="foroogh">            <div class="container">
-                <div class="textBanner">
-{*                    <p>دمو فروغ</p>*}
-                </div>
-            </div>
-        </div>
+        {if $specialCarPic}
+        {literal}
+        $('.Europcar-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialCarPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialPackagePic}
+        {literal}
+        $('.Package-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialPackagePic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialEntertainmentPic}
+        {literal}
+        $('.Entertainment-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialEntertainmentPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialCipPic}
+        {literal}
+        $('.Cip-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialCipPic}{literal}")')});
+        {/literal}
+        {/if}
+        {literal}
 
-    </div>
-
-{*{/if}*}
+    }
+</script>
+{/literal}

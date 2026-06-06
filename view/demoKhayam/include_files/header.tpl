@@ -3,6 +3,8 @@
 {load_presentation_object filename="functions" assign="objFunctions"}
 {load_presentation_object filename="frontMaster" assign="obj"}
 {load_presentation_object filename="dateTimeSetting" assign="objDate"}
+{load_presentation_object filename="partner" assign="objPartner"}
+{assign var="favicon" value=$objPartner->getFavicon() scope=parent}
 {assign var="objFunctions" value=$objFunctions scope=parent}
 {assign var="obj" value=$obj scope=parent}
 {assign var="objDate" value=$objDate scope=parent}
@@ -21,10 +23,8 @@
     <meta name="google-site-verification" content="c8S5M5D7Xr7xMO81hz-gxXiwnB3Uc32_OHOWrjuO9eI" />
     <meta name="enamad" content="73406652" />
     <base href="{$smarty.const.CLIENT_DOMAIN}" />
-    <link rel="shortcut icon" type="image/png" href="project_files/images/favicon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="project_files/images/favicon.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="project_files/images/favicon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="project_files/images/favicon.png">
+    <link href="{$favicon}" rel="shortcut icon" type="image/x-icon"/>
+
 
     {* todo: this use in all page and all of them are necessary*}
 
@@ -72,7 +72,9 @@
     <link rel="stylesheet" href="assets/all-css/all.min.css">
     <link rel="stylesheet" href="assets/main-asset/css/register.css">
 
-
+    {if $smarty.const.GDS_SWITCH eq 'mainPage' }
+        {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHeadMain.tpl"}
+    {/if}
 
     {if $smarty.const.GDS_SWITCH neq 'mainPage'}
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHead.tpl"}

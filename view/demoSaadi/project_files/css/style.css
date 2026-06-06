@@ -673,7 +673,7 @@ a:hover {
 }
 
 .newsletters .newsletterMain .form_newsletter label a:hover {
-    background: var(--secondColor)
+    background: #8d8d8d
 }
 
 .accordion-gallery {

@@ -1924,4 +1924,69 @@ background: var(--mainColor);
     }
 
 }
+.height-line-brack{
+    height: 64vh !important;
+}
+.banner-demo{
+    height: 40vh !important;
+}
+.banner-demo::after{
+    height: 100% !important;
+}
 
+body .camera_wrap,
+body .camerarelative,
+body .camera_target,
+body .camera_target_content,
+body .camera_fakehover,
+body .cameraCont,
+body .cameraContents{
+    min-height: 65vh !important;
+    max-height: 65vh !important;
+}
+
+.special_tours{
+    margin-top: 95px;
+}
+.banner-demo-1{
+    height: 65vh !important;
+}
+@media (max-width: 767px) {
+    body .height-line-brack,
+    html body .height-line-brack {
+        height: 55vh !important;
+        min-height: 55vh !important;
+        max-height: 55vh !important;
+    }
+}
+
+/* برای سایز کوچک (اولویت بالا) */
+@media (max-width: 578px) {
+    body .height-line-brack,
+    html body .height-line-brack {
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+    }
+    .special_tours{margin-top: 177px !important;}
+    .banner-demo-1::after{
+        display:none;
+    }
+   body #camera_wrap_1{
+        display:none !important;
+    }
+}
+
+/* برای تبلت (اولویت بالا) */
+@media (min-width: 578px) and (max-width: 991px) {
+    body .height-line-brack,
+    html body .height-line-brack {
+        height: 52vh !important;
+        min-height: 52vh !important;
+        max-height: 52vh !important;
+    }
+
+    .special_tours{
+        margin-top: 177px !important;
+    }
+}

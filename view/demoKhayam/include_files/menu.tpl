@@ -3,7 +3,7 @@
 
 <header class="header_area " id="header">
     <div class="main_header_area animated">
-        <div class="container-fluid">
+        <div class="container">
             <nav id="navigation1" class="navigation">
                 <div class="nav-header">
                     <a class="nav-brand" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
@@ -43,11 +43,11 @@
                                             <span>
                                             <i class="fa-light fa-suitcase-rolling"></i>
                                             </span>
-                                            تور های بوم گردی
+                                            تور های گردشگردی
                                         </p>
                                         <div class="parent-earth--new">
-                                            {assign var="type" value="6"}
-                                            {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries(false, false  , $type)}
+                                            {assign var="type" value="19"}
+                                            {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries(false, false  , $type , 'like' , true)}
                                                 {assign var="year" value=substr($item_tour['start_date'], 0, 4)}
                                                 {assign var="month" value=substr($item_tour['start_date'], 4, 2)}
                                                 {assign var="day" value=substr($item_tour['start_date'], 6)}
@@ -72,7 +72,7 @@
                             <a href="javascript:">تور داخلی</a>
                             <ul class="nav-dropdown nav-submenu">
                                 <li>
-                                    <a href="javascript:">تور داخلی</a>
+                                    <a href="javascript:">تور گروهی</a>
                                     <ul class="nav-dropdown my-dropdown nav-submenu">
                                         {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCities('=1', 'return' ,false , 17 , 'like')}
                                             {assign var="year" value=substr($item_tour['start_date'], 0, 4)}
@@ -88,9 +88,9 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="javascript:">تور زمینی</a>
+                                    <a href="javascript:">تور گردشکری</a>
                                     <ul class="nav-dropdown my-dropdown nav-submenu">
-                                        {assign var="type" value="6"}
+                                        {assign var="type" value="19"}
                                         {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries(false, false  , $type)}
                                             {assign var="year" value=substr($item_tour['start_date'], 0, 4)}
                                             {assign var="month" value=substr($item_tour['start_date'], 4, 2)}
@@ -178,13 +178,13 @@
                             <a href="javascript:">بلیط</a>
                             <ul class="nav-dropdown">
                                 <li>
-                                    <a href="{$smarty.const.ROOT_ADDRESS}/page/InternalFlight">هواپیما</a>
+                                    <a href="{$smarty.const.ROOT_ADDRESS}/page/flight-khayam">هواپیما</a>
                                 </li>
                                 <li>
-                                    <a href="{$smarty.const.ROOT_ADDRESS}/page/train">قطار</a>
+                                    <a href="{$smarty.const.ROOT_ADDRESS}/page/train-khayam">قطار</a>
                                 </li>
                                 <li>
-                                    <a href="{$smarty.const.ROOT_ADDRESS}/page/bus">اتوبوس</a>
+                                    <a href="{$smarty.const.ROOT_ADDRESS}/page/bus-khayam">اتوبوس</a>
                                 </li>
                             </ul>
                         </li>
@@ -196,7 +196,7 @@
                 <li>
                     <a href="javascript:"> ویزا </a>
                     <ul class="nav-dropdown ">
-                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa">اخذ ویزا</a></li>
+                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa-khayam">اخذ ویزا</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/embassy-appointment">وقت سفارت</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa-pickup">پیکاپ ویزا</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/obtaining-residence">اخذ اقامت</a></li>
@@ -206,10 +206,10 @@
                         <li>
                             <a href="javascript:">بیشتر</a>
                             <ul class="nav-dropdown">
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/insurance">بیمه</a></li>
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa">ویزا</a></li>
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/entertainment">تفریحات</a></li>
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/rentCar">اجاره خودرو</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/insurance-khayam">بیمه</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa-khayam">ویزا</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/entertainment-khayam">تفریحات</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/rentCar-khayam">اجاره خودرو</a></li>
                             </ul>
                         </li>
                         <li>
@@ -229,14 +229,37 @@
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/mag">وبلاگ</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/introductCountry">معرفی کشورها</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/introductIran">معرفی ایران</a></li>
-                                {*            <li><a href="{$smarty.const.ROOT_ADDRESS}/embassies">سفارت</a></li>*}
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/weather">هواشناسی</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/clock">ساعت کشورها</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/convertDate">تبدیل تاریخ</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/currency">نرخ ارز</a></li>
-                                {*            <li><a href="{$smarty.const.ROOT_ADDRESS}/page/gallery">گالری جهان</a></li>*}
                             </ul>
                         </li>
+                        <li>
+                            <a href="javascript:void(0)"> آژانس ما </a>
+                            <ul class="nav-dropdown ">
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/permissions">مجوز ها</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">ارتباط با ما</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">پیگیری درخواست</a></li>
+                                <li>
+                                    <a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین
+                                        و مقررات</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/training-employment">آموزش و استخدام</a>
+                                </li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/payment">شماره حساب شرکت</a></li>
+                                <li><a href="  https://caa.gov.ir/air-transport-agencies-renewal">لیست آژانس های (بند
+                                        الف)</a></li>
+                                <li>
+                                    <a href="https://ta.mcth.ir/kartablePage?applicationPageId=bc9bfc38-3819-4dee-aa12-01c68e5c448e">لیست
+                                        آژانس های (بند ب)</a></li>
+                                <li><a href="https://caa.gov.ir/air-cargo">لیست آژانس های بار هوایی</a></li>
+                                <li>
+                                    <a href="https://ta.mcth.ir/kartablePage?applicationPageId=3a68195e-c21e-4c02-847f-2c1ef86f9cd0">
+                                        آژانس های گردشگری سلامت</a></li>
+                            </ul>
+                        </li>
+
                 </ul>
 
 

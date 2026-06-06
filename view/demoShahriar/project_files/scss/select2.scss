@@ -10,7 +10,7 @@
   position: relative;
   z-index: 9;
   vertical-align: middle;
-  height: 53px;
+  height: 46px;
 }
 
 .select2-container .select2-selection--single {
@@ -175,7 +175,7 @@
 }
 
 .select2-container--default .select2-selection--single {
-  height: 53px;
+  height: 51px;
   border: 1px solid #ccc;
   border-radius: 14px !important;
 }
@@ -197,7 +197,7 @@
 }
 
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
-  color: #6c757d;
+  color: #9a9999;
   font-size: 14px;
   font-style: normal;
   font-weight: normal;

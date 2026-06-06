@@ -4,7 +4,9 @@
 {load_presentation_object filename="functions" assign="objFunctions"}
 {load_presentation_object filename="frontMaster" assign="obj"}
 {load_presentation_object filename="dateTimeSetting" assign="objDate"}
+{load_presentation_object filename="partner" assign="objPartner"}
 {assign var="objFunctions" value=$objFunctions scope=parent}
+{assign var="favicon" value=$objPartner->getFavicon() scope=parent}
 {assign var="obj" value=$obj scope=parent}
 {assign var="objDate" value=$objDate scope=parent}
 {assign var="obj_main_page" value=$obj_main_page scope=parent}
@@ -39,9 +41,11 @@
     {/if}
 
     <base href="{$smarty.const.CLIENT_DOMAIN}"/>
-    <link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+    <link href="{$favicon}" rel="shortcut icon" type="image/x-icon"/>
 
-
+    {if $smarty.const.GDS_SWITCH eq 'mainPage' }
+        {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHeadMain.tpl"}
+    {/if}
     {* todo: this use in all page and all of them are necessary*}
 
 
@@ -64,6 +68,8 @@
     <link type="text/css" rel="stylesheet" href="assets/datepicker-new/price_calender.css"/>
     {else}
     <link type="text/css" rel="stylesheet" href="assets/datepicker/jquery-ui.min.css"/>
+
+
     {/if}
         <link href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen" rel="stylesheet" type="text/css"/>
         <script type="text/javascript">

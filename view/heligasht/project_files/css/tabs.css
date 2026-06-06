@@ -93,6 +93,10 @@
     border-radius: 10px;
 }
 
+.banner-demo-1 .search_box_div {
+    margin-bottom: 200px;
+}
+
 .dropdown-insurance {
     position: relative;
     width: 100%;
@@ -546,7 +550,7 @@
 }
 
 .theme-btn {
-    background: var(--mainColor) !important;
+    background: var(--secondColor) !important;
     transition: all ease .3s !important;
     height: 50px;
     width: 100%;
@@ -557,7 +561,7 @@
 }
 
 .theme-btn:hover {
-    background: var(--secondColor) !important
+    background: var(--mainColor) !important
 }
 
 .btn:focus, .btn.focus {

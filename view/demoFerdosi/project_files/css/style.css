@@ -200,7 +200,7 @@
     cursor: pointer;
 }
 .other .item .icon {
-    background: #fd320a54;
+    background: #b61b1b40;
     padding: 10px;
     height: 50px;
     width: 50px;
@@ -1098,7 +1098,7 @@
 }
 
 .box-airline-img-tour img {
-    width: 45px !important;
+    width: 68px !important;
 }
 
 .tour-item-link:hover {
@@ -1170,7 +1170,7 @@
 
 .parent-title-new-social i {
     font-size: 34px;
-    color: var(--mainColor);
+    color: #b71c1c;
 }
 
 .title-new-social {
@@ -1810,3 +1810,20 @@
         display: none;
     }
 }
+.megamenu-panel {
+    display: none;
+}
+
+
+.navigation-landscape .nav-menu li:hover > .nav-submenu,
+.navigation-landscape .nav-menu li:hover > .megamenu-panel,
+.navigation-landscape .nav-menu li.focus > .nav-submenu,
+.navigation-landscape .nav-menu li.focus > .megamenu-panel {
+    display: block !important;
+}
+
+.navigation-portrait .nav-menu li.open > .nav-submenu,
+.navigation-portrait .nav-menu li.open > .megamenu-panel {
+    display: block !important;
+}
+

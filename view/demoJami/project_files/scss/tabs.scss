@@ -343,6 +343,10 @@
   transition: all ease .4s;
 }
 
+#searchBoxTabs .nav-link.active div h4 {
+  color: $mainColor;
+}
+
 #searchBoxTabs .nav-link.active{
   background: #fff;
 }
