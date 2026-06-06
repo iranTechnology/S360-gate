@@ -11,7 +11,7 @@
                 <div class="text-title-safiran">
                     <h2>تور های ویژه</h2>
                 </div>
-                <a class="more-title-safiran" href="{$smarty.const.ROOT_ADDRESS}/page/tour">
+                <a class="more-title-safiran" href="{$smarty.const.ROOT_ADDRESS}/page/tour-attar">
                     <span>بیشتر</span>
                     <svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
                         <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->

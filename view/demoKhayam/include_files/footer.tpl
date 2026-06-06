@@ -4,7 +4,7 @@
 {if $smarty.session.layout neq 'pwa'}
     {if $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotel && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintTicket && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservation && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservationAhuan}
         <footer>
-            <div class="container-fluid">
+            <div class="container">
                 <div class="parent-footer-pabpa">
                     <div class="item1-footer-pabpa">
                         <div class="data_phone">

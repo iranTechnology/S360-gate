@@ -153,32 +153,6 @@ $(function () {
     });
 });
 
-
-$(document).ready(function() {
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 200) {
-            $('.header_area').addClass('scrolled');
-        } else {
-            $('.header_area').removeClass('scrolled');
-        }
-    });
-    jQuery(function(){
-        jQuery('#camera_wrap_1').camera({
-            thumbnails: true,
-            barPosition: 'top',
-            height: '100%',
-            hover: true,
-            loader:"bar",
-            loaderColor: '#fff',
-            loaderBgColor: '#222222',
-            minHeight: '100%',
-            playPause: false,
-            pauseOnClick: false,
-
-        });
-    });
-});
-
 //hotel
 
 $('.owl-blog-demo').owlCarousel({

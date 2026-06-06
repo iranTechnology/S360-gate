@@ -645,6 +645,7 @@ footer h6 {
     justify-content: space-between;
     transition: all ease .5s;
     padding: 0 30px;
+    height: 100px;
 }
 
 .parent-logo-menu {
@@ -1877,7 +1878,6 @@ footer h6 {
     transition: all ease .3s;
     background: #fff;
     box-shadow: 0 2px 5px -1px rgba(0, 0, 0, .08);
-    padding: 8px 0;
 }
 
 .main_header_area.scrolled .navigation {
@@ -2304,7 +2304,7 @@ footer h6 {
     }
 
     .nav-menus-wrapper {
-        margin-right: 10px
+        margin-right: 40px
     }
 
     .megamenu-panel {
@@ -2925,10 +2925,6 @@ footer h6 {
         line-height: 26px !important
     }
 
-    .navigation {
-        padding: 5px 0
-    }
-
     .text-dey {
         display: none !important
     }
@@ -3240,7 +3236,7 @@ footer h6 {
     }
 
     .navigation {
-        height: 70px
+        height: 90px
     }
 
     .parent-footer-iran .nav-header h4 {
@@ -3820,7 +3816,7 @@ footer h6 {
     align-items: center;
     justify-content: center;
     padding: 8px 15px;
-    gap: 8px;
+    gap: 5px;
     border-radius: 10px;
     background: var(--mainColor);
     flex-direction: row-reverse;

@@ -50,6 +50,11 @@ a:hover {
     margin-bottom: 200px;
 }
 
+.banner-demo-1 .container {
+    display: flex;
+    align-items: end;
+}
+
 .tours, .hotel-ghods, .newsletters, .news, .tab-tour, .blog-kharazmi, .other, .about, .video, .your-question, .blog-demo, .Comments , footer , .hotels , .newsletter {
     margin-top: 90px
 }
@@ -2596,8 +2601,14 @@ a:hover {
     .banner-demo .banner {
         margin: 50px 0;
     }
+    .banner-demo-1 .search_box_div {
+        margin-bottom: 0;
+    }
+    .banner-demo-1 .container {
+        align-items: center;
+    }
     .banner-demo {
-        height: unset;
+        align-items: center;
     }
     .other-services {
         padding: 60px 0 50px

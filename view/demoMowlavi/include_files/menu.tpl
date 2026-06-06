@@ -11,7 +11,7 @@
                     <div class="nav-menus-wrapper">
                         <ul class="nav-menu align-to-right">
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">بلیط</a>
+                                <a href="javascript:">بلیط</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/page/train">قطار</a></li>
@@ -57,10 +57,10 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a>
+                                <a href="javascrip:">آژانس ما</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">تماس با ما</a></li>
-                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">چرا سفر 360 ؟</a></li>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a></li>
                                 </ul>
                             </li>

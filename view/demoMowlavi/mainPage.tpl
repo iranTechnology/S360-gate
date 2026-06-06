@@ -16,6 +16,7 @@
     {include file="include_files/about-us.tpl"}
 {*    {include file="include_files/comments.tpl"}*}
     {include file="include_files/blog-second.tpl"}
+    {include file="include_files/newsletter.tpl"}
 </main>
 {include file="include_files/footer.tpl"}
 {include file="include_files/social.tpl"}

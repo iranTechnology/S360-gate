@@ -1893,7 +1893,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 
 @media (max-width: 576px) {
     .search_box_div {
-        border: none;
+        /*border: none;*/
     }
     .parent-text-train-link h4 {
         font-size: 16px;

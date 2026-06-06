@@ -1,7 +1,9 @@
 {load_presentation_object filename="specialPages" assign="objSpecialPages"}
 
-{assign var="searchServices" value=['flight'=>'specialFlightPic','hotel'=> 'specialHotelPic','train' => 'specialTrainPic',
-'bus' =>'specialBusPic', 'tour' =>'specialTourPic', 'insurance' =>'specialInsurancePic', 'visa' =>'specialVisaPic', 'gasht' =>'specialGashtPic',
+{assign var="searchServices" value=['flight-ferdosi'=>'specialFlightPic','hotel-ferdosi'=> 'specialHotelPic','train-ferdosi' => 'specialTrainPic',
+'bus-ferdosi' =>'specialBusPic', 'tour-ferdosi' =>'specialTourPic', 'insurance-ferdosi' =>'specialInsurancePic', 'visa-ferdosi' =>'specialVisaPic', 'gasht-ferdosi' =>'specialGashtPic',
+'entertainment-ferdosi' =>'specialEntertainmentPic',
+'cip-ferdosi' =>'specialCipPic',
 'mainPage' =>'MainPagePic']}
 {foreach $searchServices as $key => $val}
     {assign var="homePage" value=$objSpecialPages->unSlugPage($key)}
@@ -21,7 +23,7 @@
     }
 </style>
 
-{$specialHotelPic|var_dump}
+
 <script>
     {literal}
     if($(window).width() > 576){

@@ -23,21 +23,13 @@
 {*        </div>*}
 {*    </div>*}
 {*</section>*}
+
 {assign var='status' value=$banners[0]['is_show_banner']}
 {if $status eq 1}
     {include file="../../include/structures-banners/structure-gallery.tpl"}
 {else}
     {include file="../../include/structures-banners/structure-searchbox.tpl"}
-
-
 {/if}
 
-
 {include file="include_files/banner-slider.tpl" }
-
-<style>
-    .banner-slider-display {
-        display: none !important;
-    }
-</style>
 

@@ -1923,7 +1923,7 @@ footer h6{
 .nav-dropdown-full {
     min-width: unset !important;
     width: 100% !important;
-    height: 80vh !important;
+    /*height: 80vh !important;*/
     right: 0 !important;
     padding: 15px 0;
     box-shadow: none;
@@ -2148,8 +2148,6 @@ footer h6{
         'item5Footer item5Footer item5Footer item5Footer';
         grid-template-columns: repeat(4, 1fr);
     }
-}
-@media (max-width: 1100px){
     .phone-number{
         display: none;
     }

@@ -56,7 +56,7 @@ $(document).ready(function () {
     var winh = $(window).height();
 
     if($(window).width() > 767){
-        $('.banner').css('height' , winh);
+   //     $('.banner').css('height' , winh);
     }
     $('body').click(function () {
         $('.main-navigation__sub-menu2').hide();

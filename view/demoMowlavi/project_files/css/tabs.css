@@ -93,6 +93,10 @@
     border-radius: 10px;
 }
 
+.banner-demo-1 .search_box_div {
+    margin-bottom: 200px;
+}
+
 .dropdown-insurance {
     position: relative;
     width: 100%;

@@ -244,7 +244,6 @@ body{
 .Terms_Conditions .nav-item .nav-link {
   background: #fff;
   color: $mainColor;
-  border: 1px solid $mainColor;
 }
 
 .Terms_Conditions .nav-item .nav-link.active {
@@ -1199,6 +1198,7 @@ body{
   grid-row-gap: 10px;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, 1fr);
 
   .service1 { grid-area: 1 / 4 / 2 / 7; height: 350px;}
   .service2 { grid-area: 1 / 1 / 2 / 4; height: 350px;}
@@ -1519,9 +1519,6 @@ body{
   .banner-safiran {
     height: 500px;
   }
-  .btn-user:hover svg {
-    fill: #444;
-  }
 }
 
 .app-text > img, .parent-btn-app-ris {
@@ -1549,11 +1546,15 @@ body{
   .hotel_link {
     height: 300px;
   }
-  .banner-safiran{
+  .banner-safiran img{
     display: none;
   }
   .search_box {
-    margin-top: 30px;
+    margin-top: -548px;
+  }
+  .banner-safiran {
+    height: 643px;
+    background: #fff !important;
   }
   .text-title-safiran p{
     display: none;

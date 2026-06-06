@@ -43,7 +43,6 @@ a:hover{
   overflow: hidden;
   height: 550px;
   position: relative;
-  padding: 50px;
   padding-bottom: 50px;
   padding-top: 63px;
   border-radius: $rounded;
@@ -80,8 +79,6 @@ a:hover{
       color: #fff;
       font-weight: 800;
       margin-bottom: 0;
-      text-align: center;
-      line-height: 47px;
     }
     #caption-banner{
       font-size: 16px;
@@ -238,10 +235,6 @@ a:hover{
             color: #333;
             font-size: 20px;
             font-weight: 600;
-            -webkit-line-clamp: 1;
-            overflow: hidden;
-            -webkit-box-orient: vertical;
-            display: -webkit-box;
           }
           .box-city-night{
             display: flex;
@@ -1404,22 +1397,21 @@ a:hover{
   .line {
     width: 54%;
   }
-  .other-links .parent-other-links {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .supplementary .supplementary-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .popular-hotels .grid-popular-hotels {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 @media (max-width: 768px) {
 
+  .supplementary .supplementary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .banner-kanoun .parent-text-banner-demo #title-banner
 {
   font-size: 26px;
+}
+
+  .other-links .parent-other-links {
+  grid-template-columns: repeat(2, 1fr);
 }
 
   .special-tours .parent-box-special-tours {
@@ -1478,6 +1470,10 @@ a:hover{
 }
 
 @media (max-width: 576px) {
+
+  .tab-mobile {
+    display: none !important;
+  }
 
   .about .about-grid {
     grid-template-columns: repeat(1, 1fr);

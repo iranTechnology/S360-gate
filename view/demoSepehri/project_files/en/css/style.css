@@ -40,7 +40,7 @@ a, a:hover {
     height: 150px;
     bottom: 0;
     top: auto;
-    z-index: 1;
+    z-index: 100000;
     right: 0;
     left: 0
 }
@@ -54,8 +54,8 @@ a, a:hover {
     position: relative;
     align-items: center;
     flex-wrap: wrap;
-    height: calc(100vh - 65px);
-    min-height: 500px;
+    /*height: calc(100vh - 65px);*/
+    /*min-height: 500px;*/
 }
 
 .search_box .carousel, .search_box .carousel-inner, .search_box .carousel-item, .search_box .carousel-inner img {
@@ -69,15 +69,15 @@ a, a:hover {
     width: 50px;
 }
 
-.search_box:before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    content: '';
-    background: rgba(0, 0, 0, .5);
-}
+/*.search_box:before {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    bottom: 0;*/
+/*    content: '';*/
+/*    background: rgba(0, 0, 0, .5);*/
+/*}*/
 
 .carousel-control-prev span, .carousel-control-next span {
     transition: all ease .4s;
@@ -2554,7 +2554,7 @@ button:focus {
     }
 
     #circle_banner {
-        display: none;
+        display: none !important;
     }
 
     #searchBoxTabs .nav-link {
@@ -2574,13 +2574,13 @@ button:focus {
         text-align: center !important;
     }
 
-    .search_box {
-        background: #fff;
-    }
+    /*.search_box {*/
+    /*    background: #fff;*/
+    /*}*/
 
-    .search_box::before {
-        display: none;
-    }
+    /*.search_box::before {*/
+    /*    display: none;*/
+    /*}*/
 }
 
 @media (max-width: 844px) {
@@ -3984,5 +3984,22 @@ button:focus {
         display: flex !important;
         margin-bottom: .5rem;
         font-size: 10px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .height-line-brack {
+        height: 50vh !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .height-line-brack {
+        height: 50vh !important;
+    }
+}
+@media (max-width: 578px) {
+    .height-line-brack {
+        height: 39vh !important;
     }
 }

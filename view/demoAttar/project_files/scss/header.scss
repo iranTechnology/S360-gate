@@ -2308,6 +2308,9 @@ background: $mainColor ;
     .nav-menu > li > a:hover .submenu-indicator-chevron {
         border-color: transparent #fff #fff transparent !important;;
     }
+    .nav-dropdown > li > a {
+       color: #fff !important;;
+    }
     .nav-dropdown {
         background: #fff;
     }
