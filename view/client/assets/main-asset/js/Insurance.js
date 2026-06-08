@@ -112,7 +112,7 @@ $(".number_2-of-passengers-js").on("change", function (e) {
 
    element_passenger.append(calender)
 })
-function searchInsurance() {
+function searchInsurance(altDomain = null) {
    const form = document.getElementById('gdsInsurance');
    const is_new_tab = form.target === '_blank';
 
@@ -139,7 +139,12 @@ console.log(passengers_age ,'fararaara')
 
    let passenger_age_list = passengers_age_array.join("/")
 // console.log(passenger_age_list)
-   let url = `${amadeusPathByLang}resultInsurance/2/${insurance_destination_country}/${travel_time}/${passengers_count}/${passenger_age_list}`
+   let url;
+   if (altDomain != null) {
+      url = `${altDomain}/gds/fa/resultInsurance/2/${insurance_destination_country}/${travel_time}/${passengers_count}/${passenger_age_list}`
+   } else {
+      url = `${amadeusPathByLang}resultInsurance/2/${insurance_destination_country}/${travel_time}/${passengers_count}/${passenger_age_list}`
+   }
    openLink(url,is_new_tab)
 }
 

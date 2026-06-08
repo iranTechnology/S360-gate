@@ -142,7 +142,7 @@ function getDestinationCityTour(type, obj) {
       },
    })
 }
-function searchInternalTour() {
+function searchInternalTour(altDomain = null) {
    const form = document.getElementById('gdsTourLocal');
    const is_new_tab = form.target === '_blank';
 
@@ -162,10 +162,16 @@ function searchInternalTour() {
    internal_destination_tour = internal_destination_tour.val()
    internal_date_travel_tour = internal_date_travel_tour.val()
 
-   let url = `${amadeusPathByLang}resultTourLocal/1-${internal_origin_tour}/1-${internal_destination_tour}/${internal_date_travel_tour}/all`
+   let url;
+   if (altDomain != null) {
+      url = `${altDomain}/gds/fa/resultTourLocal/1-${internal_origin_tour}/1-${internal_destination_tour}/${internal_date_travel_tour}/all`
+   } else {
+      url = `${amadeusPathByLang}resultTourLocal/1-${internal_origin_tour}/1-${internal_destination_tour}/${internal_date_travel_tour}/all`
+   }
+
    openLink(url, is_new_tab)
 }
-function searchInternationalTour() {
+function searchInternationalTour(altDomain = null) {
    const form = document.getElementById('gdsPortalLocal');
    const is_new_tab = form.target === '_blank';
    let international_tour = $(".international-tour-origin-city-js")
@@ -186,7 +192,13 @@ function searchInternationalTour() {
       international_destination_city_tour.val()
    internal_date_travel_tour = internal_date_travel_tour.val()
 
-   let url = `${amadeusPathByLang}resultTourLocal/1-${international_tour}/${international_destination_tour}-${international_destination_city_tour}/${internal_date_travel_tour}/all`
+   let url;
+   if (altDomain != null) {
+      url = `${altDomain}/gds/fa/resultTourLocal/1-${international_tour}/${international_destination_tour}-${international_destination_city_tour}/${internal_date_travel_tour}/all`
+   } else {
+      url = `${amadeusPathByLang}resultTourLocal/1-${international_tour}/${international_destination_tour}-${international_destination_city_tour}/${internal_date_travel_tour}/all`
+   }
+
    // let url = `${amadeusPathByLang}tours/تور-های-${international_tour.replace(' ','')}?origin=${international_destination_tour}-${international_destination_city_tour}&date=${internal_date_travel_tour}&type=all`
    console.log(url)
 

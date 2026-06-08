@@ -11,7 +11,7 @@
 {assign var="dataDocs" value=$objVisa->DocsAdditionalData($smarty.post.visaID)}
 {assign var="dataStep" value=$objVisa->StepAdditionalData($smarty.post.visaID)}
 
-{*{assign var="countryInfo" value=$objCountry->getCountryByCode($visaInfo.countryCode)}*}
+{*{assign groupTourEditvar="countryInfo" value=$objCountry->getCountryByCode($visaInfo.countryCode)}*}
 {*{load_presentation_object filename="passengersDetailLocal" assign="objDetail"}*}
 {*{assign var="InfoMember" value=$objFunctions->infoMember($objSession->getUserId())}*}
 

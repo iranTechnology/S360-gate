@@ -258,18 +258,25 @@ function dataSearchCip() {
    }
 }
 
-function searchFormCip(obj) {
+function searchFormCip(obj , altDomain = null) {
    let count_passenger = `${obj.number_adult}-${obj.number_child}-${obj.number_infant}`
-   let url = `${amadeusPathByLang}search-cip/${origin}/${obj.departure_date}/${obj.flightType}&${obj.TripType}/${count_passenger}`;
+   let url;
+   if (altDomain != null) {
+      url = `${altDomain}/gds/fa/search-cip/${origin}/${obj.departure_date}/${obj.flightType}&${obj.TripType}/${count_passenger}`;
+   } else {
+      url = `${amadeusPathByLang}search-cip/${origin}/${obj.departure_date}/${obj.flightType}&${obj.TripType}/${count_passenger}`;
+   }
    const form = $('#cip_form')[0];
 
    let target = form.target || '_self';
+
+   console.log('url: ' , url)
 
    window.open(url, target);
 
 }
 
-function searchCip() {
+function searchCip(altDomain = null) {
    let no_error = true
    let obj_url = dataSearchCip()
    no_error = checkCountAdultCip(obj_url.number_adult)
@@ -290,7 +297,7 @@ function searchCip() {
       )
    }
    if (no_error) {
-         searchFormCip(obj_url)
+         searchFormCip(obj_url , altDomain)
 
    }
    

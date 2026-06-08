@@ -1,4 +1,4 @@
-<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Visa">
+<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if}" id="Visa">
     <div class="empty-div">
     </div>
     <div class="col-md-12 col-12">

@@ -2112,7 +2112,7 @@ function dataSearchFlight(type) {
   }
 }
 
-function searchFlight(type) {
+function searchFlight(type , altDomain = null) {
   console.log(type)
   let no_error = true
   let obj_url = dataSearchFlight(type)
@@ -2145,18 +2145,18 @@ function searchFlight(type) {
   }
   if (no_error) {
     if ($("#internal_international_flight_form").length === 1){
-      search_international_flight_form(obj_url)
+      search_international_flight_form(obj_url , altDomain)
     } else {
       if (type === 'internal') {
-        searchInternal(obj_url)
+        searchInternal(obj_url , altDomain)
       } else if (type === 'international') {
-        searchInternational(obj_url)
+        searchInternational(obj_url , altDomain)
       }
     }
   }
 }
 
-function searchInternal(obj) {
+function searchInternal(obj , altDomain) {
   //for parto test
 
   let path = `${obj.origin}-${obj.destination}`
@@ -2177,10 +2177,19 @@ function searchInternal(obj) {
       ? `/${obj.classFlight}`
       : '';
 
-  let url = `${amadeusPathByLang}search-flight/${obj.multi_way}/${path}/${date}/Y/${count_passenger}${classFlightParam}`;
-  console.log('url -> ' , obj)
+  let url;
+  if (altDomain != null) {
+    url = `${altDomain}/gds/fa/search-flight/${obj.multi_way}/${path}/${date}/Y/${count_passenger}${classFlightParam}`;
+  } else {
+    url = `${amadeusPathByLang}search-flight/${obj.multi_way}/${path}/${date}/Y/${count_passenger}${classFlightParam}`;
+  }
+
   if(is_parto_test) {
-    url = `${amadeusPathByLang}international/${obj.multi_way}/${path}/${date}/Y/${count_passenger}`
+    if (altDomain != null) {
+      url = `${altDomain}/gds/fa/international/${obj.multi_way}/${path}/${date}/Y/${count_passenger}`
+    } else {
+      url = `${amadeusPathByLang}international/${obj.multi_way}/${path}/${date}/Y/${count_passenger}`
+    }
   }
 
   const form = $('#internal_flight_form')[0];
@@ -2193,7 +2202,7 @@ function searchInternal(obj) {
   }
 }
 
-function searchInternational(obj) {
+function searchInternational(obj , altDomain) {
   let path = `${obj.origin}-${obj.destination}`
   let date =
       obj.multi_way === '2'
@@ -2206,7 +2215,13 @@ function searchInternational(obj) {
       ? `/${obj.classFlight}`
       : '';
 
-  let url = `${amadeusPathByLang}international/${obj.multi_way}/${path}/${date}/Y/${count_passenger}${classFlightParam}`
+  let url;
+  if (altDomain != null) {
+    url = `${altDomain}/gds/fa/international/${obj.multi_way}/${path}/${date}/Y/${count_passenger}${classFlightParam}`
+  } else {
+    url = `${amadeusPathByLang}international/${obj.multi_way}/${path}/${date}/Y/${count_passenger}${classFlightParam}`
+  }
+
   // let target = $('#international_flight_form').data('target')
   const form = $('#international_flight_form')[0];
   const target = form?.target === '_blank';
@@ -2218,14 +2233,19 @@ function searchInternational(obj) {
   }
 
 }
-function search_international_flight_form(obj) {
+function search_international_flight_form(obj , altDomain) {
   let path = `${obj.origin}-${obj.destination}`
   let date =
       obj.multi_way === '2'
           ? `${obj.departure_date}&${obj.return_date}`
           : `${obj.departure_date}`
   let count_passenger = `${obj.number_adult}-${obj.number_child}-${obj.number_infant}`
-  let url = `${amadeusPathByLang}${internal_international}/${obj.multi_way}/${path}/${date}/Y/${count_passenger}`
+  let url;
+  if (altDomain != null) {
+    url = `${altDomain}/gds/fa/${internal_international}/${obj.multi_way}/${path}/${date}/Y/${count_passenger}`;
+  } else {
+    url = `${amadeusPathByLang}${internal_international}/${obj.multi_way}/${path}/${date}/Y/${count_passenger}`;
+  }
 
   let target = $(obj).parents().find('#international_flight_form').data('target')
   if(target != 'undefind' && target == '_blank' ){
