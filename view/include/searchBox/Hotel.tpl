@@ -1,5 +1,5 @@
 
-<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Hotel">
+<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if}" id="Hotel">
 
     {include file="./sections/hotel/international/btn_radio_internal_external.tpl"}
     <div id="internal_hotel" class="d_flex flex-wrap internal-hotel-js">

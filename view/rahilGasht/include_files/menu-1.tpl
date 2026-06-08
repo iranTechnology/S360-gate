@@ -11,7 +11,7 @@
                 <div class="nav-menus-wrapper">
                     <ul class="nav-menu">
                         <li>
-                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>
+{*                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>*}
                         <li>
                             <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور</a>
                             {if $objResult->ReservationTourCities('=1', 'return') || $objResult->ReservationTourCountries('yes')}

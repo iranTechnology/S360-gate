@@ -5,11 +5,11 @@
             <nav class="navigation d-flex align-items-center">
                 <div class="nav-header">
                     <a class="d-flex align-items-center" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                        <img alt="{$obj->Title_head()}" class="__logo_class__" src="project_files/images/logo.jpg"/>
-                        <div class="text-nav-brand">
-                            <p>گـلگـشـت</p>
-                            <span>سامانه رزرواسـیون</span>
-                        </div>
+                        <img alt="{$obj->Title_head()}" class="__logo_class__" src="project_files/images/logo.png"/>
+{*                        <div class="text-nav-brand">*}
+{*                            <p>گـلگـشـت</p>*}
+{*                            <span>سامانه رزرواسـیون</span>*}
+{*                        </div>*}
                     </a>
                 </div>
                 <div class="nav-menus-wrapper">

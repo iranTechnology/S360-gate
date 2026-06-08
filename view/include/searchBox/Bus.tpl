@@ -1,6 +1,6 @@
 {assign var='cities' value=$obj_main_page->getBusRoutes()}
 
-<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Bus">
+<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if}" id="Bus">
     <div class="col-md-12 col-12">
         <div class="row">
             <form data-action="https://s360online.iran-tech.com/" method="post" target="_blank" class="d_contents" id="gds_local_bus" name="gds_local_bus">

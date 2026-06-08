@@ -1,4 +1,4 @@
-<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="{$client['MainService']}">
+<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if}" id="{$client['MainService']}">
 <div class="col-md-12 col-12">
         <div class="row  ">
             <form data-action="https://s360online.iran-tech.com/" method="post" data-target="_self" class="d_contents" id="package_form" name="package_form">

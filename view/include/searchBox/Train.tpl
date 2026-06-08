@@ -1,5 +1,5 @@
 {assign var="obj_main_page" value=$obj_main_page }
-<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Train">
+<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if}" id="Train">
     {include file="./sections/train/btn-type-way.tpl"}
     <div class="row m-auto">
         <div class='d_contents'>

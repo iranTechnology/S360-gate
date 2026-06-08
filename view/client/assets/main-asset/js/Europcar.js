@@ -48,7 +48,7 @@ $("document").ready(function () {
 // }
 
 
-function rentcar_local(is_new_tab = false, suffix = '') {
+function rentcar_local(is_new_tab = false, suffix = '' , altDomain = null) {
    let type_rent_car = $(`.type_rent_car-js${suffix}`);
    let start_date_rent = $(`.rent-start-date-js${suffix}`);
    let rent_car_place = $(`.select-city-rent-car-js${suffix}`);
@@ -69,7 +69,13 @@ function rentcar_local(is_new_tab = false, suffix = '') {
    delivery_rent_car_date = delivery_rent_car_date.val();
    delivery_place_rent_car = delivery_place_rent_car.val();
 
-   let url = `${amadeusPathByLang}rentCar/${type_rent_car}/${start_date_rent}/${rent_car_place}/${delivery_rent_car_date}/${delivery_place_rent_car}`;
+   let url;
+   if (altDomain != null) {
+      url = `${altDomain}/gds/fa/rentCar/${type_rent_car}/${start_date_rent}/${rent_car_place}/${delivery_rent_car_date}/${delivery_place_rent_car}`;
+   } else {
+      url = `${amadeusPathByLang}rentCar/${type_rent_car}/${start_date_rent}/${rent_car_place}/${delivery_rent_car_date}/${delivery_place_rent_car}`;
+   }
+
    openLink(url, is_new_tab);
 }
 

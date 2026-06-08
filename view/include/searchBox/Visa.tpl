@@ -1,4 +1,4 @@
-<div class="__box__ tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if} shadow-box search-background" id="Visa">
+<div class="__box__ tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if} shadow-box search-background" id="Visa">
     <div class="d-flex flex-wrap gap-search-box">
         <div class="d-flex flex-wrap searchbox-style-visa w-100">
             <form data-action="https://s360online.iran-tech.com/" method="post" name="gdsVisa"

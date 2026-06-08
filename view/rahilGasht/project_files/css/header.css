@@ -34,14 +34,15 @@
 
 .main-navigation__sub-menu2 {
     right: unset !important;
-    left: 60px;
-    top: 100% !important;
+    left: 0;
+    top: 130% !important;
 }
 
 .box_button_header {
     display: flex;
     gap: 10px;
-    margin-right: auto
+    margin-right: auto;
+    position: relative;
 }
 
 .logIn > i {
@@ -585,6 +586,9 @@
 }
 
 @media (max-width: 991px) {
+    .main-navigation__sub-menu2 {
+        left: -51px;
+    }
     .nav-dropdown {
         box-shadow: none !important
     }

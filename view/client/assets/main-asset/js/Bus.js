@@ -452,7 +452,7 @@ $(document).ready(function () {
 });
 
 
-function searchBus() {
+function searchBus(altDomain = null) {
    const form = document.getElementById('gds_local_bus');
    const is_new_tab = form.target === '_blank';
 
@@ -464,7 +464,13 @@ function searchBus() {
    origin_bus = origin_bus.val()
    destination_bus = destination_bus.val()
    departure_date_bus = departure_date_bus.val()
-   let url = `${amadeusPathByLang}buses/${origin_bus}-${destination_bus}/${departure_date_bus}`
+
+   let url;
+   if (altDomain != null) {
+      url = `${altDomain}/gds/fa/buses/${origin_bus}-${destination_bus}/${departure_date_bus}`
+   } else {
+      url = `${amadeusPathByLang}buses/${origin_bus}-${destination_bus}/${departure_date_bus}`
+   }
 
    openLink(url, is_new_tab)
 }
