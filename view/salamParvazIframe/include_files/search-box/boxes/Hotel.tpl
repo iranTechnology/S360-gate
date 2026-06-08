@@ -7,7 +7,7 @@
             {include file="./sections/Hotel/internal/check_out_date.tpl"}
             {include file="./sections/Hotel/internal/count_passenger_room.tpl"}
             <div class="col-xl-1 col-lg-6 col-md-6 col-sm-6 col-12 mt-14-px btn_s col_search d-flex mr-auto m-sm-auto">
-                <button class="btn theme-btn seub-btn b-0 mb-xl-0  mb-sm-2" style="left:8px" onclick="searchInternalHotel('https://salamparvaz.ir')" type="button"><span>جستجو</span></button>
+                <button class="btn theme-btn seub-btn b-0 mb-xl-0  mb-sm-2" style="left:8px" onclick="searchInternalHotel(true , 'https://salamparvaz.ir')" type="button"><span>جستجو</span></button>
             </div>
         </form>
     </div>
@@ -22,7 +22,7 @@
             {include file="./sections/Hotel/international/count_passenger_room.tpl"}
             <div class="col-xl-1 col-lg-6 col-md-6 col-sm-6 col-12 btn_s col_search d-flex mr-auto m-sm-auto mt-14-px">
                 <input class="nights-hotel-js" id="nights_hotel" name="nights_hotel" placeholder="تاریخ خروج" type="hidden" value=""/>
-                <button class="btn theme-btn seub-btn b-0 mb-xl-0 mb-sm-2" style="left:8px" onclick="searchInternationalHotel('https://salamparvaz.ir')" type="button"><span>جستجو</span></button>
+                <button class="btn theme-btn seub-btn b-0 mb-xl-0 mb-sm-2" style="left:8px" onclick="searchInternationalHotel(true , 'https://salamparvaz.ir')" type="button"><span>جستجو</span></button>
             </div>
         </form>
     </div>
