@@ -172,7 +172,7 @@ body{
   font-weight: 700;
   font-family: "Font Awesome 6 Pro";
   font-size: 20px;
-  color: $mainColor;
+  color: $mainColor  !important;
   right: 15px;
   position: absolute;
 }
@@ -196,7 +196,7 @@ body{
 
 .card-header button:hover, .card-header button:focus {
   text-decoration: none;
-  color: $mainColor;
+  color: $mainColor !important;
   box-shadow: none
 }
 
@@ -216,7 +216,7 @@ body{
 }
 
 .card-header {
-  background: #fff
+  background: $secondColor;
 }
 
 .titr_Terms_Conditions {
@@ -242,13 +242,13 @@ body{
 }
 
 .Terms_Conditions .nav-item .nav-link {
-  background: #fff;
-  color: $mainColor;
+  background: #fff  !important;
+  color: $mainColor !important;
 }
 
 .Terms_Conditions .nav-item .nav-link.active {
-  background: $mainColor;
-  color: #fff;
+  background: $mainColor !important;
+  color: #fff !important;
 }
 
 .app .app_main {
@@ -336,14 +336,14 @@ body{
 .app .app_main .row .app_main_text .app-feature span {
   display: flex;
   gap: 10px;
-  color: $mainColor;
+  color: $mainColor !important;
   font-size: 15px;
   font-weight: 500;
 }
 
 .app .app_main .row .app_main_text .app-feature span svg {
   width: 18px;
-  fill: $mainColor;
+  fill: $mainColor !important;
 }
 
 .app .app_main .row .qrCode {
@@ -351,7 +351,7 @@ body{
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  background: $mainColor;
+  background: $mainColor !important;
   color: #666;
   font-size: 14px;
   transition: all 0.3s;
@@ -411,12 +411,12 @@ body{
 }
 
 .hotel  .button {
-  border: 1px solid $mainColor;
+  border: 1px solid $mainColor !important;
   border-radius: $rounded;
   padding: 7px 15px;
   font-size: 14px;
   color: #fff;
-  background: $mainColor;
+  background: $mainColor !important;
   transition: all .3s;
   text-decoration: none;
   cursor: pointer;
@@ -484,7 +484,7 @@ body{
         background: rgba(199, 199, 199, 0.18) !important;
       }
       &:hover svg{
-        fill: $mainColor;
+        fill: $mainColor !important;
       }
 
     }
@@ -529,9 +529,9 @@ body{
        background: rgba(0,0,0,0);
 
        &.active{
-         background: $mainColor;
+         background: $mainColor !important;
          color: #333;
-         border-color: $mainColor;
+         border-color: $mainColor !important;
        }
      }
   }
@@ -590,7 +590,7 @@ body{
       &:after{
         width: 6px;
         height: 6px;
-        background: $mainColor;
+        background: $mainColor !important;
         border-radius: 50%;
         content: '';
         position: absolute;
@@ -752,7 +752,7 @@ body{
       background: rgba(199,199,199,.18) !important;
     }
     &:hover svg{
-      fill: $mainColor;
+      fill: $mainColor !important;
     }
 
     svg{
@@ -988,7 +988,7 @@ body{
   border-radius: 30px;
 }
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
-  background: $mainColor;
+  background: $mainColor !important;
 }
 
 
@@ -1010,7 +1010,7 @@ body{
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       border-radius: $rounded;
-      background: $mainColor;
+      background: $mainColor !important;
       overflow: hidden;
 
       @media (max-width: 768px) {
@@ -1311,7 +1311,7 @@ body{
   padding: 3px 10px;
   border-radius: 999rem;
   background: #00377b2b;
-  color: $mainColor;
+  color: $mainColor !important;
   width: fit-content;
   font-size: 14px;
 }
@@ -1339,7 +1339,7 @@ body{
   position: absolute;
   left: 10px;
   top: -12px;
-  background: $mainColor;
+  background: $mainColor !important;
   padding: 5px 10px;
   border-radius: 999px;
   display: flex;

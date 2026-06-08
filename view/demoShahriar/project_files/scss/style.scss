@@ -187,12 +187,12 @@ a:hover{
       button{
         background: rgba(0,0,0,0);
         border-radius: 12px;
-        border: 1px solid $mainColor;
+        border: 1px solid $mainColor !important;
         transition: $transition;
         padding: 10px 24px;
         font-size: 16px;
         font-weight: 500;
-        color: $mainColor;
+        color: $mainColor !important;
 
         &.active{
           background: $mainColor !important;
@@ -282,11 +282,11 @@ a:hover{
 
             button{
               background: transparent;
-              border: 1px solid $mainColor;
+              border: 1px solid $mainColor !important;
               border-radius: 18px;
               transition: $transition;
               padding: 1px 26px;
-              color: $mainColor;
+              color: $mainColor !important;
               font-size: 14px;
 
               span{
@@ -536,7 +536,7 @@ a:hover{
 
 
       .about-btn{
-        background: $mainColor;
+        background: $mainColor !important;
         border: $border;
         color: #fff;
         padding: 5px 20px;
@@ -546,13 +546,13 @@ a:hover{
         align-items: center;
         justify-content: center;
         width: 100px;
-        border: 1px solid $mainColor;
+        border: 1px solid $mainColor !important;
         transition: $transition;
       }
 
       span{
         font-size: 14px;
-        color: $mainColor;
+        color: $mainColor !important;
         margin-bottom: 14px;
         display: flex;
       }
@@ -731,7 +731,7 @@ a:hover{
           width: fit-content;
           border-radius: 99px;
           padding: 5px 15px;
-          color: $mainColor;
+          color: $mainColor !important;
           margin-top: 20px;
           transition: $transition;
           margin-right: auto;
@@ -739,8 +739,8 @@ a:hover{
       }
 
       &:hover button{
-        background: $mainColor;
-        color: #fff;
+        background: $mainColor !important;
+        color: #fff !important;
       }
     }
   }
@@ -818,12 +818,12 @@ a:hover{
         button{
           background: rgba(0, 0, 0, 0);
           border-radius: 12px;
-          border: 1px solid $mainColor;
+          border: 1px solid $mainColor !important;
           transition: $transition;
           padding: 10px 24px;
           font-size: 16px;
           font-weight: 500;
-          color: $mainColor;
+          color: $mainColor !important;
 
           &.active{
             background: $mainColor !important;
@@ -1010,7 +1010,7 @@ a:hover{
       padding: 10px 24px;
       font-size: 16px;
       font-weight: 500;
-      color: $mainColor;
+      color: $mainColor !important;
 
       &.active{
         background: $mainColor !important;
@@ -1353,7 +1353,7 @@ a:hover{
   border-radius: 30px;
 }
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
-  background: $mainColor;
+  background: $mainColor !important;
 }
 
 

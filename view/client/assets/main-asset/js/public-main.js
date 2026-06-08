@@ -2223,7 +2223,7 @@ function checkOverlay() {
       if (overlay) {
         overlay.style.display = 'flex';
         overlay.classList.add('show');
-        document.body.style.overflow = 'hidden';
+        // document.body.style.overflow = 'hidden';
       }
     }, 500);
   }
@@ -2245,7 +2245,7 @@ function closeOverlay() {
   if (overlay) {
     overlay.style.display = 'none';
     overlay.classList.remove('show');
-    document.body.style.overflow = 'auto';
+    // document.body.style.overflow = 'auto';
 
     if (restThemeBtn) {
       restThemeBtn.style.display = 'flex';

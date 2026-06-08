@@ -285,7 +285,7 @@
 }
 .parent-text-train-link .parent-link-train a span {
   font-size: 18px;
-  color: $mainColor;
+  color: $mainColor !important;
   transition: all ease .5s;
 }
 #searchBoxContent > div {

@@ -291,7 +291,7 @@ footer h6{
 
 
 .nav-brand img{
-  width: 140px;
+  width: 80px;
 }
 .megamenu-list img{
   border-radius: 8px;
@@ -691,7 +691,7 @@ footer h6{
 }
 
 .nav-menu > li > .nav-dropdown li:hover > a {
-  color: $mainColor;
+  color: $mainColor !important;
 
 }
 .nav-menu > li > .nav-dropdown li:hover .submenu-indicator-chevron{
@@ -1278,7 +1278,7 @@ transition: all linear .3s;
 }
 
 .nav-menu > li > a:hover {
-  background: #000;
+  background: $mainColor;
 }
 
 .nav-dropdown > li > a:last-child{
@@ -1825,17 +1825,17 @@ transition: all linear .3s;
 .card-item-footer a {
   font-size: 16px;
   font-weight: 600;
-  color: #b71c1c;
+  color: $mainColor;
   padding: 10px;
-  border: 2px solid #b71c1c;
+  border: 2px solid $mainColor;
   border-radius: 10px;
   transition: all ease .3s;
   display: flex;
 }
 
 .card-item-footer a:hover {
-  color: #fff;
-  background: #b71c1c;
+  color: #fff !important;
+  background: $mainColor;
 }
 
 .last_text {
@@ -1963,7 +1963,7 @@ transition: all linear .3s;
     font-size: 14px;
   }
   .nav-brand img{
-    width: 100px;
+    width: 80px;
     /*! height: 100%; */
   }
   .nav-menus-wrapper{
@@ -2014,7 +2014,7 @@ transition: all linear .3s;
     margin-right: auto;
   }
   .nav-brand img{
-    width: 110px !important;
+    width: 80px !important;
   }
   .btn-user span{
     display: none;
@@ -2265,6 +2265,9 @@ transition: all linear .3s;
   .nav-all-phone:hover .sub-all-phone{
     opacity: 0;
     visibility: hidden;
+  }
+  .nav-dropdown > li > a{
+    color:#4b5259;
   }
 }
 @media (max-width: 576px) {
@@ -2541,7 +2544,7 @@ transition: all linear .3s;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $mainColor;
+  background: $mainColor !important;
   color: #fff;
   transition: all ease .3s;
   bottom: 50px;
@@ -2570,7 +2573,7 @@ transition: all linear .3s;
 }
 .btn-user{
   padding: 8px;
-  color: $mainColor;
+  color: $mainColor !important;
   transition: all ease .3s;
   display: flex;
   align-items: center;
@@ -2578,7 +2581,7 @@ transition: all linear .3s;
 }
 .btn-user:hover{
   text-decoration: none;
-  color: $mainColor;
+  color: $mainColor !important;
 }
 .img-box-footer{
   display: flex;
@@ -2639,7 +2642,7 @@ transition: all linear .3s;
   font-size: 22px;
 }
 .child-item-footer a:hover {
-  color: $mainColor;
+  color: $mainColor !important;
   text-decoration: none;
 }
 .footer-icon a{
@@ -2653,7 +2656,7 @@ transition: all linear .3s;
 }
 .footer_linkedin:hover{
   text-decoration: none;
-  color: $mainColor;
+  color: $mainColor !important;
 }
 .box-item-footer {
   margin-top: 0px;
@@ -2682,11 +2685,11 @@ transition: all linear .3s;
   width: fit-content;
 }
 .box-item-footer ul li a:hover {
-  color: #b71c1c;
+  color: $mainColor;
   text-decoration: none;
 }
 .box-item-footer ul li a:hover i {
-  border-color: $mainColor;
+  border-color: $mainColor !important;
   text-decoration: none;
 }
 .box-item-footer p{
@@ -2796,9 +2799,9 @@ transition: all linear .3s;
 
 
 .btn-phone{
-  background: $mainColor;
+  background: $mainColor !important;
   padding: 8px;
-  border: 1px solid $mainColor;
+  border: 1px solid $mainColor !important;
   border-radius: $rounded;
   color: #fff;
   transition: all ease .3s;
@@ -2828,7 +2831,7 @@ transition: all linear .3s;
   position: absolute;
   top: 0;
   width: 100%;
-  border: 8px solid $mainColor;
+  border: 8px solid $mainColor !important;
   border-radius: 50%;
   height: 32px;
   width: 32px;

@@ -83,7 +83,7 @@
      <div class="item-footer col-lg-3 col-md-3 col-sm-4 col-12 order-foot1 text-center">
       <div class="parent-item-footer parent-item-footer-responsive">
        <div class="img-box-footer">
-        <img alt="footer-logo" class="__logo_class__" src="project_files/images/logo.png"/>
+        <img alt="footer-logo"  id="footerLogo" class="__logo_class__" src="project_files/images/logo.png"/>
        </div>
        <div class="child-item-footer">
         <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_PHONE}">

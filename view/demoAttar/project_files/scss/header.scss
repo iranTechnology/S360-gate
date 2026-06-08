@@ -25,7 +25,7 @@
     justify-content: center;
 }
 .logo{
-    width: 90px;
+    width: 63px;
 }
 .nav-login {
     margin-right: auto;
@@ -401,7 +401,7 @@ footer h6 {
 }
 
 .last_text a:hover {
-    color: $mainColor;
+    color: $mainColor !important;
     text-decoration: none;
 }
 
@@ -436,7 +436,7 @@ footer h6 {
 //}
 
 .logo-caption img {
-    width: 110px;
+    width: 90px;
 }
 
 .nav-brand > img {
@@ -613,7 +613,7 @@ footer h6 {
     top: 0;
     left: -400px;
     position: fixed;
-    background-color: $mainColor;
+    background-color: $mainColor !important;
     z-index: 20000;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -748,7 +748,7 @@ footer h6 {
 }
 
 .nav-menu > li:hover > a, .nav-menu > li.active > a, .nav-menu > li.focus > a {
-background: $mainColor ;
+background: $mainColor  !important;
     color: #fff;
 }
 
@@ -2468,7 +2468,7 @@ background: $mainColor ;
         display: none !important;
     }
     .logo{
-        width: 90px;
+        width: 63px;
     }
     .logo-caption img {
         width: 70px;
@@ -2904,7 +2904,7 @@ background: $mainColor ;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $mainColor;
+    background: $mainColor !important;
     transition: all ease .3s;
     bottom: 30px;
     position: fixed;
@@ -2926,7 +2926,7 @@ background: $mainColor ;
 
 .btn-user:hover {
     text-decoration: none;
-    background: $mainColor;
+    background: $mainColor !important;
     color: #fff;
     svg{
         fill: #fff
@@ -3037,7 +3037,7 @@ background: $mainColor ;
 }
 
 .child-item-footer a:hover {
-    color: $mainColor;
+    color: $mainColor !important;
     text-decoration: none;
 }
 
@@ -3203,7 +3203,7 @@ background: $mainColor ;
 }
 .box-item-footer ul li a:hover {
     text-decoration: none;
-   color: $mainColor;
+   color: $mainColor !important;
 }
 
 .box-item-footer p {

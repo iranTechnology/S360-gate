@@ -18,6 +18,7 @@
 {include file="include_files/supplementary.tpl"}
 {*{include file="include_files/tours-third.tpl"}*}
 {include file="include_files/news.tpl"}
+    {include file="include_files/select-theme.tpl"}
 </main>
 {include file="include_files/footer.tpl"}
 </body>

@@ -11,7 +11,7 @@
                          <div class='pre-footer-parent'>
                                 <div class='social-footer'>
                                     <a class="footer-brand" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                                        <img alt="{$obj->Title_head()}" class="__logo_class__"
+                                        <img id="footerLogo" alt="{$obj->Title_head()}" class="__logo_class__"
                                              src="project_files/images/logo.png" />
                                         <span class="respect">بر مدار احترام</span>
                                     </a>

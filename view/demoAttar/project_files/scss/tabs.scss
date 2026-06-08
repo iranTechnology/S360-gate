@@ -45,7 +45,7 @@
 }
 .switch_routs:hover {
     background: $secondColor;
-    color: $mainColor;
+    color: $mainColor !important;
 
     svg {
         fill: #fff;
@@ -145,11 +145,11 @@
 }
 
 #searchBoxTabs .nav-link.active div h4 {
-    color: $mainColor;
+    color: $mainColor !important;
 }
 
 #searchBoxTabs .nav-link.active i {
-    color: $mainColor;
+    color: $mainColor !important;
 }
 #searchBoxTabs .nav-link.active{
     background: transparent !important;
@@ -774,7 +774,7 @@
     width: 93px;
     height: 29px;
     border-radius: 1rem;
-    background-color: $mainColor;
+    background-color: $mainColor !important;
     -webkit-transition: right 0.15s ease-out;
     -moz-transition: right 0.15s ease-out;
     -o-transition: right 0.15s ease-out;
@@ -811,7 +811,7 @@
     width: 100%;
     height: 4px;
     border-radius: 100px;
-    background: $mainColor;
+    background: $mainColor !important;
     position: absolute;
     bottom: -10px;
     left: 0;
@@ -1308,7 +1308,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     padding: 5px 3px;
     position: absolute;
     top: -43px;
-    right: 1px;
+    right: 190px;
 }
 
 .btn-radio {
@@ -1334,11 +1334,11 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 
 .btn-radio svg circle {
     stroke-width: 2;
-    stroke: $mainColor;
+    stroke: $mainColor !important;
 }
 
 .btn-radio svg path {
-    stroke: $mainColor;
+    stroke: $mainColor !important;
 }
 
 .btn-radio svg path.inner {
@@ -1850,8 +1850,8 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
         color: #fff;
     }
     #searchBoxTabs .nav-link.active i {
-        background: $mainColor;
-        border-color: $mainColor;
+        background: $mainColor !important;
+        border-color: $mainColor !important;
     }
     #searchBoxTabs .nav-link {
         padding: 2px 5px 0 5px;

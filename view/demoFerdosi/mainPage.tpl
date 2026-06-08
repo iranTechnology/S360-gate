@@ -16,6 +16,7 @@
     {include file="include_files/newsletter.tpl"}
     {include file="include_files/new_social.tpl"}
     {include file="include_files/other.tpl"}
+    {include file="include_files/select-theme.tpl"}
 </main>
 {include file="include_files/footer.tpl"}
 </body>

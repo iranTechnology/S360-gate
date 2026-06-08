@@ -17,6 +17,7 @@
                             <input type='hidden' id='no_select_city' value=''>
                             <input type='hidden' id='selected_type' value=''>
                             <input type='hidden' id='searchbox_internal_external' value='1'>
+                            <input type='hidden' id='client_id' value='{$smarty.const.CLIENT_ID}'>
                         </div>
                     </div>
                 </div>

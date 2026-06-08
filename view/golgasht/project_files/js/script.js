@@ -74,3 +74,143 @@ $(document).ready(function () {
         },
     })
 });
+
+
+// گرفتن ترتیب فعلی از خود لیست
+// روش اول: صبر برای لود کامل صفحه
+// تابع مرتب‌سازی
+function reorderHotelList() {
+    var list = document.getElementById('listSearchCity_2');
+    if (!list) return;
+
+    var items = list.querySelectorAll('li');
+    if (items.length === 0) return;
+
+    var desiredOrder = ['کربلا', 'آل نجف', 'بغداد', 'اربیل', 'کاظمین', 'سلیمانیه', 'بصره', 'موصل', 'مشهد', 'وان'];
+    var heading = list.querySelector('h2');
+    var itemsArray = Array.from(items);
+    var sortedItems = [];
+
+    // مرتب‌سازی بر اساس ترتیب دلخواه
+    desiredOrder.forEach(function(city) {
+        var found = itemsArray.find(function(item) {
+            return item.querySelector('.c-text')?.textContent.trim() === city;
+        });
+        if (found) {
+            sortedItems.push(found);
+        }
+    });
+
+    // اضافه کردن آیتم‌های اضافی در انتها
+    itemsArray.forEach(function(item) {
+        var cityName = item.querySelector('.c-text')?.textContent.trim();
+        if (!desiredOrder.includes(cityName)) {
+            sortedItems.push(item);
+        }
+    });
+
+    // بازسازی لیست
+    list.innerHTML = '';
+    if (heading) list.appendChild(heading);
+    sortedItems.forEach(function(item) {
+        list.appendChild(item);
+    });
+
+}
+
+// روش اول: استفاده از MutationObserver (بهترین روش)
+var listObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            // وقتی آیتم جدید اضافه شد، مرتب کن
+            setTimeout(reorderHotelList, 50);
+        }
+    });
+});
+
+// شروع نظارت بر لیست
+document.addEventListener('DOMContentLoaded', function() {
+    var list = document.getElementById('listSearchCity_2');
+    if (list) {
+        listObserver.observe(list, { childList: true, subtree: true });
+    }
+});
+
+// روش دوم: هر بار که کلیک شد، بعد از لود مرتب کن
+document.getElementById('autoComplateSearchIN_2')?.addEventListener('click', function() {
+    // منتظر بمان تا داده‌ها لود شوند
+    var checkInterval = setInterval(function() {
+        var list = document.getElementById('listSearchCity_2');
+        var items = list ? list.querySelectorAll('li') : [];
+
+        if (items.length > 0) {
+            clearInterval(checkInterval);
+            reorderHotelList();
+        }
+    }, 100);
+
+    // حداکثر 3 ثانیه منتظر بمان
+    setTimeout(function() {
+        clearInterval(checkInterval);
+    }, 3000);
+});
+
+function reorderMobileDestinations() {
+    var container = document.getElementById('mobilePopularDestinationsHotel');
+    if (!container) {
+        console.log('container پیدا نشد');
+        return;
+    }
+
+    // ترتیب مورد نظر
+    var desiredOrder = ['کربلا', 'آل نجف', 'بغداد', 'اربیل', 'کاظمین', 'سلیمانیه', 'بصره', 'موصل', 'مشهد', 'وان'];
+
+    var items = Array.from(container.querySelectorAll('li'));
+    if (items.length === 0) return;
+
+    var sortedItems = [];
+
+    // مرتب‌سازی بر اساس ترتیب دلخواه
+    for (var i = 0; i < desiredOrder.length; i++) {
+        var cityName = desiredOrder[i];
+
+        for (var j = 0; j < items.length; j++) {
+            var item = items[j];
+            var spanText = item.querySelector('.city-text div:last-child span')?.textContent.trim() || '';
+
+            if (spanText === cityName) {
+                sortedItems.push(item);
+                break;
+            }
+        }
+    }
+
+    // اضافه کردن آیتم‌های اضافی در انتها
+    for (var i = 0; i < items.length; i++) {
+        var spanText = items[i].querySelector('.city-text div:last-child span')?.textContent.trim() || '';
+        if (!desiredOrder.includes(spanText)) {
+            sortedItems.push(items[i]);
+        }
+    }
+
+    // بازسازی لیست
+    container.innerHTML = '';
+    for (var i = 0; i < sortedItems.length; i++) {
+        container.appendChild(sortedItems[i]);
+    }
+
+    console.log('لیست مرتب شد! ترتیب:', desiredOrder);
+}
+
+// اجرا بعد از لود صفحه
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(reorderMobileDestinations, 100);
+});
+
+// اجرا بعد از کلیک روی جستجو
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'autoComplateSearchIN_2' ||
+        e.target.closest('#autoComplateSearchIN_2')) {
+        setTimeout(reorderMobileDestinations, 200);
+    }
+});
