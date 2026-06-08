@@ -3,7 +3,7 @@
 {assign var='foregin_tours' value=$obj_main_page->getToursReservation($foregin_tour_params)}
 
 {if $foregin_tours}
-<section class="special_tours">
+<section class="special_tours ">
     <div class="container">
         <div class="box_special_tours">
             <div class="titel_special_tours">

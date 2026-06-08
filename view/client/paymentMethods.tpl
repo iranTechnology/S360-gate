@@ -14,35 +14,12 @@
 			{if $memberCreditPermition == '1'}
 				<div class="s-u-select-bank mart30 normal-user-payment">
 					<label for="Ipaythroughthebank" class="credit-check">
-						<input id="Ipaythroughthebank" type="radio" name="chkCreditUse" value="online_payment" onclick='checkMemberCredit("{$creditInputs["typeApplication"]}")' checked/>##Ipaythroughthebank##
+						<input id="Ipaythroughthebank" type="radio" name="chkCreditUse" value="online_payment" onclick="checkMemberCredit()" checked/>##Ipaythroughthebank##
 					</label>
 					<label for="Iusemycredit" class="credit-check">
-						<input id="Iusemycredit" type="radio" name="chkCreditUse" value="member_credit" onclick='checkMemberCredit("{$creditInputs["typeApplication"]}")' /> ##Paycredit##
+						<input id="Iusemycredit" type="radio" name="chkCreditUse" value="member_credit" onclick="checkMemberCredit()" /> ##Paycredit##
 					</label>
 					<p class="creditText mart20"></p>
-					<div class="s-u-p-factor-bank s-u-p-factor-bank-change marr10 hidden" >
-						<h4 class="site-bg-main-color site-bg-color-border-bottom">##Paycredit##</h4>
-						<div class="s-u-select-bank mart30">
-							<form id="formcredit" method="post" target="_self">
-								<div class="boxerFactorLogo">
-									<img src="project_files/images/logo.png" alt="logo">
-								</div>
-
-							</form>
-							<div class="paymentCredit">
-								<p>
-									##YourCredit##
-								</p>
-								<span>
-			{$objFunctions->CalculateMemberCredit()}
-					</span>
-							</div>
-						</div>
-						<div class="s-u-select-update-wrapper margin-top-auto">
-							<a href="javascript:;" class="mx-auto  btn-form2 creditPaymentLoader"
-							   onclick='memberCreditBuy(this, "{$creditAction}", {$creditInputs|json_encode})' id="creditpay">##Paycredit##</a>
-						</div>
-					</div>
 				</div>
 			{/if}
 

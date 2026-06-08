@@ -179,7 +179,9 @@
 
 
                     {if $article['section'] eq 'mag'}
-                        {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/position/edit.tpl" item=$article object=$articles}
+
+                        {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/position/edit.tpl"
+                        item=$article object=$articles}
 
 
                     {/if}

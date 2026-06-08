@@ -10,7 +10,10 @@ error_reporting(E_ALL | E_STRICT);
 class ApiTour extends clientAuth
 {
     public $client_id;
+    public $current_provider;
     public $admin_controller;
+
+    public $partner_controller;
     public $providers;
     public $counter_types = array();
 
@@ -25,18 +28,29 @@ class ApiTour extends clientAuth
 
     private function getNameMethodApiTour(): array {
 
-        return ['getAllTypeTour','countries', 'cities', 'typesTour', 'search', 'detail', 'prereserve', 'book', 'reserve','packages','hotelsPackages','informationsHotel','tourRoutes','infoTourByDate','packageOfTour','infoSpecialHotel','listTourTravelProgram','getInfoTour','getInfoTourRoutByIdTour','getTypeVehicleApi','getOriginCities','getOriginCitiesExternal','getCountryDestination','getCityDestinationExternal'];
+        return ['receive_report','fetchAllNewTours','getAllTypeTour','countries', 'cities', 'typesTour', 'search', 'detail', 'prereserve', 'book', 'reserve','packages','hotelsPackages','informationsHotel','tourRoutes','infoTourByDate','packageOfTour','infoSpecialHotel','listTourTravelProgram','getInfoTour','getInfoTourRoutByIdTour','getTypeVehicleApi','getOriginCities','getOriginCitiesExternal','getCountryDestination','getCityDestinationExternal'];
     }
     public function executeRequest($content, $url) {
         $method = $this->traceUrl($url);
+
         if (!empty($method)) {
+
             if (!in_array($method, $this->getNameMethodApiTour())) {
                 echo functions::withError([], 404, 'Method Not Found');
                 exit();
             }
             $providers = $this->getClientProviders();
+
             if(!empty($providers)){
-                $this->providers = $providers[0];
+                if($method == 'fetchAllNewTours' ){
+                    $this->providers = $providers;
+                    if(!$this->providers){
+                        echo functions::withError([], 400, 'You do not have access to this provider');
+                        exit();
+                    }
+                }else
+                    $this->current_provider = $providers[0];
+
                 return $this->$method($content);
             }
             echo functions::withError([], 400, 'Access Denied');
@@ -47,22 +61,27 @@ class ApiTour extends clientAuth
         }
     }
 
+
     public function processRequest() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $headers = getallheaders();
 
             if (isset($headers['Content-Type']) && strpos($headers['Content-Type'], 'application/json') !== false) {
                 $content = json_decode(file_get_contents('php://input'), true);
-                $auth_user = $headers['Username'] ?? '';
-                $auth_pass = $headers['Password'] ?? '';
+                $ModelBase = Load::library('ModelBase');
+                $auth_user = trim($headers['Username'] ?? '', '"');
+                $auth_pass = trim($headers['Password'] ?? '', '"');
 
-                if (!empty($auth_user) && !empty($auth_pass)) {
+                $Sql = "SELECT * FROM client_user_api WHERE userName='{$auth_user}' AND keyTabdol='{$auth_pass}'  AND is_enable='1'";
 
-                    $user_name = filter_var($auth_user, FILTER_SANITIZE_STRING);
-                    $password = filter_var($auth_pass, FILTER_SANITIZE_STRING);
-                    $get_info_user = $this->getAccessApiTour($user_name, $password);
+                $resClient = $ModelBase->load($Sql);
+
+                if (!empty($resClient)) {
+
+                    $get_info_user = $this->getAccessApiTour($resClient['clientId']);
+
+
                     if (!empty($get_info_user)) {
-
                         $this->client_id = $get_info_user['ClientId'];
                         $this->admin_controller = $this->getController('admin');
                         echo $this->executeRequest($content, $_SERVER['REQUEST_URI']);
@@ -113,9 +132,11 @@ class ApiTour extends clientAuth
 
     public function search($content) {
 
+
         $countries = $this->getCountries();
         $cities = $this->getCities();
         $types_tour = $this->getTourType();
+
 
         if ($content['language'] == 'fa') {
             $dateNow = dateTimeSetting::jdate("Ymd", time(), '', '', 'en');
@@ -250,11 +271,9 @@ class ApiTour extends clientAuth
                   GROUP BY T.tour_code
                   ORDER BY T.priority=0,T.priority ASC
                   ";
-
-
-        $tours = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
-
-
+        $this->partner_controller = $this->getController('partner');
+        $agencyInfo = $this->partner_controller->infoClient($this->current_provider);
+        $tours = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
         $airlines = [];
         $final_tours = [];
         if (!empty($tours)) {
@@ -267,19 +286,18 @@ class ApiTour extends clientAuth
                         'name' => $types_tour[$item]['tour_type']
                     ];
                 }
-
-
                 $vehicles = $this->getTypeVehicle($tour['id']);
                 $oneDayTour = in_array('1', $type_ides);
-
                 $minPrice = $this->minPriceHotelByIdTourR($tour['id'], $oneDayTour);
                 $routes = $this->infoTourRoutByIdTour($tour['id']);
+                $tour_name_en = preg_replace('/\s+/', '', $tour['tour_name_en']);
                 if ($minPrice['price'] > 0) {
                     $final_tours[] = [
                         'id' => $tour['id'],
                         'id_same' => $tour['id_same'],
                         'tour_name' => $tour['tour_name'],
                         'tour_name_en' => $tour['tour_name_en'],
+                        'tour_detail_address' => "http://{$agencyInfo['MainDomain']}/gds/fa/detailTour/{$tour['id_same']}/{$tour_name_en}",
                         'tour_type' => $types,
                         'tour_code' => $tour['tour_code'],
                         'start_date' => $this->formatDate($tour['start_date']),
@@ -305,7 +323,14 @@ class ApiTour extends clientAuth
                         'type_vehicle_id' => $tour['type_vehicle_id'],
                         'start_price' => $minPrice,
                         'vehicles' => $vehicles,
-                        'info_tour_rout' => $routes
+                        'info_tour_rout' => $routes,
+                        'agency_info' =>[
+                            'AgencyName' => $agencyInfo['AgencyName'],
+                            'Address' => $agencyInfo['Address'],
+                            'Phone' => $agencyInfo['Phone'],
+                            'Mobile'=>$agencyInfo['Mobile'],
+                            'Logo'=>"http://{$agencyInfo['MainDomain']}/gds/pic/{$agencyInfo['Logo']}",
+                        ]
 
                     ];
                 }
@@ -323,6 +348,341 @@ class ApiTour extends clientAuth
 
     }
 
+    public function fetchAllNewTours($content = []) {
+
+        if (empty($content) || !is_array($content)) {
+            $content = [];
+        }
+
+        // تنظیم مقادیر پیش‌فرض در صورت عدم وجود
+        $defaults = [
+            'language' => 'fa',
+            'start_date' => 'all',
+            'destination_type' => 'all',
+            'tourTypeId' => 'all',
+            'origin_country_id' => 'all',
+            'destination_country_id' => 'all',
+            'origin_city_id' => 'all',
+            'destination_city_id' => 'all',
+            'is_special' => 'all'
+        ];
+
+        // ترکیب مقادیر ارسالی با مقادیر پیش‌فرض
+        $content = array_merge($defaults, $content);
+
+        if ($content['language'] == 'fa') {
+            $dateNow = dateTimeSetting::jdate("Ymd", time(), '', '', 'en');
+        } else {
+            $dateNow = date("Ymd", time());
+        }
+
+        if ($content['start_date'] != 'all') {
+            $SDate = str_replace("-", "", $content['start_date']);
+        } else {
+            $SDate = $dateNow;
+        }
+
+        $controllerPublic = $this->getController('reservationPublicFunctions');
+        $date2Check = $controllerPublic->dateNextFewDays($SDate, ' + 120');
+
+        if (trim($SDate) < trim($dateNow)) {
+            return functions::withError([
+                'code' => 'ET004',
+                'error' => 'DateIsWrong',
+                'status' => 'error'
+            ], 400, 'Date Selected IS Wrong');
+        }
+
+        if ($content['language'] == 'fa') {
+            if ($content['start_date'] != 'all') {
+                $search_start_date = str_replace("-", "", $content ['start_date']);
+                $start_date = explode('-', $content ['start_date']);
+                $search_end_month = $controllerPublic->shamsiMonthToEndDay($start_date[0], $start_date[1]);
+                $search_end_date = implode("-", [$start_date[0], $start_date[1], $search_end_month]);
+                $search_end_date = str_replace("-", "", $search_end_date);
+            } else {
+                $search_start_date = $dateNow;
+            }
+        } else {
+            if ($content ['start_date'] != 'all') {
+                $search_start_date = str_replace("-", "", $content ['start_date']);
+                $start_date = explode('-', $content ['start_date']);
+                $search_end_month = $controllerPublic->miladiMonthToEndDay($start_date[0], $start_date[1]);
+                $search_end_date = implode("-", [$start_date[0], $start_date[1], $search_end_month]);
+                $search_end_date = str_replace("-", "", $search_end_date);
+            } else {
+                $search_start_date = $dateNow;
+            }
+        }
+
+        $WHERE = " AND T.start_date >'{$dateNow}' ";
+
+        if (isset($content ['destination_type']) && $content ['destination_type'] == 'internal') {
+            $WHERE .= " AND T.origin_country_id = '1' ";
+            $WHERE .= " AND TR.destination_country_id = '1' ";
+            $WHERE .= " AND TR.tour_title = 'dept' ";
+        } elseif (isset($content ['tourTypeId']) && $content ['tourTypeId'] == 'external') {
+            $WHERE .= " AND T.origin_country_id = '1' ";
+            $WHERE .= " AND TR.destination_country_id != '1' ";
+            $WHERE .= " AND TR.tour_title = 'dept' ";
+        } elseif (isset($content ['tourTypeId']) && $content ['tourTypeId'] != 'all' && $content ['tourTypeId'] != 'lastMinuteTour') {
+            $WHERE .= " AND T.tour_type_id LIKE '%" . '"' . $content['tourTypeId'] . '"' . "%' ";
+        }
+
+        $Join = '';
+
+        if ($content['start_date'] != 'all') {
+            $WHERE .= " AND (T.start_date >= '{$search_start_date}' AND T.start_date <= '{$search_end_date}') ";
+        } else {
+            $WHERE .= " AND (T.start_date >= '{$search_start_date}' ) ";
+        }
+
+        if (isset($content['origin_country_id']) && $content['origin_country_id'] != 'all') {
+            $WHERE .= " AND T.origin_country_id = '{$content['origin_country_id']}' ";
+            $Join .= " INNER JOIN reservation_tour_tourType_tb AS TTT ON T.id_same=TTT.fk_tour_id_same";
+        }
+        if (isset($content['destination_country_id']) && $content['destination_country_id'] != 'all') {
+            $WHERE .= " AND TR.destination_country_id = '{$content['destination_country_id']}' ";
+        }
+        if (isset($content['origin_city_id']) && $content['origin_city_id'] != 'all') {
+            $WHERE .= " AND T.origin_city_id = '{$content['origin_city_id']}' ";
+        }
+        if (isset($content['destination_city_id']) && $content['destination_city_id'] != 'all') {
+            $WHERE .= " AND TR.destination_city_id = '{$content['destination_city_id']}' ";
+        }
+        if (isset($content['is_special']) && $content['is_special'] == '1') {
+            $WHERE .= " AND T.is_special = 'yes' ";
+        }
+
+        $sql = " SELECT
+                T.id , T.id_same,T.tour_name,T.tour_name_en,T.tour_type_id,
+                T.tour_code,T.start_date,T.end_date,T.night,T.`day`,T.tour_pic,T.tour_status,
+                T.origin_continent_id,T.origin_country_id,T.is_show,T.is_special,T.is_del,
+                T.`language`,
+                T.origin_city_name,
+                T.change_price,
+                ReservationOriginCity.name_en AS origin_city_name_en,
+                T.origin_city_id,
+                T.origin_region_name,
+                T.origin_country_name,
+                ReservationOriginCountry.name_en AS origin_country_name_en,
+                TR.destination_country_name,
+                ReservationDestinationCountry.name_en AS destination_country_name_en,
+                TR.destination_city_name,
+                ReservationDestinationCity.name_en AS destination_city_name_en,
+                TR.destination_region_name,
+                TR.airline_name,
+                TR.type_vehicle_name,
+                TR.exit_hours,
+                TR.airline_id,
+                TR.type_vehicle_id,
+                TR.tour_title,
+                TR.destination_country_id,
+                TR.id AS idRout
+            FROM
+                reservation_tour_tb AS T
+                INNER JOIN reservation_tour_rout_tb AS TR ON T.id=TR.fk_tour_id
+                LEFT JOIN reservation_city_tb AS ReservationOriginCity ON ReservationOriginCity.id=T.origin_city_id
+                LEFT JOIN reservation_country_tb AS ReservationOriginCountry ON ReservationOriginCountry.id=T.origin_country_id
+                LEFT JOIN reservation_city_tb AS ReservationDestinationCity ON ReservationDestinationCity.id=TR.destination_city_id
+                LEFT JOIN reservation_country_tb AS ReservationDestinationCountry ON ReservationDestinationCountry.id=TR.destination_country_id
+                {$Join}
+            WHERE
+                T.is_del = 'no'
+                AND 
+                T.is_show = 'yes' 
+                AND TR.tour_title='dept'
+                AND (TR.is_route_fake = '1' OR TR.is_route_fake IS NULL) 
+                {$WHERE}
+            GROUP BY T.tour_code
+            ORDER BY T.priority=0,T.priority ASC
+            ";
+
+        // اینجا باید برای تمام provider ها داده بگیریم
+        $all_final_tours = [];
+        $this->partner_controller = $this->getController('partner');
+
+
+        // حلقه بر روی همه provider ها
+        foreach ($this->providers as $provider) {
+
+            $this->current_provider = $provider; // ذخیره provider فعلی برای استفاده در متدهای دیگر
+            $countries = $this->getCountries();
+            $cities = $this->getCities();
+            $types_tour = $this->getTourType();
+            $agencyInfo = $this->partner_controller->infoClient($provider);
+
+            $tours = $this->admin_controller->ConectDbClient($sql, $provider, "SelectAll", "", "", "");
+
+
+            if (!empty($tours)) {
+                foreach ($tours as $tour) {
+                    $types = [];
+                    $type_ides = json_decode($tour['tour_type_id'], true);
+                    if (is_array($type_ides)) {
+                        foreach ($type_ides as $item) {
+                            if (isset($types_tour[$item])) {
+                                $types[] = [
+                                    'id' => $item,
+                                    'name' => $types_tour[$item]['tour_type']
+                                ];
+                            }
+                        }
+                    }
+
+                    $oneDayTour = in_array('1', $type_ides);
+                    $minPrice = $this->minPriceHotelByIdTourR($tour['id'], $oneDayTour);
+                    $routes = $this->infoTourRoutByIdTour($tour['id']);
+                    $vehicles = $this->getTypeVehicle($tour['id']);
+
+
+                    if ($minPrice['price'] > 0) {
+                        $tour_name_en = preg_replace('/\s+/', '', $tour['tour_name_en']);
+                        $all_final_tours[] = [
+                            'api_id' => $tour['id'] . '-' . $tour['id_same'],
+                            'provider_id' => $provider,
+                            'agency_name' => $agencyInfo['AgencyName'] ?? '',
+                            'id' => $tour['id'],
+                            'id_same' => $tour['id_same'],
+                            'tour_name' => $tour['tour_name'],
+                            'tour_name_en' => $tour['tour_name_en'],
+                            'tour_detail_address' => "http://{$agencyInfo['MainDomain']}/gds/fa/detailTour/{$tour['id_same']}/{$tour_name_en}",
+                            'tour_type' => $types,
+                            'tour_code' => $tour['tour_code'],
+                            'start_date' => $this->formatDate($tour['start_date']),
+                            'end_date' => $this->formatDate($tour['end_date']),
+                            'night' => $tour['night'],
+                            'day' => $tour['day'],
+                            'tour_pic' => "https://safar360.com/gds/pic/reservationTour/" . $tour['tour_pic'],
+                            'origin_country_id' => $tour['origin_country_id'],
+                            'is_special' => $tour['is_special'],
+                            'is_del' => $tour['is_del'],
+                            'is_show' => $tour['is_show'],
+                            'tour_status' => $tour['tour_status'],
+                            'origin_city_name' => $tour['origin_city_name'],
+                            'origin_city_name_en' => $tour['origin_city_name_en'],
+                            'origin_city_id' => $tour['origin_city_id'],
+                            'origin_region_name' => $tour['origin_region_name'],
+                            'destination_country_id' => $tour['destination_country_id'],
+                            'destination_country_name' => $tour['destination_country_name'],
+                            'destination_city_name' => $tour['destination_city_name'],
+                            'destination_city_name_en' => $tour['destination_city_name_en'],
+                            'destination_region_name' => $tour['destination_region_name'],
+                            'vehicle_name' => $tour['airline_name'],
+                            'type_vehicle_name' => $tour['type_vehicle_name'],
+                            'exit_hours' => $tour['exit_hours'],
+                            'vehicle_id' => $tour['airline_id'],
+                            'type_vehicle_id' => $tour['type_vehicle_id'],
+                            'start_price' => $minPrice,
+                            'vehicles' => $vehicles,
+                            'info_tour_rout' => $routes,
+                            'agency_info' => [
+                                'AgencyName' => $agencyInfo['AgencyName'] ?? '',
+                                'Address' => $agencyInfo['Address'] ?? '',
+                                'Phone' => $agencyInfo['Phone'] ?? '',
+                                'Mobile' => $agencyInfo['Mobile'] ?? '',
+                                'Logo'=> "http://{$agencyInfo['MainDomain']}/gds/pic/{$agencyInfo['Logo']}",
+                            ]
+                        ];
+                    }
+                }
+            }
+        }
+
+        if (!empty($all_final_tours)) {
+            return functions::withSuccess($all_final_tours, 200, 'Data Fetched Successfully');
+        }
+
+
+        return functions::withError([
+            'code' => 'D001',
+            'error' => 'DataNotExist',
+            'status' => 'error'
+        ], 404, 'Data Not Exist');
+    }
+
+    /**
+     * دریافت گزارش روزانه از کران‌ها
+     */
+    public function receive_report($content)
+    {
+        try {
+            // validation
+            if (!isset($content['date']) || !isset($content['summary'])) {
+                return functions::withError([
+                    'code' => 'REP001',
+                    'error' => 'Invalid report format'
+                ], 400, 'Invalid report format');
+            }
+
+            // دریافت source و request_type
+            $source = $content['metadata']['source'] ?? 'safarbank';
+            $requestType = $content['metadata']['request_type'] ?? 'api';
+            $reportDate = $content['date'];
+
+            // ذخیره جزئیات تورها در tour_stats (همین یک جدول کافیست)
+            if (!empty($content['tours'])) {
+                $this->saveTourStats($reportDate, $content['tours'], $source, $requestType);
+            }
+
+            return functions::withSuccess([
+                'tours_saved' => count($content['tours'] ?? [])
+            ], 200, 'Report received successfully');
+
+        } catch (Exception $e) {
+            error_log("receive_report error: " . $e->getMessage());
+            return functions::withError([
+                'code' => 'REP002',
+                'error' => 'Failed to save report'
+            ], 500, 'Failed to save report: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * ذخیره جزئیات تورها در دیتابیس
+     */
+    private function saveTourStats($reportDate, $tours, $source, $requestType)
+    {
+        if (empty($tours)) {
+            return;
+        }
+
+        $model = $this->getModel('tourStatsModel');
+
+        foreach ($tours as $tour) {
+            $data = [
+                'report_date' => $reportDate,
+                'source' => $source,
+                'request_type' => $requestType,
+                'tour_id_same' => $tour['tour_id_same'],
+                'tour_name' => $tour['tour_name'] ?? '',
+                'destination_city' => $tour['destination']['city'] ?? '',
+                'provider_id' => $tour['provider_id'] ?? 0,
+                'total_visits' => $tour['statistics']['visits']['total'] ?? 0,
+                'unique_visits' => $tour['statistics']['visits']['unique'] ?? 0,
+                'total_clicks' => $tour['statistics']['clicks']['total'] ?? 0,
+                'unique_clicks' => $tour['statistics']['clicks']['unique'] ?? 0,
+                'conversion_rate' => $tour['statistics']['conversion_rate'] ?? 0,
+                'is_special' => $tour['is_special'] ? 1 : 0
+            ];
+
+            // چک کردن وجود رکورد قبلی
+            $existing = $model->get()
+                ->where('report_date', $reportDate)
+                ->where('source', $source)
+                ->where('request_type', $requestType)
+                ->where('tour_id_same', $tour['tour_id_same'])
+                ->find();
+
+            if ($existing) {
+                $model->updateWithBind($data, "id = {$existing['id']}");
+            } else {
+                $model->insertWithBind($data);
+            }
+        }
+    }
+
+
     public function detail($content) {
         $tour = $this->getTour($content['tour_id']);
 
@@ -338,9 +698,7 @@ class ApiTour extends clientAuth
             $one_day_tour = (strpos($tour['tour_type_id'], '"1"') !== false) ? true : false;
 
 
-
             $price = $this->minPriceHotelByIdTourR($content['tour_id'], $one_day_tour);
-
             $gallery_tour = $this->getTourGallery($content['tour_id']);
 
             $tour_days = $this->listTourDates($tour['tour_code'], $one_day_tour);
@@ -367,14 +725,15 @@ class ApiTour extends clientAuth
 
     }
 
-    private function getClientProviders(): array {
+    private function getClientProviders() {
         $providers = $this->getModel('providersTourModel')->get()->where('client_id', $this->client_id)->find();
+
         return !empty($providers) ? json_decode($providers['providers'], true) : [];
     }
 
     public function getCountries(): array {
         $sql = "SELECT * FROM reservation_country_tb WHERE is_del = 'no'";
-        $results = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $results = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         $countries = [];
         foreach ($results as $result) {
@@ -385,7 +744,7 @@ class ApiTour extends clientAuth
 
     public function getCities(): array {
         $sql = "SELECT * FROM reservation_city_tb WHERE is_del = 'no'";
-        $results = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $results = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         $cities = [];
         foreach ($results as $result) {
@@ -396,7 +755,7 @@ class ApiTour extends clientAuth
 
     public function getTourType(): array {
         $sql = " SELECT * FROM reservation_tour_type_tb WHERE is_del = 'no' ";
-        $results = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $results = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         $types = [];
         foreach ($results as $result) {
@@ -528,7 +887,7 @@ class ApiTour extends clientAuth
             WHERE
                 id = '{$id}'
             ";
-            $result = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+            $result = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
 
             $change_price = $reservation_tour_controller->doPriceChange($result['adult_price_one_day_tour_r'], $result['change_price']);
@@ -549,15 +908,14 @@ class ApiTour extends clientAuth
     SELECT
         T.change_price,
         P.id AS package_id,
-      
         CASE
-			
 			WHEN P.double_room_price_r > 0 THEN
 			P.double_room_price_r 
 			WHEN P.single_room_price_r > 0 THEN
 			P.single_room_price_r ELSE P.three_room_price_r 
 		END 
 		 AS min_price_r,
+        
         CASE
             WHEN P.double_room_price_a > 0 THEN P.double_room_price_a
             WHEN P.single_room_price_r > 0 THEN P.single_room_price_a
@@ -574,7 +932,7 @@ class ApiTour extends clientAuth
 ";
 
 
-            $result = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+            $result = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
             if ($result) {
                 $change_price = $reservation_tour_controller->doPriceChange($result['min_price_r'], $result['change_price']);
@@ -608,7 +966,7 @@ class ApiTour extends clientAuth
     private function calculateDiscount($tour_id, $min_price, $package_id) {
         $sql = "SELECT adult_amount FROM reservation_tour_discount_tb WHERE tour_package_id='{$package_id}' AND tour_id='{$tour_id}' AND counter_type_id='5'";
 
-        $discount = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+        $discount = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
         return $min_price - (!empty($discount['adult_amount']) ? $discount['adult_amount'] : 0);
 
@@ -639,7 +997,7 @@ class ApiTour extends clientAuth
                         reservation_tour_rout_tb.tour_title = 'dept' DESC";
 
 
-        $result = $this->admin_controller->ConectDbClient($sql_vehicle, $this->providers, "SelectAll", "", "", "");
+        $result = $this->admin_controller->ConectDbClient($sql_vehicle, $this->current_provider, "SelectAll", "", "", "");
 
         $listTypeVehicle = [];
         foreach ($result as $val) {
@@ -647,10 +1005,10 @@ class ApiTour extends clientAuth
             $listTypeVehicle[$val['tour_title']]['type_vehicle_name'] = $val['type_vehicle_name'];
             if ($val['type_vehicle_name'] !== 'هواپیما') {
                 $sql = "SELECT id, name, name_en, pic, abbreviation, fk_id_type_of_vehicle FROM reservation_transport_companies_tb WHERE fk_id_type_of_vehicle='{$val['type_vehicle_id']}' AND is_del='no'";
-                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
             } else {
                 $sql = "SELECT id, name, name_en, pic, abbreviation, fk_id_type_of_vehicle FROM airline_tb WHERE id='{$val['airline_id']}' AND is_del='no'";
-                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
             }
             $listTypeVehicle[$val['tour_title']]['vehicle'] = $vehicle;
@@ -714,7 +1072,7 @@ class ApiTour extends clientAuth
                       GROUP BY T.tour_code
                       ORDER BY T.priority=0,T.priority ASC";
 
-        return $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        return $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
     }
 
 
@@ -724,7 +1082,7 @@ class ApiTour extends clientAuth
                 INNER JOIN reservation_country_tb RCOUNTRY ON TR.destination_country_id=RCOUNTRY.id
                 WHERE TR.fk_tour_id = '{$id}' AND TR.is_del = 'no'  ";
         $sql .= " ORDER BY TR.tour_title ";
-        return $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        return $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
     }
 
     /**
@@ -742,7 +1100,7 @@ class ApiTour extends clientAuth
                                                                                  
                 WHERE T.id = '{$tour_id}' AND T.is_del = 'no' ";
 
-        return $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+        return $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
     }
 
     private function listTourDates($tourCode, $one_day_tour = false) {
@@ -771,7 +1129,7 @@ class ApiTour extends clientAuth
                  GROUP BY T.start_date
                  LIMIT 0,10";
 
-        $resultTours = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $resultTours = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
 
         $result = [];
@@ -821,7 +1179,7 @@ class ApiTour extends clientAuth
 
     private function getTourGallery($tourId) {
         $sql = " SELECT * FROM reservation_tour_gallery_tb WHERE is_del = 'no' AND fk_tour_id_same='{$tourId}' ORDER BY id DESC";
-        return $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        return $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
 
     }
@@ -898,7 +1256,7 @@ class ApiTour extends clientAuth
                   reservation_tour_rout_tb.tour_title  
                 ORDER BY 
                   reservation_tour_rout_tb.id , reservation_tour_rout_tb.tour_title = 'dept' DESC ";
-        $results = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $results = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         $list_type_vehicle = [];
         foreach ($results as $val) {
@@ -907,11 +1265,11 @@ class ApiTour extends clientAuth
             if ($val['type_vehicle_name'] !== 'هواپیما') {
 
                 $sql = " SELECT 'id', 'name', 'name_en', 'pic', 'abbreviation','fk_id_type_of_vehicle' FROM reservation_transport_companies_tb WHERE fk_id_type_of_vehicle='{$val['type_vehicle_id']}' AND is_del='no'";
-                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
             } else {
                 $sql = "SELECT FROM airline_tb WHERE id='{$val['airline_id']} AND del='no'";
-                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+                $vehicle = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
             }
 
@@ -937,7 +1295,7 @@ INNER JOIN
 WHERE 
   reservation_tour_tb.id = '{$tour_id}' ";
 
-        $origin_route = $this->admin_controller->ConectDbClient($sql_origin, $this->providers, "Select", "", "", "");
+        $origin_route = $this->admin_controller->ConectDbClient($sql_origin, $this->current_provider, "Select", "", "", "");
 
         $sql_destination = "	
 SELECT 
@@ -953,7 +1311,7 @@ WHERE
 ORDER BY 
   reservation_tour_rout_tb.id asc ";
 
-        $destination_route = $this->admin_controller->ConectDbClient($sql_destination, $this->providers, "SelectAll", "", "", "");
+        $destination_route = $this->admin_controller->ConectDbClient($sql_destination, $this->current_provider, "SelectAll", "", "", "");
 
 
         $destinations = [];
@@ -976,7 +1334,7 @@ INNER JOIN
 WHERE 
   reservation_transport_companies_tb.id = '{$route['airline_id']}' ";
 
-                $airline_name = $this->admin_controller->ConectDbClient($sql_airline_name, $this->providers, "Select", "", "", "");
+                $airline_name = $this->admin_controller->ConectDbClient($sql_airline_name, $this->current_provider, "Select", "", "", "");
 
                 $airline_name['vehicle_name_en'] = functions::vehicleEnName($airline_name['vehicle_name']);
                 $airline_name['vehicle_type_en'] = $airline_name['vehicle_type'];
@@ -1033,7 +1391,7 @@ GROUP BY
 ORDER BY 
   reservation_tour_package_tb.double_room_price_r DESC ";
 
-        $packages = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $packages = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         $room_types = [
             "OneBed" => [
@@ -1308,7 +1666,7 @@ WHERE
 AND 
   reservation_tour_hotel_tb.is_del = 'no' ";
 
-        return $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        return $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
     }
 
     private function getHotelInformation($hotel_id) {
@@ -1321,7 +1679,7 @@ INNER JOIN
 WHERE 
   reservation_hotel_tb.id = '{$hotel_id}' ";
 
-        $hotel = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+        $hotel = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
         $hotel['logo'] ='https://safar360.com/gds/pic/' . $hotel['logo'];
 
@@ -1342,7 +1700,7 @@ WHERE
     private function getHotelFacilitiesById($hotel_id) {
 
         $sql="SELECT * FROM reservation_hotel_facilities_tb WHERE id_hotel='{$hotel_id}'";
-        $hotel_facilities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $hotel_facilities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
 
         $facilities_id = [];
@@ -1353,7 +1711,7 @@ WHERE
         $implode_facilities = implode(',',$facilities_id);
 
         $sql="SELECT * FROM reservation_facilities_tb WHERE is_del='no' AND id IN ({$implode_facilities})";
-        $hotel_facilities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $hotel_facilities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         return $hotel_facilities ;
 
@@ -1361,7 +1719,7 @@ WHERE
 
     private function getHotelGalleryById($hotel_id) {
         $sql="SELECT * FROM reservation_facilities_tb WHERE is_del='no' AND id_hotel='{$hotel_id}'";
-        $galleries = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $galleries = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         $result = [];
         foreach ($galleries as $key => $item) {
@@ -1395,7 +1753,7 @@ WHERE
                     AND TourHotel.fk_city_id = '{$CityId}'
                     AND TourHotel.is_del = 'no'
                     AND Rout.is_del = 'no'";
-        return $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        return $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
     }
 
     public function hotelsPackages($content) {
@@ -1420,7 +1778,7 @@ WHERE
         $start_date = str_replace('/', '', $content['start_date']);
         if ($content['type_tour'] == 'oneDayTour') {
             $sql = "SELECT reservation_tour_tb.* FROM reservation_tour_tb  WHERE start_date = '{$start_date}'  AND tour_code ='{$content['tour_code']}'   AND is_show = 'yes'  AND is_del = 'no' ";
-            $tour_date =  $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+            $tour_date =  $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
             return json_encode($tour_date,256);
         }
@@ -1431,7 +1789,7 @@ WHERE
                   WHERE reservation_tour_tb.start_date = '{$start_date}'  AND reservation_tour_tb.tour_code = '{$content['tour_code']}'  
                   AND reservation_tour_tb.is_show = 'yes'  AND reservation_tour_tb.is_del = 'no'  
                  AND reservation_tour_package_tb.is_del = 'no' ";
-        $tour_date =  $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+        $tour_date =  $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
         return json_encode($tour_date,256);
     }
@@ -1454,7 +1812,7 @@ WHERE
             GROUP BY H.id
             ";
 
-        $tour_date =  $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $tour_date =  $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         return json_encode($tour_date,256);
     }
@@ -1469,7 +1827,7 @@ WHERE
                     reservation_hotel_tb AS Hotel
                     LEFT JOIN reservation_hotel_facilities_tb AS Facilities ON Hotel.id = Facilities.id_hotel
                  WHERE Hotel.id={$content['hotel_id']} ";
-        $result = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $result = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
         $hotel  = [];
         if ( ! empty( $result ) ) {
             $facilities = '';
@@ -1493,7 +1851,7 @@ WHERE
     public function listTourTravelProgram( $content ) {
 
         $sql = " SELECT *  FROM  tourtravelprogram_tb  WHERE tour_id = '{$content['id_same']}'";
-        $tourTravelProgram         = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+        $tourTravelProgram         = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
         $data                      = $tourTravelProgram['data'];
         $tourTravelProgram['data'] = json_decode(preg_replace( "/\r\n|\r|\n/", '<br/>', $data ),true);
         foreach ($tourTravelProgram['data']['day'] as $key=>$days){
@@ -1520,7 +1878,7 @@ WHERE
                  WHERE 
                     T.id = '{$content['tour_id']}'
                  GROUP BY T.id";
-        $getInfoTour         = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+        $getInfoTour         = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
         $getInfoTour['client_id'] = $this->providers ;
 
         return json_encode($getInfoTour,256);
@@ -1543,7 +1901,7 @@ WHERE
 
     private function getOneDayPackage($content) {
         $sql = "SELECT reservation_tour_tb.* FROM reservation_tour_tb  WHERE id ='{$content['tour_id']}' ";
-        $result_get_tour = $this->admin_controller->ConectDbClient($sql, $this->providers, "Select", "", "", "");
+        $result_get_tour = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "Select", "", "", "");
 
         $final_array = [];
         $room_types = [
@@ -1615,7 +1973,7 @@ WHERE
 
     public function getOriginCities($content) {
 
-         $sql = "SELECT 
+        $sql = "SELECT 
   reservation_tour_tb.id as tour_id, reservation_city_tb.id, reservation_city_tb.name, reservation_city_tb.name_en, reservation_city_tb.id_country, reservation_city_tb.abbreviation 
 FROM 
   reservation_city_tb 
@@ -1638,8 +1996,8 @@ AND
 GROUP BY 
   reservation_city_tb.id 
 ORDER BY  reservation_tour_tb.priority DESC " ;
-            
-        $cities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+
+        $cities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         return json_encode($cities,256|64);
     }
@@ -1648,7 +2006,7 @@ ORDER BY  reservation_tour_tb.priority DESC " ;
     public function getOriginCitiesExternal($content) {
 
         $origin_country = isset($content['id_country']) ? $content['id_country'] : '1';
-         $sql = "SELECT 
+        $sql = "SELECT 
   reservation_tour_tb.id as tour_id, reservation_city_tb.id, reservation_city_tb.name, reservation_city_tb.name_en, reservation_city_tb.id_country, reservation_city_tb.abbreviation, reservation_tour_rout_tb.destination_country_id 
 FROM 
   reservation_city_tb 
@@ -1677,7 +2035,7 @@ ORDER BY
 LIMIT 
   0,20 " ;
 
-        $cities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $cities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         echo json_encode($cities,256|64); die();
     }
@@ -1715,7 +2073,7 @@ GROUP BY
 LIMIT 
   0,20 " ;
 
-        $cities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $cities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         return json_encode($cities,256|64);
     }
@@ -1736,7 +2094,7 @@ LIMIT
               reservation_city_tb.id 
             ORDER BY 
               reservation_tour_rout_tb.id DESC ";
-        $cities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $cities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         return json_encode($cities,256|64);
     }
@@ -1744,7 +2102,7 @@ LIMIT
 
     public function getAllTypeTour($content) {
         $sql    = " SELECT * FROM reservation_tour_type_tb WHERE is_del = 'no' ";
-        $cities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
+        $cities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         return json_encode($cities,256|64);
     }

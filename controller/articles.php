@@ -1926,7 +1926,7 @@ class articles extends positions
     public function getByPosition($data_search) {
 
         $ids=$this->getItemsByPosition('article',$data_search);
-
+      
         $article_model = $this->getModel('articleModel');
         $article_table = $article_model->getTable();
         if (!isset($data_search['limit']) || empty($data_search['limit'])) {

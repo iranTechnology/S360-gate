@@ -500,23 +500,6 @@ class reservationPublicFunctions extends clientAuth {
         return $option;
     }
 
-    public function listTransportCompaniesNoTag($param)
-    {
-
-        $Model = Load::library('Model');
-        $sqlVehicle = " SELECT name FROM reservation_type_of_vehicle_tb 
-              WHERE id='{$param['type_of_vehicle']}' AND is_del='no' ORDER BY id ASC";
-        $resultVehicle = $Model->load($sqlVehicle);
-        if ($resultVehicle['name']=='هواپیما'){
-            $result = $this->ListAirline();
-        }else {
-            $result = $this->ListOtherAirline($param['type_of_vehicle']);
-        }
-
-        return $result;
-    }
-
-
     public function listTypeOfPlane($param)
     {
         $result = $this->getModel('reservationVehicleModel')

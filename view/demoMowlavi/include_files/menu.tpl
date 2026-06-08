@@ -5,13 +5,13 @@
             <nav class="navigation" id="navigation1">
                 <div class="parent-logo-menu">
                     <a class="nav-header" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                        <img alt="{$obj->Title_head()}" class="__logo_class__ logo"
+                        <img id="siteLogo"  alt="{$obj->Title_head()}" class="__logo_class__ logo"
                              src="project_files/images/logo.png" />
                     </a>
                     <div class="nav-menus-wrapper">
                         <ul class="nav-menu align-to-right">
                             <li>
-                                <a href="javascript:">بلیط</a>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">بلیط</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/page/train">قطار</a></li>
@@ -57,10 +57,10 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="javascrip:">آژانس ما</a>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">تماس با ما</a></li>
-                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a></li>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">چرا سفر 360 ؟</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a></li>
                                 </ul>
                             </li>
@@ -84,7 +84,7 @@
                         <!--                                  fill-rule="evenodd"></path>-->
                         <!--                        </svg>-->
                         <img alt="Hotel-tab" class="Icon06" src="project_files/images/Icon-06.png" />
-                        <img alt="Hotel-tab" class="Icon06res" src="project_files/images/Icon-06-res.png" />
+{*                        <img alt="Hotel-tab" class="Icon06res" src="project_files/images/Icon-06-res.png" />*}
                         <span>{include file="../../include/signIn/topBarName.tpl"}</span>
                     </a>
                     <div class="main-navigation__sub-menu2 arrow-up show-content-box-login-js" style="display: none">

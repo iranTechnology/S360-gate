@@ -1,4 +1,5 @@
-
+{load_presentation_object filename="aboutUs" assign="objAbout"}
+{assign var="about"  value=$objAbout->getData()}
 {assign var='AdditionalData' value=$smarty.const.ADDITIONAL_DATA|json_decode:true}
 {assign var=dateNow value=dateTimeSetting::jdate("Ymd", "", "", "", "en")}
 {if $smarty.session.layout neq 'pwa'}
@@ -9,7 +10,7 @@
                     <div class="item1-footer-pabpa">
                         <div class="data_phone">
                             <a href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}" class="footer_logo">
-                                <img src="project_files/images/logo-foot.png" alt="loggo-foot">
+                                <img  id="footerLogo" src="project_files/images/logo-foot.png" alt="loggo-foot">
                             </a>
                             <p class="phone_num">
                                 <i class="far fa-phone"></i>
@@ -127,9 +128,15 @@
 -->
 
                         <a href="https://caa.gov.ir/"><img src="project_files/images/certificate2.png" alt="namad-1"></a>
-                        <a href="javascript:">
-                            <img alt="namad-2" src="project_files/images/enamad.png"/>
-                        </a>
+                        {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+                            <a referrerpolicy="origin" target="_blank"
+                               href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+                                <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+                                     alt="اینماد"
+                                     style="cursor:pointer">
+                            </a>
+                        {/if}
+
                         <!--
                         <a href="http://www.aira.ir/"><img src="project_files/images/certificate3.png" alt="namad-2"></a>
 -->

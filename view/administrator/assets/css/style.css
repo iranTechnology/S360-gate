@@ -19190,7 +19190,7 @@ ul.pro-amenities li span i {
     }
 
     .show-sidebar .sidebar {
-        width: 240px;
+        width: 301px;
         top: 0
     }
 
@@ -19217,7 +19217,7 @@ ul.pro-amenities li span i {
 
     .sidebar-head {
         width: 0;
-        display: none
+        /*display: none*/
     }
 
     #page-wrapper {
@@ -20426,8 +20426,8 @@ textarea.form-control {
 }
 
 .language-selector span {
-    /*  margin-left: 5px; فاصله کلمه "مدیریت" از آیکون */
-    margin-right: 27px; /* فاصله کلمه "مدیریت" از لینک های زبان */
+    margin-left: 5px; /* فاصله کلمه "مدیریت" از آیکون */
+    margin-right: 10px; /* فاصله کلمه "مدیریت" از لینک های زبان */
 }
 
 .language-selector a {

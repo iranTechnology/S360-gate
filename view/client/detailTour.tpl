@@ -2458,25 +2458,22 @@
    let openAccordion = document.querySelector(".open-accordion");
    let openAccordionS = document.querySelector(".open-accordion > span");
    let openAccordionI = document.querySelector(".open-accordion > i");
-   if(openAccordion) {
-       openAccordion.addEventListener('click', function () {
+   openAccordion.addEventListener('click', function () {
 
-           if (openAccordionS.innerText === 'باز کردن همه'){
-               $('.collapse').collapse('show');
-               openAccordionS.innerText = 'بسته شدن';
-               openAccordionI.classList.add('fa fa-lock');
-               openAccordionI.classList.remove('fa fa-lock-open');
+      if (openAccordionS.innerText === 'باز کردن همه'){
+         $('.collapse').collapse('show');
+         openAccordionS.innerText = 'بسته شدن';
+         openAccordionI.classList.add('fa fa-lock');
+         openAccordionI.classList.remove('fa fa-lock-open');
 
 
-           }
-           else{
-               $('.collapse').collapse('hide');
-               openAccordionS.innerText = 'باز کردن همه';
-               openAccordionI.classList.add('fa fa-lock-open');
-               openAccordionI.classList.remove('fa fa-lock');
-           }
-       });
-   }
+      }else{
+         $('.collapse').collapse('hide');
+         openAccordionS.innerText = 'باز کردن همه';
+         openAccordionI.classList.add('fa fa-lock-open');
+         openAccordionI.classList.remove('fa fa-lock');
+      }
+   });
    $('.owl-tour-image').owlCarousel({
       rtl:true,
       loop:false,

@@ -17,7 +17,8 @@ class bookCip extends cip
     /**
      * bookTicketFlight constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->bookModel = $this->bookLocalModel();
         $this->reportModel = $this->reportModel();
@@ -30,42 +31,48 @@ class bookCip extends cip
     /**
      * @return bookLocalModel|bool
      */
-    protected function bookLocalModel() {
+    protected function bookLocalModel()
+    {
         return Load::getModel('cipModel');
     }
 
     /**
      * @return reportModel|bool
      */
-    protected function reportModel() {
+    protected function reportModel()
+    {
         return Load::getModel('cipBaseModel');
     }
 
     /**
      * @return smsServices|bool
      */
-    protected function smsService() {
+    protected function smsService()
+    {
         return Load::controller('smsServices');
     }
 
     /**
      * @return transaction|bool
      */
-    protected function transaction() {
+    protected function transaction()
+    {
         return Load::controller('transaction');
     }
 
     /**
      * @return discountCodes|bool
      */
-    protected function discountCodes() {
+    protected function discountCodes()
+    {
         return Load::controller('discountCodes');
     }
 
     /**
      * @return members|bool
      */
-    protected function members() {
+    protected function members()
+    {
         return Load::controller('members');
     }
 
@@ -73,7 +80,8 @@ class bookCip extends cip
      * @param $dataBooked
      * @return boolean
      */
-    public function book($dataBooked) {
+    public function book($dataBooked)
+    {
 
 
         functions::insertLog('params==>' . json_encode($dataBooked, 256), 'newBookCip');
@@ -85,7 +93,7 @@ class bookCip extends cip
 
         if ($payType != 'credit') {
             $this->updateInfoBankBookFlight($dataBooked['trackingCode']);
-            $this->tracking_code = $dataBooked['trackingCode'] ;
+            $this->tracking_code = $dataBooked['trackingCode'];
         }
 
         $info = $this->bookModel->get(['*'])
@@ -93,47 +101,42 @@ class bookCip extends cip
             ->limit(0, 1)
             ->find();
 
-        functions::insertLog('$info: ' . json_encode($info) , '000shojaee');
+        functions::insertLog('$info: ' . json_encode($info), '000shojaee');
         $resultBook = false;
 
-            functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookCip');
-            if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
-                functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
-                $this->updateStatusProcessing($info['factor_number']);
+        functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookCip');
+        if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
+            functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
+            $this->updateStatusProcessing($info['factor_number']);
 
-                    try {
-                        $startTime = time();
-                        $maxTime = 70;
-                        set_time_limit($maxTime + 5);
+            try {
+                $startTime = time();
+                $maxTime = 70;
+                set_time_limit($maxTime + 5);
 
-                        $resultBook = $this->reserveTicket($payType, $info);
-
-
-                        $elapsed = time() - $startTime;
-                        if ($elapsed > $maxTime) {
-                            return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
-                        }
-
-                    }
-                    catch (Exception $e) {
-                        return functions::withError('', 500, 'Error when booking a flight');
-                    }
+                $resultBook = $this->reserveTicket($payType, $info);
 
 
-                    functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
-
-                functions::insertLog('**************************************', 'newBookCip');
-
+                $elapsed = time() - $startTime;
+                if ($elapsed > $maxTime) {
+                    return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
+                }
+            } catch (Exception $e) {
+                return functions::withError('', 500, 'Error when booking a flight');
             }
-            else {
-                return functions::withError('', 403, 'تشریفات فرودگاه قبلا به نتیجه رسیده است');
-            }
+
+
+            functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
+
+            functions::insertLog('**************************************', 'newBookCip');
+        } else {
+            return functions::withError('', 403, 'تشریفات فرودگاه قبلا به نتیجه رسیده است');
+        }
 
         if ($resultBook) {
             return functions::withSuccess($resultBook, 200, 'تشریفات فرودگاه با موفقیت صادر شد');
         }
         return functions::withError('failed', 400, 'cip booking encountered an error.');
-
     }
 
     //region bookPrivateSourceFiveOfSourceSeven
@@ -142,7 +145,8 @@ class bookCip extends cip
      * @param $factorNumber
      * @param $payType
      */
-    private function updatePaymentWayBook($factorNumber, $payType) {
+    private function updatePaymentWayBook($factorNumber, $payType)
+    {
         $data['payment_date'] = Date('Y-m-d H:i:s');
         $data['payment_type'] = ($payType == 'credit') ? 'credit' : 'cash';
         $condition = "factor_number='{$factorNumber}'";
@@ -153,7 +157,8 @@ class bookCip extends cip
 
     #region checkForeSourceFive
 
-    private function updateInfoBankBookFlight($data) {
+    private function updateInfoBankBookFlight($data)
+    {
         $condition = " factor_number='" . $data['trackingCode'] . "' AND successfull = 'bank' ";
         $dataUpdate = array(
             'tracking_code_bank' => $data['trackingCode'],
@@ -161,16 +166,18 @@ class bookCip extends cip
         );
         $this->bookModel->updateWithBind($dataUpdate, $condition);
     }
-#endregion
+    #endregion
 
-    private function updateStatusProcessing($factorNumber) {
+    private function updateStatusProcessing($factorNumber)
+    {
         $data['successfull'] = 'processing';
         $condition = "factor_number='{$factorNumber}' AND successfull != 'pending' AND (successfull !='book' AND successfull !='private_reserve') ";
         $this->bookModel->updateWithBind($data, $condition);
         $this->reportModel->updateWithBind($data, $condition);
     }
 
-    public function checkForSourceFive($param) {
+    public function checkForSourceFive($param)
+    {
         /** @var airline $airlineController */
         $airlineController = Load::controller('airline');
         $dataCheckConfigAirline['flightType'] = $param['flight_type'];
@@ -181,8 +188,9 @@ class bookCip extends cip
 
         return $airlineController->checkSourceAirline($dataCheckConfigAirline);
     }
-    
-    private function updateInfo($payType, $eachDirection, $ReserveTicket = array()) {
+
+    private function updateInfo($payType, $eachDirection, $ReserveTicket = array())
+    {
 
 
 
@@ -191,10 +199,10 @@ class bookCip extends cip
             $this->transaction->setCreditToSuccess($eachDirection['factor_number'], $eachDirection['tracking_code_bank']);
         }
 
-                $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
+        $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
 
-                //email to buyer
-                $this->sendSmsToClient($eachDirection);
+        //email to buyer
+        $this->sendSmsToClient($eachDirection);
 
 
         return true;
@@ -203,7 +211,8 @@ class bookCip extends cip
     /**
      *
      */
-    private function sendSmsLowChargeClient() {
+    private function sendSmsLowChargeClient()
+    {
 
         $accountchargeController = $this->getcontroller('transaction')->getCredit();
         if ($accountchargeController < 10000000) {
@@ -226,7 +235,8 @@ class bookCip extends cip
     /**
      * @param $eachDirection
      */
-    private function sendSmsWarningToMangerIrantech($eachDirection) {
+    private function sendSmsWarningToMangerIrantech($eachDirection)
+    {
         $objSms = $this->smsService->initService('1');
         if ($objSms) {
             $ServerName = functions::TitleSource($eachDirection['api_id']);
@@ -256,8 +266,9 @@ class bookCip extends cip
      * @param $eachDirection
      * @return mixed
      */
-    private function sendSmsToClient($eachDirection) {
-//sms to buyer
+    private function sendSmsToClient($eachDirection)
+    {
+        //sms to buyer
         $objSms = $this->smsService->initService('0');
         if ($objSms) {
             //to member
@@ -310,9 +321,10 @@ class bookCip extends cip
      * @param $eachDirection
      * @return boolean
      */
-    private function reserveTicket($payType, $eachDirection) {
+    private function reserveTicket($payType, $eachDirection)
+    {
 
-        functions::insertLog('$eachDirection: ' . json_encode($eachDirection) , '000shojaee');
+        functions::insertLog('$eachDirection: ' . json_encode($eachDirection), '000shojaee');
         $resultBookedFlight = false;
         functions::insertLog('first reserve ticket==>' . json_encode([$eachDirection['factor_number']], 256), 'newBookCip');
 
@@ -323,15 +335,14 @@ class bookCip extends cip
         functions::insertLog('after reserve ticket==>' . json_encode([$eachDirection['factor_number']], 256), 'newBookCip');
 
         if (!empty($ReserveTicket) && $ReserveTicket['curl_error'] == false && !empty($ReserveTicket['Pnr'])) {
-                functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookCip');
-                $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
+            functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookCip');
+            $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
 
-                functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookCip');
-        }
-        else {
+            functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookCip');
+        } else {
             if ($payType == 'credit') {
                 if ($eachDirection['successfull'] != 'book') {
-                        $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
+                    $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
                     $this->transaction->deleteCreditAgencyCurrent($eachDirection['request_number']);
                 }
             }
@@ -339,12 +350,13 @@ class bookCip extends cip
         return $resultBookedFlight;
     }
 
-    public function getItem($reqNum) {
+    public function getItem($reqNum)
+    {
         return $this->bookModel->getOneByReq($reqNum);
     }
 
 
-        public function TrackingInfo($param)
+    public function TrackingInfo($param)
     {
         $_POST = $param;
         $Model = Load::library('Model');
@@ -362,9 +374,9 @@ class bookCip extends cip
             $status = functions::Xmlinformation("NavigateToPort");
         } else if ($res['successfull'] == 'nothing') {
             $status = functions::Xmlinformation("Unknow");
-        }elseif ($res['successfull'] == 'processing') {
+        } elseif ($res['successfull'] == 'processing') {
             $status = functions::Xmlinformation('processingPrintFlight');
-        }elseif ($res['successfull'] == 'pending') {
+        } elseif ($res['successfull'] == 'pending') {
             $status = functions::Xmlinformation('pendingPrintFlight');
         }
 
@@ -392,7 +404,7 @@ class bookCip extends cip
             $op .= '<a title="' . functions::Xmlinformation("ViewDetails") . '" onclick="ModalUserList(' . "'cip'" . ',' . "'" . $res['request_number'] . "'" . '); return false;"  class="btn btn-primary fa fa-eye"></a>';
         }
 
-        if ($res['type_app'] != 'reservation' && $res['successfull'] == 'book' && Session::IsLogin()){
+        if ($res['type_app'] != 'reservation' && $res['successfull'] == 'book' && Session::IsLogin()) {
 
             $op .= '<a id="cancelbyuser"  title="' . functions::Xmlinformation("CancelFlight") . '" onclick="ModalCancelUser(' . "'flight'" . ',' . "'" . $res['request_number'] . "'" . '); return false;"  class="btn btn-danger fa fa-times"></a>';
         }
@@ -400,7 +412,7 @@ class bookCip extends cip
             $op .='-';
         }
 
-        $result = "" ;
+        $result = "";
         if (!empty($res)) {
               
             $CancellationFeeSettingController = Load::controller('cancellationFeeSetting');
@@ -409,7 +421,7 @@ class bookCip extends cip
             $resBooks = $Model->select($sql);
             list($totalPrice, $fare) = functions::TotalPriceCancelTicketSystem($resBooks);
             if (is_numeric($CalculateIndemnity)) {
-                $dataResultBook['PercentIndemnity'] = $CalculateIndemnity ;
+                $dataResultBook['PercentIndemnity'] = $CalculateIndemnity;
 
                 $PricePenalty = functions::CalculatePenaltyPriceCancel($totalPrice, $fare, $dataResultBook);
                 $CalculateIndemnityFinal = $CalculateIndemnity . ' ' . functions::Xmlinformation("Percentagepenalty");
@@ -449,11 +461,8 @@ class bookCip extends cip
             $pnr = $res['provider_ref'] ? $res['provider_ref'] : '-' ;
             $result .= '<td>' . $res['cip_name'] . '</td><td>' . $pnr . '</td><td>' . $name . ' ' . $family . '</td><td>' . $res['airport_code_cip'] . '<br/>' . $flightType . ' (' . $tripType .')' .'</td><td>' . number_format($res['total_price']) . ' ' . functions::Xmlinformation("Rial") . '</td><td>' . $status . '</td><td>' . $op . '</td>';
             $result .= '</table>';
-
         }
 
         return $result;
-
     }
-
 }

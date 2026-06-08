@@ -10,7 +10,7 @@
                     <div class="parent-footer-iran d-flex flex-wrap w-100">
                         <div class="item-footer col-lg-6 col-md-6 col-sm-12 col-12 order-foot1">
                             <div class="parent-item-footer parent-item-footer-responsive box-item-footer2">
-                                <img alt="logo-img" src="project_files/images/logo-footer.png" />
+                                <img id="footerLogo" alt="logo-img" src="project_files/images/logo-footer.png" />
                                 <div class="child-item-footer">
                                     تلفن:
                                     <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_PHONE}">
@@ -45,9 +45,15 @@
                                     <a href="https://www.aira.ir/">
                                         <img alt="namad-2" src="project_files/images/certificate3.png" />
                                     </a>
-                                    <a href="javascript:">
-                                        <img alt="namad-2" src="project_files/images/enamad.png" />
-                                    </a>
+                                    {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+                                        <a referrerpolicy="origin" target="_blank"
+                                           href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+                                            <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+                                                 alt="اینماد"
+                                                 style="cursor:pointer">
+                                        </a>
+                                    {/if}
+
                                 </div>
                                 {assign var="socialLinks"  value=$about['social_links']|json_decode:true}
                                 {assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref','aparat' => 'aparatHref','youTube' => 'youtubeHref','facebook' => 'facebookHref','linkedin' => 'linkeDinHref' , 'twitter' => 'twitterHref']}
@@ -180,9 +186,15 @@
                         <a href="https://www.aira.ir/">
                             <img alt="namad-2" src="project_files/images/certificate3.png" />
                         </a>
-                        <a href="javascript:" class="me-2">
-                            <img alt="namad-2" src="project_files/images/enamad.png" />
-                        </a>
+                        {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+                            <a referrerpolicy="origin" target="_blank"
+                               href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+                                <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+                                     alt="اینماد"
+                                     style="cursor:pointer">
+                            </a>
+                        {/if}
+
                     </div>
 
                 </div>

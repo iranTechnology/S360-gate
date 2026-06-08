@@ -223,7 +223,7 @@
                             <option value="1">فعال باشد</option>
                         </select>
                     </div>
-{* 
+            {* 
                     <div class="form-group col-sm-6 smsPanel" style="display: none">
                         <label for="UsernameSms" class="control-label">نام کاربری پنل پیامک  </label>
                         <input type="text" class="form-control" id="UsernameSms" name="UsernameSms"
@@ -288,6 +288,7 @@
                             <option value="hafez">دموی حافظ</option>
                         </select>
                     </div>
+
                     <div class="form-group col-sm-6">
                         <label for="PasswordSms" class="control-label">لینک قوانین </label>
                         <input type="text" class="form-control" id="UrlRuls" name="UrlRuls"

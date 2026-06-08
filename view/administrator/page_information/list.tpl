@@ -67,6 +67,41 @@
                         </tbody>
                     </table>
                 </div>
+
+
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th>نام صفحه</th>
+                            <th>title</th>
+                            <th>آدرس صفحه</th>
+                            <th>عملیات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $pages as $key=>$item}
+                            <tr>
+                                <td>{$key+1}</td>
+                                <td>{$item.name}</td>
+                                <td>{$item.title}</td>
+                                <td>
+                                    {$item.gds_switch}
+                                </td>
+                                <td>
+                                    <a href="edit&id={$item.id} " class="">
+                                        <i class="fcbtn btn btn-outline btn-primary btn-1c fa fa-edit tooltip-primary"
+                                           data-toggle="tooltip" data-placement="top" title=""
+                                           data-original-title="ویرایش بخش">
+                                        </i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

@@ -4,11 +4,9 @@
 {load_presentation_object filename="specialPages" assign="objSpecialPages"}
 {assign var="checked_banner" value=$list_galleryBanner[0]['is_show_banner']}
 
-
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-xs-12">
-
             <ol class="breadcrumb FloatRight">
                 <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/admin">خانه</a></li>
                 <li  class="active" ><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/galleryBanner/list">لیست گالری بنر</a></li>
@@ -59,9 +57,6 @@
                                 <span class="btn-label"><i class="fa fa-plus"></i></span>
                                 بنر جدید
                             </a>
-
-
-
                             <div class="w-100 main_page-toggleable flex-wrap">
                                 <div class="table-responsive w-100">
                                     <table id="myTable" class="table table-striped">
@@ -129,7 +124,6 @@
                                 <input   class="btn btn-info" type="button" onclick='change_order()' value="تغییر ترتیب"  title="حذف همه" style='margin: 20px 0 0 0;' />
                                 </div>
                             </div>
-
                             <div class="w-100 main_services-toggleable  d-none flex-wrap">
                                 <div class="table-responsive w-100">
                                     <table id="myTable" class="table table-striped">

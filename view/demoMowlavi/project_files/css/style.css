@@ -41,27 +41,15 @@ a:hover {
     text-decoration: none
 }
 
-.banner-demo {
-    display: flex;
-    align-items: end;
+.tours, .hotel-ghods, .newsletters, .news, .tab-tour, .blog-kharazmi, .other, .about, .video, .your-question, .blog-demo, .Comments {
+    margin: 0 0 60px 0
 }
-.banner-demo .banner {
-    width: 100%;
-    margin-bottom: 200px;
+.tab-tour{
+    margin-top:20px;
 }
-
-.banner-demo-1 .container {
-    display: flex;
-    align-items: end;
-}
-
-.tours, .hotel-ghods, .newsletters, .news, .tab-tour, .blog-kharazmi, .other, .about, .video, .your-question, .blog-demo, .Comments , footer , .hotels , .newsletter {
-    margin-top: 90px
-}
-
 @media (max-width: 576px) {
-    .tours, .hotel-ghods, .newsletters, .news, .tab-tour, .blog-kharazmi, .other, .about, .video, .your-question, .blog-demo, .Comments , footer , .hotels , .newsletter {
-        margin-top: 80px
+    .tours, .hotel-ghods, .newsletters, .news, .tab-tour, .blog-kharazmi, .other, .about, .video, .your-question, .blog-demo, .Comments {
+        margin: 0 0 40px 0
     }
 }
 
@@ -322,6 +310,7 @@ a:hover {
 }
 
 .hotels {
+    padding: 0 0 70px;
     position: relative
 }
 
@@ -1981,6 +1970,12 @@ a:hover {
 .your-question #accordion2 .card .card-header:hover i { /*! background:#f9af01; */
 }
 
+@media (max-width: 576px) {
+    .your-question {
+        margin-top: 40px
+    }
+}
+
 .video {
     margin-top: 60px
 }
@@ -2419,172 +2414,10 @@ a:hover {
     align-items: flex-start
 }
 
-
-.newsletter {
-    position: relative;
-}
-
-.parent-newsletter {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr;
-    grid-column-gap: 0;
-    grid-row-gap: 0;
-    border-radius: 20px;
-    border: 1px solid #DEDEDE;
-    overflow: hidden;
-    background: #FCFCFC;
-}
-
-.newsletter-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(90%);
-}
-
-.parent-text-newsletter {
-    height: 100%;
-    padding: 20px;
-    background: #FCFCFC;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.parent-icon-newsletter {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.parent-icon-newsletter > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.parent-icon-newsletter i {
-    font-size: 85px;
-    color: #333;
-    padding-left: 20px;
-}
-
-.parent-icon-newsletter h2 {
-    font-size: 26px;
-    margin-bottom: 3px;
-    text-transform: capitalize;
-    text-align: right;
-    color: #333;
-    font-family: 'yekanbakhBold';
-}
-
-.parent-icon-newsletter p {
-    font-size: 16px;
-    text-align: right;
-    color: #333;
-    margin: 0;
-}
-
-.form_newsletter > label > i {
-    position: absolute;
-    top:31px;
-    right: 20px;
-    font-size: 20px;
-    transform: translateY(-50%);
-    color: #83929D;
-}
-
-.form_newsletter > label > input {
-    padding-right: 3rem;
-    border-radius: 10px;
-    font-size: 16px;
-    height: 50px;
-    border: 1px solid #DEDEDE;
-    color: #83929D;
-}
-
-.form_newsletter > label > a {
-    background: var(--mainColor);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    font-size: 20px;
-    color: #fff;
-    border-radius: 10px;
-    transition: var(--transition);
-    border: 2px solid transparent;
-}
-
-.btn-newsletterMain:hover {
-    text-decoration: none;
-    border-color: var(--secondColor);
-    background: var(--secondColor);
-    color: #fff;
-}
-
-.form_newsletter > label > input:focus {
-    outline: none;
-    box-shadow: none;
-    border-color: var(--mainColor) !important;
-}
-
 @media (max-width: 991px) {
-    .parent-newsletter {
-        grid-template-columns: repeat(1, 1fr);
-    }
     .parent-top-footer {
         grid-template-columns:repeat(2, 1fr) !important;
         grid-row-gap: 30px !important
-    }
-}
-
-@media (max-width: 576px) {
-    .parent-text-newsletter {
-        padding: 20px 10px;
-    }
-
-    .parent-icon-newsletter i {
-        font-size: 70px;
-        padding-left: 10px;
-    }
-
-    .parent-icon-newsletter h2 {
-        font-size: 20px;
-        margin-bottom: 0;
-    }
-
-    .form_newsletter > label > input {
-        height: 45px;
-        padding-right: 37px;
-    }
-    .form_newsletter > label > input::placeholder {
-        font-size: 14px !important;
-    }
-    .form_newsletter > label > i {
-        font-size: 18px;
-        top: 27px;
-        right: 12px;
-    }
-
-    .parent-form-newsletter label {
-        padding: 5px 0 !important;
-    }
-
-    .form_newsletter > label > a {
-        height: 45px;
-    }
-
-    .parent-icon-newsletter p {
-        font-size: 13px;
-    }
-}
-
-
-@media (max-width: 991px) {
-    .parent-newsletter .newsletter-item:first-child {
-        display: none;
     }
 }
 
@@ -2595,18 +2428,6 @@ a:hover {
 }
 
 @media (max-width: 576px) {
-    .banner-demo .banner {
-        margin: 50px 0;
-    }
-    .banner-demo-1 .search_box_div {
-        margin-bottom: 0;
-    }
-    .banner-demo-1 .container {
-        align-items: center;
-    }
-    .banner-demo {
-        align-items: center;
-    }
     .other-services {
         padding: 60px 0 50px
     }
@@ -2719,7 +2540,3 @@ a:hover {
 /*# sourceMappingURL=style.css.map */
 
 @media (max-width: 578px) { .height-line-brack { height: 25vh !important; } }
-
-.height-line-brack {
-    display: none;
-}

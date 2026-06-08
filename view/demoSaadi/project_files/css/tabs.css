@@ -488,8 +488,8 @@ input::placeholder {
 }
 
 .theme-btn:hover {
-    color: #fff;
-    background-color: var(--secondColor) !important;
+    opacity: .7;
+    color: #fff
 }
 
 .btn:focus, .btn.focus {

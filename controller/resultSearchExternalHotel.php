@@ -26,6 +26,7 @@ class resultSearchExternalHotel extends clientAuth
     {
 
 
+
         functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => '.json_encode($param), 'times', 'yes');
         $t1 = microtime(true);
 
@@ -56,6 +57,7 @@ class resultSearchExternalHotel extends clientAuth
         // واکشی اطلاعات کامل هتل های رزرواسیون و امکانات هتل های خارجی //
 
         $resultHotelDB = $objExternalHotel->getHotelsFromDB($param['countryNameEn'], $param['cityNameEn'], $param['startDate'], $param['nights'] , $param['rooms']);
+
 
 
         $t2 = microtime(true);
@@ -155,15 +157,12 @@ class resultSearchExternalHotel extends clientAuth
                 }
             }
 
-        }
-        else {
+        } else {
             $return = [
                 'error' => $objExternalHotel->error,
                 'message' => $objExternalHotel->errorMessage,
             ];
         }
-
-
         $t3 = microtime(true);
         //		$showApiResult = functions::isTestServer(['online.iran-tech.com','192.168']);
         //		if($showApiResult) {
@@ -174,7 +173,6 @@ class resultSearchExternalHotel extends clientAuth
      
         $searchParams = [];
         $requestNumber = '';
-
         if ($objApiExternalHotel->apiHotelAuth() == 'True') {
             $searchParams['city'] = str_replace('-', ' ', $param['cityNameEn']);
 
@@ -278,7 +276,6 @@ class resultSearchExternalHotel extends clientAuth
 //                $arrayFacilities = ['MINIBAR', 'TV', 'WI-FI', 'ROOM SERVICE'];
             }
         }
-
         //		}
 
 //		functions::insertLog( 'Action after Auth check', '00001-checkExternalHotel' );
@@ -286,9 +283,7 @@ class resultSearchExternalHotel extends clientAuth
 
 //        functions::getConfigContentByTitle('external_hotel_search_advertise');
 
-
         if (!empty($arrayHotelsByType)) {
-
             functions::insertLog('start of arrayHotelsByType ' . microtime(true), 'times');
             //امتیاز باشگاه//
             $pointClub = [];
@@ -551,16 +546,14 @@ class resultSearchExternalHotel extends clientAuth
                 'advertises' => functions::getConfigContentByTitle('external_hotel_search_advertise'),
             ];
 
-        }
-        else {
+        } else {
             $return = [
                 'error' => true,
                 'requestNumber' => $requestNumber,
                 'message' => functions::Xmlinformation('Nohotel'),
             ];
         }
-
-
+   
         functions::insertLog('end getHotels', '00000-checkExternalHotel', 'yes');
 
 //		functions::insertLog( json_encode($arrayHotelsByType), 'tttt', 'yes' );

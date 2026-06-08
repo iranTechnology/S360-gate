@@ -62,16 +62,6 @@
     justify-content: center
 }
 
-.header-page .button_header {
-    border: 1px solid var(--secondColor);
-    background: var(--secondColor);
-    color: var(--mainColor);
-}
-
-.header-page .logIn svg {
-    fill: var(--mainColor) !important;
-}
-
 .nav-header img {
     width: 110px;
     border-radius: 100%;
@@ -84,33 +74,6 @@
 .button_header:hover {
     background: #f1f1f1;
     color: #666
-}
-
-.header-page .button_header:hover {
-    background: var(--secondColor);
-    color: var(--mainColor);
-}
-
-.my-breadcrumbs:has(+ .banner-slider-display) {
-    left: 0;
-    position: absolute !important;
-    top: 110px !important;
-}
-
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item a ,
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item h1,
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item.active h1 {
-    color: #fff !important;
-    font-size: 15px !important;
-}
-
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item + .breadcrumb-item::before {
-    content: '\f053' !important;
-    color: #fff;
-    font-family: "Font Awesome 6 Pro", "FontAwesome", sans-serif;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
 }
 
 .header_area {
@@ -142,14 +105,6 @@
 
 .nav-toggle:hover svg {
     fill: #666
-}
-
-.header-page .nav-toggle:hover {
-    background: var(--secondColor);
-}
-
-.header-page .nav-toggle:hover svg {
-    fill: var(--mainColor);
 }
 
 .header-page .nav-header img {
@@ -184,20 +139,11 @@
     justify-content: center
 }
 
-.header-page .nav-toggle {
-    border: 1px solid var(--secondColor);
-    background: var(--secondColor);
-}
-
 .nav-toggle > svg {
     width: 100%;
     height: 100%;
     fill: #fff;
     transition: all .3s
-}
-
-.header-page .nav-toggle > svg {
-    fill: var(--mainColor);
 }
 
 .navigation-portrait .nav-toggle {
@@ -293,10 +239,6 @@
     padding: 15px;
     height: 95px;
     font-family: var(--fontFamilyBold2)
-}
-
-.header-page .nav-menu > li > a {
-    color: var(--secondColor);
 }
 
 .navigation-portrait .nav-menu > li > a {
@@ -481,10 +423,6 @@
 
 .nav-dropdown.nav-submenu svg {
     fill: #555 !important
-}
-
-.header-page .nav-dropdown.nav-submenu svg{
-    fill: var(--secondColor) !important
 }
 
 .submenu-indicator > svg {
@@ -860,7 +798,7 @@
 
 .header-page {
     position: relative;
-    background: var(--mainColor)
+    background: rgba(87, 87, 87, .62)
 }
 
 .parent-namad h3 {

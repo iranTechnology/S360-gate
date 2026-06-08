@@ -1,6 +1,10 @@
-
+{load_presentation_object filename="configurations" assign="objConfig"}
+{assign var="checkClientConfigurationAccess" value=$objConfig->checkClientConfigurationAccess(57 , $smarty.const.CLIENT_ID)}
 <div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Hotel">
 
+    {if $checkClientConfigurationAccess eq true}
+        {include file="./sections/hotel/internalAndinternational/internalAndinternational.tpl"}
+    {else}
     {include file="./sections/hotel/international/btn_radio_internal_external.tpl"}
     <div id="internal_hotel" class="d_flex flex-wrap internal-hotel-js">
         <form data-action="s360online.iran-tech.com/" name="gdsHotelLocal"
@@ -30,4 +34,8 @@
         </form>
     </div>
     <input type='hidden' id="type_section" name="type_section" class="type-section-js" value="internal">
+    {/if}
+
 </div>
+
+

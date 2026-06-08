@@ -516,7 +516,7 @@ footer h6{
 }
 
 .btn-login {
-  background: #000;
+  background: $mainColor !important;
   border-radius: 9999px;
   transition: all ease .3s;
   font-size: 14px;

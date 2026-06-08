@@ -1,3 +1,4 @@
+
 {load_presentation_object filename="admin" assign="objAdmin"}
 {if $smarty.const.SOFTWARE_LANG eq 'fa'}
     {assign var="languages" value=['fa'=>'فارسی','en'=>'English','ar'=>'العربیه','ru'=>'روسی']}
@@ -299,16 +300,18 @@
 {*                        <li><a href="http://www.safarbank.ir/irantech" target="_blank"><i*}
 {*                                        class="mdi mdi-bell-ring"></i>*}
 {*                                <span>اخبار </span></a></li>*}
-                      {if $smarty.const.TYPE_ADMIN eq '1'}
+                        {if $smarty.const.TYPE_ADMIN eq '1'}
                         <li>
                             <div class="language-selector">
-                                <span> </span>
+                                <span>
+                                    <i class="mdi mdi-translate"></i>مدیریت با زبان :
+                                </span>
                                 <a href="#" onclick="funSetLangPanelAdmin('fa')"  class="{if $smarty.const.LANG_PANEL_ADMIN == 'fa'}active{/if}" >فارسی</a>
                                 <a href="#" onclick="funSetLangPanelAdmin('ar')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'ar'}active{/if}" >عربی</a>
                                 <a href="#" onclick="funSetLangPanelAdmin('en')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'en'}active{/if}" >انگلیسی</a>
                             </div>
                         </li>
-                      {/if}
+                        {/if}
                         <li role="separator" class="divider"></li>
                         <li><a href="#" onclick="logoute(); return false;" class="colorExit"><i
                                         class="fa fa-power-off fa-fw"></i>
@@ -530,8 +533,8 @@
             <div class="sidebar-head sidebar-head_2">
                 <h4 class="h4_bar_icon d-flex" style='color:#fff'>
                     <span class="fa-fw open-close">
-                        <i class="ti-menu hidden-xs"></i>
-                        <i class="ti-close visible-xs"></i>
+                        <i class="ti-menu"></i>
+                        <i class="ti-close d-none"></i>
                     </span>
                     <span class="title-agency-panel-admin" >
                         {if $smarty.const.TYPE_ADMIN eq '1'}

@@ -267,9 +267,8 @@ $(document).ready(function () {
 
         })
     }
-    if ($('.select2_sex').length > 0) {
-        $('.select2_sex').select2();
-    }
+
+    $('.select2_sex').select2();
     $('body').on('click', '.research_Hotel ', function () {
         $('.filtertip_hotel_researh').fadeToggle();
         $('.filterBox_external_hotel').fadeToggle();
@@ -3550,12 +3549,6 @@ function setHidenCloseLastP() {
 
 function creditBuy(Obj, link, inputs) {
 
-    let discountCode = '';
-    if ($('#discount-code').length > 0) {
-        discountCode = $('#discount-code').val();
-    }
-    inputs['discountCode'] = discountCode;
-
     if(inputs['typeApplication'] == "externalApi"){
 
         $(document).off('click', '#creditpay').one('click', '#creditpay', function(e) {
@@ -3628,7 +3621,7 @@ function creditBuy(Obj, link, inputs) {
                         'opacity': '0.6'   // حس غیرفعال بودن
                     });
 
-                    if (modal && modal.parentNode) { modal.parentNode.removeChild(modal); } }, 300);
+                    document.body.removeChild(modal); }, 300);
             };
 
             content.appendChild(closeBtn);
@@ -3701,198 +3694,8 @@ function creditBuy(Obj, link, inputs) {
                                     form.appendChild(hiddenField);
 
                                     form.submit();
+                                    document.body.removeChild(form);
 
-                                    setTimeout(function() {
-                                        if (form && form.parentNode) {
-                                            form.parentNode.removeChild(form);
-                                        }
-                                    }, 100);
-                                } else {
-
-                                    $.alert({
-                                        title: useXmltag("CreditShoping"),
-                                        icon: 'fa fa-refresh',
-                                        content: res[1],
-                                        rtl: true,
-                                        type: 'red',
-                                    });
-
-                                }
-                            }
-                        });
-                    },
-                },
-                cancel: {
-                    text: useXmltag("Optout"),
-                    btnClass: 'btn-orange',
-                }
-            }
-        });
-    }
-
-}
-
-function memberCreditBuy(Obj, link, inputs) {
-
-    inputs['creditUse'] = 'member_credit';
-    let discountCode = '';
-    if ($('#discount-code').length > 0) {
-        discountCode = $('#discount-code').val();
-    }
-    inputs['discountCode'] = discountCode;
-
-
-    if(inputs['typeApplication'] == "externalApi"){
-
-        $(document).off('click', '#creditpay').one('click', '#creditpay', function(e) {
-            e.preventDefault();
-            // ساخت مودال با JS
-            // ساخت مودال
-            var modal = document.createElement('div');
-            modal.id = 'customModal';
-            modal.style.position = 'fixed';
-            modal.style.top = '0';
-            modal.style.left = '0';
-            modal.style.width = '100%';
-            modal.style.height = '100%';
-            modal.style.background = 'rgba(0,0,0,0.5)';
-            modal.style.display = 'flex';
-            modal.style.justifyContent = 'center';
-            modal.style.alignItems = 'center';
-            modal.style.zIndex = '9999';
-            modal.style.opacity = '0';
-            modal.style.transition = 'opacity 0.3s ease';
-
-            // محتوا
-            var content = document.createElement('div');
-            content.style.background = '#fff';
-            content.style.padding = '25px 30px';
-            content.style.borderRadius = '12px';
-            content.style.maxWidth = '450px';
-            content.style.textAlign = 'center';
-            content.style.position = 'relative';
-            content.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
-
-            // آیکون موفقیت با SVG
-            var icon = document.createElement('div');
-            icon.innerHTML = `
-        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="12" fill="#2e7d32"/>
-            <path d="M6 12.5L10 16L18 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    `;
-            icon.style.marginBottom = '15px';
-            content.appendChild(icon);
-
-            // پیام
-            var message = document.createElement('p');
-            message.innerText = 'درخواست رزرو شما ثبت شد.\nبرای نهایی کردن آن با آژانس تماس بگیرید.';
-            message.style.fontSize = '16px';
-            message.style.color = '#2e7d32';
-            message.style.margin = '0 0 20px 0';
-            content.appendChild(message);
-
-            // دکمه بستن
-            var closeBtn = document.createElement('button');
-            closeBtn.innerText = 'باشه';
-            closeBtn.style.padding = '10px 20px';
-            closeBtn.style.border = 'none';
-            closeBtn.style.background = '#2e7d32';
-            closeBtn.style.color = '#fff';
-            closeBtn.style.borderRadius = '6px';
-            closeBtn.style.cursor = 'pointer';
-            closeBtn.style.fontSize = '14px';
-            closeBtn.onmouseover = function(){ closeBtn.style.background = '#1b5e20'; }
-            closeBtn.onmouseout = function(){ closeBtn.style.background = '#2e7d32'; }
-
-            closeBtn.onclick = function() {
-                modal.style.opacity = '0';
-                setTimeout(function(){
-                    $('#creditpay').css({
-                        'pointer-events': 'none',
-                        'cursor': 'not-allowed',
-                        'opacity': '0.6'   // حس غیرفعال بودن
-                    });
-
-                    if (modal && modal.parentNode) { modal.parentNode.removeChild(modal); } }, 300);
-            };
-
-            content.appendChild(closeBtn);
-            modal.appendChild(content);
-            document.body.appendChild(modal);
-
-            // انیمیشن نمایش
-            setTimeout(function(){ modal.style.opacity = '1'; }, 10);
-
-        })
-
-    }
-    else{
-        $('.creditPaymentLoader').addClass("skeleton").attr("disabled", "disabled").css('cursor', 'default').removeAttr('onclick',true);
-        $.alert({
-            title: useXmltag("CreditShoping"),
-            icon: 'fa fa-shopping-cart',
-            content: useXmltag("SurePurchaseCreditShoping"),
-            rtl: true,
-            closeIcon: true,
-            type: 'orange',
-            buttons: {
-                confirm: {
-                    text: useXmltag("Approve"),
-                    btnClass: 'btn-green',
-                    action: function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: amadeusPath + 'user_ajax.php',
-                            data: inputs,
-                            success: function (data) {
-
-                                var res = data.split(':');
-                                if (data.indexOf('success') > -1) {
-
-                                    $('#creditpay').attr("disabled", "disabled");
-
-                                    var form = document.getElementById('formcredit');
-                                    form.setAttribute("action", link);
-
-                                    $.each(inputs,
-                                       function (i, item) {
-                                           if (typeof item === 'object' && item !== null) {
-                                               $.each(item, function (j, item2) {
-                                                   var hiddenField = document.createElement("input");
-                                                   hiddenField.setAttribute("type", "hidden");
-                                                   hiddenField.setAttribute("name", i + '[' + j + ']');
-                                                   hiddenField.setAttribute("value", item2);
-                                                   form.appendChild(hiddenField);
-                                               });
-                                           } else {
-                                               var hiddenField = document.createElement("input");
-                                               hiddenField.setAttribute("type", "hidden");
-                                               hiddenField.setAttribute("name", i);
-                                               hiddenField.setAttribute("value", item);
-                                               form.appendChild(hiddenField);
-                                           }
-                                       });
-
-                                    var hiddenField = document.createElement("input");
-                                    hiddenField.setAttribute("type", "hidden");
-                                    hiddenField.setAttribute("name", "amount");
-                                    hiddenField.setAttribute("value", res[1]);
-                                    form.appendChild(hiddenField);
-
-                                    var hiddenField = document.createElement("input");
-                                    hiddenField.setAttribute("type", "hidden");
-                                    hiddenField.setAttribute("name", "flag");
-                                    hiddenField.setAttribute("value", "credit");
-                                    form.appendChild(hiddenField);
-
-                                    form.submit();
-
-                                    setTimeout(function() {
-                                        if (form && form.parentNode) {
-                                            form.parentNode.removeChild(form);
-                                        }
-                                    }, 100);
                                 } else {
 
                                     $.alert({
@@ -6187,7 +5990,6 @@ function goToBank(Obj, link, inputs) {
            {
                flag: 'checkMemberCredit',
                priceToPay: price_to_pay,
-               typeApplication: inputs.typeApplication,
                creditUse: $("input[name='chkCreditUse']:checked").val()
            },
         success: function (data) {
@@ -7958,7 +7760,14 @@ function SelectReason(Obj) {
 }
 
 function SelectUser(RequestNumber,_this=null) {
+    // let btnClick = $(".btn-send-information");
+    // $('.donut').css("display", "block");
+    // $(btnClick).attr('disabled', true).css("cursor", "default");
 
+    // loadingToggle(_this)
+
+// alert('ffffffffff')
+// alert(RequestNumber)
     const loading = document.getElementById('btn-send-information-load');
 
     var National = [];
@@ -7968,9 +7777,8 @@ function SelectUser(RequestNumber,_this=null) {
     var AccountOwner = $('#AccountOwner').val();
     var CardNumber = $('#CardNumber').val();
     var NameBank = $('#NameBank').val();
-    var backCredit = $('#backCredit').is(':checked') ? 'on' : '';
+    var backCredit = $('#backCredit').val();
     var typeService = $('#typeService').val();
-
     if ($('#PercentNoMatter').is(':checked')) {
         var PercentNoMatter = 'Yes';
     } else {
@@ -8406,11 +8214,6 @@ function sendFromResultToVisaPassengers(){
 }
 
 function sendToCip() {
-    if (window.cipData) {
-        localStorage.setItem('selectedCip', JSON.stringify(window.cipData));
-        var expirationTime = new Date().getTime() + (60 * 60 * 1000);
-        localStorage.setItem('cipExpiration', expirationTime.toString());
-    }
     window.location.href = `${amadeusPathByLang}cip-detail/${cipCode}/${sourceId}`;
 }
 
@@ -8534,7 +8337,7 @@ function popupBuyNoLogin(useType, param1 = null, param2 = null,_this=null) {
 
 }
 
-function checkMemberCredit(typeApplication = null) {
+function checkMemberCredit() {
 
     if ($("input[name='chkCreditUse']:checked").val() == 'member_credit') {
         var price_to_pay = parseInt($(".price-after-discount-code").html().replace(/,/g, ''));
@@ -8546,36 +8349,23 @@ function checkMemberCredit(typeApplication = null) {
                {
                    flag: 'checkMemberCredit',
                    priceToPay: price_to_pay,
-                   typeApplication: typeApplication,
                    creditUse: $("input[name='chkCreditUse']:checked").val()
                },
             success: function (data) {
 
-                if (data.result_status === 'none_credit' || data.result_status === 'half_credit') {
+                if (data.result_status === 'none_credit') {
                     $('.creditText').addClass('none_credit');
                 } else if(data.result_status === 'full_credit') {
                     $('.creditText').addClass('full_credit');
-                    $('.normal-user-payment .s-u-p-factor-bank-change').removeClass('hidden');
                 }
-                // else if(data.result_status === 'half_credit') {
-                //     $(".creditText").html(data.result_message);
-                // }
-
-                // if (data.result_status === 'none_credit' || data.result_status === 'full_credit') {
-                    $(".creditText").html(data.result_message[0]);
-                    $('.onlinePaymentBox').addClass('hidden');
-                    $('.disabledButtonPayOnline').addClass('hidden');
-                // }
+                $(".creditText").html(data.result_message[0]);
+                $('.onlinePaymentBox').addClass('hidden');
                 $('.creditText').removeClass('hidden');
-                $('.go_bank_click').addClass('hidden');
             }
         });
     } else if ($("input[name='chkCreditUse']:checked").val() == 'online_payment') {
         $('.onlinePaymentBox').removeClass('hidden');
-        $('.disabledButtonPayOnline').removeClass('hidden');
         $('.creditText').addClass('hidden');
-        $('.normal-user-payment .s-u-p-factor-bank-change').addClass('hidden');
-        $('.go_bank_click').removeClass('hidden');
     }
 }
 

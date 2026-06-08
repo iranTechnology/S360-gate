@@ -18,6 +18,7 @@
 {include file="include_files/news.tpl"}
 </main>
 {include file="include_files/footer.tpl"}
+{include file="include_files/select-theme.tpl"}
 </body>
 
 

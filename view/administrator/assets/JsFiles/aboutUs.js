@@ -18,9 +18,6 @@ $("#aboutUsUpdate").validate({
     CKEDITOR.instances.body.updateElement();
     CKEDITOR.instances.about_customer_club.updateElement();
     $('.submit-button').prop("disabled", true);
-
-
-
     $(form).ajaxSubmit({
       url: amadeusPath + 'ajax',
       type:"POST",
@@ -30,7 +27,7 @@ $("#aboutUsUpdate").validate({
 
         if (response) {
           $.toast({
-            heading: $("#PA_AB_UPDATEDMSG").html(),
+            heading: 'اطلاعات درباره ی ما ویرایش شد',
             text: '',
             position: 'top-right',
             loaderBg: '#fff',
@@ -40,9 +37,11 @@ $("#aboutUsUpdate").validate({
             stack: 6
           });
 
+
         } else {
+
           $.toast({
-            heading: $("#PA_AB_NOCHANGE").html(),
+            heading: 'تغییری نداده اید!',
             text: '',
             position: 'top-right',
             loaderBg: '#fff',
@@ -108,16 +107,16 @@ function AddSocialLinks() {
   $('.DynamicSocialLinks select[data-parent="SocialLinksValues"]').each(function () {
     console.log(CountDivInEach)
     $(this).attr(
-        "name",
-        "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+      "name",
+      "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
     )
     CountDivInEach = CountDivInEach + 1
   })
   var CountDivInEach = 0
   $('.DynamicSocialLinks input[data-parent="SocialLinksValues"]').each(function () {
     $(this).attr(
-        "name",
-        "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+      "name",
+      "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
     )
     CountDivInEach = CountDivInEach + 1
   })
@@ -129,27 +128,27 @@ function AddSocialLinks() {
 
 function RemoveSocialLinks(thiss) {
   if (
-      thiss.parent().parent().parent().parent().find('div[data-target="BaseSocialLinksDiv"]').length > 1
+    thiss.parent().parent().parent().parent().find('div[data-target="BaseSocialLinksDiv"]').length > 1
   ) {
     thiss.parent().parent().parent().remove()
 
     var CountDivInEach = 0
     $('.DynamicSocialLinks select[data-parent="SocialLinksValues"]').each(
-        function () {
-          $(this).attr(
-              "name",
-              "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
-          )
+      function () {
+        $(this).attr(
+          "name",
+          "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+        )
           CountDivInEach = CountDivInEach + 1
-        }
+      }
     )
     var CountDivInEach = 0
     $('.DynamicSocialLinks input[data-parent="SocialLinksValues"]').each(
-        function () {
-          $(this).attr("name", "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
-          )
+      function () {
+        $(this).attr("name", "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+        )
           CountDivInEach = CountDivInEach + 1
-        }
+      }
     )
   }
 }
@@ -205,36 +204,3 @@ function deleteImageAbout(id){
   });
 }
 
-try {
-  fetch(LANG_XML_URL)
-      .then(r => r.text())
-      .then(text => {
-        var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(text, "text/xml"); // تعریف صریح متغیر
-
-        // بررسی اینکه آیا XML به درستی لود شده است
-        if (xmlDoc.getElementsByTagName("parsererror").length === 0) {
-          $("#PA_HOME").html(xmlDoc.getElementsByTagName("PA_HOME")[0].textContent);
-          $(".PA_Ab_TITLE").html(xmlDoc.getElementsByTagName("PA_Ab_TITLE")[0].textContent);
-          $("#PA_Ab_LANG").html(xmlDoc.getElementsByTagName("PA_Ab_LANG")[0].textContent);
-          $("#PA_Ab_SUBJECT").html(xmlDoc.getElementsByTagName("PA_Ab_SUBJECT")[0].textContent);
-          $("#PA_Ab_BANNER").html(xmlDoc.getElementsByTagName("PA_Ab_BANNER")[0].textContent);
-          $("#PA_Ab_VIDEOLINK").html(xmlDoc.getElementsByTagName("PA_Ab_VIDEOLINK")[0].textContent);
-          $("#PA_Ab_SOIALMEDIA").html(xmlDoc.getElementsByTagName("PA_Ab_SOIALMEDIA")[0].textContent);
-          $("#PA_Ab_CLUB").html(xmlDoc.getElementsByTagName("PA_Ab_CLUB")[0].textContent);
-          $("#PA_Ab_AboutCUSTOMER").html(xmlDoc.getElementsByTagName("PA_Ab_AboutCUSTOMER")[0].textContent);
-          $("#PA_Ab_DELIMG").html(xmlDoc.getElementsByTagName("PA_Ab_DELIMG")[0].textContent);
-          $(".tooltip-info").attr("data-original-title", xmlDoc.getElementsByTagName("PA_Ab_COMMENTVIDEOLINK")[0].textContent);
-          $("#PA_Ab_SUBMIT").text(xmlDoc.getElementsByTagName("PA_Ab_SUBMIT")[0]?.textContent);
-          $("#ChoseOption").text(xmlDoc.getElementsByTagName("ChoseOption")[0]?.textContent);
-          $("#PA_AB_UPDATEDMSG").html(xmlDoc.getElementsByTagName("PA_AB_UPDATEDMSG")[0].textContent);
-          $("#PA_AB_NOCHANGE").html(xmlDoc.getElementsByTagName("PA_AB_NOCHANGE")[0].textContent);
-        }
-      })
-      .catch(error => {
-        console.error("❌ خطا در دریافت فایل XML:", error);
-      });
-
-} catch (e) {
-  console.error("❌ خطای کلی:", e);
-}

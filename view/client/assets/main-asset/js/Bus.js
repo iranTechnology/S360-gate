@@ -56,43 +56,43 @@ function handleMobileBusSearch(keyword, type , search_type) {
    const listContainer = $("#mobilePopularDestinations");
 
    if (!keyword.trim()) {
-      renderMobilePopularBusCities(type);
-      return;
+         renderMobilePopularBusCities(type);
+         return;
    }
    $.ajax({
-      type: 'POST',
-      url: amadeusPath + 'ajax',
-      dataType: 'json',
-      data: JSON.stringify({
-         className: "busRoute",
-         method: "routeBus",
-         value:keyword
-      }),
-      beforeSend: function () {
-         listContainer.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
-      },
-      success: function (response) {
+         type: 'POST',
+         url: amadeusPath + 'ajax',
+         dataType: 'json',
+         data: JSON.stringify({
+            className: "busRoute",
+            method: "routeBus",
+            value:keyword
+         }),
+         beforeSend: function () {
+            listContainer.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
+         },
+         success: function (response) {
 
-         let results = response.results || [];
-         let html_items = [];
-         if (results.length === 0) {
-            listContainer.html(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
-            return;
-         }
+            let results = response.results || [];
+            let html_items = [];
+            if (results.length === 0) {
+               listContainer.html(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
+               return;
+            }
 
-         results.forEach(item => {
+            results.forEach(item => {
 
-            let id = item.id;
-            let city = item.text;
-
-
-            let json_value = JSON.stringify({
-               id: id,
-               city: city,
-            });
+               let id = item.id;
+               let city = item.text;
 
 
-            html_items.push(`
+               let json_value = JSON.stringify({
+                  id: id,
+                  city: city,
+               });
+
+
+               html_items.push(`
                  <li onclick='selectCityBusItem(${json_value}, event, $(this));'>
     <div class="mobile-city-item">
         <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
@@ -101,18 +101,18 @@ function handleMobileBusSearch(keyword, type , search_type) {
 </li>
 <div class="mobile-divider"></div>
         `);
-         });
+            });
 
-         listContainer.html(`
+            listContainer.html(`
         <h2>${useXmltag("SearchResult")}</h2>
         <ul class="ul-mobile-drawer">${html_items.join("")}</ul>
       `);
 
-      },
-      error: function () {
-         listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
-      }
-   });
+         },
+         error: function () {
+            listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
+         }
+      });
 
 }
 function setupMobileBusDrawerElements(type) {
@@ -341,9 +341,6 @@ function selectCityBusItem(data, event, element) {
       setTimeout(()=>{
          openMobileBusDrawerDatePicker();
       },100)
-
-
-
    }
 }
 
@@ -356,7 +353,6 @@ $(document).ready(function () {
          setupMobileBusDrawerElements(dataType);
       }
    }
-
    if (window.innerWidth <= 576) {
       $('#departure_date_bus')
           .attr('readonly', 'readonly')

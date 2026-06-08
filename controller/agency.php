@@ -167,8 +167,8 @@ class agency  extends clientAuth {
 						$this->subAgencyModel()->insertWithBind( $dataSubAgency );
 					}
 				}
-                if (isset($data['sepehr_username']) && !empty($data['sepehr_username']) && $data['sepehr_username'] != ''
-                && isset($data['sepehr_password']) && !empty($data['sepehr_password']) && $data['sepehr_password'] != '') {
+            if (isset($data['sepehr_username']) && !empty($data['sepehr_username']) && $data['sepehr_username'] != ''
+                && isset($data['sepehr_password']) && !empty($data['sepehr_password']) && $data['sepehr_password'] != ''){
                     $insertedAgency = $this->agencyModel()
                         ->get(['id'])
                         ->where('sepehr_username', $data['sepehr_username'])
@@ -691,7 +691,6 @@ class agency  extends clientAuth {
 		$sql   = "SELECT agency.* FROM agency_tb AS agency
                 LEFT JOIN members_tb AS member ON  member.fk_agency_id = agency.id
                 WHERE member.id ='{$id}'";
-		
 		return $Model->load( $sql );
 	}
 	

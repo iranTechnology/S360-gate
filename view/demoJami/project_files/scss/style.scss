@@ -1110,3 +1110,37 @@ a:hover{
     grid-template-columns: repeat(1, 1fr);
   }
 }
+.banner-demo-1 , .banner-demo{
+  height: 60vh !important;
+}
+
+body .camera_wrap,
+body .camerarelative,
+body .camera_target,
+body .camera_target_content,
+body .camera_fakehover,
+body .cameraCont,
+body .cameraContents{
+  min-height: 65vh !important;
+  max-height: 65vh !important;
+}
+
+@media (max-width: 578px) {
+  .height-line-brack {
+    height: 30vh !important;
+  }
+  body .camera_wrap,
+  body .camerarelative,
+  body .camera_target,
+  body .camera_target_content,
+  body .camera_fakehover,
+  body .cameraCont,
+  body .cameraContents{
+    min-height: 80vh !important;
+    max-height: 80vh !important;
+  }
+  .banner-demo-1 , .banner-demo{
+    height: 80vh !important;
+  }
+
+}

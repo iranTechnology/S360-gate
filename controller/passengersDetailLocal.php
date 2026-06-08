@@ -735,6 +735,7 @@ class passengersDetailLocal extends apiLocal
         Load::autoload('Model');
         $Model = new Model();
         $resultDetailTicket = $Model->select("SELECT * FROM temporary_routes_tb WHERE TemporaryId='{$id}'",'assoc');
+
         return $resultDetailTicket;
     }
 

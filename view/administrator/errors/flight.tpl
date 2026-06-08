@@ -20,9 +20,7 @@
             <div class="white-box">
                 <h3 class="box-title m-b-0">لیست خطا های پرواز </h3>
                  <div class="row">
-
                             <div class="form-group col-sm-12 DynamicAdditionalData">
-                                
                                 {assign var="listErrors" value=$objErrors->showAllErrors('flight')}
 
                                 {assign var="counter" value='0'}

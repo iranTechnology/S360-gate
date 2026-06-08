@@ -41,6 +41,7 @@
     {/if}
 
 
+    <title>ferdosi</title>
 
     {if $smarty.const.GDS_SWITCH eq 'mainPage'}
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHeadMain.tpl"}

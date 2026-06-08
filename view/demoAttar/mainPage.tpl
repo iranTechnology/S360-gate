@@ -14,6 +14,8 @@
     {include file="include_files/blog.tpl"}
     {include file="include_files/airlines.tpl"}
     {include file="include_files/newsletter.tpl"}
+{*    {include file="include_files/select-theme.tpl"}*}
+
 </main>
 {include file="include_files/footer.tpl"}
 </body>

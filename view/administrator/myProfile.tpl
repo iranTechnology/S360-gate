@@ -14,7 +14,6 @@
         background: #fff;
         border: 1px solid #d7d0d0;
     }
-
 </style>
 
 
@@ -101,7 +100,6 @@
                         <input type="file" name="Logo" id="Logo" class="dropify" data-height="100"
                                data-default-file="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/{$objPartner->list['Logo']}" >
                     </div>
-
                     <div class="form-group col-sm-6">
                         <label for="Favicon" class="control-label">آیکون</label>
                         <input type="file" name="Favicon" id="Favicon" class="dropify" data-height="100"

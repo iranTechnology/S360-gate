@@ -10,19 +10,19 @@
                     <div class="parent-i">
                         <i class="fa-light fa-user-headset"></i>
                     </div>
-                    <span> پشتیبانی پرواز:  <span>021-88866609</span></span>
+                    <span> پشتیبانی اختصاصی فلای دبی:  <span>02188866609</span></span>
                 </a>
                 <a class="item-social" href="tel:02188866609">
                     <div class="parent-i">
                         <i class="fa-light fa-user-headset"></i>
                     </div>
-                    <span> پشتیبانی هتل:  <span>021-88866609</span></span>
+                    <span> پشتیبانی اختصاصی ترکیش:  <span>02188866609</span></span>
                 </a>
                 <a class="item-social" href="tel:02188866609">
                     <div class="parent-i">
                         <i class="fa-light fa-user-headset"></i>
                     </div>
-                    <span> پشتیبانی تور:  <span>021-88866609</span></span>
+                    <span> پشتیبانی اختصاصی تورهای خارجی:  <span>02188866609</span></span>
                 </a>
             </div>
             <h5>کارشناسان فردوسی در 24ساعت شبانه روز و 7 روز هفته، به صورت تلفنی و ارسال پیام، پاسخگوی

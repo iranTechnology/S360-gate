@@ -1,8 +1,13 @@
 {
-    "require": {
-        "mpdf/mpdf": "8.0.4",
-      "ext-json": "*",
-      "ext-iconv": "*",
-        "box/spout": "^3.3"
+  "require": {
+    "mpdf/mpdf": "8.0.4",
+    "ext-json": "*",
+    "ext-iconv": "*",
+    "box/spout": "^3.3"
+  },
+  "config": {
+    "platform": {
+      "php": "7.4"
     }
+  }
 }

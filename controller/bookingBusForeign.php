@@ -58,7 +58,6 @@ class bookingBusForeign extends clientAuth
             if($agencyInfo['hasSite'])
             {
                 $logo = ROOT_ADDRESS_WITHOUT_LANG . '/pic/agencyPartner/' .CLIENT_ID.'/logo/'. CLIENT_LOGO;
-
             }else{
                 $logo = ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO;
             }

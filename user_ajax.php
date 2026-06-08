@@ -284,6 +284,8 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
  * checkLoginLocal
  * @return true(1) for yes and false()  for NO
  */
+
+
 //if ($_POST['flag'] == 'temprory_local') {
 //
 //
@@ -2340,7 +2342,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     $objTransaction = Load::controller( 'transaction' );
     $objUser = Load::controller( 'user' );
     $objMemberCredit = Load::controller( 'memberCredit');
-    $objDiscountCodes     = Load::controller( 'discountCodes' );
 
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
     if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
@@ -2360,11 +2361,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
         $amount        = $reserveInfo['total_price'];
 
     }
-
-    $memberId = Session::getUserId();
-
-    $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $_POST['discountCode'], $_POST['serviceType'] );
-
     if ( $_POST['paymentStatus'] == 'prePayment' ) {
         $comment = ' پیش رزرو هتل ';
     } else {
@@ -5054,7 +5050,15 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'orderServicesAdd' ) {
     $credit = functions::getGrsCharge('irantechTest');
     echo number_format(round( $credit['total'] ) ) . ' ' . 'ریال';
 
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'answerVoteUser' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkCityNetCredit' ) {
+
+    $credit = functions::getCityNetCharge('irantechTest');
+    $total = $credit['credit'] + $credit['wallet'];
+    echo number_format( $total  ) . ' ' . 'ریال';
+
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'answerVoteUser' ) {
 
     unset($_POST['flag']);
     $voteData = $_POST;
@@ -5155,14 +5159,8 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
     );
 
     /** @var memberCredit $memberCredit */
-    $memberCredit  = Load::controller( 'memberCredit');
-    $cancelTicketDetailsModel = Load::getModel('cancelTicketDetailsModel');
+    $memberCredit  = Load::controller( 'memberCredit' );
     $InsertPrice = $memberCredit->ReturnAdminToWalletUser( $data );
-
-    if (strpos($InsertPrice, 'Success') !== false) {
-        $insertPriceIndemnity = $cancelTicketDetailsModel->updateWithBind(['PriceIndemnity' => $data['priceBack']], ['RequestNumber' => $data['RequestNumber']]);
-    }
-
     echo $InsertPrice;
 }
 

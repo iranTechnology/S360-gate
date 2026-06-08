@@ -101,37 +101,37 @@ class bookExclusiveTour extends exclusiveTour
 
         $resultBook = false;
 
-            functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookExclusiveTour');
-            if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
-                functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
-                $this->updateStatusProcessing($info['factor_number']);
+        functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookExclusiveTour');
+        if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
+            functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
+            $this->updateStatusProcessing($info['factor_number']);
 
-                    try {
-                        $startTime = time();
-                        $maxTime = 70;
-                        set_time_limit($maxTime + 5);
+            try {
+                $startTime = time();
+                $maxTime = 70;
+                set_time_limit($maxTime + 5);
 
-                        $resultBook = $this->reserveTicket($payType, $info);
+                $resultBook = $this->reserveTicket($payType, $info);
 
-                        $elapsed = time() - $startTime;
-                        if ($elapsed > $maxTime) {
-                            return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
-                        }
-
-                    }
-                    catch (Exception $e) {
-                        return functions::withError('', 500, 'Error when booking a flight');
-                    }
-
-
-                    functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
-
-                functions::insertLog('**************************************', 'newBookExclusiveTour');
+                $elapsed = time() - $startTime;
+                if ($elapsed > $maxTime) {
+                    return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
+                }
 
             }
-            else {
-                return functions::withError('', 403, 'تور قبلا به نتیجه رسیده است');
+            catch (Exception $e) {
+                return functions::withError('', 500, 'Error when booking a flight');
             }
+
+
+            functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
+
+            functions::insertLog('**************************************', 'newBookExclusiveTour');
+
+        }
+        else {
+            return functions::withError('', 403, 'تور قبلا به نتیجه رسیده است');
+        }
 
         if ($resultBook) {
             return functions::withSuccess($resultBook, 200, 'تور با موفقیت صادر شد');
@@ -185,7 +185,7 @@ class bookExclusiveTour extends exclusiveTour
 
         return $airlineController->checkSourceAirline($dataCheckConfigAirline);
     }
-    
+
     private function updateInfo($payType, $eachDirection, $ReserveTicket = array()) {
 
 
@@ -194,10 +194,10 @@ class bookExclusiveTour extends exclusiveTour
             $this->transaction->setCreditToSuccess($eachDirection['factor_number'], $eachDirection['tracking_code_bank']);
         }
 
-                $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
+        $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
 
-                //email to buyer
-                $this->sendSmsToClient($eachDirection);
+        //email to buyer
+        $this->sendSmsToClient($eachDirection);
 
 
         return true;
@@ -326,15 +326,15 @@ class bookExclusiveTour extends exclusiveTour
         functions::insertLog('after reserve ticket==>' . json_encode([$eachDirection['factor_number']], 256), 'newBookExclusiveTour');
 
         if (!empty($ReserveTicket) && $ReserveTicket['curl_error'] == false && !empty($ReserveTicket['Pnr'])) {
-                functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookExclusiveTour');
-                $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
+            functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookExclusiveTour');
+            $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
 
-                functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookExclusiveTour');
+            functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookExclusiveTour');
         }
         else {
             if ($payType == 'credit') {
                 if ($eachDirection['successfull'] != 'book') {
-                        $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
+                    $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
                     $this->transaction->deleteCreditAgencyCurrent($eachDirection['request_number']);
                 }
             }
@@ -792,19 +792,13 @@ class bookExclusiveTour extends exclusiveTour
 </head>
 <body style="text-align:left; font-family: yekanbakh;">
     ';
-        $firstInfo = $info_hotel[0];
-        $subAgencyInfo = $this->getController('agency');
-        $getSubAgencyInfo = $subAgencyInfo->AgencyInfoByIdMember($firstInfo['member_id']);
 
         // Header با لوگو و بارکد
         $html .= '
 
               <div class="container">
                           <div style="width:50%; float: right;text-align:right;">
-                            <img src="' . ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO . '" alt="Logo" height="80" style="vertical-align: middle;">   
-                              <span style="display: inline-block; vertical-align: middle; padding-left: 10px;"> ' .
-               $getSubAgencyInfo['name_fa']. '
-            </span>                        
+                            <img src="' . ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO . '" alt="Logo" height="80" style="vertical-align: middle;">                           
                         </div>
                         <div style="text-align:left;width:50%;float: left;padding-top:1%">  <img src="https://safar360.com/gds/library/barcode/barcode_creator.php?barcode=' . trim($info_hotel[0]["pnr"]) . '" alt="Barcode"  style="width: 80px" height="50px"></div>
                 </div>
@@ -812,7 +806,7 @@ class bookExclusiveTour extends exclusiveTour
        ';
 
         // اطلاعات اصلی برای استفاده در بخش‌های مختلف
-
+        $firstInfo = $info_hotel[0];
 
         if (!empty($firstInfo['payment_date'])) {
             $pd = functions::set_date_payment($firstInfo['payment_date']);
@@ -1100,7 +1094,7 @@ class bookExclusiveTour extends exclusiveTour
                     </thead>
                     <tbody>';
 
-            $html .= '
+        $html .= '
                         <tr style="border-bottom: 1px solid #ddd;">
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">رفت</td>
                                <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">'. (!empty($firstInfo['origin_city']) ? $firstInfo['origin_city'] : '-') .'</td>
@@ -1134,10 +1128,6 @@ class bookExclusiveTour extends exclusiveTour
             <div style="background: #d5dddd; color: #333; padding: 12px; font-weight: bold; font-size: 14px; font-family: yekanbakh;">
                 اطلاعات تفریحات
             </div>
-         ';
-        $entertainments = json_decode($info_hotel[0]['entertainment_data_json'] , true);
-        if(!empty($entertainments)){
-         $html .='   
             <div style="padding: 15px; font-family: yekanbakh; overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse; font-family: yekanbakh;">
                     <thead>
@@ -1149,10 +1139,8 @@ class bookExclusiveTour extends exclusiveTour
                     </thead>
                     <tbody>';
         $entertainmentNum = 1;
-
-        $total_price_entertaimant = 0;
+        $entertainments = json_decode($info_hotel[0]['entertainment_data_json'] , true);
         foreach ($entertainments as $entertainment) {
-            $total_price_entertaimant += $entertainment['final_price'];
             $html .= '
                         <tr style="border-bottom: 1px solid #ddd;">
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">' . $entertainmentNum . '</td>
@@ -1161,21 +1149,11 @@ class bookExclusiveTour extends exclusiveTour
                         </tr>';
             $entertainmentNum++;
         }
-
-
         $html .= '
                     </tbody>
                 </table>
-                </div>
-                ';
-        }
-    else{
-        $html .= '
-<div style="text-align:center ;padding:20px;width:100%">بدون تفریح</div>
+            </div>
         </div>';
-    }
-
-
 
 
         // باکس اطلاعات هزینه ها
@@ -1190,8 +1168,7 @@ class bookExclusiveTour extends exclusiveTour
                         <tr style="background: #f5f5f5; border-bottom: 2px solid #ddd;">
                             <th style="padding: 12px; text-align: right; font-weight: bold; color: #333; border: 1px solid #ddd; font-family: yekanbakh;">جمع مبلغ هتل</th>
                             <th style="padding: 12px; text-align: right; font-weight: bold; color: #333; border: 1px solid #ddd; font-family: yekanbakh;">جمع مبلغ پرواز</th>
-                            <th style="padding: 12px; text-align: right; font-weight: bold; color: #333; border: 1px solid #ddd; font-family: yekanbakh;">جمع مبلغ تفریحات</th>
-                            <th style="padding: 12px; text-align: right; font-weight: bold; color: #333; border: 1px solid #ddd; font-family: yekanbakh;">جمع مبلغ (هتل + پرواز + تفریحات)</th>
+                            <th style="padding: 12px; text-align: right; font-weight: bold; color: #333; border: 1px solid #ddd; font-family: yekanbakh;">جمع مبلغ (هتل + پرواز)</th>
                         </tr>
                     </thead>
                     <tbody>';
@@ -1200,8 +1177,7 @@ class bookExclusiveTour extends exclusiveTour
                         <tr style="border-bottom: 1px solid #ddd;">
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">' . (!empty($info_hotel[0]['total_hotel_price']) ? number_format($info_hotel[0]['total_hotel_price']) . ' ریال ' : '-').'</td>
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">'. (!empty($info_hotel[0]['total_flight_price']) ?number_format($info_hotel[0]['total_flight_price']) . ' ریال ' : '-')  .'</td>
-                            <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">'. (!empty($total_price_entertaimant) ? number_format($total_price_entertaimant) . ' ریال ' : '-')   .'</td>
-                            <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">'. (!empty($info_hotel[0]['total_price']) ? number_format($info_hotel[0]['total_price'] + $total_price_entertaimant) . ' ریال ' : '-')   .'</td>
+                            <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">'. (!empty($info_hotel[0]['total_price']) ? number_format($info_hotel[0]['total_price']) . ' ریال ' : '-')   .'</td>
                         ';
         $html .= '
                     </tbody>

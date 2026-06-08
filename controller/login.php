@@ -21,14 +21,11 @@ class login extends clientAuth
         return   SERVER_HTTP . CLIENT_DOMAIN . '/gds/pic/bannerBackground' . '/'.$image_info['pic'];
     }
 
-    public function isCounter($memberId = null)
+    public function isCounter()
     {
-
-        if ($memberId == null || empty($memberId)) {
-            $CounterType = functions::getCounterTypeId($_SESSION['userId']);
-        } else {
-            $CounterType = functions::getCounterTypeId($memberId);
-        }
+            $isLogin = Session::IsLogin();
+            if ($isLogin) {
+                $CounterType = functions::getCounterTypeId($_SESSION['userId']);
                 if ($CounterType == '1') {
                     $isCounter = true;
                 } else {
@@ -36,5 +33,10 @@ class login extends clientAuth
                 }
 
                 return json_encode($isCounter);
+
+
+            } else {
+                return json_encode(false);
+            }
     }
 }

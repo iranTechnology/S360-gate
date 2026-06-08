@@ -38,6 +38,9 @@
         {/foreach}
     {/if}
 
+    <title>karvan sadat</title>
+
+
 
     <base href="{$smarty.const.CLIENT_DOMAIN}"/>
 <link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
@@ -59,7 +62,6 @@
 <link rel="stylesheet" href="project_files/css/owl.carousel.min.css"><link rel="stylesheet" href="project_files/css/camera.css">
 <link href="assets/css/jquery-confirm.min.css" rel="stylesheet">
 <link href="assets/datepicker/jquery-ui.min.css" rel="stylesheet" type="text/css">
-        <link type="text/css" rel="stylesheet" href="assets/datepicker-new/price_calender.css"/>
 <link href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
           var rootMainPath = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}';

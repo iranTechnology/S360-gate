@@ -20,15 +20,6 @@
     font-style: normal
 }
 
-.soon-searchbox {
-    color: var(--mainColor);
-    font-size: 20px;
-    min-height: 114px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .switch_routs {
     position: absolute;
     left: -15px;
@@ -211,8 +202,7 @@
 
 #searchBoxTabs .nav-item {
     min-width: 90px;
-    display: inline-block;
-    position: relative;
+    display: inline-block
 }
 
 #hotel .row, #tour .row, #gasht .row, #flight .row {
@@ -1699,7 +1689,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 
     #searchBoxTabs {
         display: grid;
-        grid-template-columns:repeat(6, 1fr);
+        grid-template-columns:repeat(4, 1fr);
         grid-template-rows:1fr;
         grid-column-gap: 10px !important;
         grid-row-gap: 20px !important
@@ -1707,12 +1697,6 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 
     .margin-center {
         margin: 0 auto
-    }
-}
-
-@media (max-width: 768px) {
-    #searchBoxTabs {
-        grid-template-columns:repeat(3, 1fr);
     }
 }
 
@@ -1730,6 +1714,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
     }
 
     #searchBoxTabs {
+        grid-template-columns:repeat(4, 1fr);
         padding: 0 !important;
         grid-column-gap: 0px !important;
         grid-row-gap: 10px !important;

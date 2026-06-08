@@ -71,7 +71,7 @@
 }
 
 #searchBoxTabs .nav-link.active {
-    background-color: var(--mainColor);
+    background-color: var(--mainColor) !important;
     border-color: transparent;
 }
 

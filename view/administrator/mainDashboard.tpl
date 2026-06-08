@@ -353,7 +353,7 @@
                             -webkit-font-smoothing: antialiased;
                             -moz-osx-font-smoothing: grayscale;
                         }
-                        
+
                         .custom-alert {
                             font-size: 12px;
                             color: #2c3e50;

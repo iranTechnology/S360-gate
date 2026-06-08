@@ -9,7 +9,7 @@
                 <!-- Logo Area Start -->
                 <div class="nav-header">
                     <a class="flex-row" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}{$mainPage}">
-                        <div class="logo logoHolder flex-col">
+                        <div id="stieLogo" class="logo logoHolder flex-col">
                             <img src="project_files/{$smarty.const.SOFTWARE_LANG}/images/logo.png" alt="{$obj_main_page->pageInfo['title']}">
                         </div>
 

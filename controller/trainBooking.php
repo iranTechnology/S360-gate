@@ -607,15 +607,13 @@ class trainBooking extends trainCore
                  SUM( Infant ) AS InfantCount
                  FROM book_train_tb 
                  WHERE 1 = 1  {$conditions}";
-
-            /*1405_2_30 غیرفعال شد
             $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
             if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
                 $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
                 $sql .= " AND serviceTitle IN ({$check_access})";
-            }*/
+            }
 
                 $sql .= " GROUP BY requestNumber
                          ORDER BY creation_date_int DESC ";

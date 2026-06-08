@@ -114,6 +114,10 @@ function reloadCaptchaSignin2() {
 let otpCountdown = null;
 let isSendingOtp = false;
 
+// متغیرهای سراسری
+let otpCountdown = null;
+let isSendingOtp = false;
+
 // تابع اصلی برای درخواست OTP
 function authenticateInitDigitCode() {
     if (isSendingOtp) return;
@@ -295,6 +299,7 @@ function startOtpTimer(seconds) {
 
             $('#otp-timer-countdown').text(timeString);
             $resendLink.text(`ارسال مجدد (${timeString})`);
+
             remaining--;
         }
     }, 1000);

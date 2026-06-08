@@ -27,8 +27,8 @@
     --fontTitle: 'iranbold';
     --rounded: 16px;
     --mainColor: #c50021;
-    --secondColor: #000;
-    --hoverColor: #000;
+    --secondColor: #8d8d8d;
+    --hoverColor: #8d8d8d;
     --transition: all .3s;
 }
 
@@ -67,35 +67,12 @@
 }
 
 .fixicone:hover {
-    color: var(--secondColor);
+    color: #8d8d8d
 }
 
 .button_header:hover {
-    background: var(--secondColor);
-    color: #fff;
-    border-color: var(--secondColor);
-}
-
-.my-breadcrumbs:has(+ .banner-slider-display) {
-    left: 0;
-    position: absolute !important;
-    top: 110px !important;
-}
-
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item a ,
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item h1,
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item.active h1 {
-    color: #fff !important;
-    font-size: 15px !important;
-}
-
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item + .breadcrumb-item::before {
-    content: '\f053' !important;
-    color: #fff;
-    font-family: "Font Awesome 6 Pro", "FontAwesome", sans-serif;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
+    background: #f1f1f1;
+    color: #666
 }
 
 .header_area {
@@ -771,13 +748,13 @@
 }
 
 .last_text a {
-    color: #fff;
+    color: #666;
     transition: all .3s
 }
 
 .last_text p {
     margin: 0;
-    color: #fff;
+    color: #333;
     margin-right: 3px
 }
 
@@ -793,7 +770,7 @@
     font-size: 14px;
     padding: 10px 0;
     align-items: center;
-    background: var(--secondColor);
+    background: #ececec
 }
 
 .footer-gisoo {

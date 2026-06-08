@@ -10,13 +10,13 @@
                     دلخواه تان، سفری به یاد ماندنی را برای خود و خانواده تان رقم بزنید.
                 </p>
                 <div class="parent-btn-app">
-                    <a href="/apk/safar360.apk" class="">
+                    <a href="" class="">
                         <img src="project_files/images/download-apk.png" alt="app">
                     </a>
                     <a href="" class="">
                         <img src="project_files/images/bazar.png" alt="app">
                     </a>
-                    <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/app" class="">
+                    <a href="" class="">
                         <img src="project_files/images/install-pwa.png" alt="app">
                     </a>
                 </div>

@@ -1803,7 +1803,80 @@ a:hover{
 
 }
 
+.banner-demo ,.banner-demo-1{
+  border-radius: 14px;
+  height: 50vh !important;
+  min-height: 550px !important;
+}
+.banner-demo::after{
+  border-radius: 14px;
+}
 
+.height-line-brack {
+  height: 59vh;
+}
+body .camera_wrap,
+body .camerarelative,
+body .camera_target,
+body .camera_target_content,
+body .camera_fakehover,
+body .cameraCont,
+body .cameraContents{
+  min-height: 59.25vh !important;
+  max-height: 59.25vh !important;
+  border-radius: 14px !important;
+
+
+}
+.camera_wrap,
+.camerarelative,
+.camera_target,
+.camera_target_content,
+.camera_fakehover,
+.cameraCont,
+.cameraContents,
+.camera_wrap img {
+  border-radius: 14px !important;
+  overflow: hidden !important;
+}
+.banner-demo-1::after{
+  border-radius: 14px !important;
+
+}
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl{
+  padding:0 !important;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .height-line-brack {
+    height: 50vh !important;
+  }
+}
+@media (max-width: 767px) {
+  .height-line-brack {
+    height: 50vh !important;
+  }
+  .other-links{
+    margin-top:130px !important;
+  }
+}
+@media (max-width: 578px) {
+  .banner-demo ,.banner-demo-1{
+    background-image: none !important;
+  }
+  .banner-demo::after,.banner-demo-1::after{
+   background: unset !important;
+  }
+
+  .height-line-brack {
+    height: 0vh !important;
+  }
+  #camera_wrap_1{
+    display: none !important;
+  }
+  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl{
+    padding:20px !important;
+  }
+}
 
 
 

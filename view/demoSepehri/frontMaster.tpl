@@ -1,10 +1,10 @@
-{if $smarty.const.SOFTWARE_LANG eq 'en'}
-    {include file="include_files/headerEn.tpl" }
-{elseif $smarty.const.SOFTWARE_LANG eq 'ar'}
-    {include file="include_files/headerAr.tpl" }
-{else}
+{*{if $smarty.const.SOFTWARE_LANG eq 'en'}*}
+{*    {include file="include_files/headerEn.tpl" }*}
+{*{elseif $smarty.const.SOFTWARE_LANG eq 'ar'}*}
+{*    {include file="include_files/headerAr.tpl" }*}
+{*{else}*}
     {include file="include_files/headerFa.tpl" }
-{/if}
+{*{/if}*}
 
 {if $smarty.const.GDS_SWITCH eq 'app'  || $smarty.const.GDS_SWITCH eq 'page'}
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentMain.tpl" obj=$obj}

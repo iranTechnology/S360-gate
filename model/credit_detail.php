@@ -79,7 +79,6 @@ class credit_detail_tb extends Model {
 		$detail['creation_date_int'] = time();
 		$detail['PaymentStatus'] = 'success';
 
-
 		return parent::insertLocal($detail);
 	}
 

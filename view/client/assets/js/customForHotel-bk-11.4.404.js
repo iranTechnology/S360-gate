@@ -4585,6 +4585,12 @@ function hotelLoader(){
                 </div>
               </li>`)
 }
+
+
+
+
+
+
 function openBoxPopular(e){
 
   HotelPopular(e);

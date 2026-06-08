@@ -137,11 +137,13 @@ $(document).ready(function () {
                 }, 200);
             }
             // اگر disabled است و attr مقدار دارد، باکس مسافر را نشان بده
-            else if(disabled_arrival_date_international && attr !== undefined){
-                showPassengerBox();
-            }
+            // else if(disabled_arrival_date_international && attr !== undefined){
+            //     showPassengerBox();
+            // }
         },
         beforeShow: function(input, inst) {
+
+
             // اصلاح: بررسی وجود تابع سفارشی
             if (typeof window.customDatepickerBeforeShow === 'function') {
                 window.customDatepickerBeforeShow(input, true);
@@ -657,7 +659,7 @@ $(document).ready(function () {
         onSelect: function(dateText){
             $(".init-miladi-return-datepicker").datepicker('option', 'minDate', dateText);
             // datepicker_type=$(this).data('type')
-            $(".init-miladi-return-datepicker[data-type='"+datepicker_type+"']").val('');
+            $(".init-miladi-return-datepicker[data-type='"+$(this).data('type')+"']").val('');
             setTimeout(function(){
                 $("#endDateForHotelLocal").trigger('click')
                 $("#endDateForHotelLocal").focus();
@@ -670,6 +672,7 @@ $(document).ready(function () {
             $("#ui-datepicker-div").addClass("INH_class_Datepicker")
         }
     });
+
     $('.init-shamsi-return-datepicker').datepicker({
         numberOfMonths: numberOfMonthsResponsive,
         minDate: $(".check-in-date-js[data-type='"+$(this).data('type')+"']").val(),

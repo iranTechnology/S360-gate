@@ -12,6 +12,8 @@
     {include file="include_files/help.tpl" }
     {include file="include_files/faq.tpl" }
     {include file="include_files/newsletter.tpl" socialLinks=$socialLinks}
+    {include file="include_files/select-theme.tpl"}
+
 </main>
 {include file="include_files/footer.tpl" socialLinks=$socialLinks}
 </body>

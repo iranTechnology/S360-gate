@@ -7,7 +7,7 @@
             {include file="./sections/train/destination_selection.tpl"}
             {include file="./sections/train/date_train.tpl"}
             {include file="./sections/train/passenger_count.tpl"}
-            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-6 col-sm-6 col-12 btn_s col_search margin-center">
+            <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-3 col-sm-6 col-12 btn_s col_search margin-center">
                 <button type="button" onclick="searchTrain(true)" class="btn theme-btn seub-btn b-0">
                     <span>جستجو</span>
                 </button>

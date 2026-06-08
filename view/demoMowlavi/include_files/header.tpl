@@ -1,4 +1,3 @@
-
 {load_presentation_object filename="demoMowlavi" assign="obj_main_page" subName="customers"}
 {load_presentation_object filename="Session" assign="objSession" }
 {load_presentation_object filename="functions" assign="objFunctions"}
@@ -21,8 +20,6 @@
 {*{assign var="allAirports" value=$obj_main_page->allAirports()}*}
 {*{$allAirports|var_dump}*}
 
-
-
 <head>
 <meta charset="utf-8"/>
 <meta test="i_modular_modulation"/>
@@ -39,7 +36,9 @@
             {/if}
         {/foreach}
     {/if}
-    
+
+    <title>دمو سفر 360</title>
+
     {if $smarty.const.GDS_SWITCH eq 'mainPage' }
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHeadMain.tpl"}
     {/if}
@@ -53,7 +52,7 @@
 
     <link rel="stylesheet" href="project_files/css/bootstrap.min.css">
     <link rel="stylesheet" href="project_files/css/header.css">
-  
+
 
 
 

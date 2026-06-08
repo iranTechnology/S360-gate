@@ -158,7 +158,7 @@ class bookTourShow extends clientAuth
 
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
-       /* if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){1405/2/30 غیرفعال شذ
+        if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
 
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
        
@@ -166,7 +166,7 @@ class bookTourShow extends clientAuth
                 $sql .= " AND serviceTitle IN ({$check_access})";
             }
 
-        }*/
+        }
 
         $sql .= " GROUP BY factor_number ORDER BY creation_date_int DESC ";
 

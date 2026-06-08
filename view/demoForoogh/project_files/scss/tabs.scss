@@ -311,7 +311,7 @@
 }
 
 .search_box{
-  width: 1130px;
+  //width: 1130px;
   margin: -132px auto;
 }
 
@@ -349,7 +349,8 @@
 }
 
 #searchBoxTabs .nav-link.active{
-  background: $mainColor;
+  background: $mainColor !important;
+  color: #fff !important;
 }
 //#searchBoxTabs .nav-link.active::after{
 //  content: "";
@@ -368,9 +369,13 @@
 }
 
 
-
+#searchBoxTabs .nav-link.active i  {
+  fill: #fff !important;
+  color: #fff !important;
+}
 #searchBoxTabs .nav-link.active i svg {
-  fill: #fff;
+  fill: #fff !important;
+  color: #fff !important;
 }
 
 .rotate-45- {

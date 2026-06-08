@@ -310,7 +310,6 @@
 }
 
 .search_box{
-  width: 1130px;
   margin: -132px auto;
 }
 
@@ -344,11 +343,11 @@
 }
 
 #searchBoxTabs .nav-link.active div h4 {
-  color: $mainColor;
+  color: #fff !important;
 }
 
 #searchBoxTabs .nav-link.active{
-  background: #fff;
+  background: $mainColor !important;
 }
 
 #searchBoxTabs .nav-link i svg {
@@ -360,7 +359,7 @@
 
 
 #searchBoxTabs .nav-link.active i svg {
-  fill: $mainColor;
+  fill: $mainColor !important;
 }
 
 .rotate-45- {

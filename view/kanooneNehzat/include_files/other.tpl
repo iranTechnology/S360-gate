@@ -21,7 +21,7 @@
                     </svg>
                     <img src="project_files/images/icons8-hotel-96(1).png" />
                 </a>
-                <h5>هتل</h5>
+                <h5>اقامتگاه</h5>
             </div>
             <div class="other-item other-item3">
                 <a class="other-img" href="{$smarty.const.ROOT_ADDRESS}/page/tour">

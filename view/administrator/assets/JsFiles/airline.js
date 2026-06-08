@@ -248,8 +248,7 @@ $(document).ready(function () {
         rules: {
             nameFa: "required",
             nameEn: "required",
-            abbreviation: "required",
-            foreignAirline: "required"
+            abbreviation: "required"
         },
         messages: {
 

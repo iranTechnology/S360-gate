@@ -86,7 +86,7 @@ function deleteAccess(id) {
       success: function (response) {
         if (response.success === true) {
           $.toast({
-            heading: "حذف سطح دسترسی صفحات",
+            heading: "حذف درباره Gds",
             text: response.message,
             position: "top-right",
             icon: "success",
@@ -96,7 +96,7 @@ function deleteAccess(id) {
           })
         } else {
           $.toast({
-            heading: " حذف سطح دسترسی صفحات",
+            heading: " حذف درباره Gds",
             text: response.message,
             position: "top-right",
             icon: "warning",

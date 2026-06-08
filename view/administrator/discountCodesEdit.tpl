@@ -31,13 +31,13 @@
 
                     <div class="form-group col-sm-6 ">
                         <label for="Title" class="control-label">عنوان تخفیف </label>
-                        <input type="text" class="form-control" id="Title" name="Title" value="{$discountInfo['title']}" readonly="readonly"
+                        <input type="text" class="form-control" id="Title" name="Title" value="{$discountInfo['title']}"
                                placeholder="عنوان تخفیف را وارد نمائید">
                     </div>
 
                     <div class="form-group col-sm-6">
                         <label for="Amount" class="control-label">مبلغ تخفیف</label>
-                        <input type="text" class="form-control" id="Amount" name="Amount" value="{$discountInfo['amount']}" readonly="readonly"
+                        <input type="text" class="form-control" id="Amount" name="Amount" value="{$discountInfo['amount']}"
                                placeholder="مبلغ تخفیف را وارد نمائید">
                     </div>
 

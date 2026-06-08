@@ -125,7 +125,7 @@ $(document).ready(function() {
           if (response.success === true) {
             setTimeout(function() {
               // location.reload()
-         
+
               if(bannerValue == 1){
                 window.location = `${amadeusPath}itadmin/galleryBanner/list`;
               }else{
@@ -151,8 +151,6 @@ $(document).ready(function() {
     },
   })
 })
-
-
 
 function deleteSpecialPage(id){
   $.ajax({
@@ -235,7 +233,7 @@ function removeSpecialPageImage(_this,page_id,src_name,type) {
 
           let currentCount = $('#preview-gallery .dropzone-parent-box').length;
           $('.image-count, [data-count]').attr('data-count', currentCount);
-          
+
           _this.parent().parent().remove()
           $.toast({
             heading: "حذف مطلب",

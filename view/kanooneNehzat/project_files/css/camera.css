@@ -30,8 +30,13 @@
 }
 
 .camera_wrap img {
+	max-width: 100% !important;
+	width: 100% !important;
+	height: auto !important;
+	object-fit: cover;
 	object-position: center;
 	margin: 0 !important;
+	filter: brightness(.8);
 }
 
 .camera_fakehover {
@@ -179,7 +184,7 @@
 	overflow: hidden;
 	position: relative;
 	width: 100%;
-	height: 100%;
+	height: auto !important;
 }
 
 .imgFake {
@@ -283,6 +288,66 @@
 	z-index: 2;
 }
 
+/* متن روی بنر */
+.text-banner {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.text-banner a {
+	border: 1px solid var(--mainColor);
+	padding: 5px 10px;
+	background: #fff;
+}
+
+@keyframes anim {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	from {
+		opacity: 0;
+		transform: translateY(100px);
+	}
+}
+
+.cameracurrent .text-banner h3 {
+	animation: anim .5s linear;
+}
+
+.cameracurrent .text-banner p {
+	animation: anim 1s linear;
+}
+
+.cameracurrent .text-banner a {
+	animation: anim 1.5s linear;
+}
+
+.text-banner h3 {
+	position: relative;
+	text-align: center;
+	margin: 0 0 1rem;
+	font-size: 26px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: #fff;
+}
+
+.text-banner p {
+	position: relative;
+	text-align: center;
+	margin: 0 0 1rem;
+	font-size: 20px;
+	letter-spacing: 1px;
+	color: #fff;
+}
+
 /* دکمه‌های قبلی و بعدی */
 .camera_prev, .camera_next {
 	transition: all .3s;
@@ -373,15 +438,23 @@
 
 /* ========== ریسپانسیو ========== */
 
+/* دسکتاپ بزرگ */
 @media (min-width: 1200px) {
 	.camerarelative {
 		min-height: 670px;
 	}
 }
 
+/* دسکتاپ */
 @media (min-width: 992px) and (max-width: 1199px) {
 	.camerarelative {
 		min-height: 550px;
+	}
+	.text-banner h3 {
+		font-size: 22px;
+	}
+	.text-banner p {
+		font-size: 18px;
 	}
 }
 
@@ -390,14 +463,34 @@
 	.camerarelative {
 		min-height: 450px;
 	}
+	.text-banner h3 {
+		font-size: 18px;
+	}
+	.text-banner p {
+		font-size: 14px;
+	}
 	.camera_thumbs_cont {
 		display: none;
 	}
 }
 
+/* موبایل */
 @media (max-width: 767px) {
 	.camerarelative {
 		min-height: 250px;
+	}
+	.text-banner h3 {
+		font-size: 12px !important;
+		white-space: normal !important;
+		margin-bottom: 5px;
+	}
+	.text-banner p {
+		font-size: 9px !important;
+		margin-bottom: 5px;
+	}
+	.text-banner a {
+		font-size: 8px;
+		padding: 3px 8px;
 	}
 	.camera_prev, .camera_next {
 		width: 30px;
@@ -425,6 +518,12 @@
 	.camerarelative {
 		min-height: 200px;
 	}
+	.text-banner h3 {
+		font-size: 10px !important;
+	}
+	.text-banner p {
+		font-size: 8px !important;
+	}
 }
 
 /* اطمینان از نمایش اسلایدر */
@@ -432,6 +531,117 @@
 	width: 100%;
 	margin: 0 auto;
 	display: block !important;
+}
+
+/* ========== تنظیم ارتفاع ثابت برای بنر ========== */
+
+/* ارتفاع ثابت برای دسکتاپ */
+.banner-safiran .camera_wrap,
+.banner-safiran .camerarelative,
+.banner-safiran .camera_target,
+.banner-safiran .camera_target_content,
+.banner-safiran .camera_fakehover,
+.banner-safiran .cameraCont,
+.banner-safiran .cameraContents {
+	height: 670px !important;
+	min-height: 670px !important;
+	max-height: 670px !important;
+}
+
+.banner-safiran .camera_wrap img {
+	height: 670px !important;
+	min-height: 670px !important;
+	max-height: 670px !important;
+	width: 100% !important;
+	object-fit: cover !important;
+}
+
+/* سرچ باکس ثابت روی بنر */
+.banner-safiran .i_modular_searchBox.search_box {
+	position: absolute !important;
+	bottom: 30px !important;
+
+}
+
+/* تبلت - ارتفاع ثابت */
+@media (max-width: 991px) {
+	.banner-safiran .camera_wrap,
+	.banner-safiran .camerarelative,
+	.banner-safiran .camera_target,
+	.banner-safiran .camera_target_content,
+	.banner-safiran .camera_fakehover,
+	.banner-safiran .cameraCont,
+	.banner-safiran .cameraContents {
+		height: 550px !important;
+		min-height: 550px !important;
+		max-height: 550px !important;
+	}
+
+	.banner-safiran .camera_wrap img {
+		height: 550px !important;
+	}
+
+	.banner-safiran .i_modular_searchBox.search_box {
+		bottom: 20px !important;
+		width: 95% !important;
+	}
+}
+
+/* موبایل - ارتفاع ثابت */
+@media (max-width: 767px) {
+	.banner-safiran .camera_wrap,
+	.banner-safiran .camerarelative,
+	.banner-safiran .camera_target,
+	.banner-safiran .camera_target_content,
+	.banner-safiran .camera_fakehover,
+	.banner-safiran .cameraCont,
+	.banner-safiran .cameraContents {
+		height: 350px !important;
+		min-height: 350px !important;
+		max-height: 350px !important;
+	}
+
+	.banner-safiran .camera_wrap img {
+		height: 350px !important;
+	}
+
+	.text-banner h3 {
+		font-size: 14px !important;
+		white-space: normal !important;
+	}
+
+	.text-banner p {
+		font-size: 10px !important;
+	}
+
+	.banner-safiran .i_modular_searchBox.search_box {
+		position: relative !important;
+		bottom: auto !important;
+		left: auto !important;
+		transform: none !important;
+		width: 100% !important;
+		margin-top: -20px !important;
+
+	}
+}
+
+/* موبایل خیلی کوچک */
+@media (max-width: 480px) {
+	.banner-safiran .camera_wrap,
+	.banner-safiran .camerarelative,
+	.banner-safiran .camera_target,
+	.banner-safiran .camera_target_content,
+	.banner-safiran .camera_fakehover,
+	.banner-safiran .cameraCont,
+	.banner-safiran .cameraContents {
+		height: 280px !important;
+		min-height: 280px !important;
+		max-height: 280px !important;
+	}
+
+	.banner-safiran .camera_wrap img {
+		height: 280px !important;
+	}
 }
 
 /* حذف display none از کلاس مشکل دار */
@@ -444,9 +654,3 @@
 	transition: none !important;
 }
 
-/* Keep transition clones inside the calculated banner frame. */
-#camera_wrap_1 .cameraappended,
-#camera_wrap_1 .cameraappended .cameraSlide,
-#camera_wrap_1 .cameraappended .camerarelative {
-	overflow: hidden !important;
-}

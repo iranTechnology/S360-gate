@@ -11,7 +11,7 @@
                         {include file="./sections/entertainment/sub_category_entertainment.tpl"}
 
 
-                <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-6 col-sm-6 col-12 btn_s col_search margin-center">
+                <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-2 col-sm-6 col-12 btn_s col_search margin-center">
                     <button type="button" onclick="searchEntertainment()"
                             class="btn theme-btn seub-btn b-0"><span>##Search##</span></button>
                 </div>

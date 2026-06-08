@@ -551,7 +551,7 @@ class Model {
 	public function updateWithBind( $data = array(), $condition = null, $table = null ) {
         // --- کنترل پرمیشن قبل از ساخت کوئری ---
         if (!$this->checkPermissionModel('update')) {
-            functions::insertLog("Permission denied for updateWithBind by user {$this->userIdSession}==> ".date("Y-m-d H:i:s")."\n",'log_permission');
+            functions::insertLog("Permission denied for prepare by user {$this->userIdSession}==> ".date("Y-m-d H:i:s")."\n",'log_permission');
             return false;
         }
 
@@ -1139,5 +1139,9 @@ class Model {
             case 'delete': return !empty($perms['can_delete']);
             default: return true;
         }
+    }
+
+    public function getPDO() {
+        return $this->_pdo;
     }
 }

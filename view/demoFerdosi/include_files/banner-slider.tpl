@@ -23,7 +23,7 @@
     }
 </style>
 
-
+{$specialHotelPic|var_dump}
 <script>
     {literal}
     if($(window).width() > 576){

@@ -11,6 +11,7 @@
 {include file="include_files/news.tpl"}
 {include file="include_files/blog.tpl"}
     {include file="include_files/hotels-webservice.tpl"}
+    {include file="include_files/select-theme.tpl"}
 
 
 </main>

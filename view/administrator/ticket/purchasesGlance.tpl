@@ -145,6 +145,12 @@
         font-weight: bold;
     }
 
+    .status-purple {
+        background: #c4b5fd;
+        color: #2e1065;
+        font-weight: bold;
+    }
+
     .card-loading {
         text-align: center;
         padding: 50px;

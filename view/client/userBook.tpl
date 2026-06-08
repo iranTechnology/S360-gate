@@ -192,7 +192,7 @@
                                                 <option value="">##All##</option>
                                                 <option value="book"> ##Definitivereservation##</option>
                                                 <option value="bank">##NotPaid##</option>
-                                                <option value="prereserve">##Prereservation##</option>
+                                                <option value="prereserve">##Prereservation##</option>memberResultSearch
                                                 <option value="nothing">##BookingFailed##</option>
                                                 <option value="cancel">##Refunded##</option>
                                             </select>

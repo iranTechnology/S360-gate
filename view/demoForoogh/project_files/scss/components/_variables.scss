@@ -1,8 +1,8 @@
 $fontFamily: IRANYekanX;
 $fontFamilyXVF: 'IRANYekanXVF';
 $rounded: 14px;
-$mainColor: #b71c1c;
-$secondColor: #b71c1c;
+$mainColor: var(--mainColor);
+$secondColor:  var(--secondColor);
 $transition: all ease .3s;
 $shadow: 0 0 12px rgb(0 0 0 / 10%);
 $border: 1px solid #e9e9e9;

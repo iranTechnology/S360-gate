@@ -97,46 +97,6 @@ class airline extends clientAuth
         $this->list = $airline->getAllOrderByiata();
     }
 
-    public function getAllWithStandardIata()
-    {
-        $airlineModel = $this->getModel('airlineModel');
-        $airlineIataModel = $this->getModel('airlineIataModel');
-        $airline_table = $airlineModel->getTable();
-        $airline_iata_table = $airlineIataModel->getTable();
-        $ret = $airlineModel->get([
-            $airline_table.'.abbreviation',
-            $airline_iata_table.'.airline_uniqe_iata',
-        ] ,true)
-            ->join($airline_iata_table, 'id', 'airline_iata_id')
-            ->all();
-        return $ret;
-    }
-
-    public function getWithStandardIata($prIata)
-    {
-        $airlineModel = $this->getModel('airlineModel');
-        $airlineIataModel = $this->getModel('airlineIataModel');
-        $airline_table = $airlineModel->getTable();
-        $airline_iata_table = $airlineIataModel->getTable();
-        $ret = $airlineModel->get([
-            $airline_table.'.abbreviation',
-            $airline_iata_table.'.airline_uniqe_iata',
-        ] ,true)
-            ->join($airline_iata_table, 'id', 'airline_iata_id')
-            ->where($airline_table . '.abbreviation' , $prIata)
-            ->find();
-        return $ret;
-    }
-
-    public function iataStandardization($prIata)
-    {
-        $airlineStandardIata = $this->getWithStandardIata($prIata);
-        if (!isset($airlineStandardIata['airline_uniqe_iata']) && !empty($airlineStandardIata['airline_uniqe_iata']) && $airlineStandardIata['airline_uniqe_iata'] != null) {
-            return $airlineStandardIata['airline_uniqe_iata'];
-        }
-        return $prIata;
-    }
-
 //    ================Airline iata codes ===========================
     public function getAllIataCodes()
     {
@@ -351,103 +311,9 @@ class airline extends clientAuth
     {
         $airline = Load::model('airline');
 
-        $insertAirline = $airline->InsertAirlineModel($data);
-
-        if (strpos($insertAirline, 'error') !== false) {
-            return $insertAirline;
-        } else {
-            $InsertAirlineConfigToAllClients = $this->InsertAirlineConfigToAllClients($insertAirline , $data['foreignAirline']);
-            if ($InsertAirlineConfigToAllClients) {
-                return 'success : خطوط پروازی مورد نظر با موفقیت ثبت شد';
-            }
-            return 'error : خطا در ثبت خطوط پروازی';
-        }
-
+        return $airline->InsertAirlineModel($data);
     }
     #endregion
-
-    public function InsertAirlineConfigToAllClients($lastInsertId , $foreignAirline) {
-
-        $referenceAirlineConf = $this->getreferenceAirlineConf($foreignAirline);
-
-        $charter_internal_sourceId = $referenceAirlineConf['charter_internal']['sourceId'];
-        $charter_internal_sourceReplaceId = $referenceAirlineConf['charter_internal']['sourceReplaceId'];
-        $charter_external_sourceId = $referenceAirlineConf['charter_external']['sourceId'];
-        $charter_external_sourceReplaceId = $referenceAirlineConf['charter_external']['sourceReplaceId'];
-        $system_internal_sourceId = $referenceAirlineConf['system_internal']['sourceId'];
-        $system_internal_sourceReplaceId = $referenceAirlineConf['system_internal']['sourceReplaceId'];
-        $system_external_sourceId = $referenceAirlineConf['system_external']['sourceId'];
-        $system_external_sourceReplaceId = $referenceAirlineConf['system_external']['sourceReplaceId'];
-
-        $clients = $this->getModel('clientsModel')->get()->all();
-        $client_sql = <<<SQL
-
-INSERT INTO `config_flight_tb`
-(`airlineId`, `typeFlight`, `isPublic`, `isPublicreplaced`, `isInternal`, `sourceId`, `sourceReplaceId`)
-VALUES
-($lastInsertId, 'charter', 1, 1, 0, $charter_external_sourceId, $charter_external_sourceReplaceId),
-($lastInsertId, 'charter',  1, 1, 1, $charter_internal_sourceId,$charter_internal_sourceReplaceId ),
-($lastInsertId, 'system', 1, 1, 0, $system_external_sourceId, $system_external_sourceReplaceId),
-($lastInsertId, 'system',  1, 1, 1, $system_internal_sourceId,$system_internal_sourceReplaceId );
-
-SQL;
-        foreach ($clients as $client){
-
-            $user = $client['DbUser'];
-            $pass = $client['DbPass'];
-            $db = $client['DbName'];
-            $client_connection = mysqli_connect('localhost',$user,$pass,$db);
-
-            try{
-                mysqli_set_charset($client_connection,'utf8');
-                $client_sql = str_replace('{{CLIENT_NAME}}',$client['DbName'],$client_sql);
-                $result = mysqli_query($client_connection,$client_sql);
-
-            }catch (Exception $exception){
-                return false ;
-            }
-
-        }
-
-        return true;
-    }
-
-    public function getreferenceAirlineConf($foreignAirline) {
-        // آی دی ایرلاینی که میخواهید مرجع قرار بگیرد را از airline_tb در دیتابیس gds بردارید
-
-        if ($foreignAirline == 'active') {
-            $referenceAirlineConf  = $this->getController('configFlight')->getConfigAirline(18);
-        } else {
-            $referenceAirlineConf = $this->getController('configFlight')->getConfigAirline(3);
-        }
-        $result = [
-            'charter_internal' => null,
-            'charter_external' => null,
-            'system_internal'  => null,
-            'system_external'  => null,
-        ];
-        $grouped = [
-            'charter_internal' => [],
-            'charter_external' => [],
-            'system_internal'  => [],
-            'system_external'  => [],
-        ];
-        foreach ($referenceAirlineConf as $row) {
-            $key = $row['typeFlight'] . '_' . ($row['isInternal'] == 1 ? 'internal' : 'external');
-
-            $grouped[$key][] = [
-                'sourceId' => $row['sourceId'],
-                'sourceReplaceId' => $row['sourceReplaceId']
-            ];
-        }
-        foreach ($grouped as $key => $items) {
-            if (!empty($items)) {
-                $result[$key] = $items[array_rand($items)];
-            }
-        }
-
-        return $result;
-    }
 
     #region active UpdateAirline
 
@@ -834,6 +700,20 @@ SQL;
         }
 
         return null;
+    }
+    #endregion
+
+    #region checkTypeAirline
+
+    public function checkTypeAirline($flightType, $airline)
+    {
+
+        $resultSql = $this->getModel('airlineClientModel')->get(['`charter`','`system`'],true)->where('airline_iata',$airline)->find();
+
+        if (($flightType == 'charter' && ($resultSql['charter'] == 'active')) || ($flightType == 'system' && ($resultSql['system'] == 'active'))) {
+            return true;
+        }
+        return false;
     }
     #endregion
 

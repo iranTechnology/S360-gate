@@ -104,18 +104,11 @@ class reportAgenciesSearch extends clientAuth
         return array_reverse($finallArray);
     }
     public function airportsTb(){
-        $Model = $this->getModel('airportModel');
-        // انتخاب فیلد شهر بر اساس زبان
-        if (defined('LANG_PANEL_ADMIN') && in_array(LANG_PANEL_ADMIN, ['en', 'ar'])) {
-            $cityField = 'DepartureCityEn';
-        } else {
-            $cityField = 'DepartureCityFa';
-        }
 
-        $cityArray = $Model
-            ->get(['id', 'DepartureCode', $cityField.' as DepartureCityFa'])
-            ->whereNotIn('DepartureCode', '')
-            ->all();
+        $Model = $this->getModel('airportModel');
+
+        $cityArray = $Model->get(['id','DepartureCode','DepartureCityFa'])->whereNotIn('DepartureCode','')->all();
+
 
         return array_reverse($cityArray);
     }

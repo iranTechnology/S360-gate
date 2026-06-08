@@ -585,7 +585,7 @@ a:hover {
 }
 
 .newsletters {
-    margin-top: 70px
+    margin-top: 50px
 }
 
 .newsletters .newsletterMain {
@@ -1043,7 +1043,7 @@ a:hover {
 }
 
 .app {
-    padding-top: 70px;
+    padding: 70px 0;
     background: url(../images/bg-tour.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -1092,289 +1092,6 @@ a:hover {
 
 .app-text > img {
     display: none
-}
-
-.blog-kharazmi .parent-special-tours-paeiz {
-    display: grid;
-    grid-template-columns:repeat(3, 1fr);
-    grid-column-gap: 30px;
-    grid-row-gap: 30px
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz {
-    position: relative;
-    display: flex;
-    align-items: end;
-    justify-content: right;
-    padding: 20px 15px;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all .3s;
-    height: 190px
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz:hover {
-    text-decoration: none
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz:hover img {
-    transform: scale(1.1)
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz::after {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(100%, transparent), to(rgba(15, 15, 15, 0.75)));
-    background: -webkit-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.99) 100%);
-    background: -o-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
-    background: linear-gradient(top bottom, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
-    position: absolute;
-    height: 150%;
-    width: 100%;
-    z-index: 1;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 1;
-    content: "";
-    transition: all ease .5s
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz img {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    transition: all .3s;
-    object-fit: cover;
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    position: relative;
-    z-index: 2
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text p {
-    color: #fff;
-    text-align: justify;
-    line-height: 23px;
-    font-size: 14px;
-    margin-bottom: 0;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    transition: all ease .5s;
-    display: none
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog {
-    display: flex;
-    align-items: center;
-    gap: 7px
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog svg {
-    width: 14px;
-    fill: #fff
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text .data-blog span {
-    font-size: 14px;
-    color: #fff
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
-    color: #fff;
-    font-size: 20px;
-    margin-bottom: 0;
-    font-family: "iranbold";
-    -webkit-line-clamp: 1;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    display: -webkit-box
-}
-
-.blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h4 {
-    color: #fff;
-    font-size: 18px;
-    margin-bottom: 0
-}
-
-.blog-kharazmi .parent-special-tours2 {
-    display: grid;
-    grid-template-columns:repeat(1, 1fr);
-    grid-column-gap: 30px;
-    grid-row-gap: 30px
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 {
-    position: relative;
-    display: flex;
-    align-items: end;
-    justify-content: right;
-    padding: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all .3s
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2:hover {
-    text-decoration: none
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2:hover img {
-    transform: scale(1.1)
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2::after {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(100%, transparent), to(rgba(15, 15, 15, 0.75)));
-    background: -webkit-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.99) 100%);
-    background: -o-linear-gradient(top, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
-    background: linear-gradient(top bottom, transparent 50%, rgba(15, 15, 15, 0.75) 100%);
-    position: absolute;
-    height: 200%;
-    width: 100%;
-    z-index: 1;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 1;
-    content: "";
-    transition: all ease .5s
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 img {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    transition: all .3s
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    position: relative;
-    z-index: 2
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text p {
-    color: #fff;
-    text-align: justify;
-    line-height: 23px;
-    font-size: 14px;
-    margin-bottom: 0;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    transition: all ease .5s
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog {
-    display: flex;
-    align-items: center;
-    gap: 7px
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog svg {
-    width: 14px;
-    fill: #fff
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text .data-blog span {
-    font-size: 14px;
-    color: #fff
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text h2 {
-    color: #fff;
-    font-size: 22px;
-    margin-bottom: 0;
-    font-family: "iranbold"
-}
-
-.blog-kharazmi .parent-special-tours2 .items-special-tours2 .parent-text h4 {
-    color: #fff;
-    font-size: 18px;
-    margin-bottom: 0
-}
-
-@media (max-width: 1200px) {
-    .blog-kharazmi .items-special-tours-paeiz {
-        height: 280px !important
-    }
-}
-
-@media (max-width: 991px) {
-    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz {
-        height: 250px
-    }
-
-    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz2 {
-        grid-area: unset !important
-    }
-
-    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz1 {
-        grid-area: unset !important
-    }
-
-    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz3 {
-        grid-area: unset !important
-    }
-
-    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz4 {
-        grid-area: unset !important
-    }
-
-    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz5 {
-        grid-area: unset !important
-    }
-
-    .blog-kharazmi .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz6 {
-        grid-area: unset !important
-    }
-
-    .blog-kharazmi .items-special-tours-paeiz {
-        height: 300px !important
-    }
-
-    .blog-kharazmi .parent-special-tours-paeiz {
-        grid-template-columns:repeat(2, 1fr)
-    }
-}
-
-@media (max-width: 768px) {
-    .blog-kharazmi .items-special-tours-paeiz {
-        height: 230px !important
-    }
-
-    .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
-        font-size: 18px
-    }
-}
-
-@media (max-width: 576px) {
-    .blog-kharazmi .parent-special-tours-paeiz {
-        grid-template-columns:1fr
-    }
-
-    .blog-kharazmi .parent-special-tours-paeiz .items-special-tours-paeiz .parent-text h2 {
-        font-size: 17px
-    }
-
-    .blog-kharazmi .items-special-tours-paeiz {
-        height: 320px !important
-    }
-
-    .blog-kharazmi .items-special-tours-paeiz4, .blog-kharazmi .items-special-tours-paeiz5, .blog-kharazmi .items-special-tours-paeiz6 {
-        display: none !important
-    }
 }
 
 .title-center {
@@ -1483,16 +1200,7 @@ a:hover {
     background: var(--mainColor)
 }
 
-@media (max-width: 1200px) {
-    #searchBoxTabs {
-        gap: unset !important
-    }
-}
-
 @media (max-width: 991px) {
-    .banner-demo {
-        height: 800px
-    }
 
     .search_flight #search_flight-tabContent .search_flight_grid {
         grid-template-columns:repeat(2, 1fr)
@@ -1512,6 +1220,12 @@ a:hover {
 
     .parent-btn-app {
         align-items: center
+    }
+}
+
+@media (max-width: 1200px) {
+    #searchBoxTabs {
+        gap: unset !important
     }
 }
 
@@ -1540,14 +1254,6 @@ a:hover {
 }
 
 @media (max-width: 576px) {
-    .parent-btn-app img {
-        width: 350px
-    }
-    .banner-demo {
-        background: #fff;
-        height: unset;
-        min-height: unset
-    }
 
     .search_flight #search_flight-tabContent .search_flight_grid {
         grid-template-columns:repeat(1, 1fr)
@@ -1627,6 +1333,10 @@ a:hover {
 
     .app-text > img {
         width: 100%
+    }
+
+    .newsletters {
+        margin-top: 0
     }
 
     .banner-demo .parent-banner-demo {

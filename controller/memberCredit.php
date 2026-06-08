@@ -29,7 +29,7 @@ class memberCredit extends clientAuth{
     }
 
     public function checkExistMemberCreditByFactorNumber($factor_number){
-        return  $this->getModel('membersCreditModel')->get()->where('factorNumber',$factor_number)->all();
+       return  $this->getModel('membersCreditModel')->get()->where('factorNumber',$factor_number)->all();
     }
     public function returnJson($success = true, $message = '', $data = null, $statusCode = 200) {
         http_response_code($statusCode);
@@ -43,10 +43,10 @@ class memberCredit extends clientAuth{
 
     }
     public function getRemainCreditMember() {
-        $charge_credit_member = $this->getChargeMemberCredit();
-        $consumed_credit_member = $this->getBuyMemberCredit();
+            $charge_credit_member = $this->getChargeMemberCredit();
+            $consumed_credit_member = $this->getBuyMemberCredit();
 
-        return intval($charge_credit_member['charge_amount'])- intval($consumed_credit_member['buy_amount']);
+            return intval($charge_credit_member['charge_amount'])- intval($consumed_credit_member['buy_amount']);
     }
 
 
@@ -122,9 +122,9 @@ class memberCredit extends clientAuth{
     }
 
 
-    public function infoAdmin($type_admin , $adminId ,$typeAgency) {
-        $name_admin = '';
-        $Model = Load::library('Model');
+   public function infoAdmin($type_admin , $adminId ,$typeAgency) {
+       $name_admin = '';
+       $Model = Load::library('Model');
         if ($type_admin == 1) {
             $name_admin = 'ایران تکنولوژی';
         }else{
@@ -147,8 +147,8 @@ class memberCredit extends clientAuth{
                 $name_admin = '-----';
             }
         }
-        return $name_admin;
-    }
+    return $name_admin;
+   }
 
 
     public function getAll($memberID)
@@ -291,42 +291,6 @@ class memberCredit extends clientAuth{
                     return 'success :' . functions::Xmlinformation("RequestedDecreaseMoneyOfCredit");
                 } else {
                     return 'error : ' . functions::Xmlinformation("Errorrecordinginformation");
-                }
-            }
-        }else{
-            return 'error : ' . functions::Xmlinformation("RequestedAmountIsMoreThanCredit");
-
-        }
-
-
-
-
-
-    }
-
-    public function decreaseChargeMemberForBuy($amount, $factorNumber, $comment) {
-
-        $members = Load::model('members');
-        $membersCreditModel = $this->getModel('membersCreditModel');
-        $credit = $members->getMemberCredit($this->user_id);
-
-        if ($amount < $credit) {
-            if ($credit > 0) {
-
-                $dataCredit['memberId'] = $this->user_id;
-                $dataCredit['amount'] = $amount;
-                $dataCredit['factorNumber'] = $factorNumber;
-                $dataCredit['state'] = 'buy';
-                $dataCredit['reason'] = 'buy';
-                $dataCredit['comment'] = $comment;
-                $dataCredit['status'] = 'success';
-                $dataCredit['creationDateInt'] = time();
-                $insert = $membersCreditModel->insertWithBind($dataCredit);
-
-                if ($insert) {
-                    return 'success :' . functions::Xmlinformation("DecreaseUser");
-                } else {
-                    return 'error : ' . functions::Xmlinformation("DecreaseUser");
                 }
             }
         }else{
@@ -493,8 +457,6 @@ class memberCredit extends clientAuth{
             $dataWallet['reason'] = 'increase';
             $dataWallet['creationDateInt'] = time();
             $result =  $this->usersWalletModel()->insertWithBind($dataWallet);
-
-
             if ($result) {
                 $dataCancel['Status']="ConfirmCancel";
                 $dataCancel['DateConfirmClientInt']=time();
@@ -503,13 +465,12 @@ class memberCredit extends clientAuth{
                 $Model->setTable('cancel_ticket_details_tb');
 
                 $Condition="id={$data['ParamId']} AND RequestNumber='{$data['RequestNumber']}'";
-                $update = $Model->update($dataCancel, $Condition);
-
-                return 'Success : انتقال اعتبار به حساب کاربر انجام شد';
+                $Model->update($dataCancel, $Condition);
+                echo 'Success : انتقال اعتبار به حساب کاربر انجام شد';
 
             }
         }else{
-            return 'Success : خطا در انتقال اعتبار به کیف پول کاربر';
+            echo 'Success : خطا در انتقال اعتبار به کیف پول کاربر';
 
         }
 
@@ -521,7 +482,9 @@ class memberCredit extends clientAuth{
 
     public function getAllCreditMember($data_main_page = []) {
 
+//        $result = [];
         $itemList = $this->getModel('membersCreditModel')->get()->orderBy('id' , 'DESC');
+//        $item_table = $itemList->getTable();
         $listItem = $itemList->all(false);
         Load::autoload('Model');
         $Model = new Model();
@@ -534,6 +497,7 @@ class memberCredit extends clientAuth{
 
             $listItem[$key]['mamber_name'] = $res_member['name'] .' '. $res_member['family'];
             $listItem[$key]['mamber_mobile'] = $res_member['mobile'];
+//            $_SESSION["adminLogin"]
             $listItem[$key]['admin_name'] = $res_admin['name'] .' '. $res_admin['family'];
             $listItem[$key]['admin_id'] = $res_admin['id'];
         }

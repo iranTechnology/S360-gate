@@ -538,6 +538,7 @@ footer h6 {
 
 .navigation {
     width: 100%;
+    height: 85px;
     display: flex;
     align-items: center;
     position: relative;
@@ -1735,7 +1736,6 @@ footer h6 {
     width: 100%;
     background: #fff;
     box-shadow: 0 4px 10px #d9d9d999;
-    padding: 5px 0;
 }
 
 .nav-dropdown > li > a:hover, .nav-dropdown > li > a:focus {

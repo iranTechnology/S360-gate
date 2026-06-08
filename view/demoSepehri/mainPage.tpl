@@ -5,3 +5,5 @@
 {else}
     {include file="mainFa.tpl"}
 {/if}
+
+{include file="include_files/select-theme.tpl"}

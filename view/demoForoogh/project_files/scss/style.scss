@@ -1539,3 +1539,7 @@ a:hover{
   top: -24px;
   right: 0;
 }
+
+.height-line-brack{height: 85vh !important;}
+
+@media (max-width: 767px) { body .height-line-brack, html body .height-line-brack { height: 55vh !important; min-height: 55vh !important; max-height: 55vh !important; } } @media (max-width: 578px) { body .height-line-brack, html body .height-line-brack { height: 25vh !important; min-height: 25vh !important; max-height: 25vh !important; } } @media (min-width: 579px) and (max-width: 991px) { body .height-line-brack, html body .height-line-brack { height: 52vh !important; min-height: 52vh !important; max-height: 52vh !important; } }

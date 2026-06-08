@@ -2907,7 +2907,7 @@ class user extends baseController
                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/gds/pdf&target=BookingHotelLocal&id=' . $item['factor_number'] .'&cancelStatus=confirm',
                     ];
             }else{
-                if ($item['status'] != 'Requested' && $item['status'] != 'RequestRejected' && $item['status'] != 'RequestAccepted' && $item['status'] != 'Cancelled') {
+                if ($item['status'] != 'Requested' && $item['status'] != 'RequestRejected' && $item['status'] != 'RequestAccepted') {
                     $result[$key]['button_list'][] =
                         [
                             'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
@@ -4499,6 +4499,7 @@ class user extends baseController
                         'title' => functions::Xmlinformation('Amount')->__toString() ,
                         'value' =>  $bookList[$key]['price_final']
                     ]
+
                 ];
                 $type_member = functions::TypeUser(session::getUserId());
                 if ($type_member == 'Counter') {
@@ -5122,7 +5123,7 @@ class user extends baseController
                             'link' => ROOT_ADDRESS_WITHOUT_LANG . '/gds/pdf&target=BookingHotelLocal&id=' . $item['factor_number'] .'&cancelStatus=confirm',
                         ];
                 }else{
-                    if ($item['statusBook'] != 'Requested' && $item['statusBook'] != 'RequestRejected' && $item['statusBook'] != 'RequestAccepted' && $item['statusBook'] != 'Cancelled') {
+                    if ($item['statusBook'] != 'Requested' && $item['statusBook'] != 'RequestRejected' && $item['statusBook'] != 'RequestAccepted'){
                         $result[$key]['button_list'][] =
                             [
                                 'title' => functions::Xmlinformation('OsafarRefund')->__toString(),

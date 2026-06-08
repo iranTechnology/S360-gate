@@ -27,7 +27,7 @@
     {if $page.files.main_file.src && $smarty.const.GDS_SWITCH eq 'page'}
         background-image: url("{$page.files.main_file.src}");
     {else}
-        background-image: url("{$specialFlightPic}");
+        background-image: url("{$specialFlightPic}") !important;
     {/if}
     }
 </style>

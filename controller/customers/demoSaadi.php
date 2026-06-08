@@ -21,12 +21,11 @@ class demoSaadi extends mainPage {
           "Hotel": {"icon": "<i class=\"fa-regular fa-hotel\"></i>", "name": "هتل"},
           "Tour": {"icon": "<i class=\"fa-regular fa-suitcase-rolling\"></i>", "name": "تور"},
            "Bus": {"icon": "<i class=\"fa-regular fa-bus\"></i>", "name": "اتوبوس"},
-            "Insurance": {"icon": "<i class=\"fa-regular fa-hospital\"></i>", "name": "بیمه"},
+            "Insurance": {"icon": "<i class=\"fa-light fa-hospital\"></i>", "name": "بیمه"},
             "Train": {"icon": "<i class=\"fa-regular fa-train\"></i>", "name": "قطار"},
             "Visa": {"icon": "<i class=\"fa-regular fa-passport\"></i>", "name": "ویزا"},
             "Package": {"icon": "<i class=\"fa-regular fa-suitcase\"></i>", "name": "پکیج"},
             "Entertainment": {"icon": "<i class=\"fa-regular fa-umbrella-beach\"></i>", "name": "تفریحات"},
-            "Cip": {"icon": "<i class=\"fa-regular fa-concierge-bell\"></i>", "name": "تشریفات"},
             "Europcar": {"icon": "<i class=\"fa-regular fa-car\"></i>", "name": "خودرو"}
                }';
 

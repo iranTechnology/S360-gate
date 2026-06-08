@@ -1,5 +1,11 @@
 <?php
 
+//if(  $_SERVER['REMOTE_ADDR']=='84.241.4.20'  ) {
+//    error_reporting(1);
+//    error_reporting(E_ALL | E_STRICT);
+//    @ini_set('display_errors', 1);
+//    @ini_set('display_errors', 'on');
+//}
 /**
  * Class listCancel
  * @property listCancel $listCancel
@@ -8,95 +14,74 @@
  * @property admin      $admin
  * @property string     $Pid
  */
-define('BASE_PATH', dirname(__DIR__));
-
-spl_autoload_register(function ($class) {
-    $prefix = 'Box\\Spout\\';
-    $base_dir = BASE_PATH . '/library/Spout/';
-
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
-
-    $relative_class = substr($class, $len);
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-
-    if (file_exists($file)) {
-        require $file;
-    }
-}, true, false);
-
-use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 class listCancel extends clientAuth {
-    public $id = '';
-    public $list;
-    public $edit;
-    public $Model;
-    public $ModelBase;
-    public $admin;
-    public $Pid;
-    private $pnrListExelCanceling=[];
+	public $id = '';
+	public $list;
+	public $edit;
+	public $Model;
+	public $ModelBase;
+	public $admin;
+	public $Pid;
+
     public $transactions;
 
-    /**
-     * listCancel constructor.
-     */
-    public function __construct() {
-        $this->Model = Load::library('Model');
-        $this->ModelBase =  Load::library('ModelBase');
-        $this->admin = Load::controller('admin');
+	/**
+	 * listCancel constructor.
+	 */
+	public function __construct() {
+		$this->Model = Load::library('Model');
+		$this->ModelBase =  Load::library('ModelBase');
+		$this->admin = Load::controller('admin');
 
         $this->transactions = $this->getModel('transactionsModel');
-    }
+	}
 
-    public function ListCancelAdmin() {
+	public function ListCancelAdmin() {
 
-        $sql = " SELECT * FROM clients_tb WHERE id >'1'";
-        $res = $this->ModelBase->select($sql);
+		$sql = " SELECT * FROM clients_tb WHERE id >'1'";
+		$res = $this->ModelBase->select($sql);
 
 
-        $date = dateTimeSetting::jdate("Y-m-d", time());
-        $date_now_explode = explode('-', $date);
-        $date_now_int_start = dateTimeSetting::jmktime(0, 0, 0, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
-        $date_now_int_end = dateTimeSetting::jmktime(23, 59, 59, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
+		$date = dateTimeSetting::jdate("Y-m-d", time());
+		$date_now_explode = explode('-', $date);
+		$date_now_int_start = dateTimeSetting::jmktime(0, 0, 0, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
+		$date_now_int_end = dateTimeSetting::jmktime(23, 59, 59, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
 
-        $ListCancelClient = [];
-        foreach ($res as $each) {
+		$ListCancelClient = [];
+		foreach ($res as $each) {
 
-            if ($each['id'] > '1') {
+			if ($each['id'] > '1') {
 
-                $sql = "SELECT TCancel.*, Cancel.*,Ticket.pnr,Ticket.IsInternal , Ticket.api_id , PFE.id as IdPFE "
+				$sql = "SELECT TCancel.*, Cancel.*,Ticket.pnr,Ticket.IsInternal , Ticket.api_id "
                     . " FROM cancel_ticket_tb AS TCancel "
                     . " LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail"
-                    . " LEFT JOIN  pnr_from_excel_tb AS PFE ON Cancel.id = PFE.IdDetail"
                     . " LEFT JOIN book_local_tb AS Ticket ON Ticket.request_number = Cancel.RequestNumber"
                     . " WHERE Cancel.Status <> 'SetCancelClient' AND Cancel.Status <> 'RequestMember' AND Cancel.Status <> 'Nothing'"
                     . " AND Cancel.Status <> 'ConfirmCancel' AND Cancel.Status != 'close' ";
 
 
-                if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
+				if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
 
-                    $date_of = explode('-', $_POST['date_of']);
-                    $date_to = explode('-', $_POST['to_date']);
-                    $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
-                    $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
-                    $sql .= " AND TCancel.DateRequestCancelClientInt >= '{$date_of_int}' AND TCancel.DateRequestCancelClientInt  <= '{$date_to_int}'";
-                }
+					$date_of = explode('-', $_POST['date_of']);
+					$date_to = explode('-', $_POST['to_date']);
+					$date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
+					$date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
+					$sql .= " AND TCancel.DateRequestCancelClientInt >= '{$date_of_int}' AND TCancel.DateRequestCancelClientInt  <= '{$date_to_int}'";
+				}
 
-                if (!empty($_POST['Status']) && 1==2) {
+				if (!empty($_POST['Status'])) {
 
-                    $sql .= " AND Cancel.Status ='{$_POST['Status']}'  ";
-                }
+					$sql .= " AND TCancel.Status ='{$_POST['Status']}'  ";
+				}
 
-                if (!empty($_POST['RequestNumber'])) {
-                    $sql .= " AND TCancel.RequestNumber ='{$_POST['RequestNumber']}'";
-                }
+				if (!empty($_POST['RequestNumber'])) {
+					$sql .= " AND TCancel.RequestNumber ='{$_POST['RequestNumber']}'";
+				}
 
 
-                $sql .= "GROUP BY TCancel.IdDetail ";
+				$sql .= "GROUP BY TCancel.IdDetail ";
 
-                $CancelClient = $this->admin->ConectDbClient($sql, $each['id'], "SelectAll", "", "", "");
+				$CancelClient = $this->admin->ConectDbClient($sql, $each['id'], "SelectAll", "", "", "");
                 $apiProviders = [
                     '1'  => 'سرور 5',
                     '5'  => 'سرور 4',
@@ -139,10 +124,7 @@ class listCancel extends clientAuth {
 			$Cancel['DateRequestCancelClientInt'][$key] = $row['DateRequestCancelClientInt'];
 		}
 
-        if (!empty($Cancel['DateRequestCancelClientInt']) && is_array($Cancel['DateRequestCancelClientInt'])) {
 		array_multisort($Cancel['DateRequestCancelClientInt'], SORT_DESC, $ListCancelClient);
-        }
-
         $factorColors = [];
         $colorList = ["#fbbdbd", "#d2cbcb"];
         $colorIndex = 0;
@@ -934,33 +916,15 @@ class listCancel extends clientAuth {
 	public function InfoCancelTicket($RequestNumber, $IdCancel, $ClientId) {
 
 
-        $SqlCancel = "SELECT 
-                            CT.*
-                      FROM 
-                            cancel_ticket_details_tb  CT
-                      WHERE 
-                            CT.id='{$IdCancel}'
-                      ";
+		$SqlCancel = "SELECT * FROM cancel_ticket_details_tb WHERE id='{$IdCancel}'";
 		$InfoCancel = $this->admin->ConectDbClient($SqlCancel, $ClientId, "Select", "", "", "");
 
 		if ($InfoCancel['TypeCancel'] == 'flight' || $InfoCancel['TypeCancel'] == '') {
 			$Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
-                         Cancel.TypeCancel AS TypeCancel,
-                         PE.id as IdExcelCanceling,
-                         PE.amount as AmountExcelCanceling,
-                         PE.type_excel as TypeExcelCanceling
+             Cancel.TypeCancel AS TypeCancel
              FROM cancel_ticket_tb AS TCancel 
              LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
-                 LEFT JOIN (
-                                SELECT *
-                                FROM pnr_from_excel_tb p1
-                                WHERE p1.id = (
-                                    SELECT MAX(p2.id) 
-                                    FROM pnr_from_excel_tb p2 
-                                    WHERE p2.IdDetail = p1.IdDetail
-                                )
-                            ) PE ON (Cancel.id = PE.IdDetail)
              LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
             WHERE book.request_number='{$RequestNumber}' AND TCancel.IdDetail='{$IdCancel}' 
              GROUP BY TCancel.NationalCode";
@@ -969,10 +933,7 @@ class listCancel extends clientAuth {
 		}elseif ($InfoCancel['TypeCancel'] == 'bus'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
-             Cancel.TypeCancel AS TypeCancel,
-             '' as IdExcelCanceling,
-             '' as AmountExcelCanceling,
-             '' as TypeExcelCanceling
+             Cancel.TypeCancel AS TypeCancel
              FROM cancel_ticket_tb AS TCancel 
              LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
              LEFT JOIN book_bus_tb AS book ON book.order_code = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
@@ -983,10 +944,7 @@ class listCancel extends clientAuth {
         }elseif ($InfoCancel['TypeCancel'] == 'hotel'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
-             Cancel.TypeCancel AS TypeCancel,
-             '' as IdExcelCanceling,
-             '' as AmountExcelCanceling,
-             '' as TypeExcelCanceling
+             Cancel.TypeCancel AS TypeCancel
              FROM cancel_ticket_tb AS TCancel 
              LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
              LEFT JOIN book_hotel_local_tb AS book ON book.factor_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
@@ -997,10 +955,7 @@ class listCancel extends clientAuth {
         }elseif ($InfoCancel['TypeCancel'] == 'insurance'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
-             Cancel.TypeCancel AS TypeCancel,
-             '' as IdExcelCanceling,
-             '' as AmountExcelCanceling,
-             '' as TypeExcelCanceling
+             Cancel.TypeCancel AS TypeCancel
              FROM cancel_ticket_tb AS TCancel 
              LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
              LEFT JOIN book_insurance_tb AS book ON book.factor_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passport_number)) 
@@ -1170,7 +1125,7 @@ class listCancel extends clientAuth {
 		$data['DateConfirmCancelInt'] = 0;
 		$data['MemberId'] = $params['MemberId'];
 		$data['TypeCancel'] = $params['typeService'];
-		$data['backCredit'] = empty($params['backCredit']) ? null : $params['backCredit'];
+		$data['backCredit'] = $params['backCredit'];
 		$data['FactorNumber'] = $params['FactorNumber'];
 		$data['RequestNumber'] = $params['RequestNumber'];
 		$data['ReasonMember'] = $params['Reasons'];
@@ -1332,32 +1287,32 @@ class listCancel extends clientAuth {
             $BookResult = $this->getInsuranceForCancel($params);
         }
 
-        return $BookResult;
-    }
+		return $BookResult;
+	}
 
-    public function InfoCancel($id) {
-        $sql = "SELECT * FROM cancel_ticket_details_tb WHERE id='{$id}'";
+	public function InfoCancel($id) {
+		$sql = "SELECT * FROM cancel_ticket_details_tb WHERE id='{$id}'";
 
-        return $this->Model->load($sql);
-    }
+		return $this->Model->load($sql);
+	}
 
-    /**
-     * @param $Param
-     * @return array
-     * @internal param $d
-     */
-    private function getInfoFlightForCancel($Param) {
-        $SqlBook = " SELECT * FROM book_local_tb WHERE request_number='{$Param['RequestNumber']}'";
-        $InfoBook = $this->admin->ConectDbClient($SqlBook, $Param['ClientId'], "Select", "", "", "");
+	/**
+	 * @param $Param
+	 * @return array
+	 * @internal param $d
+	 */
+	private function getInfoFlightForCancel($Param) {
+		$SqlBook = " SELECT * FROM book_local_tb WHERE request_number='{$Param['RequestNumber']}'";
+		$InfoBook = $this->admin->ConectDbClient($SqlBook, $Param['ClientId'], "Select", "", "", "");
 
-        if ($InfoBook['pid_private'] == '0') {
-            $d['Price'] = $Param['PriceIndemnity'];
-        } else {
-            $d['Price'] = '0';
-        }
+		if ($InfoBook['pid_private'] == '0') {
+			$d['Price'] = $Param['PriceIndemnity'];
+		} else {
+			$d['Price'] = '0';
+		}
 
-        return array($InfoBook, $d);
-    }
+		return array($InfoBook, $d);
+	}
 
 
     public function setCancelNote($params) {
@@ -1386,158 +1341,5 @@ class listCancel extends clientAuth {
     }
 
 
-    public function InsertExelCanceling($params)
-    {
-        // بررسی ارسال فایل
-        if (!isset($_FILES['pnr_file']) || empty($_FILES['pnr_file']['name'])) {
-            return functions::JsonError('هیچ فایلی ارسال نشده است', 500);
-        }
 
-        // بررسی نوع فایل
-        if (empty($params['file_type'])) {
-            return functions::JsonError('نوع فایل مشخص نشده است', 400);
-        }
-
-        // تفکیک فایل‌ها
-        $separated_files = functions::separateFiles('pnr_file');
-
-        if (!is_array($separated_files)) {
-            return functions::JsonError('خطا در پردازش فایل', 500);
-        }
-
-        if (count($separated_files) > 1) {
-            return functions::JsonError('فقط یک فایل اکسل مجاز است', 400);
-        }
-
-        $separated_file = $separated_files[0];
-        $_FILES['file'] = $separated_file;
-
-        // بررسی پسوند
-        $ext = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
-        if ($ext !== 'xlsx') {
-            return functions::JsonError('فقط فایل xlsx مجاز است', 400);
-        }
-
-        // خواندن فایل اکسل
-        $reader = ReaderEntityFactory::createXLSXReader();
-        $reader->open($_FILES['file']['tmp_name']);
-        $this->file_type_excel=$params['file_type'];
-        foreach ($reader->getSheetIterator() as $sheet) {
-            $rowIndex = 0;
-
-            foreach ($sheet->getRowIterator() as $row) {
-                $rowIndex++;
-                $cells = $row->getCells();
-                $row_data = [];
-
-                if (is_array($cells)) {
-                    foreach ($cells as $cell) {
-                        $row_data[] = $cell->getValue();
-                    }
-                }
-
-                // مدل استردادی - provider21
-                if ($params['file_type'] == 'provider21') {
-
-                    $rowIndex++;
-                    $cells = $row->getCells();
-
-                    // mapping ستون‌ها (A=0, B=1, ... ,Q=16)
-                    $row_data = [];
-                    foreach ($cells as $cell) {
-                        $row_data[] = $cell->getValue();
-                    }
-
-                    // رد کردن ۳ ردیف اول فقط برای provider21
-                    if ($params['file_type'] == 'provider21' && $rowIndex < 4) continue;
-
-                    // حداقل تا ستون P وجود داشته باشد
-                    if (count($row_data) < 17) {
-                        return functions::JsonError(null, 'فرمت فایل provider21 اشتباه است. باید تا ستون Q پر شده باشد.');
-                    }
-
-                    // گرفتن ستون F و P با ایندکس ایمن
-                    $pnr = $row_data[5] ?? null; // F
-                    $amount = isset($row_data[15]) ? (int) str_replace(',', '', $row_data[15]) : 0;
-
-                    if (!empty($pnr) && $amount > 0) {
-                        $this->pnrListExelCanceling[$pnr] = $amount;
-                    }
-
-                }
-
-                // مدل جریمه‌ای - provider43
-                elseif ($params['file_type'] == 'provider43') {
-                    $rowIndex++;
-                    $cells = $row->getCells();
-
-                    // حداقل تا ستون AM وجود داشته باشد
-                    if (count($cells) < 39) { // ستون AM = index 38
-                        return functions::JsonError(null, 'فرمت فایل provider43 اشتباه است. باید تا ستون AM پر شده باشد.');
-                    }
-
-                    $row_data = [];
-                    foreach ($cells as $cell) {
-                        $row_data[] = $cell->getValue();
-                    }
-
-                    // ستون I برای PNR (index 8)
-                    $pnr_group = $row_data[8] ?? null;
-                    // ستون AC برای مقدار مالی (index 28)
-                    $amount_ac = isset($row_data[28]) ? (float) str_replace([',',' '], '', $row_data[28]) : 0;
-
-                    if (!empty($pnr_group)) {
-                        if (!isset($this->pnrListExelCanceling[$pnr_group])) {
-                            $this->pnrListExelCanceling[$pnr_group] = 0;
-                        }
-                        // جمع کردن مقادیر AC برای PNRهای یکسان
-                        $this->pnrListExelCanceling[$pnr_group] += $amount_ac;
-                    }
-                }
-            }
-        }
-
-        $reader->close();
-        // بررسی لیست استخراج شده
-        if (empty($this->pnrListExelCanceling)) {
-            return functions::JsonError(null,'هیچ PNR معتبری یافت نشد');
-        }
-        //حالا باید این آرایه را بفرستیم به دیتابیس تا update رخ بده
-        $this->InsertCancelingFromExcel();
-        // خروجی موفق
-        return functions::JsonSuccess(null, 'اطلاعات با موفقیت بارگذاری شد');
-    }
-
-    public function InsertCancelingFromExcel()
-    {
-        // 1. گرفتن لیست کنسلی‌ها با فیلتر Status = ConfirmClient
-        $_POST['Status'] = 'ConfirmClient'; // برای فیلتر داخلی تابع
-        $ListCancelClient = $this->ListCancelAdmin();
-
-        if (empty($ListCancelClient)) {
-            return functions::JsonError(null,'هیچ رکوردی برای بررسی وجود ندارد');
-        }
-        // 2. حلقه روی رکوردها
-        foreach ($ListCancelClient as $record) {
-
-            $pnr = $record['pnr'] ?? null;
-            $clientId = $record['ClientId'] ?? null;
-            $IdDetail = $record['IdDetail'] ?? null;
-            $create_at=date('Y-m-d H:i:s');
-
-            // بررسی شرط: PNR در اکسل وجود دارد
-            if ($pnr && $IdDetail && $clientId && isset($this->pnrListExelCanceling[$pnr])) {
-                // مقدار از اکسل
-                $amount = $this->pnrListExelCanceling[$pnr];
-                $data['pnr'] = $pnr;
-                $data['amount'] = $amount;
-                $data['IdDetail'] = $IdDetail;
-                $data['type_excel'] = $this->file_type_excel;
-                $data['create_at'] = $create_at;
-                $result_pnr_from_excel = $this->admin->ConectDbClient('', $clientId, "Insert", $data, "pnr_from_excel_tb", '');
-                //echo $clientId.'***';
-            }
-        }
-
-    }
 }

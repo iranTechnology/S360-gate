@@ -5,7 +5,7 @@
             <nav class="navigation" id="navigation1">
                 <div class="parent-logo-menu">
                     <a class="nav-header" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                        <img alt="{$obj->Title_head()}" class="__logo_class__ logo"
+                        <img id="siteLogo" alt="{$obj->Title_head()}" class="__logo_class__ logo"
                              src="project_files/images/logo.png"/>
                         <!--                            <div class="logo-caption">-->
                         <!--                                <img class="title-logo" src="project_files/images/title-logo.png" alt="title-logo">-->

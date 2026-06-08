@@ -77,8 +77,6 @@ class Admin extends baseController
         return functions::withError(null,400,'لطفا نوع  کاربر مدیریت برای ورود را مشخص نمائید');
     }
 
-
-
     public function isLogin()
     {
         return Session::adminIsLogin();
@@ -713,6 +711,7 @@ class Admin extends baseController
             'id' => $validate_id
         ]);
     }
+
     public function sendAdminLoginOtp($params) {
         // محدودیت تعداد درخواست در IP
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -780,7 +779,6 @@ class Admin extends baseController
         ], 200, 'کد تایید به شماره موبایل شما ارسال شد');
     }
 
-
     public function loginAdminWithOtp($params) {
         if (Session::adminIsLogin()) {
             return functions::withError(null, 400, 'شما قبلاً وارد سیستم شده‌اید');
@@ -829,7 +827,7 @@ class Admin extends baseController
             ->where('code', $otp_data['code'])
             ->where('status', $this->unused)
             ->find();
-        
+
         if (!$validateRecord) {
             return functions::withError(null, 400, 'کد نامعتبر یا قبلاً استفاده شده است');
         }
@@ -848,8 +846,6 @@ class Admin extends baseController
         }
         return functions::withError(null, 400, 'لطفا نوع کاربر مدیریت برای ورود را مشخص نمائید');
     }
-
-
 
     public function getAdminByUsername($username, $type_manager) {
         $Model = Load::library('ModelBase');

@@ -117,30 +117,6 @@ class airLinePriceController extends clientAuth
             }
         }
 
-        if (empty($airlineCeilingPrice)) {
-            $airlineCeilingPrice = $airlineCeilingPriceModel
-                ->get(['*'])
-                ->where('origin', 'ALL')
-                ->where('destination', $destination)
-                ->all();
-        }
-
-        if (empty($airlineCeilingPrice)) {
-            $airlineCeilingPrice = $airlineCeilingPriceModel
-                ->get(['*'])
-                ->where('origin', $origin)
-                ->where('destination', 'ALL')
-                ->all();
-        }
-
-        if (empty($airlineCeilingPrice)) {
-            $airlineCeilingPrice = $airlineCeilingPriceModel
-                ->get(['*'])
-                ->where('origin', 'ALL')
-                ->where('destination', 'ALL')
-                ->all();
-        }
-
         $airlineIata = $airlineIataModel
             ->get(['id' , 'airline_uniqe_iata'])
             ->all();

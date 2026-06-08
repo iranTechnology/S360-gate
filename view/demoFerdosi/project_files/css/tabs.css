@@ -539,6 +539,7 @@
 
 .theme-btn:hover {
     background: var(--secondColor) !important;
+    color: #333 !important;
 }
 
 .btn:focus, .btn.focus {

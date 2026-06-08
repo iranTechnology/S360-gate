@@ -312,41 +312,4 @@ $(document).ready(function() {
 
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    function replaceWithSoon(elementId) {
-        var element = document.getElementById(elementId);
-        if (element) {
-            element.innerHTML = "<div class='soon-searchbox'>به زودی ...</div>";
-        }
-    }
 
-    replaceWithSoon("Insurance");
-    replaceWithSoon("Train");
-});
-
-// document.addEventListener("DOMContentLoaded", function() {
-//     var searchBoxTabs = document.getElementById("searchBoxTabs");
-//
-//     if (searchBoxTabs) {
-//         searchBoxTabs.insertAdjacentHTML('beforeend', `
-//             <li class="nav-item">
-//                 <a class="nav-link" href="javascript:">
-//                     <div>
-//                         <i class="fa-regular fa-hospital"></i>
-//                         <h4>بیمه</h4>
-//                     </div>
-//                 </a>
-//                 <span class='soon-searchbox'>به زودی</span>
-//             </li>
-//             <li class="nav-item">
-//                 <a class="nav-link" href="javascript:">
-//                     <div>
-//                         <i class="fa-regular fa-train"></i>
-//                         <h4>قطار</h4>
-//                     </div>
-//                 </a>
-//                 <span class='soon-searchbox'>به زودی</span>
-//             </li>
-//         `);
-//     }
-// });

@@ -267,7 +267,24 @@ class ModalCreator extends clientAuth {
                 }
                 ?>
                 <div class="row">
-
+                    <div class="col-md-12 modal-text-center modal-h mb-3">
+                        <label for="ReasonUser"><?php echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?></label>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12  nopad ">
+                        <select class="form-control mart5" name="ReasonUser"
+                                id="ReasonUser">
+                            <option value=""> <?php echo functions::Xmlinformation("Choosereasonfortheconsole") ?></option>
+                            <option value="PersonalReason"><?php echo functions::Xmlinformation("Canselforpersonalreasons") ?></option>
+                            <?php if (isset($param2) && $param2 == 'flight') { ?>
+                                <option value="DelayTwoHours"><?php echo functions::Xmlinformation("Delaymorethantwohours") ?></option>
+                                <option value="CancelByAirline"><?php echo functions::Xmlinformation("AbandonedbyAirline") ?></option>
+                            <?php } elseif($param2 == 'train') { ?>
+                                <option value="DelayTwoHours"><?php echo functions::Xmlinformation("delayTrain") ?></option>
+                            <?php }else{
+                                //else
+                            } ?>
+                        </select>
+                    </div>
 
                     <?php
                     if (isset($param2) && $param2 == 'flight') {
@@ -1702,6 +1719,895 @@ public function ModalShowBook($Param, $type) {
         }
 
 
+        public function ModalAddNote($RequestNumber, $ClientID) {
+            $objbook = Load::controller($this->Controller);
+            $noteList = $objbook->getAgencyNote($RequestNumber);
+            ?>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- سرفصل -->
+                    <div class="modal-header site-bg-main-color">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">یادداشت‌ها – درخواست <?php echo $RequestNumber; ?></h4>
+                    </div>
+
+                    <!-- بدنه -->
+                    <div class="modal-body">
+
+                        <!-- فرم افزودن یادداشت جدید -->
+                        <form id="noteForm">
+                            <input type="hidden" name="request_number" value="<?php echo $RequestNumber; ?>">
+                            <input type="hidden" name="client_id" value="<?php echo $ClientID; ?>">
+                            <input type="hidden" name="flag" value="addAgencyNote">
+
+                            <div class="row margin-both-vertical-15">
+                                <div class="col-md-12">
+                                    <textarea name="new_note" class="form-control" rows="3" placeholder="متن یادداشت جدید را اینجا بنویسید..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row margin-both-vertical-10">
+                                <div class="col-md-12 text-right mt-3 mb-3">
+                                    <button type="button" id="saveNote" class="btn btn-success">
+                                        <i class="fa fa-plus"></i> افزودن یادداشت
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- جدول نمایش یادداشت‌ها -->
+                        <div class="row margin-top-20">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered" id="noteTable">
+                                    <thead>
+                                    <tr class="site-bg-main-color" style="color:#fff;">
+                                        <th style="width:20%;">تاریخ / ساعت</th>
+                                        <th>متن یادداشت</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php if (!empty($noteList)): ?>
+                                        <?php foreach ($noteList as $note): ?>
+                                            <tr>
+                                                <td><?php echo $note['created_at']; ?></td>
+                                                <td><?php echo $note['note']?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="2" class="text-center">یادداشتی موجود نیست.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- زیرنویس -->
+                    <div class="modal-footer site-bg-main-color">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                    </div>
+
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('#saveNote').click(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: amadeusPath + 'user_ajax.php',
+                            data: $('#noteForm').serialize(),
+                            success: function (response) {
+                                $.toast({
+                                    heading: 'یادداشت اضافه شد',
+                                    position: 'top-right',
+                                    loaderBg: '#fff',
+                                    icon: 'success',
+                                    hideAfter: 3500,
+                                    textAlign: 'right',
+                                    stack: 6
+                                });
+                                setTimeout(function () {
+                                    try {
+                                        // اگر response رشته باشه، parse کن
+                                        var notes = typeof response === 'string' ? JSON.parse(response) : response;
+                                        var rows = '';
+
+                                        if (notes.length > 0) {
+                                            $.each(notes, function (index, note) {
+                                                rows += '<tr>';
+                                                rows += '<td>' + note.created_at + '</td>';
+                                                rows += '<td>' + note.note + '</td>';
+                                                rows += '</tr>';
+                                            });
+                                        } else {
+                                            rows = '<tr><td colspan="2" class="text-center">یادداشتی موجود نیست.</td></tr>';
+                                        }
+
+                                        // ⬅️ آپدیت مستقیم tbody
+                                        $('#noteTable tbody').html(rows);
+
+                                        // پاک کردن تکست‌آریا
+                                        $('#noteForm textarea[name="new_note"]').val('');
+
+                                    } catch (e) {
+                                        console.error('خطا در پردازش داده:', e);
+                                        alert('خطایی در نمایش یادداشت‌ها رخ داد.');
+                                    }
+                                }, 1000);
+                            },
+                            error: function () {
+                                alert('خطا در ارسال یادداشت.');
+                            }
+                        });
+                    });
+                })
+            </script>
+
+
+            <?php
+        }
+        public function ModalChat($params, $Type) {
+
+            $RequestNumber = $params['RequestNumber'];
+            $clientId = $params['clientId'];
+
+            // دریافت پیام‌ها
+            $objbook = Load::controller($this->Controller);
+            $messages = $objbook->getChatMessages($RequestNumber,$Type,true);
+            $isChatClosed = $objbook->getChatStatus($RequestNumber);
+
+
+            $currentRole = TYPE_ADMIN == 1 ? 'admin_site' : 'admin_agency'; // admin_site | admin_agency
+            ?>
+
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+
+                    <!-- Header -->
+                    <div class="modal-header site-bg-main-color">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">چت – درخواست <?php echo $RequestNumber; ?></h4>
+                        <?php if ($currentRole == 'admin_site'): ?>
+                            <button id="toggleChatStatus" class="chat-lock-floating-btn"
+                                    title="<?php echo $isChatClosed ? 'باز کردن چت' : 'بستن چت'; ?>">
+                                <i class="fas fa-lock<?php echo $isChatClosed ? '-open' : ''; ?>"></i>
+                            </button>
+                        <?php endif; ?>
+
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body" style="height:550px; overflow-y:auto; background:#f5f5f5;" id="chatBox">
+
+                        <!-- لیست پیام‌ها -->
+                        <div id="chatMessages">
+                            <?php if (!empty($messages)): ?>
+                                <?php foreach ($messages as $msg): ?>
+
+                                    <?php
+                                    $isNotMine = ($msg['sender_role'] != $currentRole);
+                                    $side = $isNotMine ? "right" : "left";
+                                    $bubbleColor = $msg['sender_role'] == 'admin_site' ? '#f03c52' : "#ffffff";
+                                    $align = $isNotMine ? "text-right" : "text-left";
+
+                                    // وضعیت تیک
+                                    $tick = "";
+                                    if (!$isNotMine) {
+                                        if ($msg['is_seen'] == 1) {
+                                            $tick = '<i class="fa fa-check-double" style="color:#0b87ff;"></i>';
+                                        } else {
+                                            $tick = '<i class="fa fa-check"></i>';
+                                        }
+                                    }
+                                    ?>
+
+                                    <div class="row margin-10">
+                                        <div class="col-md-12 <?php echo $align; ?>">
+
+                                            <div class="chat-bubble-container">
+
+                                                <?php if (!$isNotMine): ?>
+                                                    <div class="delete-message-btn" data-message-id="<?php echo $msg['id']; ?>">×</div>
+                                                <?php endif; ?>
+
+                                                <div class="reply-message-btn"
+                                                     data-message-id="<?php echo $msg['id']; ?>"
+                                                     data-message-text="<?php echo htmlspecialchars(mb_substr($msg['message'],0,50)); ?>">
+                                                    ↩
+                                                </div>
+
+                                                <div class="chat-bubble <?php echo ($msg['sender_role']=='admin_site'?'admin-site':''); ?>"
+                                                     style="background:<?php echo $bubbleColor ?>;">
+
+
+                                                    <?php if (!empty($msg['parent_id'])): ?>
+                                                        <?php
+                                                        $parent = $objbook->getMessageById($msg['parent_id']);
+                                                        if ($parent):
+                                                            ?>
+                                                            <div class="reply-box" style="
+                                                                    background:#ffd6dc;
+                                                                    border-right:3px solid #ff8fa0;
+                                                                    padding: 6px 10px;
+                                                                    margin-bottom: 6px;
+                                                                    font-size: 12px;
+                                                                    border-radius: 6px;
+                                                                    color:#b03d52;
+                                                                ">
+                                                                <?php echo htmlspecialchars(mb_substr($parent['message'], 0, 70)); ?>...
+                                                            </div>
+
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+
+                                                    <!-- متن اصلی پیام -->
+                                                    <div><?php echo nl2br($msg['message']); ?></div>
+
+                                                    <div class="meta">
+                                                        <?php echo $msg['created_at']; ?>
+                                                        &nbsp;&nbsp;<?php echo $tick; ?>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Footer (send box) -->
+                    <div class="modal-footer" style="direction:rtl; background:#fff;">
+
+                        <?php if (!$isChatClosed || $currentRole == 'admin_site'): // اگر چت بسته نیست، فرم ارسال را نمایش بده ?>
+                            <form id="chatForm" style="width:100%;">
+                                <input type="hidden" name="request_number" value="<?php echo $RequestNumber; ?>">
+                                <input type="hidden" name="type" value="<?php echo $Type; ?>">
+                                <input type="hidden" name="client_id" value="<?php echo $clientId; ?>">
+                                <input type="hidden" name="flag" value="sendChatMessage">
+                                <div id="replyPreview"
+                                     style="display:none; padding:6px 10px; background:#eef7ff; border-right:3px solid #0b87ff; margin-bottom:8px; border-radius:5px;">
+                                    <span id="replyText"></span>
+                                    <span id="cancelReply" style="float:left; cursor:pointer; color:red; font-weight:bold;">×</span>
+                                    <input type="hidden" name="parent_id" id="parent_id" value="">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                    <textarea name="message" class="form-control custom-textarea" rows="1"
+                                              placeholder="پیام خود را بنویسید..." style="resize:none;"></textarea>
+                                    </div>
+
+                                    <button id="sendMessage" class="custom-send-button" type="button">
+                                                            <span class="send-content">
+                                                                <i class="fas fa-paper-plane icon"></i>
+                                                                ارسال
+                                                            </span>
+                                        <span class="send-loading"></span>
+                                    </button>
+
+                                </div>
+                            </form>
+                        <?php else: // اگر چت بسته است، پیام و دکمه بستن را نمایش بده ?>
+                            <div class="row w-100">
+                                <div class="col-md-12 text-center">
+                                    <p>چت توسط ادمین سایت بسته شده است.</p>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                    </div>
+
+                </div>
+            </div>
+            <style>
+                #sendMessage {
+                    position: relative;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 6px;
+                }
+
+                /* محتوای اصلی دکمه */
+                #sendMessage .send-content {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                /* لودینگ */
+                #sendMessage .send-loading {
+                    display: none;
+                    width: 18px;
+                    height: 18px;
+                    border: 3px solid #fff;
+                    border-top: 3px solid #ff4f6d;
+                    border-radius: 50%;
+                    animation: spin 0.6s linear infinite;
+                }
+
+                @keyframes spin {
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+
+                /* پیام‌های ادمین سایت */
+                .chat-bubble.admin-site {
+                    background: #ffb3bd !important; /* قرمز ملایم */
+                    border-right: 4px solid #ff4f6d;
+                    position: relative;
+                    padding-right: 40px !important;
+                }
+
+                /* آیکن ادمین کنار پیام */
+                .chat-bubble.admin-site::before {
+                    content: "∞";
+                    position: absolute;
+                    right: 0px;
+                    top: -15px;
+                    font-size: 50px;
+                    font-weight: bold;
+                    color: #ffffff;
+                }
+
+                .reply-message-btn {
+                    position:absolute;
+                    bottom:-5px;
+                    right:-5px;
+                    background:#007bff;
+                    z-index: 3;
+                    color:white;
+                    width:18px;
+                    height:18px;
+                    border-radius:50%;
+                    font-size:12px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    cursor:pointer;
+                    opacity:0;
+                    transition:.2s;
+                }
+                .chat-bubble-container:hover .reply-message-btn {
+                    opacity:1;
+                }
+
+                /* دکمه شناور مخصوص ادمین */
+                .chat-lock-floating-btn {
+                    position: absolute;
+                    bottom: -15px;
+                    right: 20px;
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 50%;
+                    border: none;
+                    background: #ffffff;
+                    color: #444;
+                    font-size: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+                    cursor: pointer;
+                    transition: all .25s ease;
+                    z-index: 10;
+                }
+
+                /* افکت هاور */
+                .chat-lock-floating-btn:hover {
+                    background: #f1f1f1;
+                    transform: translateY(-2px);
+                }
+
+                /* هدر برای قرارگیری بهتر دکمه */
+                .modal-header {
+                    position: relative;
+                    padding-bottom: 25px;
+                }
+
+                /* کانتینر کلی پیام */
+                .chat-bubble-container {
+                    position: relative;
+                    display: inline-block;
+                    max-width: 70%;
+                }
+
+                /* خود حباب چت */
+                .chat-bubble {
+                    padding: 10px 14px;
+                    border-radius: 12px;
+                    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+                    word-wrap: break-word;
+                    text-align: right;
+                }
+
+                /* اطلاعات پایین پیام */
+                .chat-bubble .meta {
+                    margin-top: 6px;
+                    font-size: 11px;
+                    color: #888;
+                }
+
+                /* دکمه × حذف */
+                .delete-message-btn {
+                    position: absolute;
+
+                    /* اگر پیام سمت راست است (user)، این را RIGHT کنید */
+                    left: -7px;
+
+                    top: -7px;
+                    width: 18px;
+                    height: 18px;
+
+                    background: #ff4d4d;
+                    color: white;
+
+                    border-radius: 50%;
+                    font-size: 12px;
+                    font-weight: bold;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 3;
+                    opacity: 0;
+                    visibility: hidden;
+                    cursor: pointer;
+
+                    transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+                }
+
+                /* نمایش × هنگام هاور */
+                .chat-bubble-container:hover .delete-message-btn {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+
+                /* محدود کردن ارتفاع کلی مدال */
+                #chatModal .modal-dialog {
+                    max-height: 102vh; /* ارتفاع مدال نسبت به صفحه */
+                    margin: auto;     /* centering */
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                /* تنظیم داخلی مدال */
+                #chatModal .modal-content {
+                    max-height: 102vh;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                /* محدود کردن بخش بدنه برای جلوگیری از اسکرول کل مدال */
+                #chatModal .modal-body {
+                    overflow-y: auto;
+                    max-height: calc(102vh - 130px);
+                }
+
+                /* باکس چت محدود و اسکرول دار */
+                #chatBox {
+                    max-height: 70vh;
+                    overflow-y: auto;
+                }
+
+                /* استایل برای textarea */
+                textarea.custom-textarea {
+                    width: 100%;
+                    /* height: 60px; /* این خط را حذف می‌کنیم یا کامنت می‌کنیم */
+                    padding: 8px 15px; /* padding بالا و پایین را کمی کمتر تنظیم می‌کنیم */
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    color: #333;
+                    background-color: #f8f8f8;
+                    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+                    resize: none;
+                    outline: none;
+                    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                    /* display: flex; /* این را برمی‌داریم */
+                    /* align-items: center; /* این را هم برمی‌داریم */
+                    /* min-height: 45px; /* یا این را هم حذف می‌کنیم و به padding تکیه می‌کنیم */
+                    min-height: 45px; /* فعلا نگهش می‌داریم، اما padding تعیین کننده اصلی خواهد بود */
+                    box-sizing: border-box;
+                    line-height: 1.5; /* ارتفاع خط را تنظیم می‌کنیم تا روی ارتفاع کلی تأثیر بگذارد */
+                    height: 45px; /* یک ارتفاع ثابت تعیین می‌کنیم که با padding هماهنگ باشد */
+                }
+
+                /* استایل برای دکمه ارسال */
+                button.custom-send-button {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 20px; /* padding افقی را نگه می‌داریم */
+                    /* padding: 12px 20px; /* padding قبلی */
+                    border: none;
+                    border-radius: 8px;
+                    background-color: #ff8095;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+                    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                    text-decoration: none;
+                    height: 45px; /* ارتفاع دکمه را برابر textarea قرار می‌دهیم */
+                    box-sizing: border-box;
+                    margin-left: 10px !important;
+                }
+
+                /* اگر از <a> استفاده می‌کنید */
+                a.custom-send-button {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 20px; /* padding افقی */
+                    /* padding: 12px 20px; */ /* padding قبلی */
+                    border-radius: 8px;
+                    background-color: #ff8095;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                    text-decoration: none;
+                    height: 45px; /* ارتفاع برابر textarea */
+                    box-sizing: border-box;
+                }
+
+
+
+                /* برای اطمینان از اینکه کل ردیف (row) از Flexbox استفاده می‌کند */
+                .row {
+                    display: flex;
+                    align-items: stretch; /* این مورد ارتفاع را همسان می‌کند */
+                }
+
+                /* تنظیم padding برای placeholder textarea */
+                textarea.custom-textarea::placeholder {
+                    color: #aaa;
+                    font-style: italic;
+                }
+
+                /* استایل های هاور و اکتیو برای دکمه (مانند قبل) */
+                button.custom-send-button:hover,
+                a.custom-send-button:hover {
+                    background-color: #ff8095;
+                    transform: translateY(-2px);
+                }
+
+                button.custom-send-button:active,
+                a.custom-send-button:active {
+                    background-color: #ff8095;
+                    transform: translateY(0);
+                }
+
+                .icon {
+                    margin-right: 8px;
+                    font-size: 1.1em;
+                }
+
+            </style>
+
+            <script>
+                function showLoadingBtn() {
+                    document.querySelector("#sendMessage .send-content").style.display = "none";
+                    document.querySelector("#sendMessage .send-loading").style.display = "inline-block";
+                    document.getElementById("sendMessage").disabled = true;
+                }
+
+                function hideLoadingBtn() {
+                    document.querySelector("#sendMessage .send-content").style.display = "inline-flex";
+                    document.querySelector("#sendMessage .send-loading").style.display = "none";
+                    document.getElementById("sendMessage").disabled = false;
+                }
+
+                // کلیک روی دکمه ریپلای
+                $(".reply-message-btn").on("click", function() {
+
+                    var msgId = $(this).data("message-id");
+                    var msgText = $(this).data("message-text");
+
+                    $("#parent_id").val(msgId);
+                    $("#replyText").text("پاسخ به: " + msgText + "...");
+                    $("#replyPreview").show();
+
+                });
+
+                // لغو ریپلای
+                $("#cancelReply").on("click", function() {
+                    $("#parent_id").val("");
+                    $("#replyPreview").hide();
+                });
+                $(".reply-message-btn").off("click").on("click", function() {
+                    var msgId = $(this).data("message-id");
+                    var msgText = $(this).data("message-text");
+
+                    $("#parent_id").val(msgId);
+                    $("#replyText").text("پاسخ به: " + msgText + "...");
+                    $("#replyPreview").show();
+                });
+
+
+                $("#toggleChatStatus").on("click", function() {
+
+                    var btn = $(this);
+                    var icon = btn.find("i");
+
+                    var requestNumber = "<?php echo $RequestNumber; ?>";
+                    var type = "<?php echo $Type; ?>";
+
+                    // تشخیص وضعیت فعلی از روی آیکون
+                    var isClosed = icon.hasClass("fa-lock");
+                    var newStatus = isClosed ? "closed" : "open";
+
+                    $.ajax({
+                        type: "POST",
+                        url: amadeusPath + "user_ajax.php",
+                        data: {
+                            flag: "toggleChatStatus",
+                            request_number: requestNumber,
+                            new_status: newStatus
+                        },
+                        success: function(response) {
+                            if (response) {
+
+                                // تغییر آیکون بدون رفرش صفحه
+                                if (newStatus === "open") {
+                                    icon.removeClass("fa-lock-open").addClass("fa-lock");
+                                    btn.attr("title", "باز کردن چت");
+                                } else {
+                                    icon.removeClass("fa-lock").addClass("fa-lock-open");
+                                    btn.attr("title", "بستن چت");
+                                }
+
+                            } else {
+                                alert("خطا در تغییر وضعیت چت");
+                            }
+                        }
+                    });
+
+                });
+
+
+
+
+                $("#closeChatButton").on("click", function() {
+                    var requestNumber = $(this).data("request-number");
+                    var type = $(this).data("type");
+
+                    $.ajax({
+                        type: "POST",
+                        url: amadeusPath + "user_ajax.php", // URL مربوط به بستن چت
+                        data: {
+                            flag: "toggleChatStatus", // فلگ جدید برای بستن/باز کردن چت
+                            request_number: requestNumber,
+                            type: type,
+                            new_status: "open" // یا هر مقداری که وضعیت باز را نشان دهد
+                        },
+                        success: function(response) {
+                            if (response.success) { // فرض موفقیت آمیز بودن عملیات
+                                alert("چت با موفقیت باز شد. صفحه خود را تازه کنید.");
+                                // می‌توانید صفحه را رفرش کنید یا مودال را ببندید و دوباره باز کنید
+                                location.reload();
+                            } else {
+                                alert("خطا در باز کردن چت: " + (response.message || "خطای ناشناخته"));
+                            }
+                        },
+                        error: function() {
+                            alert("خطا در اتصال به سرور برای باز کردن چت.");
+                        }
+                    });
+                });
+                // --- بخش JavaScript جدید ---
+
+                // تابع حذف پیام
+                $(".delete-message-btn").on("click", function() {
+                    var messageId = $(this).data("message-id");
+                    var confirmDelete = confirm("آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟");
+
+                    if (confirmDelete) {
+                        $.ajax({
+                            type: "POST",
+                            url: amadeusPath + "user_ajax.php", // یا URL مربوط به حذف پیام
+                            data: {
+                                flag: "deleteChatMessage",
+                                message_id: messageId
+                            },
+                            success: function(response) {
+
+
+                                if (response) {
+                                    $('div.delete-message-btn[data-message-id="' + messageId + '"]').closest('.row.margin-10').remove();
+                                }
+                            },
+                            error: function() {
+                                alert("خطا در اتصال به سرور برای حذف پیام.");
+                            }
+                        });
+                    }
+                });
+
+                // --- پایان بخش JavaScript جدید ---
+
+
+                // اسکرول به پایین هنگام باز شدن
+                function scrollChatBottom() {
+                    $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
+                }
+                scrollChatBottom();
+
+                // ارسال پیام
+                $("#sendMessage").click(function () {
+                    showLoadingBtn();
+                    $.ajax({
+                        type: "POST",
+                        url: amadeusPath + "user_ajax.php",
+                        data: $("#chatForm").serialize(),
+                        success: function (response) {
+                            hideLoadingBtn();
+                            $("#replyPreview").hide();
+                            var msgs = (typeof response === "string") ? JSON.parse(response) : response;
+
+                            var html = "";
+                            $.each(msgs, function (index, msg) {
+
+                                var isNotMine = (msg.sender_role !== "<?php echo $currentRole; ?>");
+                                var align = isNotMine ? "text-right" : "text-left";
+
+                                // رنگ پس‌زمینه بر اساس نقش
+                                var bubbleClass = "";
+                                var bubbleColor = "#ffffff"; // پیش‌فرض
+
+                                if (msg.sender_role === "admin_site") {
+                                    bubbleClass = "admin-site"; // برای استایل قرمز و آیکن
+                                    bubbleColor = "#ffe5e8";
+                                } else if (msg.sender_role === "admin_agency") {
+                                    bubbleColor = "#ffffff";
+                                }
+
+                                // وضعیت تیک‌ها
+                                var tick = "";
+                                if (!isNotMine) {
+                                    tick = msg.seen == 1
+                                        ? '<i class="fa fa-check-double" style="color:#0b87ff;"></i>'
+                                        : '<i class="fa fa-check"></i>';
+                                }
+
+                                // دکمه حذف
+                                var deleteBtn = "";
+                                if (!isNotMine) {
+                                    deleteBtn = '<div class="delete-message-btn" data-message-id="' + msg.id + '">×</div>';
+                                }
+
+                                // دکمه ریپلای
+                                var replyBtn =
+                                    '<div class="reply-message-btn" ' +
+                                    'data-message-id="' + msg.id + '" ' +
+                                    'data-message-text="' + msg.message.replace(/"/g, '&quot;') + '">' +
+                                    '↩</div>';
+
+                                // ریپلای باکس
+                                var replyBox = "";
+                                if (msg.parent_id && msg.parent_text) {
+                                    replyBox =
+                                        '<div class="reply-box" style="\
+                                             background:#ffd6dc;\
+                                            border-right:3px solid #ff8fa0;\
+                                            padding:6px 10px;\
+                                            margin-bottom:6px;\
+                                            font-size:12px;\
+                                            border-radius:5px;\
+                                            color:#b03d52;">'
+                                        + msg.parent_text +
+                                        '</div>';
+                                }
+
+                                // تولید HTML پیام
+                                html +=
+                                    '<div class="row margin-10">' +
+                                    '<div class="col-md-12 ' + align + '">' +
+                                    '<div class="chat-bubble-container">' +
+                                    deleteBtn +
+                                    replyBtn +
+                                    '<div class="chat-bubble ' + bubbleClass + '" style="background:' + bubbleColor + ';">' +
+                                    replyBox +
+                                    '<div>' + msg.message + '</div>' +
+                                    '<div class="meta">' + msg.created_at + '&nbsp;&nbsp;' + tick + '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>';
+                            });
+
+                            $("#chatMessages").html(html);
+                            $("#chatForm textarea[name='message']").val("");
+                            scrollChatBottom();
+
+                            bindDeleteButtons();
+                            bindReplyButtons();
+                        }
+
+
+                    });
+                });
+
+                function bindReplyButtons() {
+                    $(".reply-message-btn").off("click").on("click", function () {
+
+                        // اطلاعات پیام والد
+                        let parentId = $(this).data("message-id");
+                        let parentAuthor = $(this).data("author") || "کاربر";
+                        let parentText = $(this).data("text") || "";
+
+                        // کوتاه‌سازی متن (اختیاری، فقط برای نمایش)
+                        if (parentText.length > 80) {
+                            parentText = parentText.substring(0, 80) + "...";
+                        }
+
+                        // ست‌کردن parent_id در فرم
+                        $("#parent_id").val(parentId);
+
+                        // نمایش باکس ریپلای بالا
+                        $("#replyPreview").show();
+                        $("#replyPreviewText").html(
+                            "<strong>" + parentAuthor + ":</strong> " + parentText
+                        );
+
+                        // اسکرول
+                        scrollChatBottom();
+                    });
+
+                    // لغو ریپلای
+                    $("#cancelReply").off("click").on("click", function () {
+                        $("#parent_id").val("");       // حذف parent_id
+                        $("#replyPreview").hide();     // بستن باکس نمایش
+                        $("#replyPreviewText").html("");
+                    });
+                }
+
+
+
+                function bindDeleteButtons() {
+                $(".delete-message-btn").off("click").on("click", function () {
+                    var messageId = $(this).data("message-id");
+
+                    if (!confirm("آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟")) return;
+
+                    $.ajax({
+                        type: "POST",
+                        url: amadeusPath + "user_ajax.php",
+                        data: {
+                            flag: "deleteChatMessage",
+                            message_id: messageId
+                        },
+                        success: function (response) {
+                            if (response) {
+                                $('div.delete-message-btn[data-message-id="' + messageId + '"]').closest('.row.margin-10').remove();
+
+                            }
+                        }
+                    });
+                });
+            }
+            </script>
+
+            <?php
+        }
+
+
+
 
         public function ModalShowBookForExclusiveTour($Param, $type) {
             $objbook = Load::controller($this->Controller);
@@ -2442,18 +3348,13 @@ public function ModalShowBook($Param, $type) {
     #region ModalTrackingCancelTicketAdmin
 
     public function ModalTrackingCancelTicketAdmin($Param, $id) {
-
-
         $user = Load::controller($this->Controller);
         $transportType=$_POST['transportType'];
-
         $InfoCancelTicket = $user->ShowInfoModalTicketCancel($Param, $id);
 
         if (empty($InfoCancelTicket)) {
             $InfoCancelTicket = array();
         }
-
-        // echo Load::plog($InfoCancelTicket);
 
         foreach ($InfoCancelTicket as $i => $ticket) {
 
@@ -2461,8 +3362,6 @@ public function ModalShowBook($Param, $type) {
         }
         ?>
         <div class="modal-dialog modal-lg">
-
-            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header site-bg-main-color">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -2474,66 +3373,55 @@ public function ModalShowBook($Param, $type) {
                         ?> به شماره : <span
                                 class="yn font15"><?php echo $Param ?></span></h4>
                 </div>
-                <div class="modal-body">
-                    <?php
-                    if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {
-                        ?>
-                        <div class="row">
-                            <div class="col-md-2 pull-left ">
-                                لیست مسافران
-                                <hr>
+
+                <div class="modal-body ">
+
+                    <div class="cancel-box">
+                        <div class="cancel-box__title">لیست مسافران</div>
+                        <div class="passenger-table">
+                            <div class="passenger-table__head">
+                                <span>نام مسافر</span>
+                                <?php   if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {  ?>
+                                <span>کد ملی / پاسپورت</span>
+                                <span>تاریخ تولد</span>
+                                <?php } ?>
+                                <span>نوع</span>
+                                <span>وضعیت</span>
                             </div>
-
-                        </div>
-                    <?php } ?>
-
-                    <?php
-                    foreach ($InfoCancelTicket as $i => $info) {
-
-
-                        if($transportType == 'bus'){
-                            $info['passenger_age']='Adt';
-                        }
-
-                        $NationalCodeUser = (!empty($info['passenger_national_code']) && $info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'];
-                        if ($i < 1) {
-                            ?>
-                            <input type="hidden" value="<?php echo $info['factor_number'] ?>" name="FactorNumber"
-                                   id="FactorNumber"/>
-                            <input type="hidden" value="<?php echo $info['member_id'] ?>" name="MemberId"
-                                   id="MemberId"/>
                             <?php
-                        }
-                        ?>
-                        <div class="row margin-10">
-                            <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12 margin-both-vertical-20">
-								<span><?php
-
-                                    echo (!empty($info['passenger_name'])) ?  $info['passenger_name'] . ' ' . $info['passenger_family'] : $info['passenger_name_en'] . ' ' . $info['passenger_family_en'] ; ?></span>
-                            </div>
-                            <div class="col-md-3  col-lg-3 col-sm-12 col-xs-12 margin-both-vertical-20">
-                                <?php
-                                if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {
+                            foreach ($InfoCancelTicket as $i => $info) {
+                                if($transportType == 'bus'){
+                                    $info['passenger_age']='Adt';
+                                }
+                                $NationalCodeUser = (!empty($info['passenger_national_code']) && $info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'];
+                                if ($i < 1) {
                                     ?>
-                                    <span>شماره ملی/پاسپورت:</span>
+                                    <input type="hidden" value="<?php echo $info['factor_number'] ?>" name="FactorNumber"
+                                           id="FactorNumber"/>
+                                    <input type="hidden" value="<?php echo $info['member_id'] ?>" name="MemberId"
+                                           id="MemberId"/>
+                                    <?php
+                                }
+                            ?>
+                                <div class="passenger-table__row ">
+                                <span>
+                                        <?php  echo (!empty($info['passenger_name'])) ?  $info['passenger_name'] . ' ' . $info['passenger_family'] : $info['passenger_name_en'] . ' ' . $info['passenger_family_en'] ; ?>
+                                </span>
+                                <?php if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {  ?>
+                                    <span>
+                                        <?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'] ?>
+                                    </span>
+                                    <span>
+                                    <?php if($transportType != 'insurance'){
+                                        echo (!empty($info['passenger_birthday'])) ? $info['passenger_birthday'] : $info['passenger_birthday_en'];
+                                     }
+                                     else{
+                                       echo (!empty($info['passenger_birth_date'])) ? $info['passenger_birth_date'] : $info['passenger_birth_date_en'];
+                                     } ?>
+                                     </span>
                                 <?php } ?>
-                                <span
-                                        class="yn"><?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'] ?></span>
-                            </div>
-                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 margin-both-vertical-20">
-                                <?php
-                                if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {
-                                    ?>
-                                    <span class="FloatRight">تاریخ تولد: </span>
-                                <?php } ?>
-                                <?php if($transportType != 'insurance'){ ?>
-                                    <span class="yn"><?php echo (!empty($info['passenger_birthday'])) ? $info['passenger_birthday'] : $info['passenger_birthday_en'] ?></span>
-                                <?php }else{?>
-                                    <span class="yn"><?php echo (!empty($info['passenger_birth_date'])) ? $info['passenger_birth_date'] : $info['passenger_birth_date_en'] ?></span>
-
-                                <?php  } ?>
-                            </div>
-                            <div class="col-md-1 col-lg-1 col-sm-12 col-xs-12 margin-both-vertical-20"> <span><?php
+                                <span>
+                                    <?php
                                     switch ($info['passenger_age']) {
 
                                         case 'Adt':
@@ -2548,172 +3436,236 @@ public function ModalShowBook($Param, $type) {
                                             echo 'نوزاد';
                                             break;
                                     }
-                                    ?></span></div>
-                            <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12">
-                                <div class="<?php
-                                switch ($info['Status']) {
-                                    case 'RequestMember' :
-                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-primary' : '';
-                                        break;
-                                    case 'SetCancelClient' :
-                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
-                                        break;
-                                    case 'RequestClient' :
-                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
-                                        break;
-                                    case 'SetIndemnity' :
-                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
-                                        break;
-                                    case 'SetFailedIndemnity' :
-                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
-                                        break;
-                                    case 'ConfirmClient' :
-                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
-                                        break;
-                                    case 'ConfirmCancel' :
-                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-success' : '';
-                                        break;
-                                }
-                                ?>">
-                                    <?php
+                                    ?>
+                                </span>
+                                <span class="<?php
                                     switch ($info['Status']) {
                                         case 'RequestMember' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'درخواست کاربر' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-primary' : '';
                                             break;
                                         case 'SetCancelClient' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درخواست ' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
                                             break;
                                         case 'RequestClient' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'انتظار تعیین درصد' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
                                             break;
                                         case 'SetIndemnity' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'تعیین درصد جریمه' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
                                             break;
                                         case 'SetFailedIndemnity' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درصد توسط آژانس' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
                                             break;
                                         case 'ConfirmClient' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'در حال رسیدگی و واریز' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
                                             break;
                                         case 'ConfirmCancel' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'واریز شد' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-success' : '';
                                             break;
                                     }
-                                    ?>
-                                </div>
+                                    ?>">
+                                        <?php
+                                        switch ($info['Status']) {
+                                            case 'RequestMember' :
+                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'درخواست کاربر' : '';
+                                                break;
+                                            case 'SetCancelClient' :
+                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درخواست ' : '';
+                                                break;
+                                            case 'RequestClient' :
+                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'انتظار تعیین درصد' : '';
+                                                break;
+                                            case 'SetIndemnity' :
+                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'تعیین درصد جریمه' : '';
+                                                break;
+                                            case 'SetFailedIndemnity' :
+                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درصد توسط آژانس' : '';
+                                                break;
+                                            case 'ConfirmClient' :
+                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'در حال رسیدگی و واریز' : '';
+                                                break;
+                                            case 'ConfirmCancel' :
+                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'واریز شد' : '';
+                                                break;
+                                        }
+                                        ?>
+                                </span>
+
+
+                            </>
+                            <?php }//end foreach ?>
+                        </div>
+                    </div>
+
+                    <div class="cancel-box">
+                        <div class="cancel-box__title">جزئیات استرداد</div>
+                        <div class="cancel-grid">
+                            <div>
+                                <strong>درصد جریمه:</strong>
+                                <?php
+                                if ($InfoCancelTicket[0]['Status'] == 'SetIndemnity' || $InfoCancelTicket[0]['Status'] == 'SetFailedIndemnity' || $InfoCancelTicket[0]['Status'] == 'ConfirmClient' || $InfoCancelTicket[0]['Status'] == 'ConfirmCancel') {
+                                    echo $InfoCancelTicket[0]['PercentIndemnity'] . '%';
+                                } else {
+                                    echo ' -----';
+                                }
+                                ?>
+                            </div>
+                            <div>
+                                <strong>مبلغ استرداد:</strong>
+                                <?php if($InfoCancelTicket[0]['PriceIndemnity'] !=0) echo number_format($InfoCancelTicket[0]['PriceIndemnity']).' ریال '; else echo '----';?>
                             </div>
                         </div>
-
-
-                        <?php
-                    }
-
-                    ?>
-
-
-                    <div class="row margin-10">
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10 ">
-                            شماره درخواست خرید: <span
-                                    class="yn"><?php echo $InfoCancelTicket[0]['RequestNumber']; ?></span>
+                    </div>
+                    <div class="cancel-box">
+                        <div class="cancel-box__title"> توضیحات آژانس </div>
+                        <div class="cancel-grid">
+                            <div>
+                                <?php
+                                    if (!empty($InfoCancelTicket[0]['DescriptionClient'])) {
+                                        echo $InfoCancelTicket[0]['DescriptionClient'];
+                                    } else {
+                                       echo '-------';
+                                    }
+                                ?>
+                            </div>
                         </div>
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
-                            <span style="float: right">تاریخ درخواست کنسلی :</span> <?php echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $InfoCancelTicket[0]['DateRequestMemberInt']); ?>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
-                            تاریخ تایید /رد درخواست :<?php
-                            if ($InfoCancelTicket[0]['DateSetCancelInt'] != '0' || $InfoCancelTicket[0]['DateConfirmCancelInt'] != '0') {
-                                if ($InfoCancelTicket[0]['Status'] == 'SetCancelClient') {
-                                    echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $InfoCancelTicket[0]['DateSetCancelInt']);
-                                } else if ($InfoCancelTicket[0]['Status'] == 'ConfirmCancel') {
-                                    echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $InfoCancelTicket[0]['DateConfirmCancelInt']);
+                    </div>
+                    <div class="cancel-box">
+                        <div class="cancel-box__title"> توضیحات کارگزار </div>
+                        <div class="cancel-grid">
+                            <div>
+                                <?php
+                                if (!empty($InfoCancelTicket[0]['DescriptionAdmin'])) {
+                                     echo $InfoCancelTicket[0]['DescriptionAdmin'];
+                                } else {
+                                    echo '-------';
                                 }
-                            } else {
-                                echo ' -----';
-                            }
-                            ?>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
-                            درصد جریمه:<?php
-                            if ($InfoCancelTicket[0]['Status'] == 'SetIndemnity' || $InfoCancelTicket[0]['Status'] == 'SetFailedIndemnity' || $InfoCancelTicket[0]['Status'] == 'ConfirmClient' || $InfoCancelTicket[0]['Status'] == 'ConfirmCancel') {
-                                echo $InfoCancelTicket[0]['PercentIndemnity'] . '%';
-                            } else {
-                                echo ' -----';
-                            }
-                            ?>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
-                            مبلغ استرداد:<?php
-                            echo '----';
-                            ?>
-                        </div>
-
-                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-10">
-                            توضیحات آژانس:<?php
-                            if (!empty($InfoCancelTicket[0]['DescriptionClient'])) {
                                 ?>
-                                <span><?php echo $InfoCancelTicket[0]['DescriptionClient']; ?></span>
-                                <?php
-                            } else {
-                                ?>
-                                <span>-------</span>
-                                <?php
-                            }
-                            ?>
+                            </div>
                         </div>
-                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-10">
-                            توضیحات کارگزار:<?php
-                            if (!empty($InfoCancelTicket[0]['DescriptionAdmin'])) {
-                                ?>
-                                <span><?php echo $InfoCancelTicket[0]['DescriptionAdmin']; ?></span>
-                                <?php
-                            } else {
-                                ?>
-                                <span>-------</span>
-                                <?php
-                            }
-                            ?>
+                    </div>
+                    <div class="cancel-box">
+                        <div class="cancel-box__title"> توضیح کاربر برای کنسلی </div>
+                        <div class="cancel-grid">
+                            <div>
+                                <?php  echo $InfoCancelTicket[0]['comment_user'];?>
+                            </div>
                         </div>
-                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-10">
-                            اهمیت درصد برای کاربر:<?php
-                            if ($InfoCancelTicket[0]['PercentNoMatter'] == 'Yes') {
-                                ?>
-                                <span><?php echo 'اهمیت ندارد' ?></span>
-
-                                <?php
-                            } else {
-                                ?>
-                                <span><?php echo 'با اهمیت است' ?></span>
-
-                                <?php
-                            }
-                            ?>
-                        </div>
-                        <div class="row margin-10">
-                            <div class="col-md-3 col-lg-4 col-sm-12 col-xs-12">شماره کارت اعلام
-                                شده:<span><?php echo $InfoCancelTicket[0]['CardNumber'] ?></span></div>
-                            <div class="col-md-3 col-lg-4 col-sm-12 col-xs-12">نام صاحب
-                                حساب:<span><?php echo $InfoCancelTicket[0]['AccountOwner'] ?></span></div>
-                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">نام بانک مرتبط با
-                                کارت:<span><?php echo $InfoCancelTicket[0]['NameBank'] ?></span></div>
-                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                                توضیح کاربر برای کنسلی:
-
-                                <span><?php echo $InfoCancelTicket[0]['comment_user'] ?></span></div>
-                        </div>
-
-
-
                     </div>
 
-                    <div class="modal-footer site-bg-main-color">
+                    <?php if($InfoCancelTicket[0]['confirmTransferWallet']!='none'){ ?>
+                    <div class="cancel-box">
+                        <div class="cancel-box__title"> روش واریزی </div>
+                        <div class="cancel-grid">
+                             <div>
+                                <?php
+                                if($InfoCancelTicket[0]['confirmTransferWallet']=='ReturnWallet')  echo 'به کیف پول کاربر برگردانده شد';
+                                else if($InfoCancelTicket[0]['confirmTransferWallet']=='ReturnWalletCounter')  echo 'به اعتبار کانتر برگردانده شد';
+                                else if($InfoCancelTicket[0]['confirmTransferWallet']=='ReturnBankCart')  echo 'به درخواست کاربر به کارت واریز شد';
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php }?>
 
+                    <div class="cancel-box">
+                        <div class="cancel-box__title">اطلاعات بیشتر</div>
+                        <div class="cancel-grid">
+                            <div>
+                                <strong>اهمیت درصد برای کاربر :</strong>
+                                <?php
+                                if ($InfoCancelTicket[0]['PercentNoMatter'] == 'Yes') {
+                                     echo 'اهمیت ندارد';
+                                } else {
+                                    echo 'با اهمیت است';
+                                }
+                                ?>
+                            </div>
+                            <div>
+                                <strong>شماره کارت اعلام شده :</strong>
+                                <?php echo $InfoCancelTicket[0]['CardNumber'];?>
+                            </div>
+                            <div>
+                                <strong>نام صاحب حساب :</strong>
+                                <?php echo $InfoCancelTicket[0]['AccountOwner'];?>
+                            </div>
+                            <div>
+                                <strong>نام بانک مرتبط با کارت :</strong>
+                                <?php echo $InfoCancelTicket[0]['NameBank'];?>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer site-bg-main-color"></div>
             </div>
-
         </div>
+        <style>
+            .cancel-modal {
+                font-size: 1.15rem;
+                line-height: 1.7;
+            }
+            .cancel-box{background:#fff;border:1px solid #e6e6e6;border-radius:10px;padding:15px;margin-bottom:15px;font-size: 13px; }
+            .cancel-box__title{font-weight:700;margin-bottom:10px;border-right:4px solid #2a5298;padding-right:8px}
+            .cancel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 
+            .passenger-table__head,.passenger-table__row{
+                display:grid;grid-template-columns:1.2fr 1.2fr 1fr .6fr 1fr;gap:10px;padding:8px 10px;align-items:center
+            }
+            .passenger-table__head{background:#f1f5f9;font-weight:700;border-radius:6px}
+            .passenger-table__row{border-bottom:1px solid #eee}
+            .passenger-table__row--danger{background:#fff5f5}
+
+            .passenger-status{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:700;text-align:center;color:#fff}
+            .passenger-status--ConfirmCancel{background:#198754}
+            .passenger-status--ConfirmClient{background:#0dcaf0;color:#000}
+            .passenger-status--SetIndemnity,
+            .passenger-status--RequestClient{background:#ffc107;color:#000}
+            .passenger-status--SetCancelClient,
+            .passenger-status--SetFailedIndemnity,
+            .passenger-status--close{background:#dc3545}
+            .passenger-status--RequestMember{background:#0d6efd}
+            .passenger-status--danger{background:#dc3545}
+
+            /* ===== Cancel Action Button ===== */
+            .cancel-action { margin-top: 15px; text-align: left; position: relative; z-index: 20; }
+
+            .btn-cancel-action {
+                background: linear-gradient(135deg, #0d6efd, #084298);
+                border: none;
+                color: #fff;
+                padding: 10px 26px;
+                font-size: 14px;
+                font-weight: 700;
+                border-radius: 10px;
+                cursor: pointer;
+                min-width: 160px;
+                transition: all .25s ease;
+                box-shadow: 0 6px 18px rgba(13,110,253,.35);
+            }
+            .btn-cancel-action:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 10px 26px rgba(13,110,253,.45);
+                background: linear-gradient(135deg, #0b5ed7, #06357a);
+            }
+            .btn-cancel-action:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(13,110,253,.35); }
+            .btn-cancel-action:disabled { background: #94a3b8; cursor: not-allowed; box-shadow: none; }
+
+            .btn-submit-action {
+                background: linear-gradient(135deg,#198754,#0f5132);
+                border: none;
+                color: #fff;
+                padding: 10px 30px;
+                font-weight: 800;
+                border-radius: 10px;
+                cursor: pointer;
+                box-shadow: 0 6px 18px rgba(25,135,84,.35);
+            }
+            .btn-submit-action:disabled {
+                background:#94a3b8;
+                cursor:not-allowed;
+                box-shadow:none;
+            }
+        </style>
         <?php
     }
 
@@ -4008,6 +4960,13 @@ public function ModalShowBook($Param, $type) {
         $request_number = $Param['RequestNumber'];
         $pnr = $Param['pnr'];
 
+        //کارمزد هر نفر
+        $listpenalty = Load::controller('penaltyFees');
+        $PenaltyEnd = $listpenalty->getPenaltyEnd();
+
+        // تراکنش مالی این خرید
+        $Transactions = Load::controller('bookshowTest');
+        $TransactionsReport = $Transactions->getTransactionsByDateRange('','',$pnr,'','','');
 
         $listCancel = Load::controller('listCancel');
         $Cancel = $listCancel->InfoCancelTicket($request_number, $id, $ClientId);
@@ -4019,22 +4978,15 @@ public function ModalShowBook($Param, $type) {
                 list($TotalPrice,$fare) = functions::TotalPriceCancelTicketSystem($Cancel);
                 $PricePenalty = functions::CalculatePenaltyPriceCancel($TotalPrice,$fare, $Cancel[0]);
                 $indemnityPrice =round($PricePenalty-(30000 * count($Cancel)));
-
             }elseif($Cancel[0]['flight_type'] == 'charter'){
                 $TotalPrice = functions::TotalPriceNetTicketCharter($Cancel);
-
                 $indemnityPrice = round(functions::CalculatePenaltyPriceCancelCharter($TotalPrice, $Cancel[0]));
-
-
             }
         }elseif($Cancel[0]['TypeCancel'] == 'bus'){
-
             $admin = Load::controller('admin');
             $priceBusSql = "SELECT * FROM book_bus_tb WHERE order_code='{$request_number}'";
             $priceBookBus = $airlineClientCharter = $admin->ConectDbClient($priceBusSql, $ClientId, "Select", "", "", "");
-
             $indemnityPrice = ($priceBookBus['price_api']-($priceBookBus['price_api']*($Cancel[0]['PercentIndemnity']/100))) ;
-
         }elseif($Cancel[0]['TypeCancel'] == 'insurance'){
             $admin = Load::controller('admin');
             $priceInsuranceSql = "SELECT * FROM book_insurance_tb WHERE factor_number='{$request_number}'";
@@ -4046,7 +4998,9 @@ public function ModalShowBook($Param, $type) {
             $priceBookHotel = $airlineClientCharter = $admin->ConectDbClient($priceHotelSql, $ClientId, "Select", "", "", "");
             $indemnityPrice = ($priceBookHotel['total_price']-($priceBookHotel['total_price']*($Cancel[0]['PercentIndemnity']/100))) ;
         }
-
+        $CostFinalForReturn =0;
+        $AmountExcelCanceling=0;
+        $ReturnProvider=0;
         ?>
         <div class="modal-dialog modal-lg">
 
@@ -4060,21 +5014,83 @@ public function ModalShowBook($Param, $type) {
                         <h4 class="modal-title"> (<?php echo $request_number; ?>) </h4>
 
                         <h4 class="modal-title">(<?php echo $pnr; ?>)</h4>
+                        <?php  if($Cancel[0]['IdExcelCanceling']>0) {?>
+                            <h4 class="modal-title">(اکسل  <?php echo $Cancel[0]['TypeExcelCanceling'];?>)</h4>
+                        <?php } ?>
                     </div>
                 </div>
+
                 <div class="modal-body">
-
                     <div class="row">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <h5>
+                                مبلغ اولیه فروش به آژانس :
+                                <?php $BuyFromIt=$TransactionsReport[$Cancel[0]['factor_number']];
+                                echo number_format($BuyFromIt); //خرید از سفر30
+                                ?>      ریال
+                            </h5>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <h5>
+                                <?php
+                                if($Cancel[0]['IdExcelCanceling']>0) {
+                                    echo 'مبلغ استرداد اکسل : '.number_format($Cancel[0]['AmountExcelCanceling']).' ریال ';
+                                    $AmountExcelCanceling=$Cancel[0]['AmountExcelCanceling'];
+                                }
+                                else  echo 'مبلغ استرداد اکسل در سیستم ثبت نشده است';
+                                ?>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <?php if($Cancel[0]['TypeExcelCanceling']=='provider43') {
+                            $ReturnProvider=$BuyFromIt-$AmountExcelCanceling;
+                            ?>
+                            <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                <h5>
+                                    برگشتی به مسافر قبل کارمزد :     <?php echo number_format($ReturnProvider);?>
+                                </h5>
+                            </div>
+                        <?php } ?>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <h5>
+                                کارمزد جریمه به ازای هر نفر :   <?php echo number_format($PenaltyEnd);?> ریال
+                            </h5>
+                        </div>
+                    </div>
+                    <?php if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {?>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h5>
+                                    افراد این خرید &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    ADl= <?php echo $Cancel[0]['adt_qty'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    CHD= <?php echo $Cancel[0]['chd_qty'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    INF= <?php echo $Cancel[0]['inf_qty'];?>
+                                </h5>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php
+                    if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {
+                        if($AmountExcelCanceling<=0) $PenaltyEnd=0; // agar jarime nashode ma karmoz nadarim
 
+                        if ($Cancel[0]['TypeExcelCanceling'] == 'provider21') {
+                            $CostFinalForReturn = $AmountExcelCanceling - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
+                        } else if ($Cancel[0]['TypeExcelCanceling'] == 'provider43') {
+                            $CostFinalForReturn = $ReturnProvider - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
+                        }
+                    }
+                    ?>
+                    <div class="row">
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="form-group">
-                                <label for="DescriptionClient" class="PercentLabel">تعیین مبلغ
+                                <label for="DescriptionClient" class="PercentLabel">مبلغ استرداد
                                     <small>(شما میتوانید مبلغ استرداد مربوط را در اینجا وارد نمائید)</small>
                                 </label>
                                 <input class="form-control" id="PriceIndemnity"
                                        placeholder="مبلغ مورد نظر را به ریال  وارد نمائید"
                                        onkeyup="javascript:separator(this);"
-                                       value="">
+                                       value="<?php echo number_format($CostFinalForReturn);?>">
                             </div>
                         </div>
 
@@ -6235,6 +7251,7 @@ public function ModalShowBook($Param, $type) {
         $objbook = Load::controller($this->Controller);
         $objDiscountCode = Load::controller('discountCodes');
         $books = $objbook->bookRecords($Param);
+        functions::insertLog('$books: ' . json_encode($Param) , '000shojaee');
 
         ?>
 
@@ -6485,12 +7502,14 @@ public function ModalShowBook($Param, $type) {
 
                         <div class="col-md-12 p-0 mt-5">
                             <?php
+
+
                             $custom_file_fields=json_decode($view['custom_file_fields'],true);
                             if (!empty($custom_file_fields)){
                                 foreach ($custom_file_fields as $item){
 
                                     ?>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <?php if(!empty(array_values($item)[0])) {
 
                                             ?>
@@ -6499,7 +7518,7 @@ public function ModalShowBook($Param, $type) {
                                                href="<?php echo ROOT_ADDRESS_WITHOUT_LANG .'/pic/visaPassengersFiles/' . array_values($item)[0]; ?>"
                                                type="application/octet-stream" style="border-radius:5px"  download="<?php echo basename(array_values($item)[0]); ?>">
                                                 <!--                                                <img src="--><?php //echo ROOT_ADDRESS_WITHOUT_LANG .'/pic/visaPassengersFiles/' . array_values($item)[0]; ?><!--"-->
-                                                <!--                                                     class="w-100 p-1 mb-3 border rounded"-->
+                                                <!--                                                     class="w-50 p-1 mb-3 border rounded"-->
                                                 <!--                                                     alt="--><?php //echo key($item);?><!--">-->
                                                 <?php echo key($item);?><i class="fa mr-2 fa-download"></i>
                                             </a>
@@ -6522,7 +7541,6 @@ public function ModalShowBook($Param, $type) {
                             ?>
 
                         </div>
-
                         <div class="col-md-12 p-0 mt-5 d-flex flex-wrap justify-content-center">
 
                             <?php if(!empty($view['visa_files'])) {
@@ -9209,7 +10227,7 @@ public function ModalCancelAdmin($Param, $param2) {
                         } ?>
 
                         <div class="col-md-12 modal-text-center modal-h ">
-                            <!--							<label for="ReasonUser">--><?php //echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?><!--</label>-->
+                            <label for="ReasonUser"><?php echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?></label>
                         </div>
                         <div class="col-md-3 col-lg-3 col-sm-12  nopad ">
                             <select class="form-control mart5" name="ReasonUser"
@@ -10000,6 +11018,212 @@ public function ModalCancelAdmin($Param, $param2) {
 
     }
 
+    public function getInfoTicketReservation( $requestNumber ) {
+        if ( TYPE_ADMIN == '1' ) {
+
+            $ModelBase = Load::library( 'ModelBase' );
+            $sql       = " SELECT *
+                 FROM report_tb
+                 WHERE request_number='{$requestNumber}'
+                 ORDER BY passenger_age";
+            $Book      = $ModelBase->select( $sql );
+
+        } else {
+
+            $Model = Load::library( 'Model' );
+            $sql   = " SELECT *
+                 FROM book_local_tb
+                 WHERE request_number='{$requestNumber}'
+                 ORDER BY passenger_age";
+            $Book  = $Model->select( $sql );
+
+        }
+
+        $totalPrice                = 0;
+        $totalPriceWithoutDiscount = 0;
+        foreach ( $Book as $val ) {
+            $namePrice                 = strtolower( $val['passenger_age'] ) . '_price';
+            $nameDiscountPrice         = 'discount_' . strtolower( $val['passenger_age'] ) . '_price';
+            $totalPriceWithoutDiscount += $val[ $namePrice ];
+            $totalPrice                += $val[ $nameDiscountPrice ];
+        }
+
+        if ( $Book[0]['percent_discount'] > 0 ) {
+            $result['totalPriceWithoutDiscount'] = $totalPriceWithoutDiscount;
+            $result['totalPrice']                = $totalPrice;
+        } else {
+            $result['totalPriceWithoutDiscount'] = 0;
+            $result['totalPrice']                = $totalPriceWithoutDiscount;
+        }
+
+        $result['infoTicket'] = $Book;
+
+        return $result;
+    }
+    public function ModalInfoDetails($Param)
+    {
+        $user = Load::controller($this->Controller);
+        $flightBook = functions::info_flight_client($Param)[0];
+
+
+
+        if ($flightBook['flight_type'] == 'system' && $flightBook['successfull'] == 'private_reserve') {
+            $DataFlightitAgencyCommission ='<span class="font-bold rounded-xl d-inline-block" style="direction:ltr;">'.number_format(0).'</span>';//پرداخت مسافر - خرید از ما
+        } else {
+            $DataFlightitAgencyCommission ='<span class="font-bold rounded-xl d-inline-block" style="direction:ltr;">'.number_format($flightBook['system_flight_commission']).'</span>';//پرداخت مسافر - خرید از ما
+        }
+        $DataFlightPassengerPayData2 = number_format($flightBook['amount_added']);
+
+        if ( $flightBook['flight_type'] != 'charterPrivate' ) {
+            $DataFlightTotal = number_format($flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price']);
+            $DataFlightFare = $flightBook['flight_type'] == 'system' ? number_format($flightBook['adt_fare'] + $flightBook['chd_fare'] + $flightBook['inf_fare']) : '0';
+        }
+        else {
+            $DataFlightTotal = '0';
+            $DataFlightFare = '0';
+        }
+
+        if ( $flightBook['flight_type'] != 'charterPrivate' ) {
+            if ( $flightBook['flight_type'] == 'charter' ||  $flightBook['api_id'] == '14' ) {
+                if ( $flightBook['percent_discount'] > 0 ) {
+                    $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
+                    $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['amount_added']) );
+                    if(TYPE_ADMIN != 1){
+                        $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
+                        $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )
+                            . '</span>';
+                    }
+
+                    if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
+                        $pricetotal    = ( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] ) + $pricetotal;
+                        $charter_price = $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] + $charter_price;
+                    }
+                } else {
+                    $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
+                    $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['amount_added']));
+
+                    if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
+                        $pricetotal    = ( $flightBook['agency_commission'] + $flightBook['irantech_commission'] + $flightBook['supplier_commission'] ) + $pricetotal;
+                        $charter_price = $flightBook['agency_commission'] + $flightBook['irantech_commission'] + $flightBook['supplier_commission'] + $charter_price;
+                    }
+                }
+            }
+            elseif ( $flightBook['flight_type'] == 'system' ) {
+                if ( $flightBook['percent_discount'] > 0 ) {
+                    $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
+                    $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['amount_added']));
+                    if(TYPE_ADMIN != 1){
+                        $DataFlightPassengerPayData .= "<hr style='margin:3px'> <span style='text-decoration: line-through;'>";
+                        $DataFlightPassengerPayData .= $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] . '</span>';
+                    }
+                    if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
+                        $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
+                        if ( $flightBook['pid_private'] == '1' ) {
+                            $prsystem_price += ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] );
+                        } else {
+                            $pubsystem_price += ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] );
+                        }
+                    }
+
+                } else {
+                    if ( $flightBook['IsInternal'] == '0' ) {
+                        $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
+                        $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['amount_added']) );
+                    } else {
+                        $PassengerPayment=$flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ;
+                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['amount_added']));
+                    }
+                    if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
+                        $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
+                        if ( $flightBook['pid_private'] == '1' ) {
+                            $prsystem_price += ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] );
+                        } else {
+                            $pubsystem_price += ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] );
+                        }
+                    }
+                }
+
+            }
+        }
+        else {
+            $InfoTicketReservation = $this->getInfoTicketReservation( $flightBook['request_number'] );
+            if (TYPE_ADMIN != 1 && $InfoTicketReservation['totalPriceWithoutDiscount'] != 0 ) {
+                $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span>";
+            }
+            $PassengerPayment=$InfoTicketReservation['totalPrice'];
+            $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
+            $pricetotal                 = ( $InfoTicketReservation['totalPrice'] ) + $pricetotal;
+        }
+        ?>
+
+        <div class="modal_custom" onclick="closeModalParent(event)">
+            <div class="container">
+                <div class="main_modal_custom">
+                    <div class="scrollIng_model h-auto">
+                        <div class="header_modal_custom">
+                            <h2><?php echo functions::Xmlinformation("Detail") ?></h2>
+                            <button onclick="closeModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M312.1 375c9.369 9.369 9.369 24.57 0 33.94s-24.57 9.369-33.94 0L160 289.9l-119 119c-9.369 9.369-24.57 9.369-33.94 0s-9.369-24.57 0-33.94L126.1 256L7.027 136.1c-9.369-9.369-9.369-24.57 0-33.94s24.57-9.369 33.94 0L160 222.1l119-119c9.369-9.369 24.57-9.369 33.94 0s9.369 24.57 0 33.94L193.9 256L312.1 375z"/></svg></button>
+                        </div>
+                        <div class="center_modal_custom">
+                            <div class="modal-padding-bottom-15">
+                                <div>
+<!--                                    <div class="w-100 modal-text-center modal-h ">   --><?php //echo functions::Xmlinformation("Pleaseselectthedesiredpassenger") ?><!--</div>-->
+                                </div>
+                                <div>
+                                    <div class="w-100 table-responsive-lg">
+                                        <table class="min-w-800px table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Fare</th>
+                                                <th scope="col">کمیسیون</th>
+                                                <th scope="col">مارک کانتر</th>
+                                                <th scope="col">فروش</th>
+<!--                                                <th scope="col">--><?php //echo functions::Xmlinformation("Passport") ?><!--</th>-->
+                                 
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+
+                                                    <th><?= $DataFlightTotal . ' ' . functions::Xmlinformation("Rial") ?></th>
+                                                    <th>
+                                                        <?= $DataFlightFare . ' ' . functions::Xmlinformation("Rial") ?>
+                                                    </th>
+                                                    <th><?= $DataFlightitAgencyCommission . ' ' . functions::Xmlinformation("Rial") ?></th>
+                                                    <th><?= $DataFlightPassengerPayData2 . ' ' . functions::Xmlinformation("Rial") ?></th>
+                                                    <th><?= $DataFlightPassengerPayData . ' ' . functions::Xmlinformation("Rial") ?></th>
+
+
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                               
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function closeModal(){
+                $(".modal_custom").remove()
+                $("body,html").removeClass("overflow-hidden");
+            }
+        </script>
+
+        <?php
+
+    }
 
     public function ModalCancelItem($Param, $param2)
     {

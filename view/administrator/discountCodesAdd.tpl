@@ -113,8 +113,8 @@
                             <label for="flight_external" class="control-label">پرواز خارجی</label>
                         </div>
                         <div class="col-sm-3">
-                            <input type="checkbox" name="hotel_internal" id="hotel_internal" value="1" />
-                            <label for=hotel_internal" class="control-label">هتل داخلی</label>
+                            <input type="checkbox" name="hotel_interanl" id="hotel_interanl" value="1" />
+                            <label for=hotel_interanl" class="control-label">هتل داخلی</label>
                         </div>
 
                         <div class="col-sm-3">

@@ -24,9 +24,19 @@
         </div>
 
     </div>
+    <div class="owl-carousel owl-theme owl-banner-karvan d-none">
+
+        {foreach $banners as $key => $banner}
+            <div class="__i_modular_nc_item_class_0 item">
+                <img alt='{$banner["title"]}' class="__image_class__" src='{$banner["pic"]}'/>
+            </div>
+        {/foreach}
+
+
+    </div>
     <div class="title-banner title-banner-res">
-        <h3>{$banner["title"]}</h3>
-        <p class="__title_class__">{$banner["description"]}</p>
+        <h3> موسسه فرهنگی خادمان نهضت تبلیغ</h3>
+        <p class="__title_class__">مجری کاروان‌های عتبات و تورهای زیارتی</p>
     </div>
     <div class="i_modular_searchBox search_box">
         <div class="container">

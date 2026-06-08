@@ -153,6 +153,8 @@ $(function () {
     });
 });
 
+
+
 //hotel
 
 $('.owl-blog-demo').owlCarousel({

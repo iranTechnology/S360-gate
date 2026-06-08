@@ -96,8 +96,8 @@
                                             </div>
                                             <div class="airline-tour">
                                                 <div class="box-airline-img-tour">
-                                                    <img alt="{$item['airline_name']}" class="__airline_class__"
-                                                         src="{$item['logo_transport']}">
+                                                    <img alt="airline-img-tour" class="__airline_class__"
+                                                         src="project_files/images/ref335802100001965656220001.png">
                                                 </div>
                                                 <div class="box-airline-tour">
                                                     <span class="__airline_class__">{$item['airline_name']}</span>
@@ -153,8 +153,8 @@
                                                 </div>
                                                 <div class="airline-tour">
                                                     <div class="box-airline-img-tour">
-                                                        <img alt="{$item['airline_name']}" class="__airline_class__"
-                                                             src="{$item['logo_transport']}">{$item['airline_name']}</img>
+                                                        <img alt="airline-img-tour" class="__airline_class__"
+                                                             src="project_files/images/ref335802100001965656220001.png">{$item['airline_name']}</img>
                                                     </div>
                                                     <div class="box-airline-tour">
                                                         <span class="__airline_class__">{$item['airline_name']}</span>
@@ -219,8 +219,8 @@
                                             </div>
                                             <div class="airline-tour">
                                                 <div class="box-airline-img-tour">
-                                                    <img alt="{$item['airline_name']}" class="__airline_class__"
-                                                         src="{$item['logo_transport']}">{$item['airline_name']}</img>
+                                                    <img alt="airline-img-tour" class="__airline_class__"
+                                                         src="project_files/images/ref335802100001965656220001.png">{$item['airline_name']}</img>
                                                 </div>
                                                 <div class="box-airline-tour">
                                                     <span class="__airline_class__">{$item['airline_name']}</span>
@@ -276,8 +276,8 @@
                                                 </div>
                                                 <div class="airline-tour">
                                                     <div class="box-airline-img-tour">
-                                                        <img alt="{$item['airline_name']}" class="__airline_class__"
-                                                             src="{$item['logo_transport']}">{$item['airline_name']}</img>
+                                                        <img alt="airline-img-tour" class="__airline_class__"
+                                                             src="project_files/images/ref335802100001965656220001.png">{$item['airline_name']}</img>
                                                     </div>
                                                     <div class="box-airline-tour">
                                                         <span class="__airline_class__">{$item['airline_name']}</span>

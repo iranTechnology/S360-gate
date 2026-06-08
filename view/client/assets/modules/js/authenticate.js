@@ -327,6 +327,7 @@ function authenticateChangePassword(_this) {
 }
 let countdownInterval = null;
 let isSendingCode = false;
+
 function authenticateInitDigitCode(_this=null, checkCaptcha=true) {
    if (isSendingCode) return; // جلوگیری از کلیک‌های مکرر
    isSendingCode = true; // علامت بزن که داریم ارسال می‌کنیم

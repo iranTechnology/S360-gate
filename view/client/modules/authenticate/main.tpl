@@ -38,7 +38,6 @@
     <div class="form1 form-item" data-name='check-existence'>
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/authenticate/checkExistence.tpl"}
     </div>
-
     <div class="form3 form-item" data-name='login-by-code'>
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/authenticate/loginByCode.tpl"}
     </div>

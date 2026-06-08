@@ -38,7 +38,6 @@
                                 <tr>
                                     <td>{$itemService['order_number']}</td>
                                     <td>{$itemService['Title']}</td>
-
                                     <td>
                                         <div class="input-group">
                                                 <span class="input-group-addon">
@@ -49,8 +48,6 @@
                                                    class="form-control text-right "
                                                    data-toggle="tooltip" data-placement="top"
                                                    data-original-title="{$itemCounter.name}" />
-
-
                                         </div>
                                     </td>
 

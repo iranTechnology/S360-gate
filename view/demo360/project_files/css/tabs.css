@@ -2033,6 +2033,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
     #searchBoxTabs a span h4 {
         margin-top: 9px !important
     }
+
 }
 
 @media (min-width: 577px) {

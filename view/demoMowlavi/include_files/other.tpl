@@ -32,7 +32,7 @@
                     </svg>
                     <img src="project_files/images/icons8-baggage-96(1)(2).png" />
                 </a>
-                <h5>تور</h5>
+                <h5>کاروان ها</h5>
             </div>
             <div class="other-item other-item1">
                 <a class="other-img" href="{$smarty.const.ROOT_ADDRESS}/page/bus">

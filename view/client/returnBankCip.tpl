@@ -7,7 +7,7 @@
 {load_presentation_object filename="bookCip" assign="objBook"}
 {assign var="item" value= $objBook->getItem($smarty.post['requestNumber'])}
 
-{if $smarty.post['flag'] != "credit"}
+{if $smarty.post['flag'] !='credit'}
 {*    {var_dump($smarty.post)}*}
 {*    {var_dump($smarty.get)}*}
     {load_presentation_object filename="bank" assign="objBank"}
@@ -29,7 +29,7 @@
     {assign var="infoReserve" value=['paymentType' => $paymentType, 'factorNumber' => $objBank->factorNumber,'trackingCode'=>$objBank->trackingCode,'successPayment'=>$successPayment
     ,'paymentBank'=>$paymentBank]}
     {assign var="factorNumber" value= $objBank->factorNumber}
-
+    {var_dump($infoReserve)}
 {else}
     {$paymentType='credit'}
     {assign var="factorNumber" value=$item[0]['factor_number']}
@@ -37,6 +37,7 @@
     {assign var="infoReserve" value=['paymentType' => $paymentType, 'factorNumber' => $factorNumber,'trackingCode'=>'','successPayment'=>$successPayment
     ,'paymentBank'=>'']}
 {/if}
+
 
 {if $successPayment eq true}
 
@@ -68,19 +69,18 @@
 
 {literal}
     <script type="text/javascript">
-
-             console.log('data: ' , 'data')
+       window.onload =
+          function () {
 
              let  successPayment = '{/literal}{$successPayment}{literal}'
              let  factorNumber = '{/literal}{$factorNumber}{literal}';
-
-
 
              console.log('successPayment: ' , successPayment)
              console.log('factorNumber: ' , factorNumber)
 
              let time_delay = 70000 ;
              // let time_delay = 1000 ;
+             showDown(event);
              let request =
                 $.ajax({
                    url: amadeusPath + 'ajax',
@@ -116,8 +116,8 @@
              // Disable right mouse click Script
              document.onmousedown="if (event.button==2) return false";
              document.oncontextmenu=new Function("return false");
-             document.onkeydown = showDown;
-
+             document.onkeydown = showDown();
+          }
 
        function showDown(evt) {
           evt = (evt) ? evt : ((event) ? event : null);

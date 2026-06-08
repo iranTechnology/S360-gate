@@ -46,16 +46,7 @@
                                placeholder="کد یاتای ایرلاین را وارد نمائید">
                     </div>
 
-                    <div class="form-group col-sm-6">
-                        <label for="abbreviation" class="control-label">ایرلاین داخلی است ؟</label>
-                        <select
-                                class="form-control"
-                                name="foreignAirline">
-                            <option value="">انتخاب کنید</option>
-                            <option value="inactive">بله</option>
-                            <option value="active">خیر</option>
-                        </select>
-                    </div>
+
 
                     <div class="form-group col-sm-6">
                         <label for="photo" class="control-label">لوگو</label>

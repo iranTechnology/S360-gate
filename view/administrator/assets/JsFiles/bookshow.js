@@ -435,19 +435,19 @@ function ModalUploadProof(RequestNumber , type) {
 
 
     $.post(libraryPath + 'ModalCreator.php',
-      {
-          Controller: 'bookshow',
-          Method: 'ModalUploadProof',
-          Param: {
-              requestNumber : RequestNumber ,
-              type : type
-          }
-      },
-      function (data) {
+        {
+            Controller: 'bookshow',
+            Method: 'ModalUploadProof',
+            Param: {
+                requestNumber : RequestNumber ,
+                type : type
+            }
+        },
+        function (data) {
 
-          $('#ModalPublic').html(data);
+            $('#ModalPublic').html(data);
 
-      });
+        });
 }
 
 
@@ -467,19 +467,19 @@ function ModalSendInteractiveSms(FactorNumber) {
 }
 function editInfoPassenger(RequestNumber, ClientId) {
     $.post(libraryPath + 'ModalCreator.php',
-       {
-           Controller: 'bookshow',
-           Method: 'editInfoPassenger',
-           Param: RequestNumber,
-           ParamId: ClientId
-       },
-       function (data) {
+        {
+            Controller: 'bookshow',
+            Method: 'editInfoPassenger',
+            Param: RequestNumber,
+            ParamId: ClientId
+        },
+        function (data) {
 
-           $('#ModalPublic').html(data);
-           $("#flightDate").datepicker({
-               dateFormat: "yy-mm-dd"
-           });
-       });
+            $('#ModalPublic').html(data);
+            $("#flightDate").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
 }
 
 function insertPnr(RequestNumber, ClientId) {
@@ -501,30 +501,30 @@ function insertPnr(RequestNumber, ClientId) {
 function insertHotelPnr(RequestNumber, ClientId) {
 
     $.post(libraryPath + 'ModalCreator.php',
-      {
-          Controller: 'bookshow',
-          Method: 'insertHotelPnr',
-          Param: RequestNumber,
-          ParamId: ClientId
-      },
-      function (data) {
-          $('#ModalPublic').html(data);
-      });
+        {
+            Controller: 'bookshow',
+            Method: 'insertHotelPnr',
+            Param: RequestNumber,
+            ParamId: ClientId
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
 }
 function changePendingHotel(FactorNumber, ClientId) {
 
     $.post(libraryPath + 'ModalCreator.php',
-      {
-          Controller: 'bookshow',
-          Method: 'changePendingHotel',
-          Param: FactorNumber,
-          ParamId: ClientId
-      },
-      function (data) {
+        {
+            Controller: 'bookshow',
+            Method: 'changePendingHotel',
+            Param: FactorNumber,
+            ParamId: ClientId
+        },
+        function (data) {
 
-          $('#ModalPublic').html(data);
+            $('#ModalPublic').html(data);
 
-      });
+        });
 }
 
 function FlightConvertToBook(RequestNumber, ClientId) {
@@ -779,13 +779,13 @@ $('#RTRDRepoert').DataTable({
 
 function ModalShowBookForEntertainment(factorNumber) {
     $.post(libraryPath + 'ModalCreatorForEntertainment.php',
-      {
-          Method: 'ModalShowBook',
-          factorNumber: factorNumber,
-      },
-      function (data) {
-          $('#ModalPublic').html(data);
-      });
+        {
+            Method: 'ModalShowBook',
+            factorNumber: factorNumber,
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
 }
 function DonePreReserve(RequestNumber, FactorNumber, ClientID) {
     $.confirm({
@@ -1221,7 +1221,7 @@ function fadeBG(Target) {
 function ExecuteHistoryFilter(target) {
     $('[data-info="filter-div"]').addClass('d-none').find('input, select, textarea').prop("disabled", true);
     $('[data-info="filter-div"][data-target="' + target + '"]').removeClass('d-none').find('input, select, textarea').prop("disabled", false);
-	if(LANG_PANEL_ADMIN!='fa')
+    if(LANG_PANEL_ADMIN!='fa')
         $('#DivBoxSearch').addClass('d-none');
 
     var filterData = $('#FormExecuteHistoryFilter').serialize();
@@ -1357,7 +1357,7 @@ function ExecuteHistoryFilter(target) {
                         }
 
                         // فقط اگر جدول header داشت، DataTable را initialize کن
-                       if($('#mainTicketHistory thead tr th').length > 0){
+                        if($('#mainTicketHistory thead tr th').length > 0){
                             DataTableMaker('#mainTicketHistory');
                             setTimeout(function () {
                                 var searchText = 'جستجو';
@@ -1435,7 +1435,7 @@ function ExecuteHistoryFilter(target) {
                         fadeBG($('.HotTag'));
 
                     } else {
-                  		 var Result='موردی یافت نشد';
+                        var Result='موردی یافت نشد';
                         // بررسی وجود xmlDoc و نبود خطا در پارس کردن
                         if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
                             var tags = xmlDoc.getElementsByTagName("NothingFound");
@@ -1445,7 +1445,7 @@ function ExecuteHistoryFilter(target) {
                                 Result = tags[0].textContent;
                             }
                         }
-                        TableDivision.html(Result);   
+                        TableDivision.html(Result);
 
                         bussy = false;
                         $('.table-responsive').removeClass('running ld-over'); // حذف loading overlay
@@ -1462,7 +1462,7 @@ function ExecuteHistoryFilter(target) {
                 error: function(xhr, status, error) {
                     console.error('AJAX Error:', status, error);
                     console.error('Response:', xhr.responseText);
-                     var ResultCom='خطا در دریافت اطلاعات';
+                    var ResultCom='خطا در دریافت اطلاعات';
                     if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
                         var tags = xmlDoc.getElementsByTagName("ReceiveInfoError");
 
@@ -1807,7 +1807,8 @@ function renderBookingCardsSimple(bookings) {
         const serviceClass = getCardServiceClass(serviceType);
         const serviceIcon = getCardServiceIcon(serviceType);
         const statusClass = getCardStatusClass(Object.values(booking['status'])[0]);
-
+        const errorData = booking['errorData'] ? booking['errorData'] : ''
+        const errorMessage = errorData?.message_admin
         html += `
             <div class="booking-card">
                 <div class="card-header-service ${serviceClass}">
@@ -1816,7 +1817,7 @@ function renderBookingCardsSimple(bookings) {
                         <span class="service-name">${serviceType}</span>
                     </div>
                      <div class="">
-                        <div class="info-value">
+                        <div class="info-value"  data-status="${Object.values(booking['status'])[0]}" data-error-message="${errorMessage}"  onmouseover="showErrorMessage(this)">
                             <span class="status-badge ${statusClass}">${escapeCardHtml(booking['status'][0] || 'نامشخص')}</span>
                         </div>
                     </div>
@@ -1850,6 +1851,108 @@ function renderBookingCardsSimple(bookings) {
 
     container.html(html);
 }
+function showErrorMessage(element) {
+    const status = element.getAttribute('data-status');
+    const errorMessage = element.getAttribute('data-error-message');
+    if (status && status.includes('خطای مشخص') && errorMessage != undefined && errorMessage != '') {
+        // حذف tooltip قبلی اگر وجود داشت
+        const existingTooltip = document.querySelector('.custom-tooltip');
+        if (existingTooltip) existingTooltip.remove();
+
+        // ایجاد المنت tooltip
+        let tooltip = document.createElement('div');
+        tooltip.className = 'custom-tooltip';
+        tooltip.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 16px;">⚠️</span>
+                <span${errorMessage}</span>
+            </div>
+            <div style="
+                position: absolute;
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid #1e293b;
+            "></div>
+        `;
+
+        tooltip.style.cssText = `
+            position: fixed;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 10000;
+            white-space: nowrap;
+            pointer-events: none;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+            font-family: inherit;
+            animation: tooltipFadeIn 0.2s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        `;
+
+        // موقعیت tooltip
+        const rect = element.getBoundingClientRect();
+        const tooltipWidth = 250;
+        let leftPos = rect.left + rect.width/2 - tooltipWidth/2;
+
+        // جلوگیری از خروج از صفحه
+        leftPos = Math.max(10, Math.min(leftPos, window.innerWidth - tooltipWidth - 10));
+
+        tooltip.style.top = (rect.top - 45) + 'px';
+        tooltip.style.left = leftPos + 'px';
+
+        // اضافه کردن استایل انیمیشن اگر وجود نداشت
+        if (!document.getElementById('tooltip-styles')) {
+            const style = document.createElement('style');
+            style.id = 'tooltip-styles';
+            style.textContent = `
+                @keyframes tooltipFadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(5px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes tooltipFadeOut {
+                    from {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                    to {
+                        opacity: 0;
+                        transform: translateY(5px);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(tooltip);
+
+        // حذف با انیمیشن
+        const removeTooltip = () => {
+            tooltip.style.animation = 'tooltipFadeOut 0.15s ease';
+            setTimeout(() => {
+                if (tooltip.parentNode) tooltip.remove();
+            }, 150);
+        };
+
+        element.onmouseleave = removeTooltip;
+        setTimeout(removeTooltip, 2500);
+    }
+}
 // توابع کمکی
 function getCardServiceClass(serviceType) {
     const map = {
@@ -1877,6 +1980,7 @@ function getCardStatusClass(status) {
     if (status.includes('پیش') || status.includes('در حال')) return 'status-warning';
     if (status.includes('کنسل')) return 'status-secondary';
     if (status.includes('درگاه')) return 'status-info';
+    if (status.includes('خطای نامشخص')) return 'status-purple';
     if (status.includes('خطا')) return 'status-danger';
     return 'status-secondary';
 }
@@ -1970,47 +2074,47 @@ function selectTextMessage(_this){
     switch (_this.val()) {
         case 'Delay':
             new_text=' با تغییر در ساعت 00:00 مورخ --/--/-- انجام خواهد شد. در صورت عدم تمایل به استفاده از پرواز در ساعت جدید لطفا حداکثر تا ساعت 00:00 مورخ --/--/-- جهت استرداد بلیط اقدام نمایید .'
-        break;
+            break;
         case 'HurryUp':
             new_text=' با تغییر در ساعت 00:00 مورخ --/--/-- انجام خواهد شد. در صورت عدم تمایل به استفاده از پرواز در ساعت جدید لطفا حداکثر تا ساعت 00:00 مورخ --/--/-- جهت استرداد بلیط اقدام نمایید .'
-        break;
+            break;
         case 'Cancel':
             new_text=' باطل میباشد . لذا خواهشمند است جهت استرداد بلیت و برگشت وجه اقدام فرمایید . '
-        break;
+            break;
     }
     content.val(sample_text+new_text)
 }
 
 function ModalCancelFlightAdmin(RequestNumber , type) {
     $.post(libraryPath + 'ModalCreator.php', {
-           Controller: 'user',
-           requestNumber: RequestNumber,
-           Method: 'ModalCancelFlightAdmin',
-           Param: RequestNumber,
-           ParamId: type
-       },
-       function (data) {
-           $("#ModalPublic").html(data);
-       });
+            Controller: 'user',
+            requestNumber: RequestNumber,
+            Method: 'ModalCancelFlightAdmin',
+            Param: RequestNumber,
+            ParamId: type
+        },
+        function (data) {
+            $("#ModalPublic").html(data);
+        });
 }
 
 function ModalCancelHotelAdmin(factorNumber , type) {
     $.post(libraryPath + 'ModalCreator.php', {
-           Controller: 'user',
-           typeApplication: type,
-           factorNumber: factorNumber,
-           Param: factorNumber,
-           Method: 'ModalCancelHotelAdmin',
-       },
-       function (data) {
-           $("#ModalPublic").html(data);
-       });
+            Controller: 'user',
+            typeApplication: type,
+            factorNumber: factorNumber,
+            Param: factorNumber,
+            Method: 'ModalCancelHotelAdmin',
+        },
+        function (data) {
+            $("#ModalPublic").html(data);
+        });
 }
 
 
 
 function DirectCancellationFlightAdmin(RequestNumber) {
-    
+
 
     var National = [];
     var Reasons = $('#ReasonUser').val();
@@ -2062,63 +2166,63 @@ function DirectCancellationFlightAdmin(RequestNumber) {
                 btnClass: 'btn-green',
                 action: function () {
                     $.post(amadeusPath + 'user_ajax.php',
-                       {
-                           NationalCodes: NationalCodes,
-                           Reasons: Reasons,
-                           FactorNumber: FactorNumber,
-                           RequestNumber: RequestNumber,
-                           MemberId: MemberId,
-                           AccountOwner: AccountOwner,
-                           CardNumber: CardNumber,
-                           NameBank: NameBank,
-                           backCredit: backCredit,
-                           PercentNoMatter: PercentNoMatter,
-                           typeService: typeService,
-                           DescriptionClient: DescriptionClient,
-                           isCreditPayment: isCreditPayment,
-                           flag: 'DirectCancellationFlightAdmin'
-                       },
-                       function (data) {
-                           console.log(data)
-                           var res = JSON.parse(data);
-                           console.log(res)
-                           if (res.success) {
-                               $.toast({
-                                   heading: 'ثبت کنسلی',
-                                   text: res.message,
-                                   position: 'top-right',
-                                   loaderBg: '#fff',
-                                   icon: 'success',
-                                   hideAfter: 2000,
-                                   textAlign: 'right',
-                                   stack: 6,
+                        {
+                            NationalCodes: NationalCodes,
+                            Reasons: Reasons,
+                            FactorNumber: FactorNumber,
+                            RequestNumber: RequestNumber,
+                            MemberId: MemberId,
+                            AccountOwner: AccountOwner,
+                            CardNumber: CardNumber,
+                            NameBank: NameBank,
+                            backCredit: backCredit,
+                            PercentNoMatter: PercentNoMatter,
+                            typeService: typeService,
+                            DescriptionClient: DescriptionClient,
+                            isCreditPayment: isCreditPayment,
+                            flag: 'DirectCancellationFlightAdmin'
+                        },
+                        function (data) {
+                            console.log(data)
+                            var res = JSON.parse(data);
+                            console.log(res)
+                            if (res.success) {
+                                $.toast({
+                                    heading: 'ثبت کنسلی',
+                                    text: res.message,
+                                    position: 'top-right',
+                                    loaderBg: '#fff',
+                                    icon: 'success',
+                                    hideAfter: 2000,
+                                    textAlign: 'right',
+                                    stack: 6,
 
-                               });
-                               setTimeout(function() {
-                                   $('.modal').modal('hide');
-                               }, 200);
+                                });
+                                setTimeout(function() {
+                                    $('.modal').modal('hide');
+                                }, 200);
 
-                           } else {
-                               $.toast({
-                                   heading: 'ثبت کنسلی',
-                                   text: res.message,
-                                   position: 'top-right',
-                                   loaderBg: '#fff',
-                                   icon: 'error',
-                                   hideAfter: 2000,
-                                   textAlign: 'right',
-                                   stack: 6
-                               });
-                               setTimeout(function() {
-                                   $('.modal').modal('hide');
-                               }, 200);
-                           }
-                           setTimeout(function() {
-                               console.log('sdfsfsf');
-                               $('.modal').modal('hide');
-                           }, 200);
+                            } else {
+                                $.toast({
+                                    heading: 'ثبت کنسلی',
+                                    text: res.message,
+                                    position: 'top-right',
+                                    loaderBg: '#fff',
+                                    icon: 'error',
+                                    hideAfter: 2000,
+                                    textAlign: 'right',
+                                    stack: 6
+                                });
+                                setTimeout(function() {
+                                    $('.modal').modal('hide');
+                                }, 200);
+                            }
+                            setTimeout(function() {
+                                console.log('sdfsfsf');
+                                $('.modal').modal('hide');
+                            }, 200);
 
-                       });
+                        });
                 }
             },
             cancel: {
@@ -2168,60 +2272,60 @@ function DirectCancellationHotelAdmin(typeApplication, factorNumber) {
                     btnClass: 'btn-green',
                     action: function () {
                         $.post(amadeusPath + 'user_ajax.php',
-                           {
-                               typeService: typeApplication,
-                               FactorNumber: FactorNumber,
-                               RequestNumber: FactorNumber,
-                               commentUser: commentUser,
-                               CardNumber: cardNumber,
-                               AccountOwner: AccountOwner,
-                               Status: Status,
-                               NameBank: NameBank,
-                               backCredit: backCredit,
-                               DescriptionClient: DescriptionClient,
-                               isCreditPayment: false,
-                               Indemnity: '',
-                               flag: 'DirectCancellationHotelAdmin'
-                           },
-                           function (data) {
-                               console.log(data)
-                               var res = JSON.parse(data);
-                               console.log(res)
-                               if (res.success) {
-                                   $.toast({
-                                       heading: 'ثبت کنسلی',
-                                       text: res.message,
-                                       position: 'top-right',
-                                       loaderBg: '#fff',
-                                       icon: 'success',
-                                       hideAfter: 2000,
-                                       textAlign: 'right',
-                                       stack: 6,
+                            {
+                                typeService: typeApplication,
+                                FactorNumber: FactorNumber,
+                                RequestNumber: FactorNumber,
+                                commentUser: commentUser,
+                                CardNumber: cardNumber,
+                                AccountOwner: AccountOwner,
+                                Status: Status,
+                                NameBank: NameBank,
+                                backCredit: backCredit,
+                                DescriptionClient: DescriptionClient,
+                                isCreditPayment: false,
+                                Indemnity: '',
+                                flag: 'DirectCancellationHotelAdmin'
+                            },
+                            function (data) {
+                                console.log(data)
+                                var res = JSON.parse(data);
+                                console.log(res)
+                                if (res.success) {
+                                    $.toast({
+                                        heading: 'ثبت کنسلی',
+                                        text: res.message,
+                                        position: 'top-right',
+                                        loaderBg: '#fff',
+                                        icon: 'success',
+                                        hideAfter: 2000,
+                                        textAlign: 'right',
+                                        stack: 6,
 
-                                   });
-                                   setTimeout(function() {
-                                       console.log('sdfsdfs');
-                                       $('.modal').modal('hide');
-                                   }, 200);
-                               } else {
-                                   $.toast({
-                                       heading: 'ثبت کنسلی',
-                                       text: res.message,
-                                       position: 'top-right',
-                                       loaderBg: '#fff',
-                                       icon: 'error',
-                                       hideAfter: 2000,
-                                       textAlign: 'right',
-                                       stack: 6
-                                   });
-                                   setTimeout(function() {
-                                       $('.modal').modal('hide');
-                                   }, 200);
-                               }
-                               setTimeout(function() {
-                                   $('.modal').modal('hide');
-                               }, 200);
-                           });
+                                    });
+                                    setTimeout(function() {
+                                        console.log('sdfsdfs');
+                                        $('.modal').modal('hide');
+                                    }, 200);
+                                } else {
+                                    $.toast({
+                                        heading: 'ثبت کنسلی',
+                                        text: res.message,
+                                        position: 'top-right',
+                                        loaderBg: '#fff',
+                                        icon: 'error',
+                                        hideAfter: 2000,
+                                        textAlign: 'right',
+                                        stack: 6
+                                    });
+                                    setTimeout(function() {
+                                        $('.modal').modal('hide');
+                                    }, 200);
+                                }
+                                setTimeout(function() {
+                                    $('.modal').modal('hide');
+                                }, 200);
+                            });
                     }
                 },
                 cancel: {

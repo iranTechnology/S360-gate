@@ -46,16 +46,7 @@ function bookUserHistoryFilter(target) {
                        old_footer += `<a target="_blank" href="${btn.link}">${btn.title}</a>`;
                     } else {
                        old_footer += `
-                            <button class="${
-                                               btn.title === useXmltag("OsafarRefund") ||
-                                               btn.title === useXmltag("OsafarRefundother")
-                                                   ? 'recovery-btn'
-                                                   : btn.title === useXmltag("OsafarRefundClosed")
-                                                       ? 'refund-closed-btn'
-                                                       : btn.title === useXmltag("OsafarRefundPending")
-                                                           ? 'refund-pending-btn'
-                                                           : ''
-                                           } position-relative"  onclick="${btn.function}">
+                            <button class="${btn.title === useXmltag("OsafarRefund") ? 'recovery-btn' : ''} position-relative" onclick="${btn.function}">
                                 ${btn.title}
                                 <div class="bouncing-loader bouncing-loader-none">
                                     <div></div><div></div><div></div>
@@ -85,16 +76,7 @@ function bookUserHistoryFilter(target) {
                           btn.type === "link"
                              ? `<a target="_blank" href="${btn.link}">${btn.title}</a>`
                              : `
-                           <button class="${
-                                              btn.title === useXmltag("OsafarRefund") ||
-                                              btn.title === useXmltag("OsafarRefundother")
-                                                  ? 'recovery-btn'
-                                                  : btn.title === useXmltag("OsafarRefundClosed")
-                                                      ? 'refund-closed-btn'
-                                                      : btn.title === useXmltag("OsafarRefundPending")
-                                                          ? 'refund-pending-btn'
-                                                          : ''
-                                          } position-relative" onclick="${btn.function}">
+                           <button class="${btn.title === useXmltag("OsafarRefund") ? 'recovery-btn' : ''} position-relative" onclick="${btn.function}">
                                ${btn.title}
                                <div class="bouncing-loader bouncing-loader-none">
                                    <div></div><div></div><div></div>
@@ -550,38 +532,25 @@ function requestCancelFinalBuy(typeApplication, factorNumber) {
 
 }
 
-// $(document).ready(function(){
-//     const inputDisabledJsItem = $('.input-disabled-js');
-//     let checkBoxBackCredit = $('#backCredit');
-//
-//     // چک کردن وضعیت چک‌باکس
-//     if (checkBoxBackCredit.prop('checked')) {
-//         inputDisabledJsItem.each(function() {
-//             $(this).prop('disabled', true);
-//         });
-//     }
-// });
-// document.addEventListener("DOMContentLoaded", function () {
-//
-//     const fields = document.querySelectorAll(".input-disabled-js");
-//     const backCredit = document.getElementById("backCredit");
-//
-//     // --- بار اول که صفحه لود می‌شود ---
-//     if (backCredit.checked) {
-//         fields.forEach(f => f.disabled = true);
-//     }
-//
-// });
 
-function inputDisabled(event) {
-    const fields = document.querySelectorAll(".input-disabled-js");
 
-    if (event.target.id === "backCredit") {
-        fields.forEach(f => f.disabled = true);
-    } else {
-        fields.forEach(f => f.disabled = false);
-    }
+function inputDisabled (event){
+
+  const inputDisabledJsItem = document.querySelectorAll('.input-disabled-js');
+  if (event.target.checked){
+    inputDisabledJsItem.forEach(input =>{
+      input.disabled = true;
+    })
+  } else {
+    inputDisabledJsItem.forEach(input =>{
+      input.disabled = false;
+    })
+  }
 }
+
+
+
+
 
 // // زمانی که مدال نمایش داده شد، کد زیر اجرا می‌شود
 // $('.modal_custom').on('shown.bs.modal', function () {

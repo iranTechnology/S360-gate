@@ -32,7 +32,7 @@
     /* shadow برای بازه */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* مثال سایه */
     /* رنگ دلخواه برای بازه */
-    /* background-color: #4CAF50; */ /* رنگ دلخواه */
+     background-color: #4CAF50;   رنگ دلخواه
 }
 
 /* اگر بخواهید خود اسلایدر (track) هم سایه داشته باشد */
@@ -1796,7 +1796,6 @@ input{
 .international-available-info .international-available-item-left-Cell {
     padding:0 10px;
     position: relative;
-
 }
 
 .international-available-item-left-Cell {
@@ -4623,8 +4622,7 @@ polyline {
     min-height:30px;
 }
 .foreign .international-available-airlines-info{
-    padding:10px 0;
-    /*margin-bottom:20px;*/
+    padding:10px 0
 }
 
 .foreign .flight-type, .foreign .sit-class {
@@ -7857,7 +7855,6 @@ process Flight cdd
         width:100%;
         padding: 0 10px;
         border-top: 1px dashed #ccc;
-
     }
     .inner-avlbl-itm > div{
         display:flex;
@@ -8195,7 +8192,6 @@ process Flight cdd
     /*}*/
     .international-available-info .international-available-item-left-Cell{
         border-top: none;
-        margin-top:30px;
     }
     .priceSortAdt i{
         font-size: 20px;
@@ -8257,7 +8253,6 @@ process Flight cdd
     .s-u-result-item-change{
         flex-wrap:wrap;
         padding: 8px;
-        padding-bottom: 30px;
     }
     .s-u-result-item-div-change,
     .s-u-result-item-wrapper-change{
@@ -8911,6 +8906,7 @@ process Flight cdd
     padding: 15px;
     width: 320px;
     font-family: inherit;
+
 }
 
 .ui-datepicker-header {
@@ -8918,6 +8914,7 @@ process Flight cdd
     margin-bottom: 15px;
     position: relative;
     border-bottom: 1px solid #f0f0f0;
+
 }
 
 .ui-datepicker-prev,

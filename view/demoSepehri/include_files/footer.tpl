@@ -1,3 +1,5 @@
+{load_presentation_object filename="aboutUs" assign="objAbout"}
+{assign var="about"  value=$objAbout->getData()}
 {if $smarty.session.layout neq 'pwa'}
     {if $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotel && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintTicket && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservation && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservationAhuan}
         <svg version="1.1" id="wave_footer" xmlns="http://www.w3.org/2000/svg"
@@ -134,9 +136,14 @@
                                 <a target="_blank" rel="nofollow" href="http://aira.ir/images/final3.pdf">
                                     <img src="project_files/{$smarty.const.SOFTWARE_LANG}/images/certificate3.png" alt="">
                                 </a>
-                                <a target="_blank" rel="nofollow">
-                                    <img src="project_files/{$smarty.const.SOFTWARE_LANG}/images/enamad.png" alt="">
-                                </a>
+                                {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+                                    <a referrerpolicy="origin" target="_blank"
+                                       href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+                                        <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+                                             alt="اینماد"
+                                             style="cursor:pointer">
+                                    </a>
+                                {/if}
                                 <a target="_blank" rel="nofollow" >
                                     <img src="project_files/{$smarty.const.SOFTWARE_LANG}/images/samandeh.jpg" alt="">
                                 </a>

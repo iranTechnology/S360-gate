@@ -1888,7 +1888,7 @@ class BookingHotelNew extends clientAuth
                 </td>
                 <td style="border:none;">
                     <span>آدرس:</span>
-                    <span>'.$address .'</span>
+                    <span>'. $address .'</span>
                 </td>
             </tr>
         </table>

@@ -30,36 +30,31 @@
         {$smarty.const.CLIENT_EMAIL}
        </a>
       </div>
-     
+
      </div>
     </div>
     <div class="parent-footer-iran2">
      <div class="item-footer item-footer2">
       <div class="box-item-footer text-right">
        <h3>
-        اقامتگاه‌ها
+        اقامتگاه‌های عراق
        </h3>
        <ul>
         <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=65&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">
-          اقامتگاه های مشهد مقدس
+         <a href="{$smarty.const.ROOT_ADDRESS}/page/karbala">
+          رزرو اقامتگاه کربلا
          </a>
         </li>
         <li>
-         <a href="{$smarty.const.ROOT_ADDRESS}/resultExternalHotel/iraq/Karbala/{$objDate->daysAfterToday('1')}/{$objDate->daysAfterToday('2')}/1/R:2-0-0">
-          اقامتگاه های عراق
+         <a href="{$smarty.const.ROOT_ADDRESS}/page/najaf">
+          رزرو اقامتگاه نجف
          </a>
         </li>
         <li>
-         <a href="javascript:">
-          اقامتگاه های گیلان
+         <a href="{$smarty.const.ROOT_ADDRESS}/page/kadhimiya">
+          رزرو اقامتگاه کاظمین
          </a>
         </li>
-           <li>
-               <a href="javascript:">
-                   اقامتگاه های مازندران
-               </a>
-           </li>
        </ul>
       </div>
      </div>
@@ -125,6 +120,30 @@
           </a>
          </div>
         </li>
+        <li>
+         <div class="child-item-footer">
+          سفر انفرادی :
+          <a href="tel:{$smarty.const.CLIENT_MOBILE}">
+           {$smarty.const.CLIENT_MOBILE}
+          </a>
+         </div>
+        </li>
+        <li>
+         <div class="child-item-footer">
+          کاروان‌ها :
+          <a href="tel:{$smarty.const.CLIENT_MOBILE}">
+           {$smarty.const.CLIENT_MOBILE}
+          </a>
+         </div>
+        </li>
+        <li>
+         <div class="child-item-footer">
+          پرواز :
+          <a href="tel:{$smarty.const.CLIENT_MOBILE}">
+           {$smarty.const.CLIENT_MOBILE}
+          </a>
+         </div>
+        </li>
        </ul>
       </div>
      </div>
@@ -139,8 +158,9 @@
        <a href="https://www.aira.ir/">
         <img alt="namad-2" src="project_files/images/certificate3.png"/>
        </a>
-       <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=736430&Code=uhZmdFb9N2EtNIxHYiKGLSXAxp1z1nyT'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=736430&Code=uhZmdFb9N2EtNIxHYiKGLSXAxp1z1nyT' alt='' style='cursor:pointer' code='uhZmdFb9N2EtNIxHYiKGLSXAxp1z1nyT'></a>
-
+       <a href="javascript:">
+        <img alt="namad-2" src="project_files/images/enamad.png"/>
+       </a>
       </div>
      </div>
      <div class="item-footer item-footer7">

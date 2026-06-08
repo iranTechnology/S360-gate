@@ -138,7 +138,7 @@ class Session extends baseController
 
     /*     * ***admin***** */
 
-    public static function adminIsLogin()
+    public static function aadminIsLogin()
     {
        self::init();
         if (isset($_SESSION["adminLogin"])) {

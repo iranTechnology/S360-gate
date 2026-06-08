@@ -204,7 +204,7 @@ a:hover{
     display: flex;
     align-items: center;
     transition: all ease .3s;
-     padding:5px 9px;
+    padding:5px 9px;
     border-radius:10px;
 }
 .titel_special_tours a:hover{
@@ -417,15 +417,15 @@ a:hover{
 
 .Terms_Conditions .nav-item .nav-link {
     /*background: var(--mainColor);*/
-    border: 1px solid #b71c1c;
-    color: #b71c1c;
+    border: 1px solid var(--mainColor);
+    color: var(--mainColor);
 }
 
 .new_tours .nav-item .nav-link {
     /*background: var(--mainColor);*/
-    color: #b71c1c;
+    color: var(--mainColor);
     height: 36px;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
 }
 
 .data_travel .nav-item .nav-link {
@@ -450,7 +450,7 @@ a:hover{
 }
 
 .Terms_Conditions .nav-item .nav-link.active {
-    background: #b71c1c;
+    background: var(--mainColor) !important;
 }
 .parent_tab_tour{
     width: 100%;
@@ -655,7 +655,7 @@ a:hover{
     padding: .5rem;
     margin-top: 20px;
     border-radius: 10px;
-   box-shadow: 0 3px 6px rgba(146,146,146,.2);
+    box-shadow: 0 3px 6px rgba(146,146,146,.2);
 }
 .card{
     border: none !important;
@@ -691,7 +691,7 @@ a:hover{
     background: var(--mainColor);
     box-shadow: 0 2px 6px rgba(0,0,0,.3);
     color: #fff;
-     position: absolute;
+    position: absolute;
     bottom: 1rem;
     right: -4rem;
     padding: 5px 35px;
@@ -782,7 +782,7 @@ a:hover{
 .titr_luxury h4{
     font-size: 16px;
     color: #5c5c5c;
-     margin-bottom: 15px;
+    margin-bottom: 15px;
     font-weight: 600;
     line-height: 26px;
 }
@@ -906,7 +906,7 @@ main{
 }
 
 .tours_titr{
-background: var(--mainColor);
+    background: var(--mainColor);
     height: 43px;
     margin-bottom: 15px;
     border-bottom: 1px solid #fff;
@@ -979,7 +979,7 @@ background: var(--mainColor);
     color: #333;
 }
 .fa-moon{
-   margin-left: 5px;
+    margin-left: 5px;
 }
 .parent_item .fa-plane-up{
     color: #fff;
@@ -1011,10 +1011,10 @@ background: var(--mainColor);
 }
 .arrow_after{
     position: absolute;
-   left: 3px;
+    left: 3px;
     z-index: 10;
     color: #fff;
-  font-size: 16px;
+    font-size: 16px;
     display: none !important;
 }
 
@@ -1972,7 +1972,7 @@ body .cameraContents{
     .banner-demo-1::after{
         display:none;
     }
-   body #camera_wrap_1{
+    body #camera_wrap_1{
         display:none !important;
     }
 }

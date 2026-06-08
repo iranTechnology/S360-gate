@@ -671,8 +671,7 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function ReservationTourCountries($is_external = false, $isSpecial = false , $type_id = null , $type_kind = 'like' , $is_internal = false) {
-
+    public function ReservationTourCountries($is_external = false, $isSpecial = false , $type_id = null , $type_kind = 'like') {
         $Model = Load::library('Model');
 
         $software_lang = SOFTWARE_LANG;
@@ -688,19 +687,23 @@ class reservationBasicInformation extends clientAuth {
               LEFT JOIN reservation_continent_config_tb AS CC ON C.id_continent = CC.continent_id AND CC.is_del = 'no'
           ";
 
+
+
+
+
+
+
+//if(  $_SERVER['REMOTE_ADDR']=='178.131.176.190'  ) {
+//        echo $sql;
+//        die;
+//}
+
         if ($is_external == true) {
             $sql .= " WHERE C.id != '1' AND TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
             if ($isSpecial) {
                 $sql .= "AND T.is_special = 'yes' ";
             }
-        }
-        elseif ($is_internal == true) {
-            $sql .= " WHERE C.id = '1' AND TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
-            if ($isSpecial) {
-                $sql .= "AND T.is_special = 'yes' ";
-            }
-        }
-        else{
+        }else{
             $sql.=" WHERE TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
         }
         if( isset($type_id) && !empty($type_id)) {

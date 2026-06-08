@@ -83,7 +83,6 @@ function internalHotelSearchDetails() {
       }),
       success: function(response){
 
-
          if(lang === "fa"){
             $("#autoComplateSearchIN").val(response.name);
          } else {
@@ -771,21 +770,20 @@ function internalHotelSearchDetails() {
             },
          })
       }
+      let generateMap = function(latitude, longitude, mapDiv = 'mapDiv') {
+         if (typeof L === 'undefined') {
+            console.error('Leaflet library (L) is not loaded.');
+            return;
+         }
+         map = L.map(mapDiv).setView([latitude, longitude], 16)
+         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.iran-tech.com/">Iran Technology</a> contributors',
+            // maxZoom: 18,
+            // minZoom: 11,
+         }).addTo(map)
+         marker = L.marker([latitude, longitude]).addTo(map)
 
-          let generateMap = function(latitude, longitude, mapDiv = 'mapDiv') {
-              if (typeof L === 'undefined') {
-                  console.error('Leaflet library (L) is not loaded.');
-                  return;
-              }
-              map = L.map(mapDiv).setView([latitude, longitude], 16)
-              L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  attribution: 'Map data &copy; <a href="https://www.iran-tech.com/">Iran Technology</a> contributors',
-                  // maxZoom: 18,
-                  // minZoom: 11,
-              }).addTo(map)
-              marker = L.marker([latitude, longitude]).addTo(map)
-
-          }
+      }
       let generateHtmlForSearchHotel = function(data, parseJson) {
 
 
@@ -862,8 +860,8 @@ function internalHotelSearchDetails() {
                 </svg> `;
                if (window.innerWidth < 576) {
                   galleryHtml += `
-                       <span>${value.Pictures.length}</span>
-        ${useXmltag('moreImage')}
+                       <span></span>
+        ${useXmltag('NasimBeheshtGallery')}
                `;
                } else {
                   galleryHtml += `
@@ -1236,7 +1234,6 @@ function internalHotelSearchDetails() {
             },
             success: function(data) {
 
-
                let value = data.Hotels
                let request_number = data.requestNumber
                let advertises = data.Advertises
@@ -1244,8 +1241,6 @@ function internalHotelSearchDetails() {
                $('#webServiceType').val(data.WebServiceType)
                $('.silence_span').html(`<b id='countHotelHtml'>${data.Count}</b> ${useXmltag('silenceSpanHotel')}`)
                $('#hotelResultItem').remove()
-                $('#requestNumber').text(request_number);
-
                if (data.Count > 0) {
                   $.each(value, function(index, item) {
                      if(!hotelType.includes(item.type_code)) {
@@ -1507,6 +1502,7 @@ function internalHotelSearchDetails() {
                 <div class='fullCapacity_div'>
                     <img src='${full_capacity_image}' alt='fullCapacity'>
                     <h2>${useXmltag('Nohotel')}</h2>
+                    <kbd class="kbd_style">${request_number}</kbd>
                 </div>
             </div>`
                   $('#hotelResult').html(htmlError)
@@ -4539,6 +4535,263 @@ function hotelLoader(){
                 </div>
               </li>`)
 }
+
+function handleMobileSearch(keyword, type , search_type) {
+
+    const listContainer = $("#mobilePopularDestinations");
+
+    // اگر سرچ خالی شد → دوباره لیست محبوب را برگردان
+    if (!keyword.trim()) {
+        if(search_type == 'internal'){
+            renderMobilePopularInternalCities(type);
+            return;
+        }else{
+            renderMobilePopularInternationalCities(type);
+            return;
+        }
+    }
+
+    if(search_type == 'internal'){
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'ajax',
+            dataType: 'json',
+            data: JSON.stringify({
+                method: 'searchCitiesFlightInternal',
+                className: 'newApiFlight',
+                use_customer_db: true,
+                is_group: true,
+                limit: 12,
+                value:keyword
+            }),
+            beforeSend: function () {
+                listContainer.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
+            },
+            success: function (response) {
+
+                let results = response.data || [];
+                let html_items = [];
+                if (results.length === 0) {
+                    listContainer.html(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
+                    return;
+                }
+
+                results.forEach(item => {
+
+                    console.log(item)
+                    let departure_city = item.Departure_CityFa;
+                    let departure_code = item.Departure_Code;
+                    if (lang == "ar" && item.Departure_CityAr) {
+                        departure_city = item.Departure_CityAr;
+                    } else if (lang == "en" && item.Departure_CityEn) {
+                        departure_city = item.Departure_CityEn;
+                    }else{
+                        departure_city = item.Departure_CityFa;
+                    }
+
+                    let json_value = JSON.stringify({
+                        DepartureCode: item.Departure_Code,
+                        DepartureCityFa: item.Departure_CityFa,
+                        DepartureCityEn: item.Departure_CityEn,
+                        type: type
+                    });
+
+
+                    html_items.push(`
+                 <li onclick='selectCityItem(${json_value}, event, $(this));'>
+    <div class="mobile-city-item">
+        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
+        <span class="city-text">${departure_city} (${departure_code})</span>
+    </div>
+</li>
+<div class="mobile-divider"></div>
+        `);
+                });
+
+                listContainer.html(`
+        <h2>${useXmltag("SearchResult")}</h2>
+        <ul class="ul-mobile-drawer">${html_items.join("")}</ul>
+      `);
+
+            },
+            error: function () {
+                listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
+            }
+        });
+    }else{
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'ajax',
+            dataType: 'json',
+            data: JSON.stringify({
+                method: 'cityForSearchInternational',
+                className: 'routeFlight',
+                iata:keyword
+            }),
+            beforeSend: function () {
+                listContainer.html(`<div class='mobile-loading text-center mt-4'>${useXmltag("Loading")}</div>`);
+            },
+            success: function (response) {
+
+                let results = response.data || [];
+                let html_items = [];
+                if (results.length === 0) {
+                    listContainer.html(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
+                    return;
+                }
+
+                results.forEach(item => {
+
+                    let departure_city = item.DepartureCityFa;
+                    let departure_code = item.DepartureCode;
+                    let country = item.CountryFa;
+                    let airport = item.AirportFa;
+                    if (lang == "ar" && item.DepartureCityAr) {
+                        departure_city = item.DepartureCityAr;
+                        country = item.CountryAr;
+                        airport = item.AirportAr;
+                    } else if (lang == "en" && item.DepartureCityEn) {
+                        departure_city = item.DepartureCityEn;
+                        country = item.CountryEn;
+                        airport = item.AirportEn;
+                    }else{
+                        departure_city = item.DepartureCityFa;
+                    }
+
+                    let json_value = JSON.stringify({
+                        DepartureCode: item.DepartureCode,
+                        DepartureCityFa: item.DepartureCityFa,
+                        DepartureCityEn: item.DepartureCityEn,
+                        CountryFa : item.CountryFa,
+                        AirportFa : item.AirportFa,
+                        type: type
+                    });
+
+                    console.log(json_value)
+
+                    html_items.push(`
+                 <li onclick='selectAirportItem(${json_value}, event, $(this));'>
+    <div class="mobile-city-item">
+        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
+       <div class="city-text">
+      <div>
+      <span>${airport} - </span><span>${country}</span>
+      </div>
+      <div style="font-size:12px !important">
+       <span>${departure_city} - </span><span>(${departure_code})</span>
+       </div>
+       </div>
+    </div>
+</li>
+<div class="mobile-divider"></div>
+        `);
+                });
+
+                listContainer.html(`
+        <h2>${useXmltag("SearchResult")}</h2>
+        <ul class="ul-mobile-drawer">${html_items.join("")}</ul>
+      `);
+
+            },
+            error: function () {
+                listContainer.html(`<div class='not_found'>${useXmltag("ErrorHappened")}</div>`);
+            }
+        });
+    }
+}
+function setupMobileDrawerElements(type , search_type) {
+    const drawer = document.getElementById('mobileDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+
+    const typesText = type === 'origin' ? 'انتخاب مبدا' : 'انتخاب مقصد';
+    const placeholderText = type === 'origin' ? 'جستجوی شهر مبدا' : 'جستجوی شهر مقصد';
+
+
+    // اگر قبلاً ساخته شده → فقط آپدیت + وصل کردن سرچ
+    if (drawer && overlay) {
+        document.getElementById('types').textContent = typesText;
+
+        const searchInput = document.getElementById('mobileSearchInput');
+        searchInput.placeholder = placeholderText;
+
+        // اطمینان از اینکه oninput همیشه درست وصل می شود
+        searchInput.oninput = () => handleMobileSearch(searchInput.value, type , search_type);
+
+        return; // اگر عناصر موجود بودند، کار تمام است
+    }
+
+
+    // ساخت overlay
+    const newOverlay = document.createElement('div');
+    newOverlay.id = 'drawerOverlay';
+    newOverlay.className = 'drawer-overlay';
+    document.body.appendChild(newOverlay);
+
+    // ساخت drawer
+    const newDrawer = document.createElement('div');
+    newDrawer.id = 'mobileDrawer';
+    newDrawer.className = 'mobile-drawer';
+
+    newDrawer.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mx-3">
+        <h5 id="types">${typesText}</h5>
+        <button class="close-drawer-btn ml-2">&times;</button>
+    </div>
+
+    <div class="drawer-header mb-1">
+        <input type="text" id="mobileSearchInput"
+            class="mobile-search-input m-0"
+            placeholder="${placeholderText}">
+    </div>
+
+    <div class="border-bottom w-100"></div>
+
+    <div id="mobilePopularDestinations" class="mobile-popular-list"></div>
+  `;
+
+    document.body.appendChild(newDrawer);
+
+
+    // --- تنظیم ایونت ها بعد از ساخت عناصر ---
+    // بستن drawer
+    // گرفتن دکمه بستن از newDrawer که همین الان ساخته شده
+    const closeButton = newDrawer.querySelector('.close-drawer-btn');
+    if (closeButton) {
+        closeButton.onclick = closeMobileDrawer;
+    }
+    // overlay هم همینطور
+    if (newOverlay) {
+        newOverlay.onclick = closeMobileDrawer;
+    }
+
+    // وصل کردن سرچ
+    const searchInput = document.getElementById('mobileSearchInput');
+    if (searchInput) {
+        searchInput.oninput = () => handleMobileSearch(searchInput.value, type);
+    }
+    // --- پایان تنظیم ایونت ها ---
+}
+function openMobileDrawer() {
+    const drawerOverlay = document.getElementById('drawerOverlay'); // یا querySelector
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    if (drawerOverlay && mobileDrawer) {
+        drawerOverlay.classList.add('visible');
+        mobileDrawer.classList.add('visible');
+        console.log('Drawer opened.');
+    }
+}
+function closeMobileDrawer() {
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+
+    if (drawerOverlay && mobileDrawer) {
+        drawerOverlay.classList.remove('visible');
+        mobileDrawer.classList.remove('visible');
+        console.log('Drawer closed.');
+    }
+}
+
+
 function openBoxPopular(e){
 
    HotelPopular(e);

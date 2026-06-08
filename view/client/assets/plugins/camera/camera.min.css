@@ -451,6 +451,7 @@ html, body {
 .banner-demo::after{
 	height:100% !important;
 }
+
 .banner-title{
 	position: absolute;
 	right: 0;

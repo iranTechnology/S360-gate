@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-6 col-sm-12 col-12 col_search date_search">
+<div class="col-lg-4 col-md-6 col-sm-6 col-12 col_search date_search">
     <div class="form-group">
         <input readonly="" type="text"
                class="{if $smarty.const.SOFTWARE_LANG neq 'fa'} deptCalendar-en {else} deptCalendar {/if} form-control went  departure-date-international-js" name="departure_date_international" id="departure_date_international"

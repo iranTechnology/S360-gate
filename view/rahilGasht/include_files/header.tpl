@@ -38,6 +38,8 @@
         {/foreach}
     {/if}
 
+    <title>دمو سفر 360</title>
+
     {if $smarty.const.GDS_SWITCH eq 'mainPage' }
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHeadMain.tpl"}
     {/if}

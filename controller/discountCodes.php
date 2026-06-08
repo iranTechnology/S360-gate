@@ -280,7 +280,7 @@ class discountCodes extends clientAuth
         $data['memberId'] = $memberId;
         $data['serviceTitle'] = $serviceTitle;
         $data['factorNumber'] = $factorNumber;
-        $data['status'] = 'success';
+        $data['status'] = 'pending';
         $data['creationDateInt'] = time();
 
         $Model->setTable('discount_codes_used_tb');

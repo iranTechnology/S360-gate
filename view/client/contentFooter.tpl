@@ -8,6 +8,7 @@
     <script type="text/javascript" src="assets/js/jquery.voteStar.js"></script>
     <script type="text/javascript" src="assets/js/hideMaxListItem.js"></script>
     <script type="text/javascript" src="assets/js/select2.min.js"></script>
+  <script type="text/javascript" src="assets/js/select2.min.js"></script>
   <script src="assets/plugins/switchery/dist/switchery.min.js"></script>
 
 

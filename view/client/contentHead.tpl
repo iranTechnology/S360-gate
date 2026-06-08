@@ -109,6 +109,7 @@ in_array($smarty.const.GDS_SWITCH ,[
     'listTourDates' ,
     'entertainmentPanel' ,
     'editTour' ,
+    'aboutUs',
     'rules',
     'loginAgency',
     'agencyProfile',
@@ -120,6 +121,7 @@ in_array($smarty.const.GDS_SWITCH ,[
     'agencyPassengers',
     'listTransactionUser',
     'reportCreditAgency',
+    'contactUs' ,
     'feedback'
     ])
 }

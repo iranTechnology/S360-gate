@@ -975,12 +975,8 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
                       "<div class='dropzone-parent-trash-shakkhes'>" +
                       "<button type='button' class='dropzone-btn-trash' onclick='removeFromGallery($(this))' data-index='" + i + "' class=\"remove text-danger\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i> حذف</button>" +
                       "<div class='dropzone-radio-shakhes " + (isChecked ? "d-none" : "") + "'>";
-
-
-
-
                     if(selected){
-                       
+
                         tags=tags+
                           "<label for='gallery_selected" + i + "'>" +
                           "تنظیم بعنوان شاخص" +
@@ -1087,7 +1083,7 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
 
 
                 if(selected){
-                    
+
                     tags=tags+
                       "<label for='gallery_selected" + i + "'>" +
                       "تنظیم بعنوان شاخص" +
@@ -1125,7 +1121,6 @@ async function dropHandler(ev,selected=false ,  hasAlt = false) {
     }
 
 }
-
 function setAsSelectedGallery(src) {
 $('.selected_image').find('.dropify-render img')
       .attr('src', src)

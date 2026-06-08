@@ -94,7 +94,7 @@ class verificationCode extends clientAuth
         return $membersModel->getByEmail($entry);
     }
 
-    private function generateCode() {
+    public function generateCode() {
         return rand(1000, 9999);
     }
 

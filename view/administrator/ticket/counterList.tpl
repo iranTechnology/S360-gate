@@ -61,8 +61,8 @@
                         {assign var="number" value="0"}
                         {assign var="Id" value=$smarty.get.id}
 
-                        {foreach key=key item=item from=$objCounter->getCountersByAgency($Id,'1')}
-                            {*نمایش اسامی کانترها*}
+                        {foreach key=key item=item from=$objCounter->getCountersByAgency($Id,'1')} {*نمایش اسامی
+                        کانترها*}
                             {$objCounterType->get($item.fk_counter_type_id)} {*گرفتن عنوان از جدول نوع کانتر*}
                             {$number=$number+1}
                             <tr id="del-{$item.id}">
@@ -169,14 +169,6 @@
                                                        data-original-title="مشخصات حساب بانکی"></i>
                                                 </a>
                                             </li>
-                                            <li class="li-list-operator">
-                                                <a onclick="loginMember('{$item.user_name}','{$item.password}')" class="" target="_blank">
-                                                    <i class="fcbtn btn btn-outline btn-success btn-1e fa fa-sign-in tooltip-success"
-                                                       data-toggle="tooltip" data-placement="top" title=""
-                                                       data-original-title="ورود مستقیم"></i>
-                                                </a>
-                                            </li>
-
 
                                         </ul>
                                     </div>
@@ -194,33 +186,3 @@
     </div>
 </div>
 <script type="text/javascript" src="assets/JsFiles/counter.js"></script>
-<script>
-    var clientMainDomain = '{$smarty.const.CLIENT_MAIN_DOMAIN}';
-        function loginMember(userName, password) {
-            const ajaxData = {
-                className: "members",
-                entry:userName,
-                password:password,
-                method:  "AdmincallMemberLogin"
-            }
-            $.ajax({
-                url: amadeusPath + "ajax",
-                type: "POST",
-                data: JSON.stringify(ajaxData),
-                dataType: 'json',
-                success: function (resp) {
-                    if (resp) {
-                        var targetUrl =  clientMainDomain;
-                        var newWin = window.open('https://' + clientMainDomain, '_blank');
-                    } else {
-                        alert(resp.message || 'خطا در ورود');
-                    }
-                },
-                error: function (xhr) {
-                    console.error('AJAX error:', xhr);
-                    alert('خطای ارتباط با سرور');
-                }
-            });
-
-        }
-</script>

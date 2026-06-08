@@ -50,6 +50,7 @@ class reportContentClient extends clientAuth
             $CountTourInternal = ($this->CountTourInternal($client['id']) == false)? ['count' => 0] : $this->CountTourInternal($client['id']);
             $CountTourForeigner = ($this->CountTourForeigner($client['id']) == false)? ['count' => 0] : $this->CountTourForeigner($client['id']);
             $CountSpecialPages = ($this->CountSpecialPages($client['id']) == false)? ['count' => 0] : $this->CountSpecialPages($client['id']);
+
             $ClinetName = $client['AgencyName'];
 
             $CountSuccess = intval($CountNews['count']) +
@@ -60,8 +61,6 @@ class reportContentClient extends clientAuth
 
 
             if ($CountSuccess > 0 ){
-
-
                 self::$reports[$client['id']] =
                     [
                         'CountNews' => $CountNews,
@@ -75,8 +74,8 @@ class reportContentClient extends clientAuth
             }
 
 
-                       /*   'CountHotelInternal' => $this->CountHotelInternal($client['id']),
-                       'CountHotelForeigner' => $this->CountHotelForeigner($client['id']),*/
+            /*   'CountHotelInternal' => $this->CountHotelInternal($client['id']),
+            'CountHotelForeigner' => $this->CountHotelForeigner($client['id']),*/
         }
         echo json_encode(self::$reports);
     }

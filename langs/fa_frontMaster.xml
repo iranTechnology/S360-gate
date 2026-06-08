@@ -280,6 +280,7 @@
   <Seebookingpatrolstransfers>مشاهده رزرو گشت و ترانسفر</Seebookingpatrolstransfers>
   <Setstatusreservationroom>ثبت وضعیت رزرو اتاق</Setstatusreservationroom>
   <Statusreservation>وضعیت رزرو</Statusreservation>
+  <Statusreservation>وضعیت رزرو</Statusreservation>
   <Prereservation>پیش رزرو</Prereservation>
   <Definitivereservation>رزرو قطعی</Definitivereservation>
   <Paymentprebookingamount>پرداخت مبلغ پیش رزرو</Paymentprebookingamount>
@@ -654,7 +655,6 @@
   <Passportexpirydate>تاریخ انقضاء پاسپورت</Passportexpirydate>
   <Requireddocuments>مدارک مورد نیاز</Requireddocuments>
   <InformationSaler>مشخصات خریدار</InformationSaler>
-  <InformationSalerInfo>اطلاعات تماس خریدار</InformationSalerInfo>
   <Tracknumber>شماره پیگیری</Tracknumber>
   <Title>عنوان</Title>
   <TitleEnglish>عنوان انگلیسی</TitleEnglish>
@@ -950,7 +950,6 @@
   <Sale>فروش</Sale>
   <PnrCode>شماره pnr</PnrCode>
   <CharterType>چارتری</CharterType>
-  <Charter>چارتر</Charter>
   <BusinessType>بیــزینس</BusinessType>
   <SystemType>سیستمی</SystemType>
   <EconomicsType>اکونومی</EconomicsType>
@@ -1069,7 +1068,7 @@
   <SecuritycodeDept>کد امنیتی پرواز رفت</SecuritycodeDept>
   <SecuritycodeReturn>کد امنیتی پرواز برگشت</SecuritycodeReturn>
   <Visa>ویزا</Visa>
-    <Cip>تشریفات فرودگاه</Cip>
+  <Cip>تشریفات فرودگاه</Cip>
   <Bugpasswordrecoveryprocess>اشکال در فرآیند بازیابی کلمه عبور</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>برای بازیابی رمز عبور، مجددا درخواست نمایید</Requestnewpasswordpassword>
   <expireddeadlinerequest>متاسفانه مهلت اعتبار درخواست شما به پایان رسیده است</expireddeadlinerequest>
@@ -1253,7 +1252,6 @@
   <YourvotebeenrecordedThankyou>رأی شما ثبت شد، از شما سپاسگزاریم</YourvotebeenrecordedThankyou>
   <YouhavealreadyvotedThankyou>شما قبلا رأی داده اید، از شما سپاسگزاریم</YouhavealreadyvotedThankyou>
   <Removechanges>حذف تغییرات</Removechanges>
-  <Copychanges>با موفقیت کپی شد</Copychanges>
 
   <Areyousureyouwantdeletechanges>آیا از حذف تغییرات اطمینان دارید ؟</Areyousureyouwantdeletechanges>
   <Pleaseenteryourfulldetails>لطفا اطلاعات خود را کامل وارد کنید.</Pleaseenteryourfulldetails>
@@ -1785,9 +1783,10 @@
   <ReserveInsurance>رزرو بیمه</ReserveInsurance>
   <ErrorDiscountCode>متاسفانه کد تخفیف به شما تعلق نمی گیرد</ErrorDiscountCode>
   <CompletePayment>جهت تکمیل فرآیند، لطفا روی گزینه پرداخت کلیک نمایید</CompletePayment>
-  <MessagePaymentByCreditUser>مبلغ پرداختی پس از کسر اعتبار @@creditPayment@@ ریال می باشد، لطفا جهت پرداخت مانده حساب خود یک درگاه بانکی را انتخاب نمایید</MessagePaymentByCreditUser>
+  <MessagePaymentByCreditUser>مبلغ پرداختی پس از کسر اعتبار @@creditPayment@@ ریال می باشد، لطفا جهت پرداخت مانده حساب خود یک درگاه بانکی را انتخاب
+    نمایید
+  </MessagePaymentByCreditUser>
   <ZeroCredit>متاسفانه اعتبار شما 0 ریال می باشد</ZeroCredit>
-  <notEnoughCredit>عدم اعتبار کافی جهت پرداخت اعتباری</notEnoughCredit>
   <AccessDenied>شما دسترسي لازم به اين بخش را نداريد</AccessDenied>
   <AwardDiscountCode>تبریک؛ شما از ما کد تخفیف@@CodeDiscount@@از @@title@@ دریافت نمودید</AwardDiscountCode>
   <SendEmailForOther>در صورت اینکه تمایل به ارسال رزرو برای شخص دیگری داشته، ایمیل شخص مورد نظر را در کادر زیر وارد کرده و بر روی دکمه ارسال کلیک
@@ -2239,7 +2238,7 @@
     استفاده باشد. قطعا در زمان بروز این مشکل، به شما اطمینان داده می شود بخش پشتیبانی شبانه روزی ما سعی خواهد نمود تا پروازی جایگزین برای شما تهیه
     کرده و ضرر مالی احتمالی شما را جبران نماید. ما خود را موظف می دانیم تا سفر خوشی را برای شما فراهم کنیم.
   </TermsAirlinesCharterFlightsLessThanPercentLikely>
-  <SelectReturnTicket> بلیط برگشت را انتخاب کنید</SelectReturnTicket>
+  <SelectReturnTicket>انتخاب بلیط برگشت</SelectReturnTicket>
   <FinalReservationError>خطا در رزرو نهایی</FinalReservationError>
   <InvalidFlight>پرواز نا معتبر</InvalidFlight>
   <TicketFlightWent>جزئیات و انتخاب رفت</TicketFlightWent>
@@ -2844,7 +2843,9 @@
   <PleaseEnterMobileOrEmail>لطفا ایمیل یا شماره همراه خود را وارد کنید</PleaseEnterMobileOrEmail>
   <FlightRepetition>حذف پروازهای تکراری</FlightRepetition>
   <FlightRepetitionCount>پرواز تکراری به نتایج جستجو اضافه شد</FlightRepetitionCount>
+  <FlightRepetitionShowCount>پرواز تکراری از نتایج جستجو حذف شد</FlightRepetitionShowCount>
   <FlightRepetitionShow>نمایش پروازهای تکراری</FlightRepetitionShow>
+
   <PleaseEnterUserEntry>لطفا شماره همراه خود را وارد کنید</PleaseEnterUserEntry>
   <optExpired>مدت استفاده از رمز عبور موقت به پایان رسیده است. کد جدید ارسال شد.</optExpired>
   <optSent>کد جدید ارسال شد.</optSent>
@@ -3228,7 +3229,6 @@
   <commentText>متن دیدگاه</commentText>
   <enterYourOpinion>دیدگاه خود را وارد نمایید</enterYourOpinion>
   <YourTrackingCode>کد پیگیری شما </YourTrackingCode>
-  <TrackingCodeEnd>کد پیگیری</TrackingCodeEnd>
   <YourRequestHasBeenSuccessfullyRegistered>درخواست شما با موفقیت ثبت شد</YourRequestHasBeenSuccessfullyRegistered>
 
   <FlightFrom>پروازهای</FlightFrom>
@@ -3336,7 +3336,6 @@
   <SelectDestinationCity>انتخاب شهر مقصد</SelectDestinationCity>
   <SelectDestinationCountry>انتخاب کشور مقصد</SelectDestinationCountry>
   <AllEntertainments> مجموعه تفریحات</AllEntertainments>
-  <TotalSelection>انتخاب مجموعه</TotalSelection>
   <ServiceRequestDate>تاریخ درخواست سرویس</ServiceRequestDate>
   <IndividualGasht>گشت انفرادی</IndividualGasht>
   <GroupGasht>گشت گروهی</GroupGasht>
@@ -3742,7 +3741,8 @@
   <ExtraBedsLimit>حداکثر @@ تخت اضافه مجاز است</ExtraBedsLimit>
   <NameCip>نام سرویس</NameCip>
   <moreImage>تصاویر بیشتر</moreImage>
-
+  <Errorunknown>خطای نامشخص</Errorunknown>
+  <Errorknown>خطای مشخص</Errorknown>
 
   <!--  panel admin  (en ar fa) -->
   <PA_HOME>خانه</PA_HOME>

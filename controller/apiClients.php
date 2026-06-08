@@ -12,10 +12,10 @@ class apiClients extends clientAuth
      * @var string
      */
     private $page_limit;
-    /**
+        /**
 
-     * @var string
-     */
+         * @var string
+         */
     private $photoUrl;
 
     public function __construct() {
@@ -102,7 +102,7 @@ class apiClients extends clientAuth
         }
 
         if ($params) {
-            $update = $apiClients_model->updateWithBind($data, ['id' => $params['id']]);
+             $update = $apiClients_model->updateWithBind($data, ['id' => $params['id']]);
             if ($update) {
                 return self::returnJson(true, 'مشتری با موفقیت در سیستم بروزرسانی شد');
             }
@@ -113,28 +113,13 @@ class apiClients extends clientAuth
 
 
     public function updateApiClients($params) {
+
         /** @var application $config */
         /** @var apiClientsModel $apiClients_model */
         $apiClients_model = $this->getModel('apiClientsModel');
         $dataUpdate['userName'] = $params['userName'];
         $dataUpdate['keyTabdol'] = $params['keyTabdol'];
-        $id_client = $params['id_client'];
 
-        //چک می کنیم idClient باشد و هم اینکه تکرااری یک آژآنس رو انتخاب نکرده باشیم
-        if($id_client!='' && $id_client>0){
-             if($id_client!='299'){//تکرارای نباشد
-                 $CheckApiClient = $apiClients_model
-                     ->get(['id'])
-                     ->where('id', $params['id'],'!=')
-                     ->where('clientId ',$id_client)
-                     ->find();
-                 if($CheckApiClient['id']>0 ){
-                     return self::returnJson(false, 'به این آژانس قبلا Api تخصیص داده ایم', null, 500);
-                 }
-             }
-
-             $dataUpdate['clientId']=$id_client;
-        }
 
         $check_up = true;
         $check_user_name = $this->checkUserExist($dataUpdate['userName']);
@@ -144,6 +129,8 @@ class apiClients extends clientAuth
                 $check_up = false;
             }
         }
+
+
         if ($check_up) {
             $update = $apiClients_model->updateWithBind($dataUpdate, ['id' => $params['id']]);
             if ($update) {
@@ -154,6 +141,8 @@ class apiClients extends clientAuth
         }
 
         return self::returnJson(false, $update, null, 500);
+
+
         return self::returnJson(false, 'خطا در ثبت اطلاعات در سیستم.', null, 500);
     }
 

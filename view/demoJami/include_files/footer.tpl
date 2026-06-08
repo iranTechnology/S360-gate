@@ -147,9 +147,15 @@
         <a href="javascript:">
          <img alt="namad-2" src="project_files/images/samandehipng.parspng.com_.png"/>
         </a>
-        <a href="javascript:">
-         <img alt="namad-2" src="project_files/images/enamad.png"/>
-        </a>
+        {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+         <a referrerpolicy="origin" target="_blank"
+            href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+          <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+               alt="اینماد"
+               style="cursor:pointer">
+         </a>
+        {/if}
+
         <a href="http://aira.ir/images/final3.pdf">
          <img alt="namad-2" src="project_files/images/certificate3.png"/>
         </a>

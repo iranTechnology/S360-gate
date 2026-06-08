@@ -1,21 +1,18 @@
 {load_presentation_object filename="aboutUs" assign="objAbout"}
- {assign var="aboutUsData" value=$objAbout->GetData($smarty.get.lang)}
+{assign var="aboutUsData" value=$objAbout->GetData($smarty.get.lang)}
 
 {assign var="socialMediaList" value=[
-    'instagram' => 'اینستاگرام' ,
-    'telegram' => 'تلگرام' ,
-    'linkedin' => 'لینکدین' ,
-    'whatsapp' => 'واتس اپ' ,
-    'twitter' => 'توییتر' ,
-    'youTube' => 'یوتیوب' ,
-    'pinterest' => 'پینترست',
-    'ita' => 'ایتا',
-    'bale' => 'بله',
-    'aparat' => 'آپارات'
+'instagram' => 'اینستاگرام' ,
+'telegram' => 'تلگرام' ,
+'linkedin' => 'لینکدین' ,
+'whatsapp' => 'واتس اپ' ,
+'twitter' => 'توییتر' ,
+'youTube' => 'یوتیوب' ,
+'pinterest' => 'پینترست',
+'ita' => 'ایتا',
+'bale' => 'بله',
+'aparat' => 'آپارات'
 ]}
-
-
-
 
 <div class="container-fluid">
     <div class="row bg-title">
@@ -28,18 +25,20 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="white-box">
+            <div class="white-box">##Login##
                 <h3 class="box-title m-b-0  PA_Ab_TITLE" >درباره ی ما</h3>
+
+
                 <form class='aboutUsUpdate' id='aboutUsUpdate' method="post" enctype='multipart/form-data'>
 
                     <input type='hidden' name='className' value='aboutUs'>
                     <input type='hidden' name='method' value='update'>
                     {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                    <p class="text-muted m-b-30">اطلاعات زیر در صفحه ی
-                        <a class='hover-text-underline text-megna'
-                           href='https://{$smarty.const.CLIENT_DOMAIN}/gds/aboutUs' target='_blank'> درباره ی ما</a>
-                        مشاهده کنید.
-                    </p>
+                        <p class="text-muted m-b-30">اطلاعات زیر در صفحه ی
+                            <a class='hover-text-underline text-megna'
+                               href='https://{$smarty.const.CLIENT_DOMAIN}/gds/aboutUs' target='_blank'> درباره ی ما</a>
+                            مشاهده کنید.
+                        </p>
                     {/if}
                     <div class='d-flex flex-wrap '>
                         <div class="bg-white d-flex flex-wrap rounded w-100 ">
@@ -60,7 +59,7 @@
                                     <label for="language" class="control-label">زبان</label>
                                     <select onchange='aboutUsLanguage(this.value);' name='lang' class="form-control" id="language">
                                         {foreach $languages as $value=>$title}
-                                             <option {if $value eq $smarty.get.lang}selected{/if} value="{$value}">{$title}</option>
+                                            <option {if $value eq $smarty.get.lang}selected{/if} value="{$value}">{$title}</option>
                                         {/foreach}
                                     </select>
                                 </div>
@@ -88,10 +87,10 @@
                                 <input type="file" name="banner_file" id="banner_file" class="dropify" data-height="100"
                                        data-default-file="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/aboutUs/{$aboutUsData['banner_file']}">
                                 {if $aboutUsData['banner_file']}
-                                <a  data-id="{$aboutUsData['id']}"  class='btn btn-primary delete-fara deleteImage' >
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                    <span id="PA_Ab_DELIMG"> حذف تصویر</span>
-                                </a>
+                                    <a  data-id="{$aboutUsData['id']}"  class='btn btn-primary delete-fara deleteImage' >
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <span id="PA_Ab_DELIMG"> حذف تصویر</span>
+                                    </a>
                                 {/if}
                             </div>
 
@@ -104,7 +103,7 @@
                                   data-toggle="tooltip" data-placement="top" title=""
                                   data-original-title=" در این قسمت تنها لینک ویدئو را قرار دهید"></span>
                             {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                                 {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/iframeLink.tpl"}
+                                {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/iframeLink.tpl"}
                             {/if}
                             <input type='text'  class='form-control' id='video_link' name='video_link' value="{$aboutUsData['video_link']}">
                         </div>
@@ -115,11 +114,11 @@
 
                                 <div class="form-group col-sm-12 DynamicSocialLinks">
 
-                                        {if $aboutUsData['social_links'] eq 'null'}
-                                            {assign var="socialLinks" value='[{"social_media":"","link":""}]'}
-                                        {else}
-                                            {assign var="socialLinks" value=$aboutUsData['social_links']}
-                                        {/if}
+                                    {if $aboutUsData['social_links'] eq 'null'}
+                                        {assign var="socialLinks" value='[{"social_media":"","link":""}]'}
+                                    {else}
+                                        {assign var="socialLinks" value=$aboutUsData['social_links']}
+                                    {/if}
 
                                     {assign var="counter" value='0'}
                                     {foreach key=key item=item from=$socialLinks|json_decode:true}
@@ -162,7 +161,7 @@
 
 
                     <div class='d-block flex-wrap w-100'>
-                    <textarea class='w-100' name='body' id='body'>{$aboutUsData['body']}</textarea>
+                        <textarea class='w-100' name='body' id='body'>{$aboutUsData['body']}</textarea>
                     </div>
                     <div class='d-block flex-wrap w-100' style='margin-top: 20px'>
                         <label for='about_title_customer_club' style='font-size: 17px; margin: 10px auto;' id="PA_Ab_CLUB">
@@ -191,20 +190,54 @@
     </div>
 </div>
 <script>
-    var LANG_XML_URL = "{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/langs/" + "{$smarty.const.LANG_PANEL_ADMIN}" + "_frontMaster.xml";
+    try {
+        var url = "{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/langs/" + "{$smarty.const.LANG_PANEL_ADMIN}" + "_frontMaster.xml";
+
+        fetch(url)
+            .then(r => r.text())
+            .then(text => {
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(text, "text/xml"); // تعریف صریح متغیر
+
+                // بررسی اینکه آیا XML به درستی لود شده است
+                if (xmlDoc.getElementsByTagName("parsererror").length === 0) {
+                    $("#PA_HOME").html(xmlDoc.getElementsByTagName("PA_HOME")[0].textContent);
+                    $(".PA_Ab_TITLE").html(xmlDoc.getElementsByTagName("PA_Ab_TITLE")[0].textContent);
+                    $("#PA_Ab_LANG").html(xmlDoc.getElementsByTagName("PA_Ab_LANG")[0].textContent);
+                    $("#PA_Ab_SUBJECT").html(xmlDoc.getElementsByTagName("PA_Ab_SUBJECT")[0].textContent);
+                    $("#PA_Ab_BANNER").html(xmlDoc.getElementsByTagName("PA_Ab_BANNER")[0].textContent);
+                    $("#PA_Ab_VIDEOLINK").html(xmlDoc.getElementsByTagName("PA_Ab_VIDEOLINK")[0].textContent);
+                    $("#PA_Ab_SOIALMEDIA").html(xmlDoc.getElementsByTagName("PA_Ab_SOIALMEDIA")[0].textContent);
+                    $("#PA_Ab_CLUB").html(xmlDoc.getElementsByTagName("PA_Ab_CLUB")[0].textContent);
+                    $("#PA_Ab_AboutCUSTOMER").html(xmlDoc.getElementsByTagName("PA_Ab_AboutCUSTOMER")[0].textContent);
+                    $("#PA_Ab_DELIMG").html(xmlDoc.getElementsByTagName("PA_Ab_DELIMG")[0].textContent);
+                    $(".tooltip-info").attr("data-original-title", xmlDoc.getElementsByTagName("PA_Ab_COMMENTVIDEOLINK")[0].textContent);
+                    $("#PA_Ab_SUBMIT").text(xmlDoc.getElementsByTagName("PA_Ab_SUBMIT")[0]?.textContent);
+                    $("#ChoseOption").text(xmlDoc.getElementsByTagName("ChoseOption")[0]?.textContent);
+                    $("#PA_AB_UPDATEDMSG").html(xmlDoc.getElementsByTagName("PA_AB_UPDATEDMSG")[0].textContent);
+                    $("#PA_AB_NOCHANGE").html(xmlDoc.getElementsByTagName("PA_AB_NOCHANGE")[0].textContent);
+                }
+            })
+            .catch(error => {
+                console.error("❌ خطا در دریافت فایل XML:", error);
+            });
+
+    } catch (e) {
+        console.error("❌ خطای کلی:", e);
+    }
 </script>
 
 {literal}
-<script>
-  $(document).ready(function() {
-    $('.dropify').dropify()
-    if ($('#body').length) {
-      CKEDITOR.replace('body');
-    }
-    if ($('#about_customer_club').length) {
-      CKEDITOR.replace('about_customer_club');
-    }
-  })
-</script>
-<script type="text/javascript" src="assets/JsFiles/aboutUs.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.dropify').dropify()
+            if ($('#body').length) {
+                CKEDITOR.replace('body');
+            }
+            if ($('#about_customer_club').length) {
+                CKEDITOR.replace('about_customer_club');
+            }
+        })
+    </script>
+    <script type="text/javascript" src="assets/JsFiles/aboutUs.js"></script>
 {/literal}

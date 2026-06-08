@@ -30,10 +30,11 @@
 {else}
     {include file="../../include/structures-banners/structure-searchbox.tpl"}
 {/if}
-
 {include file="include_files/banner-slider.tpl" }
+
 <style>
     .banner-slider-display {
-        display: none !important;
+        display: none;
     }
 </style>
+

@@ -34,34 +34,6 @@ class temporary_local_tb extends Model {
         return $result;
     }
 
-    public  function getWithRequestNumber($RN) {
-        $result = [] ;
-        $Sql = "select * from $this->table where  token_session LIKE '%$RN%' AND Direction = 'dept' ORDER BY id DESC";
-        $resultDept = parent::load($Sql,'assoc');
-        if(!empty($resultDept)) {
-            $result['dept'] = $resultDept;
-        }
-
-        $SqlReturn= "select * from $this->table where  token_session LIKE '%$RN%' AND Direction = 'return' ORDER BY id DESC" ;
-        $resultReturn = parent::load($SqlReturn,'assoc');
-        if(!empty($resultReturn)) {
-            $result['return'] = $resultReturn;
-        }
-
-        $SqlTwoWay= "select * from $this->table where  token_session LIKE '%$RN%' AND Direction = 'TwoWay' ORDER BY id DESC" ;
-        $resultReturn = parent::load($SqlTwoWay,'assoc');
-        if(!empty($resultReturn)) {
-            $result['TwoWay'] = $resultReturn;
-        }
-
-        $SqlTwoWay= "select * from $this->table where  token_session LIKE '%$RN%' AND Direction = 'multi_destination' ORDER BY id DESC" ;
-        $resultReturn = parent::load($SqlTwoWay,'assoc');
-        if(!empty($resultReturn)) {
-            $result['multi_destination'] = $resultReturn;
-        }
-        return $result;
-    }
-
 
 // public   function insert_temprory($data) {
 //        $result = parent::insertLocal($data);

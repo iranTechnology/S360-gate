@@ -3,7 +3,7 @@
 {if $page.files.main_file}
     {$banners = [0 => ['pic' => $page.files.main_file.src , 'title' => 'page']]}
 {/if}
-<section class="i_modular_banner_gallery banner-demo">
+<section class="i_modular_banner_gallery banner-demo" >
     <div class="banner">
         <div class="container">
             <div class="banner-title text-center">
