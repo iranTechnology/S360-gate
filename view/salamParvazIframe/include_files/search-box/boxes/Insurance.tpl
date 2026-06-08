@@ -120,7 +120,7 @@
                 </div>
 
                 <div class="col-xl-1 col-lg-6  col-md-6 col-sm-6 col-12 col_search search_btn_insuranc mr-auto mt-1 mb-md-2 mb-lg-0">
-                    <button class="btn theme-btn seub-btn b-0"  style="left:9.5px;" onclick="searchInsurance('https://salamparvaz.ir')" type="button">
+                    <button class="btn theme-btn seub-btn b-0"  style="left:9.5px;" onclick="searchInsurance(true , 'https://salamparvaz.ir')" type="button">
 <span>
  جستجو
 </span>

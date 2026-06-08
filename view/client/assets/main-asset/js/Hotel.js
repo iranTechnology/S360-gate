@@ -1516,7 +1516,7 @@ function viewResultInternationalHotel(data_response) {
 //    $(".div-hotel-city-js").addClass("d-none")
 //    $(".check-in-date-international-js").trigger("focus")
 // }
-function searchInternalHotel(altDomain = null) {
+function searchInternalHotel(flag , altDomain = null) {
    const form = document.getElementById('internal_hotel_form');
    const is_new_tab = form?.target === '_blank';
 
@@ -1610,7 +1610,7 @@ function searchInternalHotel(altDomain = null) {
    url = baseUrl + url
    openLink(url, is_new_tab)
 }
-function searchInternationalHotel(altDomain = null) {
+function searchInternationalHotel(flag , altDomain = null) {
    const form = document.getElementById('international_hotel_form');
    const is_new_tab = form?.target === '_blank';
 

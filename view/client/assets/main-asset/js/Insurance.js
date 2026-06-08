@@ -112,7 +112,7 @@ $(".number_2-of-passengers-js").on("change", function (e) {
 
    element_passenger.append(calender)
 })
-function searchInsurance(altDomain = null) {
+function searchInsurance(flag , altDomain = null) {
    const form = document.getElementById('gdsInsurance');
    const is_new_tab = form.target === '_blank';
 
