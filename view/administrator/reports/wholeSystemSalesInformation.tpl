@@ -79,7 +79,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_train > 0}
+{if $salesInformation.total_sales_train > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border">
@@ -117,7 +117,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_bus > 0}
+{if $salesInformation.total_sales_bus > 0 }
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border">
@@ -155,7 +155,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_insurance > 0}
+{if $salesInformation.total_sales_insurance > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border">
@@ -193,7 +193,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_tour > 0}
+{if $salesInformation.total_sales_tour > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border">
@@ -231,7 +231,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_visa > 0}
+{if $salesInformation.total_sales_visa > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border">
@@ -269,7 +269,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_entertainment > 0}
+{if $salesInformation.total_sales_entertainment > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border">
@@ -307,7 +307,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_gasht > 0}
+{if $salesInformation.total_sales_gasht > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
     <div class="col-lg-6  col-md-6 col-sm-6 col-xs-12">
         <div class="white-box border">

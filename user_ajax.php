@@ -1,4 +1,5 @@
 <?php
+session_start();//pak nashavad aslan ::model.php niyaz darad
 
 
 
@@ -414,6 +415,8 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookFlight' ) {
 
+
+
     $controller = Load::library( 'apiLocal' );
     //    if (isset($_POST['Type']) && $_POST['Type'] == 'App') {
 
@@ -435,12 +438,22 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookFlight' ) {
             $CaptchaCode[1]= $_POST['CaptchaReturnCode'];
         }
 
+
         $result[ $direction ] = $controller->bookFlightPassenger( $request_number, $_POST['IdMember'], ( ! empty( $_POST['SourceId'][ $direction ] ) ? $_POST['SourceId'][ $direction ] : '' ), $CaptchaCode );
 
+
     }
-    if ( isset( $result['dept']['result_status'] ) && $result['dept']['result_status'] == 'SuccessMethodBook' && ( empty( $_POST['RequestNumber']['return'] ) || ( ! empty( $_POST['RequestNumber']['return'] ) && $result['return']['result_status'] == 'SuccessMethodBook' ) ) ) {
+
+    if (
+            isset( $result['dept']['result_status'] )
+            && $result['dept']['result_status'] == 'SuccessMethodBook'
+            && ( empty( $_POST['RequestNumber']['return'] ) || ( ! empty( $_POST['RequestNumber']['return'] ) && $result['return']['result_status'] == 'SuccessMethodBook' ))
+    ) {
         $result['total_status'] = 'success';
 
+    }
+    elseif (isset( $_POST['RequestNumber']['return'] ) && !isset( $_POST['RequestNumber']['dept'] ) && $result['return']['result_status'] == 'SuccessMethodBook') {
+        $result['total_status'] = 'success';
     }
     elseif ( isset( $result['TwoWay'] ) && $result['TwoWay']['result_status'] == 'SuccessMethodBook' ) {
         $result['total_status'] = 'success';
@@ -455,7 +468,13 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookFlight' ) {
     $result = functions::clearJsonHiddenCharacters( json_encode( $result ) );
 
     echo $result;
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == "revalidate_Fight" ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'reReserveFlight' ) {
+     unset($_POST['flag']);
+     $controller = Load::controller( 'parvazBookingLocal' );
+     return $controller->flightBook($_POST['factorNum'] , 'credit');
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == "revalidate_Fight" ) {
 
     $Local = Load::library( 'apiLocal' );
 
@@ -917,7 +936,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_cip' ) {
 
         if ( $check['status'] == 'TRUE' ) {
 
-            $reason = 'buy';
+      $reason = 'buy_cip';
             // Caution: کاهش اعتبار موقت صاحب سیستم
             $reduceTransaction = $objTransaction->decreasePendingCredit( $total_price, $factorNumber, $comment, $reason );
 
@@ -959,9 +978,11 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditLocal' ) {
     $objTransaction        = Load::controller( 'transaction' );
     $objMember             = Load::controller( 'members' );
     $privateCharterSources = functions::privateCharterFlights();
-    $info_member           = functions::infoAgencyByMemberId(Session::getUserId());
+    $bookData = $bookLocal->GetInfoBookLocal(array_values($_POST['RequestNumber'])[0] );
+    $memberId = $bookData['member_id'];
+    $info_member           = functions::infoAgencyByMemberId($memberId);
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
-    $counterCredit = $objMember->getCredit();
+    $counterCredit = $objMember->getCredit($memberId);
 
     $total_amount = 0;
     $total_amount_counter = array();
@@ -979,8 +1000,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditLocal' ) {
         $amount_currency = functions::CurrencyCalculate($total_amount);
         $total_amount = $amount_currency['AmountCurrency'] ;
     }
-
-
 
     // Caution: اعتبارسنجی اعتبار کانتر
     if ( $counterCredit > $total_amount ) {
@@ -1392,6 +1411,11 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_airline' ) {
             $trainBooking = Load::controller( 'trainBooking' );
             $result   = $trainBooking->infoTrainTicket( $_POST['request_number'] );
             break;
+        case 'cip':
+            /** @var \trainBooking $trainBooking */
+            $trainBooking = Load::controller('bookCip');
+            $result   = $trainBooking->TrackingInfo($_POST['request_number']);
+            break;
         default:
             $result = '';
             break;
@@ -1548,8 +1572,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_airline' ) {
     unset( $_POST['flag'] );
     echo $bookshow->changeFlagBuyPrivateToPublic( $_POST );
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'mainTicketHistory' ) {
-
-
     /** @var bookshowTest $bookshow */
     $bookshow = Load::controller( 'bookshowTest' );
     unset( $_POST['flag'] );
@@ -3569,11 +3591,16 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'createExcelForRavisHotel'
 
     echo $result;
 
-}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'newCreateExcelFileForTransactionUser' ) {
-//   error_reporting( 1);
-//error_reporting(E_ALL | E_STRICT);
-//@ini_set('display_errors', 1);
-//@ini_set('display_errors', 'on');
+}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setLangPanelAdmin' ) {
+    unset( $_POST['flag'] );
+
+    $objBookShow = Load::controller( 'admin' );
+    $result      = $objBookShow->setLangPanelAdmin( $_POST['lang'] );
+
+    echo $result;
+
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'newCreateExcelFileForTransactionUser' ) {
     unset( $_POST['flag'] );
 
     $objBookShow = Load::controller( 'accountcharge' );
@@ -4102,7 +4129,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'flagRequestCancelUser' ) 
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'StatusMenuCounter' ) {
 
     $objController = load::controller( 'admin' );
-    $result        = $objController->StatusMenuCounter( $_POST['idMenu'], $_POST['idMember'] );
+	$result        = $objController->StatusMenuCounter( $_POST['idMenu'], $_POST['idMember'],$_POST['isAccess'] );
 
     echo $result;
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setUserPermissions' ) {
@@ -4116,7 +4143,14 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'flagRequestCancelUser' ) 
     $result        = $objController->changePercentIndemnity( $_POST );
 
     echo $result;
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'changeStatusPaymentManual' ) {
+}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'StatusMenuOtherLang' ) {
+
+    $objController = load::controller( 'admin' );
+    $result        = $objController->StatusMenuOtherLang( $_POST['idMenu'], $_POST['isAccess'] );
+
+    echo $result;
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'changeStatusPaymentManual' ) {
 
     $objController = load::controller( 'accountcharge' );
     $result        = $objController->changeStatusPaymentManual( $_POST );
@@ -5141,62 +5175,6 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'DirectCancellationFlightAdmi
     echo $result;
 
 }
-elseif (isset($_POST['flag']) && $_POST['flag'] == 'DirectCancellationHotelAdmin') {
-    unset($_POST['flag']);
-
-    $objController = Load::controller('listCancelUser');
-    $result = $objController->DirectCancellationHotelAdmin($_POST);
-
-    echo $result;
-
-}
-elseif (isset($_POST['flag']) && $_POST['flag'] == 'airlineCloseTime') {
-    unset($_POST['flag']);
-
-    $objController = Load::controller('airlineCloseTime');
-    $result = $objController->insertTime($_POST);
-
-    echo $result;
-
-}
-elseif (isset($_POST['flag']) && $_POST['flag'] == 'deleteCloseTime') {
-    unset($_POST['flag']);
-
-    $airlineId = $_POST['airlineId'];
-
-    $objController = Load::controller('airlineCloseTime');
-    $result = $objController->deleteCloseTime($airlineId);
-
-    echo $result;
-
-}
-elseif (isset($_POST['flag']) && $_POST['flag'] == 'saveAgencyCloseTime') {
-    unset($_POST['flag']);
-
-    $objController = Load::controller('manifestController');
-    $result = $objController->saveAgencyCloseTime($_POST);
-
-    echo json_encode($result);
-
-}
-elseif (isset($_POST['flag']) && $_POST['flag'] == 'deleteAgencyCloseTime') {
-    unset($_POST['flag']);
-
-    $objController = Load::controller('manifestController');
-    $result = $objController->deleteAgencyCloseTime($_POST);
-
-    echo json_encode($result);
-
-}
-elseif (isset($_POST['flag']) && $_POST['flag'] == 'getAgencyCloseTimeData') {
-    unset($_POST['flag']);
-
-    $objController = Load::controller('manifestController');
-    $result = $objController->getAgencyCloseTimeData($_POST);
-
-    echo json_encode($result);
-
-}
 elseif (isset($_POST['flag']) && $_POST['flag'] == 'generateTxtContent') {
     unset($_POST['flag']);
 
@@ -5403,6 +5381,89 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'deletePriceCeiling'){
     unset($_POST['flag']);
     $result = $obj->delete_ceilingPrice($_POST);
     echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'addAgencyNote'){
+    $obj = Load::controller('bookshow');
+    unset($_POST['flag']);
+    $result = $obj->addAgencyNote($_POST);
+    echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'sendChatMessage'){
+    $obj = Load::controller('bookshow');
+    unset($_POST['flag']);
+    $result = $obj->sendMassage($_POST);
+    echo $result;
+}elseif(isset($_POST['flag']) && $_POST['flag'] == 'deleteChatMessage'){
+    $obj = Load::controller('bookshow');
+    unset($_POST['flag']);
+    $result = $obj->deleteMassage($_POST);
+    echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'toggleChatStatus'){
+    $obj = Load::controller('bookshow');
+    unset($_POST['flag']);
+    $result = $obj->toggleChatStatus($_POST);
+    echo $result;
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'hasChangePriceFlight'){
+
+    unset($_POST['flag']);
+    $factorController = Load::controller('factorLocal');
+    $temporaryModel = Load::model('temporary_local');
+    $infoBook = $factorController->getSpecific($_POST['factorNum']);
+    $infoTemporary = $temporaryModel->getWithRequestNumber($_POST['requestNum']);
+    $hasCP = functions::checkExistChangePrice($infoBook, $infoTemporary);
+
+    $priceChanges = [];
+
+    if ($hasCP === true) {
+        foreach ($infoBook as $direction => $item) {
+            $priceChanges[$direction] = [];
+
+            foreach ($item as $chackChange) {
+                $messageChangePrice = '';
+
+                if ($chackChange['passenger_age'] === 'Adt') {
+                    $messageChangePrice = functions::checkIncreasePrice(
+                            $chackChange['adt_price'],
+                            array_values($infoTemporary)[0]['AdtPrice'],
+                            $chackChange['passenger_age'],
+                            $chackChange['currency_code'],
+                            $chackChange['flight_type'],
+                            $direction
+                    );
+                } elseif ($chackChange['passenger_age'] === 'Chd') {
+                    $messageChangePrice = functions::checkIncreasePrice(
+                            $chackChange['chd_price'],
+                            array_values($infoTemporary)[0]['ChdPrice'],
+                            $chackChange['passenger_age'],
+                            $chackChange['currency_code'],
+                            $chackChange['flight_type'],
+                            $direction
+                    );
+                } elseif ($chackChange['passenger_age'] === 'Inf') {
+                    $messageChangePrice = functions::checkIncreasePrice(
+                            $chackChange['inf_price'],
+                            array_values($infoTemporary)[0]['InfPrice'],
+                            $chackChange['passenger_age'],
+                            $chackChange['currency_code'],
+                            $chackChange['flight_type'],
+                            $direction
+                    );
+                }
+
+                if ($messageChangePrice !== '') {
+                    $priceChanges[$direction][] = [
+                            'passenger_age' => $chackChange['passenger_age'],
+                            'message' => $messageChangePrice
+                    ];
+                }
+            }
+        }
+    }
+    echo json_encode([
+            'priceChanges' => $priceChanges
+    ]);
 }
 
 

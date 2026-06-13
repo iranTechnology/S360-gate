@@ -5,6 +5,7 @@ class partner_tb extends ModelBase
     protected $setting;
 
     protected $userPassCustomer;
+    protected $agency;
     protected $table = 'clients_tb';
     protected $pk = 'id';
 
@@ -12,6 +13,7 @@ class partner_tb extends ModelBase
         parent::__construct();
         $this->setting = new settingCore();
         $this->userPassCustomer = new userPassCustomers();
+        $this->agency = new agency();
     }
 
     public function getAll()
@@ -159,8 +161,9 @@ class partner_tb extends ModelBase
 
     protected function createDatabaseForCustomer($dbName)
     {
-        $conn = new mysqli("localhost", "safar360", 'GW@!pvGOZ$h9Mk[JdoU', "safar360_gds");
-        $password= 'GW@!pvGOZ$h9Mk[JdoU';
+        require('/home/commin_config/password.php');
+        $conn = new mysqli("localhost", "safar360", $PasswordAllSystem, "safar360_gds");
+        $password= $PasswordAllSystem;
         if ($conn->connect_errno) {
             return ['message' => 'خطا در اتصال دیتابیس', 'status' => 500];
         }
@@ -177,6 +180,51 @@ class partner_tb extends ModelBase
             return ['message' => 'error : خطا در ایجاد دیتابیس مشتری ', 'status' => 500];
         }
     }
+
+
+    protected function insertAgency($data)
+    {
+        $dataInfo['name_fa'] = $data['AgencyName'];
+        $dataInfo['name_en'] = $data['AgencyName'];
+        $dataInfo['manager'] = $data['Manager'];
+        $dataInfo['phone'] = $data['Phone'];
+        $dataInfo['mobile'] = $data['Mobile'];
+        $dataInfo['email'] = $data['Email'];
+        $dataInfo['password'] = $data['password'] ?? '123456';
+        $dataInfo['license'] = 'license';
+        $dataInfo['newspaper'] = 'newspaper';
+        $dataInfo['register_date'] = date('Y-m-d H:i:s');
+        $dataInfo['ravis_code'] = '11';
+        $dataInfo['del'] = 'no';
+        $dataInfo['bank_data'] = json_encode([
+            'bank_name' => 'ملی',
+            'account_number' => '123456'
+        ]);
+        $dataInfo['address_en'] = !empty($data['AddressEn']) ? $data['AddressEn'] : 'address';
+        $dataInfo['address_fa'] = $data['Address'];
+        $dataInfo['city_iata'] = 'THR';
+        $dataInfo['payment'] = 'cash';
+        $dataInfo['type_payment'] = 'rial';
+        $dataInfo['isColleague'] = '1';
+        $dataInfo['time_limit_credit'] = time();
+        $dataInfo['seat_charter_code'] = '';
+        $dataInfo['logo'] = '';
+
+        $result = $this->agency->insert_agency($dataInfo);
+
+        // اصلاح مهم: بررسی خروجی
+        if (is_string($result) && strpos($result, 'success') !== false) {
+            return true;  // موفقیت
+        }
+
+        if (is_string($result) && strpos($result, 'error') !== false) {
+            return false; // خطا
+        }
+
+        return !empty($result); // اگر مقدار داشت موفق
+    }
+
+
     public function InsertClientModel($Info)
     {
         $mainDomainNew = $Info['Domain']; // مثال: iran.ir یا online.salam.ir
@@ -189,7 +237,8 @@ class partner_tb extends ModelBase
 //        $data['DbUser'] = 'safar360_OnRes';
         $data['DbUser'] = 'safar360';
 //        $data['DbPass'] = 'Safar@360#';
-        $data['DbPass'] = 'GW@!pvGOZ$h9Mk[JdoU';
+        require('/home/commin_config/password.php');
+        $data['DbPass'] = $PasswordAllSystem;
         $data['ThemeDir'] = $Info['ThemeDir'];
         $data['Email'] = $Info['Email'];
         $data['Manager'] = $Info['Manager'];
@@ -204,9 +253,9 @@ class partner_tb extends ModelBase
         $data['MainDomain'] = $Info['MainDomain'];
         $data['default_language'] = $Info['default_language'];
         $data['diamondAccess'] = $Info['diamondAccess'];
-        $data['AllowSendSms'] = $Info['AllowSendSms'];
-        $data['UsernameSms'] = $Info['UsernameSms'];
-        $data['PasswordSms'] = $Info['PasswordSms'];
+        // $data['AllowSendSms'] = $Info['AllowSendSms'];
+        // $data['UsernameSms'] = $Info['UsernameSms'];
+        // $data['PasswordSms'] = $Info['PasswordSms'];
         $data['Type'] = '2';
 //        $data['UserNameApi'] = $Info['UserNameApi'];
         $data['GoogleMapLatitude'] = $Info['GoogleMapLatitude'];
@@ -227,6 +276,7 @@ class partner_tb extends ModelBase
         //
         $data['new_login'] = 1;
         $data['ravis_code'] = !empty($Info['ravis_code']) ? $Info['ravis_code'] :'';
+        $data['default_lang_admin'] = $Info['default_lang_admin'];
 
         $config = Load::Config('application');
         $success = $config->UploadFile("pic", "Logo", "");
@@ -267,9 +317,13 @@ class partner_tb extends ModelBase
                     'link' => 'http://' . $Info['Domain'],
                 ];
                 $this->insertUserPassCustomer($dataUserPass);
-                $this->insertUserPassCustomer($dataUserPass);
 
                 $this->createDatabaseForCustomer('safar360_'.$dbNameNew);
+                $this->agency->agencyModel()->getPDO()->query("USE `safar360_$dbNameNew`");
+
+                $this->insertAgency($data);
+
+
 
                 return "success : مشتری جدید با موفقیت ثبت شد";
             } else {
@@ -305,9 +359,9 @@ class partner_tb extends ModelBase
             $data['Description'] = !empty($Info['Description']) ? $Info['Description'] :$result['Description'];
             $data['UrlRuls'] = !empty($Info['UrlRuls']) ? $Info['UrlRuls'] :$result['UrlRuls'];
             $data['MainDomain'] = !empty($Info['MainDomain']) ? $Info['MainDomain'] :$result['MainDomain'];
-            $data['AllowSendSms'] = !empty($Info['AllowSendSms']) ? $Info['AllowSendSms'] :$result['AllowSendSms'];
-            $data['UsernameSms'] = !empty($Info['UsernameSms']) ? $Info['UsernameSms'] : $result['UsernameSms'];
-            $data['PasswordSms'] = !empty($Info['PasswordSms']) ? $Info['PasswordSms'] : $result['PasswordSms'];
+            // $data['AllowSendSms'] = !empty($Info['AllowSendSms']) ? $Info['AllowSendSms'] :$result['AllowSendSms'];
+            // $data['UsernameSms'] = !empty($Info['UsernameSms']) ? $Info['UsernameSms'] : $result['UsernameSms'];
+            // $data['PasswordSms'] = !empty($Info['PasswordSms']) ? $Info['PasswordSms'] : $result['PasswordSms'];
             $data['IsCurrency'] = !empty($Info['IsCurrency']) ? $Info['IsCurrency'] : $result['IsCurrency'];
             $data['diamondAccess'] = !empty($Info['diamondAccess']) ? $Info['diamondAccess'] :'0';
             $data['IsEnableClub'] = !empty($Info['IsEnableClub']) ? $Info['IsEnableClub'] :'0';
@@ -320,6 +374,7 @@ class partner_tb extends ModelBase
             $data['AdditionalData'] = json_encode($Info['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             $data['new_login'] = !empty($Info['new_login']) ? $Info['new_login'] :'0';
             $data['isIframe'] = $Info['isIframe'];
+            $data['default_lang_admin'] = $Info['default_lang_admin'];
 
 
 
@@ -377,13 +432,27 @@ class partner_tb extends ModelBase
     {
         $result = parent::load("select * from $this->table where $this->pk = '{$Info}'");
 
-        $id = $result['id'];
-        if(!empty($result)){
-            $data['archived_at'] = date('Y-m-d H:i:s');
+        if (empty($result)) {
+            return ['message' => 'error : مشتری یافت نشد', 'status' => 404];
         }
-        $res_update = parent::update($data, "id='{$id}'");
-        if ($res_update) {
 
+        $id = $result['id'];
+
+        $ThemeDir = $result['ThemeDir'];
+        $date = date('Y-m-d');
+
+        // اگر قبلا تاریخ خورده، اول حذف کن که دوبار تاریخ نخورد
+        $ThemeDir = preg_replace('/^\d{4}-\d{2}-\d{2}_/', '', $ThemeDir);
+
+        // اضافه کردن تاریخ میلادی اول اسم پوشه
+        $ThemeDir = $date . '_' . $ThemeDir;
+
+        $data['archived_at'] = date('Y-m-d H:i:s');
+        $data['ThemeDir'] = $ThemeDir;
+
+        $res_update = parent::update($data, "id='{$id}'");
+
+        if ($res_update) {
             return ['message'=>'success : مشتری با موفقیت آرشیو شد','status'=>200];
         } else {
             return ['message' => 'error : خطا در آرشیو مشتری ', 'status' => 500];
@@ -394,26 +463,32 @@ class partner_tb extends ModelBase
     {
         $result = parent::load("select * from $this->table where $this->pk = '{$Info}'");
         $Model = Load::library('ModelBase');
-        $id = $result['id'];
-        $sqlUpdate = " UPDATE clients_tb SET ";
-        if(!empty($result)){
-            $sqlUpdate .= " archived_at = NULL  ";
 
-//            $update_data = array(
-//                'archived_at'  => NULL,
-//            );
+        if (empty($result)) {
+            return ['message' => 'error : مشتری یافت نشد', 'status' => 404];
         }
 
+        $id = $result['id'];
+
+        $ThemeDir = $result['ThemeDir'];
+
+        // حذف تاریخ از ابتدای نام پوشه اگر وجود داشت
+        $ThemeDir = preg_replace('/^\d{4}-\d{2}-\d{2}_/', '', $ThemeDir);
+
+        $sqlUpdate = " UPDATE clients_tb SET ";
+        $sqlUpdate .= " archived_at = NULL, ";
+        $sqlUpdate .= " ThemeDir = '{$ThemeDir}' ";
         $sqlUpdate .= " WHERE id = '{$id}' ";
+
         $res_update = $Model->updateByQuery($sqlUpdate);
 
         if ($res_update) {
-
             return ['message'=>'success : آرشیو مشتری با موفقیت لغو شد','status'=>200];
         } else {
             return ['message' => 'error : خطا در لغو آرشیو مشتری ', 'status' => 500];
         }
     }
+
     public function getClient($info) {
 
         $sql = "select partner.* from $this->table AS partner

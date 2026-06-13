@@ -274,7 +274,8 @@ LEFT JOIN report_cip_tb
         if (!empty($_POST['FactorNumber']) && $_POST['FactorNumber'] > 0) {
             $sql .= " AND t.FactorNumber= '{$_POST['FactorNumber']}'";
         }
-        $Reason = !empty($_POST['Reason']) ? $_POST['Reason'] : 'buy';
+        /*1405_2_29 Ardalani
+        $Reason = !empty($_POST['Reason']) ? $_POST['Reason'] : 'all';
         if ($_POST['Reason'] != 'all') {
             if($_POST['Reason']=='buy'){
                 $sql .= " AND (t.Reason= 'buy' OR t.Reason= 'buy_hotel' OR t.Reason= 'buy_insurance' OR t.Reason= 'buy_reservation_hotel' OR t.Reason= 'buy_reservation_ticket' OR t.Reason= 'buy_foreign_hotel'
@@ -282,6 +283,30 @@ LEFT JOIN report_cip_tb
             }else{
                 $sql .= " AND (t.Reason='{$Reason}') ";
             }
+        }*/
+        $Reason = isset($_POST['Reason']) && $_POST['Reason'] !== '' ? $_POST['Reason'] : 'buy';
+
+        if ($Reason == 'buy') {
+            $sql .= " AND (
+                        t.Reason = 'buy'
+                        OR t.Reason = 'buy_hotel'
+                        OR t.Reason = 'buy_insurance'
+                        OR t.Reason = 'buy_reservation_hotel'
+                        OR t.Reason = 'buy_reservation_ticket'
+                        OR t.Reason = 'buy_foreign_hotel'
+                        OR t.Reason = 'buy_Europcar'
+                        OR t.Reason = 'buy_reservation_tour'
+                        OR t.Reason = 'buy_reservation_visa'
+                        OR t.Reason = 'buy_gasht_transfer'
+                        OR t.Reason = 'buy_train'
+                        OR t.Reason = 'buy_bus'
+                        OR t.Reason = 'buy_entertainment'
+                        OR t.Reason = 'buy_visa_plan'
+                        OR t.Reason = 'buy_package'
+                        OR t.Reason = 'buy_cip'
+                    ) ";
+        } elseif ($Reason != 'all') {
+            $sql .= " AND t.Reason = '{$Reason}' ";
         }
         $sql .= 'GROUP BY id ORDER BY t.PriceDate ASC' ;
 
@@ -388,6 +413,7 @@ LEFT JOIN report_cip_tb
                     'cacheOrCredit'        => self::checkTransactionCacheOrCredit($transaction['BankTrackingCode']),
                     'publicOrPrivate'      => self::getPublicPrivate($transaction['publicOrPrivate']),
                     'type'                 => self::getTransactionType($transaction['Reason']),
+                    'typeColor'            => self::getTransactionTypeColor($transaction['Reason']),
                     'comment'              => $transaction['Comment'],
                     'date'                 => dateTimeSetting::jdate("Y-m-d H:i:s",$transaction['CreationDateInt']),
                     'service_date'         => $transaction['service_date'],
@@ -406,10 +432,12 @@ LEFT JOIN report_cip_tb
 
     public function getAllProviderTransactions()
     {
+
         $params = $_POST ;
         $getParams = $_GET;
         $api_id = $getParams['api_id'];
         $type = $getParams['sourceType'];
+
         $Model = Load::library('ModelBase');
         $EndPostDate = $StartTimeNow = date("Y-m-d");
         $time = time() - (600);
@@ -539,13 +567,13 @@ LEFT JOIN report_gasht_tb
                             )";
         }
         if($type == 'flight'){
-            $sql .= " AND (report_tb.id is not null OR t.sourceType = $type) ";
+            $sql .= " AND (report_tb.id is not null OR t.sourceType = '{$type}') ";
         }
         if($type == 'hotel'){
-            $sql .= " AND (report_hotel_tb.id is not null OR t.api_id = $api_id) ";
+            $sql .= " AND (report_hotel_tb.id is not null OR t.sourceType = '{$type}') ";
         }
         if($type == 'bus'){
-            $sql .= " AND (report_bus_tb.id is not null OR t.sourceType = $type) ";
+            $sql .= " AND (report_bus_tb.id is not null OR t.sourceType = '{$type}') ";
         }
         if($type == 'train'){
             $sql .= " AND (report_train_tb.id is not null OR t.sourceType = $type) ";
@@ -564,20 +592,43 @@ LEFT JOIN report_gasht_tb
         if (!empty($_POST['FactorNumber']) && $_POST['FactorNumber'] > 0) {
             $sql .= " AND t.FactorNumber= '{$_POST['FactorNumber']}'";
         }
-        $Reason = !empty($_POST['Reason']) ? $_POST['Reason'] : "all";
+        /*1404_2_29 Ardalani
+         $Reason = !empty($_POST['Reason']) ? $_POST['Reason'] : "all";
+         if ($Reason != 'all') {
+             if($_POST['Reason']=='buy'){
+                 $sql .= " AND (t.Reason= 'buy' OR t.Reason= 'buy_hotel' OR t.Reason= 'buy_insurance' OR t.Reason= 'buy_reservation_hotel' OR t.Reason= 'buy_reservation_ticket' OR t.Reason= 'buy_foreign_hotel'
+                     OR t.Reason= 'buy_Europcar' OR t.Reason= 'buy_reservation_tour' OR t.Reason= 'buy_reservation_visa' OR t.Reason= 'buy_gasht_transfer' OR t.Reason= 'buy_train' OR t.Reason= 'buy_bus' OR t.Reason= 'buy_entertainment' OR t.Reason= 'buy_visa_plan' OR t.Reason= 'buy_package' OR t.Reason= 'buy_cip' ) ";
+             }else{
+                 $sql .= " AND (t.Reason='{$Reason}') ";
+             }
+         }*/
 
-        if ($Reason != 'all') {
-            if($_POST['Reason']=='buy'){
-                $sql .= " AND (t.Reason= 'buy' OR t.Reason= 'buy_hotel' OR t.Reason= 'buy_insurance' OR t.Reason= 'buy_reservation_hotel' OR t.Reason= 'buy_reservation_ticket' OR t.Reason= 'buy_foreign_hotel'
-                    OR t.Reason= 'buy_Europcar' OR t.Reason= 'buy_reservation_tour' OR t.Reason= 'buy_reservation_visa' OR t.Reason= 'buy_gasht_transfer' OR t.Reason= 'buy_train' OR t.Reason= 'buy_bus' OR t.Reason= 'buy_entertainment' OR t.Reason= 'buy_visa_plan' OR t.Reason= 'buy_package' OR t.Reason= 'buy_cip' ) ";
-            }else{
-                $sql .= " AND (t.Reason='{$Reason}') ";
-            }
+        $Reason = isset($_POST['Reason']) && $_POST['Reason'] !== '' ? $_POST['Reason'] : 'buy';
+        if ($Reason === 'buy') {
+            $sql .= " AND (
+                            t.Reason = 'buy'
+                            OR t.Reason = 'buy_hotel'
+                            OR t.Reason = 'buy_insurance'
+                            OR t.Reason = 'buy_reservation_hotel'
+                            OR t.Reason = 'buy_reservation_ticket'
+                            OR t.Reason = 'buy_foreign_hotel'
+                            OR t.Reason = 'buy_Europcar'
+                            OR t.Reason = 'buy_reservation_tour'
+                            OR t.Reason = 'buy_reservation_visa'
+                            OR t.Reason = 'buy_gasht_transfer'
+                            OR t.Reason = 'buy_train'
+                            OR t.Reason = 'buy_bus'
+                            OR t.Reason = 'buy_entertainment'
+                            OR t.Reason = 'buy_visa_plan'
+                            OR t.Reason = 'buy_package'
+                            OR t.Reason = 'buy_cip'
+                        ) ";
+
+        }
+        elseif ($Reason !== 'all') {
+            $sql .= " AND t.Reason = '{$Reason}' ";
         }
         $sql .= 'GROUP BY id ORDER BY t.PriceDate ASC' ;
-
-
-
         $transactions = $Model->select($sql);
 
 //        $sql_remain_prev = "SELECT SUM(Price) AS sum_price FROM  transactions  WHERE PriceDate IS NOT NULL AND (( PaymentStatus = 'success' ) AND PriceDate <= '{$StartPostDate} 00:00:00' )  GROUP BY `Status`" ;
@@ -904,6 +955,35 @@ LEFT JOIN report_gasht_tb
         return $type ;
     }
 
+    private function getTransactionTypeColor($transaction_reason){
+        switch ($transaction_reason) {
+            case 'buy':
+                $color = '#2840a7';//آبی
+                break;
+            case 'buy_hotel':
+                $color = '#f67913';//نارنجی
+                break;
+            case 'buy_bus':
+                $color = '#28a745';//سبز
+                break;
+            case 'buy_reservation_hotel':
+                $color = '#f67913';
+                break;
+            case 'buy_reservation_ticket':
+                $color = '#2840a7';
+                break;
+            case 'buy_insurance':
+                $color = '#f6f313';
+                break;
+            case 'buy_cip':
+                $color = '#26CCC2';
+                break;
+            default:
+                $color = '#000000';
+                break;
+        }
+        return $color ;
+    }
     private function getSourceName($source) {
         switch ($source) {
             case '13':
@@ -943,7 +1023,7 @@ LEFT JOIN report_gasht_tb
 
     public function getLastTransactionBalanceStatus($clientID,$numberFactor)
     {
-
+        /*
         $ResultIdInTrabsaction = $this->modelTransactions
             ->get(['id'])
             ->where('clientID', $clientID)
@@ -951,36 +1031,41 @@ LEFT JOIN report_gasht_tb
             ->find();
         $IdInTrabsaction =$ResultIdInTrabsaction['id'];
 
-        $TotalChargeClient=0;
-        $ResultChargeClient = $this->modelTransactions
+        $TotalBuyClient=0;//sum price ta Ghabl In kharid
+        $TotalChargeClient=0;//شارژ مشتری در سیستم
+
+        if($IdInTrabsaction!='') {
+
+           $ResultChargeClient = $this->modelTransactions
             ->get(['Price'])
             ->where('clientID',$clientID)
             ->where('Status','1')
             ->where('PaymentStatus','success')
             ->where('id',$IdInTrabsaction,'<')
             ->all();
-        foreach ($ResultChargeClient as $row) {
-            $TotalChargeClient += $row['Price'];
-        }
+            foreach ($ResultChargeClient as $row) {
+                $TotalChargeClient += $row['Price'];
+            }
 
-        //sum price ta Ghabl In kharid
-        $TotalBuyClient=0;
-        if($IdInTrabsaction!='') {
-            $time = time() - 600;
+            $time = time() - 600;//10 min ghabl
             $Model = Load::library('ModelBase');
-            $sqlBuy = "SELECT sum(Price) AS total_buy FROM transactions 
-                       WHERE 
-                            clientID='{$clientID}' AND 
-                            Status='2' AND 
+            $sqlBuy = "SELECT sum(Price) AS total_buy FROM transactions
+                       WHERE
+                            clientID='{$clientID}' AND
+                            Status='2' AND
                             id< {$IdInTrabsaction} AND
                             (
-                                PaymentStatus = 'success' OR 
+                                PaymentStatus = 'success'  or
                                 (PaymentStatus = 'pending' AND CreationDateInt > '{$time}')
                             )";
+                                //
             $ResultBuy = $Model->select($sqlBuy);
             $TotalBuyClient=$ResultBuy[0]['total_buy'];
         }
+         return ($TotalChargeClient-$TotalBuyClient);
+        */
 
-        return ($TotalChargeClient-$TotalBuyClient);
+        $resultCharge=functions::calculateChargeUserPrice($clientID,$numberFactor);//شارژ فعلی مشتری از دیتابیس خودش
+        return ($resultCharge);
     }
 }

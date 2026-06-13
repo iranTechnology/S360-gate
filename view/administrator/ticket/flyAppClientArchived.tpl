@@ -37,6 +37,7 @@
                                 <th>تعداد نفرات</th>
                                 <th>میزان شارژ حساب</th>
                                 <th>نوع تسویه</th>
+                                <th>اسم پوشه</th>
                                 <th>آیدی تیکت مشتری</th>
                                 <th>آرشیو شده در</th>
                                 <th>عملیات</th>
@@ -59,6 +60,9 @@
                                     </td>
                                     <td>
                                         {$objFunctions->generateChargeUserString($amount)}
+                                    </td>
+                                    <td>
+                                        {$item.ThemeDir}
                                     </td>
                                     <td>
                                         {if !$item.hash_id_whmcs}کد ندارد{/if}

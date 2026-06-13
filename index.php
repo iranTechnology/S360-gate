@@ -1,4 +1,5 @@
 <?php
+@session_start();//pak nashavad aslan ::bootstrap.php niyaz darad
 
 //date_default_timezone_set('Asia/Tehran');
 require 'config/bootstrap.php';
@@ -10,22 +11,12 @@ require LIBRARY_DIR . 'baseController.php';
 require LIBRARY_DIR . 'Session.php';
 require CONTROLLERS_DIR . 'dateTimeSetting.php';
 
-
-
-Session::init();
-
-//var_dump('aaa');
-//die();
-
 require_once LIBRARY_DIR . 'Model.php';
 require_once LIBRARY_DIR . 'ModelBase.php';
 require_once LIBRARY_DIR . 'clientAuth.php';
 
 Session::getDefaultCurrency();
-
-
 functions::setPwaSession();
-
 
 /*if(in_array(CLIENT_ID , functions::isSuspend())) {
     ?>
@@ -201,6 +192,9 @@ elseif (GDS_SWITCH == 'apiTourTest') {
 elseif (GDS_SWITCH == 'apiTour') {
     require LIBRARY_DIR.'ApiSource/iranTechApi/ApiTour.php';
 }
+elseif (GDS_SWITCH == 'safarBankApi') {
+    require LIBRARY_DIR.'ApiSource/iranTechApi/safarBankApi.php';
+}
 elseif (GDS_SWITCH == 'apiExternalHotel'|| GDS_SWITCH == 'apiExternalHotelTest') {
     require LIBRARY_DIR.'ApiSource/iranTechApi/externalHotelApi.php';
 }
@@ -251,6 +245,8 @@ elseif (GDS_SWITCH == 'ApiWeatherCronjob') {
 }
 elseif (GDS_SWITCH == 'refreshFlightLimitRateCronjob') {
     require CRONJOBS_DIR . 'refreshFlightLimitRateCronjob.php';
+}elseif (GDS_SWITCH == 'safarBankDeductConsumption') {
+    require CRONJOBS_DIR . 'safarBankDeductConsumption.php';
 }
 elseif (GDS_SWITCH == 'apiLogin') {
     require LIBRARY_DIR . 'ApiSource/Sso/loginApi.php';

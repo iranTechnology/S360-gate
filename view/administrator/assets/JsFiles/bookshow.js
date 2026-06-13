@@ -882,6 +882,8 @@ function fadeBG(Target) {
 function ExecuteHistoryFilter(target) {
     $('[data-info="filter-div"]').addClass('d-none').find('input, select, textarea').prop("disabled", true);
     $('[data-info="filter-div"][data-target="' + target + '"]').removeClass('d-none').find('input, select, textarea').prop("disabled", false);
+    if(LANG_PANEL_ADMIN!='fa')
+        $('#DivBoxSearch').addClass('d-none');
 
     var filterData = $('#FormExecuteHistoryFilter').serialize();
     var thiss = $("a[data-target=" + target + "][data-info=pendingBtn]");
@@ -906,8 +908,8 @@ function ExecuteHistoryFilter(target) {
         var bussy = false;
         var TableDivision = $('table' + TableName);
 
-
         if(bussy === false){
+
             bussy = true;
             $.ajax({
                 url: amadeusPath + 'user_ajax.php',
@@ -1019,6 +1021,66 @@ function ExecuteHistoryFilter(target) {
                         // فقط اگر جدول header داشت، DataTable را initialize کن
                         if($('#mainTicketHistory thead tr th').length > 0){
                             DataTableMaker('#mainTicketHistory');
+                            setTimeout(function () {
+                                var searchText = 'جستجو';
+                                var lengthText = 'نمایش';
+                                var resultText = 'نتیجه';
+                                var prevText = 'قبلی';
+                                var nextText = 'بعدی';
+                                var infoText = 'Showing _START_ to _END_ of _TOTAL_ entries';
+
+                                if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
+                                    if (xmlDoc.getElementsByTagName("Search").length > 0)
+                                        searchText = xmlDoc.getElementsByTagName("Search")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_RESULTTABLE2").length > 0)
+                                        lengthText = xmlDoc.getElementsByTagName("PA_CO_RESULTTABLE2")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("Result").length > 0)
+                                        resultText = xmlDoc.getElementsByTagName("Result")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_DT_PREVIOUS").length > 0)
+                                        prevText = xmlDoc.getElementsByTagName("PA_CO_DT_PREVIOUS")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_DT_NEXT").length > 0)
+                                        nextText = xmlDoc.getElementsByTagName("PA_CO_DT_NEXT")[0].textContent;
+
+                                    if (xmlDoc.getElementsByTagName("PA_CO_DT_INFO").length > 0)
+                                        infoText = xmlDoc.getElementsByTagName("PA_CO_DT_INFO")[0].textContent;
+                                }
+
+                                // ۱. جستجو (Search) - پاکسازی کامل برای حذف کلمه Search انگلیسی
+                                var $searchLabel = $('#mainTicketHistory_filter label');
+                                var $searchInput = $searchLabel.find('input').first();
+                                $searchLabel.empty().append(document.createTextNode(searchText + ' ')).append($searchInput);
+
+                                // ۲. تعداد نمایش (Length) - پاکسازی کامل برای حذف کلمه Show انگلیسی
+                                var $lenLabel = $('#mainTicketHistory_length label');
+                                var $lenSelect = $lenLabel.find('select').first();
+                                $lenLabel.empty().append(document.createTextNode(lengthText + ' ')).append($lenSelect).append(document.createTextNode(' ' + resultText));
+
+                                // ۳. آمار پایین جدول (Info) - جایگزینی متن Showing... با متن XML
+                                var $infoDiv = $('#mainTicketHistory_info');
+                                if ($infoDiv.length > 0) {
+                                    // چون DataTable خودش اعداد را جایگزین کرده، ما باید فرمت کلی را از XML بگیریم
+                                    // اما برای اینکه کار راحت شود، فقط اگر متن انگلیسی بود آن را با متن درست جایگزین می‌کنیم
+                                    var currentInfo = $infoDiv.text();
+                                    // اگر دیتاتیبل قبلاً اعداد را چیده، ما فقط متن را جایگزین می‌کنیم
+                                    // راه ساده‌تر: تنظیم مستقیم متن info از روی مقادیر موجود
+                                    var table = $('#mainTicketHistory').DataTable();
+                                    var pageInfo = table.page.info();
+                                    var finalInfo = infoText
+                                        .replace('_START_', pageInfo.start + 1)
+                                        .replace('_END_', pageInfo.end)
+                                        .replace('_TOTAL_', pageInfo.recordsTotal);
+                                    $infoDiv.text(finalInfo);
+                                }
+
+                                // ۴. دکمه‌های قبلی و بعدی (Pagination)
+                                $('#mainTicketHistory_previous').text(prevText);
+                                $('#mainTicketHistory_next').text(nextText);
+
+                            }, 200); // زمان را کمی بیشتر کردیم (200ms) تا مطمئن شویم جدول کاملاً رندر شده
                         }
                         $(".popoverBox").popover({trigger: "hover"});
                         $('[data-toggle="tooltip"]').tooltip();
@@ -1035,7 +1097,17 @@ function ExecuteHistoryFilter(target) {
                         fadeBG($('.HotTag'));
 
                     } else {
-                        TableDivision.html('موردی یافت نشد');
+                        var Result='موردی یافت نشد';
+                        if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
+                            var tags = xmlDoc.getElementsByTagName("NothingFound");
+
+                            // چک کردن اینکه آیا تگ در فایل XML اصلا وجود دارد؟
+                            if (tags.length > 0) {
+                                Result = tags[0].textContent;
+                            }
+                        }
+                        TableDivision.html(Result);
+
                         bussy = false;
                         $('.table-responsive').removeClass('running ld-over'); // حذف loading overlay
                         $('.table-responsive .ld.ld-ring.ld-spin').hide(); // مخفی کردن loader داخل table
@@ -1051,7 +1123,16 @@ function ExecuteHistoryFilter(target) {
                 error: function(xhr, status, error) {
                     console.error('AJAX Error:', status, error);
                     console.error('Response:', xhr.responseText);
-                    TableDivision.html('خطا در دریافت اطلاعات: ' + error);
+                    var ResultCom='خطا در دریافت اطلاعات';
+                    if (xmlDoc && xmlDoc.getElementsByTagName("parsererror").length === 0) {
+                        var tags = xmlDoc.getElementsByTagName("ReceiveInfoError");
+
+                        // چک کردن اینکه آیا تگ در فایل XML اصلا وجود دارد؟
+                        if (tags.length > 0) {
+                            ResultCom = tags[0].textContent;
+                        }
+                    }
+                    TableDivision.html(ResultCom+ ' : ' + error);
                     bussy = false;
                     $('.table-responsive').removeClass('running ld-over'); // حذف loading overlay
                     $('.table-responsive .ld.ld-ring.ld-spin').hide(); // مخفی کردن loader داخل table

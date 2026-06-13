@@ -66,7 +66,6 @@ class resultBusTicket extends apiBus
                              data-time="' . $item['timeMove'] . '"
                              data-special="' . $item['is_special'] . '" >
                            ';
-
                 $output .= '<div class="international-available-item">
                       <div class="international-available-info bus_page">
                       <div class="p-2 international-available-item-right-Cell bus_page my-slideup">';
@@ -87,7 +86,6 @@ class resultBusTicket extends apiBus
                 }
 
                 $output .= '</div>';
-
                 $output .= '<div class="international-available-airlines-info international-available-bus-info align-content-between">';
                 $output .= '  <div class="iranL departure-time"> <h2>' . $item['timeMove'] . '</h2></div>
                               ';
@@ -100,7 +98,6 @@ class resultBusTicket extends apiBus
 <div class="airlines-info bus-info_">
                   <div class="col-md-12">
                       <div class="airline-line">';
-
                 $output .= '
 
                   <div class="plane-icon busicon_zm">
@@ -328,7 +325,7 @@ class resultBusTicket extends apiBus
                         '</div>';
                 }
             }
-                $output .= '<div onclick="showDescriptionDetail(this, \'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
+                $output .= '<div onclick="showDescriptionDetail(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
                       <i class="fa fa-angle-down"></i>
                   </div>';
 
@@ -356,7 +353,6 @@ class resultBusTicket extends apiBus
 
     public function getBuses($param)
     {
-
         $check_free_chair_all_buses = true ;
         if(!$param['cityOrigin'] && !$param['cityDestination'] && !$param['dateMove']){
             ob_start();
@@ -374,10 +370,11 @@ class resultBusTicket extends apiBus
             </div>
             <?php
             $resultBuses=ob_get_clean();
-        }else{
+        }
+        else{
             ob_start();
             $getDateJalali=$this->getDateJalali($param['dateMove']);
-//            $route=$this->getRoute($param['cityOrigin'], $param['cityDestination']);
+//          $route=$this->getRoute($param['cityOrigin'], $param['cityDestination']);
 
             $final_html_data='';
             $originCity=functions::getRoute($param['cityOrigin']);
@@ -406,6 +403,7 @@ class resultBusTicket extends apiBus
                     "destinationCityId"=>$cityDestination['code']
                 ]
             ];
+
             $jsonData=json_encode($data);
 
 
@@ -431,7 +429,6 @@ class resultBusTicket extends apiBus
                 $busSearchApiData=$resultBuses=parent::busSearch($jsonData);
 
                 }
-             
                 if(trim($dateMove) >= trim($dateNow)){
                     if($this->checkApiSuccessfulStatus($resultBuses) && $resultInfoSourcesApi) {
                         $countBuses = count($resultBuses['response']['data']);
@@ -452,6 +449,9 @@ class resultBusTicket extends apiBus
                                 $sort = array();
                                 $freeBus = array();
                                 $notFreeBus = array();
+
+
+
                                 foreach ($resultBuses['response']['data'] as $keySort => $arraySort) {
                                     if ($arraySort['countFreeChairs'] > 0) {
                                         $sort['countFreeChairs'][$keySort] = $arraySort['countFreeChairs'];
@@ -586,10 +586,8 @@ class resultBusTicket extends apiBus
 
 
                             }
-
                             if(count($html_data['reservation']) > 0 || count($html_data['api'])> 0 ){
-
-                            echo $this->generateHtml(array_merge($html_data['reservation'],$html_data['api']));
+                                echo $this->generateHtml(array_merge($html_data['reservation'],$html_data['api']));
                             }else{
                                 ?>
                                 <div class="w-100 d-flex flex-wrap d-none">

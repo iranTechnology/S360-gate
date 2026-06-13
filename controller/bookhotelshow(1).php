@@ -363,7 +363,7 @@ class bookhotelshow extends baseController
             $sql .= " AND end_date ='{$_POST['EndDate']}'";
 
         }
-
+        /* 1405_2_30 غیرفعال شد
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
@@ -371,7 +371,7 @@ class bookhotelshow extends baseController
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
             $sql .= " AND serviceTitle IN ({$check_access})";
-        }
+        }*/
         $sql .= " GROUP BY factor_number ORDER BY creation_date_int DESC ";
 
         if (TYPE_ADMIN == '1') {
@@ -1828,7 +1828,7 @@ $html .= '
             $sql .= " AND end_date ='{$_POST['EndDate']}'";
 
         }
-
+        /* 1405_2_30 غیرفعال شد
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
@@ -1836,7 +1836,7 @@ $html .= '
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
             $sql .= " AND serviceTitle IN ({$check_access})";
-        }
+        }*/
         $sql .= " GROUP BY factor_number ORDER BY creation_date_int DESC ";
 
         if (TYPE_ADMIN == '1') {

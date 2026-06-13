@@ -11,9 +11,13 @@
 {/if}
 
 {load_presentation_object filename="members" assign="objCounterLogin"}
+{load_presentation_object filename="bookshow" assign="objChatNotif"}
+{$chatNotifications = $objChatNotif->chatNotifications()}
 {load_presentation_object filename="listCancel" assign="listCancel"}
+
 {assign var=Infocounter value=$objCounterLogin->getMemberById({$smarty.session.memberIdCounterInAdmin})}
 {assign var=listCancelAdmin value=$listCancel->ListCancelAdmin()}
+
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
 
@@ -148,6 +152,7 @@
         var client_id   = "{$smarty.const.CLIENT_ID}";
         var typeAdmin = '{$smarty.const.TYPE_ADMIN}';
     </script>
+
 </head>
 
 <body class="fix-header">
@@ -295,6 +300,16 @@
                         <li><a href="http://www.safarbank.ir/irantech" target="_blank"><i
                                         class="mdi mdi-bell-ring"></i>
                                 <span>اخبار </span></a></li>
+                        {if $smarty.const.TYPE_ADMIN eq '1'}
+                        <li>
+                            <div class="language-selector">
+                                <span> </span>
+                                <a href="#" onclick="funSetLangPanelAdmin('fa')"  class="{if $smarty.const.LANG_PANEL_ADMIN == 'fa'}active{/if}" >فارسی</a>
+                                <a href="#" onclick="funSetLangPanelAdmin('ar')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'ar'}active{/if}" >عربی</a>
+                                <a href="#" onclick="funSetLangPanelAdmin('en')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'en'}active{/if}" >انگلیسی</a>
+                            </div>
+                        </li>
+                        {/if}
                         <li role="separator" class="divider"></li>
                         <li><a href="#" onclick="logoute(); return false;" class="colorExit"><i
                                         class="fa fa-power-off fa-fw"></i>
@@ -306,8 +321,6 @@
                 </li>
                 <!-- /.dropdown -->
             </ul>
-
-
             {if $smarty.const.TYPE_ADMIN eq '1'}
                 {load_presentation_object filename="bookhotelshow" assign="objbookHotel"}
                 {assign var="countReserveHotel" value=$objbookHotel->getHotelOnRequestForAdmin()}
@@ -394,6 +407,98 @@
 
                 </ul>
             {/if}
+            {if !empty($chatNotifications)}
+                {* محاسبه مجموع کل نوتیفیکیشن‌ها برای بَج اصلی *}
+                {$totalUnreadCount = 0}
+                {foreach $chatNotifications as $notif}
+                    {$totalUnreadCount = $totalUnreadCount + $notif.unread_count}
+                {/foreach}
+
+                <ul class="nav navbar-top-links navbar-right pull-right" style="border-left: 1px solid rgba(0,0,0,.08);">
+                    <!-- Notification Dropdown -->
+                    <li class="dropdown" id="chatNotificationDropdown" style="position: relative;">
+                        <!-- Top Notification Button -->
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style=" position: relative;">
+                            <i id="notifBell" class="fa fa-bell {if $totalUnreadCount > 0}bell-shake{/if}" style="font-size: 20px;"></i>
+                            <!-- Badge Count -->
+                            <span id="chatNotifCount"
+                                  style="
+                                          position: absolute;
+                                          top: 10px;
+                                          right: 5px;
+                                          background: red;
+                                          color: white;
+                                          padding: 2px 6px;
+                                          border-radius: 50%;
+                                          font-size: 10px;
+                                  {if $totalUnreadCount == 0}display: none;{/if}
+                                          ">
+                {$totalUnreadCount}
+            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages animated fadeInDown"
+                            style="width: 350px; max-height: 400px; overflow-y: auto;">
+                            <li class="dropdown-header" style="font-weight: bold; padding: 10px 15px;">
+                                شما در قسمت سوابق خرید {$totalUnreadCount} چت خوانده نشده دارید
+                            </li>
+                            <li class="divider"></li>
+                            {foreach $chatNotifications as $notif}
+                                <li>
+                                    {* تبدیل service_type به نام فارسی یا استفاده از خود service_type *}
+                                    {$serviceName = ''}
+                                    {if $notif.service_type == 'flight'}
+                                        {$serviceName = 'هواپیما'}
+                                    {elseif $notif.service_type == 'train'}
+                                        {$serviceName = 'قطار'}
+                                    {elseif $notif.service_type == 'hotel'}
+                                        {$serviceName = 'هتل'}
+                                    {else}
+                                        {$serviceName = $notif.service_type|capitalize} {* یا هر مقدار پیش‌فرض دیگر *}
+                                    {/if}
+
+                                    <a href="/gds/itadmin/ticket/mainTicketHistory" style="padding: 10px 15px; display: block;">
+                                        <div>
+                                            <strong>{$serviceName}</strong>
+                                            <span class="pull-right text-muted" style="font-size: 12px;">{$notif.unread_count} پیام خوانده نشده</span>
+                                        </div>
+
+                                        <div style="margin-top: 5px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span>شماره درخواست: {$notif.request_number}</span>
+
+                                            <!-- دکمه کپی -->
+                                            <button
+                                                    class="copy-btn"
+                                                    data-copy="{$notif.request_number}"
+                                                    title="کپی شماره درخواست"
+                                                    style="
+                                                    border: none;
+                                                    background: transparent;
+                                                    cursor: pointer;
+                                                    font-size: 14px;
+                                                    color: #007bff;
+                                                ">
+                                                <i class="fa fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+
+                                </li>
+                                <li class="divider"></li>
+                            {/foreach}
+
+                            {* در صورت تمایل می‌توانید لینکی برای "مشاهده همه" اضافه کنید *}
+                            {*
+                            <li>
+                                <a class="text-center" href="#">
+                                    <strong>مشاهده همه</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                            *}
+                        </ul>
+                    </li>
+                </ul>
+            {/if}
 
 
         </div>
@@ -408,15 +513,22 @@
     <div class="navbar-default sidebar sidebar_2" role="navigation">
         <div class="sidebar-nav slimscrollsidebar">
             <div class="sidebar-head sidebar-head_2">
-                <h4 class="h4_bar_icon d-flex" style='color:#fff'><span class="fa-fw open-close"> <i class="ti-menu hidden-xs"></i><i
-                                class="ti-close visible-xs"></i></span>
+                <h4 class="h4_bar_icon d-flex" style='color:#fff'>
+                    <span class="fa-fw open-close">
+                        <i class="ti-menu hidden-xs"></i>
+                        <i class="ti-close visible-xs"></i>
+                    </span>
                     <span class="title-agency-panel-admin" >
-                        {if $smarty.const.TYPE_ADMIN eq '1'}ایران تکنولوژی {else}{$smarty.const.CLIENT_NAME}{/if}
+                        {if $smarty.const.TYPE_ADMIN eq '1'}
+                            ایران تکنولوژی
+                        {else}
+                            {$smarty.const.CLIENT_NAME}
+
+                        {/if}
                     </span>
                 </h4>
             </div>
             <ul class="nav slide_menu_" id="side-menu">
-
                 {assign var="menu" value=$objAdmin->LinkAdminMenu()}
 {*                <pre>{$smarty.session|print_r}</pre>*}
                 {if isset($smarty.session.AgencyPartner) && $smarty.session.AgencyPartner eq 'AgencyHasLogin'}
@@ -521,7 +633,7 @@
                                         {/foreach}
                                     </ul>
                                 </li>
-				
+
                             {else}
                                 {if ($session_agency_partner && $objAdmin->accessMenuCounter($valueLevel1['id'],$smarty.session.memberIdCounterInAdmin)) || ((!$session_agency_partner && $link['accessCustomer'] eq '1')||($link['accessCustomer'] eq '0' && $smarty.const.TYPE_ADMIN  eq '1')) }
                                     <li>
@@ -611,7 +723,6 @@
       </script>
   {/literal}
 {/if}*}
-
 <script src="assets/js/dashboard3.js"></script>
 <script src="assets/js/calendar.js" type="text/javascript"></script>
 <script src="assets/js/jquery-migrate-1.4.0.min.js" type="text/javascript"></script>
@@ -635,10 +746,59 @@
 <script type="text/javascript" src="assets/editor_TinyMCE/editor/tinymce.min.js"></script>
 <script type="text/javascript" src="assets/editor_TinyMCE/editor.js"></script>
 <script type="text/javascript" src="assets/ckeditor/ckeditor.js"></script>
+
 <script>
    $(document).ready(function(){
       $(".bg-title").attr("style", "margin-top:55px !important;margin-bottom: 5px  !important;");
    });
+   setTimeout(() => {
+       document.getElementById("notifBell").classList.remove("bell-shake");
+   }, 5000);
+   const bell = document.getElementById("notifBell");
+   bell.addEventListener("mouseenter", () => {
+       bell.classList.remove("bell-shake");
+   });
+   bell.addEventListener("click", () => {
+       bell.classList.remove("bell-shake");
+   });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".copy-btn");
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const text = btn.getAttribute("data-copy");
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => showCheck(btn));
+                } else {
+                    // Fallback برای مرورگرهای قدیمی
+                    const textarea = document.createElement("textarea");
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        showCheck(btn);
+                    } catch (err) {
+                        console.error("Copy command failed:", err);
+                    }
+                    document.body.removeChild(textarea);
+                }
+            });
+        });
+
+        function showCheck(btn) {
+            const originalIcon = btn.innerHTML;
+            btn.innerHTML = "<i class='fa fa-check' style='color:green;'></i>";
+            setTimeout(() => { btn.innerHTML = originalIcon; }, 1500);
+        }
+    });
+</script>
+
 </body>
 </html>

@@ -1,5 +1,4 @@
 <?php
-/* بخاطر جنگ
 // از سمت سایت iran-tech.com وصل میشیم و فاکتورهایی که پرداخت نشده را close می کنیم
 //iran-tech.com/factors/CurlFromOtherSyatems/CheckFactorForSafar360.php
 
@@ -29,8 +28,11 @@ if (is_array($input) && !empty($input)) {
 
     $stmt = $pdo->prepare(
         "UPDATE clients_tb 
-         SET status_factor_user = 'Close' 
-         WHERE hash_id_whmcs = :hash_id_whmcs"
+         SET 
+             status_factor_user = 'Close',
+             status_factor_admin = 'Close'
+         WHERE 
+             hash_id_whmcs = :hash_id_whmcs"
     );
 
     foreach ($input as $hash_id_whmcs) {
@@ -60,5 +62,5 @@ if (is_array($input) && !empty($input)) {
         'fail' => $fail
     ], JSON_UNESCAPED_UNICODE);
 }
-*/
+
 ?>

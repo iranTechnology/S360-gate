@@ -1,5 +1,5 @@
 <?php
-/* بخاطر جنگ
+
 session_start();
 //ini_set('display_errors', 1);
 //error_reporting(E_ALL);
@@ -89,5 +89,5 @@ if (IdWhmcsCurll != '(NULL)' && IdWhmcsCurll != '') {
     echo json_encode($response_to_send);
     exit;
 }
-*/
+
 ?>

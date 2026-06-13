@@ -21,42 +21,32 @@
     <div class="row bg-title">
         <div class="col-xs-12">
             <ol class="breadcrumb FloatRight">
-                <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/admin">خانه</a></li>
-                <li class="active"> درباره ی ما</li>
+                <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/admin" id="PA_HOME">خانه</a></li>
+                <li class="active PA_Ab_TITLE">درباره ی ما</li>
             </ol>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
             <div class="white-box">
-                <h3 class="box-title m-b-0">درباره ی ما</h3>
-
-
+                <h3 class="box-title m-b-0  PA_Ab_TITLE" >درباره ی ما</h3>
                 <form class='aboutUsUpdate' id='aboutUsUpdate' method="post" enctype='multipart/form-data'>
 
                     <input type='hidden' name='className' value='aboutUs'>
                     <input type='hidden' name='method' value='update'>
-{*                    {if $smarty.get.lang}*}
-{*                        <input type='hidden' name='lang' value='{$smarty.get.lang}'>*}
-{*                    {else}*}
-{*                        <input type='hidden' name='lang' value='fa'>*}
-{*                    {/if}*}
+                    {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
                     <p class="text-muted m-b-30">اطلاعات زیر در صفحه ی
                         <a class='hover-text-underline text-megna'
                            href='https://{$smarty.const.CLIENT_DOMAIN}/gds/aboutUs' target='_blank'> درباره ی ما</a>
                         مشاهده کنید.
                     </p>
+                    {/if}
                     <div class='d-flex flex-wrap '>
                         <div class="bg-white d-flex flex-wrap rounded w-100 ">
-
-
-
-
                             <hr class='m-0 mb-4 w-100'>
-
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="language" class="control-label">زبان</label>
+                                    <label for="language" class="control-label" id="PA_Ab_LANG">زبان</label>
                                     <select onchange='aboutUsLanguage(this.value);' name='lang' class="form-control" id="language">
                                         {foreach $languages as $value=>$title}
                                              <option {if $value eq $smarty.get.lang}selected{/if} value="{$value}">{$title}</option>
@@ -68,7 +58,7 @@
 
                         </div>
                         <div class='d-block col-md-4 col-sm-12 form-group'>
-                            <label for='title'>
+                            <label for='title' id="PA_Ab_SUBJECT">
                                 عنوان
                             </label>
                             <input type='text' class='form-control' id='title' name='title'
@@ -83,13 +73,13 @@
                         <div class='d-block col-md-4 col-sm-12 form-group'>
 
                             <div class="form-group col-sm-6">
-                                <label for="banner_file" class="control-label">تصویر بنر</label>
+                                <label for="banner_file" class="control-label" id="PA_Ab_BANNER">تصویر بنر</label>
                                 <input type="file" name="banner_file" id="banner_file" class="dropify" data-height="100"
                                        data-default-file="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/aboutUs/{$aboutUsData['banner_file']}">
                                 {if $aboutUsData['banner_file']}
                                 <a  data-id="{$aboutUsData['id']}"  class='btn btn-primary delete-fara deleteImage' >
                                     <i class="fa fa-trash" aria-hidden="true"></i>
-                                    حذف تصویر
+                                    <span id="PA_Ab_DELIMG"> حذف تصویر</span>
                                 </a>
                                 {/if}
                             </div>
@@ -98,20 +88,18 @@
 
                         </div>
                         <div class='d-block col-md-12 col-sm-12 form-group'>
-                            <label for='title'>
-                                لینک ویدئو
-
-                            </label>
+                            <label for='title' id="PA_Ab_VIDEOLINK"> لینک ویدئو</label>
                             <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
                                   data-toggle="tooltip" data-placement="top" title=""
                                   data-original-title=" در این قسمت تنها لینک ویدئو را قرار دهید"></span>
-                            {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/iframeLink.tpl"}
-                            <input type='text'  class='form-control' id='video_link' name='video_link' placeholder="در این قسمت لینک ویدئو را قرار دهید"
-                                   value="{$aboutUsData['video_link']}">
+                            {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
+                                 {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/iframeLink.tpl"}
+                            {/if}
+                            <input type='text'  class='form-control' id='video_link' name='video_link' value="{$aboutUsData['video_link']}">
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label">شبکه های اجتماعی</label>
+                            <label class="control-label" id="PA_Ab_SOIALMEDIA">شبکه های اجتماعی</label>
                             <div class="row">
 
                                 <div class="form-group col-sm-12 DynamicSocialLinks">
@@ -128,7 +116,7 @@
                                         <div data-target="BaseSocialLinksDiv" class="col-sm-12 p-0 form-group">
                                             <div class="col-md-3 pr-0">
                                                 <select data-parent="SocialLinksValues" data-target="social_media" class="form-control" name="socialLinks[{$counter}][social_media]">
-                                                    <option>انتخاب کنید</option>
+                                                    <option id="ChoseOption">انتخاب کنید</option>
                                                     {foreach $socialMediaList as $key => $social}
                                                         <option {if $key == $item.social_media}selected{/if} value="{$key}">{$social}</option>
                                                     {/foreach}
@@ -166,20 +154,22 @@
                     <textarea class='w-100' name='body' id='body'>{$aboutUsData['body']}</textarea>
                     </div>
                     <div class='d-block flex-wrap w-100' style='margin-top: 20px'>
-                        <label for='about_title_customer_club' style='font-size: 17px; margin: 10px auto;'>
+                        <label for='about_title_customer_club' style='font-size: 17px; margin: 10px auto;' id="PA_Ab_CLUB">
                             عنوان باشگاه مشتریان شما
                         </label>
                         <input type='text' class='form-control' id='about_title_customer_club' name='about_title_customer_club'
                                value="{$aboutUsData['about_title_customer_club']}">
                     </div>
                     <div class='d-block flex-wrap w-100' style='margin-top: 20px'>
-                        <label for="about_customer_club" class="control-label" style='font-size: 17px; margin: 10px auto;'>درباره باشگاه مشتریان شما</label>
+                        <label for="about_customer_club" class="control-label" style='font-size: 17px; margin: 10px auto;' id="PA_Ab_AboutCUSTOMER">درباره باشگاه مشتریان شما</label>
                         <textarea class='w-100' name='about_customer_club' id='about_customer_club'>{$aboutUsData['about_customer_club']}</textarea>
                     </div>
                     <div class='d-block mt-5 flex-wrap w-100'>
-                        <button type='submit' class='btn submit-button btn-primary btn-block'>
+                        <button type='submit' class='btn submit-button btn-primary btn-block' id="PA_Ab_SUBMIT">
                             به روز رسانی
                         </button>
+                        <span class="d-none" id="PA_AB_UPDATEDMSG">اطلاعات درباره ی ما ویرایش شد</span>
+                        <span class="d-none" id="PA_AB_NOCHANGE">تغییری نداده اید!</span>
                     </div>
 
                 </form>
@@ -189,6 +179,10 @@
 
     </div>
 </div>
+<script>
+    var LANG_XML_URL = "{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/langs/" + "{$smarty.const.LANG_PANEL_ADMIN}" + "_frontMaster.xml";
+</script>
+
 {literal}
 <script>
   $(document).ready(function() {

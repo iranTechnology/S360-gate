@@ -1,6 +1,13 @@
 <?php
 function translateFromDb( $lang = 'fa', $filename = 'frontMaster' ) {
-    $mysqli = new mysqli( "localhost", "root", '', "amadeus_db" );
+    if(strpos($_SERVER['HTTP_HOST'],'192.168.')===false && strpos($_SERVER['HTTP_HOST'],'localhost')===false){//internet
+        require('/home/commin_config/password.php');
+        $mysqli = new mysqli( "localhost", "safar360", $PasswordAllSystem, "safar360_gds" );
+    }
+    else {
+        $mysqli = new mysqli("localhost", "root", '', "amadeus_db");
+    }
+
 	/* check connection */
 	if ( $mysqli->connect_errno ) {
 		echo "Connect failed " . $mysqli->connect_error;
@@ -60,7 +67,13 @@ function xmlToDbFromFile( $lang = 'fa' ) {
 }
 
 function insertToDb( $dataArray, $lang = 'fa' ) {
-    $mysqli = new mysqli( "localhost", "root", '', "amadeus_db" );
+    if(strpos($_SERVER['HTTP_HOST'],'192.168.')===false && strpos($_SERVER['HTTP_HOST'],'localhost')===false){//internet
+        require('/home/commin_config/password.php');
+        $mysqli = new mysqli( "localhost", "safar360", $PasswordAllSystem, "safar360_gds" );
+    }
+    else {
+        $mysqli = new mysqli("localhost", "root", '', "amadeus_db");
+    }
     /* check connection */
 	if ( $mysqli->connect_errno ) {
 		echo "Connect failed " . $mysqli->connect_error;

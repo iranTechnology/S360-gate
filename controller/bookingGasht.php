@@ -125,13 +125,14 @@ class bookingGasht extends clientAuth
                 $conditions .= " AND payment_type = '{$_POST['payment_type']}'";
             }
         }
+        /* 1405_2_30 غیرفعال شد
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
             $conditions .= " AND serviceTitle IN ({$check_access})";
-        }
+        }*/
         if (TYPE_ADMIN == '1') {
 
             $ModelBase = Load::library('ModelBase');

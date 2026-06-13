@@ -1133,3 +1133,27 @@ async function removeFromGallery(_this) {
     temporaryFileInput.files = dt.files;
 
 }
+
+function  funSetLangPanelAdmin(lang){
+    $.ajax({
+        type: 'post',
+        url: amadeusPath + "user_ajax.php",
+        data: {
+            lang: lang,
+            flag: 'setLangPanelAdmin'
+        },
+        success: function (data) {
+            $.toast({
+                heading: 'مدیریت زبان',
+                text: 'با موفقیت زبان پنل مدیریت تغییر کرد',
+                position: 'top-right',
+                loaderBg: '#fff',
+                icon: 'success',
+                hideAfter: 2500,
+                textAlign: 'right',
+                stack: 6
+            });
+            window.location.href = amadeusPath + 'itadmin/admin';
+        }
+    });
+}

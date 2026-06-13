@@ -176,6 +176,7 @@
                         <label for="ravis_code" class="control-label"> کد راویس پیش فرض مشتری<small style='color:red'>(در اکسل راویس اگر همکارش کد نداشت این دیده می شود)</small></label>
                         <input type="text" class="form-control" id="ravis_code" name="ravis_code" value="">
                     </div>
+                    {* 
                     <div class="form-group col-sm-6">
                         <label for="AllowSendSms" class="control-label"> اجازه ارسال پیامک </label>
                         <select name="AllowSendSms" id="AllowSendSms" class="form-control" onchange="SelectAllowPanel(this)">
@@ -184,7 +185,7 @@
                             <option value="0">ندارد</option>
                         </select>
                     </div>
-
+                *}
 
                     <div class="form-group col-sm-6">
                         <label for="IsCurrency" class="control-label"> اجازه ارزی کردن</label>
@@ -222,7 +223,7 @@
                             <option value="1">فعال باشد</option>
                         </select>
                     </div>
-
+{* 
                     <div class="form-group col-sm-6 smsPanel" style="display: none">
                         <label for="UsernameSms" class="control-label">نام کاربری پنل پیامک  </label>
                         <input type="text" class="form-control" id="UsernameSms" name="UsernameSms"
@@ -234,6 +235,7 @@
                         <input type="text" class="form-control" id="PasswordSms" name="PasswordSms"
                                placeholder="کلمه عبور پنل پیامک را وارد نمائید">
                     </div>
+                    *}
                     <div class="form-group col-sm-6">
                         <label for="parent_id" class="control-label"> مشتری معرف </label>
                             <select name="parent_id" id="parent_id" class="form-control">
@@ -243,12 +245,21 @@
                                 {/foreach}
                             </select>
                     </div>
-                    <div class="form-group col-sm-12">
+                    <div class="form-group col-sm-6">
                         <label for="isIframe" class="control-label">این مشتری آیفریم است ؟ </label>
                         <select name="isIframe" id="isIframe" class="form-control">
                             <option value="">انتخاب کنید</option>
                             <option value="1">بله</option>
                             <option value="0">خیر</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="default_lang_admin" class="control-label">زبان پیش فرض بخش ادمین </label>
+                        <select name="default_lang_admin" id="default_lang_admin" class="form-control">
+                            <option value="">انتخاب کنید</option>
+                            <option value="fa">فارسی</option>
+                            <option value="ar">عربی</option>
+                            <option value="en">انگلیسی</option>
                         </select>
                     </div>
                     <div class="form-group col-sm-6">

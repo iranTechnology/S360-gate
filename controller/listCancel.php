@@ -84,8 +84,11 @@ class listCancel extends clientAuth {
                     $sql .= " AND TCancel.DateRequestCancelClientInt >= '{$date_of_int}' AND TCancel.DateRequestCancelClientInt  <= '{$date_to_int}'";
                 }
 
-                if (!empty($_POST['Status'])) {
+                if (!empty($_POST['date_of_excel'])){//baraye File Excel ke upload mishe babate Cancel ha
+                    $sql .= " AND Ticket.date_flight < '{$_POST['date_of_excel']}' ";
+                }
 
+                if (!empty($_POST['Status'])) {
                     $sql .= " AND Cancel.Status ='{$_POST['Status']}'  ";
                 }
 
@@ -115,6 +118,8 @@ class listCancel extends clientAuth {
                     '21' => 'چارتر118',
                     '43' => 'سیتی نت',
                 ];
+
+
 
 
 
@@ -943,13 +948,13 @@ class listCancel extends clientAuth {
 
         if ($InfoCancel['TypeCancel'] == 'flight' || $InfoCancel['TypeCancel'] == '') {
             $Sql = "SELECT 
-                         book.* , Cancel.PercentIndemnity as PercentIndemnity,
+             book.* , Cancel.PercentIndemnity as PercentIndemnity,
                          Cancel.TypeCancel AS TypeCancel,
                          PE.id as IdExcelCanceling,
                          PE.amount as AmountExcelCanceling,
                          PE.type_excel as TypeExcelCanceling
              FROM cancel_ticket_tb AS TCancel 
-                 LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
+             LEFT JOIN cancel_ticket_details_tb AS Cancel ON Cancel.id = TCancel.IdDetail 
                  LEFT JOIN (
                                 SELECT *
                                 FROM pnr_from_excel_tb p1
@@ -959,11 +964,11 @@ class listCancel extends clientAuth {
                                     WHERE p2.IdDetail = p1.IdDetail
                                 )
                             ) PE ON (Cancel.id = PE.IdDetail)
-                LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
+             LEFT JOIN book_local_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode =book.passenger_national_code) OR (TCancel.NationalCode =book.passportNumber)) 
             WHERE book.request_number='{$RequestNumber}' AND TCancel.IdDetail='{$IdCancel}' 
              GROUP BY TCancel.NationalCode";
 
-             return $this->admin->ConectDbClient($Sql, $ClientId, "SelectAll", "", "", "");
+            return $this->admin->ConectDbClient($Sql, $ClientId, "SelectAll", "", "", "");
         }elseif ($InfoCancel['TypeCancel'] == 'bus'){
             $Sql = "SELECT 
              book.* , Cancel.PercentIndemnity as PercentIndemnity,
@@ -1168,7 +1173,7 @@ class listCancel extends clientAuth {
         $data['DateConfirmCancelInt'] = 0;
         $data['MemberId'] = $params['MemberId'];
         $data['TypeCancel'] = $params['typeService'];
-        $data['backCredit'] = $params['backCredit'];
+        $data['backCredit'] = empty($params['backCredit']) ? null : $params['backCredit'];
         $data['FactorNumber'] = $params['FactorNumber'];
         $data['RequestNumber'] = $params['RequestNumber'];
         $data['ReasonMember'] = $params['Reasons'];
@@ -1500,8 +1505,6 @@ class listCancel extends clientAuth {
         if (empty($this->pnrListExelCanceling)) {
             return functions::JsonError(null,'هیچ PNR معتبری یافت نشد');
         }
-
-
         //حالا باید این آرایه را بفرستیم به دیتابیس تا update رخ بده
         $this->InsertCancelingFromExcel();
         // خروجی موفق
@@ -1517,7 +1520,6 @@ class listCancel extends clientAuth {
         if (empty($ListCancelClient)) {
             return functions::JsonError(null,'هیچ رکوردی برای بررسی وجود ندارد');
         }
-
         // 2. حلقه روی رکوردها
         foreach ($ListCancelClient as $record) {
 
