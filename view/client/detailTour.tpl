@@ -600,7 +600,7 @@
                                             {/literal}
                                                   {else}
                                                    {literal}
-                                                       {"html":"name"}
+                                                       {"html":"name_fa"}
                                             {/literal}
 
                                                   {/if}

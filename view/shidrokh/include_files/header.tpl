@@ -28,7 +28,7 @@
     <meta name="generator" content="Iran teach"/>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, user-scalable=0">
 
-    <link rel="stylesheet" type="text/css" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/fa/user/GlobalFile/css/register.css">
+    <link rel="stylesheet" type="text/css" href="https://shidrokh-travel.ir/fa/user/GlobalFile/css/register.css">
     <link rel="shortcut icon" type="image/png" href="project_files/images/favicon.png">
 
 

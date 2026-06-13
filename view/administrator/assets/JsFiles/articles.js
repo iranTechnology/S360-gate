@@ -313,9 +313,7 @@ $(document).ready(function() {
     messages: {},
     errorElement: 'em',
     errorPlacement: function(error, element) {
-      // Add the `help-block` class to the error element
       error.addClass('help-block')
-
       if (element.prop('type') === 'checkbox') {
         error.insertAfter(element.parent('label'))
       } else {
@@ -323,15 +321,24 @@ $(document).ready(function() {
       }
     },
     submitHandler: function(form) {
-      //tinyMCE.triggerSave();
+      // ذخیره دکمه و متن اصلی
+      var submitBtn = $(form).find('button[type="submit"]');
+      var originalText = submitBtn.html();
+
+      // تغییر متن دکمه و اضافه کردن لودر
+      submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> در حال ثبت...')
+          .prop('disabled', true)
+          .addClass('disabled');
+
       CKEDITOR.instances.content.updateElement()
+
       $(form).ajaxSubmit({
         url: amadeusPath + 'ajax',
         type: 'POST',
         dataType: 'JSON',
         success: function(response) {
-          // console.log(response);
-          // console.log(response.success);
+          console.log(response); // برای بررسی در کنسول
+
           let displayIcon
           if (response.success === true) {
             displayIcon = 'success'
@@ -350,29 +357,54 @@ $(document).ready(function() {
           })
 
           if (response.success === true) {
-            setTimeout(function() {
-              window.location = `${amadeusPath}itadmin/articles/list?section=${response.data.section}`;
+            // دکمه را به حالت اول برگردان (اختیاری)
+            submitBtn.html(originalText)
+                .prop('disabled', false)
+                .removeClass('disabled');
 
-              // console.log(`${amadeusPath}itadmin/articles/list`);
+            setTimeout(function() {
+              // بررسی وجود section
+              if (response.data && response.data.section) {
+                window.location = `${amadeusPath}itadmin/articles/list?section=${response.data.section}`;
+              } else {
+                window.location = `${amadeusPath}itadmin/articles/list`;
+              }
             }, 1000)
+          } else {
+            // در صورت خطا، دکمه را به حالت اول برگردان
+            submitBtn.html(originalText)
+                .prop('disabled', false)
+                .removeClass('disabled');
           }
         },
+        error: function(xhr, status, error) {
+          console.error('Ajax Error:', error);
+          // در صورت خطای Ajax، دکمه را به حالت اول برگردان
+          submitBtn.html(originalText)
+              .prop('disabled', false)
+              .removeClass('disabled');
+
+          $.toast({
+            heading: 'خطا',
+            text: 'مشکلی در ارتباط با سرور پیش آمده است.',
+            position: 'top-right',
+            icon: 'error',
+            hideAfter: 3500,
+            textAlign: 'right',
+            stack: 6,
+          })
+        }
       })
     },
     highlight: function(element, errorClass, validClass) {
-      $(element)
-          .parents('.form-group ')
-          .addClass('has-error')
-          .removeClass('has-success')
+      $(element).parents('.form-group').addClass('has-error').removeClass('has-success')
     },
     unhighlight: function(element, errorClass, validClass) {
-      $(element)
-          .parents('.form-group ')
-          .addClass('has-success')
-          .removeClass('has-error')
+      $(element).parents('.form-group').addClass('has-success').removeClass('has-error')
     },
   })
   $('#editArticle').validate({
+
     rules: {
       article_id: 'required',
       language: 'required',
@@ -381,29 +413,36 @@ $(document).ready(function() {
       service: 'required',
       category: 'required',
     },
-    messages: {},
-    errorElement: 'em',
-    errorPlacement: function(error, element) {
-      // Add the `help-block` class to the error element
-      error.addClass('help-block')
 
+    messages: {},
+
+    errorElement: 'em',
+
+    errorPlacement: function(error, element) {
+      error.addClass('help-block')
       if (element.prop('type') === 'checkbox') {
         error.insertAfter(element.parent('label'))
       } else {
         error.insertAfter(element)
       }
     },
+
     submitHandler: function(form) {
-      //tinyMCE.triggerSave();
+      // ذخیره دکمه و تغییر وضعیت آن
+      var submitBtn = $(form).find('button[type="submit"]');
+      var originalText = submitBtn.html();
+
+      // تغییر متن دکمه و اضافه کردن لودر
+      submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> در حال ثبت...')
+          .prop('disabled', true)
+          .addClass('disabled');
+
       CKEDITOR.instances.content.updateElement()
+
       $(form).ajaxSubmit({
         url: amadeusPath + 'ajax',
         type: 'POST',
-        // mimeType: "multipart/form-data",
-        // contentType: false,
-        // processData: false,
         success: function(response) {
-          // console.log(response);
           let displayIcon
           if (response.success === true) {
             displayIcon = 'success'
@@ -421,31 +460,37 @@ $(document).ready(function() {
             stack: 6,
           })
 
+          console.log('response: ' , response)
+
           if (response.success === true) {
             setTimeout(function() {
-              // location.reload()
-
-              window.location = `${amadeusPath}itadmin/articles/list?section=${response.data.section}`;
-              // window.location = `${amadeusPath}itadmin/articles/list`;
+              window.location = `${amadeusPath}itadmin/articles/list?section=${response[0].section}`;
             }, 1000)
+          } else {
+            // در صورت خطا، دکمه را به حالت اول برگردان
+            submitBtn.html(originalText)
+                .prop('disabled', false)
+                .removeClass('disabled');
           }
         },
+        error: function() {
+          // در صورت خطای Ajax، دکمه را به حالت اول برگردان
+          submitBtn.html(originalText)
+              .prop('disabled', false)
+              .removeClass('disabled');
+        }
       })
     },
-    highlight: function(element, errorClass, validClass) {
-      $(element)
-          .parents('.form-group ')
-          .addClass('has-error')
-          .removeClass('has-success')
-    },
-    unhighlight: function(element, errorClass, validClass) {
-      $(element)
-          .parents('.form-group ')
-          .addClass('has-success')
-          .removeClass('has-error')
-    },
-  })
 
+    highlight: function(element, errorClass, validClass) {
+      $(element).parents('.form-group').addClass('has-error').removeClass('has-success')
+    },
+
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).parents('.form-group').addClass('has-success').removeClass('has-error')
+    },
+
+  })
   let deleteArticle = function(id) {
     $.ajax({
       url: `${amadeusPath}user_ajax.php`,

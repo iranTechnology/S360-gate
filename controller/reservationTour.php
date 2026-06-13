@@ -5410,7 +5410,7 @@ class reservationTour extends clientAuth
         $hotel_list =  $this->reservation_tour_hotel_model->get([
             $tour_hotel_table . '.*',
             $hotel_table . '.id',
-            $hotel_table . '.name',
+            $hotel_table . '.name as name_fa',
             $hotel_table . '.name_en',
             $hotel_table . '.trip_advisor',
             $hotel_table . '.star_code',
