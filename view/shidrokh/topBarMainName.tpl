@@ -10,10 +10,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     {if $smarty.const.SOFTWARE_LANG eq 'en'}
         <link rel="stylesheet" type="text/css"
-              href="https://www.shabbadgasht.ir/en/user/GlobalFile/css/register.css">
+              href="https://www.shidrokh-travel.ir/en/user/GlobalFile/css/register.css">
     {else}
         <link rel="stylesheet" type="text/css"
-              href="https://www.shabbadgasht.ir/fa/user/GlobalFile/css/register.css">
+              href="https://www.shidrokh-travel.ir/fa/user/GlobalFile/css/register.css">
     {/if}
 
 
@@ -39,13 +39,14 @@
 {include file="`$smarty.const.FRONT_THEMES_DIR`shidrokh/topBarName.tpl"}
 
 {literal}
-    <script  type="text/javascript" src="https://www.shabbadgasht.ir/fa/user/js/jquery-3.6.0.min.js"></script>
+    <script  type="text/javascript" src="https://www.shidrokh-travel.ir/fa/user/js/jquery-3.6.0.min.js"></script>
+    <script src="project_files/js/javascript.js"></script>
     <script type="text/javascript">
         function signout() {
-            $.post('https://online.shabbadgasht.ir/gds/user_ajax.php',
+            $.post('https://online.shidrokh-travel.ir/gds/user_ajax.php',
                 {flag: 'signout'},
                 function (data) {
-                    window.top.location.href ="https://www.shabbadgasht.ir/fa/user/home.php";
+                    window.top.location.href ="https://www.shidrokh-travel.ir/fa/user/home.php";
                 }
             )
         }

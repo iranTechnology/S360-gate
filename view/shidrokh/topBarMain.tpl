@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <link rel="stylesheet" type="text/css"
-              href="https://shabbadgasht.ir/fa/user/GlobalFile/css/register.css">
+              href="https://shidrokh-travel.ir/fa/user/GlobalFile/css/register.css">
     <style>
         html{
             height: 100%;
@@ -30,14 +30,15 @@
 
 {include file="`$smarty.const.FRONT_THEMES_DIR`shidrokh/topBar.tpl"}
 {literal}
-    <script  type="text/javascript" src="https://shabbadgasht.ir/fa/user/js/jquery-3.6.0.min.js"></script>
+    <script  type="text/javascript" src="https://shidrokh-travel.ir/fa/user/js/jquery-3.6.0.min.js"></script>
+    <script src="project_files/js/javascript.js"></script>
     <script type="text/javascript">
 
         function signout() {
-            $.post('https://online.shabbadgasht.ir/gds/user_ajax.php',
+            $.post('https://online.shidrokh-travel.ir/gds/user_ajax.php',
                 {flag: 'signout'},
                 function (data) {
-                    window.top.location.href ="https://shabbadgasht.ir/fa/user/home.php";
+                    window.top.location.href ="https://shidrokh-travel.ir/fa/user/home.php";
                 }
             )
         }

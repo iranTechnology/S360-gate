@@ -33,6 +33,7 @@
             <input type="hidden" name="className" value="articles">
             <input type="hidden" name="method" value="UpdateArticle">
             <input type="hidden" name="article_id" value="{$article.id}">
+            <input type="hidden" name="section" value="{$section}">
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                 <div class="d-flex flex-wrap gap-10">
 
