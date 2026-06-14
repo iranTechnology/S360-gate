@@ -260,12 +260,21 @@
 {/foreach}
 <div class="float-sm">
     <div class="fl-fl float-gp">
-        <a href="{if $telegramHref}{$telegramHref}{else}javascript:;{/if}" target="_blank"><i class="{if $smarty.const.GDS_SWITCH neq 'search-flight' and $smarty.const.GDS_SWITCH neq 'international'} fab {else} fa {/if} fa-telegram"></i>به ما ملحق شو!</a>
+        <a href="{if $telegramHref}{$telegramHref}{else}javascript:;{/if}" target="_blank">
+            <i class="{if $smarty.const.GDS_SWITCH neq 'search-flight' and $smarty.const.GDS_SWITCH neq 'international'} fab {else} fa {/if} fa-telegram"></i>
+            به ما ملحق شو!
+        </a>
     </div>
     <div class="fl-fl float-rs">
-        <a href="{if $whatsappHref}{$whatsappHref}{else}javascript:;{/if}" target="_blank"><i class="{if $smarty.const.GDS_SWITCH neq 'search-flight' and $smarty.const.GDS_SWITCH neq 'international'} fab {else} fa {/if} fa-whatsapp"></i>تماس با ما!</a>
+        <a href="{if $whatsappHref}{$whatsappHref}{else}javascript:;{/if}" target="_blank">
+            <i class="{if $smarty.const.GDS_SWITCH neq 'search-flight' and $smarty.const.GDS_SWITCH neq 'international'} fab {else} fa {/if} fa-whatsapp"></i>
+            تماس با ما!
+        </a>
     </div>
     <div class="fl-fl float-ig">
-        <a href="{if $instagramHref}{$instagramHref}{else}javascript:;{/if}" target="_blank"><i class="{if $smarty.const.GDS_SWITCH neq 'search-flight' and $smarty.const.GDS_SWITCH neq 'international'} fab {else} fa {/if} fa-instagram"></i>ما رو دنبال کن!</a>
+        <a href="{if $instagramHref}{$instagramHref}{else}javascript:;{/if}" target="_blank">
+            <i class="{if $smarty.const.GDS_SWITCH neq 'search-flight' and $smarty.const.GDS_SWITCH neq 'international'} fab {else} fa {/if} fa-instagram"></i>
+            ما رو دنبال کن!
+        </a>
     </div>
 </div>

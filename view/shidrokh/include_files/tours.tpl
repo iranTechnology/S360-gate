@@ -52,8 +52,8 @@
                         <div class="tour-info">
                             <p class="tour-city">{$item['tour_name']}</p>
                             <span class="tour-time">
-                                تاریخ حرکت : {$tour.start_date|substr:0:4}/{$tour.start_date|substr:4:2}/{$tour.start_date|substr:6:2}
-                                <span>{$tour.night} شب</span>
+                                تاریخ حرکت : {$item.start_date|substr:0:4}/{$item.start_date|substr:4:2}/{$item.start_date|substr:6:2}
+                                <span>{$item.night} شب</span>
                             </span>
                             <p class="price">شروع قیمت از <span>{$item['min_price']['discountedMinPriceR']|number_format} تومان</span></p>
                         </div>
@@ -77,8 +77,8 @@
                         <div class="tour-info">
                             <p class="tour-city">{$item['tour_name']}</p>
                             <span class="tour-time">
-                                تاریخ حرکت : {$tour.start_date|substr:0:4}/{$tour.start_date|substr:4:2}/{$tour.start_date|substr:6:2}
-                                <span>{$tour.night} شب</span>
+                                تاریخ حرکت : {$item.start_date|substr:0:4}/{$item.start_date|substr:4:2}/{$item.start_date|substr:6:2}
+                                <span>{$item.night} شب</span>
                             </span>
                             <p class="price">شروع قیمت از <span>{$item['min_price']['discountedMinPriceR']|number_format} تومان</span></p>
                         </div>

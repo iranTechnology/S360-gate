@@ -943,6 +943,13 @@ a:hover {
     border-top: 1px solid #ccc
 }
 
+.tour-grid-parent {
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px
+}
+
 .start-tour {
     display: flex;
     align-items: center;
@@ -1350,6 +1357,9 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+    .tour-grid-parent {
+        grid-template-columns: repeat(2, 1fr);
+    }
     .blog-kharazmi .items-special-tours-paeiz {
         height: 230px !important
     }
@@ -1360,7 +1370,9 @@ a:hover {
 }
 
 @media (max-width: 576px) {
-
+    .tour-grid-parent {
+        grid-template-columns: repeat(1, 1fr);
+    }
     .blog-kharazmi .parent-special-tours-paeiz {
         grid-template-columns:1fr
     }

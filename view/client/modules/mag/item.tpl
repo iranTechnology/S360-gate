@@ -50,7 +50,11 @@
                     </span>
                     <span class="calendar">
                           <i class="fa-light fa-calendar-days"></i>
+                        انتشار:
                             {$article['created_at']}
+                    |
+                        بروزرسانی:
+                            {$article['updated_at']}
                     </span>
                     {if $section eq 'news' and !empty($article['lead'])}
                         <div class="parent-lead">

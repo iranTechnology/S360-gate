@@ -30,9 +30,11 @@
             <div class="my-5 tours_1 col-12 col-xl-6 pr-lg-0 pl-lg-2">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a aria-controls="nav-home" aria-selected="true" class="tab-ul-tour nav-link active mask mask-hexagon"
+                        <a aria-controls="nav-home" aria-selected="true"
+                           class="tab-ul-tour nav-link active mask mask-hexagon"
                            data-toggle="tab" href="#nav-home" id="nav-home-tab" role="tab">داخلی</a>
-                        <a aria-controls="nav-profile" aria-selected="false" class="tab-ul-tour nav-link mask mask-hexagon"
+                        <a aria-controls="nav-profile" aria-selected="false"
+                           class="tab-ul-tour nav-link mask mask-hexagon"
                            data-toggle="tab" href="#nav-profile" id="nav-profile-tab" role="tab">خارجی</a>
                     </div>
                 </nav>
@@ -47,7 +49,7 @@
                                         <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                             <div class="mask mask-hexagon2 parent-img-tour1">
                                                 <img alt="{$item['tour_name']}" class="__image_class__"
-                                                     src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}" />
+                                                     src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                             </div>
                                             <article class="parent-text-tour-right">
                                                 <span class="coin_money">
@@ -62,9 +64,9 @@
                                                       اعتبار تور
                                                       <span class="__date_class__">
                                                         {assign var="year" value=substr($item['start_date'], 0, 4)}
-                                                        {assign var="month" value=substr($item['start_date'], 4, 2)}
-                                                        {assign var="day" value=substr($item['start_date'], 6)}
-                                                        {$year}/{$month}/{$day}
+                                                          {assign var="month" value=substr($item['start_date'], 4, 2)}
+                                                          {assign var="day" value=substr($item['start_date'], 6)}
+                                                          {$year}/{$month}/{$day}
                                                       </span>
                                                 </span>
                                                 <h5 class="__title_class__">{$item['tour_name']}</h5>
@@ -89,18 +91,27 @@
                                         <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                             <div class="mask mask-hexagon2">
                                                 <img alt="{$item['tour_name']}" class="__image_class__"
-                                                     src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}" />
+                                                     src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                             </div>
                                             <article class="parent-text-tour-right">
                                             <span class="coin_money">
 
-                                            قیمت  <span
-            class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}</span>
-                                                                                                    {if $item['min_price']['is_toman'] == true}
-                                                                                                        تومان
-                                                                                                    {else}
-                                                                                                        ریال
-                                                                                                    {/if}
+                                            قیمت
+                                                <span class="___price_class__">
+                                        {if $item['min_price_r'] != 0}
+                                            {$item['min_price_r']|number_format}
+                                            {if $item['min_price']['is_toman'] == true}
+                                                تومان
+                                            {else}
+                                                ریال
+                                            {/if}
+                                        {/if}
+                                                    {if  $item['min_price_r'] != 0 &&  $item['min_price_a'] && $item['min_price_a'] != 0} + {/if}
+                                                    {if $item['min_price_a'] && $item['min_price_a'] != 0}
+
+                                                        {$item['min_price_a']|number_format} {$item['currency_type']}
+                                                    {/if}
+                                                </span>
 
                                              </span>
                                                 <span class="calendar2"> اعتبار تور <span
@@ -132,7 +143,7 @@
                                    href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                     <div class="parent-img-bg">
                                         <img alt="{$item['tour_name']}" class="__image_class__"
-                                             src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}" />
+                                             src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                     </div>
                                     <div class="parent-text-tours">
                                         <h5 class="__title_class__">{$item['tour_name']}</h5>
@@ -151,7 +162,21 @@
                                         <p class="__description_class__ description">{$item['description']}</p>
                                         <div class="money-new-tours">
                                             <span class="text-money-new-tours">قیمت:</span>
-                                            <span class="___price_class__ number-money-new-tours">{$item['min_price']['discountedMinPriceR']|number_format}</span>
+                                            <span class="___price_class__ number-money-new-tours">
+                                                {if $item['min_price_r'] != 0}
+                                                    {$item['min_price_r']|number_format}
+                                                    {if $item['min_price']['is_toman'] == true}
+                                                        تومان
+                                                    {else}
+                                                        ریال
+                                                    {/if}
+                                                {/if}
+                                                {if  $item['min_price_r'] != 0 &&  $item['min_price_a'] && $item['min_price_a'] != 0} + {/if}
+                                                {if $item['min_price_a'] && $item['min_price_a'] != 0}
+
+                                                    {$item['min_price_a']|number_format} {$item['currency_type']}
+                                                {/if}
+                                            </span>
                                         </div>
                                         <button class="btn-more">جزئیات</button>
                                     </div>

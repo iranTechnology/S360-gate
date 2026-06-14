@@ -1657,6 +1657,9 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 }
 
 @media (max-width: 576px) {
+    .banner-demo .banner {
+        padding-bottom: 50px;
+    }
     .switch_routs {
         top: 41px;
         left: 9px;

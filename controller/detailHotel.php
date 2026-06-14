@@ -1742,6 +1742,8 @@ class detailHotel extends ApiHotelCore
                         'RoomIndex' => ($room['room_index'] + 1),
                         'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
                         'BirthdayEn' => $birthday,
+                        'NationalCode' => $room['passenger_national_code'],
+                        'passportNumber' => $room['passportNumber']
                     ];
 
                     //					$buyerArray = [
