@@ -468,9 +468,6 @@ class ApiHotelCore extends clientAuth {
     }
 
     public function Book( $param ) {
-
-
-
         unset( $param['FactorNumber'] );
         if ( $this->auth == 'True' ) {
             $url = $this->urlApi . "Book/";

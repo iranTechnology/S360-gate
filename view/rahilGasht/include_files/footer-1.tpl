@@ -93,13 +93,13 @@
            تور خارجی
           </a>
          </li>
-         <li>
-          <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">
-           <i class="fal fa-angle-left">
-           </i>
-           پرواز
-          </a>
-         </li>
+{*         <li>*}
+{*          <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">*}
+{*           <i class="fal fa-angle-left">*}
+{*           </i>*}
+{*           پرواز*}
+{*          </a>*}
+{*         </li>*}
          <li>
           <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
            <i class="fal fa-angle-left">

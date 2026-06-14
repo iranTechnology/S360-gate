@@ -64,7 +64,7 @@
 }
 
 .nav-header img {
-    width: 80px
+    width: 210px
 }
 
 .fixicone:hover {
@@ -634,7 +634,7 @@
 }
 
 .parent-item-footer img {
-    width: 100px
+    width: 220px
 }
 
 .text-logo-footer {
@@ -890,10 +890,6 @@
         width: unset
     }
 
-    .parent-item-footer img {
-        width: 95px
-    }
-
     .img-box-footer {
         margin-bottom: -5px
     }
@@ -923,7 +919,7 @@
 
 @media (max-width: 576px) {
     .parent-item-footer img {
-        width: 75px
+        width: 200px
     }
     #scroll-top {
         display: none !important
@@ -934,7 +930,7 @@
     }
 
     .nav-header img {
-        width: 70px
+        width: 190px
     }
 
     .namads > a {

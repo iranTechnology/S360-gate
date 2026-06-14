@@ -1,3 +1,4 @@
+
 <link href="assets/css/jquery.counter-analog.css" rel="stylesheet" type="text/css"/>
 {load_presentation_object filename="factorHotelLocal" assign="objFactor"}
 {load_presentation_object filename="resultHotelLocal" assign="objResult"}

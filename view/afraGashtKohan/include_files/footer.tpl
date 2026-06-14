@@ -1,3 +1,12 @@
+{load_presentation_object filename="aboutUs" assign="objAbout"}
+{assign var="about"  value=$objAbout->getData()}
+{assign var="socialLinks"  value=$about['social_links']|json_decode:true}
+{assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref', 'aparat' => 'aparatHref']}
+
+{foreach $socialLinks as $key => $val}
+    {assign var=$socialLinksArray[$val['social_media']] value=$val['link']}
+{/foreach}
+
 {if $smarty.session.layout neq 'pwa'}
     {if $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotel && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintTicket && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservation && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservationAhuan}
         <svg version="1.1" id="wave_footer" xmlns="http://www.w3.org/2000/svg"
@@ -56,22 +65,22 @@
                                 <ul class="links double_links">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/page/tour">##S360Tour##</a></li>
                                     <li class=""><a
-                                                href="{$smarty.const.ROOT_ADDRESS}/page/aboutUs">درباره ما</a>
+                                                href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a>
                                     </li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel"> ##S360Hotels## </a>
                                     </li>
 
                                     <li class=""><a
-                                                href="{$smarty.const.ROOT_ADDRESS}/page/contactUs">تماس باما</a>
+                                                href="{$smarty.const.ROOT_ADDRESS}/contactUs">تماس باما</a>
                                     </li>
 
 
 
 
                                     <li class=""><a
-                                                href="{$smarty.const.ROOT_ADDRESS}/page/blog">وبلاگ</a>
+                                                href="{$smarty.const.ROOT_ADDRESS}/mag">وبلاگ</a>
                                     </li>
-                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/page/rules">قوانین و مقررات</a>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a>
                                     </li>
 
 

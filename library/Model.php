@@ -639,7 +639,6 @@ class Model {
 			return $prepared->fetchAll( PDO::FETCH_ASSOC );
 		}
 
-
 		$prepared = $this->_pdo->prepare( $this->query );
 		$prepared->execute();
 		

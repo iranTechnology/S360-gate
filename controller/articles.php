@@ -808,12 +808,15 @@ class articles extends positions
             $result[$key]['positions'] = $this->getArticlePosition($article['id']);
 
             $time_date = functions::ConvertToDateJalaliInt($article['created_at']);
+            $time_date_up = functions::ConvertToDateJalaliInt($article['updated_at']);
             $result[$key]['created_at_en'] = functions::DateWithName($article['created_at']);
             if(SOFTWARE_LANG == 'fa') {
                 $result[$key]['created_at'] = dateTimeSetting::jdate("j F Y", $time_date);
+                $result[$key]['updated_at'] = dateTimeSetting::jdate("j F Y", $time_date_up);
             }else{
 
                 $result[$key]['created_at'] =  date( "Y-m-d", $time_date );
+                $result[$key]['updated_at'] =  date( "Y-m-d", $time_date_up );
             }
             $result[$key]['created_time'] = $time_date;
             $result[$key]['image'] = $this->featuredImageUrl($article['feature_image']);
@@ -1934,16 +1937,26 @@ class articles extends positions
         }
         $articles=[];
         if($ids){
-            $articles=$article_model->get()
+            $articles = $article_model->get()
                 ->where('deleted_at', null, 'IS')
                 ->where($article_table . '.state_site', '1')
-                ->whereIn($article_table . '.id' , $ids)
-                ->whereIn($article_table . '.language' , SOFTWARE_LANG)
-                ->orderBy($article_table . '.orders' , 'ASC' )
-                ->orderBy($article_table . '.id' , 'DESC' )
-                ->limit(0,$data_search['limit'])
+                ->where($article_table . '.section', 'mag')
+                ->whereIn($article_table . '.id', $ids)
+                ->whereIn($article_table . '.language', SOFTWARE_LANG)
+                ->setSql("
+        ORDER BY
+        CASE
+            WHEN {$article_table}.orders IS NULL OR {$article_table}.orders = 0 THEN 1
+            ELSE 0
+        END,
+        {$article_table}.orders ASC,
+        {$article_table}.id DESC
+    ")
+                ->limit(0, $data_search['limit'])
                 ->all(false);
         }
+
+
         return  $this->addArticleIndexes($articles);
     }
 
