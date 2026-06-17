@@ -19,7 +19,7 @@
 {assign var="max_external" value=5}
 
 {if $check_general}
-    <section class="i_modular_tours tour-demo">
+    <section class="i_modular_tours tour-demo" id="raaz_residential_complexes">
         <div class="container">
             <div class="title-demo">
                 <div class="text-title-demo">

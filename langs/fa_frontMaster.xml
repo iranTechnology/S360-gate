@@ -3537,6 +3537,13 @@
   <Instagram>اینستاگرام</Instagram>
   <Whatsapp>واتساپ</Whatsapp>
   <Youtube>یوتیوب</Youtube>
+  <Aparat>آپارات</Aparat>
+  <Facebook>فیس بوک</Facebook>
+  <Linkedin>لینکدین</Linkedin>
+  <Twitter>توییتر</Twitter>
+  <Bale>بله</Bale>
+  <Eita>ایتا</Eita>
+  <Pinterest>پینترست</Pinterest>
   <Enterthetext>متن پیام خود را در این بخش وارد نمایید ...</Enterthetext>
   <Mylocation>موقعیت مکانی روی نقشه</Mylocation>
   <dateType>نوع سرچ تاریخ </dateType>
@@ -3743,6 +3750,8 @@
   <NameCip>نام سرویس</NameCip>
   <moreImage>تصاویر بیشتر</moreImage>
 
+  <Errorunknown>خطای نامشخص</Errorunknown>
+  <Errorknown>خطای مشخص</Errorknown>
 
   <!--  panel admin  (en ar fa) -->
   <PA_HOME>خانه</PA_HOME>
@@ -3802,6 +3811,7 @@
   <PA_BUY_Safar360>خرید از سفر360</PA_BUY_Safar360>
   <PA_BUY_MarkCOUNTER>مارک کانتر</PA_BUY_MarkCOUNTER>
   <PA_BUY_MarkAgency>مارک آژانس</PA_BUY_MarkAgency>
+  <EnterInvoiceNumber>شماره فاکتور را وارد نمائید</EnterInvoiceNumber>
   <Exclusive>اختصاصی</Exclusive>
   <Shared>اشتراکی</Shared>
   <PrivatePad>پد اختصاصی</PrivatePad>
@@ -3846,4 +3856,6 @@
   <PassengerOnline>مسافرآنلاین</PassengerOnline>
   <SeatCount>تعداد صندلی</SeatCount>
 <ReceiveInfoError>خطا در دریافت اطلاعات</ReceiveInfoError>
+  <ReservedRooms>اتاق های رزرو شده</ReservedRooms>
+  <HotelBooking>رزرو هتل انگلیسی</HotelBooking>
 </Main>

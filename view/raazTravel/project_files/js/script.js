@@ -308,8 +308,34 @@ $(document).ready(function() {
         $('.lang_ul').removeClass('active_lang');
     });
 
+    document.querySelectorAll('[data-target]').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
 
+            const target = document.getElementById(this.dataset.target);
+
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
 
 });
 
 
+document.addEventListener("DOMContentLoaded", function() {
+    var searchBoxTabs = document.getElementById("searchBoxTabs");
+
+    if (searchBoxTabs) {
+        searchBoxTabs.insertAdjacentHTML('beforeend', `
+            <li class="nav-item">
+                <a class="nav-link" data-target="raaz_residential_complexes" href="javascript:">
+                    <div>
+                        <i class="fa-regular fa-home" style="background-color: var(--mainColor) !important;"></i>
+                        <h4>مجموعه‌های اقامتی راز</h4>
+                    </div>
+                </a>
+            </li>
+        `);
+    }
+});

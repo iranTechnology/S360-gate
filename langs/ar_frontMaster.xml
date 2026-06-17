@@ -3073,16 +3073,20 @@
   <supportteamwillrespond>وسوف يقوم فريق الدعم بالرد عليك في أقرب وقت ممكن.</supportteamwillrespond>
   <KeepInTouchtwo>كن على تواصل معنا</KeepInTouchtwo>
   <Followusonsocial>تابعونا على الشبكات الاجتماعية:</Followusonsocial>
-  <Telegram>برقية</Telegram>
-  <Instagram>انستغرام</Instagram>
-  <Whatsapp>واتس اب</Whatsapp>
+  <Telegram>Telegram</Telegram>
+  <Instagram>Instagram</Instagram>
+  <Whatsapp>Whatsapp</Whatsapp>
   <Youtube>Youtube</Youtube>
+  <Aparat>Aparat</Aparat>
+  <Facebook>Facebook</Facebook>
+  <Linkedin>Linkedin</Linkedin>
+  <Twitter>Twitter</Twitter>
+  <Bale>Bale</Bale>
+  <Eita>Eita</Eita>
+  <Pinterest>Pinterest</Pinterest>
   <Enterthetext>أدخل نص رسالتك في هذا القسم...</Enterthetext>
   <Mylocation>الموقع على الخريطة</Mylocation>
   <dateType>نوع البحث عن التاريخ </dateType>
-
-
-
   <IncreaseUserWallet>زيادة مصداقية المدير </IncreaseUserWallet>
   <DecreaseUserWallet>تقليل الائتمان للمدير </DecreaseUserWallet>
   <DecreaseUser>تخفيض الائتمان </DecreaseUser>
@@ -3349,4 +3353,6 @@
   <PassengerOnline>مسافر أونلاين</PassengerOnline>
   <SeatCount>عدد المقاعد</SeatCount>
 <ReceiveInfoError>خطأ في استلام المعلومات</ReceiveInfoError>
+  <ReservedRooms>الغرف المحجوزة</ReservedRooms>
+  <HotelBooking>حجز فندق في إنجلترا</HotelBooking>
 </Main>

@@ -2935,10 +2935,17 @@
   <supportteamwillrespond>Служба поддержки ответит вам как можно скорее.</supportteamwillrespond>
   <KeepInTouchtwo>Оставайтесь с нами на связи</KeepInTouchtwo>
   <Followusonsocial>Подписывайтесь на нас в социальных сетях:</Followusonsocial>
-  <Telegram>Телеграмма</Telegram>
-  <Instagram>Инстаграм</Instagram>
-  <Whatsapp>Ватсап</Whatsapp>
-  <Youtube>Ютуб</Youtube>
+  <Telegram>Telegram</Telegram>
+  <Instagram>Instagram</Instagram>
+  <Whatsapp>Whatsapp</Whatsapp>
+  <Youtube>Youtube</Youtube>
+  <Aparat>Aparat</Aparat>
+  <Facebook>Facebook</Facebook>
+  <Linkedin>Linkedin</Linkedin>
+  <Twitter>Twitter</Twitter>
+  <Bale>Bale</Bale>
+  <Eita>Eita</Eita>
+  <Pinterest>Pinterest</Pinterest>
   <Enterthetext>Введите текст вашего сообщения в этом разделе...</Enterthetext>
   <Mylocation>Расположение на карте</Mylocation>
   <dateType>Тип поиска даты</dateType>

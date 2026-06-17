@@ -20,6 +20,10 @@
     font-style: normal
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     overflow-x: hidden;
     direction: rtl;

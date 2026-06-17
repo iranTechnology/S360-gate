@@ -20,6 +20,12 @@
     font-style: normal
 }
 
+#searchBoxTabs .nav-item .nav-link div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .switch_routs {
     position: absolute;
     left: -15px;
@@ -783,7 +789,8 @@ input::placeholder {
     font-size: 18px;
     font-family: var(--fontFamilyBold);
     text-align: center;
-    margin-top: 10px !important
+    margin-top: 10px !important;
+    line-height: 25px;
 }
 
 .flaticon {
@@ -1717,7 +1724,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
     }
 
     #searchBoxTabs {
-        grid-template-columns:repeat(4, 1fr);
+        grid-template-columns:repeat(2, 1fr);
         padding: 0 !important;
         grid-column-gap: 0px !important;
         grid-row-gap: 10px !important;

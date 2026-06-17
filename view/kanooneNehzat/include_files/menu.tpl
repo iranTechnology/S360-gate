@@ -23,16 +23,18 @@
                                 <a href="{$smarty.const.ROOT_ADDRESS}/profile">باشگاه اعضا</a>
                             </li>
                             <li>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/pay">پرداخت آنلاین</a>
+                            </li>
+                            <li>
                                 <a href="{$smarty.const.ROOT_ADDRESS}/news">اخبار</a>
                             </li>
+
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a>
-                            </li>
-                            <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">آژانس ما</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">تماس با ما</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">چرا موسسه نهضت ؟</a></li>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a></li>
                                 </ul>
                             </li>
                         </ul>
