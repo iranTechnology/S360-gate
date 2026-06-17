@@ -546,7 +546,8 @@ class listCancel extends clientAuth {
                 $reserveInfo= functions::GetInfoBus( $InfoCancel['FactorNumber'] );
 
                 // we only able to refund Altraboo reserves
-                if($reserveInfo['SourceCode'] != 'reservation_bus' && $reserveInfo['SourceCode'] != '10'){
+                /* برگشت پول به مسافر به مشکل می خورد آقای اشفار فرمودند این بخش را غیر فعال کنم  1405_03_27_َardalani
+                 if($reserveInfo['SourceCode'] != 'reservation_bus' && $reserveInfo['SourceCode'] != '10'){
 
                     $busRefundCheck=$apiBus->busRefundCheck($InfoCancel['FactorNumber'],$Param['ClientId']);
 
@@ -555,7 +556,7 @@ class listCancel extends clientAuth {
                     if(!$busRefund['response']['SuccessfulStatus']['client'] || !$busRefund['response']['SuccessfulStatus']['provider']){
                         return 'error : خطا در کنسل کردن از سمت پروایدر';
                     }
-                }
+                }*/
 
 
 
