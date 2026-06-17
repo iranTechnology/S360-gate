@@ -1,4 +1,19 @@
 {load_presentation_object filename="partner" assign="objPartner"}
+{load_presentation_object filename="aboutUs" assign="objAbout"}
+{assign var="aboutUsData" value=$objAbout->GetData($smarty.get.lang)}
+
+{assign var="socialMediaList" value=[
+'instagram' => 'اینستاگرام' ,
+'telegram' => 'تلگرام' ,
+'linkedin' => 'لینکدین' ,
+'whatsapp' => 'واتس اپ' ,
+'twitter' => 'توییتر' ,
+'youTube' => 'یوتیوب' ,
+'pinterest' => 'پینترست',
+'ita' => 'ایتا',
+'bale' => 'بله',
+'aparat' => 'آپارات'
+]}
 
 <style>
     #map {
@@ -179,6 +194,55 @@
                                             </div>
                                             <div class="col-md-6 p-0">
                                                 <button onclick="RemoveAdditionalData($(this))" type="button" class="btn form-control btn-danger">
+                                                    <span class="fa fa-remove"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {assign var="counter" value=$counter+1}
+                                {/foreach}
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label class="control-label" id="PA_Ab_SOIALMEDIA">شبکه های اجتماعی</label>
+                        <div class="row">
+
+                            <div class="form-group col-sm-12 DynamicSocialLinks">
+
+                                {if $aboutUsData['social_links'] eq 'null'}
+                                    {assign var="socialLinks" value='[{"social_media":"","link":""}]'}
+                                {else}
+                                    {assign var="socialLinks" value=$aboutUsData['social_links']}
+                                {/if}
+
+                                {assign var="counter" value='0'}
+                                {foreach key=key item=item from=$socialLinks|json_decode:true}
+
+                                    <div data-target="BaseSocialLinksDiv" class="col-sm-12 p-0 form-group">
+                                        <div class="col-md-3 pr-0">
+                                            <select data-parent="SocialLinksValues" data-target="social_media" class="form-control" name="socialLinks[{$counter}][social_media]">
+                                                <option id="ChoseOption">انتخاب کنید</option>
+                                                {foreach $socialMediaList as $key => $social}
+                                                    <option {if $key == $item.social_media}selected{/if} value="{$key}">{$social}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input data-parent="SocialLinksValues" data-target="link" name="socialLinks[{$counter}][link]" placeholder="لینک" class="form-control text-right"
+                                                   value="{$item.link}" type="text">
+                                        </div>
+                                        <div class="col-md-1 pl-0">
+                                            <div class="col-md-6 p-0">
+                                                <button type="button" onclick="AddSocialLinks()" class="btn form-control btn-success">
+                                                    <span class="fa fa-plus"></span>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6 p-0">
+                                                <button onclick="RemoveSocialLinks($(this))" type="button" class="btn form-control btn-danger">
                                                     <span class="fa fa-remove"></span>
                                                 </button>
                                             </div>

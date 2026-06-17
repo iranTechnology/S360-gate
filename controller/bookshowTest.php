@@ -5785,7 +5785,12 @@ class bookshowTest extends clientAuth {
 
             $DataCityHotel = $hotel['city_name'] . '
                                 <hr style="margin:3px">' . $hotel['hotel_name'].'
-                                <hr style="margin:3px">' . $hotel['service_type'];
+                                <hr style="margin:3px">' . $hotel['service_type'] .  '<div class="button-box mt-1">
+                                    <button type="button" class="ml-2 btn btn-default btn-outline"
+                                            title="" data-toggle="popover"
+                                            data-placement="top" data-content="' . $hotel['room'] . '"
+                                            data-original-title="'.functions::Xmlinformation("ReservedRooms").'">' . $hotel['room_count'] . '</button>'.functions::Xmlinformation("RoomCount").'
+                                </div>';
             if ( $hotel['payment_date'] != '' ) {
                 $DataEnterInformation = $hotel['payment_date'] . '<hr style="margin:3px">';
             }
@@ -5815,14 +5820,23 @@ class bookshowTest extends clientAuth {
             $DataFactorInformation .= '<hr style="margin:3px">';
             $DataFactorInformation .= '<span class="FontBold">'.$hotel['request_number'].'</span>';
             $DataFactorInformation .= '<hr style="margin:3px">';
-            $DataFactorInformation .= '<span class="FontBold">'.$hotel['pnr'].'</span>';
-
-            $DataRoomInformation = '<div class="button-box">
-                                    <button type="button" class="btn btn-default btn-outline"
-                                            title="" data-toggle="popover"
-                                            data-placement="top" data-content="' . $hotel['room'] . '"
-                                            data-original-title="'.functions::Xmlinformation("ReservedRooms").'">' . $hotel['room_count'] . '</button>'.functions::Xmlinformation("RoomCount").'
-                                </div>';
+//            $DataFactorInformation .= '<span class="FontBold">'.$hotel['pnr'].'</span>';
+            $paymentType='';
+            switch ($hotel['payment_type']){
+                case 'credit':
+                    $paymentType = 'اعتباری';
+                    break;
+                case 'cash':
+                    $paymentType = 'نقدی';
+                    break;
+                case 'member_credit':
+                    $paymentType = 'اعتبار کاربر';
+                    break;
+                case 'nothing':
+                    $paymentType = '';
+                    break;
+            }
+            $DataFactorInformation .= '<span class="FontBold">'.$paymentType.'</span>';
             $BuyFromIt=0;
             $this->colorTrByStatusCreditBlak='';
             $this->colorTrByStatusCreditPurple='';
@@ -5890,9 +5904,9 @@ class bookshowTest extends clientAuth {
                 $linkView = "ehotelLocal";
                 $linkPDF  = "BookingHotelNew";
             }
-            $DataAction = '<div class="btn-group m-r-10">
+            $DataAction = '<div class="btn-group m-r-10 mt-1">
 
-                                    <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  '.functions::Xmlinformation("Action").' <span class="caret"></span></button>
+                                    <button aria-expanded="false" data-toggle="dropdown"  style="width:90%" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  '.functions::Xmlinformation("Action").' <span class="caret"></span></button>
 
                                     <ul role="menu" class="dropdown-menu animated flipInY mainTicketHistory-operation">
                                         <li>
@@ -6076,7 +6090,7 @@ class bookshowTest extends clientAuth {
                 $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("RequestAccepted").'</a>';
             }
             elseif ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataActivity = '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Definitivereservation").'</a>';
+                $DataActivity = '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Definitivereservation").'<br>' .$hotel['pnr']. '</a>';
             } elseif ( $hotel['status'] == 'PreReserve' ) {
                 $DataActivity = '<a class="btn btn-warning cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Prereservation").'</a>';
             } elseif ( $hotel['status'] == '' ) {
@@ -6108,7 +6122,7 @@ class bookshowTest extends clientAuth {
                                                                data-placement='top' title=''
                                                                data-original-title='تایید رزرو در سرور core'></i></a>";
             }
-
+//            $DataActivity .= $DataAction;
             $final_agency_commission = '';
             $agencyShare = $DataAllPriceFor - $BuyFromIt;
             $ClssShare = 'bg-inverse';
@@ -6126,13 +6140,13 @@ class bookshowTest extends clientAuth {
                 $TitleAgencyShare='سود آژانس';
                 $TitleBuyFromIt='خرید از ما';
                 $TitlePayment='فروش آژانس <br> به مسافر';
-                $TitleNameAgency='نام آژانس';
+//                $TitleNameAgency='نام آژانس';
             }
             else {
                 $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit").' ';
                 $TitleBuyFromIt='<span> '.functions::Xmlinformation("PA_BUYFrom").' <br>  '.functions::Xmlinformation("Safar360").' </span>';
                 $TitlePayment=functions::Xmlinformation("Discount").'<br/><del>'.functions::Xmlinformation("PassengerSale").'</del>';
-                $TitleNameAgency=functions::Xmlinformation("Action").' ';
+//                $TitleNameAgency=functions::Xmlinformation("Action").' ';
             }
             $ColorTr='';
             if($hotel['status'] == 'BookedSuccessfully' && $hotel['service_type']=='اشتراکی'){//رزرو قطعی از مدل اشتراکی باشد
@@ -6167,10 +6181,10 @@ class bookshowTest extends clientAuth {
             }
             $HotelData['data'][ $key ][$TitlePayment]                              = $DataAllPrice;
             $HotelData['data'][ $key ][$TitleAgencyShare]                          = $final_agency_commission;
-            $HotelData['data'][ $key ][$TitleNameAgency]                           = $DataAction;
+//            $HotelData['data'][ $key ][$TitleNameAgency]                           = $DataAction;
             $HotelData['data'][ $key ][$titleColumn6.' ']                          = $DataActivity;
 
-            unset( $DataCityHotel, $DataEnterInformation, $DataExitInformation, $DataFactorInformation, $DataRoomInformation, $DataAgencyCommission, $DataPrice, $DataIranTechCommission, $DataAllPrice, $DataAction, $DataActivity );
+            unset( $DataCityHotel, $DataEnterInformation, $DataExitInformation, $DataFactorInformation, $DataRoomInformation, $DataAgencyCommission, $DataPrice, $DataIranTechCommission, $DataAllPrice, $DataActivity );
         }
 
         $FooterData0  = '<th colspan="5"></th>';
@@ -6222,7 +6236,13 @@ class bookshowTest extends clientAuth {
             $infoMember = functions::infoMember( $hotel['member_id'], $hotel['client_id'] );
 
             $DataCityHotel = $hotel['city_name'] . '
-                                <hr style="margin:3px">' . $hotel['hotel_name'];
+                                <hr style="margin:3px">' . $hotel['hotel_name'] .
+                '<div class="button-box mt-1">
+                                    <button type="button" class="ml-2 btn btn-default btn-outline"
+                                            title="" data-toggle="popover"
+                                            data-placement="top" data-content="' . $hotel['room'] . '"
+                                            data-original-title="'.functions::Xmlinformation("ReservedRooms").'">' . $hotel['room_count'] . '</button>'.functions::Xmlinformation("RoomCount").'
+                                </div>';
             if ( $hotel['payment_date'] != '' ) {
                 $DataEnterInformation = $hotel['payment_date'] . '<hr style="margin:3px">';
             }
@@ -6251,10 +6271,23 @@ class bookshowTest extends clientAuth {
             $DataFactorInformation .= '<code>'.$hotel['factor_number'].'</code>';
             $DataFactorInformation .= '<hr style="margin:3px">';
             $DataFactorInformation .= '<kbd>'.$hotel['request_number'].'</kbd>';
+            $paymentType = '';
+            switch ($hotel['payment_type']){
+                case 'credit':
+                    $paymentType = 'اعتباری';
+                case 'cash':
+                    $paymentType = 'نقدی';
+                case 'member_credit':
+                    $paymentType = 'اعتبار کاربر';
+                case 'nothing':
+                    $paymentType = '';
+            }
+            $DataFactorInformation .= '<kbd>'.$paymentType.'</kbd>';
 //			$DataFactorInformation .= '<pre style="width: 100px">'.json_encode($hotel,256|64).'</pre>';
 
 
-            $DataRoomInformation = '<div class="button-box">
+            $DataRoomInformation =
+                '<div class="button-box">
                                     <button type="button" class="btn btn-default btn-outline"
                                             title="" data-toggle="popover"
                                             data-placement="top" data-content="' . $hotel['room'] . '"
@@ -10842,7 +10875,7 @@ class bookshowTest extends clientAuth {
             $out2='---';
             $this->colorTrByStatusCreditBlak = 'Yes';
         }
-        else{
+        else {
             $this->ArrChargeUserPrice[$client_id] = $ChargeNow;
             $beforeCredit = $this->ArrChargeUserPrice[$client_id];  // اعتبار قبل از خرید
             $this->ArrChargeUserPrice[$client_id] = $beforeCredit-$BuyFromIt;  // اعتبار بعد از خرید

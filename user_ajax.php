@@ -1257,7 +1257,24 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_client' ) {
 
     $partner = Load::controller( 'partner' );
     unset( $_POST['flag'] );
-    echo $partner->UpdateClient( $_POST );
+    $UpdateClient = $partner->UpdateClient( $_POST );
+    if (strpos($UpdateClient, 'success') !== false) {
+        $aboutUsModel = Load::getModel('aboutUsModel');
+        $update_data=[
+                'social_links'=>json_encode($_POST['socialLinks'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        ];
+        $UpdateSocialLinks = $aboutUsModel->updateWithBind($update_data,['page_type' => 'about_us']);
+
+        if ($UpdateSocialLinks !== false) {
+            echo $UpdateClient;
+        } else {
+            echo 'error : خطا در ویرایش اطلاعات ';
+        }
+
+
+    } else {
+        echo $UpdateClient;
+    }
 
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'updateDocs' ) {

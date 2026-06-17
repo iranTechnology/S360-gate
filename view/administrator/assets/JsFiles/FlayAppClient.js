@@ -514,6 +514,65 @@ $(document).ready(function () {
 
 });
 
+function AddSocialLinks() {
+
+
+    var CountDiv = $('div[data-target="BaseSocialLinksDiv"]').length
+    var BaseDiv = $('div[data-target="BaseSocialLinksDiv"]:last-child')
+    var CloneBaseDiv = $('div[data-target="BaseSocialLinksDiv"]:last-child').clone()
+    var CountDivInEach = 0
+
+    CloneBaseDiv.find("input").val("")
+    $('div[data-target="BaseSocialLinksDiv"]:last-child').after(CloneBaseDiv)
+
+    $('.DynamicSocialLinks select[data-parent="SocialLinksValues"]').each(function () {
+        console.log(CountDivInEach)
+        $(this).attr(
+            "name",
+            "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+        )
+        CountDivInEach = CountDivInEach + 1
+    })
+    var CountDivInEach = 0
+    $('.DynamicSocialLinks input[data-parent="SocialLinksValues"]').each(function () {
+        $(this).attr(
+            "name",
+            "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+        )
+        CountDivInEach = CountDivInEach + 1
+    })
+
+
+
+}
+function RemoveSocialLinks(thiss) {
+    if (
+        thiss.parent().parent().parent().parent().find('div[data-target="BaseSocialLinksDiv"]').length > 1
+    ) {
+        thiss.parent().parent().parent().remove()
+
+        var CountDivInEach = 0
+        $('.DynamicSocialLinks select[data-parent="SocialLinksValues"]').each(
+            function () {
+                $(this).attr(
+                    "name",
+                    "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+                )
+                CountDivInEach = CountDivInEach + 1
+            }
+        )
+        var CountDivInEach = 0
+        $('.DynamicSocialLinks input[data-parent="SocialLinksValues"]').each(
+            function () {
+                $(this).attr("name", "socialLinks[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+                )
+                CountDivInEach = CountDivInEach + 1
+            }
+        )
+    }
+}
+
+
 function SelectAllowPanel(obj) {
 
     

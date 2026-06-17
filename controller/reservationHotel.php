@@ -453,8 +453,8 @@ class reservationHotel extends clientAuth
 
         $objController = Load::controller('reservationPublicFunctions');
 
-        $startDate = str_replace("-", "", $info['start_date']);
-        $endDate = str_replace("-", "", $info['end_date']);
+        $startDate = str_replace(['-', '/'], "", $info['start_date']);
+        $endDate = str_replace(['-', '/'], "", $info['end_date']);
 
 
         while ($startDate <= $endDate) {
@@ -639,6 +639,8 @@ class reservationHotel extends clientAuth
 
                             $resInsert[] = $Model->execQuery($this->sql);
 
+                            functions::insertLog('sql: ' . json_encode($this->sql) , '0abbasi');
+
                             $this->sql = " INSERT INTO reservation_hotel_room_prices_tb VALUES";
                         }
 
@@ -696,6 +698,9 @@ class reservationHotel extends clientAuth
 
         }
 
+
+
+        functions::insertLog('$resInsert: ' . json_encode($resInsert) , '0abbasi');
 
         if (in_array('0', $resInsert)) {
             return 'error';

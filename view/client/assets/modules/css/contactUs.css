@@ -219,17 +219,13 @@
 }
 
 .contactUs-socila-parent a {
-    width: 40px;
-    height: 40px;
     text-align: center;
     border-radius: 50%;
     font-size: 21px;
     transition: 0.4s;
-    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    /*background-color: var(--mainColor);*/
 }
 
 .contactUs-socila-parent a:hover {
@@ -245,6 +241,20 @@
 
 .contactUs-socila-parent a:hover i {
     color: #fff;
+}
+
+.tooltip-social > svg {
+    color: var(--mainColor);
+    fill: var(--mainColor);
+    width: 47px;
+    height: 47px;
+    transition: 0.4s;
+    padding: 10px;
+}
+
+.contactUs-socila-parent a:hover svg {
+    color: #fff;
+    fill: #fff;
 }
 
 .contactUs-socila p {
