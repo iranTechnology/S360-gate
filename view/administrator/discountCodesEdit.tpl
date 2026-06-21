@@ -68,15 +68,15 @@
 
 
 
-                    <div class="form-group col-sm-12">
-                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="{$discountInfo['is_allow_counter']}" {if $discountInfo['is_allow_counter'] eq '1'}checked="checked"{/if} />
-                        <label for="is_allow_counter" class="control-label">
-                            مجاز برای استفاده کانتر ها
-                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
-                                  data-toggle="tooltip" data-placement="left"
-                                  title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>
-                        </label>
-                    </div>
+{*                    <div class="form-group col-sm-12">*}
+{*                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="{$discountInfo['is_allow_counter']}" {if $discountInfo['is_allow_counter'] eq '1'}checked="checked"{/if} />*}
+{*                        <label for="is_allow_counter" class="control-label">*}
+{*                            مجاز برای استفاده کانتر ها*}
+{*                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'*}
+{*                                  data-toggle="tooltip" data-placement="left"*}
+{*                                  title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>*}
+{*                        </label>*}
+{*                    </div>*}
                     <div class="form-group col-sm-12">
                         <input type="checkbox" name="is_consume" id="is_consume"  onclick="showAmountPointDiscountCode()" value="{$discountInfo['is_consume']}" {if $discountInfo['is_consume'] eq '1'}checked="checked"{/if} />
                         <label for="is_allow_counter" class="control-label">

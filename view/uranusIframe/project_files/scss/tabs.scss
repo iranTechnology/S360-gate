@@ -1357,8 +1357,16 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 }
 
 .city_start i {
-  color: #eee;
+  color: $mainColor;
   margin-left: 10px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] .city_start i {
+  color: #fff;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] .city_start {
+  color: #fff;
 }
 
 .hotel_passenger_picker, .package_passenger_picker, .hotel_local_passenger_picker {
@@ -2133,6 +2141,11 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
   }
 }
 
+@media (max-width: 576px) {
+  #searchBoxTabs .nav-item {
+    width: 90px;
+  }
+}
 
 /*multiTrack*/
 ::placeholder {

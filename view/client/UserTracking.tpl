@@ -63,9 +63,13 @@
                                         </fieldset>
                                     </div>
                                 </div>
-                                <p class="fieldset parent-fieldset-input-tracking">
+                                <p class="fieldset parent-fieldset-input-tracking mb-0">
                                     <input class="full-width has-padding has-border" id="request_number" type="text"
-                                           placeholder="##Numberreservation## (##Voucher##) ##Or## ##Ticketnumber## ##Or## pnr ##countinueStatmentTrackingUser##" value="{$smarty.get.id}">
+                                           placeholder="##Tracknumber##" value="{$smarty.get.id}">
+                                </p>
+                                <p class="fieldset parent-fieldset-input-tracking mt-2">
+                                    <input class="full-width has-padding has-border " id="phone_number" type="text"
+                                           placeholder="##PhoneNumberBuyer##" value="">
                                 </p>
                                 <div class="message-login txtCenter txtRed"></div>
                                 <img src="assets/images/load21.gif" style="display:none" class="loader-tracking" id="loaderTracking">
@@ -267,6 +271,12 @@
             <div class="s-u-select-update-wrapper" id="payCreditButton"></div>
 
         </div>
+    {/if}
+
+    {if  $objFactor->IsLogin eq true  && $objMember->list['fk_counter_type_id'] =='5'}
+        <form id="formcredit" method="post"  target="_self" class="d-none">
+            <div class="boxerFactorLogo"><img src="project_files/images/logo.png" alt="logo"></div>
+        </form>
     {/if}
 
 </div>

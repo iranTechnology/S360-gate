@@ -1139,4 +1139,19 @@ class Model {
             default: return true;
         }
     }
+
+    public function beginTransaction()
+    {
+        return $this->_pdo->beginTransaction();
+    }
+
+    public function commit()
+    {
+        return $this->_pdo->commit();
+    }
+
+    public function rollback()
+    {
+        return $this->_pdo->rollBack();
+    }
 }

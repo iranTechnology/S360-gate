@@ -14,6 +14,7 @@
 //}
 class visa extends clientAuth {
 
+
     protected $faqs_model;
     protected $docs_model;
     protected $step_model;

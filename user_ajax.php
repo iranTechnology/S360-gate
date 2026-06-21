@@ -2300,7 +2300,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_hotel' ) {
 
         $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
 
-        if ( empty( $existTransaction ) || $reserveInfo['status']==='RequestAccepted' ) {
+        if ( empty( $existTransaction ) || $reserveInfo['status']==='RequestAccepted' || $reserveInfo['status']==='bank' ) {
             if ( $checkBankIranTech && isset($_POST['selectedBank']) && $_POST['selectedBank'] == 'publicBank') {
                 $commentIranTech = 'شارژ درگاه سفر360 برای خرید هتل به شماره فاکتور ' . $factorNumber . 'از این درگاه ';
                 functions::insertLog( 'in GetWayIranTech With factorNumber=>' . $factorNumber . ' has Amount Ticket=>' . $total_price, 'iranTechGetWayBuy' );
@@ -5071,7 +5071,36 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'orderServicesAdd' ) {
     $credit = functions::getGrsCharge('irantechTest');
     echo number_format(round( $credit['total'] ) ) . ' ' . 'ریال';
 
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'answerVoteUser' ) {
+}
+if ($_POST['flag'] == 'checkCancellations') {
+    $listCancel = new listCancel();
+    $listCancelAdmin = $listCancel->ListCancelAdmin();
+
+    $hasNewCancel = false;
+    foreach ($listCancelAdmin as $item) {
+        if (trim($item['note_admin']) == "") {
+            $hasNewCancel = true;
+            break;
+        }
+    }
+
+    // ارسال پاسخ JSON
+    header('Content-Type: application/json');
+    echo json_encode([
+        'hasNewCancel' => $hasNewCancel,
+        'count' => $hasNewCancel ? count($listCancelAdmin) : 0,
+        'message' => $hasNewCancel ? 'کنسلی جدید دارید' : 'بدون کنسلی جدید'
+    ]);
+    exit;
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkCityNetCredit' ) {
+
+    $credit = functions::getCityNetCharge('irantechTest');
+    $total = $credit['credit'] + $credit['wallet'];
+    echo number_format( $total  ) . ' ' . 'ریال';
+
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'answerVoteUser' ) {
 
     unset($_POST['flag']);
     $voteData = $_POST;

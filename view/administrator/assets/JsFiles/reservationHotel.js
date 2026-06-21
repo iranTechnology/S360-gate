@@ -91,7 +91,7 @@ $(document).ready(function () {
                             position: 'top-right',
                             loaderBg: '#fff',
                             icon: 'error',
-                            hideAfter: 3500,
+                            hideAfter: 5500,
                             textAlign: 'right',
                             stack: 6
                         });

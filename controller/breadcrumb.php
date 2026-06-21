@@ -36,11 +36,11 @@ class breadcrumb extends clientAuth
                 }
 
             }
-        }elseif (GDS_SWITCH == 'roomHotelLocal') {
+        }
+        elseif (GDS_SWITCH == 'roomHotelLocal') {
             $todayDate = date('Y-m-d');
             $threeAfterToday = date('Y-m-d', strtotime($todayDate . ' +3 days'));
             $hotelId = HOTEL_ID;
-            $cityId = $_POST['cityId'];
             $startDate = $_POST['startDate'] ? $_POST['startDate'] : functions::dateFormatSpecialJalali($todayDate, 'Y-m-d');
             $endDate = $_POST['endDate'] ? $_POST['endDate'] : functions::dateFormatSpecialJalali($threeAfterToday, 'Y-m-d');
             if (!empty($_POST['nights'])) {
@@ -54,7 +54,7 @@ class breadcrumb extends clientAuth
             }
             $rooms = $_POST['searchRooms'] ? $_POST['searchRooms'] : 'R:1-0-0';
             $result = $this->getController('reservationBasicInformation')->getInfoHotelData('reservation_hotel_tb' , 'id',  $hotelId) ;
-
+            $cityId = $result['city'];
 
             if ($result['country']==1) {
             if ($startDate)  {
