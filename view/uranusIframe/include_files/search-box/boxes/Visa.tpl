@@ -1,10 +1,10 @@
-<div class="__box__ tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if} shadow-box search-background" id="Visa">
+<div class="__box__ tab-pane active shadow-box search-background" id="Visa">
     <div class="parent-head-search-box">
 
             <div class="head-search-box-detail">
                 <div class="w-100 mr-2">
                     <div class="d-flex gap-2 align-items-center" style="gap:5px">
-                        <i class="fa-light fa-cc-visa head-search-box-icon"></i>
+                        <i class="fa-light fa-passport head-search-box-icon"></i>
                         <span class="head-search-box-title">ویزا</span>
                     </div>
                     <p class="mt-2 mb-0">پذیرش ویزا در ایران و سراسر جهان</p>
@@ -25,7 +25,7 @@
 
                 {include file="./sections/visa/active_visa.tpl"}
                 <div class="col-lg-1 col-md-4 col-sm-6 col-12 btn_s col_search mx-auto p-1">
-                    <button type="button" onclick="searchActiveVisa(false , 'https://uranustrip.com')" class="btn theme-btn seub-btn b-0  btn-visa-style">
+                    <button type="button" onclick="searchActiveVisa()" class="btn theme-btn seub-btn b-0  btn-visa-style">
                         <span>##Search##</span>
                     </button>
                 </div>

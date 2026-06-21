@@ -3642,7 +3642,9 @@ function creditBuy(Obj, link, inputs) {
 
     }
     else{
-        $('.creditPaymentLoader').addClass("skeleton").attr("disabled", "disabled").css('cursor', 'default').removeAttr('onclick',true);
+        if ($('.creditPaymentLoader').length > 0) {
+            $('.creditPaymentLoader').addClass("skeleton").attr("disabled", "disabled").css('cursor', 'default').removeAttr('onclick',true);
+        }
         $.alert({
             title: useXmltag("CreditShoping"),
             icon: 'fa fa-shopping-cart',
@@ -3664,7 +3666,10 @@ function creditBuy(Obj, link, inputs) {
                                 var res = data.split(':');
                                 if (data.indexOf('success') > -1) {
 
-                                    $('#creditpay').attr("disabled", "disabled");
+                                    if ($('#creditpay').length > 0) {
+                                        $('#creditpay').attr("disabled", "disabled");
+                                    }
+
 
                                     var form = document.getElementById('formcredit');
                                     form.setAttribute("action", link);
@@ -3847,10 +3852,15 @@ function memberCreditBuy(Obj, link, inputs) {
                             data: inputs,
                             success: function (data) {
 
+                                console.log('data: ' , data)
+
                                 var res = data.split(':');
                                 if (data.indexOf('success') > -1) {
 
-                                    $('#creditpay').attr("disabled", "disabled");
+                                    if ($('#creditpay').length > 0) {
+                                        $('#creditpay').attr("disabled", "disabled");
+                                    }
+
 
                                     var form = document.getElementById('formcredit');
                                     form.setAttribute("action", link);
@@ -7625,6 +7635,8 @@ function ChangePassForRecovery() {
 function SendTrackingInfo() {
 
     var request_number = $('#request_number').val();
+    var phone_number = $('#phone_number').val();
+
     var typeSearch = $('input[name=typeSearch]:checked').val();
 
     $('#request_number').focus(function () {
@@ -7648,6 +7660,7 @@ function SendTrackingInfo() {
         $.post(amadeusPath + 'user_ajax.php',
            {
                request_number: request_number,
+               phone_number: phone_number,
                typeSearch: typeSearch,
                flag: 'trackingInfo'
            },

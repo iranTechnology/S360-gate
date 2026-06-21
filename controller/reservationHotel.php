@@ -367,6 +367,8 @@ class reservationHotel extends clientAuth
         $this->countInsert = 0;
         $this->sql = " INSERT INTO reservation_hotel_room_prices_tb VALUES";
 
+        $allSuccess = true;
+
 
         // حلقه به تعداد کاربران انتخاب شده //
         for ($for_user = 1; $for_user <= $info['count_other_user']; $for_user++) {
@@ -389,8 +391,17 @@ class reservationHotel extends clientAuth
 
                 // ارسال اطلاعات برای درج در دیتابیس //
                 $resultDateRoomPrice = $this->DateForRoomPrice($info, 'firstInsert', $isSame);
+
+                if ($resultDateRoomPrice != 'success') {
+                    $allSuccess = false;
+                    break;
+                }
             }
 
+        }
+
+        if (!$allSuccess) {
+            return 'error : اتاق درج شده برای این هتل در این تاریخ و برای این کاربران قبلا ثبت گردیده و تکراری میباشد';
         }
 
 
@@ -450,37 +461,31 @@ class reservationHotel extends clientAuth
     //بررسی تاریخ ها (از تاریخ n تا تاریخ m)//
     public function DateForRoomPrice($info, $status, $is_same)
     {
-
         $objController = Load::controller('reservationPublicFunctions');
 
         $startDate = str_replace(['-', '/'], "", $info['start_date']);
         $endDate = str_replace(['-', '/'], "", $info['end_date']);
 
-
         while ($startDate <= $endDate) {
 
             $date = $startDate;
+
             if ($status == 'firstInsert') {
                 $resultInsertRoomPrice = $this->firstInsertRoomPrice($info, $date, $is_same);
-
             } else if ($status == 'secondInsert') {
                 $resultInsertRoomPrice = $this->secondInsertRoomPrice($info, $date, $is_same);
             }
 
-            //روز بعدی//
+            // اگر حتی یک روز خطا داشت
+            if ($resultInsertRoomPrice != 'success') {
+                return 'error';
+            }
+
             $startDate = $objController->dateNextFewDays($startDate, ' + 1');
-
-        }//end while startDate<=endDate
-
-        if ($resultInsertRoomPrice == 'success') {
-            return 'success';
-        } else {
-            return 'error';
         }
 
-
+        return 'success';
     }
-
 
     //درج قیمت اتاق ها در دیتابیس//
     public function firstInsertRoomPrice($info, $date, $is_same)
@@ -639,8 +644,6 @@ class reservationHotel extends clientAuth
 
                             $resInsert[] = $Model->execQuery($this->sql);
 
-                            functions::insertLog('sql: ' . json_encode($this->sql) , '0abbasi');
-
                             $this->sql = " INSERT INTO reservation_hotel_room_prices_tb VALUES";
                         }
 
@@ -698,9 +701,6 @@ class reservationHotel extends clientAuth
 
         }
 
-
-
-        functions::insertLog('$resInsert: ' . json_encode($resInsert) , '0abbasi');
 
         if (in_array('0', $resInsert)) {
             return 'error';

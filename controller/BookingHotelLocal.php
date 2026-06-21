@@ -129,7 +129,7 @@ class BookingHotelLocal extends clientAuth
         $this->factor_number = $factorNumber;
 
         $sql = " SELECT * FROM book_hotel_local_tb 
-            WHERE factor_number='{$factorNumber}' AND status='PreReserve' GROUP BY factor_number ";
+            WHERE factor_number='{$factorNumber}' AND (status='PreReserve' OR status='bank') GROUP BY factor_number ";
         $Hotel = $Model->load($sql);
         $this->hotelInfo = $Hotel;
 

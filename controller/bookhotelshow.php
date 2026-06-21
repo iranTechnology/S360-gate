@@ -499,7 +499,7 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
                     $status = 'نامشخص';
                     break;
             }
-
+            $paymentType = $book['payment_type'];
             $this->totalPrice = 0;
             $room = $this->InformationOfEachReservation($book['factor_number']);
 
@@ -544,6 +544,7 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
             $dataRows[$k]['member_mobile'] = $book['member_mobile'];
             $dataRows[$k]['payment_date'] = $expPaymentDate[0];
             $dataRows[$k]['payment_time'] = $expPaymentDate[1];
+            $dataRows[$k]['payment_type'] = $paymentType;
             if (LANG_PANEL_ADMIN == 'fa') {
                 $dataRows[$k]['city_name'] = $book['city_name'];
             } else {
@@ -2300,8 +2301,11 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
         $Model = Load::library('Model');
         $resultHotelLocalController = Load::controller('resultHotelLocal');
 
-        $sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' OR request_number = '$factor_number' ";
-
+//        $sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' OR request_number = '$factor_number' ";
+        $sql = "SELECT * FROM book_hotel_local_tb 
+        WHERE factor_number = '{$_POST['request_number']}' 
+        AND member_mobile = '{$_POST['phone_number']}'
+        AND request_number > 0";
         $bookHotel = $Model->select($sql);
 
 
@@ -2371,14 +2375,61 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
                 $status = functions::Xmlinformation("Unknown");
             }
 
+            $IsLogin = Session::IsLogin();
+            $member = Load::controller('members');
+            $memberGet = $member->get();
+
+            $memberCreditPermition = '0';
+            if ($IsLogin && $member->list['fk_counter_type_id'] == '5') {
+                $memberCreditPermition = '1';
+            }
+
+            $counterCreditPermition = '0';
+            if ($IsLogin && $member->list['fk_counter_type_id'] != '5') {
+                $counterCreditPermition = '1';
+            }
+
+
+            $creditInputs = [
+                'flag' => 'buyByCreditHotelLocal',
+                'factorNumber' => $factor_number,
+                'paymentStatus' => $bookHotel[0]['payment_status'],
+                'typeApplication' => $bookHotel[0]['type_application'],
+                'serviceType' => $bookHotel[0]['serviceTitle']
+            ];
+            $creditAction = ROOT_ADDRESS . '/returnBankHotelLocal';
+
 
             if (!$isRequest && $bookHotel[0]['hotel_payments_price'] > 0 && $bookHotel[0]['status'] == 'RequestAccepted' && $bookHotel[0]['payment_status'] == 'fullPayment') {
                 $price_pay = $bookHotel[0]['total_price'] - $bookHotel[0]['hotel_payments_price'];
 
                 $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
-                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت</a>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت (بانکی)</a>
                         ';
+
+                if ($counterCreditPermition == '1') {
+                    $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                }
+
+                if ($memberCreditPermition == '1') {
+                    $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                }
+
             }
 //                else {
 //                    $price_pay = $bookHotel[0]['total_price'];
@@ -2391,17 +2442,127 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
                 if ($bookHotel[0]['hotel_payments_price'] > 0) {
                     $price_pay = $bookHotel[0]['hotel_payments_price'];
                     $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
-                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت</a>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت (بانکی)</a>
                         ';
-                } else {
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                }
+                else {
                     $price_pay = $bookHotel[0]['total_price'];
                     $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
                         onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
                         ';
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
                 }
 
+            }
+
+            if (!$isRequest && $bookHotel[0]['status'] == 'bank') {
+                if ($bookHotel[0]['hotel_payments_price'] > 0) {
+                    $price_pay = $bookHotel[0]['hotel_payments_price'];
+                    $status .= '<br>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت (بانکی)</a>
+                        ';
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                }
+                else {
+                    $price_pay = $bookHotel[0]['total_price'];
+                    $status .= '<br>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
+                        ';
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                }
             }
 
 
@@ -2463,9 +2624,32 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
                 } else {
                     $price_pay = $bookHotel[0]['total_price'];
                     $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
                         onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
                         ';
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
                 }
             }
 
@@ -2755,7 +2939,7 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
         $this->agencyCommissionPercent = 0;
         foreach ($BookShow as $k => $book) {
             $numberColumn = $k + 2;
-
+            $paymentType = $book['payment_type'];
             $expPaymentDate = [];
             if (!empty($book['payment_date'])) {
 
@@ -2845,6 +3029,7 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
             $dataRows[$k]['member_mobile'] = $book['member_mobile'];
             $dataRows[$k]['payment_date'] = $expPaymentDate[0];
             $dataRows[$k]['payment_time'] = $expPaymentDate[1];
+            $dataRows[$k]['payment_type'] = $paymentType;
             $dataRows[$k]['city_name'] = $book['city_name'];
             $dataRows[$k]['hotel_name'] = $book['hotel_name'];
             $dataRows[$k]['start_date'] = $book['start_date'];

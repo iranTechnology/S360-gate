@@ -427,7 +427,28 @@ class factorHotelLocal extends apiHotelLocal
 
             $ModelBase->setTable("report_hotel_tb");
             $ModelBase->update($d, $Condition);
-        } else {
+        }
+        elseif($hotel['type_application']=='reservation') {
+
+            $payment_status = '';
+
+            if ($this->temproryHotel['prepayment_percentage'] != 0) {
+                $payment_status = 'prePayment';
+            } else {
+                $payment_status = 'fullPayment';
+            }
+
+
+            $d['payment_status'] = $payment_status;
+
+            $Condition = "factor_number='{$_POST['factorNumber']}' ";
+            $Model->setTable("book_hotel_local_tb");
+            $Model->update($d, $Condition);
+
+            $ModelBase->setTable("report_hotel_tb");
+            $ModelBase->update($d, $Condition);
+        }
+        else {
             $this->paymentPrice = round($result_temprory_hotel[0]['total_price']);
         }
     }

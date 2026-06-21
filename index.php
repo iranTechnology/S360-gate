@@ -1,4 +1,5 @@
 <?php
+@session_start();//pak nashavad aslan ::bootstrap.php niyaz darad
 
 
 //date_default_timezone_set('Asia/Tehran');
@@ -10,16 +11,6 @@ require LIBRARY_DIR . 'functions.php';
 require LIBRARY_DIR . 'baseController.php';
 require LIBRARY_DIR . 'Session.php';
 require CONTROLLERS_DIR . 'dateTimeSetting.php';
-
-
-
-
-
-
-Session::init();
-
-//var_dump('aaa');
-//die();
 
 require_once LIBRARY_DIR . 'Model.php';
 require_once LIBRARY_DIR . 'ModelBase.php';
@@ -70,7 +61,7 @@ if(GDS_SWITCH == 'mag' && SOFTWARE_LANG == 'fa') {
 
 $clientIds = functions::getClientIds();
 
-if (GDS_SWITCH == 'resultTourLocal' && (CLIENT_ID == '4' || CLIENT_ID == '298' || CLIENT_ID == '292'  ||  CLIENT_ID == '224' ||  CLIENT_ID == '325' ||  CLIENT_ID == '166' || CLIENT_ID == '339' || CLIENT_ID == '383' || CLIENT_ID == '373' || CLIENT_ID == '318' || CLIENT_ID == '408'  || CLIENT_ID == '418' || CLIENT_ID == '419'|| CLIENT_ID == '420'|| CLIENT_ID == '421'|| CLIENT_ID == '422' || CLIENT_ID == '416' || CLIENT_ID == '517' || in_array(CLIENT_ID, $clientIds, true))) {
+if (GDS_SWITCH == 'resultTourLocal' && (CLIENT_ID == '4' || CLIENT_ID == '298' || CLIENT_ID == '292'  ||  CLIENT_ID == '224' ||  CLIENT_ID == '325' ||  CLIENT_ID == '166' || CLIENT_ID == '339' || CLIENT_ID == '383' || CLIENT_ID == '373' || CLIENT_ID == '318' || CLIENT_ID == '408'  || CLIENT_ID == '418' || CLIENT_ID == '419'|| CLIENT_ID == '420'|| CLIENT_ID == '421'|| CLIENT_ID == '422' || CLIENT_ID == '416' || CLIENT_ID == '517' || CLIENT_ID == '609' || in_array(CLIENT_ID, $clientIds, true))) {
     $slug_controller = new tourSlugController();
     $slug_controller->redirectToSlug();
 } elseif (GDS_SWITCH == 'tours') {
@@ -205,6 +196,9 @@ elseif (GDS_SWITCH == 'apiTourTest') {
 elseif (GDS_SWITCH == 'apiTour') {
     require LIBRARY_DIR.'ApiSource/iranTechApi/ApiTour.php';
 }
+elseif (GDS_SWITCH == 'safarBankApi') {
+    require LIBRARY_DIR.'ApiSource/iranTechApi/safarBankApi.php';
+}
 elseif (GDS_SWITCH == 'apiExternalHotel'|| GDS_SWITCH == 'apiExternalHotelTest') {
     require LIBRARY_DIR.'ApiSource/iranTechApi/externalHotelApi.php';
 }
@@ -238,6 +232,9 @@ elseif (GDS_SWITCH == 'ajax') {
 elseif (GDS_SWITCH == 'checkStatusFlight') {
     require CRONJOBS_DIR . 'checkStatusFlight.php';
 }
+elseif (GDS_SWITCH == 'flightReminder') {
+    require CRONJOBS_DIR . 'flightReminder.php';
+}
 elseif (GDS_SWITCH == 'deleteLogs') {
     require CRONJOBS_DIR . 'deleteLogs.php';
 }
@@ -255,6 +252,8 @@ elseif (GDS_SWITCH == 'ApiWeatherCronjob') {
 }
 elseif (GDS_SWITCH == 'refreshFlightLimitRateCronjob') {
     require CRONJOBS_DIR . 'refreshFlightLimitRateCronjob.php';
+}elseif (GDS_SWITCH == 'safarBankDeductConsumption') {
+    require CRONJOBS_DIR . 'safarBankDeductConsumption.php';
 }
 elseif (GDS_SWITCH == 'apiLogin') {
     require LIBRARY_DIR . 'ApiSource/Sso/loginApi.php';

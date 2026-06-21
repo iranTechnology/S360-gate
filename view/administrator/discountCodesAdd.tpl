@@ -75,15 +75,15 @@
                                           title="در صورتیکه می خواهید کدهای متفاوت یک بار مصرف به صورت تصادفی تولید گردد این گزینه را انتخاب نمایید"></span>
                         </label>
                     </div>
-                    <div class="form-group col-sm-12">
-                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="1" />
-                        <label for="is_allow_counter" class="control-label">
-                            مجاز برای استفاده کانتر ها
-                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
-                                          data-toggle="tooltip" data-placement="left"
-                                          title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>
-                        </label>
-                    </div>
+{*                    <div class="form-group col-sm-12">*}
+{*                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="1" />*}
+{*                        <label for="is_allow_counter" class="control-label">*}
+{*                            مجاز برای استفاده کانتر ها*}
+{*                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'*}
+{*                                          data-toggle="tooltip" data-placement="left"*}
+{*                                          title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>*}
+{*                        </label>*}
+{*                    </div>*}
 
                     <div class="form-group col-sm-12">
                         <input type="checkbox" name="is_consume" id="is_consume" value="1"  onclick="showAmountPointDiscountCode()"/>
