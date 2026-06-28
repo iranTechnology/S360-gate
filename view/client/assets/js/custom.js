@@ -8398,6 +8398,7 @@ function setDiscountCode(serviceType, currencyCode , factorNumber) {
                         {
                             flag: 'setDiscountCodePending',
                             discountCode: discountCode,
+                            discountAmount: data.discountAmount,
                             factorNumber: factorNumber,
                             serviceType: serviceType
                         },

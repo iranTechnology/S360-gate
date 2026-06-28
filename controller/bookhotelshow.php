@@ -265,15 +265,16 @@ class bookhotelshow extends baseController
                 {$tableName}.request_from,
                 {$tableName}.manual_book,
                 {$tableName}.hotel_payments_price,
+                {$tableName}.discount_code_amount,
 
             ";
 
-        if (TYPE_ADMIN != '1') {
-            $sql .= "
-                MAX(dcu.discountCode) AS discountCode,
-                MAX(dct.amount) AS discount_amount,
-            ";
-        }
+//        if (TYPE_ADMIN != '1') {
+//            $sql .= "
+//                MAX(dcu.discountCode) AS discountCode,
+//                MAX(dct.amount) AS discount_amount,
+//            ";
+//        }
 
         $sql .= "
                 {$FiledExtera}
@@ -281,16 +282,16 @@ class bookhotelshow extends baseController
                 {$tableName}
             ";
 
-        if (TYPE_ADMIN != '1') {
-            $sql .= "
-                        LEFT JOIN discount_codes_used_tb dcu
-ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
-       AND dcu.status = 'success'
-
-            LEFT JOIN discount_codes_tb dct
-            ON dct.code = dcu.discountCode
-            ";
-        }
+//        if (TYPE_ADMIN != '1') {
+//            $sql .= "
+//                        LEFT JOIN discount_codes_used_tb dcu
+//ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
+//       AND dcu.status = 'success'
+//
+//            LEFT JOIN discount_codes_tb dct
+//            ON dct.code = dcu.discountCode
+//            ";
+//        }
 
         $sql .= "
             WHERE
@@ -589,9 +590,9 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
             $dataRows[$k]['type_application_fa'] = $type_application;
             $dataRows[$k]['manual_book'] = $book['manual_book'];
             $dataRows[$k]['status_fa'] = $status;
-            if (TYPE_ADMIN != '1') {
-                $dataRows[$k]['discount_amount'] = $book['discount_amount'];
-            }
+//            if (TYPE_ADMIN != '1') {
+                $dataRows[$k]['discount_code_amount'] = $book['discount_code_amount'];
+//            }
 
 
             if (!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel == 'no')) {
@@ -2682,12 +2683,9 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
             $noEdit = "<a href='#' class='btn btn-default btn-editReserve fa fa-pencil margin-10' target='_blank' title=\"تست \">{$titleTxt}</a>";
 
             $paymentPrice = functions::CurrencyCalculate($bookHotel[0]['total_price'], $bookHotel[0]['currency_code'], $bookHotel['currency_equivalent']);
-
-            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $bookHotel[0]['factor_number'])->find();
-            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
-            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
-                $discountCodeAmount = $getDiscountCodeAmount['amount'];
-                $paymentPrice['AmountCurrency'] = $paymentPrice['AmountCurrency'] - $discountCodeAmount;
+            $amountDiscountCode['AmountCurrency'] = 0;
+            if (!empty($bookHotel[0]['discount_code_amount']) && $bookHotel[0]['discount_code_amount']) {
+                $amountDiscountCode = functions::CurrencyCalculate($bookHotel[0]['discount_code_amount'], $bookHotel[0]['currency_code'], $bookHotel['currency_equivalent']);
             }
 
             $result .= '<tr>';
@@ -2697,7 +2695,11 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
             $result .= '<td>' . $bookHotel[0]['request_number'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['passenger_leader_room_fullName'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['payment_date'] . '</td>';
-            $result .= '<td>' . functions::numberFormat($paymentPrice['AmountCurrency']) . ' ' . $paymentPrice['TypeCurrency'] . '</td>';
+            $result .= '<td>' . functions::numberFormat($paymentPrice['AmountCurrency'] - $amountDiscountCode['AmountCurrency']) . ' ' . $paymentPrice['TypeCurrency'];
+            if ($amountDiscountCode['AmountCurrency'] != 0) {
+                $result .= '<br><del>' . functions::numberFormat($paymentPrice['AmountCurrency']) . '</del>';
+            }
+            $result .='</td>';
             $result .= '<td>' . $status . '</td>';
             $result .= '<td>' . $op . '</td>';
 //            if ($this->IsLogin  && $bookHotel[0]['status'] != 'pending') {

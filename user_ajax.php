@@ -2484,6 +2484,19 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setDiscountCodePending' )
     $factorNumber    = trim( $_POST['factorNumber'] );
     $objDiscountCodes     = Load::controller( 'discountCodes' );
     $memberId = Session::getUserId();
+    $Model = Load::library('Model');
+    $ModelBase = Load::library('ModelBase');
+
+    $d['discount_code_amount'] = $_POST['discountAmount'];
+    $condition = " factor_number = '{$factorNumber}'";
+    $Model->setTable("book_hotel_local_tb");
+    $res = $Model->update($d, $condition);
+    if ($res) {
+        $ModelBase->setTable("report_hotel_tb");
+        $ModelBase->update($d, $condition);
+    }
+
+
 
     $reduceAmountViaDiscountCode = $objDiscountCodes->reduceAmountViaDiscountCodePending( $factorNumber, $memberId, $_POST['discountCode'], $_POST['serviceType'] );
 

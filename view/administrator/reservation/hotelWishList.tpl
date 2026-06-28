@@ -133,7 +133,15 @@
                                 {elseif $item.type_application eq 'api_app'}هتل اشتراکی<br>(خرید از اَپلیکیشن)
                                 {/if}
                             </td>
-                            <td>{$item.total_price|number_format:0:".":","}</td>
+                            <td>
+
+                                {($item.total_price - $item.discount_code_amount)|number_format:0:".":","}
+                                {if !empty($item.discount_code_amount) && $item.discount_code_amount neq 0}
+                                <br><del>
+                                    {$item.total_price|number_format:0:".":","}
+                                </del>
+                                {/if}
+                            </td>
 
                             <td>
                                 <div class="button-box">

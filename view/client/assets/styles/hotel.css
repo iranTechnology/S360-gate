@@ -5794,17 +5794,17 @@ a.f-loader-check{
     position: relative;
 }
 
-.a-takhfif-box > .a-takhfif-box-inner > div.a-takhfif-before span:last-child::before {
-    content: "";
-    width: 100%;
-    height: 1px;
-    background: #e14949;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    opacity: 0.5;
-}
+/*.a-takhfif-box > .a-takhfif-box-inner > div.a-takhfif-before span:last-child::before {*/
+/*    content: "";*/
+/*    width: 100%;*/
+/*    height: 1px;*/
+/*    background: #e14949;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    bottom: 0;*/
+/*    margin: auto;*/
+/*    opacity: 0.5;*/
+/*}*/
 
 .a-takhfif-box > .a-takhfif-box-inner > div.a-takhfif-after {
     border-bottom: 0;
