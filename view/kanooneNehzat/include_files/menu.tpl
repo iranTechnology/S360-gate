@@ -11,7 +11,7 @@
                     <div class="nav-menus-wrapper">
                         <ul class="nav-menu align-to-right">
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">اقامتگاه</a>
+                                <a href="javascript:">اقامتگاه</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=65&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های مشهد مقدس</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/resultExternalHotel/iraq/Karbala/{$objDate->daysAfterToday('1')}/{$objDate->daysAfterToday('2')}/1/R:2-0-0">اقامتگاه های عراق</a></li>
@@ -24,6 +24,9 @@
                             </li>
                             <li>
                                 <a href="{$smarty.const.ROOT_ADDRESS}/pay">پرداخت آنلاین</a>
+                            </li>
+                            <li>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/organization">خدمات سازمانی</a>
                             </li>
                             <li>
                                 <a href="{$smarty.const.ROOT_ADDRESS}/news">اخبار</a>

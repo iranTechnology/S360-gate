@@ -15,7 +15,6 @@
     {include file="include_files/blog.tpl"}
     {include file="include_files/app.tpl"}
     {include file="include_files/newsletter-1.tpl"}
-    {include file="include_files/select-theme.tpl"}
 </main>
 {include file="include_files/footer-1.tpl"}
 </body>

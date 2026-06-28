@@ -2743,6 +2743,7 @@ class user extends baseController
                     factor_number,
                     status,
                     total_price,
+                    discount_code_amount,
                     isInternal,
                     hotel_name,
                     city_name,
@@ -2794,7 +2795,10 @@ class user extends baseController
                 $bookList[$key]['creation_date_int'] = '----';
                 $bookList[$key]['creation_time_int'] = '----';
             }
-            $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
+            $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+            if (!empty($item['discount_code_amount']) && $item['discount_code_amount'] != 0) {
+                $bookList[$key]['price_final'].='<br/><del>'.number_format($item['total_price']).'</del>';
+            }
             if ($item['status'] == 'BookedSuccessfully') {
                 if ($item['request_cancel'] == 'confirm') {
                     $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString().' <span style="color: #fd6767; margin-right: 10px; ">('. functions::Xmlinformation('Refunded')->__toString().')</span>';
@@ -2907,7 +2911,7 @@ class user extends baseController
                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/gds/pdf&target=BookingHotelLocal&id=' . $item['factor_number'] .'&cancelStatus=confirm',
                     ];
             }else{
-                if ($item['status'] != 'Requested' && $item['status'] != 'RequestRejected' && $item['status'] != 'RequestAccepted' && $item['status'] != 'Cancelled') {
+                if ($item['status'] == 'BookedSuccessfully' && !empty($item['status']) ) {
                     $result[$key]['button_list'][] =
                         [
                             'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
@@ -3526,6 +3530,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   successfull AS statusBook, 
                   request_cancel AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3604,6 +3609,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   status AS statusBook,
                   request_cancel AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3682,6 +3688,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   successfull AS statusBook, 
                   request_cancel AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3761,6 +3768,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   status AS statusBook,
                   '' AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3840,6 +3848,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   status AS statusBook,
                   '' AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3918,6 +3927,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   status AS statusBook,
                   request_cancel AS request_cancel, 
+                  discount_code_amount AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3996,6 +4006,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   status AS statusBook, 
                   request_cancel AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -4075,6 +4086,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   status AS statusBook, 
                   '' AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -4153,6 +4165,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   successfull AS statusBook,  
                   request_cancel AS request_cancel, 
+                  '' AS discount_code_amount,
                   '' AS car_name,
                   '' AS car_name_en,
                   CountPeople AS CountPeople,
@@ -4232,6 +4245,7 @@ class user extends baseController
                   creation_date_int AS  creation_date_int,
                   status AS statusBook,  
                   '' AS request_cancel, 
+                  '' AS discount_code_amount,
                   car_name AS car_name,
                   car_name_en AS car_name_en,
                   '' AS CountPeople,
@@ -4310,6 +4324,7 @@ class user extends baseController
               creation_date_int AS creation_date_int,
               successfull AS statusBook,
               request_cancel AS request_cancel,
+              '' AS discount_code_amount,
               '' AS car_name,
               '' AS car_name_en,
               '' AS CountPeople,
@@ -5008,7 +5023,10 @@ class user extends baseController
 
             }
             elseif ($item['moduleTitle'] == 'hotel') {
-                $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
+                $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+                if (!empty($item['discount_code_amount']) && $item['discount_code_amount'] != 0) {
+                    $bookList[$key]['price_final'].='<br/><del>'.number_format($item['total_price']).'</del>';
+                }
                 if ($item['statusBook'] == 'BookedSuccessfully') {
                     if ($item['request_cancel'] == 'confirm') {
                         $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString().' <span style="color: #fd6767; margin-right: 10px; ">('. functions::Xmlinformation('Refunded')->__toString().')</span>';
@@ -5122,7 +5140,7 @@ class user extends baseController
                             'link' => ROOT_ADDRESS_WITHOUT_LANG . '/gds/pdf&target=BookingHotelLocal&id=' . $item['factor_number'] .'&cancelStatus=confirm',
                         ];
                 }else{
-                    if ($item['statusBook'] != 'Requested' && $item['statusBook'] != 'RequestRejected' && $item['statusBook'] != 'RequestAccepted' && $item['statusBook'] != 'Cancelled') {
+                    if ($item['statusBook'] == 'BookedSuccessfully' && !empty($item['statusBook'])) {
                         $result[$key]['button_list'][] =
                             [
                                 'title' => functions::Xmlinformation('OsafarRefund')->__toString(),

@@ -262,6 +262,7 @@
                         <span>{$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}</span>
                         <i>{$paymentPriceCurrency.TypeCurrency}</i>
                     </div>
+                    {if $objFactor->temproryHotel['prepayment_percentage'] neq 0}
                     <div class="fltl">
                         <i>
                             {$objFactor->temproryHotel['prepayment_percentage']}
@@ -271,6 +272,7 @@
                         <i>{$paymentPriceCurrency.TypeCurrency}</i>
 
                     </div>
+                    {/if}
                 </div>
             </div>
 
@@ -538,13 +540,13 @@
                     <i class="bg-yellow"> ##Dearguestsuccessfullyregisteredbookingreservation##</i>
                 </span>
                 <div class="msg">
-                <span class="box-offline-reserve offline-reserve-msg">
-                    <span class="msg-time">
-                       <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"
-                            style="direction: ltr">10:00</div>
-                    </span>
-                </span>
-                    <span class="box-offline-reserve offline-factorNumber"> ##Invoicenumber##: {$objFactor->temproryHotel['factor_number']}</span>
+{*                <span class="box-offline-reserve offline-reserve-msg">*}
+{*                    <span class="msg-time">*}
+{*                       <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"*}
+{*                            style="direction: ltr">10:00</div>*}
+{*                    </span>*}
+{*                </span>*}
+                    <span class="box-offline-reserve offline-factorNumber w-100"> ##Invoicenumber##: {$objFactor->temproryHotel['factor_number']}</span>
                 </div>
             </div>
         </div>
@@ -584,13 +586,13 @@
 
                 <div>
                     <div class="msg">
-                        <span class="box-offline-reserve offline-reserve-msg">
-                            <span class="msg-time">
-                                <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"
-                                     style="direction: ltr">10:00</div>
-                            </span>
-                        </span>
-                        <span class="box-offline-reserve offline-factorNumber"> ##Invoicenumber##: {$objFactor->temproryHotel['factor_number']}</span>
+{*                        <span class="box-offline-reserve offline-reserve-msg">*}
+{*                            <span class="msg-time">*}
+{*                                <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"*}
+{*                                     style="direction: ltr">10:00</div>*}
+{*                            </span>*}
+{*                        </span>*}
+                        <span class="box-offline-reserve offline-factorNumber w-100"> ##Invoicenumber##: {$objFactor->temproryHotel['factor_number']}</span>
                     </div>
                     <div class="s-u-check-tracking-code">
                         <p>

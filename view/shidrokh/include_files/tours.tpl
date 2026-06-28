@@ -3,8 +3,8 @@
 {assign var="special_tour_params" value=['type'=>'special','limit'=> '4','dateNow' => $dateNow]}
 {assign var='special_tours' value=$obj_main_page->getToursReservation($special_tour_params)}
 
-{assign var="internal_tour_params" value=['type'=>'','limit'=> '4','dateNow' => '', 'country' =>'internal']}
-{assign var="foreging_tour_params" value=['type'=>'','limit'=> '4','dateNow' => '', 'country' =>'external']}
+{assign var="internal_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'internal']}
+{assign var="foreging_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'external']}
 
 {assign var='internalTours' value=$obj_main_page->getToursReservation($internal_tour_params)}
 {assign var='foreginTours' value=$obj_main_page->getToursReservation($foreging_tour_params)}

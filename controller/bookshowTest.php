@@ -5886,13 +5886,11 @@ class bookshowTest extends clientAuth {
                 $price_with_change = $this->getController('BookingHotelNew')->getPriceWithChange($hotel['factor_number']);
                 $DataAllPrice = '<span style="text-decoration: line-through;">'.  number_format($price_with_change) .'</span><br/>';
             }
-            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $FActorNumberFor)->find();
-            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
-            $discountCodeAmount = 0;
-            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
-                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+
+            $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_code_amount'] );
+            if (!empty($hotel['discount_code_amount']) && $hotel['discount_code_amount'] != 0) {
+                $DataAllPrice .=  '<br><del>' . number_format( $hotel['total_price'] ) . '</del>';
             }
-            $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_amount'] - $discountCodeAmount);
             $DataAllPriceFor = $hotel['total_price'];
 
 
@@ -6150,8 +6148,9 @@ class bookshowTest extends clientAuth {
             }
             else {
                 $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit").' ';
+
                 $TitleBuyFromIt='<span> '.functions::Xmlinformation("PA_BUYFrom").' <br>  '.functions::Xmlinformation("Safar360").' </span>';
-                $TitlePayment=functions::Xmlinformation("Discount").'<br/><del>'.functions::Xmlinformation("PassengerSale").'</del>';
+                $TitlePayment=functions::Xmlinformation("PassengerSale").' ';
                 $TitleNameAgency=functions::Xmlinformation("Action").' ';
             }
             $ColorTr='';

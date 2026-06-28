@@ -315,7 +315,6 @@ class searchHotel extends ApiHotelCore {
                         foreach ($final_result_search as $Hotel) {
                             
 
-                            functions::insertLog(json_encode($Hotel) , '000shojaee');
 
                             $index++;
                             // اضافه کردن کمسیون آژانس به قیمت اتاق
@@ -377,7 +376,6 @@ class searchHotel extends ApiHotelCore {
 //                            $feature_pic = $Hotel['FeaturedPicture'];
                             $feature_pic = $Hotel['FeaturedPicture'];
 
-                            functions::insertLog(json_encode($Hotel),'0000shojaee');
 
                             $this->Hotel[$Hotel['HotelIndex'] . $index]['pic'] = $feature_pic;
 //						$this->Hotel[ $Hotel['HotelIndex'] . $index ]['ind']                 = $Hotel['ind'];
