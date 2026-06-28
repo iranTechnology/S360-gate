@@ -26,6 +26,7 @@
     <meta test="i_modular_modulation"/>
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" name="viewport"/>
     <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta name="google-site-verification" content="65dfAFdcm0JwVx5bNQKII5E4jcUy0axsZK32hgeR4V4" />
 
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/rich/pageInfo/main.tpl" obj_main_page=$obj_main_page}
 

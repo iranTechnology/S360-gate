@@ -152,6 +152,9 @@
   <Yourrequesthascanceledtolackof>تم إلغاء طلبك بسبب عدم توفر غرف متاحة في الفندق.</Yourrequesthascanceledtolackof>
   <Youcanbookanotherhotel>يمكنك حجز فندق آخر.</Youcanbookanotherhotel>
   <Dearguestsuccessfullyregisteredbooking>عزيزي الضيف ، تم تسجيل طلب فندقك بنجاح في النظام. سيتم اخبارك خلال 10 دقائق من نتيجة الحجز النهائي.</Dearguestsuccessfullyregisteredbooking>
+  <Dearguestsuccessfullyregisteredbookingreservation>
+    عزيزي المستخدم، تم تسجيل طلبك الفندقي بنجاح في النظام. في حال الموافقة على طلبك، سيتم إعلامك عبر رسالة نصية قصيرة.
+  </Dearguestsuccessfullyregisteredbookingreservation>
   <HotelMoreDetailWithFactorNumber> </HotelMoreDetailWithFactorNumber>
   <Usehotelshoppingpaymentbooking>استخدم الرابط "تتبع شراء الفنادق" لإكمال الحجز والدفع.</Usehotelshoppingpaymentbooking>
   <Arrivaldatehotel>تاريخ الوصول</Arrivaldatehotel>
@@ -3355,4 +3358,6 @@
 <ReceiveInfoError>خطأ في استلام المعلومات</ReceiveInfoError>
   <ReservedRooms>الغرف المحجوزة</ReservedRooms>
   <HotelBooking>حجز فندق في إنجلترا</HotelBooking>
+  <PhoneNumberBuyer>رقم الهاتف المحمول الذي استخدمته لإجراء عملية الشراء.</PhoneNumberBuyer>
+
 </Main>

@@ -1,5 +1,5 @@
 {load_presentation_object filename="bookhotelshow" assign="objbook"}
-{assign var="expiredBook" value=$objbook->checkForExpired()}
+{*{assign var="expiredBook" value=$objbook->checkForExpired()}*}
 
 {if strpos($expiredBook,'Success') neq false}
     <script type="text/javascript">

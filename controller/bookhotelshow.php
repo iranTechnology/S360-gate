@@ -757,6 +757,19 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
             $BookShow = $Model->select($sql);
         }
 
+        $discountCodesUsedModel = $this->getModel('discountCodesUsedModel');
+        $discountCodesModel = $this->getModel('discountCodesModel');
+
+        foreach ( $BookShow as $key => &$hotel ) {
+            $getDiscountCode = $discountCodesUsedModel->get(['discountCode'], true)->where('factorNumber',  $hotel['factor_number'])->find();
+            $getDiscountCodeAmount = $discountCodesModel->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            $discountCodeAmount = 0;
+            if (!empty($getDiscountCodeAmount)) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $hotel['total_price'] -= $discountCodeAmount;
+            }
+        }
+
 
         $this->CountHotel = count($BookShow);
         return $BookShow;
@@ -2302,10 +2315,19 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
         $resultHotelLocalController = Load::controller('resultHotelLocal');
 
 //        $sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' OR request_number = '$factor_number' ";
+
+
+        if(!Session::IsLogin()){
         $sql = "SELECT * FROM book_hotel_local_tb 
         WHERE factor_number = '{$_POST['request_number']}' 
         AND member_mobile = '{$_POST['phone_number']}'
-        AND request_number > 0";
+        ";
+        }
+        else{
+            $sql = "SELECT * FROM book_hotel_local_tb 
+        WHERE factor_number = '{$_POST['request_number']}' 
+        ";
+        }
         $bookHotel = $Model->select($sql);
 
 
@@ -2660,6 +2682,13 @@ ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
             $noEdit = "<a href='#' class='btn btn-default btn-editReserve fa fa-pencil margin-10' target='_blank' title=\"تست \">{$titleTxt}</a>";
 
             $paymentPrice = functions::CurrencyCalculate($bookHotel[0]['total_price'], $bookHotel[0]['currency_code'], $bookHotel['currency_equivalent']);
+
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $bookHotel[0]['factor_number'])->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $paymentPrice['AmountCurrency'] = $paymentPrice['AmountCurrency'] - $discountCodeAmount;
+            }
 
             $result .= '<tr>';
             $result .= '<td>' . $bookHotel[0]['city_name'] . '</td>';

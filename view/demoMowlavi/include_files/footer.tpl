@@ -10,7 +10,7 @@
     <div class="item-footer item-footer1">
      <div class="parent-item-footer parent-item-footer-responsive box-item-footer2">
       <a class="__logo_class__ nav-header" href="{$smarty.const.ROOT_ADDRESS}/aboutUs">
-       <img alt="img-logo" class="logo" src="project_files/images/logo.png"/>
+       <img id="footerLogo" alt="img-logo" class="logo" src="project_files/images/logo.png"/>
        <div class="d-flex flex-column">
 {*        <h4>*}
 {*         تجربه زیارتی متفاوت*}
@@ -148,9 +148,14 @@
        <a href="https://www.aira.ir/">
         <img alt="namad-2" src="project_files/images/certificate3.png"/>
        </a>
-       <a href="javascript:">
-        <img alt="namad-2" src="project_files/images/enamad.png"/>
+       {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+        <a referrerpolicy="origin" target="_blank"
+           href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+         <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+              alt="اینماد"
+              style="cursor:pointer">
        </a>
+       {/if}
       </div>
      </div>
      <div class="item-footer item-footer7">
@@ -201,9 +206,14 @@
      <a href="https://www.aira.ir/">
       <img alt="namad-2" src="project_files/images/certificate3.png"/>
      </a>
-     <a href="javascript:">
-      <img alt="namad-2" src="project_files/images/enamad.png"/>
+     {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+      <a referrerpolicy="origin" target="_blank"
+         href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+       <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+            alt="اینماد"
+            style="cursor:pointer">
      </a>
+     {/if}
     </div>
     <div class="contactusmobile">
      <div class="d-flex email-mob">

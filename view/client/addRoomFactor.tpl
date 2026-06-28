@@ -340,7 +340,7 @@
                                     <div class="col-sm-2 col-xs-12">
                                     <span class="input-group-btn">
                                         <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode" value="{$paymentPriceCurrency.AmountCurrency}" />
-                                        <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}')" class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">##Reviewapplycode##  </button>
+                                        <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}' , {$objFactor->temproryHotel['factor_number']})" class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">##Reviewapplycode##  </button>
                                     </span>
                                     </div>
                                     <div class="col-sm-4 col-xs-12">

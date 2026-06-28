@@ -64,7 +64,7 @@ a, a:hover {
     height: 150px;
     bottom: 0;
     top: auto;
-    z-index: 1000000;
+    z-index: 4;
     right: 0;
     left: 0;
     display:block !important
@@ -4675,7 +4675,7 @@ button:focus {
 }
 
 .newsletters .newsletterMain a {
-    background: #cb0404;
+    background: var(--mainColor);
     display: flex;
     justify-content: center;
     align-items: center;

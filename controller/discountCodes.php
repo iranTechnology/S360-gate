@@ -276,23 +276,85 @@ class discountCodes extends clientAuth
     public function DiscountCodesUseAdd($discountCode, $memberId, $serviceTitle, $factorNumber) {
         $Model = Load::library('Model');
 
-        $data['discountCode'] = $discountCode;
-        $data['memberId'] = $memberId;
-        $data['serviceTitle'] = $serviceTitle;
-        $data['factorNumber'] = $factorNumber;
-        $data['status'] = 'success';
-        $data['creationDateInt'] = time();
+        $getPendingCode = $this->getModel('discountCodesUsedModel')
+            ->get(['id'], true)
+            ->where('discountCode', $discountCode)
+            ->where('serviceTitle', $serviceTitle)
+            ->where('factorNumber', $factorNumber)
+            ->where('status', 'pending')
+            ->find();
 
-        $Model->setTable('discount_codes_used_tb');
-        $resultInsert = $Model->insertLocal($data);
+        if ($getPendingCode) {
+            $data_update['status'] = 'success';
+            $resultUpdate = $this->getModel('discountCodesUsedModel')
+                ->update($data_update,"id='{$getPendingCode['id']}'");
 
-        if (isset($resultInsert) && $resultInsert) {
-            return 'success';
+            if (isset($resultUpdate) && $resultUpdate) {
+                return 'success';
+            } else {
+                return 'error';
+            }
         } else {
-            return 'error';
+            $data['discountCode'] = $discountCode;
+            $data['memberId'] = $memberId;
+            $data['serviceTitle'] = $serviceTitle;
+            $data['factorNumber'] = $factorNumber;
+            $data['status'] = 'success';
+            $data['creationDateInt'] = time();
+
+            $Model->setTable('discount_codes_used_tb');
+            $resultInsert = $Model->insertLocal($data);
+
+            if (isset($resultInsert) && $resultInsert) {
+                return 'success';
+            } else {
+                return 'error';
+            }
         }
-    }
+        }
     #endregion
+
+
+    public function DiscountCodesUseAddPending($discountCode, $memberId, $serviceTitle, $factorNumber) {
+        $Model = Load::library('Model');
+
+        $getPendingCode = $this->getModel('discountCodesUsedModel')
+            ->get(['id'], true)
+            ->where('discountCode', $discountCode)
+            ->where('serviceTitle', $serviceTitle)
+            ->where('factorNumber', $factorNumber)
+            ->where('status', 'pending')
+            ->find();
+
+        if ($getPendingCode) {
+            $data_update['status'] = 'pending';
+            $resultUpdate = $this->getModel('discountCodesUsedModel')
+                ->update($data_update,"id='{$getPendingCode['id']}'");
+
+            if (isset($resultUpdate) && $resultUpdate) {
+                return 'success';
+            } else {
+                return 'error';
+            }
+        } else {
+            $data['discountCode'] = $discountCode;
+            $data['memberId'] = $memberId;
+            $data['serviceTitle'] = $serviceTitle;
+            $data['factorNumber'] = $factorNumber;
+            $data['status'] = 'pending';
+            $data['creationDateInt'] = time();
+
+            $Model->setTable('discount_codes_used_tb');
+            $resultInsert = $Model->insertLocal($data);
+
+            if (isset($resultInsert) && $resultInsert) {
+                return 'success';
+            } else {
+                return 'error';
+            }
+        }
+
+    }
 
     #region DiscountCodesUseConfirm: set discount code use from pending to success by factor number couse it's unique
     public function DiscountCodesUseConfirm($factorNumber) {
@@ -328,6 +390,7 @@ class discountCodes extends clientAuth
                     FROM discount_codes_tb AS DC INNER JOIN discount_codes_services_tb AS DCS ON DC.groupCode = DCS.discountGroupCode 
                     WHERE DC.code = '{$discountCode}' AND {$serviceTitleCondition} ";
         $resultCode = $Model->load($sqlCode);
+
 
 
         $output = array();
@@ -400,6 +463,7 @@ class discountCodes extends clientAuth
     #region reduceAmountViaDiscountCode: reduce given amount via a specified discount code
     public function reduceAmountViaDiscountCode($amount, $factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null) {
         $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode);
+
         if ($discountResult['result_status'] == 'success') {
             $addResult = $this->DiscountCodesUseAdd($discountCode, $memberId, $discountResult['discountService'], $factorNumber);
             if ($addResult == 'success') {
@@ -410,6 +474,16 @@ class discountCodes extends clientAuth
         return $amount;
     }
     #endregion
+
+    public function reduceAmountViaDiscountCodePending($factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null) {
+        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode);
+        $addResult = '';
+        if ($discountResult['result_status'] == 'success') {
+            $addResult = $this->DiscountCodesUseAddPending($discountCode, $memberId, $discountResult['discountService'], $factorNumber);
+        }
+
+        return $addResult;
+    }
 
     /**
      * @param $param

@@ -722,7 +722,7 @@
                                             <input type="text" placeholder="##Codediscount## ..." id="discount-code">
                                             <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
                                                    value="{$PriceTotal}"/>
-                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}')" class="site-bg-main-color">
+                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}' , {$smarty.post.factorNumber})" class="site-bg-main-color">
                                                 ##Apply##
                                             </button>
                                         </div>

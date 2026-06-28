@@ -150,6 +150,9 @@
   <Yourrequesthascanceledtolackof>В связи с загруженностью отеля ваш запрос был отменен.</Yourrequesthascanceledtolackof>
   <Youcanbookanotherhotel>Вы можете забронировать другой отель.</Youcanbookanotherhotel>
   <Dearguestsuccessfullyregisteredbooking>Уважаемый гость, Ваш запрос на отель был успешно зарегистрирован. Вы будете уведомлены как минимум через 10 минут.</Dearguestsuccessfullyregisteredbooking>
+  <Dearguestsuccessfullyregisteredbookingreservation>
+    Уважаемый пользователь, ваш запрос на бронирование отеля успешно зарегистрирован в системе. В случае одобрения вашего запроса вы получите уведомление по SMS.
+  </Dearguestsuccessfullyregisteredbookingreservation>
   <HotelMoreDetailWithFactorNumber>Вы можете ввести последний статус бронирования, введя номер счета-фактуры в разделе отслеживания покупки, и если бронирование подтверждено, вы можете завершить покупку.</HotelMoreDetailWithFactorNumber>
   <Usehotelshoppingpaymentbooking>Воспользуйтесь ссылкой для совершения покупки отеля, чтобы завершить покупку и оплату бронирования.</Usehotelshoppingpaymentbooking>
   <Arrivaldatehotel>Отель Дата прибытия</Arrivaldatehotel>
