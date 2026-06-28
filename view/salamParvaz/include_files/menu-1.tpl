@@ -13,7 +13,7 @@
                         <li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل</a></li>
-                        <li><a href="https://salamparvaz.com/tours">تور</a></li>
+                        <li><a href="https://salamparvaz.com">تور</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa">ویزا</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/insurance">بیمه</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/cip">تشریفات فرودگاه</a></li>

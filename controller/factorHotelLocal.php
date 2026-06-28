@@ -4,7 +4,6 @@
  * @property factorHotelLocal $factorHotelLocal
  */
 
-
 class factorHotelLocal extends apiHotelLocal
 {
     public $adultArr = array();
@@ -229,7 +228,7 @@ class factorHotelLocal extends apiHotelLocal
         }
 
 
-        foreach ($result_temprory_hotel as $k=>$hotel){
+        foreach ($result_temprory_hotel as $k=>$hotel) {
 
             //Group by room
             if ($AuxiliaryVariableRoom != $hotel['room_id']){
@@ -431,6 +430,8 @@ class factorHotelLocal extends apiHotelLocal
         elseif($hotel['type_application']=='reservation') {
 
             $payment_status = '';
+
+            $this->paymentPrice = $totalPrice;
 
             if ($this->temproryHotel['prepayment_percentage'] != 0) {
                 $payment_status = 'prePayment';

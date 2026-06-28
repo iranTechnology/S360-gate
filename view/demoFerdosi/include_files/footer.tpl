@@ -83,7 +83,7 @@
      <div class="item-footer col-lg-3 col-md-3 col-sm-4 col-12 order-foot1 text-center">
       <div class="parent-item-footer parent-item-footer-responsive">
        <div class="img-box-footer">
-        <img alt="footer-logo" class="__logo_class__" src="project_files/images/logo.png"/>
+        <img alt="footer-logo" id="footerLogo" class="__logo_class__" src="project_files/images/logo.png"/>
        </div>
        <div class="child-item-footer">
         <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_PHONE}">
@@ -125,9 +125,15 @@
       <a href="http://www.aira.ir/">
        <img alt="namad-2" src="project_files/images/certificate3.png"/>
       </a>
-      <a href="javascript:">
-       <img alt="namad-2" src="project_files/images/enamad.png"/>
+      {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+       <a referrerpolicy="origin" target="_blank"
+          href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+        <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+             alt="اینماد"
+             style="cursor:pointer">
       </a>
+      {/if}
+
      </div>
      <div class="about-namad">
       <h4>
@@ -253,9 +259,15 @@
     <a href="http://www.aira.ir/">
      <img alt="namad-2" src="project_files/images/certificate3.png"/>
     </a>
-    <a href="javascript:">
-     <img alt="namad-2" src="project_files/images/enamad.png"/>
+    {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+     <a referrerpolicy="origin" target="_blank"
+        href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+      <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+           alt="اینماد"
+           style="cursor:pointer">
     </a>
+    {/if}
+
    </div>
   </div>
   <div class="parent-item-footer parent-item-footer-responsive">

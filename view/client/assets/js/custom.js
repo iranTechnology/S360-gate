@@ -3494,18 +3494,25 @@ function selectPassengerLocal(idPass, moduleType,_this=null) {
 
 
                    } else {
-                       $("#gender" + numberRow + " option[value=" + obj.gender + "]").prop('selected', true);
-                       $("#nameEn" + numberRow).attr('value', obj.name_en);
-                       $("#familyEn" + numberRow).attr('value', obj.family_en);
-                       // $("#nameFa" + numberRow).attr('value', obj.name);
-                       // $("#familyFa" + numberRow).attr('value', obj.family);
-                       $("#birthdayEn" + numberRow).attr('value', obj.birthday);
-                       $("#birthday" + numberRow).attr('value', obj.birthday_fa);
-                       $("#NationalCode" + numberRow).attr('value', obj.NationalCode);
-                       $("#passportCountry" + numberRow).attr('value', obj.passportCountry);
-                       $("#select2-passportCountry" + numberRow + "-container").html($("#passportCountry" + numberRow + " option:selected").text());
-                       $("#passportNumber" + numberRow).attr('value', obj.passportNumber);
-                       $("#passportExpire" + numberRow).attr('value', obj.passportExpire);
+                       safeSet("#gender" + numberRow, obj.gender, true);
+                       safeSet("#nameEn" + numberRow, obj.name_en);
+                       safeSet("#familyEn" + numberRow, obj.family_en);
+                       safeSet("#nameFa" + numberRow, obj.name);
+                       safeSet("#familyFa" + numberRow, obj.family);
+                       safeSet("#birthdayEn" + numberRow, obj.birthday);
+                       safeSet("#birthday" + numberRow, obj.birthday_fa);
+                       safeSet("#NationalCode" + numberRow, obj.NationalCode);
+                       safeSet("#passportCountry" + numberRow, obj.passportCountry);
+                       safeSet("#passportNumber" + numberRow, obj.passportNumber);
+                       safeSet("#passportExpire" + numberRow, obj.passportExpire);
+                       var pcSelector = "#passportCountry" + numberRow;
+                       if ($(pcSelector).length > 0) {
+                           var selectedText = $(pcSelector + " option:selected").text();
+                           var containerSelector = "#select2-passportCountry" + numberRow + "-container";
+                           if ($(containerSelector).length > 0) {
+                               $(containerSelector).html(selectedText);
+                           }
+                       }
 
                    }
 
@@ -3523,6 +3530,20 @@ function selectPassengerLocal(idPass, moduleType,_this=null) {
                }
            }
        })
+}
+
+function safeSet(selector, value, isSelect = false) {
+    var $el = $(selector);
+    if ($el.length === 0) return false;
+
+    if (isSelect) {
+        // برای select
+        $el.find("option[value=" + value + "]").prop('selected', true);
+    } else {
+        // برای input ها
+        $el.attr('value', value);
+    }
+    return true;
 }
 
 /**
@@ -7633,7 +7654,7 @@ function ChangePassForRecovery() {
 }
 
 function SendTrackingInfo() {
-
+    let isLogin = window.isUserLoggedIn;
     var request_number = $('#request_number').val();
     var phone_number = $('#phone_number').val();
 
@@ -7643,6 +7664,12 @@ function SendTrackingInfo() {
         $('#request_number').css("background", "white");
     });
 
+
+    $('#phone_number').focus(function () {
+        $('#phone_number').css("background", "white");
+    });
+
+    if (isLogin) {
     if (request_number == "") {
 
         $.alert({
@@ -7653,8 +7680,28 @@ function SendTrackingInfo() {
             type: 'red'
         });
         $('#request_number').css("background", "red");
-
+            return false;
+        }
     } else {
+        if (request_number == "" || phone_number == "") {
+            $.alert({
+                title: useXmltag("TrackOrder"),
+                icon: 'fa fa-times',
+                content: useXmltag("EnterRequiredInformation"),
+                rtl: true,
+                type: 'red'
+            });
+
+            if (request_number == "") {
+                $('#request_number').css("background", "red");
+            }
+            if (phone_number == "") {
+                $('#phone_number').css("background", "red");
+            }
+            return false;
+        }
+    }
+
         $('#loaderTracking').show(500);
 
         $.post(amadeusPath + 'user_ajax.php',
@@ -7687,7 +7734,7 @@ function SendTrackingInfo() {
                }
 
            });
-    }
+
 
 }
 
@@ -8314,7 +8361,7 @@ function selectDestination(AirportFa, DepartureCityFa, CountryFa, DepartureCode)
 }
 
 
-function setDiscountCode(serviceType, currencyCode) {
+function setDiscountCode(serviceType, currencyCode , factorNumber) {
 
     var discountCode = $('#discount-code').val();
     $(".discount-code-error").html('');
@@ -8342,6 +8389,23 @@ function setDiscountCode(serviceType, currencyCode) {
                 $(".discountAmount").html(number_format(data.discountAmount));
                 // $(".item-discount__label").html(useXmltag("AmountPayableAfterApplyingDiscountCode"));
                 $(".price-after-discount-code").html(number_format(price_after_discount));
+
+                $.ajax({
+                    type: 'POST',
+                    url: amadeusPath + 'user_ajax.php',
+                    dataType: 'JSON',
+                    data:
+                        {
+                            flag: 'setDiscountCodePending',
+                            discountCode: discountCode,
+                            factorNumber: factorNumber,
+                            serviceType: serviceType
+                        },
+                    success: function (data) {
+
+                    }
+                });
+
 
             } else {
                 $(".discount-code-error").html(data.result_message);

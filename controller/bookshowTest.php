@@ -5886,7 +5886,13 @@ class bookshowTest extends clientAuth {
                 $price_with_change = $this->getController('BookingHotelNew')->getPriceWithChange($hotel['factor_number']);
                 $DataAllPrice = '<span style="text-decoration: line-through;">'.  number_format($price_with_change) .'</span><br/>';
             }
-            $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_amount']);
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $FActorNumberFor)->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            $discountCodeAmount = 0;
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+            }
+            $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_amount'] - $discountCodeAmount);
             $DataAllPriceFor = $hotel['total_price'];
 
 
@@ -5904,7 +5910,7 @@ class bookshowTest extends clientAuth {
                 $linkView = "ehotelLocal";
                 $linkPDF  = "BookingHotelNew";
             }
-            $DataAction = '<div class="btn-group m-r-10 mt-1">
+            $DataAction = '<div class="btn-group m-r-10 mt-1 w-100" >
 
                                     <button aria-expanded="false" data-toggle="dropdown"  style="width:90%" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  '.functions::Xmlinformation("Action").' <span class="caret"></span></button>
 
@@ -6140,13 +6146,13 @@ class bookshowTest extends clientAuth {
                 $TitleAgencyShare='سود آژانس';
                 $TitleBuyFromIt='خرید از ما';
                 $TitlePayment='فروش آژانس <br> به مسافر';
-//                $TitleNameAgency='نام آژانس';
+                $TitleNameAgency='نام آژانس';
             }
             else {
                 $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit").' ';
                 $TitleBuyFromIt='<span> '.functions::Xmlinformation("PA_BUYFrom").' <br>  '.functions::Xmlinformation("Safar360").' </span>';
                 $TitlePayment=functions::Xmlinformation("Discount").'<br/><del>'.functions::Xmlinformation("PassengerSale").'</del>';
-//                $TitleNameAgency=functions::Xmlinformation("Action").' ';
+                $TitleNameAgency=functions::Xmlinformation("Action").' ';
             }
             $ColorTr='';
             if($hotel['status'] == 'BookedSuccessfully' && $hotel['service_type']=='اشتراکی'){//رزرو قطعی از مدل اشتراکی باشد
@@ -6184,10 +6190,10 @@ class bookshowTest extends clientAuth {
 //            $HotelData['data'][ $key ][$TitleNameAgency]                           = $DataAction;
             $HotelData['data'][ $key ][$titleColumn6.' ']                          = $DataActivity;
 
-            unset( $DataCityHotel, $DataEnterInformation, $DataExitInformation, $DataFactorInformation, $DataRoomInformation, $DataAgencyCommission, $DataPrice, $DataIranTechCommission, $DataAllPrice, $DataActivity );
+            unset( $DataCityHotel, $DataEnterInformation, $DataExitInformation, $DataFactorInformation, $DataRoomInformation, $DataAgencyCommission, $DataPrice, $DataIranTechCommission, $DataAllPrice, $DataAction, $DataActivity );
         }
 
-        $FooterData0  = '<th colspan="5"></th>';
+//        $FooterData0  = '<th colspan="5"></th>';
         $FooterData0 .= '<th>' . number_format($TotalDataPrice) . '</th>';
         if (TYPE_ADMIN == '1') {
             $FooterData0 .= '<th>' . number_format($BookHotelController->priceForMa) . '</th>';

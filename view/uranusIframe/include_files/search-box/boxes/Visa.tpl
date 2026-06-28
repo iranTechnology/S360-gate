@@ -1,4 +1,4 @@
-<div class="__box__ tab-pane active shadow-box search-background" id="Visa">
+<div class="__box__ tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if} shadow-box search-background" id="Visa">
     <div class="parent-head-search-box">
 
             <div class="head-search-box-detail">

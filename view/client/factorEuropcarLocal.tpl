@@ -393,7 +393,7 @@
                                             <div class="col-sm-2 col-xs-12">
                                         <span class="input-group-btn">
                                             <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode" value="{$totalFinalPrice.price}" />
-                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$CurrencyCode}')" class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">بررسی و اعمال کد  </button>
+                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$CurrencyCode}' , {$smarty.post.factorNumber})" class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">بررسی و اعمال کد  </button>
                                         </span>
                                             </div>
                                             <div class="col-sm-4 col-xs-12">

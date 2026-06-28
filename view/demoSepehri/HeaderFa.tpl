@@ -197,6 +197,7 @@
                             </div>
 
                         </li>
+                        <li ><a href="{$smarty.const.ROOT_ADDRESS}/UserTracking" class="d-sm-none"> ##S360Track##</a></li>
 
 
                         <li class="mobileMenu"><a href="/">##Home##</a></li>

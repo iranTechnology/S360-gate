@@ -346,7 +346,7 @@ class bank {
 			$this->factorNumber = $reserveInfo[0]['factor_number'];
 			if(isset($redirectBank) && !empty($redirectBank)) {
 				$this->callBackPage = SERVER_HTTP.$redirectBank['replace_url'].'/gds/'.SOFTWARE_LANG.'/transferReturnBank&redirectUrl=returnBankCip';
-			}else{
+			} else {
 				$this->callBackPage = ROOT_ADDRESS . "/" . 'returnBankCip';
 			}
 		}
@@ -360,11 +360,17 @@ class bank {
 			$dataPost = filter_var_array( $_POST, $arg );
 			$memberId = Session::getUserId();
 
-			#region discount code
-			if ( $dataPost['discountCode'] != '' ) {
-				$discountCodes     = Load::controller( 'discountCodes' );
-				$this->amountToPay = $discountCodes->reduceAmountViaDiscountCode( $this->amountToPay, $this->factorNumber, $memberId, $dataPost['discountCode'], $this->serviceType );
+			$discountCode = trim( $dataPost['discountCode'] );
 
+			if (empty($discountCode)) {
+				$getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $this->factorNumber)->find();
+				$discountCode = $getDiscountCode['discountCode'];
+			}
+
+			#region discount code
+			if ( $discountCode != '' && $discountCode && !empty($discountCode)) {
+				$discountCodes     = Load::controller( 'discountCodes' );
+				$this->amountToPay = $discountCodes->reduceAmountViaDiscountCode( $this->amountToPay, $this->factorNumber, $memberId, $discountCode, $this->serviceType );
 			}
 			#endregion
 

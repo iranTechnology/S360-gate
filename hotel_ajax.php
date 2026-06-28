@@ -1093,6 +1093,42 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'searchCityHotelForInternalHotel'
     echo $result->searchCityInternalHotel($_POST );
 }
 
+
+if (isset($_POST['flag']) && $_POST['flag'] == 'searchCityHotelForInternalAndExternalHotel') {
+    unset($_POST['flag']);
+
+    $searchHotel = Load::controller('searchHotel');
+    $resultExternal = Load::controller('resultExternalHotel');
+
+    $internalResult = $searchHotel->searchCityInternalHotel($_POST);
+    $externalResult = $resultExternal->searchCity($_POST['inputSearchValue'], $_POST['json']);
+
+    $internalArray = json_decode($internalResult, true);
+    $externalArray = json_decode($externalResult, true);
+
+    // ساختار نهایی
+    $response = [];
+
+    // اضافه کردن نتایج داخلی با همان ساختار قبلی
+    if (is_array($internalArray)) {
+        $response = $internalArray; // ابتدا ساختار داخلی را مبنا قرار بده
+    }
+
+    // اضافه کردن نتایج خارجی به صورت جداگانه
+    if (is_array($externalArray) && !empty($externalArray)) {
+        $response['external'] = $externalArray;
+    }
+
+    // اگر فقط نتایج خارجی وجود دارد و داخلی خالی است
+    if (empty($response) && is_array($externalArray)) {
+        $response = $externalArray;
+    }
+
+//    functions::insertLog(json_encode($response), '000shojaee');
+    echo json_encode($response);
+}
+
+
 if (isset($_POST['flag']) && $_POST['flag'] == 'popularCityForInternalHotel') {
     unset($_POST['flag']);
 

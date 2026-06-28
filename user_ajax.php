@@ -1426,7 +1426,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_airline' ) {
         case 'train':
             /** @var \trainBooking $trainBooking */
             $trainBooking = Load::controller( 'trainBooking' );
-            $result   = $trainBooking->infoTrainTicket( $_POST['request_number'] );
+            $result   = $trainBooking->infoTrainTicket( $_POST['request_number'], $_POST['phone_number'] );
             break;
         case 'cip':
             /** @var \trainBooking $trainBooking */
@@ -2350,6 +2350,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     unset( $_POST['flag'] );
     $factorNumber    = trim( $_POST['factorNumber'] );
     $typeApplication = trim( $_POST['typeApplication'] );
+    $discountCode = trim( $_POST['discountCode'] );
 
     /** @var members $objMember */
     /** @var transaction $objTransaction */
@@ -2358,6 +2359,11 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     $objUser = Load::controller( 'user' );
     $objMemberCredit = Load::controller( 'memberCredit');
     $objDiscountCodes     = Load::controller( 'discountCodes' );
+
+    if (empty($discountCode)) {
+        $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
+        $discountCode = $getDiscountCode['discountCode'];
+    }
 
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
     if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
@@ -2380,7 +2386,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
 
     $memberId = Session::getUserId();
 
-    $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $_POST['discountCode'], $_POST['serviceType'] );
+    $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
 
     if ( $_POST['paymentStatus'] == 'prePayment' ) {
         $comment = ' پیش رزرو هتل ';
@@ -2471,6 +2477,17 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     }
 
 
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setDiscountCodePending' ) {
+
+    unset( $_POST['flag'] );
+    $factorNumber    = trim( $_POST['factorNumber'] );
+    $objDiscountCodes     = Load::controller( 'discountCodes' );
+    $memberId = Session::getUserId();
+
+    $reduceAmountViaDiscountCode = $objDiscountCodes->reduceAmountViaDiscountCodePending( $factorNumber, $memberId, $_POST['discountCode'], $_POST['serviceType'] );
+
+        echo $reduceAmountViaDiscountCode;
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_car' ) {
 
@@ -3923,8 +3940,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insertSourceAgency' ) {
     echo $objUserBuy->$methodName( $_POST );
 
 }elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberResultSearch' ) {
-//   var_dump('cccccc');
-//   die;
     unset( $_POST['flag'] );
     $objUserBuy = Load::controller( 'userBuy' );
     echo $objUserBuy->getBuyBookMember( $_POST );

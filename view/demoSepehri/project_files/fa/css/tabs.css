@@ -102,7 +102,7 @@
     transition: all ease .4s;
 }
 
-#searchBoxTabs .nav-link.active span h4 {
+#searchBoxTabs .nav-link.active div h4 {
     color: #fff;
 }
 

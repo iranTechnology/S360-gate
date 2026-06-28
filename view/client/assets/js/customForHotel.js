@@ -166,7 +166,8 @@ function internalHotelSearchDetails() {
          }
       }
       let eachRoomHtmlInternal = function(Room, value, IsInternal) {
-         let roomHtml = ''
+
+          let roomHtml = ''
 
          $.each(Room.Rates, function(index, Rate) {
             roomHtml += `<div class='hotel-detail-room-list hotel-detail-room-list-local'>
@@ -677,6 +678,24 @@ function internalHotelSearchDetails() {
          $('.RoomsContainer').append(html)
       }
       let ajaxGetPrices = function(RequestNumber, value) {
+          let totalNumberRooms = 1;
+          let totalNumberRoomsValue = $('#TotalNumberRoom_Reserve').val();
+
+          // محاسبه تعداد کل اتاق‌ها از فرمت "roomId-count,roomId-count"
+          if (totalNumberRoomsValue && totalNumberRoomsValue != '') {
+              let roomsArray = totalNumberRoomsValue.split(',');
+              totalNumberRooms = 0;
+              for (let i = 0; i < roomsArray.length; i++) {
+                  let parts = roomsArray[i].split('-');
+                  if (parts.length == 2) {
+                      totalNumberRooms += parseInt(parts[1]);
+                  }
+              }
+          } else {
+              // fallback
+              totalNumberRooms = $('#countRoom').val() || 1;
+          }
+
          return $.ajax({
             type: 'POST',
             url: amadeusPath + 'hotel_ajax.php',
@@ -691,6 +710,8 @@ function internalHotelSearchDetails() {
                countryName: value.History.Country,
                typeApplication: (value.History.IsInternal == '0' || (value.History.IsInternal == '1' && (value.Result.SourceId == '17'))) ? 'externalApi' : 'api',
                check_type_for_price_changes :  (value.History.IsInternal == '1') ? true : false ,
+                TotalNumberRooms: totalNumberRooms,  // اضافه شد
+                TotalNumberRoom_Reserve: totalNumberRoomsValue,
                flag: 'getPrices',
             },
             beforeSend: function() {
@@ -1580,6 +1601,7 @@ function internalHotelSearchDetails() {
                   generateMap(lat, lon)
                   $('#ThisHotelResult').val(JSON.stringify(data))
                   $('.RoomsContainer').html(`<div id='resultRoomHotel'><div class='roomHotelLocal'><div class='loader-box-user-buy'><span></span><span>${useXmltag('Loading')}</span></div></div></div>`)
+                   console.log('response response response ' , response)
                      ajaxGetPrices(RequestNumber, data)
                } else {
                   $.alert({
@@ -1825,7 +1847,7 @@ function CalculateNewRoomPrice(idRoom, isInternal = true, addChild = false) {
          TotalNumberRoom_Reserve.push(ThisTempInputEl.val())
       }
    }
-
+    CountTotalRoomsForPrices = CountTotalRooms
    $('#TotalNumberRoom_Reserve').val(TotalNumberRoom_Reserve.join())
    $('#TotalNumberExtraBed_Reserve').val(TotalExtraBed_Reserve.join())
    $('.roomFinalTxt').html(CountTotalRooms + ' ' + useXmltag('Selectedroom'))

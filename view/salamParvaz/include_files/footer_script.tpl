@@ -27,7 +27,7 @@
         if (searchBoxTabs) {
             searchBoxTabs.insertAdjacentHTML('beforeend', `
             <li class="nav-item">
-                <a class="nav-link" href="https://salamparvaz.com/tours" target="_blank">
+                <a class="nav-link" href="https://salamparvaz.com" target="_blank">
                     <div>
                         <i class="fa-regular fa-suitcase-rolling"></i>
                         <h4>تور</h4>

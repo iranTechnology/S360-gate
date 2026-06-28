@@ -310,4 +310,152 @@ $(document).ready(function() {
 
 
 
+    $('.show-box-nologin-js').on('click', function(e) {
+        e.stopPropagation();
+        $('.show-content-box-nologin-js').slideToggle(400);
+    });
+
+// بستن منو با کلیک در هر جای دیگر صفحه
+    $(document).on('click', function(e) {
+        if ($('.show-content-box-nologin-js').is(':visible') &&
+            !$(e.target).closest('.show-content-box-nologin-js, .show-box-nologin-js').length) {
+            $('.show-content-box-nologin-js').slideUp(200);
+        }
 });
+});
+function toggleDropdownFlightClass(event) {
+    // پیدا کردن المان dropdown که کلیک شده
+    let clickedElement = null;
+    let dropdownContent = null;
+
+    if (event && event.target) {
+        // پیدا کردن والد dropdown-toggle-cheng
+        clickedElement = event.target.closest('.dropdown-toggle-cheng');
+        if (clickedElement) {
+            dropdownContent = clickedElement.querySelector('.money-filter_ul');
+        }
+    }
+
+    if (!dropdownContent) {
+        // fallback برای کد قبلی
+        dropdownContent = document.getElementById('flight-class-dropdown');
+    }
+
+    if(dropdownContent) {
+        dropdownContent.classList.toggle('activeDropdown');
+    }
+}
+
+document.body.addEventListener('click', function(event) {
+    // بستن تمام dropdown های باز اگر کلیک خارج از آنها بود
+    const allDropdowns = document.querySelectorAll('.dropdown-toggle-cheng');
+    allDropdowns.forEach(function(dropdown) {
+        const dropdownContent = dropdown.querySelector('.money-filter_ul');
+        if(dropdown && dropdownContent){
+            if (!dropdown.contains(event.target)) {
+                dropdownContent.classList.remove('activeDropdown');
+            }
+        }
+    });
+});
+
+function selectFlightClass(optionText, classType, event) {
+    // پیدا کردن dropdown والد
+    let clickedElement = null;
+    let dropdownParent = null;
+    let toggleText = null;
+    let dropdown = null;
+
+    if (event && event.target) {
+        clickedElement = event.target;
+        dropdownParent = clickedElement.closest('.dropdown-toggle-cheng');
+        if(dropdownParent) {
+            toggleText = dropdownParent.querySelector('.dropdown-text');
+            dropdown = dropdownParent.querySelector('.money-filter_ul');
+        }
+    }
+
+    if (!toggleText) {
+        toggleText = document.getElementById('toggle-text-class');
+        dropdown = document.getElementById('flight-class-dropdown');
+    }
+
+    if(toggleText) {
+        toggleText.innerText = optionText;
+    }
+
+    // حذف کلاس active از همه آیتم‌ها
+    const allItems = dropdown.querySelectorAll('.switch-class-js');
+    allItems.forEach(item => {
+        item.classList.remove('active');
+    });
+
+    // اضافه کردن کلاس active به آیتم انتخاب شده
+    if (clickedElement) {
+        clickedElement.classList.add('active');
+    }
+
+    // International
+    const flightClassInternationalInput = document.createElement('input');
+    flightClassInternationalInput.type = 'hidden';
+    flightClassInternationalInput.id = 'flight_class_international';
+    flightClassInternationalInput.name = 'flight_class_international';
+    flightClassInternationalInput.value = 'all';
+
+    const internationalFlightForm = document.getElementById('international_flight_form');
+    internationalFlightForm.appendChild(flightClassInternationalInput);
+
+    // Internal
+    const flightClassInternalInput = document.createElement('input');
+    flightClassInternalInput.type = 'hidden';
+    flightClassInternalInput.id = 'flight_class_internal';
+    flightClassInternalInput.name = 'flight_class_internal';
+    flightClassInternalInput.value = 'all';
+
+    const internalFlightForm = document.getElementById('internal_flight_form');
+    internalFlightForm.appendChild(flightClassInternalInput);
+
+    const flightClassInternal = document.getElementById('flight_class_internal');
+    const flightClassInternational = document.getElementById('flight_class_international');
+
+    if(flightClassInternal) {
+        flightClassInternal.value = classType;
+    }
+    if(flightClassInternational) {
+        flightClassInternational.value = classType;
+    }
+
+    console.log('Selected flight class:', classType);
+
+    // بستن dropdown بعد از انتخاب
+    if(dropdown) {
+        dropdown.classList.remove('activeDropdown');
+    }
+}
+
+
+// تعیین گزینه اکتیو به صورت اولیه
+window.onload = function() {
+    let toggleTextElement = document.querySelector('toggle-text');
+    let initialOption = null ;
+    if (toggleTextElement) {
+        initialOption = toggleTextElement.innerText;
+    }
+
+    // همیشه dropdown کلاس پرواز را نمایش بده
+    const boxClass = document.querySelector('.parent-class-cheng');
+    if(boxClass) {
+        boxClass.style.display = 'flex';
+    }
+
+    if (initialOption !== null){
+        if (initialOption === 'داخلی') {
+            document.querySelector('.internal-content-flight').style.display = 'flex';
+            document.querySelector('.external-content-flight').style.display = 'none';
+        } else {
+            document.querySelector('.internal-content-flight').style.display = 'none';
+            document.querySelector('.external-content-flight').style.display = 'flex';
+        }
+    }
+}
+

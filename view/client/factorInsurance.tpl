@@ -308,7 +308,7 @@
                                     <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
                                            value="{$PriceTotal}"/>
                                     <button type="button"
-                                            onclick='setDiscountCode({$serviceType|json_encode}, {$smarty.post.CurrencyCode})'
+                                            onclick='setDiscountCode({$serviceType|json_encode}, {$smarty.post.CurrencyCode} , {$objFactor->factor_number})'
                                             class="site-secondary-text-color site-bg-main-color iranR discount-code-btn">##Apply##</button>
                                 </span>
                                     </div>

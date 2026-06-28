@@ -257,7 +257,7 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
                                         <input type="text" placeholder="##Codediscount## ..." id="discount-code">
                                         <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
                                                value="{$totalEntertainmentPrice}"/>
-                                        <button type="button" onclick='setDiscountCode({$serviceType|json_encode}, {$smarty.post.CurrencyCode})' class="site-bg-main-color">
+                                        <button type="button" onclick='setDiscountCode({$serviceType|json_encode}, {$smarty.post.CurrencyCode} , {$smarty.post.EntertainmentFactorNumber})' class="site-bg-main-color">
                                             ##Apply##
                                         </button>
                                     </div>

@@ -157,9 +157,13 @@
   <Anotherhotel>سایر هتل ها</Anotherhotel>
   <Yourrequesthascanceledtolackof>بدلیل عدم ظرفیت هتل درخواست شما لغو گردید.</Yourrequesthascanceledtolackof>
   <Youcanbookanotherhotel>می توانید هتل دیگری رزرو کنید.</Youcanbookanotherhotel>
-  <Dearguestsuccessfullyregisteredbooking>کاربر گرامی درخواست هتل شما با موفقیت در سیستم ثبت شده است. حداکثر تا 10 دقیقه دیگر نتیجه نهایی رزرو به
+  <Dearguestsuccessfullyregisteredbooking>
+    کاربر گرامی درخواست هتل شما با موفقیت در سیستم ثبت شده است. حداکثر تا 10 دقیقه دیگر نتیجه نهایی رزرو به
     شما اعلام می گردد.
   </Dearguestsuccessfullyregisteredbooking>
+  <Dearguestsuccessfullyregisteredbookingreservation>
+    کاربر گرامی درخواست هتل شما با موفقیت در سیستم ثبت شده است. در صورت تایید درخواست، از طریق پیامک به شما اعلام می گردد.
+  </Dearguestsuccessfullyregisteredbookingreservation>
   <HotelMoreDetailWithFactorNumber>شما میتوانید با وارد کردن شماره فاکتور در قسمت پیگیری خرید از آخرین وضعیت رزرو اطلاع حاصل نموده و در صورت تایید رزرو، خرید خود را تکمیل نمایید.</HotelMoreDetailWithFactorNumber>
   <Usehotelshoppingpaymentbooking>برای تکمیل خرید و پرداخت مبلغ رزرو از لینک پیگیری خرید هتل استفاده نمایید.</Usehotelshoppingpaymentbooking>
   <Arrivaldatehotel>تاریخ ورود به هتل</Arrivaldatehotel>
@@ -1293,6 +1297,7 @@
   <LongLastNameError>فامیلی شما طولانی است</LongLastNameError>
   <PleaseenterPhoneNumber>شماره موبایل خود را وارد نمایید</PleaseenterPhoneNumber>
   <PhoneNumberError>شماره موبایل نامعتبر است</PhoneNumberError>
+  <PhoneNumberBuyer>شماره موبایلی که خرید را با آن انجام داده اید</PhoneNumberBuyer>
   <LongPhoneNumberError>تعداد کاراکتر های شماره همراه وارد شد از بیش از حد مجاز است</LongPhoneNumberError>
   <PickBackFlight>انتخاب پرواز برگشت</PickBackFlight>
   <PickWentFlight>انتخاب پرواز رفت</PickWentFlight>

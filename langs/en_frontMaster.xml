@@ -151,6 +151,9 @@
   <Yourrequesthascanceledtolackof>Due to the hotel's capacity, your request has been canceled.</Yourrequesthascanceledtolackof>
   <Youcanbookanotherhotel>You can book another hotel.</Youcanbookanotherhotel>
   <Dearguestsuccessfullyregisteredbooking>Dear guest, Your hotel request has been successfully registered. You will be notified at least 10 minutes later. </Dearguestsuccessfullyregisteredbooking>
+  <Dearguestsuccessfullyregisteredbookingreservation>
+    Dear user, your hotel request has been successfully registered in the system. If your request is approved, you will be notified via SMS.
+  </Dearguestsuccessfullyregisteredbookingreservation>
   <HotelMoreDetailWithFactorNumber>You can enter the latest booking status by entering the invoice number in the purchase tracking section, and if the booking is confirmed, you can complete your purchase.</HotelMoreDetailWithFactorNumber>
   <Usehotelshoppingpaymentbooking>Use the hotel shopping follow link to complete the purchase and payment of the booking. </Usehotelshoppingpaymentbooking>
   <Arrivaldatehotel>Hotel Arrival date</Arrivaldatehotel>
@@ -3337,4 +3340,6 @@
   <PassengerOnline>Passenger Online</PassengerOnline>
   <SeatCount>Number of Seats</SeatCount>
 <ReceiveInfoError>Error receiving information</ReceiveInfoError>
+  <PhoneNumberBuyer>The mobile number you used to make the purchase.</PhoneNumberBuyer>
+
 </Main>

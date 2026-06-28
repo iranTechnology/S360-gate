@@ -254,6 +254,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="DivTotalPrice ">
                     {assign var="paymentPriceCurrency" value=$objFunctions->CurrencyCalculate($objFactor->paymentPrice, $smarty.post.CurrencyCode)}
                     <div class="fltl">##Totalamount## :
@@ -411,7 +413,7 @@
                                             <input type="text" placeholder="##Codediscount## ..." id="discount-code">
                                             <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
                                                    value="{$paymentPriceCurrency.AmountCurrency}"/>
-                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}')" class="site-bg-main-color">
+                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}' , {$objFactor->temproryHotel['factor_number']})" class="site-bg-main-color">
                                                 ##Apply##
                                             </button>
                                         </div>
@@ -533,7 +535,7 @@
                 <input type="hidden" name="factorNumber" id="factorNumber"
                        value="{$objFactor->temproryHotel['factor_number']}">
                 <span class="author">
-                    <i class="bg-yellow"> ##Dearguestsuccessfullyregisteredbooking##</i>
+                    <i class="bg-yellow"> ##Dearguestsuccessfullyregisteredbookingreservation##</i>
                 </span>
                 <div class="msg">
                 <span class="box-offline-reserve offline-reserve-msg">
