@@ -42,23 +42,23 @@
             </div>
             <ul class="nav nav-pills d-flex align-items-center justify-content-center" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button aria-controls="tour-khareji" aria-selected="false" class="nav-link active"
-                            data-target="#tour-khareji" data-toggle="pill" id="tab-tour-khareji" role="tab"
-                            type="button"> خارجی
+                    <button aria-controls="tour-dakheli" aria-selected="true" class="nav-link active"
+                            data-target="#tour-dakheli" data-toggle="pill" id="tab-tour-dakheli" role="tab"
+                            type="button"> داخلی
 
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button aria-controls="tour-dakheli" aria-selected="true" class="nav-link"
-                            data-target="#tour-dakheli" data-toggle="pill" id="tab-tour-dakheli" role="tab"
-                            type="button"> داخلی
+                    <button aria-controls="tour-khareji" aria-selected="false" class="nav-link"
+                            data-target="#tour-khareji" data-toggle="pill" id="tab-tour-khareji" role="tab"
+                            type="button"> خارجی
 
                     </button>
                 </li>
             </ul>
             <div class="parent-tab-tour">
                 <div class="tab-content" id="pills-tabContent">
-                    <div aria-labelledby="tab-tour-dakheli" class="tab-pane fade" id="tour-dakheli" role="tabpanel">
+                    <div aria-labelledby="tab-tour-dakheli" class="tab-pane fade show active" id="tour-dakheli" role="tabpanel">
                         <div class="__tour__internal__ parent-tour">
 
                             {foreach $tour_internal as $item}
@@ -180,7 +180,7 @@
                             <i class="fa-solid fa-arrow-left"></i>
                         </a>
                     </div>
-                    <div aria-labelledby="tab-tour-khareji" class="tab-pane fade show active" id="tour-khareji"
+                    <div aria-labelledby="tab-tour-khareji" class="tab-pane fade" id="tour-khareji"
                          role="tabpanel">
                         <div class="__tour__external__ parent-tour">
 

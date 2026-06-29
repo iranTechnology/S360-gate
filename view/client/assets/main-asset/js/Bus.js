@@ -454,7 +454,7 @@ $(document).ready(function () {
 
 function searchBus(altDomain = null) {
    const form = document.getElementById('gds_local_bus');
-   const is_new_tab = form.target === '_blank';
+   const target = form.target;
 
    let origin_bus = $(".select-origin-route-bus-js")
    let destination_bus = $(".select-destination-route-bus-js")
@@ -472,5 +472,14 @@ function searchBus(altDomain = null) {
       url = `${amadeusPathByLang}buses/${origin_bus}-${destination_bus}/${departure_date_bus}`
    }
 
-   openLink(url, is_new_tab)
+   console.log('url: ' , url)
+
+   if(target === '_blank'){
+      window.open(url , '_blank')
+   }else if(target === '_top') {
+      window.parent.location.href = url;
+   }else {
+      window.open(url , '_self')
+   }
+
 }

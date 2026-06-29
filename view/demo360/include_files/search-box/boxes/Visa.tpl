@@ -4,7 +4,7 @@
         <div class="parent-empty-search-box"></div>
         <div class="d-flex flex-wrap w-100">
             <form data-action="https://s360online.iran-tech.com/" method="post" name="gdsVisa"
-                  id="gdsVisa" target="_blank" class="d_contents">
+                  id="gdsVisa" target="_top" class="d_contents">
                 <input type="hidden" name="distination_code" id="distination_code"
                        value="" />
                 <input type="hidden" name="visaID" id="visaID" value="" />

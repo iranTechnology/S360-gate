@@ -27,7 +27,8 @@
     {if $page.files.main_file.src && $smarty.const.GDS_SWITCH eq 'page'}
         background-image: url("{$page.files.main_file.src}");
     {else}
-        background-image: url("{$specialFlightPic}");
+        {*background-image: url("{$specialFlightPic}");*}
+        background-image: url("project_files/images/kaj-bg.png");
     {/if}
     }
 </style>
@@ -38,7 +39,7 @@
         {/literal}
         {if $specialFlightPic}
         {literal}
-        $('.Flight-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialFlightPic}{literal}")')});
+        $('.Flight-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("project_files/images/kaj-bg.png")')});
         {/literal}
         {/if}
         {if $specialHotelPic}
