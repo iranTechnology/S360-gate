@@ -758,19 +758,6 @@ class bookhotelshow extends baseController
             $BookShow = $Model->select($sql);
         }
 
-        $discountCodesUsedModel = $this->getModel('discountCodesUsedModel');
-        $discountCodesModel = $this->getModel('discountCodesModel');
-
-        foreach ( $BookShow as $key => &$hotel ) {
-            $getDiscountCode = $discountCodesUsedModel->get(['discountCode'], true)->where('factorNumber',  $hotel['factor_number'])->find();
-            $getDiscountCodeAmount = $discountCodesModel->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
-            $discountCodeAmount = 0;
-            if (!empty($getDiscountCodeAmount)) {
-                $discountCodeAmount = $getDiscountCodeAmount['amount'];
-                $hotel['total_price'] -= $discountCodeAmount;
-            }
-        }
-
 
         $this->CountHotel = count($BookShow);
         return $BookShow;
