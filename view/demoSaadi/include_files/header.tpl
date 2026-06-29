@@ -47,7 +47,7 @@
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHeadMain.tpl"}
     {/if}
     <base href="{$smarty.const.CLIENT_DOMAIN}"/>
-    <link href="{$favicon}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="{$favicon}" rel="icon" type="image/png"/>
 
 
     {* todo: this use in all page and all of them are necessary*}

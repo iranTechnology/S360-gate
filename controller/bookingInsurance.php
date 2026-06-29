@@ -937,7 +937,20 @@ class bookingInsurance extends insurance
 
         $Model = Load::library('Model');
 
-        $sql = " SELECT * FROM book_insurance_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' ";
+//        $sql = " SELECT * FROM book_insurance_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' ";
+
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
+
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_insurance_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'";
+        }
+        else{
+            $sql = "SELECT * FROM book_insurance_tb 
+        WHERE factor_number = '$requestNumber'";}
+
         $book = $Model->load($sql);
 
         $result = '';

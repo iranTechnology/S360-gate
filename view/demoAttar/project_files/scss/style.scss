@@ -1138,6 +1138,7 @@ body{
   }
 
   @media (max-width: 992px) {
+
     .advertising-parent {
       gap: 10px;
 
@@ -1406,7 +1407,12 @@ body{
   align-items: center;
   margin-bottom: 30px;
 }
-
+.other-services{
+  margin-top: 170px;
+}
+body .height-line-brack {
+  height: 88vh !important;
+}
 @media (max-width: 1200px) {
   .hotel_grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1431,7 +1437,9 @@ body{
 
 }
 @media (max-width: 768px) {
-
+  body .height-line-brack {
+    height: 70vh !important;
+  }
   .titr_Terms_Conditions .title-safiran {
     flex-direction: column;
     gap: 20px;
@@ -1631,4 +1639,19 @@ body{
     display: flex !important;
   }
 }
-
+@media (max-width: 992px) {
+  .other-services {
+    margin-top: 360px;
+  }
+}
+@media (max-width: 578px) {
+  .banner-demo{
+    height:100% !important
+  }
+  .other-services {
+    margin-top: 10px;
+  }
+  body .height-line-brack {
+    height: 67vh !important;
+  }
+}

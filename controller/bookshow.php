@@ -24,6 +24,7 @@ class bookshow extends clientAuth
     protected $dbCustomer ;
     protected $dbBase ;
     public $transactions;
+    protected $factorNumber;
 
     public function __construct()
     {
@@ -393,7 +394,7 @@ class bookshow extends clientAuth
                         $DataFlightIranTechCommission = '---';
                     }
                 }
-                
+
 
 
                 $dataRows[$k]['creation_date_int'] = $creation_date_int;
@@ -1346,11 +1347,27 @@ class bookshow extends clientAuth
         $_POST = $param;
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
-        $sql = " SELECT * FROM book_local_tb WHERE  
-            (request_number = '{$_POST['request_number']}' OR pnr = '{$_POST['request_number']}' OR factor_number = '{$_POST['request_number']}') 
-            AND (request_number > 0 OR request_number<>'')";
+//        $sql = " SELECT * FROM book_local_tb WHERE
+//            (request_number = '{$_POST['request_number']}' OR pnr = '{$_POST['request_number']}' OR factor_number = '{$_POST['request_number']}')
+//            AND (request_number > 0 OR request_number<>'')";
+
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
+
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_local_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'
+        AND request_number > 0";
+        }
+        else{
+            $sql = "SELECT * FROM book_local_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND request_number > 0";
+        }
 
         $res = $Model->load($sql);
+        $this->factorNumber = $res['factor_number'];
 
         if ($res['successfull'] == 'book') {
             $status = functions::Xmlinformation("Definitivereservation");
@@ -1415,9 +1432,15 @@ class bookshow extends clientAuth
                 $PricePenalty = '--';
             }
 
+
             $typeFlight = (strtolower($res['flight_type']) == 'system') ? 'سیستمی' : 'چارتری';
 
-
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $this->factorNumber)->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $totalPrice -= $discountCodeAmount;
+            }
             $this->request_number = $res['request_number'];
 
             $result = '
@@ -2930,7 +2953,9 @@ class bookshow extends clientAuth
 
         $Sql = "SELECT * FROM book_local_tb WHERE  factor_number='{$factorNumber}'";
 
-        return $Model->select($Sql);
+        $res = $Model->select($Sql);
+
+        return $res;
 
 
     }
@@ -3754,6 +3779,9 @@ class bookshow extends clientAuth
 
     public function createExcelForRavisFlight($param)
     {
+        $resultTransactions = Load::controller('bookshowTest');
+        $transactions=$resultTransactions->getTransactionsByDateRange($param['date_of'],$param['to_date'],$param['pnr'],$param['factor_number'],$param['request_number'],$param['passenger_name']);//list Transactions
+
         $_POST = $param;
         $resultBook = $this->listBookLocal();
         if (!empty($resultBook)) {
@@ -3770,7 +3798,8 @@ class bookshow extends clientAuth
                     ->where('id' , $book['agency_id'])
                     ->find();
 
-                $total_price = !empty($book['total_price']) ? number_format($book['total_price']) : 0;
+                //$total_price = !empty($book['total_price']) ? number_format($book['total_price']) : 0;
+                $total_price=!empty($transactions[$book['factor_number']]) ? number_format($transactions[$book['factor_number']]) : 0;//خرید از سفر30 1404/12/03
                 //$tracking_code = !empty($book['tracking_code_bank']) ? $book['tracking_code_bank'] : '';
                 $ravis_code = !empty($resultRavis['ravis_code']) ? $resultRavis['ravis_code'] : '';
 
@@ -3842,4 +3871,277 @@ class bookshow extends clientAuth
             return 'error|اطلاعاتی برای ساخت فایل اکسسل وجود ندارد.';
         }
     }
+    public function getAgencyNote($req_number){
+        $Model = Load::library('Model');
+        $Model->setTable('agency_flight_note_tb');
+        $results =  $Model->get(['*'])->where('request_number',$req_number)->all();
+        foreach($results as &$result){
+            $timestamp = strtotime($result['created_at']);
+            $result['created_at'] = dateTimeSetting::jdate( 'Y/m/d H:i:s', $timestamp );
+        }
+        return $results;
+    }
+    public function addAgencyNote($params){
+        $data = [];
+        $data['request_number'] = $params['request_number'];
+        $data['note'] = $params['new_note'];
+        $data['client_id'] = $params['client_id'];
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $Model = Load::library('Model');
+        $Model->setTable('agency_flight_note_tb');
+        $result = $Model->insertWithBind($data);
+        if($result){
+            return json_encode($this->getAgencyNote($data['request_number']));
+        }else
+            return false;
+    }
+
+    public function getChatMessages($RequestNumber,$type,$checkIsSeen){
+        if($checkIsSeen == true){
+            $this->changeMassageSeenStatus($RequestNumber);
+        }
+        $Model = Load::library('ModelBase');
+        $sql = "
+    SELECT 
+        cmt.*, 
+        ct.is_closed,
+        pm.message AS parent_message,
+        pm.sender_role AS parent_author,
+        LEFT(pm.message, 70) AS parent_text
+    FROM chats_tb ct
+    INNER JOIN chat_messages_tb cmt 
+        ON cmt.chat_id = ct.id
+    LEFT JOIN chat_messages_tb pm 
+        ON pm.id = cmt.parent_id
+    WHERE 
+         ct.service_type = '{$type}'
+        AND ct.request_number = '{$RequestNumber}'
+        AND cmt.is_deleted != 1
+";
+
+        return $Model->select($sql) ;
+
+    }
+    public function getUnreadCount($RequestNumber, $type)
+    {
+        $current_role = (TYPE_ADMIN == 1 ? 'admin_site' : 'admin_agency');
+        $sql = "
+    SELECT COUNT(*) AS unread
+    FROM chat_messages_tb cmt
+    INNER JOIN chats_tb ct ON ct.id = cmt.chat_id
+    WHERE ct.request_number = '{$RequestNumber}'
+      AND ct.service_type = '{$type}'
+      AND cmt.is_seen = 0
+      And cmt.is_deleted = 0
+      AND cmt.sender_role != '{$current_role}'
+";
+        $Model = Load::library('ModelBase');
+        $row = $Model->select($sql)[0];
+        return $row['unread'];
+    }
+    public function chatNotifications(){
+        $Model = Load::library('ModelBase');
+        $current_role = (TYPE_ADMIN == 1 ? 'admin_site' : 'admin_agency');
+        if($current_role == 'admin_site'){
+            $sql = "SELECT
+                    ct.request_number,
+                    ct.service_type,
+                    COUNT(*) AS unread_count
+                FROM chats_tb ct
+                         INNER JOIN chat_messages_tb cmt
+                                    ON ct.id = cmt.chat_id
+                WHERE
+                   cmt.is_deleted != 1
+                  AND cmt.is_seen = 0
+                  AND cmt.sender_role != 'admin_site'
+                GROUP BY
+                    ct.request_number,
+                    ct.service_type";
+        }
+        if($current_role == 'admin_agency'){
+            $client_id = CLIENT_ID;
+            $sql = "SELECT
+                    ct.request_number,
+                    ct.service_type,
+                    COUNT(*) AS unread_count
+                FROM chats_tb ct
+                         INNER JOIN chat_messages_tb cmt
+                                    ON ct.id = cmt.chat_id
+                WHERE
+                   cmt.is_deleted != 1
+                  AND cmt.is_seen = 0
+                  AND cmt.sender_role != 'admin_agency'
+                  AND ct.client_id = '{$client_id}'
+                GROUP BY
+                    ct.request_number,
+                    ct.service_type";
+
+        }
+        $data = $Model->select($sql);
+        return $data;
+
+    }
+
+    private function changeMassageSeenStatus($RequestNumber){
+        $current_role = (TYPE_ADMIN == 1 ? 'admin_site' : 'admin_agency');
+
+        $Model = Load::library('ModelBase');
+
+        $sql = "
+        UPDATE chat_messages_tb AS cmt
+        INNER JOIN chats_tb AS ct ON cmt.chat_id = ct.id
+        SET cmt.is_seen = 1
+        WHERE ct.request_number = '{$RequestNumber}'
+        AND cmt.sender_role != '{$current_role}'
+    ";
+        $Model->updateByQuery($sql);
+    }
+    public function toggleChatStatus($data)
+    {
+        $Model = Load::library('ModelBase');
+        $request = $data['request_number'];
+        $status = $data['new_status'] === 'closed' ? 1 : 0;
+
+        $sql = "UPDATE chats_tb SET is_closed = {$status} WHERE request_number = '{$request}'";
+
+        $stmt = $Model->updateByQuery($sql);
+
+
+
+        if ($stmt) {
+            return json_encode(['success' => true]);
+        }
+
+        return json_encode(['success' => false]);
+    }
+    public function getChatStatus($request_number){
+        $Model = Load::library('ModelBase');
+        $sql = "select id , is_closed from  chats_tb where request_number  = '{$request_number}'";
+
+        $status = $Model->select($sql)[0];
+        if (!$status['id']){
+            return false;
+        }
+        if($status['is_closed'] != 1){
+            return false;
+        }
+        return true;
+    }
+
+
+    public function deleteMassage($param)
+    {
+        $massage_id = $param['message_id'];
+        $Model = Load::library('ModelBase');
+        $Model->setTable('chat_messages_tb');
+        $data=[
+            'is_deleted' => 1,
+        ];
+        $con = "id = {$massage_id}";
+
+        $result = $Model->update($data,$con);
+        if($result){
+            return json_encode([
+                "success" => true,
+                "message" => "پیام حذف شد"
+            ]);
+        }
+
+    }
+
+
+
+    private function getChatId($requestNumber,$type,$client_id)
+    {
+        $Model = Load::library('ModelBase');
+        $sql = "SELECT * FROM chats_tb WHERE request_number = '{$requestNumber}'
+                          and service_type = '{$type}' limit 1";
+
+        $chat = $Model->select($sql);
+
+        if ($chat && !empty($chat)) {
+            return $chat[0]['id'];
+        } else {
+            $Model->setTable('chats_tb');
+
+            $dataToInsert = [
+                'request_number' => $requestNumber,
+                'client_id' => $client_id,
+                'is_closed' => 0,
+                'service_type'=>$type,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            $newChatId = $Model->insertWithBind($dataToInsert);
+
+            if ($newChatId) {
+                return $newChatId;
+            } else {
+                error_log("Failed to insert new chat for request_id: " . $requestNumber);
+                return null;
+            }
+        }
+    }
+
+    public function sendMassage($postData)
+    {
+
+        $Model = Load::library('ModelBase');
+
+        if (!isset($postData['request_number']) || !isset($postData['message'])) {
+            return json_encode(['error' => 'اطلاعات پیام ناقص است.']);
+        }
+
+
+        $requestNumber = $postData['request_number'];
+        $client_id = $postData['client_id'];
+        $messageText = $postData['message'];
+        $parent_id = $postData['parent_id'];
+        $type = isset($postData['type']) ? $postData['type'] : null;
+
+        $currentRole = TYPE_ADMIN == 1 ? 'admin_site' : 'admin_agency';
+
+        if (!$currentRole) {
+            return json_encode(['error' => 'نقش کاربر نامشخص است.']);
+        }
+
+
+        $chatId = $this->getChatId($requestNumber, $type,$client_id);
+
+
+        if ($chatId === null) {
+            return json_encode(['error' => 'امکان ایجاد یا یافتن چت وجود ندارد.']);
+        }
+        $Model->setTable('chat_messages_tb');
+
+        $dataToInsert = [
+            'chat_id' => $chatId,
+            'message' => $messageText,
+            'sender_role' => $currentRole,
+            'parent_id' => $parent_id,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+
+        $inserted = $Model->insertWithBind($dataToInsert);
+
+        if ($inserted) {
+            $messages = $this->getChatMessages($requestNumber,$type,false);
+            return json_encode($messages);
+
+        } else {
+            return json_encode(['error' => 'خطا در ارسال پیام. لطفا دوباره تلاش کنید.']);
+        }
+    }
+    public function getMessageById($id){
+        $Model = Load::library('ModelBase');
+        $sql = "SELECT message FROM chat_messages_tb WHERE id = '{$id}'
+                          limit 1";
+        $chat = $Model->select($sql)[0];
+        return $chat;
+
+    }
+
+
 }

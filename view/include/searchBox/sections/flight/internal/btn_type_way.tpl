@@ -1,4 +1,5 @@
 <div class="col-md-12 col-xs-12 col-sm-12 d-ceckboxs">
+
     <div class="cntr">
         <label for="rdo-10" class="btn-radio select-type-way-js" data-type='internal'>
             <input  checked="" type="radio" id="rdo-10" name="select-rb2" value="1" class="internal-one-way-js">
@@ -23,4 +24,5 @@
             <span>##Twoway##</span>
         </label>
     </div>
+
 </div>

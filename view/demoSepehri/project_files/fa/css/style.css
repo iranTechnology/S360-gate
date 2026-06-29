@@ -4322,6 +4322,11 @@ button:focus {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 .5rem 0;
+    background:none  !important;
+}
+.rangeslider__fill{
+    background-color:var(--mainColor)  !important;
+
 }
 .installmentCalculator .installmentCalculator_box .installmentCalculator_box_div1 > div > div.header > h3 {
     font-size: 18px;
@@ -4394,9 +4399,10 @@ button:focus {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    background: #ffdee26b;
+    background: color-mix(in srgb, var(--mainColor) 10%, transparent);
     padding: 20px 5px;
     border-radius: 16px;
+
 }
 .installmentCalculator .installmentCalculator_box_div2 .box_price {
     display: flex;

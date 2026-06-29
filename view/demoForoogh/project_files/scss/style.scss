@@ -1542,4 +1542,10 @@ a:hover{
 
 .height-line-brack{height: 85vh !important;}
 
-@media (max-width: 767px) { body .height-line-brack, html body .height-line-brack { height: 55vh !important; min-height: 55vh !important; max-height: 55vh !important; } } @media (max-width: 578px) { body .height-line-brack, html body .height-line-brack { height: 25vh !important; min-height: 25vh !important; max-height: 25vh !important; } } @media (min-width: 579px) and (max-width: 991px) { body .height-line-brack, html body .height-line-brack { height: 52vh !important; min-height: 52vh !important; max-height: 52vh !important; } }
+
+@media (max-width: 767px) { .banner-demo{min-height: 750px !important;}  body .height-line-brack, html body .height-line-brack { height: 55vh !important; min-height: 55vh !important; max-height: 55vh !important; } } @media (max-width: 578px) { .banner-demo{height: 100% !important;} body .height-line-brack, html body .height-line-brack { height: 8vh !important; min-height: 8vh !important; max-height: 8vh !important; } } @media (min-width: 579px) and (max-width: 991px) { body .height-line-brack, html body .height-line-brack { height: 52vh !important; min-height: 52vh !important; max-height: 52vh !important; } }
+@media (max-width: 360px) {
+  .btn-login{
+    margin-left: 22px;
+  }
+}

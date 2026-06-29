@@ -8,25 +8,25 @@
 
 
 <div class="loaderPublic" style="display: none;">
-<div class="positioning-container" >
-    <div class="spinning-container">
-        <div class="airplane-container"><span class="zmdi zmdi-airplane airplane-icon site-main-text-color"></span></div>
+    <div class="positioning-container" >
+        <div class="spinning-container">
+            <div class="airplane-container"><span class="zmdi zmdi-airplane airplane-icon site-main-text-color"></span></div>
+        </div>
     </div>
-</div>
 
-<div class='loader'>
-    <div class='loader_overlay'></div>
-    <div class='loader_cogs'>
+    <div class='loader'>
+        <div class='loader_overlay'></div>
+        <div class='loader_cogs'>
             <i class="fa fa-globe site-main-text-color-drck"></i>
+        </div>
     </div>
-</div>
 
 </div>
 <div class='parent-tab-user-tracking'>
     <ul class="nav nav-pills nav-user-tracking " id="pills-tab-user-tracking" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link nav-link-user-tracking active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home-user-tracking" type="button" role="tab" aria-controls="pills-home-user-tracking" aria-selected="true">
-                 ##PursueThePurchaseOfServices##
+                ##PursueThePurchaseOfServices##
             </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -47,6 +47,7 @@
                                         <fieldset>
                                             {assign var="arrayServices" value=Functions::getServicesAgency()}
                                             {assign var="checkedForFirst" value="0"}
+
                                             {foreach $arrayServices as $k=>$services}
                                                 {assign var="servicesByLanguage" value=Functions::ConvertArrayByLanguage($k)}
                                                 {$checkedForFirst = $checkedForFirst+ 1}
@@ -62,10 +63,16 @@
                                         </fieldset>
                                     </div>
                                 </div>
-                                <p class="fieldset parent-fieldset-input-tracking">
+                                <p class="fieldset parent-fieldset-input-tracking mb-0">
                                     <input class="full-width has-padding has-border" id="request_number" type="text"
-                                           placeholder="##Numberreservation## (##Voucher##) ##Or## ##Ticketnumber## ##Or## pnr ##countinueStatmentTrackingUser##" value="{$smarty.get.id}">
+                                           placeholder="##Tracknumber##" value="{$smarty.get.id}">
                                 </p>
+                                {if $objSession->IsLogin()}
+                                <p class="fieldset parent-fieldset-input-tracking mt-2">
+                                    <input class="full-width has-padding has-border " id="phone_number" type="text"
+                                           placeholder="##PhoneNumberBuyer##" value="">
+                                </p>
+                                {/if}
                                 <div class="message-login txtCenter txtRed"></div>
                                 <img src="assets/images/load21.gif" style="display:none" class="loader-tracking" id="loaderTracking">
                                 <p class="fieldset parent-fieldset-btn-tracking">
@@ -96,15 +103,15 @@
                                                 <span > ##chopContactUs##</span>
                                             </label>
 
-                                           {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                                            <label class='label-tracking' for="radio-feedback">
-                                                <input type="radio" name="typeSearchRequest" value="feedback"  id="radio-feedback" >
-                                                <span > ##GoharFeedBack##</span>
-                                            </label>
-                                            <label class='label-tracking' for="radio-lastMinute">
-                                                <input type="radio" name="typeSearchRequest" value="lastMinute"  id="radio-lastMinute" >
-                                                <span > ##S360Min90##</span>
-                                            </label>
+                                            {if $smarty.const.SOFTWARE_LANG eq 'fa'}
+                                                <label class='label-tracking' for="radio-feedback">
+                                                    <input type="radio" name="typeSearchRequest" value="feedback"  id="radio-feedback" >
+                                                    <span > ##GoharFeedBack##</span>
+                                                </label>
+                                                <label class='label-tracking' for="radio-lastMinute">
+                                                    <input type="radio" name="typeSearchRequest" value="lastMinute"  id="radio-lastMinute" >
+                                                    <span > ##S360Min90##</span>
+                                                </label>
                                             {/if}
                                             <label class='label-tracking' for="radio-orderServices">
                                                 <input type="radio" name="typeSearchRequest" value="orderServices"  id="radio-orderServices" >
@@ -116,10 +123,10 @@
                                             </label>
 
                                             {if $smarty.const.SOFTWARE_LANG neq 'fa'}
-                                            <label for="radio-iranVisa">
-                                                <input type="radio" name="typeSearchRequest" value="orderIranVisa"  id="radio-iranVisa" >
-                                                <span > ##IranVisaApplicationForm##</span>
-                                            </label>
+                                                <label for="radio-iranVisa">
+                                                    <input type="radio" name="typeSearchRequest" value="orderIranVisa"  id="radio-iranVisa" >
+                                                    <span > ##IranVisaApplicationForm##</span>
+                                                </label>
                                             {/if}
                                             <label class='label-tracking' for="radio-sendDocuments">
                                                 <input type="radio" name="typeSearchRequest" value="sendDocuments"  id="radio-sendDocuments" >
@@ -191,7 +198,7 @@
 
         <div id="railBanks" style="display: none">
             {assign var="infoBank" value=$objFunctions->InfoBank()}
-{*            {$infoBank|var_dump}*}
+            {*            {$infoBank|var_dump}*}
             {if $infoBank|count > 0}
                 <div class="s-u-select-bank mart30">
                     <form>
@@ -268,6 +275,12 @@
         </div>
     {/if}
 
+    {if  $objFactor->IsLogin eq true  && $objMember->list['fk_counter_type_id'] =='5'}
+        <form id="formcredit" method="post"  target="_self" class="d-none">
+            <div class="boxerFactorLogo"><img src="project_files/images/logo.png" alt="logo"></div>
+        </form>
+    {/if}
+
 </div>
 
 
@@ -327,17 +340,17 @@
 
 
 {literal}
-    <script type="text/javascript">
-        {/literal}
-        {if $smarty.get.id neq ''}
-            {literal}
-                setTimeout(function () {
-                    SendTrackingInfo();
-                }, 100);
-            {/literal}
-        {/if}
-        {literal}
-    </script>
+<script type="text/javascript">
+    {/literal}
+    {if $smarty.get.id neq ''}
+    {literal}
+    setTimeout(function () {
+        SendTrackingInfo();
+    }, 100);
+    {/literal}
+    {/if}
+    {literal}
+</script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#userProfile').DataTable();
@@ -360,10 +373,10 @@
         function changePlaceHolder($type) {
 
             if($type=='train'){
-                    $('#request_number').attr('placeholder',useXmltag('Numberreservation') +' '+  useXmltag('Or')+' ' + useXmltag('Ticketnumber'))
-                }else{
-                    $('#request_number').attr('placeholder',useXmltag('Numberreservation') +' ('+  useXmltag('Voucher') + ')' + useXmltag('Or')+' ' + useXmltag('Ticketnumber') + ' ' + useXmltag('Or')+' ' + 'pnr')
-                }
+                $('#request_number').attr('placeholder',useXmltag('Numberreservation') +' '+  useXmltag('Or')+' ' + useXmltag('Ticketnumber'))
+            }else{
+                $('#request_number').attr('placeholder',useXmltag('Tracknumber'))
+            }
         }
     </script>
 
@@ -388,11 +401,11 @@
         });
 
         function removemeNew(){
-          $("#modalRequestService").hide();
+            $("#modalRequestService").hide();
         }
 
         function closePurchase() {
-          $("#trListReserve").hide();
+            $("#trListReserve").hide();
         }
     </script>
 

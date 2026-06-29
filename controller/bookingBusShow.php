@@ -2,7 +2,7 @@
 
 class bookingBusShow extends clientAuth
 {
-
+    protected $factorNumber;
     #region createExcelFile
     public function createExcelFile($param)
     {
@@ -52,13 +52,13 @@ class bookingBusShow extends clientAuth
             $whereQuery.=' AND agency_id='.$intendedUser['agency_id'].' ';
         }
 
-	    if(!empty($_POST['member_id'])){
-		    $whereQuery.=' AND member_id='.$_POST['member_id'].' ';
-	    }
+        if(!empty($_POST['member_id'])){
+            $whereQuery.=' AND member_id='.$_POST['member_id'].' ';
+        }
 
-	    if(!empty($_POST['agency_id'])){
-		    $whereQuery.=' AND agency_id='.$_POST['agency_id'].' ';
-	    }
+        if(!empty($_POST['agency_id'])){
+            $whereQuery.=' AND agency_id='.$_POST['agency_id'].' ';
+        }
 
         $sql="
             SELECT
@@ -120,15 +120,12 @@ class bookingBusShow extends clientAuth
                 $sql.=" AND (payment_type = 'credit' OR payment_type = 'member_credit')";
             }
         }
-
+        /*1405/2/30 غیرفعال شذ
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
-
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
-
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
-            
-            $sql .= " AND serviceTitle IN ({$check_access})";
-        }
+           $sql .= " AND serviceTitle IN ({$check_access})";
+        }*/
 
         $sql.=" GROUP BY passenger_factor_num ORDER BY creation_date_int DESC ";
 
@@ -167,48 +164,53 @@ class bookingBusShow extends clientAuth
 
             $creation_date_int=dateTimeSetting::jdate('Y-m-d (H:i:s)', $book['creation_date_int']);
             $expPaymentDate=[];
-            if(!empty($book['payment_date'])){
-                $paymentDate=functions::set_date_payment($book['payment_date']);
-                $expPaymentDate=explode(" ", $paymentDate);
+            if(!empty($book['payment_date'])) {
+                if (LANG_PANEL_ADMIN == 'fa') {
+                    $paymentDate = functions::set_date_payment($book['payment_date']);
+                    $expPaymentDate = explode(" ", $paymentDate);
+                }
+                else{//en ar
+                    $expPaymentDate = explode(" ", $book['payment_date']);
+                }
             }
             if(!empty($book['member_name'])){
                 $memberName=$book['member_name'];
             }else{
-                $memberName='مسافرآنلاین';
+                $memberName=functions::Xmlinformation("PassengerOnline");
             }
             switch($book['status']){
                 case 'book':
-                    $status='رزرو قطعی';
+                    $status=(string)functions::Xmlinformation("Definitivereservation");
                     break;
                 case 'temporaryReservation':
-                    $status='رزرو موقت';
+                    $status=(string)functions::Xmlinformation("Temporaryreservation");
                     break;
                 case 'prereserve':
-                    $status='پیش رزرو';
+                    $status=(string)functions::Xmlinformation("lock");
                     break;
                 case 'bank':
-                    $status='هدایت به درگاه';
+                    $status=(string)functions::Xmlinformation("NavigateToPort");
                     break;
                 case 'cancel':
-                    $status='کنسل';
+                    $status=(string)functions::Xmlinformation("Cancle");
                     break;
                 case 'error':
-                    $status='خطا';
+                    $status=(string)functions::Xmlinformation("reserveError");
                     break;
                 case 'nothing':
-                    $status='نامشخص';
+                    $status=(string)functions::Xmlinformation("Unknown");
                     break;
                 default:
-                    $status='نامشخص';
+                    $status=(string)functions::Xmlinformation("Unknown");
                     break;
             }
 
             if (strpos($book['WebServiceType'], 'private') === 0) {
-                $service_type = 'اختصاصی';
+                $service_type = functions::Xmlinformation("Exclusive");
             } elseif (strpos($book['WebServiceType'], 'public') === 0) {
-                $service_type = 'اشتراکی';
+                $service_type = functions::Xmlinformation("Shared");
             } else {
-                $service_type = '<del> اشتراکی - اختصاصی</del>';
+                $service_type = '<del>'.functions::Xmlinformation("Exclusive").' - '.functions::Xmlinformation("Shared").'</del>';
             }
 
             $dataRows[$k]['NumberColumn']=$numberColumn-1;
@@ -216,8 +218,21 @@ class bookingBusShow extends clientAuth
             $dataRows[$k]['PaymentTime']=$expPaymentDate[1];
             $dataRows[$k]['MemberName']=$memberName;
             $dataRows[$k]['MemberMobile']=$book['member_mobile'];
-            $dataRows[$k]['OriginName']=$book['OriginCity'];
-            $dataRows[$k]['DestinationCity']=$book['DestinationCity'];
+            if(LANG_PANEL_ADMIN=='fa') {
+                $dataRows[$k]['OriginName'] = $book['OriginCity'];
+                $dataRows[$k]['DestinationCity'] = $book['DestinationCity'];
+            }else{//en ar
+                $OriginCity =$this->getModel('airportModel')
+                    ->get(['DepartureCode'])
+                    ->where('DepartureCityFa',$book['OriginCity'])
+                    ->find();
+                $DestinationCity =$this->getModel('airportModel')
+                    ->get(['DepartureCode'])
+                    ->where('DepartureCityFa',$book['DestinationCity'])
+                    ->find();
+                $dataRows[$k]['OriginName'] = $OriginCity['DepartureCode'];
+                $dataRows[$k]['DestinationCity'] = $DestinationCity['DepartureCode'];
+            }
             $dataRows[$k]['DateMove']=$book['DateMove'];
             $dataRows[$k]['TimeMove']=$book['TimeMove'];
             $dataRows[$k]['BaseCompany']=$book['BaseCompany'];
@@ -337,16 +352,12 @@ class bookingBusShow extends clientAuth
 
         $function = Load::library('functions');
         $data = $this->getBookReportBusTicket($factorNumber);
-        $subAgencyInfo = $this->getController('agency');
 
         $pdfContent = '';
         if ($data[0]['status'] == 'book') {
             /** @var agency $agencyController */
             $agencyController = Load::controller('agency');
             $agencyInfo = $agencyController->infoAgency($data[0]['agency_id'],CLIENT_ID);
-            $getSubAgencyInfo = $subAgencyInfo->AgencyInfoByIdMember($data[0]['member_id']);
-            $agencyName = !empty($getSubAgencyInfo['name_fa']) ? $getSubAgencyInfo['name_fa'] : CLIENT_NAME;
-
             if($agencyInfo['hasSite'])
             {
                 $logo = ROOT_ADDRESS_WITHOUT_LANG . '/pic/agencyPartner/' .CLIENT_ID.'/logo/'. CLIENT_LOGO;
@@ -481,10 +492,7 @@ class bookingBusShow extends clientAuth
             
             <table width="100%" align="center" cellpadding="0" cellspacing="0" class="rtl">
                 <tr>
-                    <td width="33%"><img src="' . $logo . '" height="100" /> 
-                     <span style="font-family: yekanbakh;">
-                        '. $agencyName . '
-                </span></td>
+                    <td width="33%"><img src="' . $logo . '" height="100" /></td>
                     <td width="34%" align="center" class="title">بلیط اتوبوس از ' . $data[0]['OriginCity'] . ' به ' . $data[0]['DestinationCity'] . '</td>
                     <td width="33%"></td>
                 </tr>
@@ -599,28 +607,28 @@ class bookingBusShow extends clientAuth
             }
             $pdfContent .= '</tr> ';
 
-        if (!empty($discountCodeInfo) && $cash == 'no') {
+            if (!empty($discountCodeInfo) && $cash == 'no') {
 
-            $pdfContent .= '
+                $pdfContent .= '
             <tr>
                 <td class="borderBottomTd">قیمت کد تخفیف</td>
                 <td class="borderBottomTd">1</td><td class="borderBottomTd">'.number_format($discountCodeInfo['amount']).'</td>
             </tr>
 
         ';
-            $data[0]['total_price']=$data[0]['total_price'] - $discountCodeInfo['amount'];
-        }
+                $data[0]['total_price']=$data[0]['total_price'] - $discountCodeInfo['amount'];
+            }
 
-        $pdfContent .= '
+            $pdfContent .= '
                  <tr>
                     <td class="borderBottomTd bold">جمع کل</td>
                     <td class="borderBottomTd bold"></td>';
-        if($cash == 'no') {
-            $pdfContent .= '<td class="borderBottomTd bold">cache</td>';
-        }else {
-            $pdfContent .= '<td class="borderBottomTd bold">' . number_format($data[0]['total_price']) . '</td>';
-        }
-$pdfContent .= '</tr>
+            if($cash == 'no') {
+                $pdfContent .= '<td class="borderBottomTd bold">cache</td>';
+            }else {
+                $pdfContent .= '<td class="borderBottomTd bold">' . number_format($data[0]['total_price']) . '</td>';
+            }
+            $pdfContent .= '</tr>
             </table>';
 
             if ($data[0]['request_cancel'] == 'confirm') {
@@ -643,20 +651,18 @@ $pdfContent .= '</tr>
             </table>
                 
                 ';
-        }
+            }
 
 
-            $phone = !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : CLIENT_PHONE ;
-            $address =  !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : CLIENT_ADDRESS;
 
             $pdfContent .= '
             <div class="footer">
                 <table width="100%" align="center" cellpadding="0" cellspacing="0" class="rtl">
                     <tr>
-                        <td align="center" colspan="2"><p>آدرس: ' . $address . '</p></td>
+                        <td align="center" colspan="2"><p>آدرس: ' . CLIENT_ADDRESS . '</p></td>
                     </tr>
                     <tr>
-                        <td align="center"><p>تلفن پشتیبانی: ' . $phone . '</p></td>
+                        <td align="center"><p>تلفن پشتیبانی: ' . CLIENT_PHONE . '</p></td>
                         <td align="center"><p>وب سایت: ' . CLIENT_MAIN_DOMAIN . '</p></td>
                     </tr>
                 </table>
@@ -682,7 +688,26 @@ $pdfContent .= '</tr>
     #region busInfoTracking
     public function busInfoTracking($factorNumber)
     {
-        $book = $this->getBookReportBusTicket($factorNumber);
+//        $book = $this->getBookReportBusTicket($factorNumber);
+
+        $Model = Load::library('Model');
+
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
+
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_bus_tb 
+        WHERE passenger_factor_num = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'";
+        }
+        else {
+            $sql = "SELECT * FROM book_bus_tb 
+        WHERE passenger_factor_num = '$requestNumber'";
+        }
+
+
+        $book = $Model->load($sql);
+        $this->factorNumber = $book['passenger_factor_num'];
 
         $result = '';
         if (!empty($book)) {
@@ -720,10 +745,16 @@ $pdfContent .= '</tr>
                 $op .= "<a href='{$href}' class='btn btn-dropbox fa fa-print margin-10 ' target='_blank' title='".functions::Xmlinformation('See')."'></a>";
                 $op .= "<a href='{$href2}' class='btn btn-info fa fa-file-pdf-o margin-10' target='_blank' title='".functions::Xmlinformation('ViewPDFReservation')."'></a>";
                 if (Session::IsLogin() ) {
-                $op .= "<a {$onClick} class='btn btn-danger fa fa-remove margin-10' target='_blank' title='".functions::Xmlinformation('RefundTicket')."'></a>";
+                    $op .= "<a {$onClick} class='btn btn-danger fa fa-remove margin-10' target='_blank' title='".functions::Xmlinformation('RefundTicket')."'></a>";
                 }
             }
-
+            $totalPrice = $book['total_price'];
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $this->factorNumber)->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $finalPrice = $totalPrice - $discountCodeAmount;
+            }
             $result .= '
             <table class="display" cellspacing="0" width="100%">
                 <thead>
@@ -747,7 +778,7 @@ $pdfContent .= '</tr>
             $result .= '<td>' . $book['passenger_factor_num']  . '<hr style="color: #f8f8f8;">' . $book['pnr'] . '</td>';
             $result .= '<td>' . $book['passenger_chairs'] . '</td>';
             $result .= '<td>' . $book['DateMove'] . '<hr style="color: #f8f8f8;">' . $book['TimeMove'] . '</td>';
-            $result .= '<td>' . number_format($book['total_price']) . '</td>';
+            $result .= '<td>' . number_format($finalPrice) . '</td>';
             $result .= '<td>' . $status . '</td>';
             $result .= '<td>' . $op . '</td>';
             $result .= '</tr>';
@@ -759,7 +790,7 @@ $pdfContent .= '</tr>
 
     }
     #endregion
-    
+
     #region getCountBusBookingInStatusTemporaryReservation
     public function getCountBusBookingInStatusTemporaryReservation()
     {
@@ -786,7 +817,7 @@ $pdfContent .= '</tr>
             $Model = Load::library('Model');
             $resultBook = $Model->select($sql);
         }
-        
+
         return count($resultBook);
 
     }
@@ -875,15 +906,12 @@ $pdfContent .= '</tr>
                 $sql.=" AND (payment_type = 'credit' OR payment_type = 'member_credit')";
             }
         }
-
+        /* 1405_2_30 غیرفعال شذ
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
-
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
-
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
-
             $sql .= " AND serviceTitle IN ({$check_access})";
-        }
+        }*/
 
         $sql.=" GROUP BY passenger_factor_num ORDER BY creation_date_int DESC ";
 

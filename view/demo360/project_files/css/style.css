@@ -20,7 +20,9 @@
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     /* برای زبان فارسی، کشو از راست وارد می‌شود، پس overlay باید کل صفحه را بپوشاند */
 }
-
+body .banner-demo::after{
+    background:none !important;
+}
 /* Drawer (کشو) */
 .mobile-drawer {
     position: fixed;

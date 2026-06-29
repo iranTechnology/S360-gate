@@ -580,6 +580,20 @@
                                             </div>
                                         </a>
                                     </li>
+                                    <li class='parent-tracking organization-menu'>
+                                        <a href='{$smarty.const.ROOT_ADDRESS}/organization' class=''>
+                                            <div class='parent-data-tracking'>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>ثبت نام سازمانی</h4>
+                                                    <p class="sub-menu-caption">
+                                                        در بخش ثبت نام سازمانی، می‌توانید با انتخاب هر سازمان ثبت نام کنید
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <button>مشاهده</button>
+                                        </a>
+                                    </li>
+
                                 </ul>
                             </li>
                         </ul>

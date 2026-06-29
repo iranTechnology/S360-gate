@@ -7425,31 +7425,53 @@ function ChangePassForRecovery() {
 }
 
 function SendTrackingInfo() {
-
+    let isLogin = window.isUserLoggedIn;
     var request_number = $('#request_number').val();
+    var phone_number = $('#phone_number').val();
     var typeSearch = $('input[name=typeSearch]:checked').val();
 
     $('#request_number').focus(function () {
         $('#request_number').css("background", "white");
     });
 
-    if (request_number == "") {
-
-        $.alert({
-            title: useXmltag("TrackOrder"),
-            icon: 'fa fa-times',
-            content: useXmltag("EnterRequiredInformation"),
-            rtl: true,
-            type: 'red'
-        });
-        $('#request_number').css("background", "red");
-
+    if (isLogin) {
+        if (request_number == "") {
+            $.alert({
+                title: useXmltag("TrackOrder"),
+                icon: 'fa fa-times',
+                content: useXmltag("EnterRequiredInformation"),
+                rtl: true,
+                type: 'red'
+            });
+            $('#request_number').css("background", "red");
+            return false;
+        }
     } else {
+        if (request_number == "" || phone_number == "") {
+            $.alert({
+                title: useXmltag("TrackOrder"),
+                icon: 'fa fa-times',
+                content: useXmltag("EnterRequiredInformation"),
+                rtl: true,
+                type: 'red'
+            });
+
+            if (request_number == "") {
+                $('#request_number').css("background", "red");
+            }
+            if (phone_number == "") {
+                $('#phone_number').css("background", "red");
+            }
+            return false;
+        }
+    }
+
         $('#loaderTracking').show(500);
 
         $.post(amadeusPath + 'user_ajax.php',
            {
                request_number: request_number,
+               phone_number: phone_number,
                typeSearch: typeSearch,
                flag: 'trackingInfo'
            },
@@ -7476,7 +7498,7 @@ function SendTrackingInfo() {
                }
 
            });
-    }
+
 
 }
 

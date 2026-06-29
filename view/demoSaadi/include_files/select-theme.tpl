@@ -761,10 +761,16 @@
         .instagram-editor  {
             width:70%;
         }
-    }
-    @media (max-width: 768px) {
         #rest-theme-btn {
             display: none !important;
+        }
+        .overlay-content{
+            height: auto;
+            padding: 10px;
+            margin-right: 17px;
+        }
+        #show-message-setting{
+            display:none !important
         }
     }
 </style>

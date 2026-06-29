@@ -337,7 +337,7 @@ if(!empty($client['Services'])){
 
     if($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
     {
-        $client['ThemeDir'] = 'demo360';
+        $client['ThemeDir'] = 'uranusIframe';
     }
 
 
@@ -348,6 +348,7 @@ if(!empty($client['Services'])){
     defined('FRONT_TEMPLATE_NAME') or define('FRONT_TEMPLATE_NAME', $client['ThemeDir']);
     defined('CLIENT_DOMAIN') or define('CLIENT_DOMAIN', $client['Domain']);
     defined('CLIENT_MAIN_DOMAIN') or define('CLIENT_MAIN_DOMAIN', $client['MainDomain']);
+    defined('CLIENT_MAIN_DOMAIN_IFRAME') or define('CLIENT_MAIN_DOMAIN_IFRAME', $client['mainDominIframe']);
     defined('DOMAIN_FOR_URL') or define('DOMAIN_FOR_URL', SERVER_HTTP.$client['MainDomain']);
     defined('TYPE_ADMIN') or define('TYPE_ADMIN', $client['Type']);
     defined('CLIENT_ID') or define('CLIENT_ID', $client['id']);
@@ -1009,7 +1010,14 @@ if(!empty($client['Services'])){
 
                     break;
                 }
+                case 'organization': {
 
+
+
+                    defined('ORGANIZATION_TITLE') or define('ORGANIZATION_TITLE', $arrUrl[4]);
+
+                    break;
+                }
                 case 'visa':
                 case 'immigration':
                 case 'pickup':

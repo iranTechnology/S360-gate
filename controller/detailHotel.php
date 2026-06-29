@@ -576,7 +576,8 @@ class detailHotel extends ApiHotelCore
     }
 
     public function getPrices($param){
-      
+
+        functions::insertLog(json_encode($param) , '000000000shojaee');
         $checkBool = filter_var($param['check_type_for_price_changes'], FILTER_VALIDATE_BOOLEAN) ;
 
         $type_application_for_change_price = ($checkBool) ? 'api' : 'externalApi';
@@ -587,7 +588,15 @@ class detailHotel extends ApiHotelCore
         }else{
             $sqlCity = "SELECT * FROM `hotel_cities_tb` WHERE city_name='{$param['cityName']}' OR city_name_en = '{$param['cityName']}'";
         }
+        $totalNumberRooms = isset($param['TotalNumberRooms']) ? (int)$param['TotalNumberRooms'] : 1;
 
+        if ($totalNumberRooms == 1 && isset($param['searchRooms'])) {
+            if (preg_match('/R:(\d+)/', $param['searchRooms'], $matches)) {
+                $totalNumberRooms = (int)$matches[1];
+            }
+        }
+
+        $param['TotalNumberRooms'] = $totalNumberRooms;
 
         $getCity = $this->modelBase->load($sqlCity);
         $CityId = $getCity['id'];

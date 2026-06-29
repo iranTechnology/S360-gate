@@ -2535,8 +2535,24 @@ class entertainment extends clientAuth
 
     public function entertainmentInfoTracking($factor_number) {
 
-        $book = $this->GetInfoEntertainment($factor_number);
+//        $book = $this->GetInfoEntertainment($factor_number);
+        $Model = Load::library('Model');
 
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
+
+
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_entertainment_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'";
+        }
+        else {
+            $sql = "SELECT * FROM book_entertainment_tb 
+        WHERE factor_number = '$requestNumber'";
+        }
+
+        $book = $Model->load($sql);
         $result = '';
         if (!empty($book)) {
 

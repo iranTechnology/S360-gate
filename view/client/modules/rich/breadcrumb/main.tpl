@@ -1,6 +1,6 @@
 {assign var="breadcrumbs" value=$obj_main_page->breadcrumb scope=parent}
 
-
+{*{var_dump($breadcrumbs)|die}*}
 {if $breadcrumbs}
     <div class='container'>
         <div class="my-breadcrumbs">

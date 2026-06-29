@@ -68,6 +68,7 @@
 {include file="include_files/newsletter.tpl"}
 
 </main>
+{include file="include_files/select-theme.tpl"}
 {include file="include_files/footer.tpl"}
 
 </body>

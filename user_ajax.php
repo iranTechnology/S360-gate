@@ -284,8 +284,6 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
  * checkLoginLocal
  * @return true(1) for yes and false()  for NO
  */
-
-
 //if ($_POST['flag'] == 'temprory_local') {
 //
 //
@@ -447,9 +445,9 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookFlight' ) {
     }
 
     if (
-            isset( $result['dept']['result_status'] )
-            && $result['dept']['result_status'] == 'SuccessMethodBook'
-            && ( empty( $_POST['RequestNumber']['return'] ) || ( ! empty( $_POST['RequestNumber']['return'] ) && $result['return']['result_status'] == 'SuccessMethodBook' ))
+        isset( $result['dept']['result_status'] )
+        && $result['dept']['result_status'] == 'SuccessMethodBook'
+        && ( empty( $_POST['RequestNumber']['return'] ) || ( ! empty( $_POST['RequestNumber']['return'] ) && $result['return']['result_status'] == 'SuccessMethodBook' ))
     ) {
         $result['total_status'] = 'success';
 
@@ -472,9 +470,9 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookFlight' ) {
     echo $result;
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'reReserveFlight' ) {
-     unset($_POST['flag']);
-     $controller = Load::controller( 'parvazBookingLocal' );
-     return $controller->flightBook($_POST['factorNum'] , 'credit');
+    unset($_POST['flag']);
+    $controller = Load::controller( 'parvazBookingLocal' );
+    return $controller->flightBook($_POST['factorNum'] , 'credit');
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == "revalidate_Fight" ) {
 
@@ -938,7 +936,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_cip' ) {
 
         if ( $check['status'] == 'TRUE' ) {
 
-      $reason = 'buy_cip';
+            $reason = 'buy_cip';
             // Caution: کاهش اعتبار موقت صاحب سیستم
             $reduceTransaction = $objTransaction->decreasePendingCredit( $total_price, $factorNumber, $comment, $reason );
 
@@ -1259,7 +1257,24 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_client' ) {
 
     $partner = Load::controller( 'partner' );
     unset( $_POST['flag'] );
-    echo $partner->UpdateClient( $_POST );
+    $UpdateClient = $partner->UpdateClient( $_POST );
+    if (strpos($UpdateClient, 'success') !== false) {
+        $aboutUsModel = Load::getModel('aboutUsModel');
+        $update_data=[
+            'social_links'=>json_encode($_POST['socialLinks'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        ];
+        $UpdateSocialLinks = $aboutUsModel->updateWithBind($update_data,['page_type' => 'about_us']);
+
+        if ($UpdateSocialLinks !== false) {
+            echo $UpdateClient;
+        } else {
+            echo 'error : خطا در ویرایش اطلاعات ';
+        }
+
+
+    } else {
+        echo $UpdateClient;
+    }
 
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'updateDocs' ) {
@@ -1411,7 +1426,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_airline' ) {
         case 'train':
             /** @var \trainBooking $trainBooking */
             $trainBooking = Load::controller( 'trainBooking' );
-            $result   = $trainBooking->infoTrainTicket( $_POST['request_number'] );
+            $result   = $trainBooking->infoTrainTicket( $_POST['request_number'] , $_POST['phone_number'] );
             break;
         case 'cip':
             /** @var \trainBooking $trainBooking */
@@ -2342,6 +2357,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     $objTransaction = Load::controller( 'transaction' );
     $objUser = Load::controller( 'user' );
     $objMemberCredit = Load::controller( 'memberCredit');
+    $objDiscountCodes     = Load::controller( 'discountCodes' );
 
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
     if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
@@ -2361,6 +2377,11 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
         $amount        = $reserveInfo['total_price'];
 
     }
+
+    $memberId = Session::getUserId();
+
+    $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $_POST['discountCode'], $_POST['serviceType'] );
+
     if ( $_POST['paymentStatus'] == 'prePayment' ) {
         $comment = ' پیش رزرو هتل ';
     } else {
@@ -4169,7 +4190,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'flagRequestCancelUser' ) 
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'StatusMenuCounter' ) {
 
     $objController = load::controller( 'admin' );
-	$result        = $objController->StatusMenuCounter( $_POST['idMenu'], $_POST['idMember'],$_POST['isAccess'] );
+    $result        = $objController->StatusMenuCounter( $_POST['idMenu'], $_POST['idMember'],$_POST['isAccess'] );
 
     echo $result;
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setUserPermissions' ) {
@@ -5051,6 +5072,27 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'orderServicesAdd' ) {
     echo number_format(round( $credit['total'] ) ) . ' ' . 'ریال';
 
 }
+if ($_POST['flag'] == 'checkCancellations') {
+    $listCancel = new listCancel();
+    $listCancelAdmin = $listCancel->ListCancelAdmin();
+
+    $hasNewCancel = false;
+    foreach ($listCancelAdmin as $item) {
+        if (trim($item['note_admin']) == "") {
+            $hasNewCancel = true;
+            break;
+        }
+    }
+
+    // ارسال پاسخ JSON
+    header('Content-Type: application/json');
+    echo json_encode([
+        'hasNewCancel' => $hasNewCancel,
+        'count' => $hasNewCancel ? count($listCancelAdmin) : 0,
+        'message' => $hasNewCancel ? 'کنسلی جدید دارید' : 'بدون کنسلی جدید'
+    ]);
+    exit;
+}
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkCityNetCredit' ) {
 
     $credit = functions::getCityNetCharge('irantechTest');
@@ -5159,8 +5201,14 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
     );
 
     /** @var memberCredit $memberCredit */
-    $memberCredit  = Load::controller( 'memberCredit' );
+    $memberCredit  = Load::controller( 'memberCredit');
+    $cancelTicketDetailsModel = Load::getModel('cancelTicketDetailsModel');
     $InsertPrice = $memberCredit->ReturnAdminToWalletUser( $data );
+
+    if (strpos($InsertPrice, 'Success') !== false) {
+        $insertPriceIndemnity = $cancelTicketDetailsModel->updateWithBind(['PriceIndemnity' => $data['priceBack']], ['RequestNumber' => $data['RequestNumber']]);
+    }
+
     echo $InsertPrice;
 }
 
@@ -5480,44 +5528,44 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'hasChangePriceFlight'){
 
                 if ($chackChange['passenger_age'] === 'Adt') {
                     $messageChangePrice = functions::checkIncreasePrice(
-                            $chackChange['adt_price'],
-                            array_values($infoTemporary)[0]['AdtPrice'],
-                            $chackChange['passenger_age'],
-                            $chackChange['currency_code'],
-                            $chackChange['flight_type'],
-                            $direction
+                        $chackChange['adt_price'],
+                        array_values($infoTemporary)[0]['AdtPrice'],
+                        $chackChange['passenger_age'],
+                        $chackChange['currency_code'],
+                        $chackChange['flight_type'],
+                        $direction
                     );
                 } elseif ($chackChange['passenger_age'] === 'Chd') {
                     $messageChangePrice = functions::checkIncreasePrice(
-                            $chackChange['chd_price'],
-                            array_values($infoTemporary)[0]['ChdPrice'],
-                            $chackChange['passenger_age'],
-                            $chackChange['currency_code'],
-                            $chackChange['flight_type'],
-                            $direction
+                        $chackChange['chd_price'],
+                        array_values($infoTemporary)[0]['ChdPrice'],
+                        $chackChange['passenger_age'],
+                        $chackChange['currency_code'],
+                        $chackChange['flight_type'],
+                        $direction
                     );
                 } elseif ($chackChange['passenger_age'] === 'Inf') {
                     $messageChangePrice = functions::checkIncreasePrice(
-                            $chackChange['inf_price'],
-                            array_values($infoTemporary)[0]['InfPrice'],
-                            $chackChange['passenger_age'],
-                            $chackChange['currency_code'],
-                            $chackChange['flight_type'],
-                            $direction
+                        $chackChange['inf_price'],
+                        array_values($infoTemporary)[0]['InfPrice'],
+                        $chackChange['passenger_age'],
+                        $chackChange['currency_code'],
+                        $chackChange['flight_type'],
+                        $direction
                     );
                 }
 
                 if ($messageChangePrice !== '') {
                     $priceChanges[$direction][] = [
-                            'passenger_age' => $chackChange['passenger_age'],
-                            'message' => $messageChangePrice
+                        'passenger_age' => $chackChange['passenger_age'],
+                        'message' => $messageChangePrice
                     ];
                 }
             }
         }
     }
     echo json_encode([
-            'priceChanges' => $priceChanges
+        'priceChanges' => $priceChanges
     ]);
 }elseif(isset($_POST['flag']) && $_POST['flag'] == 'toggleSafarBankStatus'){
     $obj = Load::controller('safarBankController');

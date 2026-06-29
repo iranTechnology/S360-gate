@@ -1569,13 +1569,21 @@ class trainBooking extends trainCore
         return 'error res' . $res;
     }
 
-    public function infoTrainTicket($numberBuy)
+    public function infoTrainTicket($numberBuy , $phoneNumber)
     {
 //        $Model = Load::library('Model');
         /** @var \bookTrainModel $bookTrainModel */
         $bookTrainModel = Load::getModel('bookTrainModel');
-        $book = $bookTrainModel->get()->where('requestNumber', $numberBuy)->orWhere('TicketNumber', $numberBuy)->find();
-//        $sql = " SELECT * FROM book_train_tb WHERE requestNumber = '{$numberBuy}' OR TicketNumber='{$numberBuy}' ";
+
+
+        if(!Session::IsLogin()){
+            $book = $bookTrainModel->get()->Where('factor_number', $numberBuy)->Where('member_number' , $phoneNumber)->find();
+        }
+        else {
+            $book = $bookTrainModel->get()->Where('factor_number', $numberBuy)->find();
+        }
+
+//        $sql = " SELECT * FROM book_train_tb WHERE requestNumber = '{$_POST['request_number']}' AND factor_number='{$numberBuy}' ";
 //        $book = $Model->load($sql);
         $result = '';
         if (!empty($book)) {

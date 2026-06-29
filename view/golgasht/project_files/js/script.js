@@ -81,136 +81,163 @@ $(document).ready(function () {
 // تابع مرتب‌سازی
 function reorderHotelList() {
     var list = document.getElementById('listSearchCity_2');
-    if (!list) return;
+    if (!list) {
+        console.log('listSearchCity_2 پیدا نشد');
+        return false;
+    }
 
     var items = list.querySelectorAll('li');
-    if (items.length === 0) return;
+    if (items.length === 0) {
+        console.log('آیتمی در listSearchCity_2 پیدا نشد');
+        return false;
+    }
 
     var desiredOrder = ['کربلا', 'آل نجف', 'بغداد', 'اربیل', 'کاظمین', 'سلیمانیه', 'بصره', 'موصل', 'مشهد', 'وان'];
     var heading = list.querySelector('h2');
-    var itemsArray = Array.from(items);
-    var sortedItems = [];
 
-    // مرتب‌سازی بر اساس ترتیب دلخواه
-    desiredOrder.forEach(function(city) {
-        var found = itemsArray.find(function(item) {
-            return item.querySelector('.c-text')?.textContent.trim() === city;
-        });
-        if (found) {
-            sortedItems.push(found);
+    // ساخت آرایه از آیتم‌ها با نام شهر
+    var itemsWithName = [];
+    for (var i = 0; i < items.length; i++) {
+        var cityName = items[i].querySelector('.c-text')?.textContent.trim();
+        if (cityName) {
+            itemsWithName.push({ item: items[i], name: cityName });
         }
-    });
-
-    // اضافه کردن آیتم‌های اضافی در انتها
-    itemsArray.forEach(function(item) {
-        var cityName = item.querySelector('.c-text')?.textContent.trim();
-        if (!desiredOrder.includes(cityName)) {
-            sortedItems.push(item);
-        }
-    });
-
-    // بازسازی لیست
-    list.innerHTML = '';
-    if (heading) list.appendChild(heading);
-    sortedItems.forEach(function(item) {
-        list.appendChild(item);
-    });
-
-}
-
-// روش اول: استفاده از MutationObserver (بهترین روش)
-var listObserver = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-            // وقتی آیتم جدید اضافه شد، مرتب کن
-            setTimeout(reorderHotelList, 50);
-        }
-    });
-});
-
-// شروع نظارت بر لیست
-document.addEventListener('DOMContentLoaded', function() {
-    var list = document.getElementById('listSearchCity_2');
-    if (list) {
-        listObserver.observe(list, { childList: true, subtree: true });
     }
-});
 
-// روش دوم: هر بار که کلیک شد، بعد از لود مرتب کن
-document.getElementById('autoComplateSearchIN_2')?.addEventListener('click', function() {
-    // منتظر بمان تا داده‌ها لود شوند
-    var checkInterval = setInterval(function() {
-        var list = document.getElementById('listSearchCity_2');
-        var items = list ? list.querySelectorAll('li') : [];
+    if (itemsWithName.length === 0) {
+        console.log('هیچ شهری در لیست پیدا نشد');
+        return false;
+    }
 
-        if (items.length > 0) {
-            clearInterval(checkInterval);
-            reorderHotelList();
-        }
-    }, 100);
+    // مرتب‌سازی آرایه
+    itemsWithName.sort(function(a, b) {
+        var indexA = desiredOrder.indexOf(a.name);
+        var indexB = desiredOrder.indexOf(b.name);
+        if (indexA === -1) indexA = 999;
+        if (indexB === -1) indexB = 999;
+        return indexA - indexB;
+    });
 
-    // حداکثر 3 ثانیه منتظر بمان
-    setTimeout(function() {
-        clearInterval(checkInterval);
-    }, 3000);
-});
+    // اضافه کردن به ترتیب جدید (بدون حذف innerHTML)
+    for (var i = 0; i < itemsWithName.length; i++) {
+        list.appendChild(itemsWithName[i].item);
+    }
+
+    console.log('✅ listSearchCity_2 مرتب شد:', itemsWithName.map(function(x) { return x.name; }));
+    return true;
+}
 
 function reorderMobileDestinations() {
     var container = document.getElementById('mobilePopularDestinationsHotel');
     if (!container) {
-        console.log('container پیدا نشد');
+        console.log('mobilePopularDestinationsHotel پیدا نشد');
+        return false;
+    }
+
+    var items = container.querySelectorAll('li');
+    if (items.length === 0) {
+        console.log('آیتمی در mobilePopularDestinationsHotel پیدا نشد');
+        return false;
+    }
+
+    var desiredOrder = ['کربلا', 'آل نجف', 'بغداد', 'اربیل', 'کاظمین', 'سلیمانیه', 'بصره', 'موصل', 'مشهد', 'وان'];
+
+    // ساخت آرایه از آیتم‌ها با نام شهر
+    var itemsWithName = [];
+    for (var i = 0; i < items.length; i++) {
+        var span = items[i].querySelector('.city-text div:last-child span');
+        var cityName = span ? span.textContent.trim() : '';
+        if (cityName) {
+            itemsWithName.push({ item: items[i], name: cityName });
+        }
+    }
+
+    if (itemsWithName.length === 0) {
+        console.log('هیچ شهری در لیست موبایل پیدا نشد');
+        return false;
+    }
+
+    // مرتب‌سازی آرایه
+    itemsWithName.sort(function(a, b) {
+        var indexA = desiredOrder.indexOf(a.name);
+        var indexB = desiredOrder.indexOf(b.name);
+        if (indexA === -1) indexA = 999;
+        if (indexB === -1) indexB = 999;
+        return indexA - indexB;
+    });
+
+    // اضافه کردن به ترتیب جدید (بدون حذف innerHTML)
+    for (var i = 0; i < itemsWithName.length; i++) {
+        container.appendChild(itemsWithName[i].item);
+    }
+
+    console.log('✅ mobilePopularDestinationsHotel مرتب شد:', itemsWithName.map(function(x) { return x.name; }));
+    return true;
+}
+
+// نسخه پشتیبان - هر 1 ثانیه یکبار چک کن
+var isReordered = false;
+
+function checkAndReorder() {
+    if (isReordered) {
+        console.log('مرتب‌سازی قبلاً انجام شده است');
         return;
     }
 
-    // ترتیب مورد نظر
-    var desiredOrder = ['کربلا', 'آل نجف', 'بغداد', 'اربیل', 'کاظمین', 'سلیمانیه', 'بصره', 'موصل', 'مشهد', 'وان'];
+    console.log('چک کردن لیست‌ها...');
 
-    var items = Array.from(container.querySelectorAll('li'));
-    if (items.length === 0) return;
+    var list = document.getElementById('listSearchCity_2');
+    var mobileList = document.getElementById('mobilePopularDestinationsHotel');
 
-    var sortedItems = [];
+    var listItems = list ? list.querySelectorAll('li').length : 0;
+    var mobileItems = mobileList ? mobileList.querySelectorAll('li').length : 0;
 
-    // مرتب‌سازی بر اساس ترتیب دلخواه
-    for (var i = 0; i < desiredOrder.length; i++) {
-        var cityName = desiredOrder[i];
+    console.log('تعداد آیتم‌ها - لیست عادی: ' + listItems + ', لیست موبایل: ' + mobileItems);
 
-        for (var j = 0; j < items.length; j++) {
-            var item = items[j];
-            var spanText = item.querySelector('.city-text div:last-child span')?.textContent.trim() || '';
+    if (listItems > 0 || mobileItems > 0) {
+        isReordered = true;
+        console.log('🎯 شروع مرتب‌سازی نهایی...');
 
-            if (spanText === cityName) {
-                sortedItems.push(item);
-                break;
-            }
+        if (listItems > 0) {
+            reorderHotelList();
         }
-    }
-
-    // اضافه کردن آیتم‌های اضافی در انتها
-    for (var i = 0; i < items.length; i++) {
-        var spanText = items[i].querySelector('.city-text div:last-child span')?.textContent.trim() || '';
-        if (!desiredOrder.includes(spanText)) {
-            sortedItems.push(items[i]);
+        if (mobileItems > 0) {
+            reorderMobileDestinations();
         }
-    }
 
-    // بازسازی لیست
-    container.innerHTML = '';
-    for (var i = 0; i < sortedItems.length; i++) {
-        container.appendChild(sortedItems[i]);
+        console.log('✅ مرتب‌سازی با موفقیت انجام شد!');
     }
-
-    console.log('لیست مرتب شد! ترتیب:', desiredOrder);
 }
 
-// اجرا بعد از لود صفحه
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(reorderMobileDestinations, 100);
-});
+// هر 1 ثانیه یکبار چک کن
+var interval = setInterval(checkAndReorder, 1000);
 
-// اجرا بعد از کلیک روی جستجو
-document.addEventListener('click', function(e) {
-    if (e.target.id === 'autoComplateSearchIN_2' ||
-        e.target.closest('#autoComplateSearchIN_2')) {
-        setTimeout(reorderMobileDestinations, 200);
+// بعد از 15 ثانیه stop کن
+setTimeout(function() {
+    clearInterval(interval);
+    if (!isReordered) {
+        console.log('⚠️ مرتب‌سازی انجام نشد - لیست پیدا نشد');
+    } else {
+        console.log('✅ فرآیند مرتب‌سازی متوقف شد');
     }
+}, 15000);
+
+// همچنین وقتی روی input کلیک شد، دوباره چک کن
+var searchInput = document.getElementById('autoComplateSearchIN_2');
+if (searchInput) {
+    searchInput.addEventListener('click', function() {
+        console.log('🖱️ کلیک روی جستجو - ریست کردن وضعیت مرتب‌سازی');
+        isReordered = false;
+        setTimeout(function() {
+            checkAndReorder();
+        }, 500);
+    });
+}
+
+// اجرای اولیه بعد از لود صفحه
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 صفحه لود شد - شروع فرآیند مرتب‌سازی');
+    setTimeout(function() {
+        checkAndReorder();
+    }, 500);
 });

@@ -11,6 +11,7 @@
   <EnterHotelName>Enter the name hotel</EnterHotelName>
   <FlightRepetition>Eliminate duplicate flights</FlightRepetition>
   <FlightRepetitionCount>Duplicate flight added to search results</FlightRepetitionCount>
+  <PhoneNumberBuyer>The mobile number you used to make the purchase.</PhoneNumberBuyer>
 
   <Namepersion>Name (Farsi only)</Namepersion>
   <Nameenglish>Name</Nameenglish>

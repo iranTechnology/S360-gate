@@ -39,7 +39,7 @@ $(document).ready(function () {
         }
     });
 
-
+    AlertUserCancel()
 });
 
 function ModalShowBook(RequestNumber) {
@@ -1631,8 +1631,52 @@ function setActiveDateButton(activeButton) {
     activeButton.classList.add('active');
 
 }
-// فیلتر بر اساس تعداد روز قبل
+function AlertUserCancel(){
+    $.ajax({
+        type: 'POST',
+        url: amadeusPath + 'user_ajax.php',
+        data:
+            {
+                flag: 'checkCancellations',
+            },
+        success: function (data) {
+            console.log('data' , data.hasNewCancel)
+            if(data.hasNewCancel){
+                $('#showAlertCancellations')[0].classList.add('d-block');
+            }
+
+        }
+    });
+}
+
+
+
 function filterByDays(days , event) {
+    AlertUserCancel()
+    $.ajax({
+        type: 'POST',
+        url: amadeusPath + 'user_ajax.php',
+        data:
+            {
+                flag: 'checkGRSCredit',
+            },
+        success: function (data) {
+            console.log('data' , data)
+            $('#GRSCredit2').html(data)
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: amadeusPath + 'user_ajax.php',
+        data:
+            {
+                flag: 'checkCityNetCredit',
+            },
+        success: function (data) {
+            $('#CityNetCredit2').html(data)
+        }
+    });
     if (event && event.currentTarget) {
         setActiveDateButton(event.currentTarget);
     } else {
@@ -1808,7 +1852,6 @@ function renderBookingCardsSimple(bookings) {
         const serviceIcon = getCardServiceIcon(serviceType);
         const statusClass = getCardStatusClass(Object.values(booking['status'])[0]);
         const errorData = booking['errorData'] ? booking['errorData'] : ''
-        const errorMessage = errorData?.message_admin
         html += `
             <div class="booking-card">
                 <div class="card-header-service ${serviceClass}">
@@ -1817,7 +1860,7 @@ function renderBookingCardsSimple(bookings) {
                         <span class="service-name">${serviceType}</span>
                     </div>
                      <div class="">
-                        <div class="info-value"  data-status="${Object.values(booking['status'])[0]}" data-error-message="${errorMessage}"  onmouseover="showErrorMessage(this)">
+                        <div class="info-value"  data-status="${Object.values(booking['status'])[0]}" data-error-message="${errorData.message_admin}"  onmouseover="showErrorMessage(this)">
                             <span class="status-badge ${statusClass}">${escapeCardHtml(booking['status'][0] || 'نامشخص')}</span>
                         </div>
                     </div>
@@ -1853,19 +1896,18 @@ function renderBookingCardsSimple(bookings) {
 }
 function showErrorMessage(element) {
     const status = element.getAttribute('data-status');
-    const errorMessage = element.getAttribute('data-error-message');
-    if (status && status.includes('خطای مشخص') && errorMessage != undefined && errorMessage != '') {
+    let errorMessage = element.getAttribute('data-error-message');
+    if (status.includes('خطای مشخص')) {
         // حذف tooltip قبلی اگر وجود داشت
         const existingTooltip = document.querySelector('.custom-tooltip');
         if (existingTooltip) existingTooltip.remove();
-
         // ایجاد المنت tooltip
         let tooltip = document.createElement('div');
         tooltip.className = 'custom-tooltip';
         tooltip.innerHTML = `
             <div style="display: flex; align-items: center; gap: 8px;">
                 <span style="font-size: 16px;">⚠️</span>
-                <span${errorMessage}</span>
+                <span>${errorMessage}</span>
             </div>
             <div style="
                 position: absolute;

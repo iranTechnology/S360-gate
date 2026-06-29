@@ -44,26 +44,26 @@ class bookhotelshow extends baseController
         $result = $ModelBase->select($sql);
         return $result;
     }
-	
-	/**
-	 * @param $AgencyId
-	 *
-	 * @return array
-	 */
-	public function listCounter($AgencyId)
+
+    /**
+     * @param $AgencyId
+     *
+     * @return array
+     */
+    public function listCounter($AgencyId)
     {
-        $Model =  Load::library('Model');
+        $Model = Load::library('Model');
         $sql = " SELECT * FROM members_tb WHERE fk_agency_id='{$AgencyId}' ORDER BY id DESC";
         $counters = $Model->select($sql);
         return $counters;
     }
-	
-	/**
-	 * @param $client_id
-	 *
-	 * @return string
-	 */
-	public function nameAgency($client_id)
+
+    /**
+     * @param $client_id
+     *
+     * @return string
+     */
+    public function nameAgency($client_id)
     {
         if (!empty($client_id)) {
 
@@ -75,14 +75,14 @@ class bookhotelshow extends baseController
             return 'ندارد';
         }
     }
-	
-	/**
-	 * @param null $bank_dir
-	 * @param $client_id
-	 *
-	 * @return string
-	 */
-	public function namebank($bank_dir = null, $client_id)
+
+    /**
+     * @param null $bank_dir
+     * @param $client_id
+     *
+     * @return string
+     */
+    public function namebank($bank_dir = null, $client_id)
     {
 
         if ($bank_dir != null && !empty($bank_dir)) {
@@ -96,14 +96,14 @@ class bookhotelshow extends baseController
             return 'ندارد';
         }
     }
-	
-	/**
-	 * @param null $bank_dir
-	 * @param $client_id
-	 *
-	 * @return string
-	 */
-	public function numberPortBnak($bank_dir = null, $client_id)
+
+    /**
+     * @param null $bank_dir
+     * @param $client_id
+     *
+     * @return string
+     */
+    public function numberPortBnak($bank_dir = null, $client_id)
     {
 
         if ($bank_dir != null && !empty($bank_dir)) {
@@ -124,37 +124,38 @@ class bookhotelshow extends baseController
         $time = date("H:i", strtotime($num));
         return $time;
     }
-	
-	public function checkForExpired() {
-		$time = strtotime('-10 minutes');
-		$time2 = strtotime('-1 day');
+
+    public function checkForExpired()
+    {
+        $time = strtotime('-10 minutes');
+        $time2 = strtotime('-1 day');
 //		return $time2;
-		$condition = "admin_checked = 0 AND status = 'OnRequest' AND creation_date_int >= '{$time2}' AND creation_date_int  <= '{$time}'";
-		$data['status'] = 'Cancelled';
-		$sqlSelect = "SELECT id,client_id FROM report_hotel_tb WHERE {$condition}";
+        $condition = "admin_checked = 0 AND status = 'OnRequest' AND creation_date_int >= '{$time2}' AND creation_date_int  <= '{$time}'";
+        $data['status'] = 'Cancelled';
+        $sqlSelect = "SELECT id,client_id FROM report_hotel_tb WHERE {$condition}";
 //		return $time2;
-		
-		/** @var ModelBase $ModelBase */
-		$ModelBase = Load::library('ModelBase');
-		$ModelBase->setTable('report_hotel_tb');
-		/** @var Model $Model */
-		$Model = Load::library('Model');
-		$expiredBook = $ModelBase->select($sqlSelect);
-		if($expiredBook){
+
+        /** @var ModelBase $ModelBase */
+        $ModelBase = Load::library('ModelBase');
+        $ModelBase->setTable('report_hotel_tb');
+        /** @var Model $Model */
+        $Model = Load::library('Model');
+        $expiredBook = $ModelBase->select($sqlSelect);
+        if ($expiredBook) {
             /** @var admin $admin */
-			$admin = Load::controller('admin');
-			
-			$updateAgency = $admin->ConectDbClient('', $expiredBook[0]['client_id'], 'Update', $data, 'book_hotel_local_tb', $condition);
-			
-			$updateAdmin = $ModelBase->update($data,$condition);
-			if($updateAgency && $updateAdmin){
-                return 'Success1|'.$sqlSelect;
+            $admin = Load::controller('admin');
+
+            $updateAgency = $admin->ConectDbClient('', $expiredBook[0]['client_id'], 'Update', $data, 'book_hotel_local_tb', $condition);
+
+            $updateAdmin = $ModelBase->update($data, $condition);
+            if ($updateAgency && $updateAdmin) {
+                return 'Success1|' . $sqlSelect;
             }
-            return 'Success2|'.$sqlSelect;
-		}
-		return 'Error|'.$sqlSelect;
+            return 'Success2|' . $sqlSelect;
+        }
+        return 'Error|' . $sqlSelect;
     }
-    
+
     public function createExcelFile($param)
     {
 
@@ -189,13 +190,13 @@ class bookhotelshow extends baseController
                 'وضعیت'];
 
 
-            $firstRowWidth = [10, 10, 20, 30, 15, 15, 15, 15,10, 15,15, 15,
-                10,10, 40,15, 15, 15, 15, 15, 20, 15, 10];
+            $firstRowWidth = [10, 10, 20, 30, 15, 15, 15, 15, 10, 15, 15, 15,
+                10, 10, 40, 15, 15, 15, 15, 15, 20, 15, 10];
 
-	        /** @var createExcelFile $objCreateExcelFile */
-	        $objCreateExcelFile = Load::controller('createExcelFile');
-            $resultExcel        = $objCreateExcelFile->create($resultBook, $firstRowColumnsHeading , $firstRowWidth);
-            if ($resultExcel['message'] == 'success'){
+            /** @var createExcelFile $objCreateExcelFile */
+            $objCreateExcelFile = Load::controller('createExcelFile');
+            $resultExcel = $objCreateExcelFile->create($resultBook, $firstRowColumnsHeading, $firstRowWidth);
+            if ($resultExcel['message'] == 'success') {
                 return 'success|' . $resultExcel['fileName'];
             } else {
                 return 'error|متاسفانه در ساخت فایل اکسل مشکلی پیش آمده. لطفا مجددا تلاش کنید';
@@ -210,8 +211,7 @@ class bookhotelshow extends baseController
     }
 
 
-
-    public function listBookHotelLocal($reportForExcel = null, $intendedUser=null)
+    public function listBookHotelLocal($reportForExcel = null, $intendedUser = null)
     {
 
         $date = dateTimeSetting::jdate("Y-m-d", time());
@@ -219,56 +219,80 @@ class bookhotelshow extends baseController
         $date_now_int_start = dateTimeSetting::jmktime(0, 0, 0, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
         $date_now_int_end = dateTimeSetting::jmktime(23, 59, 59, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
 
-        if(TYPE_ADMIN == '1'){
-            $tableName ='report_hotel_tb';
-            $FiledExtera='creation_date_int';
-        }
-        else{
-            $tableName ='book_hotel_local_tb';
-            $FiledExtera="agency_id,creation_date_int";
+        if (TYPE_ADMIN == '1') {
+            $tableName = 'report_hotel_tb';
+            $FiledExtera = 'creation_date_int';
+        } else {
+            $tableName = 'book_hotel_local_tb';
+            $FiledExtera = "agency_id,creation_date_int";
         }
 
         //$tableName = (TYPE_ADMIN == '1') ? 'report_hotel_tb' : 'book_hotel_local_tb';
         $sql = "
             SELECT
-                   id,
-                passenger_name,
-                passenger_family,
-                city_name,
-                hotel_id,
-                hotel_name,
-                payment_date,
-                agency_name,
-                number_night,
-                start_date,
-                end_date,
-                factor_number,
-                type_application,
-                passenger_leader_room_fullName,
-                `status`,
-                request_number,
-                pnr,
-                payment_type,
-                tracking_code_bank,
-                total_price,
-                total_price_api,
-                client_id,
-                member_name,
-                passenger_leader_room_fullName,
-                member_mobile,
-                member_id,
-                agency_commission,
-                type_of_price_change,
-                agency_commission_price_type,
-                irantech_commission,
-                services_discount,
-                serviceTitle,
-                request_from,
-                manual_book,
-                hotel_payments_price,
+                   {$tableName}.id,
+                {$tableName}.passenger_name,
+                {$tableName}.passenger_family,
+                {$tableName}.city_name,
+                {$tableName}.hotel_id,
+                {$tableName}.hotel_name,
+                {$tableName}.payment_date,
+                {$tableName}.agency_name,
+                {$tableName}.number_night,
+                {$tableName}.start_date,
+                {$tableName}.end_date,
+                {$tableName}.factor_number,
+                {$tableName}.type_application,
+                {$tableName}.passenger_leader_room_fullName,
+                {$tableName}.`status`,
+                {$tableName}.request_number,
+                {$tableName}.pnr,
+                {$tableName}.payment_type,
+                {$tableName}.tracking_code_bank,
+                {$tableName}.total_price,
+                {$tableName}.total_price_api,
+                {$tableName}.client_id,
+                {$tableName}.member_name,
+                {$tableName}.passenger_leader_room_fullName,
+                {$tableName}.member_mobile,
+                {$tableName}.member_id,
+                {$tableName}.agency_commission,
+                {$tableName}.type_of_price_change,
+                {$tableName}.agency_commission_price_type,
+                {$tableName}.irantech_commission,
+                {$tableName}.services_discount,
+                {$tableName}.serviceTitle,
+                {$tableName}.request_from,
+                {$tableName}.manual_book,
+                {$tableName}.hotel_payments_price,
+
+            ";
+
+        if (TYPE_ADMIN != '1') {
+            $sql .= "
+                MAX(dcu.discountCode) AS discountCode,
+                MAX(dct.amount) AS discount_amount,
+            ";
+        }
+
+        $sql .= "
                 {$FiledExtera}
             FROM
                 {$tableName}
+            ";
+
+        if (TYPE_ADMIN != '1') {
+            $sql .= "
+                        LEFT JOIN discount_codes_used_tb dcu
+ON TRIM(dcu.factorNumber) = TRIM({$tableName}.factor_number)
+       AND dcu.status = 'success'
+
+            LEFT JOIN discount_codes_tb dct
+            ON dct.code = dcu.discountCode
+            ";
+        }
+
+        $sql .= "
             WHERE
                 1 = 1 
             ";
@@ -284,45 +308,44 @@ class bookhotelshow extends baseController
             }
         }*/
 
-        if(!empty($intendedUser['member_id'])){
-            $sql.=' AND member_id='.$intendedUser['member_id'].' ';
+        if (!empty($intendedUser['member_id'])) {
+            $sql .= ' AND member_id=' . $intendedUser['member_id'] . ' ';
         }
 
-        if(!empty($intendedUser['agency_id'])){
-            $sql.=' AND agency_id='.$intendedUser['agency_id'].' ';
+        if (!empty($intendedUser['agency_id'])) {
+            $sql .= ' AND agency_id=' . $intendedUser['agency_id'] . ' ';
         }
-        if(!empty($_POST['member_id'])){
-            $sql.=' AND member_id='.$_POST['member_id'].' ';
+        if (!empty($_POST['member_id'])) {
+            $sql .= ' AND member_id=' . $_POST['member_id'] . ' ';
         }
-        if(!empty($_POST['hotel_id'])){
-            $sql.=' AND hotel_id='.$_POST['hotel_id'].' ';
+        if (!empty($_POST['hotel_id'])) {
+            $sql .= ' AND hotel_id=' . $_POST['hotel_id'] . ' ';
         }
-        if(!empty($_POST['agency_id'])){
-            $sql.=' AND agency_id='.$_POST['agency_id'].' ';
+        if (!empty($_POST['agency_id'])) {
+            $sql .= ' AND agency_id=' . $_POST['agency_id'] . ' ';
         }
-        if (  empty( $_POST['request_number'] ) &&
-            empty( $_POST['factor_number'] ) &&
-            empty( $_POST['pnr'] ) &&
-            empty( $_POST['request_number'] ) &&
-            empty( $_POST['passenger_national_code'] ) &&
-            empty( $_POST['DateFlight'] ) ) {
-            if ( ! empty( $_POST['date_of'] ) && ! empty( $_POST['to_date'] ) ) {
+        if (empty($_POST['request_number']) &&
+            empty($_POST['factor_number']) &&
+            empty($_POST['pnr']) &&
+            empty($_POST['request_number']) &&
+            empty($_POST['passenger_national_code']) &&
+            empty($_POST['DateFlight'])) {
+            if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
 
-                $date_of     = explode( '-', $_POST['date_of'] );
-                $date_to     = explode( '-', $_POST['to_date'] );
-                $date_of_int = dateTimeSetting::jmktime( 0, 0, 0, $date_of[1], $date_of[2], $date_of[0] );
-                $date_to_int = dateTimeSetting::jmktime( 23, 59, 59, $date_to[1], $date_to[2], $date_to[0] );
-                $sql         .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
-            }
-            else {
+                $date_of = explode('-', $_POST['date_of']);
+                $date_to = explode('-', $_POST['to_date']);
+                $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
+                $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
+                $sql .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
+            } else {
 
                 $sql .= "AND creation_date_int >= '{$date_now_int_start}' AND creation_date_int  <= '{$date_now_int_end}'";
 
             }
         }
         if (!empty($_POST['reserve_date_of']) && !empty($_POST['reserve_to_date'])) {
-                $sql .= " AND start_date >= '{$_POST['reserve_date_of']}'";
-                $sql .= " AND end_date  <= '{$_POST['reserve_to_date']}'";
+            $sql .= " AND start_date >= '{$_POST['reserve_date_of']}'";
+            $sql .= " AND end_date  <= '{$_POST['reserve_to_date']}'";
         }
         if (!empty($_POST['status'])) {
 
@@ -339,7 +362,7 @@ class bookhotelshow extends baseController
                 $sql .= " AND type_application='api' ";
             } else if ($_POST['type_app'] == 'reservation') {
                 $sql .= " AND type_application='reservation' ";
-            }else if ($_POST['type_app'] == 'externalApi') {
+            } else if ($_POST['type_app'] == 'externalApi') {
                 $sql .= " AND type_application='externalApi' ";
             }
         }
@@ -384,24 +407,21 @@ class bookhotelshow extends baseController
             $sql .= " AND end_date ='{$_POST['EndDate']}'";
 
         }
+        /* 1405_2_30  غیرفعال شد
+         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
+         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
 
-        $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
+                    $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
-        if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
-
-            $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
-
-            $sql .= " AND serviceTitle IN ({$check_access})";
-        }
+                    $sql .= " AND serviceTitle IN ({$check_access})";
+                }*/
         $sql .= " GROUP BY factor_number ORDER BY creation_date_int DESC ";
-
         if (TYPE_ADMIN == '1') {
 
             $ModelBase = Load::library('ModelBase');
             $BookShow = $ModelBase->select($sql);
 
         } else {
-
             $Model = Load::library('Model');
             $BookShow = $Model->select($sql);
         }
@@ -421,27 +441,27 @@ class bookhotelshow extends baseController
             $numberColumn = $k + 2;
 
             $expPaymentDate = [];
-            if (!empty($book['payment_date'])){
-
+            if (!empty($book['payment_date']) && LANG_PANEL_ADMIN == 'fa') {
                 $paymentDate = functions::set_date_payment($book['payment_date']);
-
                 $expPaymentDate = explode(" ", $paymentDate);
-                
+            } else if (!empty($book['payment_date']) && LANG_PANEL_ADMIN != 'fa') {
+                $paymentDate = $book['payment_date'];
+                $expPaymentDate = explode(" ", $paymentDate);
             }
 
-            if (!empty(rtrim($book['member_name']))){
+            if (!empty(rtrim($book['member_name']))) {
                 $memberName = $book['member_name'];
             } else {
                 $memberName = $book['passenger_leader_room_fullName'];
             }
-            
-            switch ($book['type_application']){
+
+            switch ($book['type_application']) {
                 case 'reservation':
                     $type_application = 'هتل رزرواسیون';
                     break;
                 case 'api':
                     $type_application = ($book['serviceTitle'] == 'PrivateLocalHotel') ? 'هتل اختصاصی داخلی' : 'هتل اشتراکی داخلی';
-	                break;
+                    break;
                 case 'externalApi':
                     $type_application = ($book['serviceTitle'] == 'PrivatePortalHotel') ? 'هتل اختصاصی خارجی' : 'هتل اشتراکی خارجی';
                     break;
@@ -463,9 +483,9 @@ class bookhotelshow extends baseController
             } else {
                 $service_type = '<del> اشتراکی - اختصاصی</del>';
             }
-            
 
-            switch ($book['status']){
+
+            switch ($book['status']) {
                 case 'BookedSuccessfully':
                     $status = 'رزرو قطعی';
                     break;
@@ -479,7 +499,7 @@ class bookhotelshow extends baseController
                     $status = 'نامشخص';
                     break;
             }
-
+            $paymentType = $book['payment_type'];
             $this->totalPrice = 0;
             $room = $this->InformationOfEachReservation($book['factor_number']);
 
@@ -487,22 +507,22 @@ class bookhotelshow extends baseController
             $this->totalPrice += $room['totalPrice'];
             $this->price += $room['price'];
 
-            if($book['type_application'] == 'externalApi' || ($book['type_application'] == 'api' && substr($book['hotel_id'], 0,2) == '17')){
+            if ($book['type_application'] == 'externalApi' || ($book['type_application'] == 'api' && substr($book['hotel_id'], 0, 2) == '17')) {
                 $this->totalPrice = $room['totalPrice'];
                 $this->price = $room['price'];
             }
             $this->priceForMa += $room['priceForMa'];
             $agencyCommission = '';
             if ($book['agency_commission_price_type'] == 'cost') {
-                $agencyCommission =  number_format($room['agencyCommission'] * $room['nights']);
+                $agencyCommission = number_format($room['agencyCommission'] * $room['nights']);
                 $this->agencyCommissionCost += $agencyCommission;
             }
-            if ($book['agency_commission_price_type'] == 'percent'){
+            if ($book['agency_commission_price_type'] == 'percent') {
 //                $agencyCommission = $room['agencyCommission'] . ' % ';
-                $agencyCommission = number_format( $room['onlinePrice'] * $room['agencyCommission'] / 100);
+                $agencyCommission = number_format($room['onlinePrice'] * $room['agencyCommission'] / 100);
 
                 $this->agencyCommissionPercent += $room['agencyCommission'];
-                $agencyCommission .= ' - <small class="badge badge-xs badge-inverse"> '.$room['agencyCommission'].'% </small>';
+                $agencyCommission .= ' - <small class="badge badge-xs badge-inverse"> ' . $room['agencyCommission'] . '% </small>';
             }
 
 //            $agencyCommission .= '<code style="display:none">'.json_encode(array('book'=>$book,'room'=>$room),256|64).'</code>';
@@ -524,23 +544,43 @@ class bookhotelshow extends baseController
             $dataRows[$k]['member_mobile'] = $book['member_mobile'];
             $dataRows[$k]['payment_date'] = $expPaymentDate[0];
             $dataRows[$k]['payment_time'] = $expPaymentDate[1];
-            $dataRows[$k]['city_name'] = $book['city_name'];
+            $dataRows[$k]['payment_type'] = $paymentType;
+            if (LANG_PANEL_ADMIN == 'fa') {
+                $dataRows[$k]['city_name'] = $book['city_name'];
+            } else {
+                $OriginCity = $this->getModel('airportModel')
+                    ->get(['DepartureCode'])
+                    ->where('DepartureCityFa', $book['city_name'])
+                    ->find();
+                $dataRows[$k]['city_name'] = $OriginCity['DepartureCode'];
+            }
             $dataRows[$k]['hotel_name'] = $book['hotel_name'];
-            $dataRows[$k]['start_date'] = $book['start_date'];
-            $dataRows[$k]['end_date'] = $book['end_date'];
+            if (LANG_PANEL_ADMIN == 'fa') {
+                $dataRows[$k]['start_date'] = $book['start_date'];
+                $dataRows[$k]['end_date'] = $book['end_date'];
+            } else {
+                $start_dateDateExplode = explode('-', $book['start_date']);
+                $start_date = dateTimeSetting::jalali_to_gregorian($start_dateDateExplode[0], $start_dateDateExplode[1], $start_dateDateExplode[2], '-');
+
+                $end_dateDateExplode = explode('-', $book['end_date']);
+                $end_date = dateTimeSetting::jalali_to_gregorian($end_dateDateExplode[0], $end_dateDateExplode[1], $end_dateDateExplode[2], '-');
+
+                $dataRows[$k]['start_date'] = $start_date;
+                $dataRows[$k]['end_date'] = $end_date;
+            }
             $dataRows[$k]['number_night'] = $book['number_night'];
             $dataRows[$k]['room_count'] = $room['roomCount'];
             $dataRows[$k]['room_excel'] = str_replace("&nbsp;", "", $room['room']);
 
 
-            $dataRows[$k]['total_price_api'] =$book['total_price_api'];
+            $dataRows[$k]['total_price_api'] = $book['total_price_api'];
             $dataRows[$k]['service_type'] = $service_type;
             $dataRows[$k]['total_price'] = $this->totalPrice;
 
             $dataRows[$k]['agency_commission'] = 0;
             $dataRows[$k]['price'] = 0;
             $dataRows[$k]['onlinePrice'] = 0;
-            if ($book['type_application'] == 'api' || $book['type_application'] == 'api_app' || $book['type_application'] == 'externalApi'){
+            if ($book['type_application'] == 'api' || $book['type_application'] == 'api_app' || $book['type_application'] == 'externalApi') {
                 $dataRows[$k]['agency_commission'] = $agencyCommission;
                 $dataRows[$k]['price'] = $room['price'];
                 $dataRows[$k]['onlinePrice'] = $room['onlinePrice'];
@@ -549,11 +589,12 @@ class bookhotelshow extends baseController
             $dataRows[$k]['type_application_fa'] = $type_application;
             $dataRows[$k]['manual_book'] = $book['manual_book'];
             $dataRows[$k]['status_fa'] = $status;
+            if (TYPE_ADMIN != '1') {
+                $dataRows[$k]['discount_amount'] = $book['discount_amount'];
+            }
 
 
-
-
-            if (!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel == 'no')){
+            if (!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel == 'no')) {
                 $dataRows[$k]['hotel_payments_price'] = $book['hotel_payments_price'];
                 $dataRows[$k]['total_price_without_discount'] = $room['totalPriceWithoutDiscount'];
                 $dataRows[$k]['priceForMa'] = $room['priceForMa'];
@@ -568,8 +609,6 @@ class bookhotelshow extends baseController
                 $dataRows[$k]['services_discount'] = $book['services_discount'];
 
             }
-
-
 
 
         }
@@ -589,7 +628,7 @@ class bookhotelshow extends baseController
                           SUM(agency_commission) as total_agency_commission
                     FROM report_hotel_tb WHERE factor_number='{$factorNumber}' GROUP BY room_id ";
             $book = $ModelBase->select($sql);
-        } else{
+        } else {
             Load::autoload('Model');
             $Model = new Model();
             $sql = "SELECT *,
@@ -601,8 +640,14 @@ class bookhotelshow extends baseController
             $book = $Model->select($sql);
         }
 
-        $room = ''; $price = 0; $bordPrice = 0; $markup = 0; $roomCount = 0; $onlinePrice = 0; $irantech_commission = 0;
-        foreach ($book as $k => $val){
+        $room = '';
+        $price = 0;
+        $bordPrice = 0;
+        $markup = 0;
+        $roomCount = 0;
+        $onlinePrice = 0;
+        $irantech_commission = 0;
+        foreach ($book as $k => $val) {
 
             $room .= '◄' . $val['room_count'] . ' باب  ' . $val['room_name'] . '&nbsp;&nbsp;&nbsp;&nbsp;';
             $roomCount += $val['room_count'];
@@ -611,15 +656,15 @@ class bookhotelshow extends baseController
             $bordPrice = $bordPrice + $val['total_room_bord_price'];
             $onlinePrice = $val['total_room_online_price'];
             $markup = $markup + $val['total_agency_commission'];
-	        $irantech_commission = $val['irantech_commission'];
-	        if($val['type_application'] == 'externalApi'){
-		        $price = $val['room_price'];
-		        $onlinePrice = $val['room_online_price'];
-		        $totalPriceWithoutDiscount = $val['room_bord_price'];
-		        $irantech_commission = $irantech_commission + $val['irantech_commission'];
-		
-		        //            $resultRoom['agencyCommission'] = $book[0]['total_agency_commission'];
-	        }
+            $irantech_commission = $val['irantech_commission'];
+            if ($val['type_application'] == 'externalApi') {
+                $price = $val['room_price'];
+                $onlinePrice = $val['room_online_price'];
+                $totalPriceWithoutDiscount = $val['room_bord_price'];
+                $irantech_commission = $irantech_commission + $val['irantech_commission'];
+
+                //            $resultRoom['agencyCommission'] = $book[0]['total_agency_commission'];
+            }
         }
 
         $resultRoom['room'] = htmlspecialchars_decode($room);
@@ -634,7 +679,7 @@ class bookhotelshow extends baseController
         $resultRoom['onlinePrice'] = $onlinePrice;
         $resultRoom['irantech_commission'] = $irantech_commission;
         $resultRoom['totalPriceWithoutDiscount'] = $totalPriceWithoutDiscount;
-       
+
         return $resultRoom;
     }
 
@@ -658,7 +703,7 @@ class bookhotelshow extends baseController
                           passenger_leader_room_fullName, `status`, request_number, pnr,
                           payment_date, payment_type, tracking_code_bank, total_price, member_id,
                           status_confirm_hotel, type_application
-                    FROM {$nameTable} 
+                    FROM {$nameTable}
                     WHERE 1=1
                     ";*/
         $sql = "SELECT
@@ -679,7 +724,7 @@ class bookhotelshow extends baseController
             $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             $sql .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
 
-        }else {
+        } else {
             $sql .= "AND creation_date_int >= '{$date_now_int_start}' AND creation_date_int  <= '{$date_now_int_end}'";
         }
 
@@ -689,11 +734,11 @@ class bookhotelshow extends baseController
                 $sql .= " AND status='OnRequest' ";
             } else if ($_POST['status'] == 'Cancelled') {
                 $sql .= " AND status='Cancelled' ";
-            }else if ($_POST['status'] == 'PreReserve') {
+            } else if ($_POST['status'] == 'PreReserve') {
                 $sql .= " AND status='PreReserve' ";
             }
-        }else {
-            $sql .=" AND (`status`='OnRequest' OR `status`='Cancelled' OR `status`='PreReserve') ";
+        } else {
+            $sql .= " AND (`status`='OnRequest' OR `status`='Cancelled' OR `status`='PreReserve') ";
         }
 
         if (!empty($_POST['factor_number'])) {
@@ -711,7 +756,7 @@ class bookhotelshow extends baseController
             $Model = Load::library('Model');
             $BookShow = $Model->select($sql);
         }
-        
+
 
         $this->CountHotel = count($BookShow);
         return $BookShow;
@@ -723,7 +768,7 @@ class bookhotelshow extends baseController
         $sql_members = "SELECT fk_counter_type_id, name, family FROM members_tb WHERE id='{$id}' ";
         $members = $Model->Load($sql_members);
 
-        if (!empty($members['fk_counter_type_id'])){
+        if (!empty($members['fk_counter_type_id'])) {
 
             $ModelBase = Load::library('ModelBase');
             $sql_counter_type = "SELECT name FROM counter_type_tb WHERE id='{$members['fk_counter_type_id']}' ";
@@ -731,7 +776,7 @@ class bookhotelshow extends baseController
 
             return $counter_type['name'] . ' ( ' . $members['name'] . ' ' . $members['family'] . ')';
 
-        }else {
+        } else {
             return 'مسافرآنلاین';
         }
 
@@ -793,7 +838,7 @@ class bookhotelshow extends baseController
         if (!empty($info_hotel)) {
 
 
-            $printBoxCheck .='';
+            $printBoxCheck .= '';
 
             $printBoxCheck .= ' <!DOCTYPE html>
             <html>
@@ -801,7 +846,7 @@ class bookhotelshow extends baseController
                     <title>View hotel file pdf</title>
                 </head>
                 <body>';
-            $printBoxCheck .='<div style="margin:30px auto 0;background-color: #fff;line-height: 24px; direction: ltr;font-family: sans-serif;">
+            $printBoxCheck .= '<div style="margin:30px auto 0;background-color: #fff;line-height: 24px; direction: ltr;font-family: sans-serif;">
                         <div style="margin:30px auto 0;background-color: #fff;">
             <div style="position: relative;font-size: 18px;margin: 10px auto;color: #171717;text-align: center;padding: 0 15px;background: #fff;width: 91%; ">
             	<span style="background: #fff;position: relative;z-index: 1;padding: 0 15px;font-weight: bold;">Hotel voucher</span>
@@ -812,7 +857,7 @@ class bookhotelshow extends baseController
             $passenger_number = 1;
             foreach ($info_hotel as $info) {
 
-                if ($c==0){
+                if ($c == 0) {
                     $c++;
 
                     $printBoxCheck .= '
@@ -825,52 +870,52 @@ class bookhotelshow extends baseController
                         <div style="width: 50%;position: relative;float: left;min-height: 1px;padding-left: .9375rem;box-sizing: border-box;">
                             <span style="font-weight: bold;">Booking date : </span><span>';
                     $printBoxCheck .= functions::ConvertToMiladi($payDate[0]);
-                    $printBoxCheck .='</span>
+                    $printBoxCheck .= '</span>
                         </div>
                     </div>
 
                     <div class="row" style="padding: 8px;margin: 0;">
                         <div style="width: 65%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;der-box;">
                             <span style="font-weight: bold;">Hotel Name : </span><span>';
-                    $printBoxCheck .= !empty($info['hotel_name_en']) ? $info['hotel_name_en']: $info['hotel_name'];
+                    $printBoxCheck .= !empty($info['hotel_name_en']) ? $info['hotel_name_en'] : $info['hotel_name'];
                     $printBoxCheck .= '</span>' .
                         '<span style="font-weight: bold;">Check-in : </span><span style="font: normal 12px/28px Yekan,Tahoma, Geneva, sans-serif;">';
                     $printBoxCheck .= functions::ConvertToMiladi($info['start_date']);
-                    $printBoxCheck .='</span>';
+                    $printBoxCheck .= '</span>';
 //                    $printBoxCheck .= $info['hotel_entryHour'];
 
-                    $printBoxCheck .='<br><span style="font-weight: bold;">Check-out : </span><span style="font: normal 12px/28px Yekan,Tahoma, Geneva, sans-serif;">';
+                    $printBoxCheck .= '<br><span style="font-weight: bold;">Check-out : </span><span style="font: normal 12px/28px Yekan,Tahoma, Geneva, sans-serif;">';
                     $printBoxCheck .= functions::ConvertToMiladi($info['end_date']);
 //                    $printBoxCheck .='</span><span style="">  until : </span><span>';
 //                    $printBoxCheck .= $info['hotel_leaveHour'];
 
-                    $printBoxCheck .='</span>';
+                    $printBoxCheck .= '</span>';
 
-                    $printBoxCheck .='<br><span style="font-weight: bold;">Hotel Star : </span><span>';
+                    $printBoxCheck .= '<br><span style="font-weight: bold;">Hotel Star : </span><span>';
                     $printBoxCheck .= $info['hotel_starCode'];
-                    $printBoxCheck .='</span>';
-                    $printBoxCheck .='<br><span style="font-weight: bold;">Telephone : </span><span>';
+                    $printBoxCheck .= '</span>';
+                    $printBoxCheck .= '<br><span style="font-weight: bold;">Telephone : </span><span>';
                     $printBoxCheck .= $info['hotel_telNumber'];
-                    $printBoxCheck .='</span>';
-                    $printBoxCheck .='<br><span style="padding-left: 1rem;font-weight: bold; direction: ltr; text-align: right;">Address : </span><span>';
-                    $printBoxCheck .= !empty($info['hotel_address_en']) ? $info['hotel_address_en']  : $info['hotel_address'];
+                    $printBoxCheck .= '</span>';
+                    $printBoxCheck .= '<br><span style="padding-left: 1rem;font-weight: bold; direction: ltr; text-align: right;">Address : </span><span>';
+                    $printBoxCheck .= !empty($info['hotel_address_en']) ? $info['hotel_address_en'] : $info['hotel_address'];
                     if (!empty($info['hotel_location'])) {
 //                        $t = '24.8583526611,67.0242004395';
-                            $lat_lng = json_decode($info['hotel_location'],true);
-                            $lat = $lat_lng['latitude'];
-                            $lng = $lat_lng['longitude'];
-                            $link = "https://www.google.com/maps/@$lat,$lng,16z";
-                        $printBoxCheck .= '<br><span style="font-weight: bold">GPS Coordinate :</span> '.implode(array_values($lat_lng));
-                        $printBoxCheck .= '<br><a target="_blank" href="'.$link.'">View on map</a>';
+                        $lat_lng = json_decode($info['hotel_location'], true);
+                        $lat = $lat_lng['latitude'];
+                        $lng = $lat_lng['longitude'];
+                        $link = "https://www.google.com/maps/@$lat,$lng,16z";
+                        $printBoxCheck .= '<br><span style="font-weight: bold">GPS Coordinate :</span> ' . implode(array_values($lat_lng));
+                        $printBoxCheck .= '<br><a target="_blank" href="' . $link . '">View on map</a>';
                     }
-                    $printBoxCheck .='</span>';
-                    $printBoxCheck .='</div>';
-                    $printBoxCheck .='<div style="width: 30%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;box-sizing: border-box;">' .
-                    '<div style="padding: 4px;overflow: hidden;border: 1px solid #eee; border-radius: 2px;"><img alt="'.($info['hotel_pictures']).'" style="max-width: 100%" src="'.($info['hotel_pictures']).'" /></div>' .
-                    '</div>';
-                    $printBoxCheck .='</div>';
-                    $printBoxCheck .='</div>';
-                    $printBoxCheck .='<div style="border: 1px solid #132f3b;margin: 15px 40px 15px 40px;">
+                    $printBoxCheck .= '</span>';
+                    $printBoxCheck .= '</div>';
+                    $printBoxCheck .= '<div style="width: 30%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;box-sizing: border-box;">' .
+                        '<div style="padding: 4px;overflow: hidden;border: 1px solid #eee; border-radius: 2px;"><img alt="' . ($info['hotel_pictures']) . '" style="max-width: 100%" src="' . ($info['hotel_pictures']) . '" /></div>' .
+                        '</div>';
+                    $printBoxCheck .= '</div>';
+                    $printBoxCheck .= '</div>';
+                    $printBoxCheck .= '<div style="border: 1px solid #132f3b;margin: 15px 40px 15px 40px;">
                       <div class="row" style="padding: 8px;margin: 0;font: inherit;vertical-align: baseline;">
                           <div class="col-md-12 modal-text-center modal-h"
                               style="text-align: right;font-size: 18px !important;width: 100%;font-weight: bold;">
@@ -881,106 +926,106 @@ class bookhotelshow extends baseController
 
                 }
 
-                if ($info['type_application']=='reservation'){
+                if ($info['type_application'] == 'reservation') {
 
-                    if ($info['flat_type']=='DBL'){
+                    if ($info['flat_type'] == 'DBL') {
                         $flatType = 'تخت اصلی';
 
-                    }elseif ($info['flat_type']=='EXT'){
+                    } elseif ($info['flat_type'] == 'EXT') {
                         $flatType = 'تخت اضافه بزرگسال';
 
-                    }elseif ($info['flat_type']=='ECHD'){
+                    } elseif ($info['flat_type'] == 'ECHD') {
                         $flatType = 'تخت اضافه کودک';
                     }
 
 
-                    $printBoxCheck .='
+                    $printBoxCheck .= '
                    <div class="row" style="padding: 8px;margin: 0;">
                         <div style="width: 16.666667%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;padding-left: .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">Room : </span><span>';
-                        $printBoxCheck .= $info['room_name_en'];
-                        $printBoxCheck .='</span>
+                    $printBoxCheck .= $info['room_name_en'];
+                    $printBoxCheck .= '</span>
                         </div>
                         <div style="width: 16.666667%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;padding-left: .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">Bed : </span><span>';
-                        $printBoxCheck .= $flatType;
-                        $printBoxCheck .='</span>
+                    $printBoxCheck .= $flatType;
+                    $printBoxCheck .= '</span>
                         </div>
                         <div style="width: 16.666667%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;padding-left: .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">Full name : </span><span>';
-                        $printBoxCheck .= $info['passenger_name'].' '.$info['passenger_family'];
-                        $printBoxCheck .='</span>
+                    $printBoxCheck .= $info['passenger_name'] . ' ' . $info['passenger_family'];
+                    $printBoxCheck .= '</span>
                         </div>
                         <div style="width: 16.666667%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;padding-left: .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">National code / Passport: </span><span>';
-                        if ($info['passenger_national_code']!=""){
-                            $printBoxCheck .= $info['passenger_national_code'];
-                        }else{
-                            $printBoxCheck .= $info['passportNumber'];
-                        }
-                        $printBoxCheck .='</span>
+                    if ($info['passenger_national_code'] != "") {
+                        $printBoxCheck .= $info['passenger_national_code'];
+                    } else {
+                        $printBoxCheck .= $info['passportNumber'];
+                    }
+                    $printBoxCheck .= '</span>
                         </div>
                         <div style="width: 16.666667%;float: left;position: relative;min-height: 1px;padding-left: .9375rem;padding-left: .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">Date of birth: </span><span>';
 
-                        if ($info['passenger_birthday']!=""){
-                            $printBoxCheck .= $info['passenger_birthday'];
-                        }else{
-                            $printBoxCheck .= $info['passenger_birthday_en'];
-                        }
+                    if ($info['passenger_birthday'] != "") {
+                        $printBoxCheck .= $info['passenger_birthday'];
+                    } else {
+                        $printBoxCheck .= $info['passenger_birthday_en'];
+                    }
 
-                        $printBoxCheck .='</span>
+                    $printBoxCheck .= '</span>
                         </div>
                     </div>';
 
 
-                }else{
+                } else {
 
-                    $printBoxCheck .='
+                    $printBoxCheck .= '
                    <div class="row" style="padding: 8px;margin: 0;">';
-                    if($room_index == $info['room_index'] && $info['room_index'] > 0 ){
-                        $printBoxCheck .='<hr>';
+                    if ($room_index == $info['room_index'] && $info['room_index'] > 0) {
+                        $printBoxCheck .= '<hr>';
                     }
-                        $printBoxCheck .='<div style="width: 100%;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box; float: left;">';
-                        if($room_index == $info['room_index'] ){
-                            $printBoxCheck .='<div style="width: 100%;">';
-                            $printBoxCheck .='<span style="font-weight: bold;">Room '.($info['room_index'] + 1).': </span>';
-                            $printBoxCheck .='<span>';
-                            $printBoxCheck .= !empty( $info['room_name_en']) ?  $info['room_name_en'] :  $info['room_name'];
-                            $printBoxCheck .='</span>';
-                            $printBoxCheck .=' </div>';
+                    $printBoxCheck .= '<div style="width: 100%;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box; float: left;">';
+                    if ($room_index == $info['room_index']) {
+                        $printBoxCheck .= '<div style="width: 100%;">';
+                        $printBoxCheck .= '<span style="font-weight: bold;">Room ' . ($info['room_index'] + 1) . ': </span>';
+                        $printBoxCheck .= '<span>';
+                        $printBoxCheck .= !empty($info['room_name_en']) ? $info['room_name_en'] : $info['room_name'];
+                        $printBoxCheck .= '</span>';
+                        $printBoxCheck .= ' </div>';
 
-                            $printBoxCheck .='<div class="row-header" style="width: 100%;">';
-                            $printBoxCheck .='<div style="width: 1%;float: left;position: relative;min-height: 1px;padding-left: 1rem;"><span style="font-weight: bold;">#</span></div>';
-                            $printBoxCheck .='<div style="width: 30%;float: left;position: relative;min-height: 1px;padding-left: 1rem;"><span style="font-weight: bold;">Full Name</span></div>';
-                            $printBoxCheck .='<div style="width: 15%;float: left;position: relative;min-height: 1px;padding-left: 1rem;"><span style="font-weight: bold;">Passenger Type</span></div>';
+                        $printBoxCheck .= '<div class="row-header" style="width: 100%;">';
+                        $printBoxCheck .= '<div style="width: 1%;float: left;position: relative;min-height: 1px;padding-left: 1rem;"><span style="font-weight: bold;">#</span></div>';
+                        $printBoxCheck .= '<div style="width: 30%;float: left;position: relative;min-height: 1px;padding-left: 1rem;"><span style="font-weight: bold;">Full Name</span></div>';
+                        $printBoxCheck .= '<div style="width: 15%;float: left;position: relative;min-height: 1px;padding-left: 1rem;"><span style="font-weight: bold;">Passenger Type</span></div>';
 
-                            $passenger_number = 1;
-                        }
-                        $printBoxCheck.= '</div><div class="row-passenger" style="width: 100%">';
-                        $printBoxCheck .='<div style="width: 1%;float: left;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box;"><span>';
-                        $printBoxCheck .= $passenger_number.'</span></div>';
-                        $printBoxCheck .='<div style="width: 30%;float: left;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box;">';
-                        $printBoxCheck .='<span class="full-name-field">';
-                        $passenger_name = !empty($info['passenger_name_en']) ? $info['passenger_name_en'] : $info['passenger_name'];
-                        $passenger_family = !empty($info['passenger_family_en']) ? $info['passenger_family_en'] : $info['passenger_family'];
-                        $printBoxCheck .= $passenger_name.' '.$passenger_family;
-                        $printBoxCheck .='</span>';
-                        $printBoxCheck .='</div>';
+                        $passenger_number = 1;
+                    }
+                    $printBoxCheck .= '</div><div class="row-passenger" style="width: 100%">';
+                    $printBoxCheck .= '<div style="width: 1%;float: left;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box;"><span>';
+                    $printBoxCheck .= $passenger_number . '</span></div>';
+                    $printBoxCheck .= '<div style="width: 30%;float: left;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box;">';
+                    $printBoxCheck .= '<span class="full-name-field">';
+                    $passenger_name = !empty($info['passenger_name_en']) ? $info['passenger_name_en'] : $info['passenger_name'];
+                    $passenger_family = !empty($info['passenger_family_en']) ? $info['passenger_family_en'] : $info['passenger_family'];
+                    $printBoxCheck .= $passenger_name . ' ' . $passenger_family;
+                    $printBoxCheck .= '</span>';
+                    $printBoxCheck .= '</div>';
 
-                        $printBoxCheck .='<div style="width: 15%;float: left;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box;"><span>';
-                            if ($info['passenger_birthday_en']!=""){
-                                $printBoxCheck .= functions::type_passengers($info['passenger_birthday_en']);
-                            }else{
-                                $printBoxCheck .= functions::type_passengers(functions::ConvertToMiladi($info['passenger_birthday']));
-                            }
-                            $printBoxCheck .='</span></div></div>';
-                        if($room_index != $info['room_index']){
-                            $printBoxCheck.= '</div>';
-                        }
-                    $printBoxCheck.= '</div>';
-                    $passenger_number ++;
+                    $printBoxCheck .= '<div style="width: 15%;float: left;position: relative;min-height: 1px;padding-left: 1rem;box-sizing: border-box;"><span>';
+                    if ($info['passenger_birthday_en'] != "") {
+                        $printBoxCheck .= functions::type_passengers($info['passenger_birthday_en']);
+                    } else {
+                        $printBoxCheck .= functions::type_passengers(functions::ConvertToMiladi($info['passenger_birthday']));
+                    }
+                    $printBoxCheck .= '</span></div></div>';
+                    if ($room_index != $info['room_index']) {
+                        $printBoxCheck .= '</div>';
+                    }
+                    $printBoxCheck .= '</div>';
+                    $passenger_number++;
                     $room_index = $info['room_index'] + 1;
 
                 }
             }
 
-            $printBoxCheck .='
+            $printBoxCheck .= '
              </div>
          <br/>
     
@@ -1003,33 +1048,33 @@ class bookhotelshow extends baseController
 //            $printBoxCheck .='</div>';
 
             $extra_details = $info['extra_hotel_details'];
-            $details = json_decode($extra_details,true);
+            $details = json_decode($extra_details, true);
 
-            if(isset($details['SpecialInstructions']) && !empty($details['SpecialInstructions'])){
+            if (isset($details['SpecialInstructions']) && !empty($details['SpecialInstructions'])) {
                 $printBoxCheck .= '<div style="width: 93%;margin: 5px 40px 5px 40px;">';
                 $printBoxCheck .= '<h3 style="font-size: 13px;display: block;text-align: left;margin: 10px 40px 0px 40px;">Special Instructions</h3>';
-                $printBoxCheck .= '<p style="padding-left: 8px;">'.$details['SpecialInstructions'].'</p>';
+                $printBoxCheck .= '<p style="padding-left: 8px;">' . $details['SpecialInstructions'] . '</p>';
                 $printBoxCheck .= '</div>';
             }
-            if(isset($details['Instructions']) && !empty($details['Instructions'])){
+            if (isset($details['Instructions']) && !empty($details['Instructions'])) {
                 $printBoxCheck .= '<div style="width: 93%;margin: 5px 40px 5px 40px;">';
                 $printBoxCheck .= '<h3 style="font-size: 13px;display: block;text-align: left;margin: 10px 40px 0px 40px;">Instructions</h3>';
-                $printBoxCheck .= '<p style="padding-left: 8px;">'.$details['Instructions'].'</p>';
+                $printBoxCheck .= '<p style="padding-left: 8px;">' . $details['Instructions'] . '</p>';
                 $printBoxCheck .= '</div>';
             }
-            if(isset($details['Description']) && !empty($details['Description'])){
+            if (isset($details['Description']) && !empty($details['Description'])) {
                 $printBoxCheck .= '<div style="width: 93%;margin: 5px 40px 5px 40px;">';
                 $printBoxCheck .= '<h3 style="font-size: 13px;display: block;text-align: left;margin: 10px 40px 0px 40px;">Description</h3>';
-                $printBoxCheck .= '<p style="padding-left: 8px;">'.$details['Description'].'</p>';
+                $printBoxCheck .= '<p style="padding-left: 8px;">' . $details['Description'] . '</p>';
                 $printBoxCheck .= '</div>';
             }
-            if(isset($details['MandatoryFee']) && !empty($details['MandatoryFee'])){
+            if (isset($details['MandatoryFee']) && !empty($details['MandatoryFee'])) {
                 $printBoxCheck .= '<div style="width: 93%;margin: 5px 40px 5px 40px;">';
                 $printBoxCheck .= '<h3 style="font-size: 13px;display: block;text-align: left;margin: 10px 40px 0px 40px;">Mandatory Fee</h3>';
-                $printBoxCheck .= '<p style="padding-left: 8px;">'.$details['MandatoryFee'].'</p>';
+                $printBoxCheck .= '<p style="padding-left: 8px;">' . $details['MandatoryFee'] . '</p>';
                 $printBoxCheck .= '</div>';
             }
-            $printBoxCheck .='<div class="clear-both"></div>';
+            $printBoxCheck .= '<div class="clear-both"></div>';
             $printBoxCheck .= '</div></div>
     
             <div class="clear-both"></div>
@@ -1426,17 +1471,17 @@ class bookhotelshow extends baseController
     {
         $Model = Load::library('Model');
         $tableName = 'book_hotel_local_tb';
-        $info_hotel = $this->getModel('bookHotelLocalModel')->get()->where('factor_number',$factorNumber);
+        $info_hotel = $this->getModel('bookHotelLocalModel')->get()->where('factor_number', $factorNumber);
         $subAgencyInfo = $this->getController('agency');
 
         if (TYPE_ADMIN == '1') {
             $Model = Load::library('ModelBase');
             $tableName = 'report_hotel_tb';
-            $info_hotel = $this->getModel('reportHotelModel')->get()->where('factor_number',$factorNumber);
+            $info_hotel = $this->getModel('reportHotelModel')->get()->where('factor_number', $factorNumber);
         }
 
         if (isset($cancelStatus) && $cancelStatus != '') {
-            $info_hotel = $info_hotel->where('status','canceled');
+            $info_hotel = $info_hotel->where('status', 'canceled');
         }
         $info_hotel = $info_hotel->all();
         $getSubAgencyInfo = $subAgencyInfo->AgencyInfoByIdMember($info_hotel[0]['member_id']);
@@ -1445,7 +1490,7 @@ class bookhotelshow extends baseController
             return '<div style="text-align:center; font-size:20px; font-family: Arial;">The requested information is not available.</div>';
         }
         $agencyName = !empty($getSubAgencyInfo['name_en']) ? $getSubAgencyInfo['name_en'] : CLIENT_NAME;
-        $image = !empty($getSubAgencyInfo['logo']) ? ROOT_ADDRESS_WITHOUT_LANG . '/pic/' .'agencyPartner/' . CLIENT_ID . '/logo/'. $getSubAgencyInfo['logo'] : ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO ;
+        $image = !empty($getSubAgencyInfo['logo']) ? ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . 'agencyPartner/' . CLIENT_ID . '/logo/' . $getSubAgencyInfo['logo'] : ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO;
         // شروع HTML
         $html = '<!DOCTYPE html>
 <html dir="rtl" lang="fa">
@@ -1874,7 +1919,7 @@ class bookhotelshow extends baseController
                     <td class="header-logo">
                         <img src="' . $image . '" alt="Logo" style="max-width: 80px; min-height: 50px">
                           <span style="font-family: yekanbakh;">
-                        '. $agencyName . '
+                        ' . $agencyName . '
                 </span>
                     </td>
                     <td class="header-barcode">
@@ -1973,11 +2018,11 @@ class bookhotelshow extends baseController
                                     <table cellpadding="0" cellspacing="0" style="width: 100%; border: none; border-collapse: collapse; font-family: Arial; margin-top:-6px;margin-bottom:-20px !important">
                                         <tr>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; width: 120px; line-height: 1.4; font-family: Arial;">Room delivery time:</td>
-                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: Arial;">'. (!empty($firstInfo['start_date']) ? $firstInfo['start_date'] : '-')  . '      ' .    (!empty($firstInfo['hotel_entryHour']) ? $firstInfo['hotel_entryHour'] : '-')   . '</td>
+                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: Arial;">' . (!empty($firstInfo['start_date']) ? $firstInfo['start_date'] : '-') . '      ' . (!empty($firstInfo['hotel_entryHour']) ? $firstInfo['hotel_entryHour'] : '-') . '</td>
                                         </tr>
                                         <tr>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: Arial;">Room vacating time:</td>
-                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: Arial;">'. (!empty($firstInfo['end_date']) ? $firstInfo['end_date'] : '-')  . '      ' .  (!empty($firstInfo['hotel_leaveHour']) ? $firstInfo['hotel_leaveHour'] : '-')     . '</td>
+                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: Arial;">' . (!empty($firstInfo['end_date']) ? $firstInfo['end_date'] : '-') . '      ' . (!empty($firstInfo['hotel_leaveHour']) ? $firstInfo['hotel_leaveHour'] : '-') . '</td>
                                         </tr>
                                         <tr>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: Arial;">Duration of stay:</td>
@@ -2003,7 +2048,7 @@ class bookhotelshow extends baseController
                                         </tr>
                                         <tr>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: Arial;">Reservation date: </td>
-                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: Arial;">' . ($pay_date !== '-' ? $pay_date : '-'). '</td>
+                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: Arial;">' . ($pay_date !== '-' ? $pay_date : '-') . '</td>
                                         </tr>
                                         <tr>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: Arial;">Reservation hours: </td>
@@ -2020,7 +2065,6 @@ class bookhotelshow extends baseController
             ';
 
 
-
         $html .= '
                       
                         </div>
@@ -2032,7 +2076,6 @@ class bookhotelshow extends baseController
                 <span style="font-weight: bold; color: #c62828; font-size: 16px; font-family: Arial;"> این هتل کنسل شده است</span>
             </div>';
         }
-
 
 
         // باکس اطلاعات اتاق‌ها
@@ -2110,10 +2153,10 @@ class bookhotelshow extends baseController
             $fullName = '';
             if (!empty($passenger['passenger_name_en'])) {
                 $fullName = $passenger['passenger_name_en'] . ' ' . $passenger['passenger_family_en'];
-            }elseif(!empty($passenger['passenger_name_en'])) {
+            } elseif (!empty($passenger['passenger_name_en'])) {
                 $fullName = $passenger['passenger_name'] . ' ' . $passenger['passenger_family'];
 
-            }else {
+            } else {
                 $fullName = '-';
             }
 
@@ -2155,7 +2198,6 @@ class bookhotelshow extends baseController
         </div>';
 
 
-
         if ($firstInfo['type_application'] == 'api') {
             // قوانین کنسلی
             $html .= '
@@ -2168,7 +2210,7 @@ class bookhotelshow extends baseController
 
             </div>';
 
-        }else{
+        } else {
             $html .= '
              <div class="important-notes" style="font-family: Arial;">
                 <div class="section-title" style="font-family: Arial;">Cancellation laws</div>
@@ -2219,8 +2261,8 @@ class bookhotelshow extends baseController
             }
         }
 
-        $phone = !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : CLIENT_PHONE ;
-        $address =  !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : CLIENT_ADDRESS;
+        $phone = !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : CLIENT_PHONE;
+        $address = !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : CLIENT_ADDRESS;
 
 
         // Footer
@@ -2231,15 +2273,15 @@ class bookhotelshow extends baseController
             <tr>
                 <td style="border:none;">
                     <span>Website:</span>
-                    <span dir="ltr">'.CLIENT_MAIN_DOMAIN.'</span>
+                    <span dir="ltr">' . CLIENT_MAIN_DOMAIN . '</span>
                 </td>
                 <td style="border:none;">
                     <span>Phone:</span>
-                    <span dir="ltr">'.$phone.'</span>
+                    <span dir="ltr">' . $phone . '</span>
                 </td>
                 <td style="border:none;">
                     <span>Address:</span>
-                    <span>'.$address.'</span>
+                    <span>' . $address . '</span>
                 </td>
             </tr>
         </table>
@@ -2253,33 +2295,45 @@ class bookhotelshow extends baseController
     }
 
 
-
     public function hotelInfoTracking($factor_number)
     {
 
         $Model = Load::library('Model');
-        $resultHotelLocalController=Load::controller('resultHotelLocal');
+        $resultHotelLocalController = Load::controller('resultHotelLocal');
 
-        $sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' OR request_number = '$factor_number' ";
+//        $sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' OR request_number = '$factor_number' ";
 
+
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_hotel_local_tb 
+        WHERE factor_number = '{$_POST['request_number']}' 
+        AND member_mobile = '{$_POST['phone_number']}'
+        ";
+        }
+        else{
+            $sql = "SELECT * FROM book_hotel_local_tb 
+        WHERE factor_number = '{$_POST['request_number']}' 
+        ";
+        }
         $bookHotel = $Model->select($sql);
-        
 
-        $hotelDetail =  $resultHotelLocalController->getHotelInfoById($bookHotel[0]['hotel_id']);
-        $isRequest=false;
-        if($hotelDetail['is_request'] =='1')
-            $isRequest=true;
 
-        $result = ''; $counterId = '';
+        $hotelDetail = $resultHotelLocalController->getHotelInfoById($bookHotel[0]['hotel_id']);
+        $isRequest = false;
+        if ($hotelDetail['is_request'] == '1')
+            $isRequest = true;
+
+        $result = '';
+        $counterId = '';
         if (!empty($bookHotel)) {
 
             $sDate_miladi = functions::ConvertToMiladi($bookHotel[0]['start_date']);
             $sDate_miladi = str_replace("-", "", $sDate_miladi);
-            $resultDate = date('Ymd', strtotime("".$sDate_miladi.",- 1 day"));
+            $resultDate = date('Ymd', strtotime("" . $sDate_miladi . ",- 1 day"));
             $SDate = functions::ConvertToJalali($resultDate);
             $SDate = str_replace("-", "", $SDate);
 
-            $dateNow = dateTimeSetting::jdate("Ymd",'','','','en');
+            $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
 
             $accessStatusEdit = array('Cancelled', 'NoReserve', 'PreReserve', 'OnRequest');
 
@@ -2287,15 +2341,15 @@ class bookhotelshow extends baseController
             <table class="display" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th>'.functions::Xmlinformation("City").'</th>
-                    <th>'.functions::Xmlinformation("Hotel").'</th>
-                    <th>'.functions::Xmlinformation("Enterdate").'<br>'.functions::Xmlinformation("Exitdate").'<br>'.functions::Xmlinformation("Stayigtime").'</th>
-                    <th>'.functions::Xmlinformation("WachterNumber").'</th>
-                    <th>'.functions::Xmlinformation("NamePassengerRepresentative").'</th>
-                    <th>'.functions::Xmlinformation("Buydate").'</th>
-                    <th>'.functions::Xmlinformation("Amount").'</th>
-                    <th>'.functions::Xmlinformation("Status").'</th>
-                    <th>'.functions::Xmlinformation("See").'</th>';
+                    <th>' . functions::Xmlinformation("City") . '</th>
+                    <th>' . functions::Xmlinformation("Hotel") . '</th>
+                    <th>' . functions::Xmlinformation("Enterdate") . '<br>' . functions::Xmlinformation("Exitdate") . '<br>' . functions::Xmlinformation("Stayigtime") . '</th>
+                    <th>' . functions::Xmlinformation("WachterNumber") . '</th>
+                    <th>' . functions::Xmlinformation("NamePassengerRepresentative") . '</th>
+                    <th>' . functions::Xmlinformation("Buydate") . '</th>
+                    <th>' . functions::Xmlinformation("Amount") . '</th>
+                    <th>' . functions::Xmlinformation("Status") . '</th>
+                    <th>' . functions::Xmlinformation("See") . '</th>';
 //            if ($this->IsLogin && $bookHotel[0]['status'] != 'pending') {
 //                $result .= '<th>'.functions::Xmlinformation("Editbookings").'</th>';
 //            }
@@ -2307,38 +2361,85 @@ class bookhotelshow extends baseController
 
             $this->FactorNumber = $bookHotel[0]['factor_number'];
             if ($bookHotel[0]['status'] == 'Requested') {
-                $status = functions::Xmlinformation("Requested").' ('. functions::Xmlinformation("WaitingForAccepted") .')';
-            } elseif  ($bookHotel[0]['status'] == 'RequestRejected') {
+                $status = functions::Xmlinformation("Requested") . ' (' . functions::Xmlinformation("WaitingForAccepted") . ')';
+            } elseif ($bookHotel[0]['status'] == 'RequestRejected') {
                 $status = functions::Xmlinformation("RequestRejected");
-            }elseif  ($bookHotel[0]['status'] == 'RequestAccepted') {
+            } elseif ($bookHotel[0]['status'] == 'RequestAccepted') {
                 $status = functions::Xmlinformation("RequestAccepted");
-            }elseif ($bookHotel[0]['status'] == 'BookedSuccessfully') {
+            } elseif ($bookHotel[0]['status'] == 'BookedSuccessfully') {
                 $status = functions::Xmlinformation("Definitivereservation");
-            } elseif ($bookHotel[0]['status'] == 'PreReserve' && $isRequest  ) {
+            } elseif ($bookHotel[0]['status'] == 'PreReserve' && $isRequest) {
                 $status = functions::Xmlinformation("RequestAccepted");
-            } else if ($bookHotel[0]['status'] == 'PreReserve'   ) {
+            } else if ($bookHotel[0]['status'] == 'PreReserve') {
                 $status = functions::Xmlinformation("Prereservation");
-            }  else if ($bookHotel[0]['status'] == 'bank') {
+            } else if ($bookHotel[0]['status'] == 'bank') {
                 $status = functions::Xmlinformation("NavigateToPort");
             } else if ($bookHotel[0]['status'] == 'OnRequest') {
                 $status = functions::Xmlinformation("OnRequestedHotel");
-            }else if ($bookHotel[0]['status'] == 'pending') {
+            } else if ($bookHotel[0]['status'] == 'pending') {
                 $status = functions::Xmlinformation("pendingPrintFlight");
-            }else if ($bookHotel[0]['status'] == 'Cancelled') {
+            } else if ($bookHotel[0]['status'] == 'Cancelled') {
                 $status = functions::Xmlinformation("Yourrequesthascanceledtolackof");
-            }else {
+            } else {
                 $status = functions::Xmlinformation("Unknown");
             }
 
+            $IsLogin = Session::IsLogin();
+            $member = Load::controller('members');
+            $memberGet = $member->get();
 
-                if (!$isRequest && $bookHotel[0]['hotel_payments_price'] > 0 && $bookHotel[0]['status'] == 'RequestAccepted' && $bookHotel[0]['payment_status'] == 'fullPayment' ) {
-                         $price_pay = $bookHotel[0]['total_price'] - $bookHotel[0]['hotel_payments_price'];
+            $memberCreditPermition = '0';
+            if ($IsLogin && $member->list['fk_counter_type_id'] == '5') {
+                $memberCreditPermition = '1';
+            }
 
-                    $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
-                        onclick="showTypePayment(\''.$bookHotel[0]['factor_number'].'\',\''.$bookHotel[0]['type_application'].'\',\'hotelLocal\',\''.round($price_pay).'\',\''.$bookHotel[0]['serviceTitle'].'\',\''.$bookHotel[0]['currency_code'].'\',\''.$bookHotel[0]['currency_equivalent'].'\')">ادامه پرداخت</a>
+            $counterCreditPermition = '0';
+            if ($IsLogin && $member->list['fk_counter_type_id'] != '5') {
+                $counterCreditPermition = '1';
+            }
+
+
+            $creditInputs = [
+                'flag' => 'buyByCreditHotelLocal',
+                'factorNumber' => $factor_number,
+                'paymentStatus' => $bookHotel[0]['payment_status'],
+                'typeApplication' => $bookHotel[0]['type_application'],
+                'serviceType' => $bookHotel[0]['serviceTitle']
+            ];
+            $creditAction = ROOT_ADDRESS . '/returnBankHotelLocal';
+
+
+            if (!$isRequest && $bookHotel[0]['hotel_payments_price'] > 0 && $bookHotel[0]['status'] == 'RequestAccepted' && $bookHotel[0]['payment_status'] == 'fullPayment') {
+                $price_pay = $bookHotel[0]['total_price'] - $bookHotel[0]['hotel_payments_price'];
+
+                $status .= '<br>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت (بانکی)</a>
                         ';
+
+                if ($counterCreditPermition == '1') {
+                    $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
                 }
+
+                if ($memberCreditPermition == '1') {
+                    $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                }
+
+            }
 //                else {
 //                    $price_pay = $bookHotel[0]['total_price'];
 //                    $status .= '<br>
@@ -2346,33 +2447,142 @@ class bookhotelshow extends baseController
 //                        onclick="showTypePayment(\''.$bookHotel[0]['factor_number'].'\',\''.$bookHotel[0]['type_application'].'\',\'hotelLocal\',\''.round($price_pay).'\',\''.$bookHotel[0]['serviceTitle'].'\',\''.$bookHotel[0]['currency_code'].'\',\''.$bookHotel[0]['currency_equivalent'].'\')">'.functions::Xmlinformation("Payment").'</a>
 //                        ';
 //                }
-            if (!$isRequest && $bookHotel[0]['status'] == 'PreReserve' ){
-                if ($bookHotel[0]['hotel_payments_price'] > 0  ) {
+            if (!$isRequest && $bookHotel[0]['status'] == 'PreReserve') {
+                if ($bookHotel[0]['hotel_payments_price'] > 0) {
                     $price_pay = $bookHotel[0]['hotel_payments_price'];
                     $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
-                        onclick="showTypePayment(\''.$bookHotel[0]['factor_number'].'\',\''.$bookHotel[0]['type_application'].'\',\'hotelLocal\',\''.round($price_pay).'\',\''.$bookHotel[0]['serviceTitle'].'\',\''.$bookHotel[0]['currency_code'].'\',\''.$bookHotel[0]['currency_equivalent'].'\')">ادامه پرداخت</a>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت (بانکی)</a>
                         ';
-                }else {
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                }
+                else {
                     $price_pay = $bookHotel[0]['total_price'];
                     $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
-                        onclick="showTypePayment(\''.$bookHotel[0]['factor_number'].'\',\''.$bookHotel[0]['type_application'].'\',\'hotelLocal\',\''.round($price_pay).'\',\''.$bookHotel[0]['serviceTitle'].'\',\''.$bookHotel[0]['currency_code'].'\',\''.$bookHotel[0]['currency_equivalent'].'\')">'.functions::Xmlinformation("Payment").'</a>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
                         ';
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
                 }
 
             }
 
+            if (!$isRequest && $bookHotel[0]['status'] == 'bank') {
+                if ($bookHotel[0]['hotel_payments_price'] > 0) {
+                    $price_pay = $bookHotel[0]['hotel_payments_price'];
+                    $status .= '<br>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت (بانکی)</a>
+                        ';
 
-            if ( $isRequest && $bookHotel[0]['status'] == 'PreReserve') {
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                }
+                else {
+                    $price_pay = $bookHotel[0]['total_price'];
+                    $status .= '<br>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
+                        ';
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                }
+            }
+
+
+            if ($isRequest && $bookHotel[0]['status'] == 'PreReserve') {
 
 
                 $serviceName = "hotel";
                 $isRequest = ($hotelDetail['is_request'] == 1) ? 1 : 0;
 
 
-
-                $status .= '<form action="'.ROOT_ADDRESS.'/passengersDetailReservationHotel" method="post" id="formReservationTour">
+                $status .= '<form action="' . ROOT_ADDRESS . '/passengersDetailReservationHotel" method="post" id="formReservationTour">
                             <input name="serviceName" type="hidden" value="' . $serviceName . '">
                             <input name="idMember" type="hidden" value="' . $bookHotel[0]['member_id'] . '">
                             <input name="memberMobile" type="hidden" value="' . $bookHotel[0]['member_mobile'] . '">
@@ -2388,23 +2598,23 @@ class bookhotelshow extends baseController
                             <input name="nights_reserve" type="hidden" value="' . $bookHotel[0]['number_night'] . '">
                             <input name="IdCity_Reserve" type="hidden" value="' . $bookHotel[0]['city_id'] . '">
                             <input name="statusDiscount" type="hidden" value="' . $bookHotel[0]['discount'] . '">';
-                $TypeRoomHotel = '' ;
+                $TypeRoomHotel = '';
                 foreach ($bookHotel as $key => $room) {
                     $TypeRoomHotel = $TypeRoomHotel . $room['room_id'] . '/';
-                    $status .= '<input name="priceRoom'.$room['room_id'].'" type="hidden" value="' . $room['room_online_price'] . '">
-                            <input name="RoomCount'.$room['room_id'].'" type="hidden" value="' . $room['room_count'] . '">  
-                            <input name="ExtraBed'.$room['room_id'].'" type="hidden" value="' . $room['extra_bed_count'] . '">
-                            <input name="ExtraChildBed'.$room['room_id'].'" type="hidden" value="' . $room['child_count'] . '">
-                            <input name="CostkolHotelRoom_EXT'.$room['room_id'].'" type="hidden" value="' . $room['extra_bed_price'] . '">
-                            <input name="CostkolHotelRoom_CHD'.$room['room_id'].'" type="hidden" value="' . $room['child_price'] . '">
-                            <input name="CostkolHotelRoom_DBL'.$room['room_id'].'" type="hidden" value="' . $room['room_online_price'] . '">
-                            <input name="fkDBL'.$room['room_id'].'" type="hidden" value="' . $room['hotel_room_prices_id'] . '">';
+                    $status .= '<input name="priceRoom' . $room['room_id'] . '" type="hidden" value="' . $room['room_online_price'] . '">
+                            <input name="RoomCount' . $room['room_id'] . '" type="hidden" value="' . $room['room_count'] . '">  
+                            <input name="ExtraBed' . $room['room_id'] . '" type="hidden" value="' . $room['extra_bed_count'] . '">
+                            <input name="ExtraChildBed' . $room['room_id'] . '" type="hidden" value="' . $room['child_count'] . '">
+                            <input name="CostkolHotelRoom_EXT' . $room['room_id'] . '" type="hidden" value="' . $room['extra_bed_price'] . '">
+                            <input name="CostkolHotelRoom_CHD' . $room['room_id'] . '" type="hidden" value="' . $room['child_price'] . '">
+                            <input name="CostkolHotelRoom_DBL' . $room['room_id'] . '" type="hidden" value="' . $room['room_online_price'] . '">
+                            <input name="fkDBL' . $room['room_id'] . '" type="hidden" value="' . $room['hotel_room_prices_id'] . '">';
                 }
 
                 $status .= '
                         <input name="TypeRoomHotel" type="hidden" value="' . $TypeRoomHotel . '">  
                         <input name="TotalNumberRoom" type="hidden" value="' . count($bookHotel) . '">
-                        <button class="btn site-bg-main-color" type="submit"> '.functions::Xmlinformation('ResumeReservation').'</button>
+                        <button class="btn site-bg-main-color" type="submit"> ' . functions::Xmlinformation('ResumeReservation') . '</button>
                         </form>';
 
             }
@@ -2413,29 +2623,59 @@ class bookhotelshow extends baseController
 
             $href2 = ROOT_ADDRESS_WITHOUT_LANG . "/pdf&target=BookingHotelNew&id={$bookHotel[0]['factor_number']}";
             $hrefEdit = ROOT_ADDRESS . "/editReserveHotel&id={$bookHotel[0]['factor_number']}";
-            $op = '<a  id="myBtn" onclick="modalListForHotel('."'".$bookHotel[0]['factor_number']."'".')" class="btn btn-primary fa fa-eye margin-10" title="'.functions::Xmlinformation("SeeBooking").'"></a>';
-            if ($bookHotel[0]['status'] == 'BookedSuccessfully' ) {
-              if ($bookHotel[0]['payment_status'] != 'prePayment') {
+            $op = '<a  id="myBtn" onclick="modalListForHotel(' . "'" . $bookHotel[0]['factor_number'] . "'" . ')" class="btn btn-primary fa fa-eye margin-10" title="' . functions::Xmlinformation("SeeBooking") . '"></a>';
+            if ($bookHotel[0]['status'] == 'BookedSuccessfully') {
+                if ($bookHotel[0]['payment_status'] != 'prePayment') {
 
-                  $op .= "<a href='{$href}' class='btn btn-dropbox fa fa-print margin-10 ' target='_blank' title='" . functions::Xmlinformation('See') . "'></a>";
-                  $op .= "<a href='{$href2}' class='btn btn-info fa fa-file-pdf-o margin-10' target='_blank' title='" . functions::Xmlinformation('See') . "'></a>";
-                  $op .= '<a id="cancelbyuser"  title="' . functions::Xmlinformation("RefundTicket") . '" onclick="ModalCancelUser(' . "'hotel'" . ',' . "'" . $bookHotel[0]['factor_number'] . "'" . '); return false;"  class="btn btn-danger fa fa-times"></a>';
-              }else {
-                  $price_pay = $bookHotel[0]['total_price'];
-                  $status .= '<br>
-                        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
-                        onclick="showTypePayment(\''.$bookHotel[0]['factor_number'].'\',\''.$bookHotel[0]['type_application'].'\',\'hotelLocal\',\''.round($price_pay).'\',\''.$bookHotel[0]['serviceTitle'].'\',\''.$bookHotel[0]['currency_code'].'\',\''.$bookHotel[0]['currency_equivalent'].'\')">'.functions::Xmlinformation("Payment").'</a>
+                    $op .= "<a href='{$href}' class='btn btn-dropbox fa fa-print margin-10 ' target='_blank' title='" . functions::Xmlinformation('See') . "'></a>";
+                    $op .= "<a href='{$href2}' class='btn btn-info fa fa-file-pdf-o margin-10' target='_blank' title='" . functions::Xmlinformation('See') . "'></a>";
+                    $op .= '<a id="cancelbyuser"  title="' . functions::Xmlinformation("RefundTicket") . '" onclick="ModalCancelUser(' . "'hotel'" . ',' . "'" . $bookHotel[0]['factor_number'] . "'" . '); return false;"  class="btn btn-danger fa fa-times"></a>';
+                } else {
+                    $price_pay = $bookHotel[0]['total_price'];
+                    $status .= '<br>
+                        <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
+                        onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
                         ';
-              }
+
+                    if ($counterCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-counter"
+    onclick=\'creditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                    if ($memberCreditPermition == '1') {
+                        $status .= '
+    <br>
+    <a
+    class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" id="creditpay-member"
+    onclick=\'memberCreditBuy(this, "' . addslashes($creditAction) . '", ' . json_encode($creditInputs) . ')\'>
+    پرداخت اعتباری
+    </a>
+';
+                    }
+
+                }
             }
 
             $titleTxt = functions::Xmlinformation('Editbookings');
             $edit = "<a href='{$hrefEdit}' class='btn btn-default btn-editReserve fa fa-pencil margin-10' target='_blank' title='{$titleTxt}'>{$titleTxt}</a>";
-            
+
             $titleTxt = functions::Xmlinformation('NoBookingEditable');
             $noEdit = "<a href='#' class='btn btn-default btn-editReserve fa fa-pencil margin-10' target='_blank' title=\"تست \">{$titleTxt}</a>";
 
             $paymentPrice = functions::CurrencyCalculate($bookHotel[0]['total_price'], $bookHotel[0]['currency_code'], $bookHotel['currency_equivalent']);
+
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $bookHotel[0]['factor_number'])->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $paymentPrice['AmountCurrency'] = $paymentPrice['AmountCurrency'] - $discountCodeAmount;
+            }
 
             $result .= '<tr>';
             $result .= '<td>' . $bookHotel[0]['city_name'] . '</td>';
@@ -2470,9 +2710,9 @@ class bookhotelshow extends baseController
         $Model = Load::library('Model');
         $sql = "select * from reservation_edit_hotel_booking_tb where fk_factor_number='{$factorNumber}' ORDER BY id ";
         $info = $Model->select($sql);
-        if (!empty($info)){
+        if (!empty($info)) {
             $this->editHotelBooking = "True";
-        }else {
+        } else {
             $this->editHotelBooking = "False";
         }
 
@@ -2486,7 +2726,6 @@ class bookhotelshow extends baseController
 
         return $info;
     }
-
 
 
     public function getHotelOnRequestForAdmin()
@@ -2519,12 +2758,11 @@ class bookhotelshow extends baseController
     }
 
 
-
     public function getHotelOnRequestForAdminSpecial()
     {
 
 
-       $nameTable = 'report_hotel_tb';
+        $nameTable = 'report_hotel_tb';
         $sql = "SELECT
                       count(id) as countReserve
                 FROM {$nameTable}
@@ -2543,7 +2781,7 @@ class bookhotelshow extends baseController
     }
 
 
-    public function listBookHotelLocalWebService($reportForExcel = null, $intendedUser=null)
+    public function listBookHotelLocalWebService($reportForExcel = null, $intendedUser = null)
     {
 
         $date = dateTimeSetting::jdate("Y-m-d", time());
@@ -2602,19 +2840,19 @@ class bookhotelshow extends baseController
             }
         }*/
 
-        if(!empty($intendedUser['member_id'])){
-            $sql.=' AND member_id='.$intendedUser['member_id'].' ';
+        if (!empty($intendedUser['member_id'])) {
+            $sql .= ' AND member_id=' . $intendedUser['member_id'] . ' ';
         }
 
-        if(!empty($intendedUser['agency_id'])){
-            $sql.=' AND agency_id='.$intendedUser['agency_id'].' ';
+        if (!empty($intendedUser['agency_id'])) {
+            $sql .= ' AND agency_id=' . $intendedUser['agency_id'] . ' ';
         }
-        if(!empty($_POST['member_id'])){
-            $sql.=' AND member_id='.$_POST['member_id'].' ';
+        if (!empty($_POST['member_id'])) {
+            $sql .= ' AND member_id=' . $_POST['member_id'] . ' ';
         }
 
-        if(!empty($_POST['agency_id'])){
-            $sql.=' AND agency_id='.$_POST['agency_id'].' ';
+        if (!empty($_POST['agency_id'])) {
+            $sql .= ' AND agency_id=' . $_POST['agency_id'] . ' ';
         }
         if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
 
@@ -2624,7 +2862,7 @@ class bookhotelshow extends baseController
             $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             $sql .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
 
-        }else {
+        } else {
             $sql .= "AND creation_date_int >= '{$date_now_int_start}' AND creation_date_int  <= '{$date_now_int_end}'";
         }
 
@@ -2643,7 +2881,7 @@ class bookhotelshow extends baseController
                 $sql .= " AND type_application='api' ";
             } else if ($_POST['type_app'] == 'reservation') {
                 $sql .= " AND type_application='reservation' ";
-            }else if ($_POST['type_app'] == 'externalApi') {
+            } else if ($_POST['type_app'] == 'externalApi') {
                 $sql .= " AND type_application='externalApi' ";
             }
         }
@@ -2685,14 +2923,12 @@ class bookhotelshow extends baseController
 
         }
 
+        /* 1405_2_30  غیرفعال شد
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
-
-        if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
-
+          if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
-
             $sql .= " AND serviceTitle IN ({$check_access})";
-        }
+        }*/
         $sql .= " GROUP BY factor_number ORDER BY creation_date_int DESC ";
 
         if (TYPE_ADMIN == '1') {
@@ -2719,9 +2955,9 @@ class bookhotelshow extends baseController
         $this->agencyCommissionPercent = 0;
         foreach ($BookShow as $k => $book) {
             $numberColumn = $k + 2;
-
+            $paymentType = $book['payment_type'];
             $expPaymentDate = [];
-            if (!empty($book['payment_date'])){
+            if (!empty($book['payment_date'])) {
 
                 $paymentDate = functions::set_date_payment($book['payment_date']);
 
@@ -2729,13 +2965,13 @@ class bookhotelshow extends baseController
 
             }
 
-            if (!empty($book['member_name'])){
+            if (!empty($book['member_name'])) {
                 $memberName = $book['member_name'];
             } else {
                 $memberName = $book['passenger_leader_room_fullName'];
             }
 
-            switch ($book['type_application']){
+            switch ($book['type_application']) {
                 case 'reservation':
                     $type_application = 'هتل رزرواسیون';
                     break;
@@ -2757,8 +2993,7 @@ class bookhotelshow extends baseController
             }
 
 
-
-            switch ($book['status']){
+            switch ($book['status']) {
                 case 'BookedSuccessfully':
                     $status = 'رزرو قطعی';
                     break;
@@ -2780,22 +3015,22 @@ class bookhotelshow extends baseController
             $this->totalPrice += $room['totalPrice'];
             $this->price += $room['price'];
 
-            if($book['type_application'] == 'externalApi' || ($book['type_application'] == 'api' && substr($book['hotel_id'], 0,2) == '17')){
+            if ($book['type_application'] == 'externalApi' || ($book['type_application'] == 'api' && substr($book['hotel_id'], 0, 2) == '17')) {
                 $this->totalPrice = $room['totalPrice'];
                 $this->price = $room['price'];
             }
             $this->priceForMa += $room['priceForMa'];
             $agencyCommission = '';
             if ($book['agency_commission_price_type'] == 'cost') {
-                $agencyCommission =  number_format($room['agencyCommission'] * $room['nights']);
+                $agencyCommission = number_format($room['agencyCommission'] * $room['nights']);
                 $this->agencyCommissionCost += $agencyCommission;
             }
-            if ($book['agency_commission_price_type'] == 'percent'){
+            if ($book['agency_commission_price_type'] == 'percent') {
 //                $agencyCommission = $room['agencyCommission'] . ' % ';
-                $agencyCommission = number_format( $room['onlinePrice'] * $room['agencyCommission'] / 100);
+                $agencyCommission = number_format($room['onlinePrice'] * $room['agencyCommission'] / 100);
 
                 $this->agencyCommissionPercent += $room['agencyCommission'];
-                $agencyCommission .= ' - <small class="badge badge-xs badge-inverse"> '.$room['agencyCommission'].'% </small>';
+                $agencyCommission .= ' - <small class="badge badge-xs badge-inverse"> ' . $room['agencyCommission'] . '% </small>';
             }
 
 //            $agencyCommission .= '<code style="display:none">'.json_encode(array('book'=>$book,'room'=>$room),256|64).'</code>';
@@ -2810,6 +3045,7 @@ class bookhotelshow extends baseController
             $dataRows[$k]['member_mobile'] = $book['member_mobile'];
             $dataRows[$k]['payment_date'] = $expPaymentDate[0];
             $dataRows[$k]['payment_time'] = $expPaymentDate[1];
+            $dataRows[$k]['payment_type'] = $paymentType;
             $dataRows[$k]['city_name'] = $book['city_name'];
             $dataRows[$k]['hotel_name'] = $book['hotel_name'];
             $dataRows[$k]['start_date'] = $book['start_date'];
@@ -2819,13 +3055,13 @@ class bookhotelshow extends baseController
             $dataRows[$k]['room_excel'] = str_replace("&nbsp;", "", $room['room']);
 
 
-            $dataRows[$k]['total_price_api'] =$book['total_price_api'];
+            $dataRows[$k]['total_price_api'] = $book['total_price_api'];
             $dataRows[$k]['total_price'] = $this->totalPrice;
 
             $dataRows[$k]['agency_commission'] = 0;
             $dataRows[$k]['price'] = 0;
             $dataRows[$k]['onlinePrice'] = 0;
-            if ($book['type_application'] == 'api' || $book['type_application'] == 'api_app' || $book['type_application'] == 'externalApi'){
+            if ($book['type_application'] == 'api' || $book['type_application'] == 'api_app' || $book['type_application'] == 'externalApi') {
                 $dataRows[$k]['agency_commission'] = $agencyCommission;
                 $dataRows[$k]['price'] = $room['price'];
                 $dataRows[$k]['onlinePrice'] = $room['onlinePrice'];
@@ -2836,8 +3072,7 @@ class bookhotelshow extends baseController
             $dataRows[$k]['status_fa'] = $status;
 
 
-
-            if (!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel == 'no')){
+            if (!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel == 'no')) {
 
                 $dataRows[$k]['total_price_without_discount'] = $room['totalPriceWithoutDiscount'];
                 $dataRows[$k]['priceForMa'] = $room['priceForMa'];
@@ -2852,8 +3087,6 @@ class bookhotelshow extends baseController
                 $dataRows[$k]['services_discount'] = $book['services_discount'];
 
             }
-
-
 
 
         }

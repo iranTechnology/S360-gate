@@ -3225,4 +3225,6 @@
   <errorPaymentFlightMessage>حدثت مشكلة أثناء عملية الدفع. إذا لم يتم خصم المبلغ من رصيدك أو حسابك، فحاول مرة أخرى</errorPaymentFlightMessage>
   <pendingFlight>في انتظار الإصدار</pendingFlight>
   <upperThanTwoHundredAndFifty>لا يجوز أن تتجاوز الزيادة في الائتمان 2,500,000,000 ريال</upperThanTwoHundredAndFifty>
+  <PhoneNumberBuyer>رقم الهاتف المحمول الذي استخدمته لإجراء عملية الشراء.</PhoneNumberBuyer>
+
 </Main>

@@ -676,6 +676,17 @@ function internalHotelSearchDetails() {
          $('.RoomsContainer').append(html)
       }
       let ajaxGetPrices = function(RequestNumber, value) {
+
+          let totalNumberRooms = $('#countRoom').val() || 1;
+          // اگر countRoom وجود نداشت، از searchRooms استخراج کنید
+          if (!totalNumberRooms || totalNumberRooms == '') {
+              let searchRooms = $('#searchRooms').val();
+              if (searchRooms) {
+                  let match = searchRooms.match(/R:(\d+)/);
+                  totalNumberRooms = match ? match[1] : 1;
+              }
+          }
+
          return $.ajax({
             type: 'POST',
             url: amadeusPath + 'hotel_ajax.php',
@@ -690,6 +701,7 @@ function internalHotelSearchDetails() {
                countryName: value.History.Country,
                typeApplication: (value.History.IsInternal == '0' || (value.History.IsInternal == '1' && (value.Result.SourceId == '17'))) ? 'externalApi' : 'api',
                check_type_for_price_changes :  (value.History.IsInternal == '1') ? true : false ,
+               TotalNumberRooms: totalNumberRooms,
                flag: 'getPrices',
             },
             beforeSend: function() {

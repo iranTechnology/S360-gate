@@ -1575,10 +1575,17 @@ class apiLocal extends clientAuth
                 $data['Books'][$key]['PhoneNumber'] = !empty($rec['mobile_buyer']) ? $rec['mobile_buyer'] : $rec['member_mobile'];
                 $data['Books'][$key]['Email'] = (!empty($rec['email_buyer'])) ? $rec['email_buyer'] : $rec['member_email'];
             }elseif ($rec['pid_private'] =='1') {
-                //shomare telephone and email modir
-                $data['Books'][$key]['PhoneNumber'] = CLIENT_MOBILE ;
-                $data['Books'][$key]['Email'] = CLIENT_EMAIL;
-            }elseif ($rec['pid_private'] =='0' && $sourceId=='14') {
+
+                if($sourceId == '22'){
+                    $data['Books'][$key]['PhoneNumber'] = !empty($rec['mobile_buyer']) ? $rec['mobile_buyer'] : $rec['member_mobile'];
+                }
+                else{
+                    //shomare telephone and email modir
+                    $data['Books'][$key]['PhoneNumber'] = CLIENT_MOBILE ;
+                    $data['Books'][$key]['Email'] = CLIENT_EMAIL;
+                }
+            }
+            elseif ($rec['pid_private'] =='0' && $sourceId=='14') {
                 //pid_private =0 yani parvaz eshteraki hast
                 //baraye parto eshteraki
                 $data['Books'][$key]['PhoneNumber'] = '09020661033' ;

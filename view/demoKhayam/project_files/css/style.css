@@ -1699,9 +1699,9 @@ main{
         grid-template-columns: repeat(1, 1fr);
     }
 
-    .banner-demo {
-        display: none;
-    }
+    /*.banner-demo {*/
+    /*    display: none;*/
+    /*}*/
 
     .img-banner {
         height: 170px;

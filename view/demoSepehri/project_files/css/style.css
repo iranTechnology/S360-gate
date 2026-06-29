@@ -3577,6 +3577,10 @@ button:focus {
 }
 
 @media ( max-width: 576px) {
+    .banner-demo{
+        min-height:700px !important;
+        height: 100%;
+    }
     .image_card {
         width: 100%
     }

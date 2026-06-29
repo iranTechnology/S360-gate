@@ -2252,8 +2252,22 @@ $(document).ready(function () {
 
 
 
+var overlay = document.getElementById('overlayBlack');
+var dontShowCheckbox = document.getElementById('dontShowAgain');
+if (overlay) {
 
-
+    overlay.addEventListener('click' , () => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('show');
+        if (dontShowCheckbox && dontShowCheckbox.checked) {
+            const data = {
+                dontShow: true,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('dontShowOverlayData', JSON.stringify(data));
+        }
+    })
+}
 
 
 

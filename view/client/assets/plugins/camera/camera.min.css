@@ -624,6 +624,10 @@ html, body {
 
 /* موبایل */
 @media (max-width: 767px) {
+
+	.banner-demo {
+		min-height: 800px;
+	}
 	.camerarelative {
 		min-height: 100vh !important;
 		height: 100vh !important;

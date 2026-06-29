@@ -1025,6 +1025,12 @@ let instagramImageHeight = 0;
 let instagramRotation = 0;
 let logoExpiryTimer = null;
 
+if(window.innerWidth <= 576){
+  var element = document.getElementById('show-message-setting');
+  element.style.setProperty('display', 'none', 'important');
+}
+
+
 // ========== توابع کمکی ==========
 function getSiteKey() {
   var path = window.location.pathname.split('/')[1] || 'root';
@@ -1810,14 +1816,16 @@ function toggleSidebar() {
   hideShowMessageClear()
   var sidebar = document.getElementById('settingsSidebar');
   if(window.innerWidth <= 768){
-    simpleSwal('توجه!', 'جهت اعمال تنظیمات شخصی‌سازی، از نسخه دسکتاپ استفاده نمایید.','با انتخاب لوگو و رنگ سازمانی از این بخش، گرافیک سایت به‌صورت خودکار متناسب با برند شما شخصی‌سازی و نمایش داده می‌شود.');
+    simpleSwal('توجه!', 'جهت اعمال تنظیمات شخصی‌سازی، از نسخه دسکتاپ استفاده نمایید.','با انتخاب لوگو و رنگ سازمانی از این بخش، گرافیک سایت به‌صورت خودکار متناسب با برند شما شخصی‌سازی و نمایش داده می‌شود.', function (){
+      closeOverlay();
+    });
   }else{
     if(sidebar) sidebar.classList.toggle('open');
     closeOverlay();
   }
 
 }
-function simpleSwal(options,message2) {
+function simpleSwal(options,message2,onConfirm = null) {
   // پشتیبانی از ورودی ساده یا شی تنظیمات
   let config = {};
   if (typeof options === 'string') {

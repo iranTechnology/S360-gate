@@ -1291,6 +1291,7 @@
   <LongLastNameError>فامیلی شما طولانی است</LongLastNameError>
   <PleaseenterPhoneNumber>شماره موبایل خود را وارد نمایید</PleaseenterPhoneNumber>
   <PhoneNumberError>شماره موبایل نامعتبر است</PhoneNumberError>
+  <PhoneNumberBuyer>شماره موبایلی که خرید را با آن انجام داده اید</PhoneNumberBuyer>
   <LongPhoneNumberError>تعداد کاراکتر های شماره همراه وارد شد از بیش از حد مجاز است</LongPhoneNumberError>
   <PickBackFlight>انتخاب پرواز برگشت</PickBackFlight>
   <PickWentFlight>انتخاب پرواز رفت</PickWentFlight>

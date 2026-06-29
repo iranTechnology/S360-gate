@@ -25,7 +25,7 @@ class bookTourShow extends clientAuth
 
         $_POST = $param;
         $resultBook = $this->listBookTourLocal('yes');
-        
+
         if (!empty($resultBook)) {
 
             // برای نام گذاری سطر اول فایل اکسل //
@@ -74,7 +74,7 @@ class bookTourShow extends clientAuth
     public function listBookTourLocal($reportForExcel = null, $intendedUser=null)
     {
         $reservationTourController=$this->getController('reservationTour');
-  
+
         $date = dateTimeSetting::jdate("Y-m-d", time());
         $date_now_explode = explode('-', $date);
         $date_now_int_start = dateTimeSetting::jmktime(0, 0, 0, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
@@ -158,15 +158,15 @@ class bookTourShow extends clientAuth
 
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
-        if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
+        /* if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){1405/2/30 غیرفعال شذ
 
-            $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
-       
-            if($check_access){
-                $sql .= " AND serviceTitle IN ({$check_access})";
-            }
+             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
-        }
+             if($check_access){
+                 $sql .= " AND serviceTitle IN ({$check_access})";
+             }
+
+         }*/
 
         $sql .= " GROUP BY factor_number ORDER BY creation_date_int DESC ";
 
@@ -283,7 +283,7 @@ class bookTourShow extends clientAuth
                 $dataRows[$k]['changed_total_price']= $book['total_price'] + $changePrice;
 
             }
-         
+
             $this->totalPrice += $book['total_price'];
             $this->payment_price += $book['status'] == 'BookedSuccessfully' ? $book['total_price'] :  $book['tour_payments_price'];
 
@@ -294,18 +294,18 @@ class bookTourShow extends clientAuth
 
 
     }
-	
-	public function info_tour_client( $factor_number ) {
-		$Model = Load::library('Model');
-		
-		$sql = " SELECT * FROM book_tour_local_tb WHERE factor_number='{$factor_number}' ";
-		$book = $Model->load($sql);
-    
+
+    public function info_tour_client( $factor_number ) {
+        $Model = Load::library('Model');
+
+        $sql = " SELECT * FROM book_tour_local_tb WHERE factor_number='{$factor_number}' ";
+        $book = $Model->load($sql);
+
     }
 
     public function tourInfoTracking($factor_number)
     {
-         
+
 
         $Model = Load::library('Model');
         /** @var resultTourLocal $resultTourLocalController */
@@ -320,12 +320,23 @@ class bookTourShow extends clientAuth
 
 
         }
-          $sql = " SELECT * FROM book_tour_local_tb WHERE factor_number='{$factor_number}' ";
-        $book = $Model->load($sql);
+//          $sql = " SELECT * FROM book_tour_local_tb WHERE factor_number='{$factor_number}' ";
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
 
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_tour_local_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'";
+        }
+        else {
+            $sql = "SELECT * FROM book_tour_local_tb 
+        WHERE factor_number = '$requestNumber'";
+        }
+        $book = $Model->load($sql);
         $resultTourLocalController->getInfoTourByIdTour($book['tour_id']);
         $tourDetail=$resultTourLocalController->arrayTour['infoTour'];
-     
+
         $isRequest=false;
         if($tourDetail['is_request'] =='1')
             $isRequest=true;
@@ -476,7 +487,7 @@ class bookTourShow extends clientAuth
                 $roomCounts = array_fill_keys(array_values($roomTypes), 0);
 
                 // Extract the count of each room type from the JSON data
-                 if (isset($tour_package_data['infoRooms'])) {
+                if (isset($tour_package_data['infoRooms'])) {
                     foreach ($tour_package_data['infoRooms'] as $roomType => $roomData) {
                         if (isset($roomTypes[$roomType])) {
                             $roomIndex = $roomTypes[$roomType];
@@ -550,7 +561,7 @@ class bookTourShow extends clientAuth
             }
 
             if ($book['cancel_status'] == '' && ($book['status'] == 'PreReserve'
-                || $book['status'] == 'TemporaryReservation' || $book['status'] == 'BookedSuccessfully')){
+                    || $book['status'] == 'TemporaryReservation' || $book['status'] == 'BookedSuccessfully')){
 
                 $result_isReserveByStopTime = functions::isReserveByStopTime($book['tour_exit_hour'], $book['tour_stop_time_cancel'], $book['tour_start_date']);
                 if ($result_isReserveByStopTime){
@@ -585,6 +596,15 @@ class bookTourShow extends clientAuth
 
             }
 
+            $totalPrice = intval($book['tour_total_price']);
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $this->FactorNumber)->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $totalPrice -= $discountCodeAmount;
+            }
+            functions::insertLog(json_encode($getDiscountCode),'000shojaee');
+            functions::insertLog(json_encode($getDiscountCodeAmount),'000shojaee');
 
             $result .= join(', ',$cities) . '</td>';
             $result .= '<td>' . $book['tour_start_date'] . '<hr style="color: #f8f8f8;">';
@@ -597,7 +617,7 @@ class bookTourShow extends clientAuth
             $result .= '</td>';
             $result .= '<td>' . $book['factor_number'] . '<hr style="color: #f8f8f8;">';
             $result .= $book['payment_date'] . '</td>';
-            $result .= '<td>' . number_format($book['tour_total_price']) . '<hr style="color: #f8f8f8;">';
+            $result .= '<td>' . number_format($totalPrice) . '<hr style="color: #f8f8f8;">';
 
             if($priceChanged > 0){
                 $result .= 'افزایش قیمت ' . number_format($priceChanged).'<hr style="color: #f8f8f8;">' ;

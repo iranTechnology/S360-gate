@@ -2478,7 +2478,7 @@ class newApiFlight extends clientAuth
      * @param $arrayTicket
      * @param $route
      * @param $data_translate
-     * @param bool $reservation
+     * @param boo$cellArrayl $reservation
      * @return string|string[]
      */
     public function baggageTitle($source_id, $route, $data_translate, $reservation = false) {

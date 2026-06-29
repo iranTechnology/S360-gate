@@ -757,16 +757,72 @@
     .instagram-logo-wrapper:hover .instagram-logo-overlay {
         opacity: 1;
     }
+    .settings-toggle,
+    #show-message-setting,
+    #show-message-clear,
+    .settings-sidebar,
+    .overlay-black,
+    .instagram-editor {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    /* بهبود کلیک در iOS */
+    .settings-toggle,
+    #show-message-setting,
+    #show-message-clear,
+    .close-overlay,
+    .apply-btn,
+    .save-btn,
+    .reset-btn,
+    .instagram-tool-btn,
+    .instagram-cancel-btn,
+    .instagram-done-btn {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* بهبود اسکرول در iOS */
+    .settings-sidebar,
+    .instagram-editor {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* رفع مشکل overflow: hidden در iOS */
+    body.overlay-open,
+    body.instagram-editor-open {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* استایل مخصوص iOS */
+    @supports (-webkit-touch-callout: none) {
+        .overlay-content {
+            bottom: 90px;
+        }
+
+        .settings-toggle {
+            bottom: 25px;
+        }
+    }
     @media (max-width: 768px) {
         .instagram-editor  {
             width:70%;
         }
-    }
-    @media (max-width: 768px) {
         #rest-theme-btn {
             display: none !important;
         }
+        .overlay-content{
+            height: auto;
+            padding: 10px;
+            margin-right: 17px;
+        }
+        #show-message-setting{
+            display:none !important
+        }
     }
+
 </style>
 
 

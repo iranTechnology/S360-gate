@@ -1024,16 +1024,35 @@ class rentCar extends clientAuth {
         $rent_car_table = $rent_car_model->getTable();
         $request_model = $this->getModel('requestServiceModel');
         $request_table = $request_model->getTable();
-        $sql = $rent_car_model->get([
-            $rent_car_table.'.*',
-            $rent_car_table . '.id AS rId',
-            $request_table.'.*',
-            $request_table . '.id AS sId',
-        ] ,true)
-            ->join($request_table, 'module_id', 'id')
-            ->where($request_table . '.tracking_code' , $trackingCode)
-            ->where($request_table . '.module_title' , 'rentCar')
-            ->find(false);
+
+
+
+        if(!Session::IsLogin()){
+            $sql = $rent_car_model->get([
+                $rent_car_table.'.*',
+                $rent_car_table . '.id AS rId',
+                $request_table.'.*',
+                $request_table . '.id AS sId',
+            ] ,true)
+                ->join($request_table, 'module_id', 'id')
+                ->where($request_table . '.tracking_code' , $trackingCode)
+                ->where($request_table . '.member_mobile' , $_POST['phone_number'])
+                ->where($request_table . '.module_title' , 'rentCar')
+                ->find(false);
+        }
+        else {
+            $sql = $rent_car_model->get([
+                $rent_car_table.'.*',
+                $rent_car_table . '.id AS rId',
+                $request_table.'.*',
+                $request_table . '.id AS sId',
+            ] ,true)
+                ->join($request_table, 'module_id', 'id')
+                ->where($request_table . '.tracking_code' , $trackingCode)
+                ->where($request_table . '.module_title' , 'rentCar')
+                ->find(false);
+        }
+
 
         if (!empty($sql)) {
             if (isset($sql['rent_place']) && !empty($sql['rent_place'])) {
