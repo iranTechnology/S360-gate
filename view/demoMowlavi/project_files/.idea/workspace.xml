@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="21e88701-bf0f-4058-aff3-63fef084fbd7" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2YCdu1zXrR2P8rvJPGW4NZEvxpz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;Y:/site-03/karvan sadat/site/karvan-sadat4&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-php-predefined-ba97393d7c68-6f8e3395a2b4-com.jetbrains.php.sharedIndexes-PS-233.14015.96" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="21e88701-bf0f-4058-aff3-63fef084fbd7" name="Changes" comment="" />
+      <created>1700033716796</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700033716796</updated>
+      <workItem from="1700033723643" duration="16962000" />
+      <workItem from="1700286217281" duration="15866000" />
+      <workItem from="1700371029301" duration="23622000" />
+      <workItem from="1700573957284" duration="597000" />
+      <workItem from="1701608200847" duration="158000" />
+      <workItem from="1702192742143" duration="1126000" />
+      <workItem from="1704693060720" duration="14000" />
+      <workItem from="1719058242108" duration="6936000" />
+      <workItem from="1719132160348" duration="2589000" />
+      <workItem from="1719140349593" duration="2793000" />
+      <workItem from="1719214971089" duration="6976000" />
+      <workItem from="1719229310399" duration="10513000" />
+      <workItem from="1719385024221" duration="7902000" />
+      <workItem from="1719396447522" duration="952000" />
+      <workItem from="1719646414375" duration="984000" />
+      <workItem from="1719653618612" duration="1806000" />
+      <workItem from="1719656588581" duration="299000" />
+      <workItem from="1719656943645" duration="297000" />
+      <workItem from="1719658912251" duration="203000" />
+      <workItem from="1724658291880" duration="11380000" />
+      <workItem from="1724740017063" duration="8523000" />
+      <workItem from="1724750750386" duration="7125000" />
+      <workItem from="1724825440330" duration="14878000" />
+      <workItem from="1724843655406" duration="1263000" />
+      <workItem from="1724851090578" duration="2000" />
+      <workItem from="1724907014310" duration="5371000" />
+      <workItem from="1724912980556" duration="7825000" />
+      <workItem from="1724921380827" duration="6244000" />
+      <workItem from="1724931605848" duration="9865000" />
+      <workItem from="1725095856551" duration="7000" />
+      <workItem from="1725122640648" duration="3000" />
+      <workItem from="1725707437534" duration="865000" />
+      <workItem from="1725713898208" duration="1869000" />
+      <workItem from="1725774792115" duration="4000" />
+      <workItem from="1725866017876" duration="946000" />
+      <workItem from="1726031847226" duration="4000" />
+      <workItem from="1727588906740" duration="18689000" />
+      <workItem from="1727682197217" duration="7142000" />
+      <workItem from="1727759269721" duration="1798000" />
+      <workItem from="1728913023524" duration="910000" />
+      <workItem from="1728971262427" duration="2053000" />
+      <workItem from="1728973411412" duration="24747000" />
+      <workItem from="1729009725667" duration="3360000" />
+      <workItem from="1729058296914" duration="1171000" />
+      <workItem from="1729071191407" duration="221000" />
+      <workItem from="1729071704641" duration="1829000" />
+      <workItem from="1729076441114" duration="497000" />
+      <workItem from="1729077053451" duration="1168000" />
+      <workItem from="1729341487922" duration="5302000" />
+      <workItem from="1729402102640" duration="1043000" />
+      <workItem from="1729403947252" duration="4532000" />
+      <workItem from="1729684338831" duration="615000" />
+      <workItem from="1729687891115" duration="2918000" />
+      <workItem from="1734941951735" duration="489000" />
+      <workItem from="1737566191788" duration="144000" />
+      <workItem from="1737792292722" duration="4665000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
