@@ -5891,7 +5891,14 @@ class bookshowTest extends clientAuth {
             if (!empty($hotel['discount_code_amount']) && $hotel['discount_code_amount'] != 0) {
                 $DataAllPrice .=  '<br><del>' . number_format( $hotel['total_price'] ) . '</del>';
             }
-            $DataAllPriceFor = $hotel['total_price'];
+
+            if ( $hotel['type_application'] == 'reservation' ) {
+                $DataAllPriceFor = $hotel['total_price'] - $hotel['discount_code_amount'];
+
+            } else {
+                $DataAllPriceFor = $hotel['total_price'];
+            }
+
 
 
 
@@ -6126,7 +6133,7 @@ class bookshowTest extends clientAuth {
                                                                data-placement='top' title=''
                                                                data-original-title='تایید رزرو در سرور core'></i></a>";
             }
-//            $DataActivity .= $DataAction;
+            $DataActivity .= $DataAction;
             $final_agency_commission = '';
             $agencyShare = $DataAllPriceFor - $BuyFromIt;
             $ClssShare = 'bg-inverse';
