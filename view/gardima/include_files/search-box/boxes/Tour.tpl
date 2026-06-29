@@ -3,7 +3,7 @@
 <div class="internal-tour-js" id="internal_tour">
 <div class="col-12">
 <div class="row">
-<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsTourLocal" method="post" name="gdsTourLocal" target="_blank">
+<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsTourLocal" method="post" name="gdsTourLocal" target="_top">
 {include file="./sections/Tour/internal/origin_city_tour.tpl"}
 {include file="./sections/Tour/internal/destination_city_tour.tpl"}
 {include file="./sections/Tour/internal/date_teravel.tpl"}
@@ -21,7 +21,7 @@
 <div class="international-tour-js" id="international_tour">
 <div class="col-12">
 <div class="row">
-<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsPortalLocal" method="post" name="gdsPortalLocal" target="_blank">
+<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsPortalLocal" method="post" name="gdsPortalLocal" target="_top">
 {include file="./sections/Tour/international/country_origin.tpl"}
 {include file="./sections/Tour/international/city_origin.tpl"}
 {include file="./sections/Tour/international/country_destination.tpl"}

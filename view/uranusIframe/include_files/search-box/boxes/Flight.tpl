@@ -1,17 +1,17 @@
 <div class="__box__ tab-pane active" id="Flight">
-    <div class="parent-head-search-box">
-    <div class="head-search-box-detail">
-        <div class="w-100 mr-2">
-            <div clsas="d-flex align-items-center" style="gap:5px">
-                <i class="fa-light fa-plane head-search-box-icon"></i>
-                <span class="head-search-box-title">پرواز</span>
-            </div>
-            <p class="mt-2 mb-0">بلیط پرواز داخلی و خارجی</p>
-        </div>
-        <div class="head-search-box-parent-img">
-            <img class="head-search-box-img" src="project_files/images/flight.png" alt="">
-        </div>
-    </div>
+{*    <div class="parent-head-search-box">*}
+{*    <div class="head-search-box-detail">*}
+{*        <div class="w-100 mr-2">*}
+{*            <div class="d-flex align-items-center" style="gap:5px">*}
+{*                <i class="fa-light fa-plane head-search-box-icon mt-1"></i>*}
+{*                <span class="head-search-box-title">پرواز</span>*}
+{*            </div>*}
+{*            <p class="mt-2 mb-0">بلیط پرواز داخلی و خارجی</p>*}
+{*        </div>*}
+{*        <div class="head-search-box-parent-img">*}
+{*            <img class="head-search-box-img" src="project_files/images/flight.png" alt="">*}
+{*        </div>*}
+{*    </div>*}
         <div class="parent-internal-external-flight  mt-2 mt-lg-0">
     {include file="./sections/Flight/internal/btn_radio_internal_external.tpl"}
 
@@ -50,5 +50,5 @@
         </form>
     </div>
         </div>
-    </div>
+{*    </div>*}
 </div>
