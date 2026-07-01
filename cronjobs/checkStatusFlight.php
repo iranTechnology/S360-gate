@@ -239,7 +239,6 @@ class checkStatusFlight extends clientAuth
 //        $sms_service = $this->getcontroller('smsServices');
 //        $cellArray = array(
 //            'araste' => '09211559872',
-//            'fanipor' => '09129409530'
 //        );
 //        $objSms = $sms_service->initService('1');
 //        if ($objSms) {

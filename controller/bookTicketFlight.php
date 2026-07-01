@@ -367,8 +367,6 @@ class bookTicketFlight extends apiLocal
             $sms = "{$ServerName} -" . CLIENT_NAME . "-{$eachDirection['airline_name']}-{$date}";
             $cellArray = array(
                 'afshar' => '09123493154',
-                'fanipor' => '09129409530',
-                'araste' => '09211559872'
 
             );
             foreach ($cellArray as $cellNumber) {

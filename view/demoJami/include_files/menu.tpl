@@ -51,7 +51,7 @@
 </ul>
 </li>
 <li>
-<a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور داخلی</a>
+<a href="javascript:">تور داخلی</a>
     {if $objResult->ReservationTourCities('=1', 'return')}
 <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
     {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCities('=1', 'return')}
@@ -65,7 +65,7 @@
     {/if}
 </li>
 <li>
-<a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور خارجی</a>
+<a href="javascript:">تور خارجی</a>
     {if $objResult->ReservationTourCountries('yes')}
 
     <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
