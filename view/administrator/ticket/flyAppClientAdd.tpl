@@ -282,6 +282,7 @@
                             <option value="saadi">دموی سعدی</option>
                             <option value="foroogh">دموی فروغ</option>
                             <option value="sepehri">دموی سپهری</option>
+                            <option value="jami">دموی جامی</option>
                             <option value="attar">دموی عطار</option>
                             <option value="khayam">دموی خیام</option>
                             <option value="mowlavi">دموی مولوی</option>

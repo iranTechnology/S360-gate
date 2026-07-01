@@ -2033,9 +2033,6 @@ class detailHotel extends ApiHotelCore
                 $objSms = $smsController->initService('1');
                 if ($objSms) {
                     $cellArray = array(
-                        'fanipoor' => '09129409530',
-                        'afrazeh' => '09916211232',
-                        'araste' => '09211559872',
                         'amirabbas' => '09057078341',
                     );
                     functions::insertLog('before sms pattern'. $data['serviceTitle'] .'===>'.$params['factorNumber'],'Hotels/smsHotel');

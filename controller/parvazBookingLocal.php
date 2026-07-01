@@ -199,10 +199,6 @@ class parvazBookingLocal extends apiLocal
                                         $sms = "{$ServerName} -" . CLIENT_NAME . "-{$eachDirection['airline_name']}-{$date}";
                                         $cellArray = array(
                                             'afshar' => '09123493154',
-                                            'fanipor' => '09129409530',
-                                            'araste' => '09211559872',
-                                            'afraze' => '09916211232',
-                                            'bahrami' => '09351252904',
                                         );
                                         foreach ($cellArray as $cellNumber) {
                                             $smsArray = array(

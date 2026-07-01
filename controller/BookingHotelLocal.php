@@ -192,10 +192,7 @@ class BookingHotelLocal extends clientAuth
                 if ($objSms) {
                     $sms = " رزرو هتل، شماره رزرو: {$factorNumber} - " . CLIENT_NAME;
                     $cellArray = array(
-                        'fanipor' => '09129409530',
-                        'afraze' => '09916211232',
                         'abasi2' => '09057078341',
-                        'bahrami' => '09351252904',
 
                     );
                     foreach ($cellArray as $cellNumber) {

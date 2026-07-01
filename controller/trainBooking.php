@@ -99,12 +99,7 @@ class trainBooking extends trainCore
 
                 $cellArray = array(
                     'afshar'   => '09123493154',
-                    'afraze'   => '09916211232',
-                    'fanipor'  => '09129409530',
-                    'araste' => '09211559872',
                     'abasi2' => '09057078341',
-                    'ms_bahrami' => '09351252904',
-
                 );
                 $ServerName = 'قطار';
                 /** @var smsServices $smsController */
@@ -1571,14 +1566,19 @@ class trainBooking extends trainCore
         return 'error res' . $res;
     }
 
-    public function infoTrainTicket($numberBuy)
+    public function infoTrainTicket($numberBuy,$phoneNumber)
     {
-//        $Model = Load::library('Model');
+        $Model = Load::library('Model');
         /** @var \bookTrainModel $bookTrainModel */
         $bookTrainModel = Load::getModel('bookTrainModel');
-        $book = $bookTrainModel->get()->where('requestNumber', $numberBuy)->orWhere('TicketNumber', $numberBuy)->find();
-//        $sql = " SELECT * FROM book_train_tb WHERE requestNumber = '{$numberBuy}' OR TicketNumber='{$numberBuy}' ";
-//        $book = $Model->load($sql);
+//        $book = $bookTrainModel->get()->where('factor_number', $numberBuy)->where('member_number' , $phoneNumber)->find();
+
+        if(!Session::IsLogin()){
+            $book = $bookTrainModel->get()->Where('factor_number', $numberBuy)->Where('member_number' , $phoneNumber)->find();
+        }
+        else {
+            $book = $bookTrainModel->get()->Where('factor_number', $numberBuy)->find();
+        }
         $result = '';
         if (!empty($book)) {
 

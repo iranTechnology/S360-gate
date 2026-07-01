@@ -1589,14 +1589,10 @@ class apiLocal extends clientAuth
                 //baraye parto eshteraki
                 $data['Books'][$key]['PhoneNumber'] = '09020661033' ;
                 $data['Books'][$key]['Email'] = 'flymurshid@gmail.com';
-
+رفع ایراد کار شجاعی
                 $cellArray = array(
-                    'afraze' => '09916211232',
-                    'fanipor' => '09129409530',
-                    'araste' => '09211559872',
                     'abbasi_' => '09057078341',
-                    'alami' => '09155909722'
-
+                    'afshar_' => '09123493154',
                 );
                 $ServerName = '14 اشتراکی';
                 /** @var smsServices $smsController */

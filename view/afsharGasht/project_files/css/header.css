@@ -460,10 +460,6 @@ footer h6 {
     transition: all ease .1s;
 }
 
-.nav-brand > img {
-    height: 65px;
-}
-
 .respect {
     position: absolute;
     bottom: -11px;
@@ -474,7 +470,7 @@ footer h6 {
 }
 
 .nav-brand .logo-img {
-    width: 103px;
+    width: 90px;
 }
 
 .megamenu-list img {
@@ -1735,7 +1731,7 @@ footer h6 {
     width: 100%;
     background: #fff;
     box-shadow: 0 4px 10px #d9d9d999;
-    padding: 5px 0;
+    padding: 10px 0;
 }
 
 .nav-dropdown > li > a:hover, .nav-dropdown > li > a:focus {
@@ -2422,11 +2418,11 @@ footer h6 {
     .btn-user i {
         font-size: 19px !important;
     }
+    .main_header_area {
+        padding: 5px 0;
+    }
     .nav-toggle::before {
         width: 22px;
-    }
-    .nav-brand > img {
-        height: 50px;
     }
     .navigation {
         height: 75px;

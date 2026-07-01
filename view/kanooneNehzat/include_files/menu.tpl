@@ -33,7 +33,7 @@
                             </li>
 
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">آژانس ما</a>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره مؤسسه</a>
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">تماس با ما</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">چرا موسسه نهضت ؟</a></li>
