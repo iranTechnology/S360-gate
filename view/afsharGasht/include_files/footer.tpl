@@ -66,6 +66,11 @@
          {$smarty.const.CLIENT_PHONE}
         </a>
        </div>
+       <div class="child-item-footer">
+        <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_MOBILE}">
+         {$smarty.const.CLIENT_MOBILE}
+        </a>
+       </div>
        {assign var="socialLinks"  value=$about['social_links']|json_decode:true}
                                 {assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref','aparat' => 'aparatHref','youTube' => 'youtubeHref','facebook' => 'facebookHref','linkedin' => 'linkeDinHref' , 'twitter' => 'twitterHref']}
 
@@ -220,14 +225,16 @@
    <div class="img-box-footer">
     <img alt="footer-logo" src="project_files/images/logo.png"/>
    </div>
-   <div class="child-item-footer">
-    <span class="text-mobile-phone">
-     تلفن:
-    </span>
+   <div class="child-item-footer d-flex flex-column align-items-center">
     <a class="" href="tel:{$smarty.const.CLIENT_PHONE}">
      <i class="fa-regular fa-phone icon-mobile-phone">
      </i>
      {$smarty.const.CLIENT_PHONE}
+    </a>
+    <a class="" href="tel:{$smarty.const.CLIENT_MOBILE}">
+     <i class="fa-regular fa-mobile icon-mobile-phone">
+     </i>
+     {$smarty.const.CLIENT_MOBILE}
     </a>
    </div>
    {assign var="socialLinks"  value=$about['social_links']|json_decode:true}
