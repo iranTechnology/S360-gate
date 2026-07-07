@@ -13,6 +13,10 @@ header {
   }
 }
 
+footer .__logo_class__ {
+  width: 200px;
+}
+
 .res-menu {
   display: none;
   gap: 20px;
@@ -2206,7 +2210,9 @@ transition: all linear .3s;
 
 @media (max-width: 576px) {
 
-
+  footer .__logo_class__ {
+    width: 140px;
+  }
 
   .last_text {
     margin-bottom: 0px;
