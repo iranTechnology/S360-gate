@@ -16,7 +16,7 @@
                             <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a>
                         </li>
                         <li>
-                            <a href="javascript:">اقامت</a>
+                            <a href="javascript:">هتل</a>
                             <ul class="nav-dropdown nav-submenu">
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل داخلی</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل خارجی</a></li>

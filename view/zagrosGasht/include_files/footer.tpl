@@ -15,7 +15,7 @@
       <div class="parent-footer-iran d-flex flex-wrap w-100">
        <div class="item-footer col-lg-3 col-md-6 col-sm-12 col-12 order-foot1">
         <div class="parent-item-footer parent-item-footer-responsive box-item-footer2">
-         <img alt="img-logo" id="footerLogo" class="__logo_class__" src="project_files/images/logo.png"/>
+         <img alt="img-logo" class="__logo_class__" src="project_files/images/logo.png"/>
          <div class="parent-about-footer box-item-footer text-right">
         <span class="__aboutUs_class__ text-footer-about">
          {$htmlContent = $about['body']|strip_tags}{$htmlContent|truncate:300}

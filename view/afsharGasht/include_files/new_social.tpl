@@ -6,23 +6,23 @@
                 <h2 class="title-new-social">پشتیبانی 24 ساعته و 7 روز هفته</h2>
             </div>
             <div class="parent-item-social">
-                <a class="item-social" href="tel:02188866609">
+                <a class="item-social" href="tel:02691096998">
                     <div class="parent-i">
                         <i class="fa-light fa-user-headset"></i>
                     </div>
-                    <span> پشتیبانی پرواز:  <span>021-88866609</span></span>
+                    <span> پشتیبانی پرواز:  <span>026-91096998</span></span>
                 </a>
-                <a class="item-social" href="tel:02188866609">
+                <a class="item-social" href="tel:02691096998">
                     <div class="parent-i">
                         <i class="fa-light fa-user-headset"></i>
                     </div>
-                    <span> پشتیبانی هتل:  <span>021-88866609</span></span>
+                    <span> پشتیبانی هتل:  <span>026-91096998</span></span>
                 </a>
-                <a class="item-social" href="tel:02188866609">
+                <a class="item-social" href="tel:02691096998">
                     <div class="parent-i">
                         <i class="fa-light fa-user-headset"></i>
                     </div>
-                    <span> پشتیبانی تور:  <span>021-88866609</span></span>
+                    <span> پشتیبانی تور:  <span>026-91096998</span></span>
                 </a>
             </div>
             <h5>کارشناسان افشار گشت در 24ساعت شبانه روز و 7 روز هفته، به صورت تلفنی و ارسال پیام، پاسخگوی

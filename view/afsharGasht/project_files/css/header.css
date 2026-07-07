@@ -2923,7 +2923,7 @@ footer h6 {
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 2px;
 }
 
 .child-item-footer {
