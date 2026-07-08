@@ -406,8 +406,15 @@
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #083b5a;
+  background-color: var(--mainColor);
   color: white;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] .city_start i {
+  color: #fff;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] .city_start {
+  color: #fff;
 }
 
 .select2-container--default .select2-results__group {
