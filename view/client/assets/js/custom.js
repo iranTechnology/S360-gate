@@ -8413,7 +8413,8 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                             discountCode: discountCode,
                             discountAmount: data.discountAmount,
                             factorNumber: factorNumber,
-                            serviceType: serviceType
+                            serviceType: serviceType,
+                            typeDiscount:data.typeDiscount
                         },
                     success: function (data) {
 

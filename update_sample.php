@@ -8,9 +8,8 @@
 
 $client_sql = <<<SQL
 
-ALTER TABLE discount_codes_tb 
-ADD COLUMN typeDiscount ENUM('cash', 'percent') NOT NULL DEFAULT 'cash' 
-AFTER title;
+ALTER TABLE `book_hotel_local_tb` 
+ADD `type_discount` VARCHAR(50) NULL DEFAULT NULL AFTER `discount_code_amount`;
 
 
 

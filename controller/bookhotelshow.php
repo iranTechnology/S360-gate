@@ -763,6 +763,7 @@ class bookhotelshow extends baseController
 
         foreach ( $BookShow as $key => &$hotel ) {
             $getDiscountCode = $discountCodesUsedModel->get(['discountCode'], true)->where('factorNumber',  $hotel['factor_number'])->find();
+            functions::insertLog(json_encode($getDiscountCode) , '000shojaee');
             $getDiscountCodeAmount = $discountCodesModel->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
             $discountCodeAmount = 0;
             if (!empty($getDiscountCodeAmount)) {

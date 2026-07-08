@@ -1587,7 +1587,7 @@ option {
     gap: 8px;
 }
 .bus-facilities-badge{
-    background: #e2e6e9;
+    background: #e2e6e980;
     font-size: 10px;
     border-radius: 20px;
     padding: 0 .5rem;
