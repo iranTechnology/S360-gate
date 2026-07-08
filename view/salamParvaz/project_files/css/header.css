@@ -844,7 +844,47 @@
 .fixicone:hover {
     animation: none
 }
+.main-navigation__sub-menu2 {
+    background: hsla(0, 0%, 100%, .99) !important;
+    border: 1px solid hsla(0, 0%, 100%, .99);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, .15);
+    padding: 0px;
+    transition: transform .3s ease, box-shadow .3s ease
+}
 
+.main-navigation__sub-menu2 .sup-menu-flex > a {
+    border-bottom: 1px solid #d6d5d5 !important;
+    border-radius: 0px !important
+}
+
+.main-navigation__sub-menu2 .sup-menu-flex > a:hover {
+    background: var(--hoverColor) !important;
+    color: #fff !important
+}
+
+.main-navigation__sub-menu2 .sup-menu-flex > a:hover i svg {
+    fill: #fff
+}
+
+.main-navigation__sub-menu2 .sup-menu-flex > a {
+    gap: 20px
+}
+
+.main-navigation__sub-menu2 .sup-menu-flex > a i {
+    right: 10px
+}
+
+.main-navigation__sub-menu2 .sup-menu-flex > a i {
+    margin-left: 5px;
+    margin-right: 5px
+}
+.btn-user{
+    border-radius: 999px !important;
+}
+.btn-user:hover{
+    background:var(--hoverColor) !important;
+    border-color:var(--hoverColor) !important;
+}
 @keyframes bounce {
     0% {
         -webkit-transform: translateY(0);

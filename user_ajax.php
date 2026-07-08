@@ -2489,6 +2489,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setDiscountCodePending' )
     $ModelBase = Load::library('ModelBase');
 
     $d['discount_code_amount'] = $_POST['discountAmount'];
+    $d['type_discount'] = $_POST['typeDiscount'];
     $condition = " factor_number = '{$factorNumber}'";
     $Model->setTable("book_hotel_local_tb");
     $res = $Model->update($d, $condition);

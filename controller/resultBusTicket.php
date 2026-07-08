@@ -17,7 +17,7 @@ class resultBusTicket extends apiBus
 
     public function __construct()
     {
-     
+
 
         parent::__construct();
         $this->accessBus=parent::accessApiBus();
@@ -56,7 +56,7 @@ class resultBusTicket extends apiBus
 
         foreach ($array as $item) {
 
-                $output .= '<div class="showListSort">
+            $output .= '<div class="showListSort">
                       <div class="international-available-box early ASS"
                            data-price="' . $item['price'] . '"
                              data-company="' . $item['baseCompany'] . ' ' . $item['companyName'] . '"
@@ -66,12 +66,12 @@ class resultBusTicket extends apiBus
                              data-time="' . $item['timeMove'] . '"
                              data-special="' . $item['is_special'] . '" >
                            ';
-                $output .= '<div class="international-available-item">
+            $output .= '<div class="international-available-item">
                       <div class="international-available-info bus_page">
                       <div class="p-2 international-available-item-right-Cell bus_page my-slideup">';
 
 
-                $output .= '<div class=" international-available-airlines ">
+            $output .= '<div class=" international-available-airlines ">
                   <div class="international-available-airlines-logo roundedLogo">
                       <img src="' . $item['getCompanyBusPhoto'] . '"
                            alt="' . $item['baseCompany'] . '"
@@ -81,16 +81,16 @@ class resultBusTicket extends apiBus
                   <div class="international-available-airlines-log-info">
                       <span class="iranM silence_heading">' . $item['baseCompany'] . '</span>
                   </div>';
-                if ($item['carType'] && $item['carType'] != '') {
-                    $output.='<div class="d-flex flex-wrap justify-content-center bus-facilities-badge">'.$item['carType'].'</div>';
-                }
+            if ($item['carType'] && $item['carType'] != '') {
+                $output.='<div class="d-flex flex-wrap justify-content-center bus-facilities-badge">'.$item['carType'].'</div>';
+            }
 
-                $output .= '</div>';
-                $output .= '<div class="international-available-airlines-info international-available-bus-info align-content-between">';
-                $output .= '  <div class="iranL departure-time"> <h2>' . $item['timeMove'] . '</h2></div>
+            $output .= '</div>';
+            $output .= '<div class="international-available-airlines-info international-available-bus-info align-content-between">';
+            $output .= '  <div class="iranL departure-time"> <h2>' . $item['timeMove'] . '</h2></div>
                               ';
 
-                $output .= '
+            $output .= '
 <div class="box-item-bus">
 <div class="airlines-info bus-info_ destination txtLeft">
                       <span class="iranB bold_text">' . $item['TextOriginTerminal'] . '</span>
@@ -98,7 +98,7 @@ class resultBusTicket extends apiBus
 <div class="airlines-info bus-info_">
                   <div class="col-md-12">
                       <div class="airline-line">';
-                $output .= '
+            $output .= '
 
                   <div class="plane-icon busicon_zm">
                       <svg xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +129,7 @@ class resultBusTicket extends apiBus
                           </g>
                   </svg>
                   </div>';
-                $output .= '<div class="loc-icon-destination">
+            $output .= '<div class="loc-icon-destination">
                                                                             <svg version="1.1" class=""
                                                                                  id="Layer_1"
                                                                                  xmlns="http://www.w3.org/2000/svg"
@@ -147,40 +147,40 @@ class resultBusTicket extends apiBus
                                                                             </g>
                                                                         </svg>
                                                                         </div>';
-                $output .= '</div>
+            $output .= '</div>
 
                                                                 </div>
                                                             </div>';
 
-                $output .= ' <div class="airlines-info bus-info_ destination txtRight namecity_zm">
+            $output .= ' <div class="airlines-info bus-info_ destination txtRight namecity_zm">
                               <span class="iranB bold_text">' . $item['TextDestinationTerminal'] . '</span>
                           </div>';
 
 
-                /* if ($item['description'] && $item['description'] != '') {
-                     $output.='<div class="d-flex flex-wrap font-12 justify-content-center text-muted w-100">'.$item['description'].'</div>';
-                 }*/
-                $output .= '</div>';
-                $output .= '</div>';
+            /* if ($item['description'] && $item['description'] != '') {
+                 $output.='<div class="d-flex flex-wrap font-12 justify-content-center text-muted w-100">'.$item['description'].'</div>';
+             }*/
+            $output .= '</div>';
+            $output .= '</div>';
 
-                $output .= '<div class="col-md-12 p-0 esterdad-blit text-right">
+            $output .= '<div class="col-md-12 p-0 esterdad-blit text-right">
                  <span class="iranL col-md-12 silence_text silence_div3 d-flex text-dark capacity-parent">
                      <span class="capacity-col" style="color: #f7f7f7;right: 90px;color: rgba(0,0,0,0);background: none;">S.' . $item['sourceCode'] . '</span>
                  </span>
              </div>';
 
 
-                $output .= '</div>';
+            $output .= '</div>';
 
 
-                $output .= '<div class="inner-avlbl-itm international-available-item-left-Cell my-slideup pr-3">
+            $output .= '<div class="inner-avlbl-itm international-available-item-left-Cell my-slideup pr-3">
                                                     <div class="inner-avlbl-itm">';
 
-                $output .= '<span class="iranL priceSortAdt1">';
+            $output .= '<span class="iranL priceSortAdt1">';
 
-                if ($item['setPriceChanges'] > 0) {
+            if ($item['setPriceChanges'] > 0) {
 
-                    $output .= '<div class="decent">
+                $output .= '<div class="decent">
 
                     <i class="iranM site-main-text-color-drck discount"  style="text-decoration: line-through" data-amount="' . $item['mainCurrency']['AmountCurrency'] . '">
                       ' . Functions::numberFormat($item['mainCurrency']['AmountCurrency']) . '
@@ -193,45 +193,45 @@ class resultBusTicket extends apiBus
                        <i class="iranM site-main-text-color-drck CurrencyCal " 
                        data-amount="' . $item['setPriceChanges'] . '">
                        ' . Functions::numberFormat($item['setPriceChanges']) . '</i>';
-                } else {
-                    $output .= '<i class="iranM site-main-text-color-drck CurrencyCal "
+            } else {
+                $output .= '<i class="iranM site-main-text-color-drck CurrencyCal "
                     data-amount="' . $item['price'] . '">
                     ' . Functions::numberFormat($item['mainCurrency']['AmountCurrency']) . '
                   </i>';
 
-                }
-                $output .= '<span class="CurrencyText">' . $item['mainCurrency']['TypeCurrency'] . '</span>
+            }
+            $output .= '<span class="CurrencyText">' . $item['mainCurrency']['TypeCurrency'] . '</span>
                                                         </div>
                                                         </span>';
-                $output .= '<div class="SelectTicket"> 
+            $output .= '<div class="SelectTicket"> 
                           <a class="init-loading international-available-btn site-bg-main-color ';
 
-                if ($item['countFreeChairs'] > 0) {
-                    $output .=' site-main-button-color-hover ';
-                }else{
-                    $output .=' btn-cancle ';
+            if ($item['countFreeChairs'] > 0) {
+                $output .=' site-main-button-color-hover ';
+            }else{
+                $output .=' btn-cancle ';
 
-                }
-                $output .='"';
+            }
+            $output .='"';
 
-                if ($item['countFreeChairs'] > 0) {
+            if ($item['countFreeChairs'] > 0) {
 
 
-                    $output .= ' onclick="reserveBusTicket(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\',true,$(this))"';
+                $output .= ' onclick="reserveBusTicket(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\',true,$(this))"';
 
-                }
-                $output .= '>';
+            }
+            $output .= '>';
 
-                if ($item['countFreeChairs'] > 0) {
+            if ($item['countFreeChairs'] > 0) {
 
-                    $output .= functions::Xmlinformation('Ticketselect');
-                } else {
-                    $output .= functions::Xmlinformation('CompletionCapacity');
-                }
-                $output .= '</a>
+                $output .= functions::Xmlinformation('Ticketselect');
+            } else {
+                $output .= functions::Xmlinformation('CompletionCapacity');
+            }
+            $output .= '</a>
                           </div>';
 
-                $output .= '
+            $output .= '
                                  <span class="iranL  silence_text silence_div3 d-flex text-dark capacity-parent">
                      <span class="capacity-col mt-1">  <span class="number-remaining-seats">' . $item['countFreeChairs'] . '</span><span class="remaining-seats">صندلی باقی مانده</span></span>
           
@@ -239,15 +239,15 @@ class resultBusTicket extends apiBus
                  </span>
                 ';
 
-                $output .='</div>
+            $output .='</div>
                   </div>';
 
 
-                $output .= '<div class="ticketSubDetail international-available-details">
+            $output .= '<div class="ticketSubDetail international-available-details">
                  <div>
                      <div class="international-available-panel-min">';
 
-                $output .= '<div id="tab-1-0" class="tab-content current">
+            $output .= '<div id="tab-1-0" class="tab-content current">
                   <div class="international-available-airlines-detail-tittle">
                   
                   
@@ -258,55 +258,95 @@ class resultBusTicket extends apiBus
                           <ul class="justifyCenter Container-progessbar">
                               <li class="active">' . $item['origin']['cityName'] . '</li>';
 
-                if (isset($item['droppingPoints']) && count($item['droppingPoints']) > 1) {
-                    foreach ($item['droppingPoints'] as $droppingPoint) {
+            if (isset($item['droppingPoints']) && count($item['droppingPoints']) > 1) {
+                foreach ($item['droppingPoints'] as $droppingPoint) {
 
 
-                        if ($droppingPoint != $item['destination']['cityName']) {
+                    if ($droppingPoint != $item['destination']['cityName']) {
 
-                            $output .= '<li class="">' . $droppingPoint . '</li>';
-                        }
+                        $output .= '<li class="">' . $droppingPoint . '</li>';
                     }
                 }
+            }
 
 
-                $output .= '<li class="active">' . $item['destination']['cityName'] . '</li>';
+            $output .= '<li class="active">' . $item['destination']['cityName'] . '</li>';
 
 
-                $output .= '</ul>
+            $output .= '</ul>
                           </div>
                       </div>
                   </div>';
 
-                $output.='
-               <div data-name="bus-extra-descriptions-loading" class="align-items-center d-flex flex-wrap gap-10 justify-content-center w-100">
-                  
-               </div>
-                <div data-name="bus-extra-descriptions" class=" w-100">
-                    <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color">
-                           '.functions::Xmlinformation('ConsoleFines').'
-                    </span>
-                    <div class="panel-default-change-Buyer-parent row">
-                        <div data-name="bus-refund-rules" class="desctiptionBus right w-100">
-                              <div class="alert-bus">
-                                 <h6>10% جریمه</h6>
-                                 <p>از زمان صدور تا 1 ساعت قبل از حرکت</p>
-                           </div>
-                                 <div class="alert-bus">
-                                    <h6>50% جریمه حضوری</h6>
-                                    <p>از 1 ساعت قبل از حرکت تا پس از آن</p>
-                                 </div>
-                        </div>
-                    </div>
-                </div>';
 
-                $output .= '</div>
+// تعریف متغیرها
+            $busId = isset($item['id']) ? $item['id'] : uniqid('bus_');
+            $carType = isset($item['carType']) ? $item['carType'] : 'نامشخص';
+
+            $output .= '
+<div data-name="bus-extra-descriptions-loading" class="align-items-center d-flex flex-wrap gap-10 justify-content-center w-100">
+</div>
+
+<div data-name="bus-extra-descriptions" class="w-100">
+    <!-- ===== تب‌ها با id یونیک بر اساس busId ===== -->
+    <ul class="nav nav-tabs my-3 gap-2 justify-content-center align-items-center" id="busTab_' . $busId . '" role="tablist">
+        <li class="nav-item rounded-md">
+            <a class="nav-link active border-0" style="border-radius:10px" id="penalty-tab_' . $busId . '" data-toggle="tab" 
+               href="#penalty_' . $busId . '" role="tab" aria-controls="penalty_' . $busId . '" aria-selected="true">
+               جریمه
+            </a>
+        </li>
+        <li class="nav-item rounded-md">
+            <a class="nav-link  border-0" style="border-radius:10px" id="details-tab_' . $busId . '" data-toggle="tab" 
+               href="#details_' . $busId . '" role="tab" aria-controls="details_' . $busId . '" aria-selected="false">
+              جزییات
+            </a>
+        </li>
+    </ul>
+
+    <!-- ===== محتوای تب‌ها ===== -->
+    <div class="tab-content" id="busTabContent_' . $busId . '">
+        
+        <!-- تب جریمه -->
+        <div class="tab-pane fade show active" id="penalty_' . $busId . '" role="tabpanel" aria-labelledby="penalty-tab_' . $busId . '">
+          
+            <div class="panel-default-change-Buyer-parent row">
+                <div data-name="bus-refund-rules" class="desctiptionBus right w-100">
+                    <div class="alert alert-danger alert-bus">
+                        <h6 class="mb-1">10% جریمه</h6>
+                        <p class="mb-0">از زمان صدور تا 1 ساعت قبل از حرکت</p>
+                    </div>
+                    <div class="alert alert-danger alert-bus">
+                        <h6 class="mb-1">50% جریمه حضوری</h6>
+                        <p class="mb-0">از 1 ساعت قبل از حرکت تا پس از آن</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        <!-- تب جزییات -->
+        <div class="tab-pane fade" id="details_' . $busId . '" role="tabpanel" aria-labelledby="details-tab_' . $busId . '">
+            <div class="panel-default-change-Buyer-parent row">
+                <div class="w-100">
+                    <div class="alert alert-info alert-bus">
+                        <p class="mb-0">' . $carType . '</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>';
+
+
+            $output .= '</div>
                   </div>';
 
 
-                $output .= '<span class="international-available-detail-btn slideDownHotelDescription">';
+            $output .= '<span class="international-available-detail-btn slideDownHotelDescription">';
 
-                if (Session::IsLogin()) {
+            if (Session::IsLogin()) {
 
                 $counterId = functions::getCounterTypeId($_SESSION['userId']);
                 $baseCompany = (isset($item['baseCompany']) && $item['baseCompany'] != '') ? $item['baseCompany'] : $item['companyName'];
@@ -325,7 +365,7 @@ class resultBusTicket extends apiBus
                         '</div>';
                 }
             }
-                $output .= '<div onclick="showDescriptionDetail(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
+            $output .= '<div onclick="showDescriptionDetail(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
                       <i class="fa fa-angle-down"></i>
                   </div>';
 
@@ -409,24 +449,24 @@ class resultBusTicket extends apiBus
 
             $bus_reservation_result=[];
 
-           
+
             if($this->accessBusReservation){
                 if(trim($dateMove) >= trim($dateNow)){
-                  $reservation_data=$this->getController('busPanel')->getBusReservationData($param);
+                    $reservation_data=$this->getController('busPanel')->getBusReservationData($param);
 
-                  foreach ($reservation_data as $key=>$item){
-                    $bus_reservation_result[$key]=$item;
-                    $bus_reservation_result[$key]['source_name']='reservation_bus';
+                    foreach ($reservation_data as $key=>$item){
+                        $bus_reservation_result[$key]=$item;
+                        $bus_reservation_result[$key]['source_name']='reservation_bus';
 
-                  }
+                    }
                 }
             }
 
 
             if($resultInfoSourcesApi || $bus_reservation_result){
-              if($resultInfoSourcesApi){
-                  
-                $busSearchApiData=$resultBuses=parent::busSearch($jsonData);
+                if($resultInfoSourcesApi){
+
+                    $busSearchApiData=$resultBuses=parent::busSearch($jsonData);
 
                 }
                 if(trim($dateMove) >= trim($dateNow)){
@@ -439,401 +479,401 @@ class resultBusTicket extends apiBus
                         }
                     }
 
- 
-                            $html_data = [
-                                'api' => [],
-                                'reservation' => [],
+
+                    $html_data = [
+                        'api' => [],
+                        'reservation' => [],
+                    ];
+
+                    if ($this->checkApiSuccessfulStatus($resultBuses)  && $resultInfoSourcesApi) {
+                        $sort = array();
+                        $freeBus = array();
+                        $notFreeBus = array();
+
+
+
+                        foreach ($resultBuses['response']['data'] as $keySort => $arraySort) {
+                            if ($arraySort['countFreeChairs'] > 0) {
+                                $sort['countFreeChairs'][$keySort] = $arraySort['countFreeChairs'];
+                                $sort['price'][$keySort] = $arraySort['price'];
+                                $notFreeBus[] = $arraySort;
+                            }else{
+                                $freeBus[] = $arraySort ;
+                            }
+
+                        }
+                        if (!empty($sort)) {
+                            @array_multisort($sort['countFreeChairs'], SORT_DESC, $sort['price'], SORT_ASC, $resultBuses['response']['data']);
+                        }
+
+                        usort($notFreeBus, function ($a, $b) {
+                            return strtotime($a['timeMove']) - strtotime($b['timeMove']);
+                        });
+
+                        $resultBuses['response']['data'] = array_merge($notFreeBus , $freeBus);
+                        foreach ($resultBuses['response']['data'] as $numberBus => $bus) {
+
+                            if ($bus['sourceCode'] === '15') {
+                                $sourceName = 'alterabo';
+                            } else if ($bus['sourceCode'] === '10') {
+                                $sourceName = 'safar724';
+                            } else {
+                                $sourceName = 'Payaneha';
+                            }
+
+
+                            $price = (round($bus['beforeDiscountPrice']));
+                            $arrayParamPriceChanges = [];
+                            $arrayParamPriceChanges['originCity'] = $param['cityOrigin'];
+                            $arrayParamPriceChanges['destinationCity'] = $param['cityDestination'];
+                            $arrayParamPriceChanges['companyId'] = isset($arrayCompanyBusTB[trim($bus['baseCompany'])]) ? $arrayCompanyBusTB[trim($bus['baseCompany'])] : 0;
+                            $arrayParamPriceChanges['counterId'] = $this->counterId;
+                            $arrayParamPriceChanges['date'] = $param['dateMove'];
+                            $arrayParamPriceChanges['price'] = $price;
+                            $resBusTicketPriceChanges = functions::getBusTicketPriceChanges($arrayParamPriceChanges);
+                            if ($resBusTicketPriceChanges != false) {
+                                $price = round($resBusTicketPriceChanges['price']);
+                            }
+
+
+                            //$priceWithoutDiscount = 0;
+                            /*if(!empty($this->serviceDiscount[$reservation_bus['webServiceType']]) && $this->serviceDiscount[$reservation_bus['webServiceType']]['off_percent'] > 0){
+                                //$priceWithoutDiscount = $price;
+                                $price=round($price-(($price*$this->serviceDiscount[$reservation_bus['webServiceType']]['off_percent'])/100));
+                            }*/
+
+                            if ($price > 0) {
+                                $arrayPrice[] = ($price);
+                            }
+
+                            $CurrencyCalculate = Functions::CurrencyCalculate($price);
+                            if($bus['countFreeChairs'] > 0) {
+                                $check_free_chair_all_buses = false;
+                            }
+                            $html_data['api'][] = [
+                                'is_special' => 0,
+                                'sourceName' => $sourceName,
+                                'sourceCode' => $bus['sourceCode'],
+                                'price' => $price,
+                                'baseCompany' => $bus['baseCompany'],
+                                'getCompanyBusPhoto' => Functions::getCompanyBusPhoto($bus['baseCompany']),
+                                'dateMove' => $bus['dateMove'],
+                                'countFreeChairs' => $bus['countFreeChairs'],
+                                'textTimeMove' => functions::classTimeLOCAL($bus['timeMove'],false),
+                                'timeMove' => $bus['timeMove'],
+                                'busCode' => $bus['busCode'],
+                                'carType' => $bus['carType'],
+                                'origin' => $bus['origin'],
+                                'webServiceType' => $bus['webServiceType'],
+                                'description' => $bus['description'],
+                                'destination' => $bus['destination'],
+                                'cancellationTime' => $bus['cancellationTime'],
+                                'mainCurrency' => $CurrencyCalculate,
+                                'setPriceChanges' => $this->setPriceChanges($CurrencyCalculate['AmountCurrency']),
+                                'TextOriginTerminal' => ($bus['originTerminal'] != '') ? $bus['originTerminal'] : $bus['originCity'],
+                                'TextDestinationTerminal' => ($bus['destinationTerminal'] != '') ? $bus['destinationTerminal'] : $bus['destinationCity'],
                             ];
 
-                            if ($this->checkApiSuccessfulStatus($resultBuses)  && $resultInfoSourcesApi) {
-                                $sort = array();
-                                $freeBus = array();
-                                $notFreeBus = array();
+
+                        }
+
+                    }
+
+                    if ($bus_reservation_result) {
+
+
+                        foreach ($bus_reservation_result as $reservation_bus) {
 
 
 
-                                foreach ($resultBuses['response']['data'] as $keySort => $arraySort) {
-                                    if ($arraySort['countFreeChairs'] > 0) {
-                                        $sort['countFreeChairs'][$keySort] = $arraySort['countFreeChairs'];
-                                        $sort['price'][$keySort] = $arraySort['price'];
-                                        $notFreeBus[] = $arraySort;
-                                    }else{
-                                        $freeBus[] = $arraySort ;
-                                    }
-
-                                }
-                                if (!empty($sort)) {
-                                    @array_multisort($sort['countFreeChairs'], SORT_DESC, $sort['price'], SORT_ASC, $resultBuses['response']['data']);
-                                }
-
-                                usort($notFreeBus, function ($a, $b) {
-                                    return strtotime($a['timeMove']) - strtotime($b['timeMove']);
-                                });
-
-                                $resultBuses['response']['data'] = array_merge($notFreeBus , $freeBus);
-                                foreach ($resultBuses['response']['data'] as $numberBus => $bus) {
-
-                                    if ($bus['sourceCode'] === '15') {
-                                        $sourceName = 'alterabo';
-                                    } else if ($bus['sourceCode'] === '10') {
-                                        $sourceName = 'safar724';
-                                    } else {
-                                        $sourceName = 'Payaneha';
-                                    }
-
-
-                                    $price = (round($bus['beforeDiscountPrice']));
-                                    $arrayParamPriceChanges = [];
-                                    $arrayParamPriceChanges['originCity'] = $param['cityOrigin'];
-                                    $arrayParamPriceChanges['destinationCity'] = $param['cityDestination'];
-                                    $arrayParamPriceChanges['companyId'] = isset($arrayCompanyBusTB[trim($bus['baseCompany'])]) ? $arrayCompanyBusTB[trim($bus['baseCompany'])] : 0;
-                                    $arrayParamPriceChanges['counterId'] = $this->counterId;
-                                    $arrayParamPriceChanges['date'] = $param['dateMove'];
-                                    $arrayParamPriceChanges['price'] = $price;
-                                    $resBusTicketPriceChanges = functions::getBusTicketPriceChanges($arrayParamPriceChanges);
-                                    if ($resBusTicketPriceChanges != false) {
-                                        $price = round($resBusTicketPriceChanges['price']);
-                                    }
-
-
-                                    //$priceWithoutDiscount = 0;
-                                    /*if(!empty($this->serviceDiscount[$reservation_bus['webServiceType']]) && $this->serviceDiscount[$reservation_bus['webServiceType']]['off_percent'] > 0){
-                                        //$priceWithoutDiscount = $price;
-                                        $price=round($price-(($price*$this->serviceDiscount[$reservation_bus['webServiceType']]['off_percent'])/100));
-                                    }*/
-
-                                    if ($price > 0) {
-                                        $arrayPrice[] = ($price);
-                                    }
-
-                                    $CurrencyCalculate = Functions::CurrencyCalculate($price);
-                                    if($bus['countFreeChairs'] > 0) {
-                                        $check_free_chair_all_buses = false;
-                                    }
-                                    $html_data['api'][] = [
-                                        'is_special' => 0,
-                                        'sourceName' => $sourceName,
-                                        'sourceCode' => $bus['sourceCode'],
-                                        'price' => $price,
-                                        'baseCompany' => $bus['baseCompany'],
-                                        'getCompanyBusPhoto' => Functions::getCompanyBusPhoto($bus['baseCompany']),
-                                        'dateMove' => $bus['dateMove'],
-                                        'countFreeChairs' => $bus['countFreeChairs'],
-                                        'textTimeMove' => functions::classTimeLOCAL($bus['timeMove'],false),
-                                        'timeMove' => $bus['timeMove'],
-                                        'busCode' => $bus['busCode'],
-                                        'carType' => $bus['carType'],
-                                        'origin' => $bus['origin'],
-                                        'webServiceType' => $bus['webServiceType'],
-                                        'description' => $bus['description'],
-                                        'destination' => $bus['destination'],
-                                        'cancellationTime' => $bus['cancellationTime'],
-                                        'mainCurrency' => $CurrencyCalculate,
-                                        'setPriceChanges' => $this->setPriceChanges($CurrencyCalculate['AmountCurrency']),
-                                        'TextOriginTerminal' => ($bus['originTerminal'] != '') ? $bus['originTerminal'] : $bus['originCity'],
-                                        'TextDestinationTerminal' => ($bus['destinationTerminal'] != '') ? $bus['destinationTerminal'] : $bus['destinationCity'],
-                                    ];
-
-
-                                }
-
-                                }
-
-                            if ($bus_reservation_result) {
-
-
-                                foreach ($bus_reservation_result as $reservation_bus) {
-
-
-
-                                    $price = $reservation_bus['price'];
-                                    if ($reservation_bus['price'] > 0) {
-                                        $arrayPrice[] = ($price);
-                                    }
-
-                                    $CurrencyCalculate = Functions::CurrencyCalculate($price);
-
-                                    $html_data['reservation'][] = [
-                                        'is_special' => 1,
-                                        'sourceName' => 'reservation_bus',
-                                        'sourceCode' => 'reservation_bus',
-                                        'price' => $price,
-                                        'baseCompany' => $reservation_bus['company']['name_fa'],
-                                        'getCompanyBusPhoto' => $reservation_bus['company']['logo'],
-                                        'dateMove' => $reservation_bus['move_date'],
-                                        'countFreeChairs' => $reservation_bus['left_chairs_count'],
-                                        'textTimeMove' => functions::classTimeLOCAL($reservation_bus['move_time'],false),
-                                        'timeMove' => $reservation_bus['move_time'],
-                                        'busCode' => $reservation_bus['id'],
-                                        'carType' => $reservation_bus['vehicle_name'],
-                                        'origin' => [
-                                            'cityName' => $reservation_bus['origin']['name_fa']
-                                        ],
-                                        'webServiceType' => $reservation_bus['webServiceType'],
-                                        'destination' => [
-                                            'cityName' => $reservation_bus['destination']['name_fa']
-                                        ],
-                                        'description' => $reservation_bus['description'],
-                                        'cancellationTime' => '',
-                                        'mainCurrency' => $CurrencyCalculate,
-                                        'setPriceChanges' => $this->setPriceChanges($CurrencyCalculate['AmountCurrency']),
-                                        'TextOriginTerminal' => $reservation_bus['origin_station_name'],
-                                        'TextDestinationTerminal' => $reservation_bus['destination_station_name'],
-                                        'droppingPoints' => json_decode($reservation_bus['dropping_points'], true),
-                                    ];
-
-                                }
-
-
+                            $price = $reservation_bus['price'];
+                            if ($reservation_bus['price'] > 0) {
+                                $arrayPrice[] = ($price);
                             }
-                            if(count($html_data['reservation']) > 0 || count($html_data['api'])> 0 ){
-                                echo $this->generateHtml(array_merge($html_data['reservation'],$html_data['api']));
-                            }else{
-                                ?>
-                                <div class="w-100 d-flex flex-wrap d-none">
-<!---->
-<!--                                        <div class="col-lg-12 p-0">-->
-<!--                                            <div class="alert alert-danger" role="alert">-->
-<!--                                                <div class="row vertical-align d-flex gap-10">-->
-<!--                                                    <div class="col-xs-1 text-center">-->
-<!--                                                        <i class="fa fa-exclamation-triangle fa-2x"></i>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="col-xs-11">-->
-<!--                                                        --><?php
-//                                                            echo functions::Xmlinformation('Noresult');
-//                                                        ?>
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
 
-                                </div>
+                            $CurrencyCalculate = Functions::CurrencyCalculate($price);
+
+                            $html_data['reservation'][] = [
+                                'is_special' => 1,
+                                'sourceName' => 'reservation_bus',
+                                'sourceCode' => 'reservation_bus',
+                                'price' => $price,
+                                'baseCompany' => $reservation_bus['company']['name_fa'],
+                                'getCompanyBusPhoto' => $reservation_bus['company']['logo'],
+                                'dateMove' => $reservation_bus['move_date'],
+                                'countFreeChairs' => $reservation_bus['left_chairs_count'],
+                                'textTimeMove' => functions::classTimeLOCAL($reservation_bus['move_time'],false),
+                                'timeMove' => $reservation_bus['move_time'],
+                                'busCode' => $reservation_bus['id'],
+                                'carType' => $reservation_bus['vehicle_name'],
+                                'origin' => [
+                                    'cityName' => $reservation_bus['origin']['name_fa']
+                                ],
+                                'webServiceType' => $reservation_bus['webServiceType'],
+                                'destination' => [
+                                    'cityName' => $reservation_bus['destination']['name_fa']
+                                ],
+                                'description' => $reservation_bus['description'],
+                                'cancellationTime' => '',
+                                'mainCurrency' => $CurrencyCalculate,
+                                'setPriceChanges' => $this->setPriceChanges($CurrencyCalculate['AmountCurrency']),
+                                'TextOriginTerminal' => $reservation_bus['origin_station_name'],
+                                'TextDestinationTerminal' => $reservation_bus['destination_station_name'],
+                                'droppingPoints' => json_decode($reservation_bus['dropping_points'], true),
+                            ];
+
+                        }
 
 
-                                <?php
-                            }
+                    }
+                    if(count($html_data['reservation']) > 0 || count($html_data['api'])> 0 ){
+                        echo $this->generateHtml(array_merge($html_data['reservation'],$html_data['api']));
+                    }else{
+                        ?>
+                        <div class="w-100 d-flex flex-wrap d-none">
+                            <!---->
+                            <!--                                        <div class="col-lg-12 p-0">-->
+                            <!--                                            <div class="alert alert-danger" role="alert">-->
+                            <!--                                                <div class="row vertical-align d-flex gap-10">-->
+                            <!--                                                    <div class="col-xs-1 text-center">-->
+                            <!--                                                        <i class="fa fa-exclamation-triangle fa-2x"></i>-->
+                            <!--                                                    </div>-->
+                            <!--                                                    <div class="col-xs-11">-->
+                            <!--                                                        --><?php
+                            //                                                            echo functions::Xmlinformation('Noresult');
+                            //                                                        ?>
+                            <!--                                                    </div>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+
+                        </div>
+
+
+                        <?php
+                    }
                     $resultBuses=ob_get_clean();
 
-                            $minPrice = min($arrayPrice);
-                            $maxPrice = max($arrayPrice);
+                    $minPrice = min($arrayPrice);
+                    $maxPrice = max($arrayPrice);
 
 
-                            ?>
+                    ?>
 
 
 
-                        <script>
-                            $(".filter-price-text span:nth-child(1) i").html('<?php echo number_format($maxPrice); ?>');
-                            $(".filter-price-text span:nth-child(2) i").html('<?php echo number_format($minPrice); ?>');
+                    <script>
+                        $(".filter-price-text span:nth-child(1) i").html('<?php echo number_format($maxPrice); ?>');
+                        $(".filter-price-text span:nth-child(2) i").html('<?php echo number_format($minPrice); ?>');
 
-                            let minPriceBus =$('#minPriceBus i').text() ;
-                            let maxPriceBus = $('#maxPriceBus i').text() ;
+                        let minPriceBus =$('#minPriceBus i').text() ;
+                        let maxPriceBus = $('#maxPriceBus i').text() ;
 
-                            if(minPriceBus == maxPriceBus){
-                                $('#priceBoxBus').hide()
+                        if(minPriceBus == maxPriceBus){
+                            $('#priceBoxBus').hide()
+                        }
+
+
+                        $("#slider-range").slider({
+                            range: true,
+                            min: <?php echo $minPrice; ?>,
+                            max: <?php echo $maxPrice; ?>,
+                            step: 1000,
+                            animate: false,
+                            values: [<?php echo $minPrice; ?>, <?php echo $maxPrice; ?>],
+                            slide: function (event, ui) {
+
+                                let minRange = ui.values[0];
+                                let maxRange = ui.values[1];
+
+                                $(".filter-price-text span:nth-child(1) i").html(addCommas(maxRange));
+                                $(".filter-price-text span:nth-child(2) i").html(addCommas(minRange));
+
+                                let busList = $(".showListSort");
+                                busList.hide().filter(function () {
+                                    let price = parseInt($(this).children('div').data("price"), 10);
+                                    return price >= minRange && price <= maxRange;
+                                }).show();
                             }
+                        });
+                    </script>
+
+                    <?php
 
 
-                            $("#slider-range").slider({
-                                range: true,
-                                min: <?php echo $minPrice; ?>,
-                                max: <?php echo $maxPrice; ?>,
-                                step: 1000,
-                                animate: false,
-                                values: [<?php echo $minPrice; ?>, <?php echo $maxPrice; ?>],
-                                slide: function (event, ui) {
 
-                                    let minRange = ui.values[0];
-                                    let maxRange = ui.values[1];
 
-                                    $(".filter-price-text span:nth-child(1) i").html(addCommas(maxRange));
-                                    $(".filter-price-text span:nth-child(2) i").html(addCommas(minRange));
+                    // filter time move
 
-                                    let busList = $(".showListSort");
-                                    busList.hide().filter(function () {
-                                        let price = parseInt($(this).children('div').data("price"), 10);
-                                        return price >= minRange && price <= maxRange;
+
+
+                    ?>
+                    <p class="raste-item">
+                        <input type="checkbox" class="FilterHoteltype ShowAllTimeMove" id="foodTypeAll"
+                               name="foodType" value="all" checked>
+                        <label class="FilterHoteltypeName site-main-text-color-a"
+                               for="foodTypeAll"><?php echo Functions::Xmlinformation('All') ?></label>
+                    </p>
+                    <p class="raste-item">
+                        <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
+                               id="timeMove_1" name="timeMove_1" value="early">
+                        <label class="FilterHoteltypeName site-main-text-color-a"
+                               for="timeMove_1"><?php echo Functions::Xmlinformation('Morning') ?>
+                            <i>0-8</i></label>
+                    </p>
+                    <p class="raste-item">
+                        <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
+                               id="timeMove_2" name="timeMove_2" value="morning">
+                        <label class="FilterHoteltypeName site-main-text-color-a"
+                               for="timeMove_2"><?php echo Functions::Xmlinformation('Timemorning') ?>
+                            <i>8-12</i></label>
+                    </p>
+                    <p class="raste-item">
+                        <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
+                               id="timeMove_3" name="timeMove_3" value="afternoon">
+                        <label class="FilterHoteltypeName site-main-text-color-a"
+                               for="timeMove_3"><?php echo Functions::Xmlinformation('Timeevening') ?> <i>12-18</i></label>
+                    </p>
+                    <p class="raste-item">
+                        <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
+                               id="timeMove_4" name="timeMove_4" value="night">
+                        <label class="FilterHoteltypeName site-main-text-color-a"
+                               for="timeMove_4"><?php echo Functions::Xmlinformation('Timenight') ?>
+                            <i>18-24</i></label>
+                    </p>
+
+
+                    <script>
+                        // time move
+                        $(".ShowByFiltersTimeMove").on("click", function () {
+                            $('.ShowAllTimeMove').prop('checked', true);
+                            let busList = $(".showListSort");
+                            let isCheck = 0;
+                            busList.hide();
+                            $("input:checkbox.ShowByFiltersTimeMove").each(function () {
+                                let check = $(this).prop('checked');
+                                let time = $(this).val();
+                                if (check == true) {
+                                    isCheck++;
+                                    $('.ShowAllTimeMove').prop('checked', false);
+                                    busList.filter(function () {
+                                        let timeMove = $(this).children('div').data("timemove");
+                                        if (timeMove == time) {
+                                            return true;
+                                        }
                                     }).show();
                                 }
                             });
-                        </script>
 
-                        <?php
+                            setTimeout(function () {
+                                if (isCheck == 0) {
+                                    busList.show();
+                                }
+                            }, 30);
 
+                            $('html, body').animate({
+                                scrollTop: $('.showListSort').offset().top
+                            }, 'slow');
+                        });
 
-
-
-                        // filter time move
-
-
-
-                        ?>
-                        <p class="raste-item">
-                            <input type="checkbox" class="FilterHoteltype ShowAllTimeMove" id="foodTypeAll"
-                                   name="foodType" value="all" checked>
-                            <label class="FilterHoteltypeName site-main-text-color-a"
-                                   for="foodTypeAll"><?php echo Functions::Xmlinformation('All') ?></label>
-                        </p>
-                        <p class="raste-item">
-                            <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
-                                   id="timeMove_1" name="timeMove_1" value="early">
-                            <label class="FilterHoteltypeName site-main-text-color-a"
-                                   for="timeMove_1"><?php echo Functions::Xmlinformation('Morning') ?>
-                                <i>0-8</i></label>
-                        </p>
-                        <p class="raste-item">
-                            <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
-                                   id="timeMove_2" name="timeMove_2" value="morning">
-                            <label class="FilterHoteltypeName site-main-text-color-a"
-                                   for="timeMove_2"><?php echo Functions::Xmlinformation('Timemorning') ?>
-                                <i>8-12</i></label>
-                        </p>
-                        <p class="raste-item">
-                            <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
-                                   id="timeMove_3" name="timeMove_3" value="afternoon">
-                            <label class="FilterHoteltypeName site-main-text-color-a"
-                                   for="timeMove_3"><?php echo Functions::Xmlinformation('Timeevening') ?> <i>12-18</i></label>
-                        </p>
-                        <p class="raste-item">
-                            <input type="checkbox" class="FilterHoteltype ShowByFiltersTimeMove"
-                                   id="timeMove_4" name="timeMove_4" value="night">
-                            <label class="FilterHoteltypeName site-main-text-color-a"
-                                   for="timeMove_4"><?php echo Functions::Xmlinformation('Timenight') ?>
-                                <i>18-24</i></label>
-                        </p>
-
-
-                        <script>
-                            // time move
-                            $(".ShowByFiltersTimeMove").on("click", function () {
-                                $('.ShowAllTimeMove').prop('checked', true);
-                                let busList = $(".showListSort");
-                                let isCheck = 0;
-                                busList.hide();
+                        $(".ShowAllTimeMove").on("click", function () {
+                            let busList = $(".showListSort");
+                            busList.show();
+                            let check = $(this).prop('checked');
+                            if (check == true) {
                                 $("input:checkbox.ShowByFiltersTimeMove").each(function () {
-                                    let check = $(this).prop('checked');
-                                    let time = $(this).val();
-                                    if (check == true) {
-                                        isCheck++;
-                                        $('.ShowAllTimeMove').prop('checked', false);
-                                        busList.filter(function () {
-                                            let timeMove = $(this).children('div').data("timemove");
-                                            if (timeMove == time) {
-                                                return true;
-                                            }
-                                        }).show();
-                                    }
+                                    $(this).prop("checked", false);
                                 });
+                            } else {
+                                $(".ShowAllTimeMove").prop("checked", true);
+                            }
+                            $('html, body').animate({
+                                scrollTop: $('.showListSort').offset().top
+                            }, 'slow');
+                        });
+                        // end time move
+                    </script>
+                    <?php
 
-                                setTimeout(function () {
-                                    if (isCheck == 0) {
-                                        busList.show();
-                                    }
-                                }, 30);
-
-                                $('html, body').animate({
-                                    scrollTop: $('.showListSort').offset().top
-                                }, 'slow');
-                            });
-
-                            $(".ShowAllTimeMove").on("click", function () {
-                                let busList = $(".showListSort");
-                                busList.show();
-                                let check = $(this).prop('checked');
-                                if (check == true) {
-                                    $("input:checkbox.ShowByFiltersTimeMove").each(function () {
-                                        $(this).prop("checked", false);
-                                    });
-                                } else {
-                                    $(".ShowAllTimeMove").prop("checked", true);
-                                }
-                                $('html, body').animate({
-                                    scrollTop: $('.showListSort').offset().top
-                                }, 'slow');
-                            });
-                            // end time move
-                        </script>
-                        <?php
-
-                        $filterTimeMove=ob_get_clean();
+                    $filterTimeMove=ob_get_clean();
 
 
-                        // filter company
+                    // filter company
 
+                    ?>
+                    <p class="raste-item">
+                        <input type="checkbox" class="FilterHoteltype ShowAllCompanyName"
+                               id="check_list_all" name="check_list_all" value="all" checked>
+                        <label class="FilterHoteltypeName site-main-text-color-a"
+                               for="check_list_all"><?php echo Functions::Xmlinformation('All') ?></label>
+                    </p>
+                    <?php
+                    foreach($arrayCompanyName as $k=>$company){
                         ?>
                         <p class="raste-item">
-                            <input type="checkbox" class="FilterHoteltype ShowAllCompanyName"
-                                   id="check_list_all" name="check_list_all" value="all" checked>
+                            <input type="checkbox" class="FilterHoteltype ShowByCompanyName"
+                                   id="check_list_<?php echo $k; ?>" name="check_list_<?php echo $k; ?>"
+                                   value="<?php echo $company; ?>">
                             <label class="FilterHoteltypeName site-main-text-color-a"
-                                   for="check_list_all"><?php echo Functions::Xmlinformation('All') ?></label>
+                                   for="check_list_<?php echo $k; ?>"><?php echo $company; ?></label>
                         </p>
                         <?php
-                        foreach($arrayCompanyName as $k=>$company){
-                            ?>
-                            <p class="raste-item">
-                                <input type="checkbox" class="FilterHoteltype ShowByCompanyName"
-                                       id="check_list_<?php echo $k; ?>" name="check_list_<?php echo $k; ?>"
-                                       value="<?php echo $company; ?>">
-                                <label class="FilterHoteltypeName site-main-text-color-a"
-                                       for="check_list_<?php echo $k; ?>"><?php echo $company; ?></label>
-                            </p>
-                            <?php
-                        }
-                        ?>
-                        <script>
-                            // company
-                            $(".ShowByCompanyName").on("click", function () {
-                                $('.ShowAllCompanyName').prop('checked', true);
-                                let busList = $(".showListSort");
-                                let isCheck = 0;
-                                busList.hide();
-                                $("input:checkbox.ShowByCompanyName").each(function () {
-                                    let check = $(this).prop('checked');
-                                    let val = $(this).val();
-                                    if (check == true) {
-                                        isCheck++;
-                                        $('.ShowAllCompanyName').prop('checked', false);
-                                        busList.filter(function () {
-                                            let company = $(this).children('div').data("company");
-                                            let search = company.indexOf(val);
-                                            if (search > -1) {
-                                                return true;
-                                            }
-                                        }).show();
-                                    }
-                                });
-
-                                setTimeout(function () {
-                                    if (isCheck == 0) {
-                                        busList.show();
-                                    }
-                                }, 30);
-
-                                $('html, body').animate({
-                                    scrollTop: $('.showListSort').offset().top + 100
-                                }, 'slow');
-
-                            });
-
-                            $(".ShowAllCompanyName").on("click", function () {
-                                let busList = $(".showListSort");
-                                busList.show();
+                    }
+                    ?>
+                    <script>
+                        // company
+                        $(".ShowByCompanyName").on("click", function () {
+                            $('.ShowAllCompanyName').prop('checked', true);
+                            let busList = $(".showListSort");
+                            let isCheck = 0;
+                            busList.hide();
+                            $("input:checkbox.ShowByCompanyName").each(function () {
                                 let check = $(this).prop('checked');
+                                let val = $(this).val();
                                 if (check == true) {
-                                    $("input:checkbox.ShowByCompanyName").each(function () {
-                                        $(this).prop("checked", false);
-                                    });
-                                } else {
-                                    $(".ShowAllCompanyName").prop("checked", true);
+                                    isCheck++;
+                                    $('.ShowAllCompanyName').prop('checked', false);
+                                    busList.filter(function () {
+                                        let company = $(this).children('div').data("company");
+                                        let search = company.indexOf(val);
+                                        if (search > -1) {
+                                            return true;
+                                        }
+                                    }).show();
                                 }
-                                $('html, body').animate({
-                                    scrollTop: $('.showListSort').offset().top
-                                }, 'slow');
                             });
-                            // end company
-                        </script>
-                        <?php
-                        $filterCompanyName=ob_get_clean();
+
+                            setTimeout(function () {
+                                if (isCheck == 0) {
+                                    busList.show();
+                                }
+                            }, 30);
+
+                            $('html, body').animate({
+                                scrollTop: $('.showListSort').offset().top + 100
+                            }, 'slow');
+
+                        });
+
+                        $(".ShowAllCompanyName").on("click", function () {
+                            let busList = $(".showListSort");
+                            busList.show();
+                            let check = $(this).prop('checked');
+                            if (check == true) {
+                                $("input:checkbox.ShowByCompanyName").each(function () {
+                                    $(this).prop("checked", false);
+                                });
+                            } else {
+                                $(".ShowAllCompanyName").prop("checked", true);
+                            }
+                            $('html, body').animate({
+                                scrollTop: $('.showListSort').offset().top
+                            }, 'slow');
+                        });
+                        // end company
+                    </script>
+                    <?php
+                    $filterCompanyName=ob_get_clean();
 
 
 
@@ -898,7 +938,7 @@ class resultBusTicket extends apiBus
 
         $not_available_bus = false;
         if($check_free_chair_all_buses || (isset($countBuses)) && $countBuses == 0) {
-          $not_available_bus = true;
+            $not_available_bus = true;
         }
 
 
@@ -1022,32 +1062,32 @@ class resultBusTicket extends apiBus
         $temporary_bus_model = $this->getModel('temporaryBusModel');
 
         $data=[
-          'factor_number'=>$params['factor_number'],
-          'requestNumber'=>$params['requestNumber'],
-          'origin_city_iata'=>$params['origin_city_iata'],
-          'destination_city_iata'=>$params['destination_city_iata'],
-          'source_code'=>$params['source_code'],
-          'source_name'=>$params['source_name'],
-          'web_service_type'=>$params['web_service_type'],
-          'bus_code'=>$params['bus_code'],
-          'available_payment_methods'=>$params['available_payment_methods'],
-          'date_move'=>$params['date_move'],
-          'time_move'=>$params['time_move'],
-          'origin_city'=>$params['origin_city'],
-          'origin_name'=>$params['origin_name'],
-          'origin_terminal'=>$params['origin_terminal'],
-          'destination_city'=>$params['destination_city'],
-          'destination_name'=>$params['destination_name'],
-          'destination_terminal'=>$params['destination_terminal'],
-          'car_type'=>$params['car_type'],
-          'count_free_chairs'=>$params['count_free_chairs'],
-          'price'=>$params['price'],
-          'beforeDiscountPrice'=>$params['beforeDiscountPrice'],
-          'company'=>$params['company'],
-          'base_company'=>$params['base_company'],
-          'description'=>$params['description'],
-          'refundRules'=>json_encode($params['refundRules'],true),
-          'seates'=>$params['seates']
+            'factor_number'=>$params['factor_number'],
+            'requestNumber'=>$params['requestNumber'],
+            'origin_city_iata'=>$params['origin_city_iata'],
+            'destination_city_iata'=>$params['destination_city_iata'],
+            'source_code'=>$params['source_code'],
+            'source_name'=>$params['source_name'],
+            'web_service_type'=>$params['web_service_type'],
+            'bus_code'=>$params['bus_code'],
+            'available_payment_methods'=>$params['available_payment_methods'],
+            'date_move'=>$params['date_move'],
+            'time_move'=>$params['time_move'],
+            'origin_city'=>$params['origin_city'],
+            'origin_name'=>$params['origin_name'],
+            'origin_terminal'=>$params['origin_terminal'],
+            'destination_city'=>$params['destination_city'],
+            'destination_name'=>$params['destination_name'],
+            'destination_terminal'=>$params['destination_terminal'],
+            'car_type'=>$params['car_type'],
+            'count_free_chairs'=>$params['count_free_chairs'],
+            'price'=>$params['price'],
+            'beforeDiscountPrice'=>$params['beforeDiscountPrice'],
+            'company'=>$params['company'],
+            'base_company'=>$params['base_company'],
+            'description'=>$params['description'],
+            'refundRules'=>json_encode($params['refundRules'],true),
+            'seates'=>$params['seates']
         ];
 
 
@@ -1061,13 +1101,13 @@ class resultBusTicket extends apiBus
     public function generateBusSeats($number,$used_chairs)
     {
 
-      $is_minibus=false;
-      $minibus_seats_number=0;
-      if($number >= 13 && $number <= 16){
-        $minibus_seats_number=$number;
-        $number=60;
-        $is_minibus=true;
-      }
+        $is_minibus=false;
+        $minibus_seats_number=0;
+        if($number >= 13 && $number <= 16){
+            $minibus_seats_number=$number;
+            $number=60;
+            $is_minibus=true;
+        }
 
         $all_chairs=[];
         foreach ($used_chairs as $chair){
@@ -1187,7 +1227,7 @@ class resultBusTicket extends apiBus
 
             $status='Available';
             if($is_minibus && $key + 1 > $minibus_seats_number){
-              $status='Disable';
+                $status='Disable';
             }
 
 
@@ -1241,19 +1281,19 @@ class resultBusTicket extends apiBus
     public function setTemporaryBus($param)
     {
 
-      $data=[
-          'factor_number' => functions::generateFactorNumber(),
-          'requestNumber' => $param['requestNumber'],
-          'origin_city_iata' => $param['originCity'],
-          'destination_city_iata' => $param['destinationCity'],
-          'source_code' => $param['sourceCode'],
-          'bus_code' => $param['busCode'],
-          'available_payment_methods' => 'Credit',
-      ];
+        $data=[
+            'factor_number' => functions::generateFactorNumber(),
+            'requestNumber' => $param['requestNumber'],
+            'origin_city_iata' => $param['originCity'],
+            'destination_city_iata' => $param['destinationCity'],
+            'source_code' => $param['sourceCode'],
+            'bus_code' => $param['busCode'],
+            'available_payment_methods' => 'Credit',
+        ];
 
         if($this->accessBusReservation() && $param['sourceCode']=='reservation_bus'){
-          $reservation_bus=$this->getController('reservationBus');
-          $bus_detail=$reservation_bus->getData(['id'=>$param['busCode']])[0];
+            $reservation_bus=$this->getController('reservationBus');
+            $bus_detail=$reservation_bus->getData(['id'=>$param['busCode']])[0];
 
 
             $data ['source_name']= CLIENT_NAME;
@@ -1322,7 +1362,7 @@ class resultBusTicket extends apiBus
                 $dataInsert['car_type'] = $busDetail['response']['data']['carType'];
                 $dataInsert['count_free_chairs'] = $busDetail['response']['data']['countFreeChairs'];
                 $how_much_percent  = ($busDetail['response']['data']['commision'] / 100) * $busDetail['response']['data']['beforeDiscountPrice'] ;
-  							$dataInsert['price'] = $busDetail['response']['data']['beforeDiscountPrice'] - $how_much_percent;
+                $dataInsert['price'] = $busDetail['response']['data']['beforeDiscountPrice'] - $how_much_percent;
 //                $dataInsert['price'] = $busDetail['response']['data']['price'];
                 $dataInsert['beforeDiscountPrice'] = $busDetail['response']['data']['beforeDiscountPrice'];
                 $dataInsert['company'] = $busDetail['response']['data']['company'];
