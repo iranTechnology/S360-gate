@@ -8,7 +8,9 @@
 
 $client_sql = <<<SQL
 
-
+ALTER TABLE discount_codes_tb 
+ADD COLUMN typeDiscount ENUM('cash', 'percent') NOT NULL DEFAULT 'cash' 
+AFTER title;
 
 
 

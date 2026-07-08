@@ -7,7 +7,7 @@ $(document).ready(function () {
     $("#DiscountCodesAdd").validate({
         rules: {
             Title:'required',
-            Amount:'required',
+            // Amount: required,
             StartDate:'required',
             EndDate:'required',
             Stock: {
@@ -36,12 +36,14 @@ $(document).ready(function () {
             }
         },
         submitHandler: function (form) {
+            if (!validateDiscount()) {
+                return false;
+            }
             $(form).ajaxSubmit({
                 url: amadeusPath + 'user_ajax.php',
                 type: "post",
                 success: function (response) {
 
-                    console.log(response);
                     var res = response.split(':');
 
                     if (response.indexOf('success') > -1) {
@@ -175,7 +177,96 @@ $(document).ready(function () {
     });
 
 });
+function validateDiscount() {
+    var cashValue = $('#discountAmountCash').val().trim();
+    var percentValue = $('#discountAmountPercent').val().trim();
+    var typeDiscount = $('#typeDiscount').val();
 
+    console.log('validateDiscount - typeDiscount:', typeDiscount);
+    console.log('validateDiscount - cashValue:', cashValue);
+    console.log('validateDiscount - percentValue:', percentValue);
+
+    // ========== چک کردن اینکه حداقل یکی پر شده ==========
+    if (cashValue === '' && percentValue === '') {
+        $.toast({
+            heading: 'خطا',
+            text: 'لطفاً حداقل یکی از فیلدهای تخفیف (ریال یا درصد) را پر کنید',
+            position: 'top-right',
+            loaderBg: '#fff',
+            icon: 'error',
+            hideAfter: 3500,
+            textAlign: 'right',
+            stack: 6
+        });
+        return false;
+    }
+
+    // ========== چک کردن نوع تخفیف ==========
+    if (typeDiscount === '') {
+        $.toast({
+            heading: 'خطا',
+            text: 'نوع تخفیف مشخص نیست',
+            position: 'top-right',
+            loaderBg: '#fff',
+            icon: 'error',
+            hideAfter: 3500,
+            textAlign: 'right',
+            stack: 6
+        });
+        return false;
+    }
+
+    // ========== اگر درصد هست، بیشتر از ۱۰۰ نباشه ==========
+    if (typeDiscount === 'percent') {
+        var percentNum = parseFloat(percentValue);
+        if (percentNum > 100) {
+            $.toast({
+                heading: 'خطا',
+                text: 'درصد تخفیف نمی‌تواند بیشتر از ۱۰۰ باشد',
+                position: 'top-right',
+                loaderBg: '#fff',
+                icon: 'error',
+                hideAfter: 3500,
+                textAlign: 'right',
+                stack: 6
+            });
+            return false;
+        }
+        if (percentNum <= 0) {
+            $.toast({
+                heading: 'خطا',
+                text: 'درصد تخفیف باید بزرگتر از صفر باشد',
+                position: 'top-right',
+                loaderBg: '#fff',
+                icon: 'error',
+                hideAfter: 3500,
+                textAlign: 'right',
+                stack: 6
+            });
+            return false;
+        }
+    }
+
+    // ========== اگر ریال هست، بزرگتر از صفر باشه ==========
+    if (typeDiscount === 'cash') {
+        var cashNum = parseFloat(cashValue);
+        if (cashNum <= 0) {
+            $.toast({
+                heading: 'خطا',
+                text: 'مبلغ تخفیف باید بزرگتر از صفر باشد',
+                position: 'top-right',
+                loaderBg: '#fff',
+                icon: 'error',
+                hideAfter: 3500,
+                textAlign: 'right',
+                stack: 6
+            });
+            return false;
+        }
+    }
+
+    return true;
+}
 function activate(id)
 {
     $.post(amadeusPath + 'user_ajax.php',
@@ -220,72 +311,72 @@ function ModalShowBook(reserveType, factorNumber) {
 
     if(reserveType == 'Flight'){
         $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'bookshow',
-            Method: 'ModalShowBook',
-            Param: factorNumber
-        },
-        function (data) {
-            $('#ModalPublic').html(data);
-        });
+            {
+                Controller: 'bookshow',
+                Method: 'ModalShowBook',
+                Param: factorNumber
+            },
+            function (data) {
+                $('#ModalPublic').html(data);
+            });
     }
     else if(reserveType == 'Hotel')
     {
         $.post(libraryPath + 'ModalCreatorForHotel.php',
-        {
-            Controller: 'bookhotelshow',
-            Method: 'ModalShowBook',
-            Param: factorNumber
-        },
-        function (data) {
-            $('#ModalPublic').html(data);
-        });
+            {
+                Controller: 'bookhotelshow',
+                Method: 'ModalShowBook',
+                Param: factorNumber
+            },
+            function (data) {
+                $('#ModalPublic').html(data);
+            });
     }
     else if(reserveType == 'Insurance')
     {
         $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'bookingInsurance',
-            Method: 'ModalShowInsuranceBook',
-            Param: factorNumber
-        },
-        function (data) {
-            $('#ModalPublic').html(data);
-        });
+            {
+                Controller: 'bookingInsurance',
+                Method: 'ModalShowInsuranceBook',
+                Param: factorNumber
+            },
+            function (data) {
+                $('#ModalPublic').html(data);
+            });
     }
     else if(reserveType == 'Europcar')
     {
         $.post(libraryPath + 'ModalCreatorForEuropcar.php',
-        {
-            Method: 'ModalShowBook',
-            factorNumber: factorNumber
-        },
-        function (data) {
-            $('#ModalPublic').html(data);
-        });
+            {
+                Method: 'ModalShowBook',
+                factorNumber: factorNumber
+            },
+            function (data) {
+                $('#ModalPublic').html(data);
+            });
     }
     else if(reserveType == 'Tour')
     {
         $.post(libraryPath + 'ModalCreatorForTour.php',
-        {
-            Method: 'ModalShowBook',
-            factorNumber: factorNumber
-        },
-        function (data) {
-            $('#ModalPublic').html(data);
-        });
+            {
+                Method: 'ModalShowBook',
+                factorNumber: factorNumber
+            },
+            function (data) {
+                $('#ModalPublic').html(data);
+            });
     }
     else if(reserveType == 'Visa')
     {
         $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'bookingVisa',
-            Method: 'ModalShowVisaBook',
-            Param: factorNumber
-        },
-        function (data) {
-            $('#ModalPublic').html(data);
-        });
+            {
+                Controller: 'bookingVisa',
+                Method: 'ModalShowVisaBook',
+                Param: factorNumber
+            },
+            function (data) {
+                $('#ModalPublic').html(data);
+            });
     }
 }
 
@@ -363,4 +454,80 @@ function showAmountPointDiscountCode(){
         $('.limit-point-club').hide()
     }
 
+}
+function handleDiscountInput(element) {
+    var cashInput = $('#discountAmountCash');
+    var percentInput = $('#discountAmountPercent');
+    var typeDiscountHidden = $('#typeDiscount');
+    var percentAlert = $('#percentAlert');
+
+    var cashValue = cashInput.val().trim();
+    var percentValue = percentInput.val().trim();
+
+    // ========== مدیریت فعال/غیرفعال کردن ==========
+    if (cashValue !== '' && cashValue !== '0') {
+        // اگر مبلغ ریالی پر شده
+        percentInput.prop('disabled', true);
+        percentInput.val('');
+        typeDiscountHidden.val('cash');  // ← مقدار رو به cash تنظیم کن
+        percentAlert.hide();
+
+        cashInput.attr('name', 'Amount');
+        percentInput.removeAttr('name');
+
+    } else if (percentValue !== '' && percentValue !== '0') {
+        // اگر درصد پر شده
+        cashInput.prop('disabled', true);
+        cashInput.val('');
+        typeDiscountHidden.val('percent');  // ← مقدار رو به percent تنظیم کن
+        percentAlert.show();
+
+        percentInput.attr('name', 'Amount');
+        cashInput.removeAttr('name');
+
+    } else {
+        // هر دو خالی
+        cashInput.prop('disabled', false);
+        percentInput.prop('disabled', false);
+        typeDiscountHidden.val('cash');  // ← پیش‌فرض cash
+        percentAlert.hide();
+
+        cashInput.attr('name', 'Amount');
+        percentInput.removeAttr('name');
+    }
+
+
+}
+
+// ========== اعتبارسنجی ورودی (فقط عدد) ==========
+$('#discountAmountCash, #discountAmountPercent').on('keypress', function(e) {
+    var key = e.which;
+    if (key < 48 || key > 57) {
+        if (key !== 8 && key !== 0) {
+            e.preventDefault();
+            return false;
+        }
+    }
+});
+
+// ========== حذف کاما و تبدیل به عدد ==========
+$('#discountAmountCash, #discountAmountPercent').on('blur', function() {
+    var value = $(this).val();
+    if (value !== '') {
+        value = value.replace(/,/g, '').replace(/\s/g, '');
+        $(this).val(value);
+    }
+});
+
+// ========== دریافت مقدار Amount برای ارسال ==========
+function getDiscountAmount() {
+    var typeDiscount = $('#typeDiscount').val();
+
+    if (typeDiscount === 'cash') {
+        return $('#discountAmountCash').val().trim() || '0';
+    } else if (typeDiscount === 'percent') {
+        return $('#discountAmountPercent').val().trim() || '0';
+    }
+
+    return '0';
 }
