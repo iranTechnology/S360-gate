@@ -60,7 +60,13 @@
                                         {$item.code}
                                     {/if}
                                 </td>
-                                <td class="align-middle">{$item.amount|number_format}</td>
+                                <td class="align-middle">
+                                    {if $item.typeDiscount eq 'cash'}
+                                    {$item.amount|number_format}
+                                    {else}
+                                        {$item.amount}%
+                                    {/if}
+                                </td>
                                 <td class="align-middle">
                                     {assign var="remainStock" value="0"}
                                     {if $item.isGroup eq 'yes'}

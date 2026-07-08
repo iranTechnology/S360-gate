@@ -759,4 +759,7 @@ class ModelBase {
     {
         return $this->_pdo->rollBack();
     }
+    public function getPDO() {
+        return $this->_pdo;
+    }
 }
