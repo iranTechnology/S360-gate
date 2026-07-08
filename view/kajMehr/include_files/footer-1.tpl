@@ -111,7 +111,7 @@
           <a href="{$smarty.const.ROOT_ADDRESS}/page/cip">
            <i class="fal fa-angle-left">
            </i>
-           تشریفات فرودگاهی
+           CIP
           </a>
          </li>
         </ul>

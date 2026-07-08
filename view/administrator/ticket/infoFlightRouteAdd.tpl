@@ -22,7 +22,7 @@
         <div class="col-sm-12">
             <div class="white-box">
                 <h3 class="box-title m-b-0">افزودن  خطوط پروازی جدید</h3>
-                <p class="text-muted m-b-30"> شما با استفاده از فرم زیر میتوانید خطوط پروازی  جدیدی را در سیستم ثبت نمائید</p>
+                <p class="text-muted m-b-30">با اضافه شدن ایرلاین در این بخش تنظیمات ایرلاین نیز خود به خود ایجاد میشود</p>
 
                 <form id="EditRoute" method="post">
                     <input type="hidden" name="flag" value="insert_airline">
