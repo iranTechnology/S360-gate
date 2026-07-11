@@ -1589,7 +1589,7 @@ class apiLocal extends clientAuth
                 //baraye parto eshteraki
                 $data['Books'][$key]['PhoneNumber'] = '09020661033' ;
                 $data['Books'][$key]['Email'] = 'flymurshid@gmail.com';
-رفع ایراد کار شجاعی
+
                 $cellArray = array(
                     'abbasi_' => '09057078341',
                     'afshar_' => '09123493154',
@@ -2087,7 +2087,6 @@ class apiLocal extends clientAuth
             if ($book['api_id'] == '10') {
                 $cellArray = array(
                     'afraze' => '09916211232',
-                    'fanipor' => '09129409530',
                     'abbasi' => '09211559872',
                     'abbasi_' => '09057078341',
                     'bahrami' => '09351252904',

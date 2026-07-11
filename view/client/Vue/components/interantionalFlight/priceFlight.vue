@@ -88,49 +88,67 @@
                </template>
             </span>
             <div class="SelectTicket">
-               <template v-if="each_price_flight.source_id == 'special'">
-                  <a
-                     class="international-available-btn site-bg-main-color site-main-button-color-hover SendInfoReservationFlight"
-                     :id="`btnReservationFlight_${each_price_flight.flight_id}`"
-                     @click="
-                        sendInfoReservationFlightForeign(
-                           `${each_price_flight.flight_id}`
-                        )
-                     ">
-                     {{ useXmltag("Selectionflight") }}
-                  </a>
-               </template>
-               <template v-else>
-                  <a
-                     class="international-available-btn site-bg-main-color site-main-button-color-hover nextStepclass price-btn--new"
-                     :id="`nextStep_${each_price_flight.flight_id.replace(
-                        '#',
-                        ''
-                     )}`"
-                     v-if="each_price_flight.return_route != ''">
-                     {{ useXmltag("Selectionflight") }}
-                     <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512">
-                        <path
-                           data-v-00f5dc0f=""
-                           d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path>
-                     </svg>
-                  </a>
-                  <a
-                     class="international-available-btn site-bg-main-color site-main-button-color-hover nextStepclass"
-                     :id="`nextStep_${each_price_flight.flight_id.replace(
-                        '#',
-                        ''
-                     )}${each_price_flight.return_routes.flight_id_return.replace(
-                        '#',
-                        ''
-                     )}`"
-                     v-else>
-                     {{ useXmltag("Selectionflight") }}
-                  </a>
-               </template>
+<!--               <template v-if="each_price_flight.source_id == 'special'">-->
+<!--                  <a-->
+<!--                     class="international-available-btn site-bg-main-color site-main-button-color-hover SendInfoReservationFlight"-->
+<!--                     :id="`btnReservationFlight_${each_price_flight.flight_id}`"-->
+<!--                     @click="-->
+<!--                        sendInfoReservationFlightForeign(-->
+<!--                           `${each_price_flight.flight_id}`-->
+<!--                        )-->
+<!--                     ">-->
+<!--                     {{ useXmltag("Selectionflight") }}-->
+<!--                  </a>-->
+<!--               </template>-->
+<!--               <template v-else>-->
 
+<!--                  <a-->
+<!--                      @click="openSidebarFromPrice"-->
+<!--                      class="international-available-btn site-bg-main-color site-main-button-color-hover nextStepclass price-btn&#45;&#45;new"-->
+<!--                      :id="`nextStep_${each_price_flight.flight_id.replace(-->
+<!--                        '#',-->
+<!--                        ''-->
+<!--                     )}`"-->
+<!--                     v-if="each_price_flight.return_route != ''">-->
+<!--                     {{ useXmltag("Selectionflight") }}-->
+<!--                     <svg-->
+<!--                        xmlns="http://www.w3.org/2000/svg"-->
+<!--                        viewBox="0 0 448 512">-->
+<!--                        <path-->
+<!--                           data-v-00f5dc0f=""-->
+<!--                           d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path>-->
+<!--                     </svg>-->
+<!--                  </a>-->
+<!--                  <a-->
+<!--                      @click="openSidebarFromPrice"-->
+<!--                     class="international-available-btn site-bg-main-color site-main-button-color-hover nextStepclass"-->
+<!--                     :id="`nextStep_${each_price_flight.flight_id.replace(-->
+<!--                        '#',-->
+<!--                        ''-->
+<!--                     )}${each_price_flight.return_routes.flight_id_return.replace(-->
+<!--                        '#',-->
+<!--                        ''-->
+<!--                     )}`"-->
+<!--                     v-else>-->
+<!--                     {{ useXmltag("Selectionflight") }}-->
+<!--                  </a>-->
+<!--               </template>-->
+
+
+              <a
+                  @click="openSidebarFromPrice"
+                  class="international-available-btn site-bg-main-color site-main-button-color-hover price-btn--new"
+
+                  >
+                {{ useXmltag("SelectionAndDetailflight") }}
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512">
+                  <path
+                      data-v-00f5dc0f=""
+                      d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path>
+                </svg>
+              </a>
                <input
                   type="hidden"
                   value=""
@@ -253,7 +271,7 @@
 <script>
 export default {
    name: "priceFlight",
-   props: ["each_price_flight", "data_search"],
+   props: ["each_price_flight", "data_search" , "open-sidebar"],
    data() {
       return {
          check_currency_data: true,
@@ -276,6 +294,8 @@ export default {
          let price = this.each_price_flight.price.adult.price
          let price_with_out_currency =
             this.each_price_flight.price.adult.price_with_out_currency
+
+
          if (Object.keys(info_price).length !== 0) {
             if (Object.keys(info_price.data).length > 1) {
                if (info_price.data.CurrencyCode > 0) {
@@ -289,7 +309,6 @@ export default {
                return price_with_out_currency
             }
          }
-
          return price
       },
       price_adult_with_discount() {
@@ -335,6 +354,11 @@ export default {
             this.each_price_flight.source_id
          )
       },
+     openSidebarFromPrice() {
+       // ارسال رویداد به والد
+       this.$emit('open-sidebar');
+     }
+
    },
 }
 </script>
