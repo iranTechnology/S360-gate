@@ -1752,12 +1752,23 @@ class detailHotel extends ApiHotelCore
                     //						'Mobile'    => $room['member_mobile'],
                     //						'Email'     => $room['member_email'],
                     //					];
+
+                    if ($room['source_id'] == '42') {
+                        $buyerArray = [
+                            'FirstName' => $room['member_name'],
+                            'LastName' => $room['member_name'],
+                            'Mobile' => $room['member_mobile'],
+                            'Email' => $room['member_email'],
+                        ];
+                    } else {
                     $buyerArray = [
                         'FirstName' => 'Abazar',
                         'LastName' => 'Afshar',
                         'Mobile' => '09057078341',
                         'Email' => 'info@iran-tech.com',
                     ];
+                }
+
                 }
 
                 if($hotel_source['source_id'] == '29'){
@@ -2135,7 +2146,6 @@ class detailHotel extends ApiHotelCore
 
                 //				'afshar'   => '09123493154',
                 'afraze'   => '09916211232',
-                'fanipor'  => '09129409530',
                 'araste'   => '09211559872',
                 'amirabas' => '09057078341'
             );
