@@ -21,7 +21,7 @@
 <meta property="og:site_name" content="{$smarty.const.TITLE_SITE}"/>
 <meta property="og:title" content="{$info_page['title']}" />
 <meta property="og:description" content="{$info_page['description']}">
-<meta property="og:url" content="https://{$smarty.const.CLIENT_MAIN_DOMAIN}" />
+<meta property="og:url" content="https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" />
 {if $smarty.const.MAG_TITLE neq '' && $smarty.const.REQUEST eq 'mag'}
     <meta property="og:image" content="{$article['image']}"/>
     <meta property="og:image:secure_url" content="{$article['image']}">
