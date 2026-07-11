@@ -551,7 +551,7 @@
 }
 
 .newsletter {
-    padding-bottom: 70px;
+    padding: 70px 0;
     position: relative;
 }
 
@@ -1771,7 +1771,7 @@
         width: 100px; /*! height: 100%; */
     }
     .nav-brand .logo-img {
-        width: 76px !important
+        width: 70px !important
     }
     .nav-brand {
         gap: 0

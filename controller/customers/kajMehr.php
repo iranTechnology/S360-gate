@@ -17,7 +17,7 @@ class kajMehr extends mainPage {
     }
 
     public $icons_json = '{
-         "Flight": {"icon": "<i class=\"fa-regular fa-plane-circle-check\"></i>", "name": "هواپیما"},
+         "Flight": {"icon": "<i class=\"fa-regular fa-plane-circle-check\"></i>", "name": "پرواز"},
           "Hotel": {"icon": "<i class=\"fa-regular fa-hotel\"></i>", "name": "هتل"},
           "Tour": {"icon": "<i class=\"fa-regular fa-suitcase-rolling\"></i>", "name": "تور"},
            "Bus": {"icon": "<i class=\"fa-regular fa-bus\"></i>", "name": "اتوبوس"},
@@ -26,7 +26,7 @@ class kajMehr extends mainPage {
             "Visa": {"icon": "<i class=\"fa-regular fa-passport\"></i>", "name": "ویزا"},
             "Package": {"icon": "<i class=\"fa-regular fa-suitcase\"></i>", "name": "پکیج"},
             "Entertainment": {"icon": "<i class=\"fa-regular fa-umbrella-beach\"></i>", "name": "تفریحات"},
-            "Cip": {"icon": "<i class=\"fa-regular fa-concierge-bell\"></i>", "name": "تشریفات"},
+            "Cip": {"icon": "<i class=\"fa-regular fa-concierge-bell\"></i>", "name": "CIP"},
             "Europcar": {"icon": "<i class=\"fa-regular fa-car\"></i>", "name": "خودرو"}
                }';
 

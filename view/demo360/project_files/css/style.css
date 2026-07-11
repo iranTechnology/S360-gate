@@ -124,7 +124,7 @@ main {
     width: 100%;
     height: 100%;
     background: #ee384e;
-    background: linear-gradient(90deg, #b71c1c 17%, rgba(9, 9, 121, 0) 93%);
+    background: linear-gradient(90deg, var(--mainColor) 17%, rgba(9, 9, 121, 0) 93%);
     position: absolute;
     top: 0;
     left: 0;
@@ -193,7 +193,7 @@ main {
 .title-demo div h2 .square-title {
     width: 16px;
     height: 16px;
-    background: #b71c1c;
+    background: var(--mainColor);
     border-radius: 4px
 }
 
@@ -224,11 +224,11 @@ main {
 }
 
 .title-demo a:hover {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .title-demo a:hover svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .title-center-demo {
@@ -261,7 +261,7 @@ main {
 .title-center-demo div h2 .square-title {
     width: 16px;
     height: 16px;
-    background: #b71c1c;
+    background: var(--mainColor);
     border-radius: 4px
 }
 
@@ -379,16 +379,16 @@ main {
 .tour-demo .tour-internal-external .parent-data-tour-tab-demo ul button {
     background: rgba(0, 0, 0, 0);
     border-radius: 12px;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     transition: all ease .5s;
     padding: 10px 24px;
     font-size: 16px;
     font-weight: 500;
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .tour-demo .tour-internal-external .parent-data-tour-tab-demo ul button.active {
-    background: #b71c1c !important;
+    background: var(--mainColor) !important;
     color: #fff
 }
 
@@ -419,7 +419,7 @@ main {
 }
 
 .tour-demo .tour-internal-external .parent-data-tour-tab-demo a:hover button svg {
-    fill: #b71c1c !important
+    fill: var(--mainColor) !important
 }
 
 .tour-demo .tour-internal-external .parent-data-tour-tab-demo a:hover .parent-img img {
@@ -579,7 +579,7 @@ main {
 }
 
 .installmentCalculator .installmentCalculator_box .installmentCalculator_box_div1 > h2 {
-    color: #b71c1c;
+    color: var(--mainColor);
     font-size: 36px;
     margin-bottom: 30px
 }
@@ -642,7 +642,7 @@ main {
 
 .installmentCalculator .installmentCalculator_box_div2 > h3 {
     text-align: right;
-    color: #b71c1c;
+    color: var(--mainColor);
     font-size: 26px
 }
 
@@ -674,7 +674,7 @@ main {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    background: rgba(255, 222, 226, .4196078431);
+    background: color-mix(in srgb, var(--mainColor) 10%, transparent);
     padding: 20px 5px;
     border-radius: 12px
 }
@@ -723,7 +723,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #b71c1c;
+    background: var(--mainColor);
     padding: 15px
 }
 
@@ -775,7 +775,7 @@ main {
 }
 
 .installmentCalculator .AdvancedInstallmentCalculatorBox > div > div h6.title-2 > div button.active {
-    background-color: #b71c1c;
+    background-color: var(--mainColor);
     color: #fff
 }
 
@@ -849,10 +849,10 @@ main {
 .installmentCalculator .AdvancedInstallmentCalculatorBtn {
     margin: 2rem auto 0 auto;
     cursor: pointer;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     padding: 12px 25px;
     border-radius: 12px;
-    background: #b71c1c;
+    background: var(--mainColor);
     color: #fff;
     font-size: 12px;
     transition: all .3s;
@@ -875,10 +875,10 @@ main {
 .installmentCalculator .AdvancedInstallmentCalculatorBox > div .Main_AdvancedInstallmentCalculatorBtn {
     width: 100%;
     cursor: pointer;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     padding: 12px 25px;
     border-radius: 12px;
-    background: #b71c1c;
+    background: var(--mainColor);
     color: #fff;
     font-size: 12px;
     transition: all .3s;
@@ -901,10 +901,10 @@ main {
 .installmentCalculator .AdvancedInstallmentCalculatorBtn {
     margin: 2rem auto 0 auto;
     cursor: pointer;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     padding: 12px 25px;
     border-radius: 12px;
-    background: #b71c1c;
+    background: var(--mainColor);
     color: #fff;
     font-size: 12px;
     transition: all .3s;
@@ -1045,7 +1045,7 @@ main {
 }
 
 .blog-demo .blog-grid > div > a:hover > div > i > svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .blog-demo .blog-grid > div > a > img {
@@ -1226,10 +1226,10 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0);
-    color: #b71c1c;
+    color: var(--mainColor);
     height: 40px;
     gap: 5px;
     cursor: pointer;
@@ -1240,7 +1240,7 @@ main {
 }
 
 .search_flight #search_flight-tabContent .nav.nav-pills .nav-link.active {
-    background-color: #b71c1c;
+    background-color: var(--mainColor) !important;
     color: #fff
 }
 
@@ -1303,7 +1303,7 @@ main {
 .search_flight #search_flight-tabContent .search_flight_grid > div > div svg:nth-child(4) {
     width: 30px;
     height: 30px;
-    fill: #b71c1c;
+    fill: var(--mainColor);
     transform: rotate(180deg)
 }
 
@@ -1357,17 +1357,17 @@ main {
 .search_flight #search_flight-tabContent .search_flight_grid a > div svg:nth-child(4) {
     width: 30px;
     height: 30px;
-    fill: #b71c1c;
+    fill: var(--mainColor);
     transform: rotate(180deg)
 }
 
 .button {
-    background: #b71c1c;
+    background: var(--mainColor);
     color: #fff;
     padding: 8px 20px;
     cursor: pointer;
     border-radius: 12px;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     transition: all .3s;
     font-size: .9rem;
     display: flex;
@@ -1392,7 +1392,7 @@ main {
 }
 
 ::selection {
-    background-color: #b71c1c;
+    background-color: var(--mainColor);
     color: #fff
 }
 
@@ -1431,16 +1431,16 @@ main {
 .hotel-demo .parent-data-hotel-tab-demo ul button {
     background: rgba(0, 0, 0, 0);
     border-radius: 12px;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     transition: all ease .5s;
     padding: 10px 24px;
     font-size: 16px;
     font-weight: 500;
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .hotel-demo .parent-data-hotel-tab-demo ul button.active {
-    background: #b71c1c !important;
+    background: var(--mainColor) !important;
     color: #fff
 }
 
@@ -1614,7 +1614,7 @@ main {
 }
 
 .hotel-demo .parent-data-hotel-tab-demo a:hover .text-hotel h4 svg {
-    fill: #b71c1c !important
+    fill: var(--mainColor) !important
 }
 
 .hotel-popular {
@@ -1862,7 +1862,7 @@ main {
 }
 
 .news-demo .parent-news-demo .box-news-demo-category a:hover h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .app-demo {
@@ -1911,7 +1911,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #b71c1c
+    background: var(--mainColor)
 }
 
 .app-demo .parent-app-demo .items-app-demo .box-app-demo .parent-icon-app svg {
@@ -2510,7 +2510,7 @@ main {
     }
 
     .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
-        background: #b71c1c
+        background: var(--mainColor)
     }
 
     .blog-demo .blog-grid {
@@ -2828,7 +2828,7 @@ main {
         display: flex;
         flex-direction: column;
         z-index: 20;
-        transform: translateY(100%);
+        transform: translateX(100%);
         transition: transform .3s ease-in-out;
         border-radius: 12px 12px 0 0;
         touch-action: auto;
@@ -2837,7 +2837,7 @@ main {
     }
 
     .bottom-sheet.open {
-        transform: translateY(0)
+        transform: translateX(0)
     }
 
     .sheet-header {
@@ -2939,7 +2939,7 @@ main {
 }
 
 .ui-datepicker-buttonpane.ui-widget-content .btn:last-child:hover {
-    background: #b71c1c !important
+    background: var(--mainColor) !important
 }
 
 .tour-more-data-new .date-item, .tour-more-data-new .parent-title-data-count {
@@ -2950,4 +2950,2004 @@ main {
 .installmentCalculator .installmentCalculator_box_div1 {
     gap: 15px !important
 }
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Overlay */
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000; /* اطمینان از قرار گرفتن روی سایر محتوا */
+    opacity: 0; /* مخفی در حالت عادی */
+    visibility: hidden; /* مخفی و غیر قابل دسترس */
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    /* برای زبان فارسی، کشو از راست وارد می‌شود، پس overlay باید کل صفحه را بپوشاند */
+}
+
+body .banner-demo::after {
+    background: none !important;
+}
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 85%; /* عرض 85% صفحه */
+    max-width: 350px; /* حداکثر عرض برای جلوگیری از بزرگ شدن زیاد در تبلت‌ها */
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Overlay */
+.drawer-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    max-width: 350px; /* حداکثر عرض برای جلوگیری از بزرگ شدن زیاد در تبلت‌ها */
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    max-width: 350px; /* حداکثر عرض برای جلوگیری از بزرگ شدن زیاد در تبلت‌ها */
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    max-width: 350px; /* حداکثر عرض برای جلوگیری از بزرگ شدن زیاد در تبلت‌ها */
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    max-width: 350px; /* حداکثر عرض برای جلوگیری از بزرگ شدن زیاد در تبلت‌ها */
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    max-width: 350px; /* حداکثر عرض برای جلوگیری از بزرگ شدن زیاد در تبلت‌ها */
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mobile-drawer-svg-map {
+    color: #959ea6 !important;
+}
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px 10px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mobile-drawer-svg-map {
+    color: #959ea6 !important;
+}
+
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    height: 100%;
+    max-width: unset !important;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px 10px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mobile-drawer-svg-map {
+    color: #959ea6 !important;
+}
+
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    height: 100%;
+    max-width: unset !important;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px 10px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.mobile-divider:last-child {
+    border-bottom: 0;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mobile-drawer-svg-map {
+    color: #959ea6 !important;
+}
+
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    height: 100%;
+    max-width: unset !important;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px 10px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+/* @media (min-width: 768px) {
+    .mobile-drawer {
+        width: 400px;
+    }
+} */
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.mobile-divider:last-child {
+    display: none;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mobile-drawer-svg-map {
+    color: #959ea6 !important;
+}
+
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    height: 100%;
+    max-width: unset !important;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px 10px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+@media (min-width: 768px) {
+    .input-pointer-select {
+        cursor: pointer !important;
+    }
+}
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.mobile-divider:last-child {
+    display: none;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mobile-drawer-svg-map {
+    color: #959ea6 !important;
+}
+
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    height: 100%;
+    max-width: unset !important;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px 10px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+.drawer-header {
+    display: flex;
+    align-items: center; /* هم‌ترازی عمودی */
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px; /* کمی فضا در پایین */
+}
+
+/* ورودی جستجو در موبایل */
+.mobile-search-input {
+    flex-grow: 1; /* اجازه رشد به ورودی برای اشغال فضای موجود */
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* گوشه‌های گرد */
+    font-size: 16px;
+    outline: none; /* حذف خط دور در حالت فوکوس */
+    box-sizing: border-box;
+    margin-right: 10px; /* فاصله با خط جداکننده */
+}
+
+/* خط جداکننده */
+.separator-line {
+    width: 1px;
+    height: 30px; /* ارتفاع خط */
+    background-color: #e0e0e0; /* رنگ خاکستری روشن */
+    margin: 0 10px; /* فاصله از دو طرف */
+}
+
+/* لیست مقاصد پرطرفدار */
+.mobile-popular-list {
+    margin-top: 10px;
+    flex-grow: 1; /* اجازه رشد برای اشغال فضای باقی‌مانده */
+    overflow-y: auto; /* اسکرول در صورت نیاز */
+    /* استایل‌های بیشتر برای آیتم‌های لیست را می‌توانید اینجا اضافه کنید */
+}
+
+/* مثال استایل برای آیتم‌های لیست (اگر نیاز بود) */
+/*
+.mobile-popular-list .popular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-popular-list .popular-item:hover {
+    background-color: #f9f9f9;
+}
+*/
+
+/* (اختیاری) استایل برای صفحه نمایش کوچکتر یا تبلت‌ها */
+@media (min-width: 768px) {
+    #route_destination_internal, #route_destination_internal, #iata_origin_international, #origin_international, #iata_destination_international, #iata_destination_international {
+        cursor: pointer;
+    }
+}
+
+
+/* کانتینر لیست */
+#mobilePopularDestinations {
+    padding: 10px 0;
+}
+
+/* عنوان‌ها */
+#mobilePopularDestinations h2 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* باکس تاریخچه */
+.mobile_history_box h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_history_box h2 button {
+    font-size: 12px;
+    border: none;
+    background: none;
+    color: #d9534f;
+    cursor: pointer;
+}
+
+/* استایل آیتم‌های شهر */
+.mobile-city-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    cursor: pointer;
+}
+
+/* آیکون */
+.mobile-city-item i {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* متن */
+.mobile-city-item .city-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* خط جدا کننده */
+.mobile-divider {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.mobile-divider:last-child {
+    display: none;
+}
+
+.ul-mobile-drawer {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mobile-drawer-svg-map {
+    color: #959ea6 !important;
+}
+
+/* --- استایل‌های کلی برای Overlay و Drawer --- */
+
+/* Drawer (کشو) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    /* برای فارسی، از راست وارد می‌شود */
+    right: 0;
+    width: 100%; /* عرض 85% صفحه */
+    height: 100%;
+    max-width: unset !important;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); /* سایه برای نمایش عمق */
+    z-index: 1001; /* بالاتر از overlay */
+    transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */
+    padding: 20px 10px;
+    box-sizing: border-box; /* padding و border در محاسبه عرض لحاظ شوند */
+    display: flex; /* برای چیدمان عمودی محتوا */
+    flex-direction: column; /* چیدمان ستونی */
+}
+
+/* --- استایل‌های کلاس visible برای نمایش --- */
+
+/* فعال کردن نمایش Drawer */
+.mobile-drawer.visible {
+    transform: translateX(0); /* بازگشت به موقعیت اصلی */
+}
+
+/* --- استایل‌های داخلی Drawer --- */
+
+/* دکمه بستن */
+.mobile-drawer .close-drawer-btn {
+    position: absolute;
+    top: 15px;
+    /* برای راست‌چین */
+    left: 15px; /* کمی فاصله از لبه چپ */
+    font-size: 28px; /* اندازه فونت بزرگتر */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1; /* تنظیم ارتفاع خط برای هم‌ترازی بهتر */
+    padding: 0;
+}
+
+/* سربرگ کشو */
+
+
+@media (max-width: 768px) {
+    .button01 {
+        position: unset !important;
+        right: unset !important;
+        width: 100% !important;
+    }
+
+    .search_flight #search_flight-tabContent .search_flight_grid {
+        grid-template-columns:repeat(2, 1fr)
+    }
+
+    .mobile-datepicker .ui-state-active {
+        background: #1976d2 !important;
+        color: #fff !important;
+    }
+
+
+}
+
+.installmentCalculator .installmentCalculator_box .installmentCalculator_box_div1 > div > div.header {
+    background: none !important;
+}
+
+.rangeslider__fill {
+    background: var(--mainColor) !important;
+}
+
+
+
+
 

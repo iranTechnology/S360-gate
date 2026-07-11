@@ -40,7 +40,7 @@
 
 {*    <link rel='canonical' href='https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}' />*}
 
-    <base href="{$smarty.const.CLIENT_DOMAIN}"/>
+    <base href="https://{$smarty.const.CLIENT_DOMAIN}/"/>
 <link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
 
 

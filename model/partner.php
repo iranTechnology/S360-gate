@@ -195,7 +195,7 @@ class partner_tb extends ModelBase
 
         $conn->query("CREATE DATABASE `$dbName` CHARACTER SET utf8 COLLATE utf8_general_ci");
 
-        $cmd = "mysqldump -u safar360 -p'$password' safar360_sample | mysql -u safar360 -p'$password' $dbName";
+        $cmd = "mysqldump --routines --triggers --events -u safar360 -p'$password' safar360_sample | mysql -u safar360 -p'$password' $dbName";
 
         exec($cmd, $output, $returnStatus);
 

@@ -3575,6 +3575,8 @@ class newApiFlight extends clientAuth
 
         $flights = json_decode($this->findTicketInSearch(), true);
 
+
+
         $request_numbers = [];
         foreach ($flights as $direction => $arrayFlight) {
             $request_numbers[$direction] = $arrayFlight['Code'] ;

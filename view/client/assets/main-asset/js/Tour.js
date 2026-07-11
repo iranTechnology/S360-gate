@@ -144,7 +144,7 @@ function getDestinationCityTour(type, obj) {
 }
 function searchInternalTour(altDomain = null) {
    const form = document.getElementById('gdsTourLocal');
-   const is_new_tab = form.target === '_blank';
+   const target = form?.target;
 
    let internal_origin_tour = $(".internal-origin-tour-js")
    let internal_destination_tour = $(".internal-destination-tour-js")
@@ -169,11 +169,20 @@ function searchInternalTour(altDomain = null) {
       url = `${amadeusPathByLang}resultTourLocal/1-${internal_origin_tour}/1-${internal_destination_tour}/${internal_date_travel_tour}/all`
    }
 
-   openLink(url, is_new_tab)
+   if(target === '_blank'){
+      window.open(url , '_blank')
+   }else if(target === '_top') {
+      window.parent.location.href = url;
+   }else {
+      window.open(url , '_self')
+   }
+
+   // openLink(url, is_new_tab)
 }
 function searchInternationalTour(altDomain = null) {
    const form = document.getElementById('gdsPortalLocal');
-   const is_new_tab = form.target === '_blank';
+   const target = form?.target;
+
    let international_tour = $(".international-tour-origin-city-js")
    let international_destination_tour = $(".international-destination-tour-js")
    let international_destination_city_tour = $(".international-destination-city-tour-js")
@@ -200,9 +209,16 @@ function searchInternationalTour(altDomain = null) {
    }
 
    // let url = `${amadeusPathByLang}tours/تور-های-${international_tour.replace(' ','')}?origin=${international_destination_tour}-${international_destination_city_tour}&date=${internal_date_travel_tour}&type=all`
-   console.log(url)
 
-   openLink(url, is_new_tab)
+   if(target === '_blank'){
+      window.open(url , '_blank')
+   }else if(target === '_top') {
+      window.parent.location.href = url;
+   }else {
+      window.open(url , '_self')
+   }
+
+   // openLink(url, is_new_tab)
 }
 
 

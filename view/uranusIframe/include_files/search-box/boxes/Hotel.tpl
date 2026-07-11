@@ -1,18 +1,18 @@
 <div class="__box__ tab-pane {if $active} active {/if}" id="Hotel">
 
-    <div class="parent-head-search-box">
-        <div class="head-search-box-detail">
-          <div class="w-100 mr-2">
-              <div class="d-flex gap-2 align-items-center" style="gap:5px">
-                  <i class="fa-light fa-hotel head-search-box-icon"></i>
-                  <span class="head-search-box-title">هتل</span>
-              </div>
-              <p class="mt-2 mb-0">رزرو هتل در ایران و سراسر جهان</p>
-          </div>
-            <div class="head-search-box-parent-img">
-                <img class="head-search-box-img" src="project_files/images/hotel-vector.png" alt="">
-            </div>
-        </div>
+{*    <div class="parent-head-search-box">*}
+{*        <div class="head-search-box-detail">*}
+{*          <div class="w-100 mr-2">*}
+{*              <div class="d-flex gap-2 align-items-center" style="gap:5px">*}
+{*                  <i class="fa-light fa-hotel head-search-box-icon"></i>*}
+{*                  <span class="head-search-box-title">هتل</span>*}
+{*              </div>*}
+{*              <p class="mt-2 mb-0">رزرو هتل در ایران و سراسر جهان</p>*}
+{*          </div>*}
+{*            <div class="head-search-box-parent-img">*}
+{*                <img class="head-search-box-img" src="project_files/images/hotel-vector.png" alt="">*}
+{*            </div>*}
+{*        </div>*}
     {include file="./sections/Hotel/international/btn_radio_internal_external.tpl"}
     <div id="internal_hotel" class="d_flex flex-wrap internal-hotel-js  mt-2 mt-lg-0">
         <form data-action="s360online.iran-tech.com/" name="gdsHotelLocal"
@@ -41,5 +41,5 @@
         </form>
     </div>
     <input type='hidden' id="type_section" name="type_section" class="type-section-js" value="internal">
-    </div>
+{*    </div>*}
 </div>

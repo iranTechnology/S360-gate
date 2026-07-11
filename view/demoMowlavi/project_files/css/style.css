@@ -63,6 +63,10 @@ a:hover {
     .tours, .hotel-ghods, .newsletters, .news, .tab-tour, .blog-kharazmi, .other, .about, .video, .your-question, .blog-demo, .Comments , footer , .hotels , .newsletter {
         margin-top: 80px
     }
+    .banner-demo-1 ,.banner-demo{
+        min-height: 850px !important;
+        height: 100% !important;
+    }
 }
 
 .bg-btn-karvan {

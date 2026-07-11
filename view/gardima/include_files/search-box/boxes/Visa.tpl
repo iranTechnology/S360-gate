@@ -5,7 +5,7 @@
 </div>
 <div class="col-md-12 col-12">
 <div class="row">
-<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsVisa" method="post" name="gdsVisa" target="_blank">
+<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsVisa" method="post" name="gdsVisa" target="_top">
 {include file="./sections/Visa/continent_visa.tpl"}
 {include file="./sections/Visa/country_visa.tpl"}
 {include file="./sections/Visa/type_visa.tpl"}

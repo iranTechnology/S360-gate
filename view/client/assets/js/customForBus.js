@@ -487,6 +487,85 @@ function sortBuses(sortBy) {
     }, 200);
 
 }
+function openReservationPanel(carType, busCode,sourceCode,element) {
+    // بستن پنل‌های باز قبلی
+    $('.side-panel-bus').remove();
+    $('.overlay').remove();
+
+    // اضافه کردن overlay
+    $('body').append('<div class="overlay" onclick="closePanel()"></div>');
+    setTimeout(() => {
+        $('.overlay').addClass('show');
+    }, 10);
+
+    // ایجاد پنل با تب‌های تست
+    var panel = `
+        <div class="side-panel-bus">
+            <div class="panel-header-bus">
+            <div class="d-flex align-items-center gap-1">
+                <button class="close-btn-bus" onclick="closePanel()"> <i class="fa fa-arrow-right text-dark"></i></button>
+                <h5 class="mb-0">جزئیات بلیط</h5>
+             
+                </div>
+                <button class="close-btn-bus" onclick="closePanel()"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="panel-content position-relative">
+                <div style="margin-bottom: 20px;">
+                    <button onclick="$('#bus1').show(); $('#bus2').hide(); $(this).addClass('active-tab').siblings().removeClass('active-tab')" 
+                            class="tab-bus-btn active-tab" 
+                           >
+                        جریمه
+                    </button>
+                    <button onclick="$('#bus2').show(); $('#bus1').hide(); $(this).addClass('active-tab').siblings().removeClass('active-tab')" 
+                            class="tab-bus-btn" >
+                        جزئیات
+                    </button>
+                </div>
+                
+                <div id="bus1" style="display: block;">
+                    <div class="fine-bus">
+                        <h6 class="mb-1">10% جریمه</h6>
+                        <p class="mb-0">از زمان صدور تا 1 ساعت قبل از حرکت</p>
+                    </div>
+                    <div class="fine-bus">
+                         <h6 class="mb-1">50% جریمه حضوری</h6>
+                        <p class="mb-0">از 1 ساعت قبل از حرکت تا پس از آن</p>
+                    </div>
+                </div>
+                
+                <div id="bus2" style="display: none;">
+                    <div class="cartype-bus">
+                        <p>${carType}</p>
+                    </div>
+                </div>
+                  <div class="panel-footer-bus">
+            <button onclick="reserveBusTicket('${busCode}','${sourceCode}',true,$(this))" 
+                        class="reserve-bus-btn">
+                    انتخاب بلیط
+                </button>
+</div>
+            </div>
+          
+        </div>
+    `;
+
+    $('body').append(panel);
+
+    setTimeout(() => {
+        $('.side-panel-bus').addClass('open');
+    }, 100);
+}
+
+function closePanel() {
+    $('.side-panel-bus').removeClass('open');
+    $('.overlay').removeClass('show');
+    setTimeout(() => {
+        $('.side-panel-bus').remove();
+        $('.overlay').remove();
+    }, 300);
+}
+
+
 
 async function reserveBusTicket(busCode, sourceCode, checkLogin = true, _this = null) {
 

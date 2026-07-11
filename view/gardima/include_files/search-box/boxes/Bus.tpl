@@ -3,12 +3,12 @@
 </div>
 <div class="col-md-12 col-12">
 <div class="row">
-<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gds_local_bus" method="post" name="gds_local_bus" target="_blank">
+<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gds_local_bus" method="post" name="gds_local_bus" target="_top">
 {include file="./sections/Bus/origin_selection.tpl"}
 {include file="./sections/Bus/destination_selection.tpl"}
 {include file="./sections/Bus/date_bus.tpl"}
 <div class="col-lg-2 col-md-6 col-sm-6 col-12 btn_s col_search p-1">
-<button class="btn theme-btn seub-btn b-0" onclick="searchBus(true)" type="button">
+<button class="btn theme-btn seub-btn b-0" onclick="searchBus()" type="button">
 <span>
  جستجو
 </span>

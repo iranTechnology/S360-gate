@@ -37,7 +37,7 @@ a:hover {
   display: block;
   -webkit-backface-visibility: visible;
   transition: opacity .2s ease;
-  border-radius: 30px;
+  border-radius: $rounded;
 }
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
   background: $mainColor;

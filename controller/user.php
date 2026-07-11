@@ -1048,7 +1048,7 @@ class user extends baseController
         return $this->Model->select($sql);
     }
 
-      private function getInfoTicketCipCancel($RequestNumber)
+    private function getInfoTicketCipCancel($RequestNumber)
     {
         $sql = "SELECT  "
             . " book.id,"
@@ -2027,7 +2027,7 @@ class user extends baseController
                     $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&lang=fa';
                     $type_member = functions::TypeUser(session::getUserId());
                     if ($type_member == 'Counter') {
-                 $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'].'&lang=fa';
+                        $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'].'&lang=fa';
                         $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
                     }
 
@@ -2744,6 +2744,7 @@ class user extends baseController
                     status,
                     total_price,
                     discount_code_amount,
+                    type_discount,
                     isInternal,
                     hotel_name,
                     city_name,
@@ -2795,7 +2796,13 @@ class user extends baseController
                 $bookList[$key]['creation_date_int'] = '----';
                 $bookList[$key]['creation_time_int'] = '----';
             }
-            $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+
+            if($item['type_discount'] === 'percent'){
+                $price_final = $item['total_price'] - ($item['total_price'] * $item['discount_code_amount'] / 100);
+                $bookList[$key]['price_final'] = number_format($price_final);
+            }else{
+                $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+            }
             if (!empty($item['discount_code_amount']) && $item['discount_code_amount'] != 0) {
                 $bookList[$key]['price_final'].='<br/><del>'.number_format($item['total_price']).'</del>';
             }
@@ -3531,6 +3538,7 @@ class user extends baseController
                   successfull AS statusBook, 
                   request_cancel AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3610,6 +3618,7 @@ class user extends baseController
                   status AS statusBook,
                   request_cancel AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3689,6 +3698,7 @@ class user extends baseController
                   successfull AS statusBook, 
                   request_cancel AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3769,6 +3779,7 @@ class user extends baseController
                   status AS statusBook,
                   '' AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3849,6 +3860,7 @@ class user extends baseController
                   status AS statusBook,
                   '' AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -3928,6 +3940,7 @@ class user extends baseController
                   status AS statusBook,
                   request_cancel AS request_cancel, 
                   discount_code_amount AS discount_code_amount,
+                  type_discount AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -4007,6 +4020,7 @@ class user extends baseController
                   status AS statusBook, 
                   request_cancel AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -4087,6 +4101,7 @@ class user extends baseController
                   status AS statusBook, 
                   '' AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   '' AS CountPeople,
@@ -4166,6 +4181,7 @@ class user extends baseController
                   successfull AS statusBook,  
                   request_cancel AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
                   CountPeople AS CountPeople,
@@ -4246,6 +4262,7 @@ class user extends baseController
                   status AS statusBook,  
                   '' AS request_cancel, 
                   '' AS discount_code_amount,
+                  '' AS type_discount,
                   car_name AS car_name,
                   car_name_en AS car_name_en,
                   '' AS CountPeople,
@@ -4325,6 +4342,7 @@ class user extends baseController
               successfull AS statusBook,
               request_cancel AS request_cancel,
               '' AS discount_code_amount,
+              '' AS type_discount,
               '' AS car_name,
               '' AS car_name_en,
               '' AS CountPeople,
@@ -5023,7 +5041,13 @@ class user extends baseController
 
             }
             elseif ($item['moduleTitle'] == 'hotel') {
-                $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+                if($item['type_discount'] === 'percent'){
+                    $price_final = $item['total_price'] - ($item['total_price'] * $item['discount_code_amount'] / 100);
+                    $bookList[$key]['price_final'] = number_format($price_final);
+                }else{
+                    $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+                }
+
                 if (!empty($item['discount_code_amount']) && $item['discount_code_amount'] != 0) {
                     $bookList[$key]['price_final'].='<br/><del>'.number_format($item['total_price']).'</del>';
                 }
@@ -5600,7 +5624,7 @@ class user extends baseController
                         [
                             'title' => functions::Xmlinformation('GetTicket')->__toString(),
                             'type' => 'link',
-                        'link' => $bookList[$key]['dataBtnPdf'],
+                            'link' => $bookList[$key]['dataBtnPdf'],
                         ],
                         [
                             'title' => functions::Xmlinformation('Viewbill')->__toString(),
@@ -5804,7 +5828,7 @@ class user extends baseController
             $result =  $this->getInfoTicketFlightCancel($request_number);
         }
         if($type == 'cip'){
-             $result =  $this->getInfoTicketCipCancel($request_number);
+            $result =  $this->getInfoTicketCipCancel($request_number);
         }
         return $result;
     }
