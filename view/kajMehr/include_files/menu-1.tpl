@@ -12,6 +12,7 @@
                     <ul class="nav-menu">
                         <li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>
+                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل</a></li>
                         <li>
                             <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور</a>
                             {if $objResult->ReservationTourCities('=1', 'return') || $objResult->ReservationTourCountries('yes')}
@@ -48,7 +49,42 @@
                                 </ul>
                             {/if}
                         </li>
-                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل</a></li>
+                        <li>
+                            <a href="javascript:">ویزا</a>
+                            <ul class="nav-dropdown">
+                                <li>
+                                    <a href="javascript:">
+
+                                        اقامت
+
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:">
+
+                                        توریستی
+
+                                    </a>
+                                    <ul class="nav-dropdown">
+                                        <li>
+                                            <a href="javascript:">
+
+                                                آسیا
+
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:">
+
+                                                اروپا
+
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                            </ul>
+                        </li>
                         <li>
                             <a href="{$smarty.const.ROOT_ADDRESS}/mag">
 
@@ -89,8 +125,6 @@
                             </ul>
                         </li>
                         <li>
-
-
                     </ul>
                 </div>
                 <div class="box_button_header">

@@ -239,7 +239,8 @@ function fillActiveVisas(obj) {
 
 function searchVisa() {
    const form = document.getElementById('gdsVisa');
-   const is_new_tab = form.target === '_blank';
+   const target = form?.target;
+
    let country_visa = $(".country-visa-js")
    let visa_type = $(".visa-type-js")
    let count_passengers = $('.number-count-js').attr('data-number')
@@ -252,8 +253,16 @@ function searchVisa() {
    country_visa = country_visa.val()
    visa_type = visa_type.val()
 
-   let url = `${amadeusPathByLang}resultVisa/${country_visa}/${visa_type}`
-   openLink(url, is_new_tab)
+   let url = `${amadeusPathByLang}resultVisa/${country_visa}/${visa_type}`;
+
+   if(target === '_blank'){
+      window.open(url , '_blank')
+   }else if(target === '_top') {
+      window.parent.location.href = url;
+   }else {
+      window.open(url , '_self')
+   }
+   // openLink(url, is_new_tab)
 }
 function searchActiveVisa(is_new_tab = false , altDomain = null) {
    let form = $("#gdsVisa");

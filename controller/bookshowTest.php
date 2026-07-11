@@ -5887,11 +5887,24 @@ class bookshowTest extends clientAuth {
                 $DataAllPrice = '<span style="text-decoration: line-through;">'.  number_format($price_with_change) .'</span><br/>';
             }
 
-            $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_code_amount'] );
+            if($hotel['total_price'] === 'percent'){
+                $DataAllPrice .=  number_format( $hotel['total_price'] - ($hotel['total_price'] * $hotel['discount_code_amount'] / 100 ) );
+            }
+            else{
+                $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_code_amount'] );
+            }
+
             if (!empty($hotel['discount_code_amount']) && $hotel['discount_code_amount'] != 0) {
                 $DataAllPrice .=  '<br><del>' . number_format( $hotel['total_price'] ) . '</del>';
             }
-            $DataAllPriceFor = $hotel['total_price'];
+
+            if ( $hotel['type_application'] == 'reservation' ) {
+                $DataAllPriceFor = $hotel['total_price'] - $hotel['discount_code_amount'];
+
+            } else {
+                $DataAllPriceFor = $hotel['total_price'];
+            }
+
 
 
 
@@ -6126,7 +6139,7 @@ class bookshowTest extends clientAuth {
                                                                data-placement='top' title=''
                                                                data-original-title='تایید رزرو در سرور core'></i></a>";
             }
-//            $DataActivity .= $DataAction;
+            $DataActivity .= $DataAction;
             $final_agency_commission = '';
             $agencyShare = $DataAllPriceFor - $BuyFromIt;
             $ClssShare = 'bg-inverse';

@@ -1,7 +1,7 @@
 <div class="__box__ tab-pane active" id="Flight">
 {include file="./sections/Flight/internal/btn_radio_internal_external.tpl"}
 <div class="d_flex flex-wrap internal-flight-js" id="internal_flight">
-<form class="d_contents" id="internal_flight_form" method="post" data-target="_blank" name="internal_flight_form" target="_blank">
+<form class="d_contents" id="internal_flight_form" method="post" data-target="_top" name="internal_flight_form" target="_top">
 {include file="./sections/Flight/internal/btn_type_way.tpl"}
 {include file="./sections/Flight/internal/origin_selection.tpl"}
 {include file="./sections/Flight/internal/destination_selection.tpl"}
@@ -15,7 +15,7 @@
 </form>
 </div>
 <div class="flex-wrap international-flight-js" id="international_flight">
-<form class="d_contents" data-action="https://s360online.iran-tech.com/" data-target="_blank" id="international_flight_form" method="post" name="international_flight_form" target="_blank">
+<form class="d_contents" data-action="https://s360online.iran-tech.com/" data-target="_top" id="international_flight_form" method="post" name="international_flight_form" target="_top">
 {include file="./sections/Flight/international/btn_type_way.tpl"}
 {include file="./sections/Flight/international/origin_search_box.tpl"}
 {include file="./sections/Flight/international/destination_search_box.tpl"}

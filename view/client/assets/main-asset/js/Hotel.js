@@ -1608,11 +1608,23 @@ function searchInternalHotel(flag , altDomain = null) {
 
    }
    url = baseUrl + url
-   openLink(url, is_new_tab)
+
+   const target2 = form?.target;
+
+
+   if(target2 === '_blank'){
+      window.open(url , '_blank')
+   }else if(target2 === '_top') {
+      window.parent.location.href = url;
+   }else {
+      window.open(url , '_self')
+   }
+
+   // openLink(url, is_new_tab)
 }
 function searchInternationalHotel(flag , altDomain = null) {
    const form = document.getElementById('international_hotel_form');
-   const is_new_tab = form?.target === '_blank';
+   const target = form?.target;
 
    let check_in_date = $("#international_hotel .check-in-date-international-js")
    let check_out_date_js = $("#international_hotel .check-out-date-international-js")
@@ -1665,7 +1677,17 @@ function searchInternationalHotel(flag , altDomain = null) {
    } else {
       url = `${amadeusPathByLang}resultExternalHotel/${destination_country}/${destination_city}/${check_in_date}/${check_out_date}/${nights_hotel}/${rooms}`;
    }
-   openLink(url,is_new_tab)
+
+
+   if(target === '_blank'){
+      window.open(url , '_blank')
+   }else if(target === '_top') {
+      window.parent.location.href = url;
+   }else {
+      window.open(url , '_self')
+   }
+
+   // openLink(url,is_new_tab)
 }
 
 function searchResidence(is_new_tab = false) {
@@ -3201,6 +3223,25 @@ function renderMobileHotelPopularExternalCities(type) {
             // }
 
          });
+         var client_id = $('#client_id').val(); // 325 => golgasht
+         if(client_id == '325'){
+            popularListHTML +=`
+  <li onclick="selectItem('city', '65', 'مشهد', 'mhd', null, null, null, null)">
+    <div class="mobile-city-item">
+       <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
+      <div class="city-text">
+      <div>
+      <span>ایران</span>
+      </div>
+      <div style="font-size:12px !important">
+       <span>مشهد</span>
+       </div>
+       </div>
+    </div>
+  </li>
+                                   `;
+         }
+
 
          if (html_output) {
             container.html(html_output);
@@ -3562,6 +3603,18 @@ function HotelPopularNew(e) {
                }
             }
          });
+         $(targetUl).append(`
+                     <li onclick="selectItem('city', '65', 'مشهد', 'mhd', null, null, null, null)">
+                        <i class="div_c_sr_i">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M272 192C272 236.2 236.2 272 192 272C147.8 272 112 236.2 112 192C112 147.8 147.8 112 192 112C236.2 112 272 147.8 272 192zM192 160C174.3 160 160 174.3 160 192C160 209.7 174.3 224 192 224C209.7 224 224 209.7 224 192C224 174.3 209.7 160 192 160zM384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192H384zM192 48C112.5 48 48 112.5 48 192C48 204.4 52.49 223.6 63.3 249.2C73.78 274 88.66 301.4 105.8 329.1C134.2 375.3 167.2 419.1 192 451.7C216.8 419.1 249.8 375.3 278.2 329.1C295.3 301.4 310.2 274 320.7 249.2C331.5 223.6 336 204.4 336 192C336 112.5 271.5 48 192 48V48z"/></svg>
+                        </i>
+                        <div class="div_c_sr">
+                           <span class="c-text">مشهد</span>
+                           <div class="yata_gdemo"><i>ایران</i></div>
+                        </div>
+                     </li>
+                     
+                  `);
 
          $(targetUl).removeClass('displayiN');
       });

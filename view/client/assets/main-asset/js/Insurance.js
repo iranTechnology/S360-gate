@@ -114,7 +114,7 @@ $(".number_2-of-passengers-js").on("change", function (e) {
 })
 function searchInsurance(flag , altDomain = null) {
    const form = document.getElementById('gdsInsurance');
-   const is_new_tab = form.target === '_blank';
+   const target = form?.target;
 
    let insurance_destination_country = $(".insurance-destination-country-js")
    let travel_time = $(".travel-time-js")
@@ -145,7 +145,16 @@ console.log(passengers_age ,'fararaara')
    } else {
       url = `${amadeusPathByLang}resultInsurance/2/${insurance_destination_country}/${travel_time}/${passengers_count}/${passenger_age_list}`
    }
-   openLink(url,is_new_tab)
+
+   if(target === '_blank'){
+      window.open(url , '_blank')
+   }else if(target === '_top') {
+      window.parent.location.href = url;
+   }else {
+      window.open(url , '_self')
+   }
+
+   // openLink(url,is_new_tab)
 }
 
 

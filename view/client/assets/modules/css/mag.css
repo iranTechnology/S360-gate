@@ -1407,7 +1407,6 @@ p:has(img) {
 
 .content-whatever-special-pages {
     margin-top: 15px;
-    display: inline-block;
 }
 
 .content-whatever-special-pages input{
@@ -1878,6 +1877,11 @@ textarea:focus{
 }
 
 @media (max-width: 767px) {
+    .parent_box_right img{
+        width: 100% !important;
+        height: unset !important;
+        object-fit: unset !important;
+    }
     .comment-meta{
         width: 100%;
         padding-right: 0;

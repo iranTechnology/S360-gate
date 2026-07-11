@@ -234,8 +234,6 @@ class bookCip extends cip
             $sms = "{$ServerName} -" . CLIENT_NAME . "-{$eachDirection['airline_name']}-{$date}";
             $cellArray = array(
                 'afshar' => '09123493154',
-                'fanipor' => '09129409530',
-                'araste' => '09211559872'
 
             );
             foreach ($cellArray as $cellNumber) {
@@ -346,11 +344,24 @@ class bookCip extends cip
 
         public function TrackingInfo($param)
     {
-        $_POST = $param;
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
 
-        $sql = "select *  from book_cip_tb where request_number = '{$param}' OR factor_number = '{$param}' OR provider_ref='{$param}'";
+//        $sql = "select *  from book_cip_tb where request_number = '{$param}' OR factor_number = '{$param}' OR provider_ref='{$param}'";
+            $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+            $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
+
+
+            if(!Session::IsLogin()){
+                $sql = "SELECT * FROM book_cip_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'";
+            }
+            else {
+                $sql = "SELECT * FROM book_cip_tb 
+        WHERE factor_number = '$requestNumber'";
+            }
+
         $res = $Model->load($sql);
 
 
@@ -403,20 +414,8 @@ class bookCip extends cip
         $result = "" ;
         if (!empty($res)) {
               
-            $CancellationFeeSettingController = Load::controller('cancellationFeeSetting');
-            $CalculateIndemnity = $CancellationFeeSettingController->CalculateIndemnity($res['request_number']);
+            $totalPrice = functions::calcDiscountCodeByFactor($res['total_price'],$res['factor_number']);
 
-            $resBooks = $Model->select($sql);
-            list($totalPrice, $fare) = functions::TotalPriceCancelTicketSystem($resBooks);
-            if (is_numeric($CalculateIndemnity)) {
-                $dataResultBook['PercentIndemnity'] = $CalculateIndemnity ;
-
-                $PricePenalty = functions::CalculatePenaltyPriceCancel($totalPrice, $fare, $dataResultBook);
-                $CalculateIndemnityFinal = $CalculateIndemnity . ' ' . functions::Xmlinformation("Percentagepenalty");
-            } else {
-                $CalculateIndemnityFinal = '--';
-                $PricePenalty = '--';
-            }
 
 
 
@@ -447,7 +446,7 @@ class bookCip extends cip
             $flightType = $res['flight_type'] === 'inbound' ? 'پرواز ورودی به فرودگاه' : ' پرواز خروجی از فرودگاه';
             $tripType = $res['trip_type'] === 'international' ? 'پرواز بین المللی' : 'پرواز داخلی';
             $pnr = $res['provider_ref'] ? $res['provider_ref'] : '-' ;
-            $result .= '<td>' . $res['cip_name'] . '</td><td>' . $pnr . '</td><td>' . $name . ' ' . $family . '</td><td>' . $res['airport_code_cip'] . '<br/>' . $flightType . ' (' . $tripType .')' .'</td><td>' . number_format($res['total_price']) . ' ' . functions::Xmlinformation("Rial") . '</td><td>' . $status . '</td><td>' . $op . '</td>';
+            $result .= '<td>' . $res['cip_name'] . '</td><td>' . $pnr . '</td><td>' . $name . ' ' . $family . '</td><td>' . $res['airport_code_cip'] . '<br/>' . $flightType . ' (' . $tripType .')' .'</td><td>' . number_format($totalPrice) . ' ' . functions::Xmlinformation("Rial") . '</td><td>' . $status . '</td><td>' . $op . '</td>';
             $result .= '</table>';
 
         }

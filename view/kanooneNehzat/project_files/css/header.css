@@ -32,6 +32,11 @@
     --transition: all ease .3s;
 }
 
+.main-navigation__sub-menu2 {
+    left: 60px;
+    right: unset !important;
+}
+
 .header_area {
     width: 100%;
     z-index: 100;

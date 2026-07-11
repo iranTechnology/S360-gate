@@ -46,10 +46,10 @@ class smsCountTicket extends clientAuth
 //sms to Mr Fanipoor
         $objSms_f = $smsController->initService('1');
         if ($objSms_f) {
-             $sms_f = "جناب آقای فنی پور" . PHP_EOL . "تعداد کل خرید های امروز در تاریخ: " . $Today . " به شرح زیراست، تعداد کل: " . $ResultCountTicket['CountTicket'] . " عدد" . PHP_EOL . "چارتری: " . $ResultCountTicket['CountTicketCharter'] . " عدد" . PHP_EOL . "سیستمی اشتراکی: " . $ResultCountTicket['CountTicketPublicSystem'] . " عدد" . PHP_EOL . "سیستمی اختصاصی: " . $ResultCountTicket['CountTicketPrivateSystem'] . " عدد";
+             $sms_f = "جناب آقای افشار" . PHP_EOL . "تعداد کل خرید های امروز در تاریخ: " . $Today . " به شرح زیراست، تعداد کل: " . $ResultCountTicket['CountTicket'] . " عدد" . PHP_EOL . "چارتری: " . $ResultCountTicket['CountTicketCharter'] . " عدد" . PHP_EOL . "سیستمی اشتراکی: " . $ResultCountTicket['CountTicketPublicSystem'] . " عدد" . PHP_EOL . "سیستمی اختصاصی: " . $ResultCountTicket['CountTicketPrivateSystem'] . " عدد";
             $smsArrayF = array(
                 'smsMessage' => $sms_f,
-                'cellNumber' => '09129409530'
+                'cellNumber' => '09123493154'
             );
             $smsController->sendSMS($smsArrayF);
         }

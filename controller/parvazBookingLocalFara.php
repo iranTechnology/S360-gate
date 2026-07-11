@@ -192,11 +192,7 @@ class parvazBookingLocalFara extends apiLocal
                                         $sms = "{$ServerName} -" . CLIENT_NAME . "-{$eachDirection['airline_name']}-{$date}";
                                         $cellArray = array(
                                             'afshar' => '09123493154',
-                                            'moqadam' => '09355501074',
-                                            'fanipor' => '09129409530',
-                                            'abasi' => '09030391954',
-                                            'afraze' => '09916211232',
-                                            'bahrami' => '09351252904',
+                                            'poshtibani' => '09057078341',
                                         );
                                         foreach ($cellArray as $cellNumber) {
                                             $smsArray = array(

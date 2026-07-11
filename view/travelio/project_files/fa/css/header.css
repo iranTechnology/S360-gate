@@ -1328,7 +1328,7 @@ i.svg-icon svg {
 }
 
 .header_area.fixedmenu .logo img {
-    width: 80px;
+    width: 120px;
     height: 100%;
 }
 
@@ -1868,7 +1868,7 @@ i.svg-icon svg {
 
     .logo img {
         width: 100%;
-        max-width: 85px;
+        max-width: 100px;
     }
 
     .support-menu__link > a {

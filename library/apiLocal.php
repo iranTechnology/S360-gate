@@ -2088,7 +2088,6 @@ class apiLocal extends clientAuth
             if ($book['api_id'] == '10') {
                 $cellArray = array(
                     'afraze' => '09916211232',
-                    'fanipor' => '09129409530',
                     'abbasi' => '09211559872',
                     'abbasi_' => '09057078341',
                     'bahrami' => '09351252904',

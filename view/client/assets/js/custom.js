@@ -8414,7 +8414,7 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                             discountAmount: data.discountAmount,
                             factorNumber: factorNumber,
                             serviceType: serviceType,
-                            typeDiscount:data.typeDiscount
+                            typeDiscount: data.typeDiscount
                         },
                     success: function (data) {
 

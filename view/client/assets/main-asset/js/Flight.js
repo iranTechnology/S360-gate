@@ -2193,10 +2193,12 @@ function searchInternal(obj , altDomain) {
   }
 
   const form = $('#internal_flight_form')[0];
-  let target = form?.target === '_blank';
+  let target = form?.target;
 
-  if(target){
+  if(target === '_blank'){
     window.open(url , '_blank')
+  }else if(target === '_top') {
+    window.parent.location.href = url;
   }else {
     window.open(url , '_self')
   }
@@ -2224,10 +2226,12 @@ function searchInternational(obj , altDomain) {
 
   // let target = $('#international_flight_form').data('target')
   const form = $('#international_flight_form')[0];
-  const target = form?.target === '_blank';
+  const target = form?.target;
 
-  if(target){
+  if(target === '_blank'){
     window.open(url , '_blank')
+  }else if(target === '_top') {
+    window.parent.location.href = url;
   }else {
     window.open(url , '_self')
   }

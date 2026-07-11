@@ -56,6 +56,7 @@ class resultBusTicket extends apiBus
 
         foreach ($array as $item) {
 
+
             $output .= '<div class="showListSort">
                       <div class="international-available-box early ASS"
                            data-price="' . $item['price'] . '"
@@ -213,12 +214,13 @@ class resultBusTicket extends apiBus
 
             }
             $output .='"';
-
+            $busId = isset($item['id']) ? $item['id'] : uniqid('bus_');
+            $carType = isset($item['carType']) ? $item['carType'] : 'نامشخص';
             if ($item['countFreeChairs'] > 0) {
 
 
-                $output .= ' onclick="reserveBusTicket(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\',true,$(this))"';
-
+//                $output .= ' onclick="reserveBusTicket(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\',true,$(this))"';
+                $output .= ' onclick="openReservationPanel(\'' . $carType . '\', \'' . $item['busCode'] . '\',\'' . $item['sourceCode'] . '\', $(this))"';
             }
             $output .= '>';
 
@@ -277,66 +279,8 @@ class resultBusTicket extends apiBus
                           </div>
                       </div>
                   </div>';
-
-
-// تعریف متغیرها
-            $busId = isset($item['id']) ? $item['id'] : uniqid('bus_');
-            $carType = isset($item['carType']) ? $item['carType'] : 'نامشخص';
-
             $output .= '
 <div data-name="bus-extra-descriptions-loading" class="align-items-center d-flex flex-wrap gap-10 justify-content-center w-100">
-</div>
-
-<div data-name="bus-extra-descriptions" class="w-100">
-    <!-- ===== تب‌ها با id یونیک بر اساس busId ===== -->
-    <ul class="nav nav-tabs my-3 gap-2 justify-content-center align-items-center" id="busTab_' . $busId . '" role="tablist">
-        <li class="nav-item rounded-md">
-            <a class="nav-link active border-0" style="border-radius:10px" id="penalty-tab_' . $busId . '" data-toggle="tab" 
-               href="#penalty_' . $busId . '" role="tab" aria-controls="penalty_' . $busId . '" aria-selected="true">
-               جریمه
-            </a>
-        </li>
-        <li class="nav-item rounded-md">
-            <a class="nav-link  border-0" style="border-radius:10px" id="details-tab_' . $busId . '" data-toggle="tab" 
-               href="#details_' . $busId . '" role="tab" aria-controls="details_' . $busId . '" aria-selected="false">
-              جزییات
-            </a>
-        </li>
-    </ul>
-
-    <!-- ===== محتوای تب‌ها ===== -->
-    <div class="tab-content" id="busTabContent_' . $busId . '">
-        
-        <!-- تب جریمه -->
-        <div class="tab-pane fade show active" id="penalty_' . $busId . '" role="tabpanel" aria-labelledby="penalty-tab_' . $busId . '">
-          
-            <div class="panel-default-change-Buyer-parent row">
-                <div data-name="bus-refund-rules" class="desctiptionBus right w-100">
-                    <div class="alert alert-danger alert-bus">
-                        <h6 class="mb-1">10% جریمه</h6>
-                        <p class="mb-0">از زمان صدور تا 1 ساعت قبل از حرکت</p>
-                    </div>
-                    <div class="alert alert-danger alert-bus">
-                        <h6 class="mb-1">50% جریمه حضوری</h6>
-                        <p class="mb-0">از 1 ساعت قبل از حرکت تا پس از آن</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-     
-        <!-- تب جزییات -->
-        <div class="tab-pane fade" id="details_' . $busId . '" role="tabpanel" aria-labelledby="details-tab_' . $busId . '">
-            <div class="panel-default-change-Buyer-parent row">
-                <div class="w-100">
-                    <div class="alert alert-info alert-bus">
-                        <p class="mb-0">' . $carType . '</p>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-        
-    </div>
 </div>';
 
 
@@ -365,9 +309,9 @@ class resultBusTicket extends apiBus
                         '</div>';
                 }
             }
-            $output .= '<div onclick="showDescriptionDetail(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
-                      <i class="fa fa-angle-down"></i>
-                  </div>';
+//            $output .= '<div onclick="showDescriptionDetail(\'' . $item['busCode'] . '\', \'' . $item['sourceCode'] . '\')" class="my-more-info">' . Functions::Xmlinformation('detailAndCacellation') . '
+//                      <i class="fa fa-angle-down"></i>
+//                  </div>';
 
             $output .= ' </span>
                                <span class="international-available-detail-btn  slideUpHotelDescription displayiN">
@@ -511,6 +455,7 @@ class resultBusTicket extends apiBus
                         });
 
                         $resultBuses['response']['data'] = array_merge($notFreeBus , $freeBus);
+
                         foreach ($resultBuses['response']['data'] as $numberBus => $bus) {
 
                             if ($bus['sourceCode'] === '15') {

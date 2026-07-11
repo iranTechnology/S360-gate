@@ -28,7 +28,10 @@ let inputElement = document.getElementById('price');
 
 inputElement.addEventListener('input', function() {
     let maxLength = 14;
-    let numericValue = inputElement.value.replace(/[^0-9]/g, '');
+
+    let value = toEnglishDigits(inputElement.value);
+
+    let numericValue = value.replace(/[^0-9]/g, '');
 
     if (numericValue.length > maxLength) {
         numericValue = numericValue.slice(0, maxLength);
@@ -38,26 +41,31 @@ inputElement.addEventListener('input', function() {
     inputElement.value = formattedValue;
 });
 
+function toEnglishDigits(str) {
+    return str
+        .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+        .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+}
+
 function formatNumber(number) {
     let numericValue = parseFloat(number);
 
     if (!isNaN(numericValue)) {
-        let formattedValue = numericValue.toLocaleString();
+        let formattedValue = Number(numericValue).toLocaleString('en-US');
         return formattedValue;
     }
 
     return '';
 }
 
-
-
-
-
-
 function onclick(event) {
     reloadCaptcha();
     return false
 }
+
+$('#mobile').on('input', function () {
+    this.value = toEnglishDigits(this.value);
+});
 
 
 $("#onlinePaymentAdd").validate({

@@ -115,11 +115,8 @@ class trainCore extends clientAuth
     {
         functions::insertLog('RegisterTicket params ---- ' . json_encode($params, 256 | 64), 'train_log');
         $cellArray = array(
-            'afraze'   => '09916211232',
-            'fanipor'  => '09129409530',
-            'araste' => '09211559872',
             'abasi2' => '09057078341',
-            'ms_bahrami' => '09351252904',
+            'afshar' => '09123493154',
         );
         $ServerName = 'قطار';
         /** @var smsServices $smsController */
