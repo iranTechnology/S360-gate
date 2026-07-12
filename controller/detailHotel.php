@@ -1736,8 +1736,6 @@ class detailHotel extends ApiHotelCore
                         'passportNumber' => $room['passportNumber']
                     ];
 
-<<<<<<< HEAD
-=======
                     //					$buyerArray = [
                     //						'FirstName' => $room['member_name'],
                     //						'LastName'  => $room['member_name'],
@@ -1745,7 +1743,6 @@ class detailHotel extends ApiHotelCore
                     //						'Email'     => $room['member_email'],
                     //					];
 
->>>>>>> f43f0f187b910d1edff55301edca4b30e36e9a36
                     if ($room['source_id'] == '42') {
                         $buyerArray = [
                             'FirstName' => $room['member_name'],
@@ -1754,7 +1751,6 @@ class detailHotel extends ApiHotelCore
                             'Email' => $room['member_email'],
                         ];
                     } else {
-<<<<<<< HEAD
                         $buyerArray = [
                             'FirstName' => 'Abazar',
                             'LastName' => 'Afshar',
@@ -1767,19 +1763,6 @@ class detailHotel extends ApiHotelCore
                 }
 
                 if ($hotel_source['source_id'] == '29') {
-=======
-                    $buyerArray = [
-                        'FirstName' => 'Abazar',
-                        'LastName' => 'Afshar',
-                        'Mobile' => '09057078341',
-                        'Email' => 'info@iran-tech.com',
-                    ];
-                }
-
-                }
-
-                if($hotel_source['source_id'] == '29'){
->>>>>>> f43f0f187b910d1edff55301edca4b30e36e9a36
                     foreach ($book_room_hotel as $rk => $room) {
                         $roomsArray = [
                             [
@@ -2149,14 +2132,8 @@ class detailHotel extends ApiHotelCore
             $cellArray = array(
 
                 //				'afshar'   => '09123493154',
-<<<<<<< HEAD
-                'afraze' => '09916211232',
-                'fanipor' => '09129409530',
-                'araste' => '09211559872',
-=======
                 'afraze'   => '09916211232',
                 'araste'   => '09211559872',
->>>>>>> f43f0f187b910d1edff55301edca4b30e36e9a36
                 'amirabas' => '09057078341'
             );
 
