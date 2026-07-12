@@ -20,6 +20,10 @@
     font-style: normal
 }
 
+/*.cbox-count-passenger .cbox-count-passenger-ch.infant-number-js {*/
+/*    display: none;*/
+/*}*/
+
 .switch_routs {
     position: absolute;
     left: -15px;

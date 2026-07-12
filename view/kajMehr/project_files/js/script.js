@@ -313,3 +313,15 @@ $(document).ready(function() {
 });
 
 
+// انتخاب المان مورد نظر
+const label = document.querySelector('.label-tracking #radio-cip');
+
+if (label) {
+    // پیدا کردن span بعد از label (همسطح با آن)
+    const span = label.nextElementSibling;
+
+    if (span && span.tagName === 'SPAN') {
+        // تغییر متن span به "CIP"
+        span.textContent = 'CIP';
+    }
+}
