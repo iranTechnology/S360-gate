@@ -3,6 +3,8 @@
     {include file="./sections/flight/internal/btn_radio_internal_external.tpl"}
     <div id="internal_flight" class="d_flex flex-wrap internal-flight-js">
         <form method="post" class="d_contents" target="_blank" id="internal_flight_form" name="internal_flight_form">
+            <input type="hidden" id="flight_class_internal" name="flight_class_internal" value="economy">
+            {include file="./sections/flight/internal/class_type.tpl"}
             {include file="./sections/flight/internal/btn_type_way.tpl"}
             {include file="./sections/flight/internal/origin_selection.tpl"}
             {include file="./sections/flight/internal/destination_selection.tpl"}
@@ -17,6 +19,9 @@
     <div id="international_flight" class="flex-wrap international-flight-js">
         <form data-action="https://s360online.iran-tech.com/" method="post" target="_blank"
               class="d_contents" id="international_flight_form" name="international_flight_form">
+            <input type="hidden" id="flight_class_international" name="flight_class_international" value="economy">
+
+                        {include file="./sections/flight/internal/class_type.tpl"}
             {include file="./sections/flight/international/btn_type_way.tpl"}
             {include file="./sections/flight/international/origin_search_box.tpl"}
             {include file="./sections/flight/international/destination_search_box.tpl"}

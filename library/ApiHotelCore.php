@@ -240,7 +240,16 @@ class ApiHotelCore extends clientAuth {
             functions::insertLog('before list hotel curl=>','package_log');
         }
 
-        $resultHotel = functions::curlExecution( $url, $datajson, $this->header );
+//        $resultHotel = functions::curlExecution( $url, $datajson, $this->header );
+        $t = microtime(true);
+
+        $resultHotel = functions::curlExecution($url, $datajson, $this->header);
+
+        functions::insertLog(
+            'Curl Time : '.round(microtime(true)-$t,3),
+            '000shojaee'
+        );
+
 
         if($param['getPackage']) {
             functions::insertLog('after list hotel curl=>', 'package_log');

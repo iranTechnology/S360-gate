@@ -2069,6 +2069,12 @@ div.IRT .logo-airline-ico
 div.R0 .logo-airline-ico {
     background-position: -416px -122px;
 }
+div.L4 .logo-airline-ico {
+    background-position: -480px 0px;
+}
+div.SHR .logo-airline-ico {
+    background-position: -482px -60px;
+}
 .international-available-airlines-log-info > span {
     font-size: 14px;
     color: #666666;
