@@ -2,18 +2,18 @@
 
 
 {assign var="searchServices" value=[
-'flight-shahriar'=>'specialFlightPic',
-'hotel-shahriar'=> 'specialHotelPic',
-'train-shahriar' => 'specialTrainPic',
-'bus-shahriar' =>'specialBusPic',
-'tour-shahriar' =>'specialTourPic',
-'insurance-shahriar' =>'specialInsurancePic',
-'visa-shahriar' =>'specialVisaPic',
-'gasht-shahriar' =>'specialGashtPic',
-'package-shahriar' =>'specialPackagePic',
-'rentCar-shahriar' =>'specialCarPic',
-'entertainment-shahriar' =>'specialEntertainmentPic',
-'cip-shahriar' =>'specialCipPic',
+'flight'=>'specialFlightPic',
+'hotel'=> 'specialHotelPic',
+'train' => 'specialTrainPic',
+'bus' =>'specialBusPic',
+'tour' =>'specialTourPic',
+'insurance' =>'specialInsurancePic',
+'visa' =>'specialVisaPic',
+'gasht' =>'specialGashtPic',
+'package' =>'specialPackagePic',
+'rentCar' =>'specialCarPic',
+'entertainment' =>'specialEntertainmentPic',
+'cip' =>'specialCipPic',
 'mainPage' =>'MainPagePic']}
 {foreach $searchServices as $key => $val}
     {assign var="homePage" value=$objSpecialPages->unSlugPage($key)}
@@ -28,7 +28,7 @@
     {if $page.files.main_file.src && $smarty.const.GDS_SWITCH eq 'page'}
         background-image: url("{$page.files.main_file.src}");
     {else}
-        background-image: url("{$specialFlightPic}");
+        background-image: url("{$specialTourPic}");
     {/if}
     }
 </style>
