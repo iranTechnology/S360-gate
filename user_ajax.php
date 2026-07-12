@@ -2020,7 +2020,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
     $currencyCode = ( ! empty( $_POST['currencyCode'] ) ? filter_var( $_POST['currencyCode'], FILTER_VALIDATE_INT ) : 0 );
     $typeApplication = $_POST['typeApplication'] ;
     if ( Session::IsLogin() ) {
-        $result = $controller->CheckDiscountCode( $_POST['discountCode'], Session::getUserId(), $_POST['serviceType'], $currencyCode ,$typeApplication);
+        $result = $controller->CheckDiscountCode( $_POST['discountCode'], Session::getUserId(), $_POST['serviceType'], $typeApplication );
     } else {
         $result['result_status'] = 'error';
         if ( isset( $_POST['Type'] ) && $_POST['Type'] == 'App' ) {
