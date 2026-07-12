@@ -6246,7 +6246,7 @@ function goToBank(Obj, link, inputs) {
                     inputs['redirectUrl'] = $('#redirectUrl').val();
                     link = amadeusPath + 'goToBankSamanInsurance';
                 }
-
+console.log(inputs)
                 $.ajax({
                     type: 'POST',
                     url: amadeusPath + 'user_ajax.php',
@@ -8361,7 +8361,7 @@ function selectDestination(AirportFa, DepartureCityFa, CountryFa, DepartureCode)
 }
 
 
-function setDiscountCode(serviceType, currencyCode , factorNumber) {
+function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplication,typeCurrency) {
 
     var discountCode = $('#discount-code').val();
     $(".discount-code-error").html('');
@@ -8376,15 +8376,28 @@ function setDiscountCode(serviceType, currencyCode , factorNumber) {
                flag: 'checkDiscountCode',
                discountCode: discountCode,
                serviceType: serviceType,
-               currencyCode: currencyCode
+               currencyCode: currencyCode,
+               typeApplication:typeApplication
            },
         success: function (data) {
             if (data.result_status == 'success') {
+                var display_discount_currency = $('.dispalyTypeCurrency');
 
+                    if( data.typeDiscount === 'percent'){
+                        var price_after_discount = price_before_discount - (price_before_discount * data.discountAmount / 100);
+                        display_discount_currency.text('%');
+                    }
+                    else{
                 var price_after_discount = price_before_discount - data.discountAmount;
                 if (price_after_discount % 1 !== 0) {
                     price_after_discount = price_after_discount.toFixed(2); //float
                 }
+                        display_discount_currency.text(typeCurrency);
+                    }
+
+
+
+
                 $(".discount-code-error").html(data.result_message);
                 $(".discountAmount").html(number_format(data.discountAmount));
                 // $(".item-discount__label").html(useXmltag("AmountPayableAfterApplyingDiscountCode"));
@@ -8400,7 +8413,8 @@ function setDiscountCode(serviceType, currencyCode , factorNumber) {
                             discountCode: discountCode,
                             discountAmount: data.discountAmount,
                             factorNumber: factorNumber,
-                            serviceType: serviceType
+                            serviceType: serviceType,
+                            typeDiscount: data.typeDiscount
                         },
                     success: function (data) {
 

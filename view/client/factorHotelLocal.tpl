@@ -415,7 +415,7 @@
                                             <input type="text" placeholder="##Codediscount## ..." id="discount-code">
                                             <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
                                                    value="{$paymentPriceCurrency.AmountCurrency}"/>
-                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}' , {$objFactor->temproryHotel['factor_number']})" class="site-bg-main-color">
+                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}' , {$objFactor->temproryHotel['factor_number']} , '{$smarty.post.typeApplication}' , '{$paymentPriceCurrency.TypeCurrency}')" class="site-bg-main-color">
                                                 ##Apply##
                                             </button>
                                         </div>
