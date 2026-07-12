@@ -6,6 +6,7 @@
 {if $smarty.const.GDS_SWITCH neq 'mainPage'}{include file="include_files/menu.tpl"}{/if}
 <main>
 {include file="include_files/search-box.tpl"}
+{include file="include_files/others.tpl"}
 </main>
 {if $smarty.const.GDS_SWITCH neq 'mainPage'}{include file="include_files/footer.tpl"}{/if}
 </body>
