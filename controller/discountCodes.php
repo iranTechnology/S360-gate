@@ -68,6 +68,7 @@ class discountCodes extends clientAuth
         $jmkEndDate = dateTimeSetting::jmktime(0, 0, 0, $explodeEndDate[1], $explodeEndDate[2], $explodeEndDate[0]);
 
         $data['title'] = filter_var($param['Title'], FILTER_SANITIZE_STRING);
+        $data['typeDiscount'] = $param['typeDiscount'] ? $param['typeDiscount'] : 'cash';
         $data['amount'] = filter_var($param['Amount'], FILTER_VALIDATE_INT);
         $data['stock'] = (!$isGroup ? filter_var($param['Stock'], FILTER_VALIDATE_INT) : '1');
         $data['startDateInt'] = $jmkStartDate;
@@ -371,7 +372,7 @@ class discountCodes extends clientAuth
     #endregion
 
     #region CheckDiscountCode: check if specified discount code not used by this person
-    public function CheckDiscountCode($discountCode, $memberId, $serviceTitle, $currencyCode = null) {
+    public function CheckDiscountCode($discountCode, $memberId, $serviceTitle, $currencyCode = null,$typeApplication = null) {
         $Model = Load::library('Model');
         $jmkTodayDate = dateTimeSetting::jmktime();
 
@@ -384,7 +385,7 @@ class discountCodes extends clientAuth
             $serviceTitleCondition = " DCS.serviceTitle = '{$serviceTitle}' ";
         }
 
-        $sqlCode = "SELECT DC.id, DC.title, DC.code, DC.amount, DC.isActive, DC.stock, DC.startDateInt, DC.endDateInt, DC.organizationID, DCS.serviceTitle,
+        $sqlCode = "SELECT DC.id, DC.title, DC.code, DC.amount, DC.typeDiscount, DC.isActive, DC.stock, DC.startDateInt, DC.endDateInt, DC.organizationID, DCS.serviceTitle,
                     (SELECT COUNT(id) FROM discount_codes_used_tb WHERE discountCode = '{$discountCode}' AND status = 'success' AND serviceTitle = '{$serviceTitle}') AS used,
                     (SELECT COUNT(id) FROM discount_codes_used_tb WHERE discountCode = '{$discountCode}' AND status = 'success' AND serviceTitle = '{$serviceTitle}' AND memberId = '{$memberId}') AS usedByMember
                     FROM discount_codes_tb AS DC INNER JOIN discount_codes_services_tb AS DCS ON DC.groupCode = DCS.discountGroupCode 
@@ -396,6 +397,11 @@ class discountCodes extends clientAuth
         $output = array();
         if (!empty($resultCode) && ($info_member['fk_counter_type_id'] == '5' || ($info_member['fk_counter_type_id'] != '5' && $resultCode['is_allow_counter']))) {
 
+            if($typeApplication != 'reservation' && $resultCode['typeDiscount'] != 'cash'){
+                $output['result_status'] = 'error';
+                $output['result_message'] = 'کد تخفیف مورد نظر نامعتبر است';
+            }
+            else{
             if ($resultCode['isActive'] == 'yes' && $jmkTodayDate >= $resultCode['startDateInt'] && $jmkTodayDate <= $resultCode['endDateInt']) {
 
                 if ($resultCode['usedByMember'] == 0) {
@@ -404,12 +410,13 @@ class discountCodes extends clientAuth
 
                         //change currency of discount code amount if needed
                         $amount = functions::CurrencyCalculate($resultCode['amount'], $currencyCode);
-
+                            $typeCurrency =  $resultCode['typeDiscount'] === 'cash' ? $amount['TypeCurrency'] : '%';
                         $output['result_status'] = 'success';
-                        $output['result_message'] = 'کد تخفیف ' . $resultCode['title'] . ' به مبلغ ' . functions::numberFormat($amount['AmountCurrency']) . ' ' . $amount['TypeCurrency'];
+                            $output['result_message'] = 'کد تخفیف ' . $resultCode['title'] . ' به میزان ' . functions::numberFormat($amount['AmountCurrency']) . ' ' . $typeCurrency;
                         $output['discountCode'] = $resultCode['code'];
                         $output['discountAmount'] = $amount['AmountCurrency'];
                         $output['discountService'] = $resultCode['serviceTitle'];
+                            $output['typeDiscount'] = $resultCode['typeDiscount'];
 
                     } else {
                         $output['result_status'] = 'error';
@@ -425,6 +432,8 @@ class discountCodes extends clientAuth
                 $output['result_status'] = 'error';
                 $output['result_message'] = 'اعتبار کد تخفیف مورد نظر به پایان رسیده است';
             }
+            }
+
 
         } else {
             $output['result_status'] = 'error';
@@ -462,7 +471,7 @@ class discountCodes extends clientAuth
 
     #region reduceAmountViaDiscountCode: reduce given amount via a specified discount code
     public function reduceAmountViaDiscountCode($amount, $factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null) {
-        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode);
+        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode,null);
 
         if ($discountResult['result_status'] == 'success') {
             $addResult = $this->DiscountCodesUseAdd($discountCode, $memberId, $discountResult['discountService'], $factorNumber);
@@ -476,7 +485,7 @@ class discountCodes extends clientAuth
     #endregion
 
     public function reduceAmountViaDiscountCodePending($factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null) {
-        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode);
+        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode,null);
         $addResult = '';
         if ($discountResult['result_status'] == 'success') {
             $addResult = $this->DiscountCodesUseAddPending($discountCode, $memberId, $discountResult['discountService'], $factorNumber);
