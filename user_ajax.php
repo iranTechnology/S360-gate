@@ -2018,8 +2018,9 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
 
     $controller = Load::controller( 'discountCodes' );
     $currencyCode = ( ! empty( $_POST['currencyCode'] ) ? filter_var( $_POST['currencyCode'], FILTER_VALIDATE_INT ) : 0 );
+    $typeApplication = $_POST['typeApplication'] ;
     if ( Session::IsLogin() ) {
-        $result = $controller->CheckDiscountCode( $_POST['discountCode'], Session::getUserId(), $_POST['serviceType'], $currencyCode );
+        $result = $controller->CheckDiscountCode( $_POST['discountCode'], Session::getUserId(), $_POST['serviceType'], $typeApplication );
     } else {
         $result['result_status'] = 'error';
         if ( isset( $_POST['Type'] ) && $_POST['Type'] == 'App' ) {
@@ -2488,6 +2489,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setDiscountCodePending' )
     $ModelBase = Load::library('ModelBase');
 
     $d['discount_code_amount'] = $_POST['discountAmount'];
+    $d['type_discount'] = $_POST['typeDiscount'];
     $condition = " factor_number = '{$factorNumber}'";
     $Model->setTable("book_hotel_local_tb");
     $res = $Model->update($d, $condition);

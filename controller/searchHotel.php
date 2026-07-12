@@ -313,7 +313,7 @@ class searchHotel extends ApiHotelCore {
                         $t2 = microtime(true);
                         $final_result_search = $this->excludeWebserviceHotel($resultHotelApi['Result']);
                         foreach ($final_result_search as $Hotel) {
-                            
+
 
 
                             $index++;
@@ -722,7 +722,7 @@ class searchHotel extends ApiHotelCore {
         return json_encode($cities);
     }
     public function searchCityInternalHotel($params) {
-      
+
         $name      = urldecode( $params['inputSearchValue'] );
         $result    = [];
         $hotelHtml = '';
@@ -841,13 +841,13 @@ WHERE
         $webserviceHotelController = $this->getController('webserviceHotel') ;
         $webserviceHotel = $webserviceHotelController->getNotIncludeWebservice('13');
 
-        $result = [] ; 
+        $result = [] ;
         foreach ($hotel_list as $hotel) {
             if(!in_array( $hotel['index'] , $webserviceHotel )){
                 $result[] = $hotel;
             }
         }
-       
+
         return $result;
     }
 }

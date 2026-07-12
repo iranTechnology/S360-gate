@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
     font-family: var(--fontFamilyBold2);
     src: url("../../../assets/all-fonts/yekanbakhBold/Yekan-Bakh-FaNum-06-Bold.woff") format("woff");
     font-weight: bold;
@@ -1235,26 +1235,15 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
     border: 2px dotted #f39200
 }
 
-.d-ceckboxs {
-    padding: 0 10px;
-    margin-bottom: 0
-}
-
-.d-ceckboxs .cntr label {
-    padding-left: 20px;
-    font-weight: normal;
-    display: flex;
-    align-items: center
-}
-
 .cntr {
     margin: auto;
     display: flex;
     align-items: center;
     position: absolute;
-    right: 220px;
+    right: 315px;
     top: -38px
 }
+
 
 .btn-radio {
     cursor: pointer;
@@ -1657,6 +1646,10 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 }
 
 @media (max-width: 576px) {
+    .class_type_flight_search_box{
+        position: unset !important;
+        justify-content: center;
+    }
     .switch_routs {
         top: 41px;
         left: 9px;
@@ -1924,6 +1917,100 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 .hotel_passenger_picker ul em, .hotel_local_passenger_picker ul em, .package_passenger_picker ul em {
     font-style: normal;
     padding: 0 3px
+}
+.parent-class-cheng {
+    display: flex;
+    flex: 1;
+}
+.activeDropdown {
+    display: block !important
+}
+.cheng-flight-class {
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    transition: all ease .5s;
+    padding: 16px 12px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    gap: 5px;
+    width: 96px
+}
+
+
+.cheng-flight-class .dropdown-text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+}
+
+.cheng-flight-class svg {
+    width: 16px;
+    height: 16px;
+    fill: #666;
+    transition: transform 0.3s ease;
+}
+
+.cheng-flight-class.active svg {
+    transform: rotate(180deg);
+}
+
+#flight-class-dropdown {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 0;
+    top: 114%;
+    text-align: center;
+    border-radius: 8px;
+    transition: all ease-in .1s;
+    margin-bottom: 0;
+    z-index: 12;
+    right: 0;
+    width: 107px;
+    overflow: hidden;
+    display: none;
+}
+
+#flight-class-dropdown.activeDropdown {
+    display: none;
+}
+
+#flight-class-dropdown li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#flight-class-dropdown li .switch-class-js {
+    border-bottom: 1px solid #ccc !important;
+    list-style: none;
+    transition: all ease .5s;
+    display: block;
+    padding: 6px 10px;
+    color: #757575;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+#flight-class-dropdown li .switch-class-js:hover {
+    background: rgba(183, 28, 28, .1490196078);
+}
+
+.class_type_flight_search_box{
+    margin: auto;
+    display: flex !important;
+    align-items: center;
+    position: absolute;
+    right: 199px;
+    top: -43px;
+
 }
 
 /*# sourceMappingURL=tabs.css.map */

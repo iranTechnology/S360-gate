@@ -321,7 +321,7 @@ $(document).ready(function() {
             !$(e.target).closest('.show-content-box-nologin-js, .show-box-nologin-js').length) {
             $('.show-content-box-nologin-js').slideUp(200);
         }
-});
+    });
 });
 function toggleDropdownFlightClass(event) {
     // پیدا کردن المان dropdown که کلیک شده
@@ -400,7 +400,7 @@ function selectFlightClass(optionText, classType, event) {
     flightClassInternationalInput.type = 'hidden';
     flightClassInternationalInput.id = 'flight_class_international';
     flightClassInternationalInput.name = 'flight_class_international';
-    flightClassInternationalInput.value = 'all';
+    flightClassInternationalInput.value = 'economy';
 
     const internationalFlightForm = document.getElementById('international_flight_form');
     internationalFlightForm.appendChild(flightClassInternationalInput);
@@ -410,7 +410,7 @@ function selectFlightClass(optionText, classType, event) {
     flightClassInternalInput.type = 'hidden';
     flightClassInternalInput.id = 'flight_class_internal';
     flightClassInternalInput.name = 'flight_class_internal';
-    flightClassInternalInput.value = 'all';
+    flightClassInternalInput.value = 'economy';
 
     const internalFlightForm = document.getElementById('internal_flight_form');
     internalFlightForm.appendChild(flightClassInternalInput);

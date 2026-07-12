@@ -16,7 +16,7 @@
         <div class="step active">
             <span class="flat_icon_airplane">
                 <svg id="Capa_1" enable-background="new 0 0 501.577 501.577" height="25" viewBox="0 0 501.577 501.577" width="25"
-                 xmlns="http://www.w3.org/2000/svg">
+                     xmlns="http://www.w3.org/2000/svg">
         <g>
             <path d="m441 145.789h29v105h-29z"/>
             <path d="m60 85.789h-60v387.898l60-209.999z"/>
@@ -136,7 +136,12 @@
                         <div>
                             <div class="company-name">{$result['detailBus']['company']}</div>
                             <div class="option-name">{$result['detailBus']['car_type']}</div>
+                            <div class="capacity-info mt-2">
+                                <span>##Capacity##</span>
+                                <span>{$result['detailBus']['count_free_chairs']} صندلی</span>
+                            </div>
                         </div>
+
                     </div>
 
                     <!-- Route Info -->
@@ -180,10 +185,7 @@
                             {/if}
                             {$amountCurrency.TypeCurrency}
                         </div>
-                        <div class="capacity-info">
-                            <span>##Capacity##</span>
-                            <span>{$result['detailBus']['count_free_chairs']} صندلی</span>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -191,127 +193,127 @@
 
 
 
-{*            <div class="s-u-result-wrapper">*}
-{*                <ul>*}
+            {*            <div class="s-u-result-wrapper">*}
+            {*                <ul>*}
 
-{*                    <li class="col-md-12 d-flex align-items-center flex-wrap">*}
+            {*                    <li class="col-md-12 d-flex align-items-center flex-wrap">*}
 
-{*                        <div class="s-u-result-item-div s-u-result-item-div-change col-xs-12 col-sm-12 col-md-2 s-u-result-item-div-width">*}
-{*                            <div class="s-u-result-item-div-logo s-u-result-item-div-logo-change roundedLogo">*}
-{*                                <img src="{$objFunctions->getCompanyBusPhoto($result['detailBus']['company'])}"*}
-{*                                     alt="{$result['detailBus']['company']}" title="{$result['detailBus']['company']}">*}
-{*                            </div>*}
-{*                            <div class="s-u-result-item-div s-u-result-content-item-div-change">*}
-{*                                <span class="silence_heading">{$result['detailBus']['company']}</span>*}
-{*                            </div>*}
-{*                            *}{*<span class="displayib-change d-block"> ظرفیت : {$result['detailBus']['count_free_chairs']} </span>*}
-{*                        </div>*}
+            {*                        <div class="s-u-result-item-div s-u-result-item-div-change col-xs-12 col-sm-12 col-md-2 s-u-result-item-div-width">*}
+            {*                            <div class="s-u-result-item-div-logo s-u-result-item-div-logo-change roundedLogo">*}
+            {*                                <img src="{$objFunctions->getCompanyBusPhoto($result['detailBus']['company'])}"*}
+            {*                                     alt="{$result['detailBus']['company']}" title="{$result['detailBus']['company']}">*}
+            {*                            </div>*}
+            {*                            <div class="s-u-result-item-div s-u-result-content-item-div-change">*}
+            {*                                <span class="silence_heading">{$result['detailBus']['company']}</span>*}
+            {*                            </div>*}
+            {*                            *}{*<span class="displayib-change d-block"> ظرفیت : {$result['detailBus']['count_free_chairs']} </span>*}
+            {*                        </div>*}
 
-{*                        <div class="s-u-result-item-wrapper-change col-xs-12 col-sm-12 col-md-10">*}
+            {*                        <div class="s-u-result-item-wrapper-change col-xs-12 col-sm-12 col-md-10">*}
 
-{*                            <div class="details-wrapper-change">*}
+            {*                            <div class="details-wrapper-change">*}
 
-{*                                <div class="s-u-result-raft first-row-change">*}
+            {*                                <div class="s-u-result-raft first-row-change">*}
 
-{*                                    <div style="border:none" class="s-u-result-item-div right-Cell-change fltr padb5 displayN400 ">*}
-
-
-
-{*                                            <div class="col-md-3 col-sm-12 col-12 align-items-center flex-wrap d-flex xs-block">*}
-{*                                                <div class="col-xs-12 silence_div4 text-dark">*}
-{*                                                    <span class="d-block">##Origin## : {$result['detailBus']['origin_city']}</span>*}
-{*                                                <div class="col-xs-12 mt-2 silence_text d-block">##OriginTerminal## : {$result['detailBus']['origin_terminal']}</div>*}
-{*                                                </div>*}
-
-{*                                                <div class="col-xs-12 silence_div4 text-dark">*}
-{*                                                    <span class="d-block">##Destination## : {$result['detailBus']['destination_city']}</span>*}
-{*                                                <div class="col-xs-12 mt-2 silence_text d-block">##DestinationTerminal## : {$result['detailBus']['destination_terminal']}</div>*}
-{*                                                </div>*}
-{*                                                *}{*<span class="s-u-bozorg s-u-bozorg-change  txt14 yekanB">##Between##</span>*}
-{*                                            </div>*}
-{*                                            <div class="col-md-3 col-sm-12 col-12 align-items-center flex-wrap silence_div6 ">*}
-{*                                                <div class="col-md-12 col-6 silence_text text-dark">*}
-{*                                                    <div >##Capacity## : <span>{$result['detailBus']['count_free_chairs']}</span></div>*}
-{*                                                </div>*}
-{*                                                <div class="col-md-12 col-6 silence_text text-dark ">*}
-{*                                                    <div >##Bustype## : <span>{$result['detailBus']['car_type']}</span></div>*}
-{*                                                </div>*}
-{*                                                <span>##Bustype## : {$result['detailBus']['car_type']}</span>*}
-{*                                                <span>{$result['detailBus']['description']}</span>*}
-{*                                                *}{*<span class="s-u-bozorg s-u-bozorg-change font12">*}
-{*                                                    <i class="font-chanhe"> CountChairs </i>##Chair##*}
-{*                                                </span>*}
-{*                                            </div>*}
-{*                                            <div class="col-md-3 col-sm-12 col-12 align-items-center flex-wrap d-flex xs-block xs-bus-padd">*}
-
-{*                                                <div class="col-12 silence_div6">*}
-{*                                                *}{*$objResult->DateJalali2($InfoBus.DateMove)*}
-{*                                                    ##dateMove## : <span class="text-bold"> {$result['date']['dayName']}, {$result['date']['dataString']}</span>*}
-{*                                                </div>*}
-{*                                                <div class="col-12 silence_div6">*}
-{*                                                    ##timeMove## : <span class="text-bold">{$result['detailBus']['time_move']}</span>*}
-{*                                                </div>*}
-{*                                            </div>*}
-{*                                            <div class="col-md-3 d-flex">*}
-{*                                                    <div class="col-md-12 align-items-center flex-wrap d-flex">*}
-{*                                                        <div class="s-u-bozorg s-u-bozorg-change">*}
-
-{*                                                            {assign var="amountCurrency" value=$objFunctions->CurrencyCalculate($result['price'], $smarty.post.CurrencyCode)}*}
-{*                                                            {assign var="setPriceChanges" value=$objResult->setPriceChanges($amountCurrency.AmountCurrency)}*}
-
-
-{*                                                            {if $setPriceChanges > 0}*}
-{*                                                                <strike><i class="iranM site-main-text-color-drck CurrencyCal" data-amount="{$objFunctions->numberFormat($result['priceWithoutDiscount'])}">*}
-{*                                                                        {$objFunctions->numberFormat($result['priceWithoutDiscount'])}</i></strike>*}
-
-{*                                                                <span class="CurrencyText">{$amountCurrency.TypeCurrency}</span>*}
-
-
-{*                                                                <span class="s-u-bozorg price">*}
-{*                                                            <i>{$objFunctions->numberFormat($result['price'])}</i>*}
-{*                                                            {$amountCurrency.TypeCurrency}*}
-{*                                                        </span>*}
-{*                                                            {else}*}
-{*                                                                <span class="s-u-bozorg price">*}
-{*                                                            <i>{$objFunctions->numberFormat($amountCurrency.AmountCurrency)}</i>*}
-{*                                                            {$amountCurrency.TypeCurrency}*}
-{*                                                        </span>*}
-{*                                                            {/if}*}
+            {*                                    <div style="border:none" class="s-u-result-item-div right-Cell-change fltr padb5 displayN400 ">*}
 
 
 
-{*                                                            *}{*{if $result['priceWithoutDiscount']  neq 0}*}
-{*                                                                {assign var="amountCurrency" value=$objFunctions->CurrencyCalculate($result['priceWithoutDiscount'], $smarty.post.CurrencyCode)}*}
-{*                                                                <div class="shenase-nerkhi">awdawd*}
-{*                                                                    <span class="Direction-rtl" style="text-decoration: line-through;">*}
-{*                                                                        <i>{$objFunctions->numberFormat($amountCurrency.AmountCurrency)}</i>*}
-{*                                                                    </span>*}
-{*                                                                </div>*}
-{*                                                            {/if}*}
+            {*                                            <div class="col-md-3 col-sm-12 col-12 align-items-center flex-wrap d-flex xs-block">*}
+            {*                                                <div class="col-xs-12 silence_div4 text-dark">*}
+            {*                                                    <span class="d-block">##Origin## : {$result['detailBus']['origin_city']}</span>*}
+            {*                                                <div class="col-xs-12 mt-2 silence_text d-block">##OriginTerminal## : {$result['detailBus']['origin_terminal']}</div>*}
+            {*                                                </div>*}
 
-{*                                                            {assign var="amountCurrency" value=$objFunctions->CurrencyCalculate($result['price'], $smarty.post.CurrencyCode)}*}
-{*                                                            <span class="s-u-bozorg price">*}
-{*                                                                <i>{$objFunctions->numberFormat(round($amountCurrency.AmountCurrency,-4))}</i>*}
-{*                                                                {$amountCurrency.TypeCurrency}*}
-{*                                                            </span>*}
-{*                                                        </div>*}
-{*                                                    </div>*}
-{*                                                </div>*}
+            {*                                                <div class="col-xs-12 silence_div4 text-dark">*}
+            {*                                                    <span class="d-block">##Destination## : {$result['detailBus']['destination_city']}</span>*}
+            {*                                                <div class="col-xs-12 mt-2 silence_text d-block">##DestinationTerminal## : {$result['detailBus']['destination_terminal']}</div>*}
+            {*                                                </div>*}
+            {*                                                *}{*<span class="s-u-bozorg s-u-bozorg-change  txt14 yekanB">##Between##</span>*}
+            {*                                            </div>*}
+            {*                                            <div class="col-md-3 col-sm-12 col-12 align-items-center flex-wrap silence_div6 ">*}
+            {*                                                <div class="col-md-12 col-6 silence_text text-dark">*}
+            {*                                                    <div >##Capacity## : <span>{$result['detailBus']['count_free_chairs']}</span></div>*}
+            {*                                                </div>*}
+            {*                                                <div class="col-md-12 col-6 silence_text text-dark ">*}
+            {*                                                    <div >##Bustype## : <span>{$result['detailBus']['car_type']}</span></div>*}
+            {*                                                </div>*}
+            {*                                                <span>##Bustype## : {$result['detailBus']['car_type']}</span>*}
+            {*                                                <span>{$result['detailBus']['description']}</span>*}
+            {*                                                *}{*<span class="s-u-bozorg s-u-bozorg-change font12">*}
+            {*                                                    <i class="font-chanhe"> CountChairs </i>##Chair##*}
+            {*                                                </span>*}
+            {*                                            </div>*}
+            {*                                            <div class="col-md-3 col-sm-12 col-12 align-items-center flex-wrap d-flex xs-block xs-bus-padd">*}
+
+            {*                                                <div class="col-12 silence_div6">*}
+            {*                                                *}{*$objResult->DateJalali2($InfoBus.DateMove)*}
+            {*                                                    ##dateMove## : <span class="text-bold"> {$result['date']['dayName']}, {$result['date']['dataString']}</span>*}
+            {*                                                </div>*}
+            {*                                                <div class="col-12 silence_div6">*}
+            {*                                                    ##timeMove## : <span class="text-bold">{$result['detailBus']['time_move']}</span>*}
+            {*                                                </div>*}
+            {*                                            </div>*}
+            {*                                            <div class="col-md-3 d-flex">*}
+            {*                                                    <div class="col-md-12 align-items-center flex-wrap d-flex">*}
+            {*                                                        <div class="s-u-bozorg s-u-bozorg-change">*}
+
+            {*                                                            {assign var="amountCurrency" value=$objFunctions->CurrencyCalculate($result['price'], $smarty.post.CurrencyCode)}*}
+            {*                                                            {assign var="setPriceChanges" value=$objResult->setPriceChanges($amountCurrency.AmountCurrency)}*}
+
+
+            {*                                                            {if $setPriceChanges > 0}*}
+            {*                                                                <strike><i class="iranM site-main-text-color-drck CurrencyCal" data-amount="{$objFunctions->numberFormat($result['priceWithoutDiscount'])}">*}
+            {*                                                                        {$objFunctions->numberFormat($result['priceWithoutDiscount'])}</i></strike>*}
+
+            {*                                                                <span class="CurrencyText">{$amountCurrency.TypeCurrency}</span>*}
+
+
+            {*                                                                <span class="s-u-bozorg price">*}
+            {*                                                            <i>{$objFunctions->numberFormat($result['price'])}</i>*}
+            {*                                                            {$amountCurrency.TypeCurrency}*}
+            {*                                                        </span>*}
+            {*                                                            {else}*}
+            {*                                                                <span class="s-u-bozorg price">*}
+            {*                                                            <i>{$objFunctions->numberFormat($amountCurrency.AmountCurrency)}</i>*}
+            {*                                                            {$amountCurrency.TypeCurrency}*}
+            {*                                                        </span>*}
+            {*                                                            {/if}*}
 
 
 
-{*                                    </div>*}
+            {*                                                            *}{*{if $result['priceWithoutDiscount']  neq 0}*}
+            {*                                                                {assign var="amountCurrency" value=$objFunctions->CurrencyCalculate($result['priceWithoutDiscount'], $smarty.post.CurrencyCode)}*}
+            {*                                                                <div class="shenase-nerkhi">awdawd*}
+            {*                                                                    <span class="Direction-rtl" style="text-decoration: line-through;">*}
+            {*                                                                        <i>{$objFunctions->numberFormat($amountCurrency.AmountCurrency)}</i>*}
+            {*                                                                    </span>*}
+            {*                                                                </div>*}
+            {*                                                            {/if}*}
+
+            {*                                                            {assign var="amountCurrency" value=$objFunctions->CurrencyCalculate($result['price'], $smarty.post.CurrencyCode)}*}
+            {*                                                            <span class="s-u-bozorg price">*}
+            {*                                                                <i>{$objFunctions->numberFormat(round($amountCurrency.AmountCurrency,-4))}</i>*}
+            {*                                                                {$amountCurrency.TypeCurrency}*}
+            {*                                                            </span>*}
+            {*                                                        </div>*}
+            {*                                                    </div>*}
+            {*                                                </div>*}
 
 
-{*                                </div>*}
 
-{*                            </div>*}
-{*                        </div>*}
+            {*                                    </div>*}
 
-{*                    </li>*}
 
-{*                </ul>*}
-{*            </div>*}
+            {*                                </div>*}
+
+            {*                            </div>*}
+            {*                        </div>*}
+
+            {*                    </li>*}
+
+            {*                </ul>*}
+            {*            </div>*}
 
             <div class="price-Box displayNone" id="ShowInfoFlightCabinType"></div>
 
@@ -333,52 +335,52 @@
             <input type="hidden" name="countChairReserve" id="countChairReserve" value="0">
             <input type="hidden" name="countChairRowFirst" id="countChairRowFirst" value="0">
 
-{*            {if count($result['refundRules']) > 0}*}
+            {*            {if count($result['refundRules']) > 0}*}
 
-                <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer first">
+            <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer first">
                     <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color">
                            ##ConsoleFines##
                     </span>
-                    <div class="panel-default-change-Buyer-parent--new row">
-                        <div data-name="bus-refund-rules" class="desctiptionBus right w-100">
-                            <div class="alert-bus">
-                                <h6>10% جریمه</h6>
-                                <p>از زمان صدور تا 1 ساعت قبل از حرکت</p>
-                            </div>
-                            <div class="alert-bus">
-                                <h6>50% جریمه حضوری</h6>
-                                <p>از 1 ساعت قبل از حرکت تا پس از آن</p>
-                            </div>
+                <div class="panel-default-change-Buyer-parent--new row">
+                    <div data-name="bus-refund-rules" class="desctiptionBus right w-100">
+                        <div class="alert-bus">
+                            <h6>10% جریمه</h6>
+                            <p>از زمان صدور تا 1 ساعت قبل از حرکت</p>
                         </div>
-{*                        <div class="desctiptionBus right w-100">*}
-{*                {foreach $result['refundRules'] as $rule}*}
-{*                            <div class="alert alert-primary" role="alert">*}
-{*                    {if isset($rule.From) && isset($rule.Percent)}*}
-{*                        {assign var=time value=$rule.From|substr:1}*}
-{*                        {assign var=hours value=$time|replace:":":" "}*}
-{*                        {assign var=hours value=$hours|intval}*}
-{*                        از لحظه خرید تا {$hours} ساعت قبل از حرکت کسر  {$rule.Percent}% جریمه*}
-{*                    {elseif isset($rule.To) && isset($rule.Percent)}*}
-{*                        {assign var=time value=$rule.To|substr:1}*}
-{*                        {assign var=hours value=$time|replace:":":" "}*}
-{*                        {assign var=hours value=$hours|intval}*}
-{*                        از {$hours} ساعت قبل از حرکت کسر  {$rule.Percent}% جریمه*}
-{*                    {/if}*}
-{*                            </div>*}
-{*                {/foreach}*}
-{*                        </div>*}
+                        <div class="alert-bus">
+                            <h6>50% جریمه حضوری</h6>
+                            <p>از 1 ساعت قبل از حرکت تا پس از آن</p>
+                        </div>
                     </div>
+                    {*                        <div class="desctiptionBus right w-100">*}
+                    {*                {foreach $result['refundRules'] as $rule}*}
+                    {*                            <div class="alert alert-primary" role="alert">*}
+                    {*                    {if isset($rule.From) && isset($rule.Percent)}*}
+                    {*                        {assign var=time value=$rule.From|substr:1}*}
+                    {*                        {assign var=hours value=$time|replace:":":" "}*}
+                    {*                        {assign var=hours value=$hours|intval}*}
+                    {*                        از لحظه خرید تا {$hours} ساعت قبل از حرکت کسر  {$rule.Percent}% جریمه*}
+                    {*                    {elseif isset($rule.To) && isset($rule.Percent)}*}
+                    {*                        {assign var=time value=$rule.To|substr:1}*}
+                    {*                        {assign var=hours value=$time|replace:":":" "}*}
+                    {*                        {assign var=hours value=$hours|intval}*}
+                    {*                        از {$hours} ساعت قبل از حرکت کسر  {$rule.Percent}% جریمه*}
+                    {*                    {/if}*}
+                    {*                            </div>*}
+                    {*                {/foreach}*}
+                    {*                        </div>*}
                 </div>
+            </div>
 
-{*            {/if}*}
+            {*            {/if}*}
 
             <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer first">
                 <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color">
                        ##Seatselect##
                 </span>
-              {*  <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
-                    ##Seatselect## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
-                </span>*}
+                {*  <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
+                      ##Seatselect## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
+                  </span>*}
 
 
 
@@ -388,17 +390,17 @@
                         <div class=" right col-lg-4 col-md-12">
                             <div class="detailBus--new">
                                 <svg viewBox="0 0 24 24" width="1.5em" height="1.5em" fill="currentColor" class="align-top ml-2 shrink-0" data-v-4c79b6d3=""><path d="M12 1.5c5.799 0 10.5 4.701 10.5 10.5S17.799 22.5 12 22.5 1.5 17.799 1.5 12 6.201 1.5 12 1.5ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 6a.75.75 0 0 1 .745.663l.005.087v7.5a.75.75 0 0 1-1.495.087l-.005-.087v-7.5A.75.75 0 0 1 12 9Zm0-3a.75.75 0 0 1 .745.663l.005.087v.75a.75.75 0 0 1-1.495.087L11.25 7.5v-.75A.75.75 0 0 1 12 6Z"></path></svg>
-                                <p>
-                                     صندلی‌های موردنظر خود را انتخاب نمایید.
-                                    <br>  صندلی‌ها با اولین کلیک انتخاب  و با  <br> کلیک
-                                    بعدی از انتخاب خارج می‌شوند.
-                                </p>
+                                <p class="w-100">
+                                    برای انتخاب صندلی روی شماره صندلی آن کلیک کنید.
+                                    (با کلیک بعدی این صندلی از حالت انتخاب خارج میشود)
+                                </>
+
                             </div>
                             <div class="detailBus--new">
                                 <svg viewBox="0 0 24 24" width="1.5em" height="1.5em" fill="currentColor" class="align-top ml-2 shrink-0" data-v-4c79b6d3=""><path d="M12 1.5c5.799 0 10.5 4.701 10.5 10.5S17.799 22.5 12 22.5 1.5 17.799 1.5 12 6.201 1.5 12 1.5ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 6a.75.75 0 0 1 .745.663l.005.087v7.5a.75.75 0 0 1-1.495.087l-.005-.087v-7.5A.75.75 0 0 1 12 9Zm0-3a.75.75 0 0 1 .745.663l.005.087v.75a.75.75 0 0 1-1.495.087L11.25 7.5v-.75A.75.75 0 0 1 12 6Z"></path></svg>
                                 <p>
-                                  بر اساس قانون انتخاب صندلی های <br>
-                                    اول برای بانوان محدود شده است.
+                                    بر اساس قانون انتخاب صندلی های <br>
+                                    ردیف اول برای بانوان محدود شده است.
                                 </p>
                             </div>
                         </div>
@@ -548,7 +550,7 @@
 
                 <div class="clear"></div>
 
-{*                <div id="errorForFemale" class="messageInfo1"></div>*}
+                {*                <div id="errorForFemale" class="messageInfo1"></div>*}
                 <div id="messageChairNumberReserve" class="messageInfo1"></div>
 
             </div>
@@ -564,16 +566,16 @@
                                      </span>
                          {/if}
             </span>
-               {* <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
-                    ##TravelerGuard## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
-                </span>*}
+                {* <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
+                     ##TravelerGuard## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
+                 </span>*}
 
                 <div class="panel-default-change-Buyer">
 
 
-                        <div class="panel-heading-change d-none">
-                            <i class="room-kind-bed"> ##Adultagegroup## (+11) </i>
-                            <span class="kindOfPasenger">
+                    <div class="panel-heading-change d-none">
+                        <i class="room-kind-bed"> ##Adultagegroup## (+11) </i>
+                        <span class="kindOfPasenger">
                                     <label class="control--checkbox">
                                         <span>##Iranian##</span>
                                         <input type="radio" name="passengerNationality1"
@@ -587,7 +589,7 @@
                                         </div>
                                     </label>
                                 </span>
-                            <span class="kindOfPasenger">
+                        <span class="kindOfPasenger">
                                     <label class="control--checkbox">
                                         <span>##Noiranian##</span>
                                         <input type="radio" name="passengerNationality1"
@@ -602,74 +604,74 @@
                                     </label>
                                 </span>
 
+                    </div>
+
+                    <div class="panel-body-change">
+
+                        <div class="s-u-passenger-item  s-u-passenger-item-change">
+                            <select id="gender1" name="gender1">
+                                <option value="" disabled="" selected="selected">##Sex##</option>
+                                <option value="Male">##Sir##</option>
+                                <option value="Female">##Lady##</option>
+                            </select>
                         </div>
 
-                        <div class="panel-body-change">
-
-                            <div class="s-u-passenger-item  s-u-passenger-item-change">
-                                <select id="gender1" name="gender1">
-                                    <option value="" disabled="" selected="selected">##Sex##</option>
-                                    <option value="Male">##Sir##</option>
-                                    <option value="Female">##Lady##</option>
-                                </select>
-                            </div>
-
-                            <div class="s-u-passenger-item s-u-passenger-item-change">
-                                <input id="nameFa1" type="text" placeholder="##Namepersion##" name="nameFa1"
-                                       onkeypress=" return persianLetters(event, 'nameFa1')" class="justpersian">
-                            </div>
-                            <div class="s-u-passenger-item s-u-passenger-item-change">
-                                <input id="familyFa1" type="text" placeholder="##Familypersion##"
-                                       name="familyFa1"
-                                       onkeypress=" return persianLetters(event, 'familyFa1')" class="justpersian">
-                            </div>
-{*                            <div class="s-u-passenger-item-hotel s-u-passenger-item-change">*}
-{*                                <input id="nameEn1" type="text" placeholder="##Nameenglish##" name="nameEn1"*}
-{*                                       onkeypress="return isAlfabetKeyFields(event, 'nameEn1')" class="">*}
-{*                            </div>*}
-{*                            <div class="s-u-passenger-item-hotel s-u-passenger-item-change">*}
-{*                                <input id="familyEn1" type="text" placeholder="##Familyenglish##" name="familyEn1"*}
-{*                                       onkeypress="return isAlfabetKeyFields(event, 'familyEn1')" class="">*}
-{*                            </div>*}
-                            <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
-                                <input id="birthday1" type="text" placeholder="##shamsihappybirthday##" name="birthday1"
-                                       class="shamsiDriverBirthdayCalendar pwt-datepicker-input-element"
-                                       readonly="readonly">
-                            </div>
-                            <div class="s-u-passenger-item-hotel s-u-passenger-item-change noneIranian d-none">
-                                <input id="birthdayEn1" type="text" placeholder="##miladihappybirthday##"
-                                       name="birthdayEn1" readonly="readonly">
-                            </div>
-                            <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
-                                <input id="NationalCode1" type="tel" placeholder="##Nationalnumber##"
-                                       name="NationalCode1"
-                                       maxlength="10"
-                                       class="UniqNationalCode">
-                            </div>
-
-
-                            <div class="s-u-passenger-item-hotel s-u-passenger-item-change select-meliat noneIranian d-none">
-                                <select name="passportCountry1" id="passportCountry1"
-                                        class="select2">
-                                    <option value="">##Countryissuingpassport##</option>
-                                    {foreach $objFunctions->CountryCodes() as $Country}
-                                        <option value="{$Country['code']}">{$Country['titleFa']}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-
-                            <div class="s-u-passenger-item s-u-passenger-item-change noneIranian d-none">
-                                <input id="passportNumber1" type="text" placeholder="##Numpassport##"
-                                       name="passportNumber1" class="UniqPassportNumber">
-                            </div>
-                            <div class="s-u-passenger-item s-u-passenger-item-change noneIranian d-none">
-                                <input id="passportExpire1"
-                                       class="gregorianFromTodayCalendar pwt-datepicker-input-element"
-                                       type="text" placeholder="##Passportexpirydate##" name="passportExpire1">
-                            </div>
-
-
+                        <div class="s-u-passenger-item s-u-passenger-item-change">
+                            <input id="nameFa1" type="text" placeholder="##Namepersion##" name="nameFa1"
+                                   onkeypress=" return persianLetters(event, 'nameFa1')" class="justpersian">
                         </div>
+                        <div class="s-u-passenger-item s-u-passenger-item-change">
+                            <input id="familyFa1" type="text" placeholder="##Familypersion##"
+                                   name="familyFa1"
+                                   onkeypress=" return persianLetters(event, 'familyFa1')" class="justpersian">
+                        </div>
+                        {*                            <div class="s-u-passenger-item-hotel s-u-passenger-item-change">*}
+                        {*                                <input id="nameEn1" type="text" placeholder="##Nameenglish##" name="nameEn1"*}
+                        {*                                       onkeypress="return isAlfabetKeyFields(event, 'nameEn1')" class="">*}
+                        {*                            </div>*}
+                        {*                            <div class="s-u-passenger-item-hotel s-u-passenger-item-change">*}
+                        {*                                <input id="familyEn1" type="text" placeholder="##Familyenglish##" name="familyEn1"*}
+                        {*                                       onkeypress="return isAlfabetKeyFields(event, 'familyEn1')" class="">*}
+                        {*                            </div>*}
+                        <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                            <input id="birthday1" type="text" placeholder="##shamsihappybirthday##" name="birthday1"
+                                   class="shamsiDriverBirthdayCalendar pwt-datepicker-input-element"
+                                   readonly="readonly">
+                        </div>
+                        <div class="s-u-passenger-item-hotel s-u-passenger-item-change noneIranian d-none">
+                            <input id="birthdayEn1" type="text" placeholder="##miladihappybirthday##"
+                                   name="birthdayEn1" readonly="readonly">
+                        </div>
+                        <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                            <input id="NationalCode1" type="tel" placeholder="##Nationalnumber##"
+                                   name="NationalCode1"
+                                   maxlength="10"
+                                   class="UniqNationalCode">
+                        </div>
+
+
+                        <div class="s-u-passenger-item-hotel s-u-passenger-item-change select-meliat noneIranian d-none">
+                            <select name="passportCountry1" id="passportCountry1"
+                                    class="select2">
+                                <option value="">##Countryissuingpassport##</option>
+                                {foreach $objFunctions->CountryCodes() as $Country}
+                                    <option value="{$Country['code']}">{$Country['titleFa']}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+
+                        <div class="s-u-passenger-item s-u-passenger-item-change noneIranian d-none">
+                            <input id="passportNumber1" type="text" placeholder="##Numpassport##"
+                                   name="passportNumber1" class="UniqPassportNumber">
+                        </div>
+                        <div class="s-u-passenger-item s-u-passenger-item-change noneIranian d-none">
+                            <input id="passportExpire1"
+                                   class="gregorianFromTodayCalendar pwt-datepicker-input-element"
+                                   type="text" placeholder="##Passportexpirydate##" name="passportExpire1">
+                        </div>
+
+
+                    </div>
 
                 </div>
                 <div id="errorMessagePassenger" class="messageInfo"></div>
@@ -685,9 +687,9 @@
                     <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color">
                         ##InformationSaler##
                     </span>
-               {* <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
-                    ##InformationSaler## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
-                </span>*}
+                    {* <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
+                         ##InformationSaler## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
+                     </span>*}
                     <input type="hidden" name="UsageNotLogin" value="yes" id="UsageNotLogin">
                     <div class="clear"></div>
                     <div class="panel-default-change-Buyer">
@@ -712,9 +714,9 @@
 
                          ##Travelerprofile##
                     </span>
-             {*   <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
-                    ##InformationSaler## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
-                </span>*}
+                    {*   <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-bg-main-color">
+                           ##InformationSaler## <i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>
+                       </span>*}
                     <input type="hidden" name="UsageNotLogin" value="no" id="UsageNotLogin">
                     <div class="clear"></div>
                     <div class="panel-default-change-Buyer">
@@ -862,21 +864,21 @@
         });
 
     });
-   /* $('.counter').on('counterStop', function () {
-        $.confirm({
-            theme: 'supervan',// 'material', 'bootstrap'
-            title: '##Update##',
-            icon: 'fa fa-clock',
-            content: '##Reserveend##',
-            rtl: true,
-            closeIcon: true,
-            type: 'orange',
-            buttons: {
-                confirm: {
-                    text: '##Approve##',
-                    btnClass: 'btn-green',
-                    action: function () {
-                        location.href = '{/literal}http://{$smarty.const.CLIENT_MAIN_DOMAIN}{literal}';
+    /* $('.counter').on('counterStop', function () {
+         $.confirm({
+             theme: 'supervan',// 'material', 'bootstrap'
+             title: '##Update##',
+             icon: 'fa fa-clock',
+             content: '##Reserveend##',
+             rtl: true,
+             closeIcon: true,
+             type: 'orange',
+             buttons: {
+                 confirm: {
+                     text: '##Approve##',
+                     btnClass: 'btn-green',
+                     action: function () {
+                         location.href = '{/literal}http://{$smarty.const.CLIENT_MAIN_DOMAIN}{literal}';
                     }
                 },
                 cancel: {
@@ -891,12 +893,12 @@
     });*/
 
     $(document).ready(function () {
-      $('.itemRow').each(function(){
+        $('.itemRow').each(function(){
 
-        if(!$(this).find('span').length){
-          $(this).addClass('w-100')
-        }
-      })
+            if(!$(this).find('span').length){
+                $(this).addClass('w-100')
+            }
+        })
         // hide popup
         $('.s-u-t-r-p .s-u-t-r-p-h').on("click", function (e) {
             e.preventDefault();

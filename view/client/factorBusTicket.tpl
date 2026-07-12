@@ -102,6 +102,10 @@
                         <div>
                             <div class="company-name">{$objFactor->bookBusTicket['detailBusTicket']['company']}</div>
                             <div class="option-name">{$objFactor->bookBusTicket['detailBusTicket']['car_type']}</div>
+                            <div class="capacity-info mt-2">
+                                <span>##Capacity##</span>
+                                <span>{$objFactor->bookBusTicket['detailBusTicket']['count_free_chairs']} صندلی</span>
+                            </div>
                         </div>
                     </div>
 
@@ -136,10 +140,7 @@
                             {$objFunctions->numberFormat($amountCurrency.AmountCurrency)} {$amountCurrency.TypeCurrency}
                         </div>
 
-                        <div class="capacity-info">
-                            <span>##Capacity##</span>
-                            <span>{$objFactor->bookBusTicket['detailBusTicket']['count_free_chairs']} صندلی</span>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -149,95 +150,95 @@
 
 
             {*            <div class="s-u-result-wrapper">*}
-{*                <ul>*}
+            {*                <ul>*}
 
-{*                    <li class="col-md-12 d-flex align-items-center flex-wrap p-0">*}
-{*                        <div class="s-u-result-item-div s-u-result-item-div-change col-xs-12 col-sm-12 col-md-2 s-u-result-item-div-width">*}
-{*                            <div class="s-u-result-item-div-logo s-u-result-item-div-logo-change roundedLogo">*}
-{*                                <img src="{$objFunctions->getCompanyBusPhoto($objFactor->bookBusTicket['detailBusTicket']['company'])}"*}
-{*                                     alt="{$objFactor->bookBusTicket['detailBusTicket']['company']}"*}
-{*                                     title="{$objFactor->bookBusTicket['detailBusTicket']['company']}">*}
-{*                            </div>*}
-{*                            <div class="s-u-result-item-div s-u-result-content-item-div-change">*}
-{*                                <span class="silence_heading">{$objFactor->bookBusTicket['detailBusTicket']['company']}</span>*}
-{*                            </div>*}
-{*                            *}{*<span class="displayib-change d-block"> ظرفیت : {$objFactor->bookBusTicket['detailBusTicket']['count_free_chairs']} </span>*}
-{*                        </div>*}
-{*                        <div class="s-u-result-item-wrapper-change col-xs-12 col-sm-12 col-md-10">*}
+            {*                    <li class="col-md-12 d-flex align-items-center flex-wrap p-0">*}
+            {*                        <div class="s-u-result-item-div s-u-result-item-div-change col-xs-12 col-sm-12 col-md-2 s-u-result-item-div-width">*}
+            {*                            <div class="s-u-result-item-div-logo s-u-result-item-div-logo-change roundedLogo">*}
+            {*                                <img src="{$objFunctions->getCompanyBusPhoto($objFactor->bookBusTicket['detailBusTicket']['company'])}"*}
+            {*                                     alt="{$objFactor->bookBusTicket['detailBusTicket']['company']}"*}
+            {*                                     title="{$objFactor->bookBusTicket['detailBusTicket']['company']}">*}
+            {*                            </div>*}
+            {*                            <div class="s-u-result-item-div s-u-result-content-item-div-change">*}
+            {*                                <span class="silence_heading">{$objFactor->bookBusTicket['detailBusTicket']['company']}</span>*}
+            {*                            </div>*}
+            {*                            *}{*<span class="displayib-change d-block"> ظرفیت : {$objFactor->bookBusTicket['detailBusTicket']['count_free_chairs']} </span>*}
+            {*                        </div>*}
+            {*                        <div class="s-u-result-item-wrapper-change col-xs-12 col-sm-12 col-md-10">*}
 
-{*                            <div class="details-wrapper-change">*}
+            {*                            <div class="details-wrapper-change">*}
 
-{*                                <div class="s-u-result-raft first-row-change">*}
-{*                                    <div style="border:none"*}
-{*                                         class="s-u-result-item-div right-Cell-change fltr padb5 displayN400 ">*}
-{*                                        <div class="col-12 d-flex flex-wrap p-0">*}
-{*                                            <div class="col-md-3 col-sm-12 col-xs-12 align-items-center flex-wrap d-flex xs-block">*}
-{*                                                <div class="col-xs-12 silence_div4 text-dark mb-2">*}
-{*                                                    <span class="iranB">##Origin## : {$objFactor->bookBusTicket['detailBusTicket']['origin_city']}</span>*}
-{*                                                    <span class="col-xs-12 mt-2 silence_text d-block">##OriginTerminal## : {$objFactor->bookBusTicket['detailBusTicket']['origin_city']}</span>*}
-
-
-{*                                                </div>*}
-{*                                                <div class="col-xs-12 silence_div4 text-dark">*}
-{*                                                    <span class="iranB">##Destination## : {$objFactor->bookBusTicket['detailBusTicket']['destination_city']}</span>*}
-{*                                                    <span class="col-xs-12 mt-2 silence_text d-block">##DestinationTerminal## : {$objFactor->bookBusTicket['detailBusTicket']['destination_terminal']}</span>*}
-
-{*                                                </div>*}
-
-{*                                            </div>*}
-{*                                            <div class="col-md-3 col-sm-12 col-xs-12 align-items-center flex-wrap silence_div6 d-flex xs-block">*}
-{*                                                <span>##Bustype## :<span*}
-{*                                                            class="text-bold"> {$objFactor->bookBusTicket['detailBusTicket']['car_type']}</span></span>*}
+            {*                                <div class="s-u-result-raft first-row-change">*}
+            {*                                    <div style="border:none"*}
+            {*                                         class="s-u-result-item-div right-Cell-change fltr padb5 displayN400 ">*}
+            {*                                        <div class="col-12 d-flex flex-wrap p-0">*}
+            {*                                            <div class="col-md-3 col-sm-12 col-xs-12 align-items-center flex-wrap d-flex xs-block">*}
+            {*                                                <div class="col-xs-12 silence_div4 text-dark mb-2">*}
+            {*                                                    <span class="iranB">##Origin## : {$objFactor->bookBusTicket['detailBusTicket']['origin_city']}</span>*}
+            {*                                                    <span class="col-xs-12 mt-2 silence_text d-block">##OriginTerminal## : {$objFactor->bookBusTicket['detailBusTicket']['origin_city']}</span>*}
 
 
-{*                                            </div>*}
-{*                                            <div class="col-md-3 col-sm-12 col-xs-12 align-items-center  flex-wrap d-flex xs-block xs-bus-padd">*}
-{*                                                <div class="col-12 silence_div6 ">*}
+            {*                                                </div>*}
+            {*                                                <div class="col-xs-12 silence_div4 text-dark">*}
+            {*                                                    <span class="iranB">##Destination## : {$objFactor->bookBusTicket['detailBusTicket']['destination_city']}</span>*}
+            {*                                                    <span class="col-xs-12 mt-2 silence_text d-block">##DestinationTerminal## : {$objFactor->bookBusTicket['detailBusTicket']['destination_terminal']}</span>*}
 
-{*                                                        ##timeMove## : <span class="text-bold">*}
-{*                                                            {$objFactor->bookBusTicket['detailBusTicket']['time_move']}</span>*}
+            {*                                                </div>*}
 
-
-{*                                                <span>{$objFactor->bookBusTicket['detailBusTicket']['description']}</span>*}
-{*                                                *}{*<span class="s-u-bozorg s-u-bozorg-change font12">*}
-{*                                                    <i class="font-chanhe"> CountChairs </i>##Chair##*}
-
-{*                                                </div>*}
-{*                                                <div class="col-12 silence_div6">*}
-
-{*                                                        ##dateMove## :*}
-{*                                                        <span class="text-bold">*}
-{*                                            {$objFactor->bookBusTicket['detailBusTicket']['date']['dayName']}, {$objFactor->bookBusTicket['detailBusTicket']['date']['dataString']}*}
-{*                                                        </span>*}
-{*                                                        </div>*}
+            {*                                            </div>*}
+            {*                                            <div class="col-md-3 col-sm-12 col-xs-12 align-items-center flex-wrap silence_div6 d-flex xs-block">*}
+            {*                                                <span>##Bustype## :<span*}
+            {*                                                            class="text-bold"> {$objFactor->bookBusTicket['detailBusTicket']['car_type']}</span></span>*}
 
 
+            {*                                            </div>*}
+            {*                                            <div class="col-md-3 col-sm-12 col-xs-12 align-items-center  flex-wrap d-flex xs-block xs-bus-padd">*}
+            {*                                                <div class="col-12 silence_div6 ">*}
 
-{*                                            </div>*}
-{*                                            <div class="col-md-3 d-flex">*}
-{*                                                {$amountCurrency = $objFunctions->CurrencyCalculate($objFactor->bookBusTicket['paymentPrice'], $currencyCode)}*}
-
-{*                                                <div class="col-md-12 align-items-center flex-wrap d-flex">*}
-{*                                                    <div class="s-u-bozorg s-u-bozorg-change">*}
-{*                                                <span class="s-u-bozorg price">*}
-{*                                                            <i>{$objFunctions->numberFormat($amountCurrency.AmountCurrency)}</i>*}
-{*                                                            {$amountCurrency.TypeCurrency}*}
-{*                                                        </span>*}
-{*                                                    </div>*}
-{*                                                </div>*}
-
-{*                                            </div>*}
-{*                                        </div>*}
-{*                                    </div>*}
-{*                                </div>*}
+            {*                                                        ##timeMove## : <span class="text-bold">*}
+            {*                                                            {$objFactor->bookBusTicket['detailBusTicket']['time_move']}</span>*}
 
 
-{*                            </div>*}
-{*                        </div>*}
-{*                    </li>*}
+            {*                                                <span>{$objFactor->bookBusTicket['detailBusTicket']['description']}</span>*}
+            {*                                                *}{*<span class="s-u-bozorg s-u-bozorg-change font12">*}
+            {*                                                    <i class="font-chanhe"> CountChairs </i>##Chair##*}
 
-{*                </ul>*}
-{*            </div>*}
+            {*                                                </div>*}
+            {*                                                <div class="col-12 silence_div6">*}
+
+            {*                                                        ##dateMove## :*}
+            {*                                                        <span class="text-bold">*}
+            {*                                            {$objFactor->bookBusTicket['detailBusTicket']['date']['dayName']}, {$objFactor->bookBusTicket['detailBusTicket']['date']['dataString']}*}
+            {*                                                        </span>*}
+            {*                                                        </div>*}
+
+
+
+            {*                                            </div>*}
+            {*                                            <div class="col-md-3 d-flex">*}
+            {*                                                {$amountCurrency = $objFunctions->CurrencyCalculate($objFactor->bookBusTicket['paymentPrice'], $currencyCode)}*}
+
+            {*                                                <div class="col-md-12 align-items-center flex-wrap d-flex">*}
+            {*                                                    <div class="s-u-bozorg s-u-bozorg-change">*}
+            {*                                                <span class="s-u-bozorg price">*}
+            {*                                                            <i>{$objFunctions->numberFormat($amountCurrency.AmountCurrency)}</i>*}
+            {*                                                            {$amountCurrency.TypeCurrency}*}
+            {*                                                        </span>*}
+            {*                                                    </div>*}
+            {*                                                </div>*}
+
+            {*                                            </div>*}
+            {*                                        </div>*}
+            {*                                    </div>*}
+            {*                                </div>*}
+
+
+            {*                            </div>*}
+            {*                        </div>*}
+            {*                    </li>*}
+
+            {*                </ul>*}
+            {*            </div>*}
 
             <div class="price-Box displayNone" id="ShowInfoFlightCabinType"></div>
 
@@ -252,39 +253,6 @@
                 </div>
 
                 <div class="table-responsive">
-                <table id="passengers" class="display" cellspacing="0" width="100%">
-                    <thead>
-                   <tr>
-                        <th>##Sex##</th>
-                        <th>##Namepassenger##</th>
-                        <th>##Familypassenger##</th>
-                        <th>##NationalCode##</th>
-                        <th>##Seatno##</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <p>{if $objFactor->bookBusTicket['passenger_gender'] eq 'Male'}##Sir##{else}##Lady##{/if}</p>
-                        </td>
-                        <td><p>{$objFactor->bookBusTicket['passenger_name']}</p></td>
-                        <td><p>{$objFactor->bookBusTicket['passenger_family']}</p></td>
-                        <td><p>{$objFactor->bookBusTicket['passenger_national_code']}</p></td>
-                        <td><p>##SeatNumber##: {$objFactor->bookBusTicket['chairNumberReserve']}</p></td>
-                    </tr>
-                    </tbody>
-                </table>
-                </div>
-            </div>
-        </div>
-        {if !empty($objFactor->bookBusTicket['passengerArray'])}
-        <div class="main-Content-bottom Dash-ContentL-B">
-            <div class="main-Content-bottom-table Dash-ContentL-B-Table">
-                <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title l-p-p-header l-p-p-header-change site-bg-main-color">
-                    <i class="icon-table"></i>
-                    <h3>##PassengersList##</h3>
-                </div>
-                <div class="table-responsive">
                     <table id="passengers" class="display" cellspacing="0" width="100%">
                         <thead>
                         <tr>
@@ -296,22 +264,55 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {foreach $objFactor->bookBusTicket['passengerArray'] as $passenger}
-                            <tr>
-                                <td>
-                                    <p>{if $passenger['gender'] eq 'Male'}##Sir##{else}##Lady##{/if}</p>
-                                </td>
-                                <td><p>{$passenger['passenger_name']}</p></td>
-                                <td><p>{$passenger['passenger_family']}</p></td>
-                                <td><p>{$passenger['nationalCode']}</p></td>
-                                <td><p>##SeatNumber##: {$passenger['chair']}</p></td>
-                            </tr>
-                        {/foreach}
+                        <tr>
+                            <td>
+                                <p>{if $objFactor->bookBusTicket['passenger_gender'] eq 'Male'}##Sir##{else}##Lady##{/if}</p>
+                            </td>
+                            <td><p>{$objFactor->bookBusTicket['passenger_name']}</p></td>
+                            <td><p>{$objFactor->bookBusTicket['passenger_family']}</p></td>
+                            <td><p>{$objFactor->bookBusTicket['passenger_national_code']}</p></td>
+                            <td><p>##SeatNumber##: {$objFactor->bookBusTicket['chairNumberReserve']}</p></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        {if !empty($objFactor->bookBusTicket['passengerArray'])}
+            <div class="main-Content-bottom Dash-ContentL-B">
+                <div class="main-Content-bottom-table Dash-ContentL-B-Table">
+                    <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title l-p-p-header l-p-p-header-change site-bg-main-color">
+                        <i class="icon-table"></i>
+                        <h3>##PassengersList##</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="passengers" class="display" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>##Sex##</th>
+                                <th>##Namepassenger##</th>
+                                <th>##Familypassenger##</th>
+                                <th>##NationalCode##</th>
+                                <th>##Seatno##</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $objFactor->bookBusTicket['passengerArray'] as $passenger}
+                                <tr>
+                                    <td>
+                                        <p>{if $passenger['gender'] eq 'Male'}##Sir##{else}##Lady##{/if}</p>
+                                    </td>
+                                    <td><p>{$passenger['passenger_name']}</p></td>
+                                    <td><p>{$passenger['passenger_family']}</p></td>
+                                    <td><p>{$passenger['nationalCode']}</p></td>
+                                    <td><p>##SeatNumber##: {$passenger['chair']}</p></td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         {/if}
         <div class=" s-u-passenger-wrapper  "
              style="padding: 0">
@@ -322,10 +323,10 @@
                         {assign var="serviceType" value="PublicBus"} {* لازم برای انتخاب نوع بانک *}
                         {if $objSession->IsLogin() && $objMember->list['fk_counter_type_id'] =='5'}
                             <div class="s-u-result-item-RulsCheck-item">
-{*                                <input class="FilterHoteltype Show_all FilterHoteltypeName-top" id="discount_code"*}
-{*                                       name=""*}
-{*                                       value="" type="checkbox">*}
-{*                                <label class="FilterHoteltypeName site-main-text-color-a  " for="discount_code">##Ihavediscountcodewantuse##</label>*}
+                                {*                                <input class="FilterHoteltype Show_all FilterHoteltypeName-top" id="discount_code"*}
+                                {*                                       name=""*}
+                                {*                                       value="" type="checkbox">*}
+                                {*                                <label class="FilterHoteltypeName site-main-text-color-a  " for="discount_code">##Ihavediscountcodewantuse##</label>*}
 
                                 <div class="parent-discount">
                                     <div class="row separate-part-discount">

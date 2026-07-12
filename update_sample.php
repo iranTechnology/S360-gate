@@ -8,7 +8,8 @@
 
 $client_sql = <<<SQL
 
-
+ALTER TABLE `book_hotel_local_tb` 
+ADD `type_discount` VARCHAR(50) NULL DEFAULT NULL AFTER `discount_code_amount`;
 
 
 

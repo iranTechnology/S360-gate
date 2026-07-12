@@ -266,6 +266,7 @@ class bookhotelshow extends baseController
                 {$tableName}.manual_book,
                 {$tableName}.hotel_payments_price,
                 {$tableName}.discount_code_amount,
+                {$tableName}.type_discount,
 
             ";
 
@@ -591,7 +592,7 @@ class bookhotelshow extends baseController
             $dataRows[$k]['manual_book'] = $book['manual_book'];
             $dataRows[$k]['status_fa'] = $status;
 //            if (TYPE_ADMIN != '1') {
-                $dataRows[$k]['discount_code_amount'] = $book['discount_code_amount'];
+            $dataRows[$k]['discount_code_amount'] = $book['discount_code_amount'];
 //            }
 
 
@@ -2306,7 +2307,7 @@ class bookhotelshow extends baseController
 
 
         if(!Session::IsLogin()){
-        $sql = "SELECT * FROM book_hotel_local_tb 
+            $sql = "SELECT * FROM book_hotel_local_tb 
         WHERE factor_number = '{$_POST['request_number']}' 
         AND member_mobile = '{$_POST['phone_number']}'
         ";
@@ -2674,6 +2675,13 @@ class bookhotelshow extends baseController
             if (!empty($bookHotel[0]['discount_code_amount']) && $bookHotel[0]['discount_code_amount']) {
                 $amountDiscountCode = functions::CurrencyCalculate($bookHotel[0]['discount_code_amount'], $bookHotel[0]['currency_code'], $bookHotel['currency_equivalent']);
             }
+            if($bookHotel[0]['type_discount'] === 'percent'){
+                $finalPrice= $paymentPrice['AmountCurrency'] - ($paymentPrice['AmountCurrency']*$amountDiscountCode['AmountCurrency'] / 100);
+            }
+            else{
+                $finalPrice = $paymentPrice['AmountCurrency'] - $amountDiscountCode['AmountCurrency'];
+            }
+
 
             $result .= '<tr>';
             $result .= '<td>' . $bookHotel[0]['city_name'] . '</td>';
@@ -2682,7 +2690,7 @@ class bookhotelshow extends baseController
             $result .= '<td>' . $bookHotel[0]['request_number'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['passenger_leader_room_fullName'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['payment_date'] . '</td>';
-            $result .= '<td>' . functions::numberFormat($paymentPrice['AmountCurrency'] - $amountDiscountCode['AmountCurrency']) . ' ' . $paymentPrice['TypeCurrency'];
+            $result .= '<td>' . functions::numberFormat($finalPrice) . ' ' . $paymentPrice['TypeCurrency'];
             if ($amountDiscountCode['AmountCurrency'] != 0) {
                 $result .= '<br><del>' . functions::numberFormat($paymentPrice['AmountCurrency']) . '</del>';
             }
