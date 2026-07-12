@@ -159,10 +159,10 @@ class discountCodes extends clientAuth
                 foreach ($selectedServices as $service) {
                     $check_exist_service = $this->hasThisServiceWithTitle($groupCode, $service);
                     if (!$check_exist_service) {
-                            $dataServices['discountGroupCode'] = $groupCode;
-                            $dataServices['serviceTitle'] = $service;
-                            $dataServices['service_group'] = $this->getServiceDiscountGroupTitle($service);
-                            $this->getModel('discountCodesServicesModel')->insertLocal($dataServices);//discount_codes_services_tb
+                        $dataServices['discountGroupCode'] = $groupCode;
+                        $dataServices['serviceTitle'] = $service;
+                        $dataServices['service_group'] = $this->getServiceDiscountGroupTitle($service);
+                        $this->getModel('discountCodesServicesModel')->insertLocal($dataServices);//discount_codes_services_tb
                     }
 
                 }
@@ -172,7 +172,7 @@ class discountCodes extends clientAuth
                     $check_exist_service = $this->hasThisServiceWithTitle($groupCode, $service_unselect);
 
                     if (!in_array($service_unselect, $selectedServices) && $check_exist_service) {
-                            $this->getModel('discountCodesServicesModel')->delete("discountGroupCode='{$groupCode}' AND serviceTitle='{$service_unselect}'");
+                        $this->getModel('discountCodesServicesModel')->delete("discountGroupCode='{$groupCode}' AND serviceTitle='{$service_unselect}'");
                     }
                 }
 
@@ -312,7 +312,7 @@ class discountCodes extends clientAuth
                 return 'error';
             }
         }
-        }
+    }
     #endregion
 
 
@@ -416,7 +416,7 @@ class discountCodes extends clientAuth
                         $output['discountCode'] = $resultCode['code'];
                         $output['discountAmount'] = $amount['AmountCurrency'];
                         $output['discountService'] = $resultCode['serviceTitle'];
-                            $output['typeDiscount'] = $resultCode['typeDiscount'];
+                        $output['typeDiscount'] = $resultCode['typeDiscount'];
 
                     } else {
                         $output['result_status'] = 'error';
@@ -746,7 +746,7 @@ class discountCodes extends clientAuth
 
 
     public function getAllCodeDiscountUsed() {
-       return  $this->getModel('discountCodesUsedModel')->get()->where('status','success')->all();
+        return  $this->getModel('discountCodesUsedModel')->get()->where('status','success')->all();
 
     }
 
@@ -765,24 +765,24 @@ class discountCodes extends clientAuth
     }
 
     public function getDiscountCodeWithPoint($param) {
-            $get_discount_code = $this->getDiscountCodeById($param['id_discount']);
+        $get_discount_code = $this->getDiscountCodeById($param['id_discount']);
 
-            if(!empty($get_discount_code)){
-                $check_exist_point = $this->getController('historyPointClub')->getPointClubMember(Session::getUserId());
-                if($check_exist_point > $get_discount_code['limit_point_club']) {
-                    $data_to_discount_Codes['point'] = $get_discount_code['limit_point_club'];
-                    $data_to_discount_Codes['discount_code'] = $get_discount_code['code'];
-                    $data_to_discount_Codes['factor_number'] = 'CHD'.rand(000,999);
-                    $insert_decrease_point = $this->getController('historyPointClub')->decreasePointForConvertToDiscountCode($data_to_discount_Codes);
-                    if($insert_decrease_point){
-                        $data_update_discount_code['stock'] = $get_discount_code['stock']-1 ;
-                        $this->getModel('DiscountCodesModel')->update($data_update_discount_code,"id='{$param['id_discount']}'");
-                        return functions::withSuccess($data_to_discount_Codes,200,'دریافت کد تخفیف با موفقیت انجام شد');
-                    }
-                    return functions::withError(null,401,'امتیاز شما به حد کافی نمی باشد');
+        if(!empty($get_discount_code)){
+            $check_exist_point = $this->getController('historyPointClub')->getPointClubMember(Session::getUserId());
+            if($check_exist_point > $get_discount_code['limit_point_club']) {
+                $data_to_discount_Codes['point'] = $get_discount_code['limit_point_club'];
+                $data_to_discount_Codes['discount_code'] = $get_discount_code['code'];
+                $data_to_discount_Codes['factor_number'] = 'CHD'.rand(000,999);
+                $insert_decrease_point = $this->getController('historyPointClub')->decreasePointForConvertToDiscountCode($data_to_discount_Codes);
+                if($insert_decrease_point){
+                    $data_update_discount_code['stock'] = $get_discount_code['stock']-1 ;
+                    $this->getModel('DiscountCodesModel')->update($data_update_discount_code,"id='{$param['id_discount']}'");
+                    return functions::withSuccess($data_to_discount_Codes,200,'دریافت کد تخفیف با موفقیت انجام شد');
                 }
+                return functions::withError(null,401,'امتیاز شما به حد کافی نمی باشد');
             }
-            return functions::withError(null,401,'خطا در دریافت کد تخفیف،لطفا با پشتیبانی تماس حاصل نمایید');
+        }
+        return functions::withError(null,401,'خطا در دریافت کد تخفیف،لطفا با پشتیبانی تماس حاصل نمایید');
     }
 
 
