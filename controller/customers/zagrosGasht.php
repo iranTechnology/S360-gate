@@ -24,7 +24,7 @@
             "Insurance": {"icon": "<i class=\"fa-light fa-hospital\"></i>", "name": "بیمه"},
             "Train": {"icon": "<i class=\"fa-light fa-train\"></i>", "name": "قطار"},
             "Visa": {"icon": "<i class=\"fa-light fa-passport\"></i>", "name": "ویزا"},
-            "Package": {"icon": "<i class=\"fa-light fa-suitcase\"></i>", "name": "پکیج"},
+            "Package": {"icon": "<i class=\"fa-light fa-suitcase\"></i>", "name": "هتل + پرواز"},
             "Entertainment": {"icon": "<i class=\"fa-light fa-umbrella-beach\"></i>", "name": "تفریحات"},
             "Cip": {"icon": "<i class=\"fa-light fa-concierge-bell\"></i>", "name": "تشریفات"},
             "Europcar": {"icon": "<i class=\"fa-light fa-car\"></i>", "name": "خودرو"}
