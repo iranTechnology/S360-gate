@@ -205,10 +205,13 @@
                                 section='tour'}
                             </div>
                         {/if}
-                        <a id="fileUrlPackage" target="_blank" href="" class="parent-share-tour d-none file_package">
+    {if $objResult->arrayTour['infoTour']['tour_file']}
+
+                        <a id="fileUrlPackage" target="_blank" href='{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$objResult->arrayTour['infoTour']['tour_file']}' class="parent-share-tour file_package">
                             <i class="fa-light fa-download"></i>
                             <span>##PackageTour##</span>
                         </a>
+    {/if}
                         <a onclick="shareBtn('{$objResult->arrayTour['infoTour'][$objFunctions->ChangeIndexNameByLanguage($smarty.const.SOFTWARE_LANG,'tour_name')]}')"
                            class="parent-share-tour">
                             <i class="fa-light fa-share-nodes"></i>

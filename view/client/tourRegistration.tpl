@@ -85,10 +85,10 @@
                 <span class='d-flex'>
                       <i class="zmdi zmdi-account-box-mail zmdi-hc-fw mart5"></i> ##Defualtinformationtour##
                 </span>
-                {assign var="check_offline" value=$objFunctions->checkClientConfigurationAccess('offline_tour')}
-                {assign var="check_online" value=$objFunctions->checkClientConfigurationAccess('online_tour')}
+{*                {assign var="check_offline" value=$objFunctions->checkClientConfigurationAccess('offline_tour')}*}
+{*                {assign var="check_online" value=$objFunctions->checkClientConfigurationAccess('online_tour')}*}
 
-                {if $check_offline eq true  && $check_online eq true}
+{*                {if $check_offline eq true  && $check_online eq true}*}
                     <div class='d-flex'>
                         <div class="form-check">
                           <input class="form-check-input" type="radio" name="is_request" id="isRequest1" checked value="false">
@@ -103,11 +103,11 @@
                       </label>
                     </div>
                     </div>
-                {elseif $check_offline eq true}
-                    <input type="hidden"  id="is_request" name="is_request" value="true">
-                {else}
-                     <input type="hidden"  id="is_request" name="is_request" value="false">
-                {/if}
+{*                {elseif $check_offline eq true}*}
+{*                    <input type="hidden"  id="is_request" name="is_request" value="true">*}
+{*                {else}*}
+{*                     <input type="hidden"  id="is_request" name="is_request" value="false">*}
+{*                {/if}*}
             </span>
             <div class="panel-default-change site-border-main-color">
                 <div class="s-u-result-item-change">
