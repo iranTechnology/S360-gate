@@ -1609,7 +1609,6 @@ class user extends baseController
                 ORDER BY b.creation_date_int DESC ";
 //echo $sql; die();
         $bookList = $Model->select($sql);
-        var_dump($bookList);
         $result = [] ;
         foreach ($bookList as  $key => $item ){
             $amount_buy = functions::CalculateDiscount($item['request_number']) ;
@@ -1764,7 +1763,7 @@ class user extends baseController
                     ];
 
                     $result[$key]['button_list'][] = [
-                        'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                        'title' => functions::Xmlinformation('GetTicketCounter')->__toString(),
                         'type' => 'link',
                         'link' => $bookList[$key]['dataBtnPdf'],
                     ];
@@ -1803,7 +1802,7 @@ class user extends baseController
                         if ($item['IsInternal'] != '0') {
                             $result[$key]['button_list'][] =
                                 [
-                                    'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                    'title' => functions::Xmlinformation('PassengerTicket')->__toString(),
                                     'type' => 'link',
                                     'link' => $bookList[$key]['dataBtnPdfFreeLink'],
                                 ];
@@ -2070,7 +2069,7 @@ class user extends baseController
                     if ($item['IsInternal'] != '0') {
                         $result[$key]['button_list'][] =
                             [
-                                'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                'title' => functions::Xmlinformation('PassengerTicket')->__toString(),
                                 'type' => 'link',
                                 'link' => $bookList[$key]['dataBtnPdfFreeLink'],
                             ];
@@ -4558,7 +4557,7 @@ class user extends baseController
                             $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
 
                         }
-                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&cash=no'.'&lang=fa';
+                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&cash=no'.'&lang=fa&isPassenger=1';
 
                     }
 
@@ -4569,7 +4568,7 @@ class user extends baseController
                             'function'  => "modalPassengerDetails(event.currentTarget  , ".$item['factor_number']." , 'flight')" ,
                         ],
                         [
-                            'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                            'title' => functions::Xmlinformation('GetTicketCounter')->__toString(),
                             'type' => 'link',
                             'link' => $bookList[$key]['dataBtnPdf'],
                         ],
@@ -4600,7 +4599,7 @@ class user extends baseController
                         if ($item['IsInternal'] != '0') {
                             $result[$key]['button_list'][] =
                                 [
-                                    'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                    'title' => functions::Xmlinformation('PassengerTicket')->__toString(),
                                     'type' => 'link',
                                     'link' => $bookList[$key]['dataBtnPdfFreeLink'],
                                 ];
@@ -5653,7 +5652,7 @@ class user extends baseController
                         if ($item['IsInternal'] != '0') {
                             $result[$key]['button_list'][] =
                                 [
-                                    'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                    'title' => functions::Xmlinformation('PassengerTicket')->__toString(),
                                     'type' => 'link',
                                     'link' => $bookList[$key]['dataBtnPdfFreeLink'],
                                 ];
