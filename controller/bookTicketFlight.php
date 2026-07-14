@@ -152,7 +152,7 @@ class bookTicketFlight extends apiLocal
     //region bookPrivateSourceFiveOfSourceSeven
 
     /**
-     * @param $factorNumber
+     * @param $
      * @param $payType
      */
     private function updatePaymentWayBook($factorNumber, $payType) {

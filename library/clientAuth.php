@@ -335,8 +335,14 @@ class clientAuth extends baseController {
         return $this->getModel('clientsModel')->get()->where('id',CLIENT_ID)->find();
     }
 
-    public function getAccessApiTour($user_name,$password) {
-        return $this->getModel('clientAuthModel')->get()->where('Username',$user_name)->where('Password',$password)->find();
+    public function getAccessApiTour($client_id) {
+        $ModelBase = Load::library('ModelBase');
+        $query = "SELECT AUTH.id, AUTH.Username,AUTH.ClientId
+                  FROM client_auth_tb AS AUTH 
+                  INNER JOIN client_source_tb AS SOURCE ON AUTH.SourceId = SOURCE.id
+                  INNER JOIN client_services_tb AS SERVICE ON SOURCE.ServiceId = SERVICE.id
+                  WHERE AUTH.ClientId = '".$client_id."' AND SERVICE.Service = 'TourApi' AND AUTH.IsActive='Active' ";
+        return  $ModelBase->load($query);
     }
 
     public function getAccessTourWebService() {
