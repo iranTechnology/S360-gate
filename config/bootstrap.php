@@ -339,7 +339,6 @@ if(!empty($client['Services'])){
         $client['jahangaThemeDir'] = 'mizbanfly';
     }
 
-    // mr javani >>>
     elseif($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
     {
         $client['ThemeDir'] = 'uranusIframe';

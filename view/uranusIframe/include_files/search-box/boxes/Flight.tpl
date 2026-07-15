@@ -1,4 +1,4 @@
-<div class="__box__ tab-pane active" id="Flight">
+<div class="__box__ tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Flight">
 {*    <div class="parent-head-search-box">*}
 {*    <div class="head-search-box-detail">*}
 {*        <div class="w-100 mr-2">*}
