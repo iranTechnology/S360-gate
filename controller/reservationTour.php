@@ -1711,6 +1711,8 @@ class reservationTour extends clientAuth
     public function editTourWithIdSame($param, $file) {
 
 
+
+
         if(Session::IsLogin()) {
 
             $Model = Load::library('Model');
@@ -1736,6 +1738,8 @@ class reservationTour extends clientAuth
                     $days_Week []= $param['sh' . $sh];
                 }
             }
+
+
 
             $array_check_Days = [];
             $not_array_check_Days = [];
@@ -1846,6 +1850,7 @@ class reservationTour extends clientAuth
                 } else {
                     $data['tour_cover'] = $param['cover'];
                 }
+
 
 
                 if (isset($file['tourFile']) && $file['tourFile'] != "") {
@@ -2010,6 +2015,8 @@ class reservationTour extends clientAuth
                 $data['tour_leader_language'] = $param['TourLeaderLanguage'];
                 $data['custom_file_fields'] = $custom_file_fields;
 
+
+
                 $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
 //        $sqlCheck = " SELECT id, start_date, end_date FROM reservation_tour_tb
 //                          WHERE id_same='{$idSame}'";
@@ -2072,7 +2079,10 @@ class reservationTour extends clientAuth
                 $all_package_items = [];
                 functions::insertLog('before foreach for delete and again insert=>' . json_encode($all_tours_by_id_same, 256), $log_name);
 
+
+
                 foreach ($all_tours_by_id_same as $tour) {
+
                     functions::insertLog('first in loop foreach for delete each tour=>' . json_encode($tour, 256), $log_name);
                     $this->reservation_tour_route_model->delete([
                         'fk_tour_id' => $tour['id']

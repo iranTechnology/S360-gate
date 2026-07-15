@@ -2380,12 +2380,14 @@ $(document).ready(function () {
 document.addEventListener('DOMContentLoaded', function() {
     const visaTab = document.querySelector('#Visa-tab');
     const visaBoard = document.querySelector('.visa-board-section');
+    const HotelBanner = document.querySelector('.hotel-banner-section');
 
     if (visaTab && visaBoard) {
         visaTab.addEventListener('click', function(event) {
             event.preventDefault();
 
             visaBoard.classList.remove('d-none');
+            HotelBanner.classList.add('d-none');
         });
     }
 });
@@ -2393,12 +2395,14 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const FlightTab = document.querySelector('#Flight-tab');
     const visaBoard = document.querySelector('.visa-board-section');
+    const HotelBanner = document.querySelector('.hotel-banner-section');
 
     if (FlightTab && visaBoard) {
         FlightTab.addEventListener('click', function(event) {
             event.preventDefault();
 
             visaBoard.classList.add('d-none');
+            HotelBanner.classList.add('d-none');
         });
     }
 });
@@ -2406,12 +2410,14 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const HotelTab = document.querySelector('#Hotel-tab');
     const visaBoard = document.querySelector('.visa-board-section');
+    const HotelBanner = document.querySelector('.hotel-banner-section');
 
     if (HotelTab && visaBoard) {
         HotelTab.addEventListener('click', function(event) {
             event.preventDefault();
 
             visaBoard.classList.add('d-none');
+            HotelBanner.classList.remove('d-none');
         });
     }
 });

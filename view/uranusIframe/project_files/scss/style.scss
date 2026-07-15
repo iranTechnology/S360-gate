@@ -1183,6 +1183,18 @@ a:hover {
   }
 }
 
+.hotel-banner-section {
+  margin-top: -35px;
+  display: flex;
+  justify-content: center;
+}
+
+.hotel-banner-section img {
+  object-fit: cover;
+  border-radius: $rounded;
+  overflow: hidden;
+  height: 120px;
+}
 
 /* عنوان اصلی */
 .title {

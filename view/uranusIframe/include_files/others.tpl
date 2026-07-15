@@ -1,4 +1,4 @@
-<div class="container d-none d-sm-none visa-board-section">
+<div class="container d-sm-none visa-board-section">
 
     <!-- عنوان -->
     <p class="title">خدمات پر طرفدار جهانگرد ویزا</p>
