@@ -50,7 +50,7 @@
                             {/if}
                         </li>
                         <li>
-                            <a href="javascript:">ویزا</a>
+                            <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">ویزا</a>
                             <ul class="nav-dropdown">
                                 <li>
                                     <a href="javascript:">

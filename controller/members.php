@@ -528,6 +528,9 @@ class members extends clientAuth {
             if (!empty($data['id_departments'])) {
                 $data_update['id_departments'] = trim($data['id_departments']);
             }
+            if (!empty($data['tour_contact_display'])) {
+                $data_update['tour_contact_display'] = trim($data['tour_contact_display']);
+            }
             $result = $model->updateWithBind($data_update, ['id' => $user['id']]);
             if ($result) {
                 return 'success : ویرایش با موفقیت انجام شد';
@@ -579,7 +582,8 @@ class members extends clientAuth {
             'accessAdmin' => trim($members['accessAdmin']),
             'card_number' => $this->generateCardNumber(),
             'register_date' => Date('Y-m-d H:i:s'),
-            'id_departments'=> trim($members['id_departments'])
+            'id_departments'=> trim($members['id_departments']),
+            'tour_contact_display'=> trim($members['tour_contact_display'])
         ];
         $insert_result = $this->members_model->insertWithBind($data_insert);
 

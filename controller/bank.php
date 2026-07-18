@@ -116,7 +116,7 @@ class bank {
 
 			$infoBook           = functions::GetInfoHotel( $requestID );
 			$this->amountToPay  = $infoBook['hotel_payments_price'] > 0 ?  $infoBook['hotel_payments_price'] : $infoBook['total_price'];
-
+			$this->typeAppliction = $infoBook['type_application'];
 			if($infoBook['payment_status'] =='fullPayment') {
 				$this->amountToPay = $infoBook['total_price'] - $infoBook['hotel_payments_price'];
 			}
@@ -370,7 +370,7 @@ class bank {
 			#region discount code
 			if ( $discountCode != '' && $discountCode && !empty($discountCode)) {
 				$discountCodes     = Load::controller( 'discountCodes' );
-				$this->amountToPay = $discountCodes->reduceAmountViaDiscountCode( $this->amountToPay, $this->factorNumber, $memberId, $discountCode, $this->serviceType );
+				$this->amountToPay = $discountCodes->reduceAmountViaDiscountCode( $this->amountToPay, $this->factorNumber, $memberId, $discountCode, $this->serviceType ,null,$this->typeAppliction );
 			}
 			#endregion
 

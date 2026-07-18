@@ -104,6 +104,15 @@
                     </div>
 
                     <div class="form-group col-sm-6">
+                        <label for="tour_contact_display" class="control-label">دسترسی نمایش اطلاعات تماس در تور </label>
+                        <select class="form-control" name="tour_contact_display" id="tour_contact_display" data-required="false">
+                            <option value="null">انتخاب کنید...</option>
+                            <option value="1" >بله </option>
+                            <option value="null" >خیر </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-6">
                         <label for="password" class="control-label">کلمه عبور {$TypeMember}</label>
                         <input type="password" class="form-control" id="password" name="password"
                                placeholder="کلمه عبور {$TypeMember} را وارد نمائید">
