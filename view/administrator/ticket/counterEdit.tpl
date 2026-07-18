@@ -125,6 +125,15 @@
                     </div>
 
                     <div class="form-group col-sm-6">
+                        <label for="tour_contact_display" class="control-label">دسترسی نمایش اطلاعات تماس در تور </label>
+                        <select class="form-control" name="tour_contact_display" id="tour_contact_display" data-required="false">
+                            <option value="null">انتخاب کنید...</option>
+                            <option value="1" {if $objCounter->list['tour_contact_display'] eq '1'}selected="selected"{/if} >بله </option>
+                            <option value="null"{if $objCounter->list['tour_contact_display'] eq '0'}selected="selected"{/if} >خیر </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-6">
                         <label for="password" class="control-label">کلمه عبور {$TypeMember}</label>
                         <input type="password" class="form-control" id="password" name="password"
                                placeholder="در صورتی که قصد تغییر کلمه عبور را ندارید دو فیلد کلمه عبور و تکرار آن را خالی رها نمائید">

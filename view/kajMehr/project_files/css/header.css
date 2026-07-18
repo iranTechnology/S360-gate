@@ -77,20 +77,20 @@
     border-color: var(--secondColor);
 }
 
-.my-breadcrumbs:has(+ .banner-slider-display) {
+.my-breadcrumbs:has(+ .banner-demo) {
     left: 0;
     position: absolute !important;
     top: 110px !important;
 }
 
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item a ,
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item h1,
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item.active h1 {
+.my-breadcrumbs:has(+ .banner-demo) .breadcrumb-item a ,
+.my-breadcrumbs:has(+ .banner-demo) .breadcrumb-item h1,
+.my-breadcrumbs:has(+ .banner-demo) .breadcrumb-item.active h1 {
     color: #fff !important;
     font-size: 15px !important;
 }
 
-.my-breadcrumbs:has(+ .banner-slider-display) .breadcrumb-item + .breadcrumb-item::before {
+.my-breadcrumbs:has(+ .banner-demo) .breadcrumb-item + .breadcrumb-item::before {
     content: '\f053' !important;
     color: #fff;
     font-family: "Font Awesome 6 Pro", "FontAwesome", sans-serif;
