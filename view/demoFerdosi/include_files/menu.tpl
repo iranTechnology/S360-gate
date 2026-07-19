@@ -30,7 +30,7 @@
                         <li>
                             <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/all/0">تور</a>
                             <ul class="nav-dropdown nav-submenu">
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/1-all/all/all/0">تور های داخلی</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/1-all/all/all/0">تور های داخلی</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/international-tour">تور های خارجی</a>
                                 </li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/popular-destinations">مقاصد پر طرفدار</a>

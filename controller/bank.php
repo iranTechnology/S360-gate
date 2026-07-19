@@ -15,6 +15,7 @@ class bank {
 	public $isCurrency;
 	public $transactionStatus = '';
 	public $detect_service_payment;
+	public $typeAppliction;
 	private $bankParam1 = '', $bankParam2 = '', $bankParam3 = '', $bankParam4 = '', $bankParam5 = '', $bankServiceType = ''; //this one should not be array
 	public $return_immediately=false;
 
@@ -501,6 +502,9 @@ class bank {
 				break;
 			case 'azKiVam':
 				return $this->executeAzKiVamBank( $operation );
+				break;
+			case 'payStar':
+				return $this->executePayStar( $operation );
 				break;
 		}
 

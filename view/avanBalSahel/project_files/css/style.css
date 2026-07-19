@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .banner {
     width: 100%;
     display: flex;
@@ -1440,6 +1444,9 @@
     .parent-tour {
         grid-template-columns: repeat(2, 1fr);
     }
+    .main_header_area {
+        padding: 10px 0;
+    }
 }
 
 .app-text > img, .parent-btn-app-ris {
@@ -1745,9 +1752,6 @@
     .navigation-hidden .nav-header {
         display: none
     }
-    .nav-brand .logo-img {
-        width: 103px;
-    }
     .nav-brand {
         text-decoration: none !important;
         width: 100%;
@@ -1767,11 +1771,11 @@
     .header_area.fixedmenu .main_header_area .nav-brand span {
         color: #222
     }
-    .nav-brand .logo-img {
-        width: 100px; /*! height: 100%; */
+    .main_header_area {
+        padding: 0;
     }
     .nav-brand .logo-img {
-        width: 76px !important
+        width: 150px
     }
     .nav-brand {
         gap: 0
