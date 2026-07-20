@@ -167,13 +167,13 @@
          مجوزها
         </h3>
         <div class="namads">
-         <a href="javascript:">
+         <a href="https://farasa.cao.ir/sysworkflow/fa/modern/3810212626028ab03488017019616799/6464336316028ab04e3c618028352200.php">
           <img alt="Enamad1" src="project_files/images/certificate1.png"/>
          </a>
-         <a href="javascript:">
+         <a href="https://bpms.cao.ir/web/inquiry/esls">
           <img alt="namad-1" src="project_files/images/certificate2.png"/>
          </a>
-         <a href="javascript:">
+         <a href="https://www.aira.ir/members">
           <img alt="namad-2" src="project_files/images/certificate3.png"/>
          </a>
          <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=92574&Code=hdxHMBXNbXSUIR1ZdSV2'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=92574&Code=hdxHMBXNbXSUIR1ZdSV2' alt='' style='cursor:pointer' code='hdxHMBXNbXSUIR1ZdSV2'></a>

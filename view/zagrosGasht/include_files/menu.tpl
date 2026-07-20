@@ -33,7 +33,7 @@
                         <li>
                             <a href="javascript:">تور داخلی</a>
                             {if $objResult->ReservationTourCities('=1', 'return')}
-                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
+                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}" style="display: grid; grid-template-columns: 1fr 1fr;">
                                     {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCities('=1', 'return')}
                                         <li>
                                             <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/1-{$item_tour.id}/all/all">
@@ -46,7 +46,7 @@
                         <li>
                             <a href="javascript:">تور خارجی</a>
                             {if $objResult->ReservationTourCountries('yes')}
-                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
+                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}" style="display: grid; grid-template-columns: 1fr 1fr;">
                                     {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries('yes')}
                                         <li>
                                             <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/{$item_tour.id}-all/all/all">
