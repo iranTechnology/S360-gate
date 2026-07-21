@@ -14,15 +14,15 @@
   font-style: normal;
 }
 
-.resultUlInputSearch {
+.search_box_div .resultUlInputSearch {
   top: -65px;
 }
 
-.s-u-in-out-wrapper.raft.raft-change.change-bor .ul-inputSearch-externalHotel {
+.search_box_div .s-u-in-out-wrapper.raft.raft-change.change-bor .ul-inputSearch-externalHotel {
   top: -45px;
 }
 
-.select2-dropup .select2-dropdown {
+.search_box_div .select2-dropup .select2-dropdown {
   bottom: 100% !important;
   top: auto !important;
 }
@@ -274,7 +274,7 @@
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-  .myhotels-rooms, .mypackege-rooms, .hotel_local-rooms {
+  .search_box_div .myhotels-rooms, .search_box_div .mypackege-rooms, .search_box_div .hotel_local-rooms {
     width: 250px;
   }
 }
@@ -1980,7 +1980,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 }
 
 @media (max-width: 992px) {
-  .resultUlInputSearch {
+  .search_box_div .resultUlInputSearch {
     top: 100%;
   }
   .theme-btn{
@@ -2195,7 +2195,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 }
 
 @media (max-width: 768px) {
-  .s-u-in-out-wrapper.raft.raft-change.change-bor .ul-inputSearch-externalHotel {
+  .search_box_div  .s-u-in-out-wrapper.raft.raft-change.change-bor .ul-inputSearch-externalHotel {
     top: 100%;
   }
 }
@@ -2204,7 +2204,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
   #searchBoxTabs .nav-item {
     width: 100px;
   }
-  .myhotels-rooms, .mypackege-rooms, .hotel_local-rooms {
+  .search_box_div .myhotels-rooms, .search_box_div .mypackege-rooms, .search_box_div .hotel_local-rooms {
     top: 100%
   }
 }

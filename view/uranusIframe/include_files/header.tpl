@@ -79,7 +79,6 @@
 
     {if $smarty.const.GDS_SWITCH neq 'mainPage' }
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHead.tpl"}
-        <link href="project_files/css/{$StyleSheetHeader}" rel="stylesheet"/>
         <script type="text/javascript">
           var rootMainPath = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}';
           var clientMainDomain = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_MAIN_DOMAIN}';
@@ -103,4 +102,18 @@
     <link rel="stylesheet" href="project_files/css/all.min.css">
     <link rel="stylesheet" href="assets/main-asset/css/register.css">
     <link rel="stylesheet" href="project_files/css/style.css">
+    {if $smarty.const.GDS_SWITCH eq 'mainPage' || $smarty.const.GDS_SWITCH eq 'page'}
+
+    <style>
+        @media (max-width: 576px) {
+            #ui-datepicker-div {
+                top: 100px !important;
+            }
+        }
+        #ui-datepicker-div {
+            top: 20px !important;
+        }
+        </style>
+    {/if}
+
 </head>
