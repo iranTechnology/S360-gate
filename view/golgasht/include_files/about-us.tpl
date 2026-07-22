@@ -8,9 +8,9 @@
 {if $specialMainPage['content']}
  <section class="i_modular_about_us about py-5">
   <div class="container">
-   <h2 class="about_title">
-    سفری به یادماندنی با بهترین‌ها
-   </h2>
+{*   <h2 class="about_title">*}
+{*    سفری به یادماندنی با بهترین‌ها*}
+{*   </h2>*}
    <p class="__aboutUs_class__ about_p">
 
     {$specialMainPage['content']}

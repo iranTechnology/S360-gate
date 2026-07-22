@@ -358,9 +358,8 @@ class reservationBasicInformation extends clientAuth {
 
         $Model = Load::library('Model');
 
-        $sql = " SELECT * FROM  reservation_country_tb WHERE abbreviation='{$info['country_code']}' AND is_del='no'";
+        $sql = " SELECT * FROM  reservation_country_tb WHERE abbreviation='{$info['country_code']}'";
         $country = $Model->load($sql);
-        if (empty($country)) {
             if(!empty($_FILES['pic'])) {
                 $config = Load::Config('application');
                 $path = "country/" . CLIENT_ID . "/";
@@ -398,16 +397,36 @@ class reservationBasicInformation extends clientAuth {
             $data['comments_visa'] = $info['comments_visa'];
             $data['is_del'] = 'no';
             $data['pic'] = $result_upload ?? '';
-//            $data['expire_passport'] = $info['expire_passport'];
 
             $Model->setTable('reservation_country_tb');
+
+            functions::insertLog('$sql$country: ' . json_encode($sql) , '0abbasi');
+            functions::insertLog('$country: ' . json_encode($country) , '0abbasi');
+            functions::insertLog('code: ' . json_encode($countryBase['code']) , '0abbasi');
+
+        if ($country == false) {
+            functions::insertLog('insertLocal$country', '0abbasi');
             $res = $Model->insertLocal($data);
-            $result  = $this->getModel('reservationCountryModel')->get(['id'])->orderBy('id' , 'DESC')->limit('0', '1')->find();
-            $slugTourModel = $this->getController('tourSlugController');
+        }
+        else {
+            functions::insertLog('update$country', '0abbasi');
+            $condition = " abbreviation = '{$countryBase['code']}'";
+            $res = $Model->update($data, $condition);
+        }
 
-            $check_slug = $this->getModel('slugModel')->get()->where('slug_fa', '-' . $countryBase['titleFa'])->find();
+        $result  = $this->getModel('reservationCountryModel')
+            ->get(['id'])
+            ->where('abbreviation' , $countryBase['code'])
+            ->find();
 
-            if (!$check_slug) {
+        functions::insertLog('$result: ' . json_encode($result) , '0abbasi');
+        functions::insertLog('$countryBase: ' . json_encode($countryBase) , '0abbasi');
+
+        $slugTourModel = $this->getController('tourSlugController');
+            $check_slug = $this->getModel('slugModel')->get()->where('slug_en', '%' . $countryBase['titleEn'] . '%', 'LIKE')->find();
+        functions::insertLog('$check_slug: ' . json_encode($check_slug) , '0abbasi');
+
+            if ($check_slug == false) {
                 $slugTourModel->store(['en' =>  $countryBase['titleEn'].'-', 'ar' => $countryBase['titleEn'].'-', 'fa' =>  $countryBase['titleFa'].'-'], ['city_id' => 'all', 'country_id' => $result['id']]);
             }
 
@@ -417,9 +436,6 @@ class reservationBasicInformation extends clientAuth {
                 return 'error : خطا در  تغییرات' . ':' . $info['id_continent'];
             }
 
-        } else {
-            return 'error : کشور تکراری میباشد.' . ':' . $info['id_continent'];
-        }
 
 
     }

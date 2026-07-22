@@ -151,7 +151,11 @@ class country extends clientAuth {
 	public function countriesByContinentID( $id, $RemoveExistCountries = false ) {
         $additional_condition = array();
 		if ( $RemoveExistCountries ) {
-			$countries = $this->getModel( 'reservationCountryModel' )->get()->where( 'abbreviation', '', '!=' )->all(false);
+			$countries = $this->getModel( 'reservationCountryModel' )
+                ->get()
+                ->where( 'abbreviation', '', '!=' )
+                ->where( 'is_del', 'no' )
+                ->all();
 			$abb = array();
 			foreach ( $countries as $item ) {
 				$abb[] = $item['abbreviation'];
