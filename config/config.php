@@ -38,7 +38,8 @@ if($client['DefaultDb'] == '1')
     define('DB_DATABASE', 'safar360_iran_tech');
     define('DB_USERNAME','safar360');
     define('DB_PASSWORD', 'GW@!pvGOZ$h9Mk[JdoU');
-}else{
+}
+else {
     define('DB_DATABASE', $client['DbName']);
     define('DB_USERNAME', $client['DbUser']);
     define('DB_PASSWORD', $client['DbPass']);

@@ -568,6 +568,7 @@
                                 {/if}
                             </div>
                         </div>
+
                         {if $typeApplication eq 'api' AND $sourceId neq '17' AND $sourceId neq '29'}
                         <div class="box-reserve-hotel-fix-items-2">
                             <span class="City">صورتحساب  شما</span>

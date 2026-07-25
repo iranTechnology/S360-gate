@@ -198,3 +198,14 @@ $('.owl-Comments').owlCarousel({
 });
 
 
+document.addEventListener("DOMContentLoaded", function() {
+    function replaceWithFn(selector, replaceWithStr) {
+        let element = document.querySelector(selector);
+        if (element) {
+            element.innerHTML = replaceWithStr;
+        }
+    }
+
+    replaceWithFn("#pills-tab-user-tracking #pills-home-tab", 'پیگیری و استرداد');
+    replaceWithFn("#pills-tab-user-tracking #pills-profile-tab", 'پیگیری خدمات');
+});
