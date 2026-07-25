@@ -228,7 +228,6 @@ class insurance extends clientAuth {
             );
             $result = $insuranceObj->preReserveInsurance($data);
 
-
             if($result['status']){
 
                 $successFlag['status'] = "TRUE" ;
@@ -251,6 +250,8 @@ class insurance extends clientAuth {
 
             }else{
                 $successFlag['status'] = 'FALSE';
+                $successFlag['errorCode'] = $result['errorCode'];
+                $successFlag['errorMessage'] = $result['errorText'];
 
 
             }

@@ -1,0 +1,380 @@
+.nav-tabs {
+    border-bottom: none;
+}
+#myTabContent{
+    min-height: 150px;
+    flex-wrap: wrap;
+    display: flex;
+    width: 100%;
+    align-content: flex-end;
+    align-items: flex-end;
+
+}
+#myTabContent > div{ width: 100%;}
+#myTab {
+    display: block;
+    margin-top: 15px;
+}
+
+#myTab a:hover {
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    box-shadow: 0px 0px 0px 7px rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 0px 0px 0px 7px rgba(255, 255, 255, 0.4);
+    color: #737373;
+}
+
+#myTab a.active {
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    box-shadow: 0px 0px 0px 7px rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 0px 0px 0px 7px rgba(255, 255, 255, 0.4);
+    color: #737373;
+}
+
+#myTab a.active span {
+    color: #575d67;
+}
+
+#myTab a:hover span {
+    color: #575d67;
+}
+
+#myTab .nav-link {
+    width: 90px;
+    height: 80px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 3px;
+    color: #ffffff;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+    padding: 4px;
+}
+
+#myTab .nav-item {
+    margin: 0 5px
+}
+
+#myTab .nav-item {
+    display: inline-block
+}
+
+#myTab .nav-link i {
+    font-size: 27px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.col_search input {
+    font-family: 'IRANSansnum';
+    padding: 16px;
+    border-radius: 0;
+    height: 56px;
+    font-size: 14px;
+    border-left: none;
+}
+.col_search ::placeholder{
+    color: #8e8e8e;
+}
+.col_search {
+    padding: 0
+}
+
+.date_search {
+    font-size: 0
+}
+
+.date_search .form-group {
+    display: inline-block;
+
+    width: 50%;
+
+    margin: 0;
+    position: relative;
+}
+
+.date_search i.fa , .search_col i.fa {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 18px;
+    position: absolute;
+    line-height: 50px;
+    top: 3px;
+    left: 1px;
+    padding-left: 11px;
+    display: block;
+    width: 20px;
+    box-sizing: content-box;
+    height: 50px;
+    z-index: 9;
+    color: #737373;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ced4da;;
+    outline: 0;
+    box-shadow: none;
+}
+
+.theme-btn {
+    background: #fff700;
+    border-color: #fff700;
+    height: 56px;
+    width: 100%;
+    border-radius: 0;
+    color: #000;
+}
+
+.btn:focus, .btn.focus {
+    box-shadow: none
+}
+
+.down-count-nafar {
+    color: #737373 !important;
+    top: 0px;
+    left: 0px;
+    line-height: 54px;
+    font-size: 12px;
+    position: absolute;
+    text-align: left;
+    padding-left: 13px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    z-index: 1;
+}
+
+.box-of-count-nafar {
+    height: 56px;
+    background-color: white;
+    position: relative;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-bottom: 0px !important;
+}
+
+.text-count-nafar {
+    font-family: 'IRANSansnum';
+    color:  #8e8e8e !important;
+    top: 0px;
+    right: 5px;
+    font-size: 13px;
+    line-height: 56px;
+    position: absolute;
+    text-align: right;
+}
+
+.cbox-count-nafar {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #e0e1e5;
+    border-radius: 0;
+    -webkit-box-shadow: -3px 2px 10px 0 rgba(0, 0, 0, .2);
+    -moz-box-shadow: -3px 2px 10px 0 rgba(0, 0, 0, .2);
+    box-shadow: -3px 2px 10px 0 rgba(0, 0, 0, .2);
+    top: 56px;
+    z-index: 10;
+    left: 0;
+
+    right: 0px;
+    background-color: white;
+    display: none;
+    cursor: default;
+    border-top: 0;
+}
+
+.cbox-count-nafar-ch {
+    padding: 10px;
+}
+
+.cbox-count-nafar-ch > .row {
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.cbox-count-nafar-ch > .row > div {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-family: 'IRANSansnum';
+}
+
+.type-of-count-nafar {
+    color: #999;
+    padding-right: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: right;
+    vertical-align: middle;
+    line-height: 25px;
+}
+
+.num-of-count-nafar {
+    color: #999;
+    padding-left: 5px;
+    text-align: left;
+    font-size: 12px;
+    font-size: 0;
+}
+
+.counting-of-count-nafar {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 23px;
+    display: inline-block;
+    border: 1px solid #737373;
+    font-size: 12px;
+
+    border-radius: 100%;
+    margin: 0 5px;
+    color: #737373;
+}
+
+.number-count {
+    top: -2px;
+    position: relative;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    display: inline-block;
+    border: 1px solid #D1D1D1;
+    font-size: 12px;
+}
+
+.rotateb::before {
+    transform: rotate(180deg)
+}
+
+.days-in-hotel {
+    font-size: 14px;
+    height: 56px;
+    border-radius: 0;
+    line-height: 56px;
+    background: #737373;
+
+    padding: 0 5px;
+    text-align: center;
+    color: #fff;
+}
+
+.days-in-hotel i {
+    font-size: 19px;
+    position: relative;
+    top: 4px;
+}
+
+.days-in-hotel .result-st em {
+    font-style: normal
+}
+
+.days-in-hotel .result-st {
+    font-family: IRANSansnum;
+    font-size: 14px;
+    margin-top: 0px;
+    /*! font-weight: 500; */
+
+    color: #FFF;
+    display: inline;
+
+}
+
+.days-in-hotel .fa-hotel {
+    color: #FFF;
+}
+
+
+
+
+
+
+
+
+
+
+.radios{ width: 100%;}
+.switch {
+    position: relative;
+    margin: 20px auto 0;
+    height: 35px;
+    width: 200px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 3px;
+    
+}
+
+.switch-label {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100px;
+    line-height: 35px;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+}
+
+
+.switch-label-off {
+    padding-left: 2px;
+}
+
+.switch-label-on {
+    padding-right: 2px;
+}
+
+
+
+.switch-input {
+    display: none;
+}
+
+.switch-input:checked + .switch-label {
+    color: #404040;
+
+    -webkit-transition: 0.15s ease-out;
+    -moz-transition: 0.15s ease-out;
+    -o-transition: 0.15s ease-out;
+    transition: 0.15s ease-out;
+}
+
+.switch-input:checked + .switch-label-on ~ .switch-selection {
+
+    right: 98px;
+}
+
+.switch-selection {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 2px;
+    right: 2px;
+    width: 100px;
+    height: 31px;
+
+
+    border-radius: 3px;
+  background-color: #fff700;
+    -webkit-transition: right 0.15s ease-out;
+    -moz-transition: right 0.15s ease-out;
+    -o-transition: right 0.15s ease-out;
+    transition: right 0.15s ease-out;
+}
+
+.nafaratbime{ display: contents}
+
+.search_btn_insuranc{ margin-right: auto;}

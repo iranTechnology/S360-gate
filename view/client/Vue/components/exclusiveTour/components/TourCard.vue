@@ -1,4 +1,3 @@
-+
 
 <template>
    <div class="card-tour-search" onclick="showModal('.modal-card')">

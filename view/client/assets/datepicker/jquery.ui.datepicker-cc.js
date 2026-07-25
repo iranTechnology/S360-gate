@@ -2486,6 +2486,7 @@
             var html = '<div class="ui-datepicker-title">'
             var monthHtml = ''
             if (secondary || !changeMonth) {
+
                 monthHtml +=
                   '<span class="ui-datepicker-month">' +
                   monthNames[drawMonth] +
@@ -2493,6 +2494,7 @@
             } else {
                 var inMinYear = minDate && minDate.getFullYear() == drawYear
                 var inMaxYear = maxDate && maxDate.getFullYear() == drawYear
+
                 monthHtml +=
                   '<select class="ui-datepicker-month" onchange="DP_jQuery_' +
                   dpuuid +

@@ -15,6 +15,7 @@ class bank {
 	public $isCurrency;
 	public $transactionStatus = '';
 	public $detect_service_payment;
+	public $typeAppliction;
 	private $bankParam1 = '', $bankParam2 = '', $bankParam3 = '', $bankParam4 = '', $bankParam5 = '', $bankServiceType = ''; //this one should not be array
 	public $return_immediately=false;
 
@@ -116,7 +117,7 @@ class bank {
 
 			$infoBook           = functions::GetInfoHotel( $requestID );
 			$this->amountToPay  = $infoBook['hotel_payments_price'] > 0 ?  $infoBook['hotel_payments_price'] : $infoBook['total_price'];
-
+			$this->typeAppliction = $infoBook['type_application'];
 			if($infoBook['payment_status'] =='fullPayment') {
 				$this->amountToPay = $infoBook['total_price'] - $infoBook['hotel_payments_price'];
 			}
@@ -370,7 +371,7 @@ class bank {
 			#region discount code
 			if ( $discountCode != '' && $discountCode && !empty($discountCode)) {
 				$discountCodes     = Load::controller( 'discountCodes' );
-				$this->amountToPay = $discountCodes->reduceAmountViaDiscountCode( $this->amountToPay, $this->factorNumber, $memberId, $discountCode, $this->serviceType );
+				$this->amountToPay = $discountCodes->reduceAmountViaDiscountCode( $this->amountToPay, $this->factorNumber, $memberId, $discountCode, $this->serviceType ,null,$this->typeAppliction );
 			}
 			#endregion
 
@@ -501,6 +502,9 @@ class bank {
 				break;
 			case 'azKiVam':
 				return $this->executeAzKiVamBank( $operation );
+				break;
+			case 'payStar':
+				return $this->executePayStar( $operation );
 				break;
 		}
 
@@ -2524,6 +2528,9 @@ class bank {
 			$params['order_id'] = $this->factorNumber;
 			$params['callback'] = $this->callBackURL;
 
+			functions::insertLog('requestPayment$params: ' . json_encode($params) , '0abbasi');
+
+
 			$request_payment = $client->requestPayment($params);
 
 			functions::insertLog('requestPayment : ' . json_encode([
@@ -2550,16 +2557,27 @@ class bank {
 
 		}
 		elseif ( $operation == 'return' ) {
-			$params['ref_num'] = isset($_POST['ref_num']) ? $_POST['ref_num'] : isset($_GET['ref_num']) ? $_GET['ref_num'] : '';
-			$params['order_id'] = isset($_POST['order_id']) ? $_POST['order_id'] : isset($_GET['order_id']) ? $_GET['order_id'] : '';
-			$params['tracking_code'] = isset($_POST['tracking_code']) ? $_POST['tracking_code'] : isset($_GET['tracking_code']) ? $_GET['tracking_code'] : '';
-			//$params['amount'] = $this->amountToPay; مقدارش صفر بود تو تابع veryfy پرش می کنیم
-			$params['gateway_id'] = $this->bankParam1;
 
-			$verify_payment = $client->verifyPayment($params);
+			$postSave = $_POST;
+
+			functions::insertLog('$_POST: ' . json_encode($_POST) , '0abbasi');
+			functions::insertLog('$postSave: ' . json_encode($postSave) , '0abbasi');
+			functions::insertLog('factorNumber: ' . json_encode($this->factorNumber) , '0abbasi');
+
+			$verifyPaymentParams = [];
+
+			$verifyPaymentParams['ref_num'] = isset($postSave['ref_num']) ? $postSave['ref_num'] : '';
+			$verifyPaymentParams['order_id'] = isset($postSave['order_id']) ? $postSave['order_id'] : '';
+			$verifyPaymentParams['tracking_code'] = isset($postSave['tracking_code']) ? $postSave['tracking_code'] : '';
+			//$params['amount'] = $this->amountToPay; مقدارش صفر بود تو تابع veryfy پرش می کنیم
+			$verifyPaymentParams['gateway_id'] = $this->bankParam1;
+
+            functions::insertLog('verifyPayment$params: ' . json_encode($verifyPaymentParams) , '0abbasi');
+
+			$verify_payment = $client->verifyPayment($verifyPaymentParams);
 
 			functions::insertLog('verifyPayment : ' . json_encode([
-					'params' => $params,
+					'params' => $verifyPaymentParams,
 					'verify_payment' => $verify_payment,
 				], 256), 'logBankPaystar_verify');
 
@@ -2571,7 +2589,7 @@ class bank {
 				]);
 			} else {
 				return $this->returnMethod(false, $operation, [
-					'factorNumber' => $params['order_id'],
+					'factorNumber' => $verifyPaymentParams['order_id'],
 					'failMessage' => $verify_payment['message'],
 					'transactionStatus' => 'failed',
 				]);

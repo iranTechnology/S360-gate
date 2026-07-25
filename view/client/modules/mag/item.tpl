@@ -50,7 +50,7 @@
                     </span>
                     <span class="calendar">
                           <i class="fa-light fa-calendar-days"></i>
-                        انتشار:
+                        انتشار: 
                             {$article['created_at']}
                     |
                         بروزرسانی:

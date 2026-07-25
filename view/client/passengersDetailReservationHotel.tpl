@@ -810,7 +810,7 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
 
         {assign var="moreInformationPassengerHotel" value=$objFunctions->checkClientConfigurationAccess('more_information_passenger_hotel')}
 
-
+        
         <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer first ">
           <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-main-text-color ">
               ##Headgroupinformation##

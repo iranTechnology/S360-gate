@@ -2,7 +2,7 @@
 
 class bookingBusShow extends clientAuth
 {
-
+    protected $factorNumber;
     #region createExcelFile
     public function createExcelFile($param)
     {
@@ -688,7 +688,26 @@ $pdfContent .= '</tr>
     #region busInfoTracking
     public function busInfoTracking($factorNumber)
     {
-        $book = $this->getBookReportBusTicket($factorNumber);
+//        $book = $this->getBookReportBusTicket($factorNumber);
+
+        $Model = Load::library('Model');
+
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
+
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_bus_tb 
+        WHERE passenger_factor_num = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'";
+        }
+        else {
+            $sql = "SELECT * FROM book_bus_tb 
+        WHERE passenger_factor_num = '$requestNumber'";
+        }
+
+
+        $book = $Model->load($sql);
+        $this->factorNumber = $book['passenger_factor_num'];
 
         $result = '';
         if (!empty($book)) {
@@ -729,7 +748,13 @@ $pdfContent .= '</tr>
                 $op .= "<a {$onClick} class='btn btn-danger fa fa-remove margin-10' target='_blank' title='".functions::Xmlinformation('RefundTicket')."'></a>";
                 }
             }
-
+            $totalPrice = $book['total_price'];
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $this->factorNumber)->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $finalPrice = $totalPrice - $discountCodeAmount;
+            }
             $result .= '
             <table class="display" cellspacing="0" width="100%">
                 <thead>
@@ -753,7 +778,7 @@ $pdfContent .= '</tr>
             $result .= '<td>' . $book['passenger_factor_num']  . '<hr style="color: #f8f8f8;">' . $book['pnr'] . '</td>';
             $result .= '<td>' . $book['passenger_chairs'] . '</td>';
             $result .= '<td>' . $book['DateMove'] . '<hr style="color: #f8f8f8;">' . $book['TimeMove'] . '</td>';
-            $result .= '<td>' . number_format($book['total_price']) . '</td>';
+            $result .= '<td>' . number_format($finalPrice) . '</td>';
             $result .= '<td>' . $status . '</td>';
             $result .= '<td>' . $op . '</td>';
             $result .= '</tr>';

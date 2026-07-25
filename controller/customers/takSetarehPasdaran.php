@@ -1,12 +1,12 @@
 
         <?php
     //todo: ********************* CREATE ACCESS CLIENT FOR ((FLIGHT + HOTEL)) *********************
-    //if(  $_SERVER['REMOTE_ADDR']=='84.241.4.20'  ) {
-    //    error_reporting(1);
-    //    error_reporting(E_ALL | E_STRICT);
-    //    @ini_set('display_errors', 1);
-    //    @ini_set('display_errors', 'on');
-    //}
+//    if(  $_SERVER['REMOTE_ADDR']=='93.118.161.174'  ) {
+//        error_reporting(1);
+//        error_reporting(E_ALL | E_STRICT);
+//        @ini_set('display_errors', 1);
+//        @ini_set('display_errors', 'on');
+//    }
 
     class takSetarehPasdaran extends mainPage {
 

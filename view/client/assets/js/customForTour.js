@@ -3063,7 +3063,7 @@ function logicalDeletion(idSame, type, checkbox)
 
                         if (data.indexOf('success') > -1) {
 
-                            checkbox.checked = !checkbox.checked; // تغییر وضعیت بعد از تایید
+                            // checkbox.checked = !checkbox.checked; // تغییر وضعیت بعد از تایید
 
                             $.alert({
                                 title: useXmltag("Removechanges"),
@@ -3093,6 +3093,100 @@ function logicalDeletion(idSame, type, checkbox)
                 btnClass: 'btn-orange',
                 action: function () {
                     // هیچ کاری نکن → چک‌باکس تغییر نمی‌کند
+                }
+            }
+        }
+    });
+
+    return false;
+}
+function showBlocker() {
+    $('#globalBlocker').show();
+}
+
+function hideBlocker() {
+    $('#globalBlocker').hide();
+}
+
+function duplicateTour(idSame, type, checkbox)
+{
+
+    event.preventDefault();
+
+    $.confirm({
+        theme: 'supervan',
+        title: 'کپی کردن تور',
+        icon: 'fa fa-trash',
+        content: 'آیا از کپی کردن تور اطمینان دارید؟',
+        rtl: true,
+        closeIcon: true,
+        type: 'orange',
+        buttons: {
+            confirm: {
+                text: useXmltag("Approve"),
+                btnClass: 'btn-green',
+                action: function () {
+                    showBlocker();
+                    $.alert({
+                        title: useXmltag("Copychanges"),
+                        content: `
+                                        <div style="
+                                            display:flex;
+                                            flex-direction:column;
+                                            justify-content:center;
+                                            align-items:center;
+                                            padding:15px;
+                                            height:110px;
+                                            margin-right: 116px;
+                                            text-align:center;
+                                            z-index: 2001;
+                                        ">
+                                            <div class="spinner-border text-success" role="status"></div>
+                                            <div style="margin-top:10px">در حال بارگذاری...</div>
+                                        </div>
+                                        `,
+                        rtl: true,
+                        type: 'green'
+                    });
+
+                    $.post({
+                        url: amadeusPath + 'tour_ajax.php',
+                        data: {
+                            idSame: idSame,
+                            flag: 'duplicateTour'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+
+                            if (data.status === 'success') {
+
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 500);
+
+                            } else {
+
+                                $.alert({
+                                    title: 'Error',
+                                    content: data.message,
+                                    rtl: true,
+                                    type: 'red'
+                                });
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 500);
+
+                            }
+                        }
+                    });
+
+                }
+            },
+            cancel: {
+                text: useXmltag("Optout"),
+                btnClass: 'btn-orange',
+                action: function () {
+
                 }
             }
         }
@@ -4775,7 +4869,7 @@ function triggerTourPackages(_this , tour_id, start_date,end_date) {
 
     create_section_package_tour_several_date(_this , start_date, tour_id, end_date)
 
-    get_file_package_by_id_tour(_this , start_date, tour_id, end_date)
+    // get_file_package_by_id_tour(_this , start_date, tour_id, end_date)
 
     /*  if(check_request_tour !=='1'){
       }else{

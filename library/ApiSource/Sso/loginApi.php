@@ -1,11 +1,5 @@
 <?php
 
-
-/**
- * Class api
- * @property loginApi $loginApi
- */
-
 class loginApi extends clientAuth
 {
 
@@ -13,6 +7,8 @@ class loginApi extends clientAuth
 
     public function __construct()
     {
+
+        return json_encode('hi');
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && (strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false)) {
             $this->content = json_decode(file_get_contents('php://input'), true);
@@ -41,9 +37,7 @@ class loginApi extends clientAuth
                                 'Code' => ''
                             );
                             echo json_encode($infoCode);
-                            exit;
-                        }
-                        elseif (empty($this->content['firstName'])) {
+                        } elseif (empty($this->content['firstName'])) {
                             $infoCode = array(
                                 'Result' => array(
                                     'Value' => ''
@@ -54,9 +48,7 @@ class loginApi extends clientAuth
                                 'Code' => ''
                             );
                             echo json_encode($infoCode);
-                            exit;
-                        }
-                        elseif (empty($this->content['lastName'])) {
+                        } elseif (empty($this->content['lastName'])) {
                             $infoCode = array(
                                 'Result' => array(
                                     'Value' => ''
@@ -67,128 +59,8 @@ class loginApi extends clientAuth
                                 'Code' => ''
                             );
                             echo json_encode($infoCode);
-                            exit;
                         }
-                        elseif (empty($this->content['password'])) {
-                            $infoCode = array(
-                                'Result' => array(
-                                    'Value' => ''
-                                ),
-                                'RequestStatus' => 'Error',
-                                'Message' => 'password is required',
-                                'MessageCode' => 'E0User',
-                                'Code' => ''
-                            );
-                            echo json_encode($infoCode);
-                            exit;
-                        }
-
-                        $mock_fields = [
-                            "given_name" => $this->content['firstName'],
-                            "family_name" => $this->content['lastName'],
-                            "email" => $this->content['email'],
-                            "Mobile" => $this->content['mobile'],
-                            "password" => $this->content['password']
-                        ];
-
-                        $response = $this->mock_connect_token($mock_fields);
-
-
-                        $data = $response;
-
-                        $userInfo = [];
-                        if (isset($data['id_token'])) {
-                            $parts = explode('.', $data['id_token']);
-                            $payload_b64 = $parts[1];
-                            $payload_b64 .= str_repeat('=', 4 - (strlen($payload_b64) % 4)); // padding
-
-                            $payload_json = base64_decode(strtr($payload_b64, '-_', '+/'));
-                            $userInfo = $payload_json;
-                        }
-                        elseif (isset($data['user_info'])) {
-                            $userInfo = $data['user_info'];
-                        }
-                        else {
-                            $possible = ['given_name', 'family_name', 'firstname', 'lastname', 'mobile', 'Mobile', 'email'];
-                            foreach ($possible as $k) if (isset($data[$k])) $userInfo[$k] = $data[$k];
-                        }
-
-
-
-                        $userInfo = json_decode($userInfo , true);
-
-                        $userData = array(
-                            'firstname' => $userInfo['given_name'],
-                            'lastname' => $userInfo['family_name'],
-                            'mobile' => $userInfo['Mobile'],
-                            'password' => $userInfo['password'],
-                            'email' => $userInfo['email']
-                        );
-
-
-
-
-                        $memberData = [
-                            'entry' => $userData['mobile'],
-                            'password' => $userData['password'],
-                            'name' => $userData['firstname'],
-                            'family' => $userData['lastname'],
-                            'mobile' => $userData['mobile'],
-                            'reagentCode' => '',
-                            'Type' => 'app'
-                        ];
-
-                        $membersModel = $this->getModel('membersModel');
-                        $exist_member = $membersModel->getMemberByUserName($memberData);
-
-                        $memberController = $this->getController( 'members' );
-
-                        if ($exist_member) {
-                            $response = $memberController->memberLogin( $memberData['mobile'], $memberData['password'], 'off', '0', IS_ENABLE_CLUB , false);
-                            if (!$response) {
-                                $infoCode = array(
-                                    'RequestStatus' => 'Success',
-                                    'Message' => 'The login information is incorrect'
-                                );
-                                echo json_encode($infoCode);
-                                exit;
-                            }
-                        } else {
-                            $response = $memberController->memberInsert($memberData , false);
-                        }
-
-
-
-                        $info_member = $exist_member;
-
-                        if ($info_member && isset($info_member['data'])) {
-                            session_start();
-                            $_SESSION['Login'] = 'success';
-                            $_SESSION['nameUser'] = $info_member['name'] . ' ' . $info_member['family'];
-                            $_SESSION['userId'] = $info_member['id'];
-                            $_SESSION['typeUser'] = ($info_member['fk_counter_type_id'] == 5 ? 'member' : 'counter');
-                            $_SESSION['cardNo'] = (isset($info_member['card_number']) ? $info_member['card_number'] : '');
-                            $_SESSION['LastLogin'] = time();
-                            $_SESSION['counterTypeId'] = (isset($info_member['fk_counter_type_id']) ? $info_member['fk_counter_type_id'] : '');
-                            $_SESSION['layout'] = (isset($info_member['TypeOs']) ? $info_member['TypeOs'] : '');
-                        }
-
-                        if ($exist_member) {
-                            $infoCode = array(
-                            'RequestStatus' => 'Success',
-                            'Message' => 'The login was successful'
-                        );
-                        } else {
-                            $infoCode = array(
-                            'RequestStatus' => 'Success',
-                            'Message' => 'The register was successful'
-                        );
-                        }
-
-                        echo json_encode($infoCode);
-                        exit;
-                    }
-                    else {
+                    } else {
                         $infoCode = array(
                             'Result' => array(
                                 'Value' => ''
@@ -199,10 +71,8 @@ class loginApi extends clientAuth
                             'Code' => ''
                         );
                         echo json_encode($infoCode);
-                        exit;
                     }
-                }
-                else {
+                } else {
                     $infoCode = array(
                         'Result' => array(
                             'Value' => ''
@@ -213,7 +83,6 @@ class loginApi extends clientAuth
                         'Code' => ''
                     );
                     echo json_encode($infoCode);
-                    exit;
                 }
             } else {
                 $infoCode = array(
@@ -226,7 +95,6 @@ class loginApi extends clientAuth
                     'Code' => ''
                 );
                 echo json_encode($infoCode);
-                exit;
             }
 
 
@@ -243,28 +111,94 @@ class loginApi extends clientAuth
             );
 
             echo json_encode($infoCode);
-            exit;
         }
 
+        $mock__fields = http_build_query([
+            "given_name" => $this->content['firstName'],
+            "family_name" => $this->content['lastName'],
+            "email" => $this->content['email'],
+            "Mobile" => $this->content['mobile']
+        ]);
+
+        $response = $this->mock_connect_token($mock__fields);
+
+
+        $data = json_decode($response, true);
+        if (!is_array($data)) die("پاسخ توکن JSON معتبر نیست: " . htmlspecialchars($response));
+
+        $userInfo = [];
+        if (isset($data['id_token'])) {
+            $parts = explode('.', $data['id_token']);
+            $payload_b64 = $parts[1];
+            $payload_b64 .= str_repeat('=', 4 - (strlen($payload_b64) % 4)); // padding
+            $payload_json = base64_decode(strtr($payload_b64, '-_', '+/'));
+            $userInfo = json_decode($payload_json, true);
+        } elseif (isset($data['user_info'])) {
+            $userInfo = $data['user_info'];
+        } else {
+            $possible = ['given_name', 'family_name', 'firstname', 'lastname', 'mobile', 'Mobile', 'email'];
+            foreach ($possible as $k) if (isset($data[$k])) $userInfo[$k] = $data[$k];
+        }
+
+        $userData = array(
+            'firstname' => isset($userInfo['given_name']) ? $userInfo['given_name'] :
+                (isset($userInfo['firstname']) ? $userInfo['firstname'] : ''),
+            'lastname' => isset($userInfo['family_name']) ? $userInfo['family_name'] :
+                (isset($userInfo['lastname']) ? $userInfo['lastname'] : ''),
+            'mobile' => isset($userInfo['Mobile']) ? $userInfo['Mobile'] :
+                (isset($userInfo['mobile']) ? $userInfo['mobile'] : ''),
+            'email' => isset($userInfo['email']) ? $userInfo['email'] : ''
+        );
+
+
+        $memberData = [
+            'entry' => $userData['mobile'],
+            'password' => '123456',
+            'name' => $userData['firstname'],
+            'family' => $userData['lastname'],
+            'mobile' => $userData['mobile'],
+            'reagentCode' => '',
+            'Type' => 'app'
+        ];
+
+        $memberController = Load::controller( 'members' );
+        $response = $memberController->memberInsert($memberData);;
+
+        $info_member = json_decode($response, true);
+        if ($info_member && isset($info_member['data'])) {
+            session_start();
+            $_SESSION['Login'] = 'success';
+            $_SESSION['nameUser'] = $info_member['data']['nameUser'];
+            $_SESSION['userId'] = $info_member['data']['userId'];
+            $_SESSION['typeUser'] = $info_member['data']['typeUser'];
+            $_SESSION['cardNo'] = $info_member['data']['cardNo'];
+            $_SESSION['LastLogin'] = time();
+            $_SESSION['counterTypeId'] = $info_member['data']['counterTypeId'];
+            $_SESSION['layout'] = $info_member['data']['layout'];
+        }
+
+        $infoCode = array(
+            'RequestStatus' => 'Success',
+            'Message' => 'The operation was successful.'
+        );
+        echo json_encode($infoCode);
+
+        exit;
     }
 
     public function mock_connect_token($mockData) {
         $header = array("alg" => "HS256", "typ" => "JWT");
-
         $payload = array(
             "given_name" => $mockData['given_name'],
             "family_name" => $mockData['family_name'],
             "email" => $mockData['email'],
             "Mobile" => $mockData['Mobile'],
-            "password" => $mockData['password'],
             "iat" => time(),
             "exp" => time() + 3600,
             "iss" => "mock.sso",
         );
 
-
         $jwt = $this->base64url_encode(json_encode($header)) . '.' . $this->base64url_encode(json_encode($payload)) . '.' . 'MOCK_SIGNATURE';
-
 
         if (!function_exists('random_bytes')) {
             function random_bytes($length) {
@@ -295,8 +229,5 @@ class loginApi extends clientAuth
     }
 
 }
-
-new loginApi();
-
 
 ?>

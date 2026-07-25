@@ -266,7 +266,7 @@ class bookhotelshow extends baseController
                 {$tableName}.manual_book,
                 {$tableName}.hotel_payments_price,
                 {$tableName}.discount_code_amount,
-                {$tableName}.type_discount,
+                 {$tableName}.type_discount,
 
             ";
 
@@ -592,7 +592,8 @@ class bookhotelshow extends baseController
             $dataRows[$k]['manual_book'] = $book['manual_book'];
             $dataRows[$k]['status_fa'] = $status;
 //            if (TYPE_ADMIN != '1') {
-            $dataRows[$k]['discount_code_amount'] = $book['discount_code_amount'];
+                $dataRows[$k]['discount_code_amount'] = $book['discount_code_amount'];
+                $dataRows[$k]['type_discount'] = $book['type_discount'];
 //            }
 
 
@@ -2307,7 +2308,7 @@ class bookhotelshow extends baseController
 
 
         if(!Session::IsLogin()){
-            $sql = "SELECT * FROM book_hotel_local_tb 
+        $sql = "SELECT * FROM book_hotel_local_tb 
         WHERE factor_number = '{$_POST['request_number']}' 
         AND member_mobile = '{$_POST['phone_number']}'
         ";
@@ -2412,6 +2413,12 @@ class bookhotelshow extends baseController
 
 
             if (!$isRequest && $bookHotel[0]['hotel_payments_price'] > 0 && $bookHotel[0]['status'] == 'RequestAccepted' && $bookHotel[0]['payment_status'] == 'fullPayment') {
+//                if($bookHotel[0]['total_price'] === 'percent'){
+//                    $price_pay = $bookHotel[0]['total_price'] - ($bookHotel[0]['total_price'] * $bookHotel[0]['hotel_payments_price'] / 10);
+//                }else{
+//                    $price_pay = $bookHotel[0]['total_price'] - $bookHotel[0]['hotel_payments_price'];
+//                }
+
                 $price_pay = $bookHotel[0]['total_price'] - $bookHotel[0]['hotel_payments_price'];
 
                 $status .= '<br>
@@ -2452,6 +2459,7 @@ class bookhotelshow extends baseController
             if (!$isRequest && $bookHotel[0]['status'] == 'PreReserve') {
                 if ($bookHotel[0]['hotel_payments_price'] > 0) {
                     $price_pay = $bookHotel[0]['hotel_payments_price'];
+
                     $status .= '<br>
                         <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
                         onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">ادامه پرداخت (بانکی)</a>
@@ -2482,6 +2490,7 @@ class bookhotelshow extends baseController
                 }
                 else {
                     $price_pay = $bookHotel[0]['total_price'];
+
                     $status .= '<br>
                         <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
                         onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
@@ -2545,7 +2554,9 @@ class bookhotelshow extends baseController
 
                 }
                 else {
+
                     $price_pay = $bookHotel[0]['total_price'];
+
                     $status .= '<br>
                         <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
                         onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
@@ -2634,6 +2645,7 @@ class bookhotelshow extends baseController
                     $op .= '<a id="cancelbyuser"  title="' . functions::Xmlinformation("RefundTicket") . '" onclick="ModalCancelUser(' . "'hotel'" . ',' . "'" . $bookHotel[0]['factor_number'] . "'" . '); return false;"  class="btn btn-danger fa fa-times"></a>';
                 } else {
                     $price_pay = $bookHotel[0]['total_price'];
+
                     $status .= '<br>
                         <a class="mb-1 s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color" 
                         onclick="showTypePayment(\'' . $bookHotel[0]['factor_number'] . '\',\'' . $bookHotel[0]['type_application'] . '\',\'hotelLocal\',\'' . round($price_pay) . '\',\'' . $bookHotel[0]['serviceTitle'] . '\',\'' . $bookHotel[0]['currency_code'] . '\',\'' . $bookHotel[0]['currency_equivalent'] . '\')">' . functions::Xmlinformation("Payment") . '</a>
@@ -2690,7 +2702,7 @@ class bookhotelshow extends baseController
             $result .= '<td>' . $bookHotel[0]['request_number'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['passenger_leader_room_fullName'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['payment_date'] . '</td>';
-            $result .= '<td>' . functions::numberFormat($finalPrice) . ' ' . $paymentPrice['TypeCurrency'];
+                $result .= '<td>' . functions::numberFormat($finalPrice) . ' ' . $paymentPrice['TypeCurrency'];
             if ($amountDiscountCode['AmountCurrency'] != 0) {
                 $result .= '<br><del>' . functions::numberFormat($paymentPrice['AmountCurrency']) . '</del>';
             }

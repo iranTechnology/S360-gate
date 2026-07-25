@@ -1,0 +1,280 @@
+
+.social a {
+    width: 38px;
+    height: 38px;
+    overflow: hidden;
+    /*margin:0 8px;*/
+    transition: all 0.3s ease-out;
+    opacity: .8;
+    display: inline-block;
+    transition: .3s all ease;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+
+}
+.social a:hover{
+    opacity: 1;
+}
+.social a img{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.social{
+    padding-bottom: 20px;
+    transition: .3s all ease;
+    text-align: center;
+    width: 100%;
+}
+
+
+
+
+.top-content {
+    display: block;
+}
+
+/*newsletter*/
+.n-letter{
+  overflow: hidden;
+  /*background: #787070;*/
+  padding: 10px;
+  /*border-radius: 31px;*/
+
+}
+.NewsLetterBox input[type="text"] {
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    float: right;
+    padding: 0px 10px;
+    margin: 5px 1%;
+    font: normal 14px "Yekan","YekanNumbers";
+    text-align: right;
+    border:none; 
+    border-bottom: 1px solid rgb(207, 202, 202);
+    outline: none;
+    background: rgba(255, 255, 255, 0.3);
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    direction: rtl;
+}
+.NewsLetterBox input[type="text"]:hover {
+         background: transparent;
+    color: #224E59;
+    border-bottom:3px solid #224E59;
+}
+.NewsLetterBox input[type="text"]:focus {
+    background: transparent;
+    color: #224E59;
+    border-bottom:3px solid #224E59;
+}
+.NewsLetterBox input[type="button"] {
+    width: 100%;
+    line-height: 35px;
+    float: right;
+    height: 35px;
+    padding: 0px 10px;
+    font: normal 16px "Yekan","YekanNumbers";
+    text-align: center;
+    border: none;
+    outline: none;
+    color: #fff;
+    background:#D49955;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    margin: 5px 1%;
+
+}
+.NewsLetterBox input[type="button"]:hover,
+.NewsLetterBox input[type="button"]:focus {
+    background: #224E59;
+    color: #fff;
+}
+
+
+/* Underline From Right */
+
+.hvr-underline-from-center {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow: hidden;
+
+
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+}
+.hvr-underline-from-center:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    right: 50%;
+    bottom: 0;
+    background: #2d3851;
+    height: 3px;
+    -webkit-transition-property: left, right;
+    transition-property: left, right;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+.hvr-underline-from-center:hover::before, .hvr-underline-from-center:focus::before, .hvr-underline-from-center:active::before {
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    color: #666;
+
+}
+
+/*date convert*/
+input#txtMiladiCalendar, input#txtShamsiCalendar {
+    float: right;
+    margin: 5px 0 0 0;
+    font: normal 14px 'IRANSansLight' ,'IRANSansNumber';
+    text-align: right;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    direction: rtl;
+    height: 34px;
+    line-height: 20px;
+    outline: 0;
+    background:#82b62d;
+    border: 1px solid #82b62d;
+    padding: 5px 20px 5px 5px;
+    /*margin-left: 10px;*/
+    color: rgb(85, 85, 85);
+    -webkit-text-fill-color: rgb(85, 85, 85);
+    width: 49.5%;
+}
+input#txtShamsiCalendar:hover, input#txtMiladiCalendar:hover,
+input#txtShamsiCalendar:focus, input#txtMiladiCalendar:focus{
+    border-right: 4px solid #282e3c;
+    background: rgba(255, 255, 255, 0.4);
+}
+div#showShamsiResult,div#showMiladiResult {
+    float: left;
+    margin: 5px 0 0 0;
+    font: normal 14px 'IRANSansLight' ,'IRANSansNumber';
+    text-align: right;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    direction: rtl;
+    height: 34px;
+    line-height: 20px;
+    outline: 0;
+    background: rgba(246,246,246,.51);
+    border: 1px solid #82b62d    ;
+    padding: 5px 20px 5px 5px;
+    /* margin-left: 10px; */
+    -webkit-text-fill-color: rgb(85, 85, 85);
+    width: 49.5%;
+}
+button#miladiConvertButton, button#shamsiConvertButton {
+    line-height: 35px;
+    float: left;
+    height: 35px;
+    padding: 0px 10px;
+    font: normal 16px 'IRANSansLight' ,'IRANSansNumber';
+    text-align: center;
+    outline: none;
+    color: #fff;
+    background: #82b62d    ;
+    cursor: pointer;
+    margin: 5px 1% 0 0;
+    border: 0;
+    box-sizing: border-box;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    -ms-box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    transition: .3s all;
+    -webkit-transition: .3s all;
+    width: 133px;
+    font-size: 13px;
+    height: 34px;
+    background: #82b62d;
+    color: #e7e9ea;
+    width: 100%;
+    text-align: center;
+}
+button#miladiConvertButton:hover, button#shamsiConvertButton:hover{
+    background: #282e3c;
+    color: #fff;
+}
+a.miladiConvertButton{
+        line-height: 35px;
+    float: left;
+    height: 35px;
+    padding: 0px 10px;
+    font: normal 16px 'IRANSansLight' ,'IRANSansNumber';
+    text-align: center;
+    outline: none;
+    color: #fff;
+    background: #25257D;
+    cursor: pointer;
+    margin: 5px 1% 0 0;
+    border: 0;
+    box-sizing: border-box;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    -ms-box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    transition: .3s all;
+    -webkit-transition: .3s all;
+    width: 133px;
+    font-size: 13px;
+    height: 34px;
+    background: #82b62d    ;
+    color: #e7e9ea;
+    width: 100%;
+    text-align: center;
+}
+a.miladiConvertButton:hover{
+    background: #282e3c;
+    color: #fff;
+}
+a.countryTime, a.weather {
+    line-height: 44px;
+    float: left;
+    height: 35px;
+    padding: 5px 10px;
+    font: normal 16px 'IRANSansLight' ,'IRANSansNumber';
+    text-align: center;
+    outline: none;
+    color: #fff;
+    background: #25257D;
+    cursor: pointer;
+    margin: 5px 1% 0 0;
+    border: 0;
+    box-sizing: border-box;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    -ms-box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.15);
+    transition: .3s all;
+    -webkit-transition: .3s all;
+    width: 133px;
+    font-size: 13px;
+    height: 34px;
+    background: #2c87c4;
+    color: #e7e9ea;
+    width: 100%;
+    text-align: center;
+        margin-top: 30px
+}
+a.countryTime:hover, a.weather:hover {
+    background: #ffffff;
+    color: #000;
+}

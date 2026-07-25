@@ -2,6 +2,15 @@
 
 {load_presentation_object filename="organizationLevel" assign="objOrganization"}
 {assign var="organizationList" value=$objOrganization->ListAll()} {*گرفتن لیست سطح سازمانی*}
+<style>
+
+    #discountAmountPercent-error{
+        position: absolute;
+        top: 35px;
+
+    }
+
+</style>
 
 <div class="container-fluid">
     <div class="row bg-title">
@@ -39,13 +48,9 @@
                         <label for="discountAmountCash" class="control-label">مبلغ تخفیف </label>
                         <input type="text" class="form-control" id="discountAmountCash"
                                name="Amount"
-                               placeholder="مبلغ تخفیف را وارد کنید"
-                               oninput="handleDiscountInput(this)">
+                        placeholder="مبلغ تخفیف را وارد کنید"
+                        oninput="handleDiscountInput(this)">
                     </div>
-
-
-
-
                     <div class="form-group col-sm-6">
                         <label for="Stock" class="control-label">تعداد کدهای تخفیف</label>
                         <input type="text" class="form-control" id="Stock" name="Stock"
@@ -72,38 +77,42 @@
 
                     <div class="form-group col-sm-6">
                         <label for="discountAmountPercent" class="control-label"> درصد تخفیف (فقط برای هتل‌های رزرواسیون اعمال میگردد)</label>
-                        <input type="text" class="form-control" id="discountAmountPercent"
-                               name="Amount"
-                               placeholder="درصد تخفیف را وارد کنید "
-                               oninput="handleDiscountInput(this)">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="discountAmountPercent"
+                                   name="Amount"
+                                   placeholder="درصد تخفیف را وارد کنید"
+                                   oninput="handleDiscountInput(this)" min="0" max="100">
+                            <span class="input-group-addon">%</span>
+                        </div>
+
                     </div>
                     <div class="form-group col-sm-12">
                         <input type="checkbox" name="RandomCheck" id="RandomCheck" value="1" />
                         <label for="RandomCheck" class="control-label">
                             تولید کد های متفاوت
                             <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
-                                  data-toggle="tooltip" data-placement="left"
-                                  title="در صورتیکه می خواهید کدهای متفاوت یک بار مصرف به صورت تصادفی تولید گردد این گزینه را انتخاب نمایید"></span>
+                                          data-toggle="tooltip" data-placement="left"
+                                          title="در صورتیکه می خواهید کدهای متفاوت یک بار مصرف به صورت تصادفی تولید گردد این گزینه را انتخاب نمایید"></span>
                         </label>
                     </div>
 
-                    {*                    <div class="form-group col-sm-12">*}
-                    {*                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="1" />*}
-                    {*                        <label for="is_allow_counter" class="control-label">*}
-                    {*                            مجاز برای استفاده کانتر ها*}
-                    {*                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'*}
-                    {*                                          data-toggle="tooltip" data-placement="left"*}
-                    {*                                          title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>*}
-                    {*                        </label>*}
-                    {*                    </div>*}
+{*                    <div class="form-group col-sm-12">*}
+{*                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="1" />*}
+{*                        <label for="is_allow_counter" class="control-label">*}
+{*                            مجاز برای استفاده کانتر ها*}
+{*                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'*}
+{*                                          data-toggle="tooltip" data-placement="left"*}
+{*                                          title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>*}
+{*                        </label>*}
+{*                    </div>*}
 
                     <div class="form-group col-sm-12">
                         <input type="checkbox" name="is_consume" id="is_consume" value="1"  onclick="showAmountPointDiscountCode()"/>
                         <label for="is_consume" class="control-label">
                             کد تخفیف ویژه
                             <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
-                                  data-toggle="tooltip" data-placement="left"
-                                  title="در صورتی که میخواهید این  کد  تخفیف فقط در ازای کسر از امتیاز کاربر قابل استفاده باشد گزینه زیر را انتخاب کنید"></span>
+                                          data-toggle="tooltip" data-placement="left"
+                                          title="در صورتی که میخواهید این  کد  تخفیف فقط در ازای کسر از امتیاز کاربر قابل استفاده باشد گزینه زیر را انتخاب کنید"></span>
                         </label>
                     </div>
                     <div class="form-group col-sm-12 limit-point-club" style="display: none;">

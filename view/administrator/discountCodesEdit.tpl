@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="form-group col-sm-6">
-                        <label for="Amount" class="control-label">میزان تخفیف {if $discountInfo['typeDiscount'] neq 'cash'}(درصدی){/if}}</label>
+                        <label for="Amount" class="control-label">میزان تخفیف {if $discountInfo['typeDiscount'] neq 'cash'}(درصدی){/if}</label>
                         <input type="text" class="form-control" id="Amount" name="Amount" value="{$discountInfo['amount']}" readonly="readonly"
                                placeholder="میزان تخفیف را وارد نمائید">
                     </div>

@@ -3358,28 +3358,6 @@ class functions {
             return 'PublicPortalHotel';
         }
     }
-
-    public static function TypeDiscount( $typeApplication, $isExternal = null, $webservice_type = '' ) {
-        if ( $typeApplication == 'api' || $typeApplication == 'api_app' ) {
-            if ( $webservice_type == 'private' ) {
-                return 'PrivateLocalHotel';
-            }
-
-            return 'PublicLocalHotel';
-        } elseif ( $typeApplication == 'reservation' || $typeApplication == 'reservation_app' ) {
-            if ( isset( $isExternal ) && $isExternal == 'yes' ) {
-                return 'PrivatePortalHotel';
-            } else {
-                return 'PrivateLocalHotel';
-            }
-        } elseif ( $typeApplication == 'externalApi' ) {
-            if ( $webservice_type == 'private' ) {
-                return 'PrivatePortalHotel';
-            }
-
-            return 'PublicPortalHotel';
-        }
-    }
     #endregion
 
     #region ServiceDiscount

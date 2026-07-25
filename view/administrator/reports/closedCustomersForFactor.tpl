@@ -1,11 +1,20 @@
 {load_presentation_object filename="clients" assign="objReport"}
 {assign var="reports" value=$objReport->listClosedClients()}
+{fetch file="/home/irantech/public_html/factors/CurlFromOtherSyatems/LastUpdateCheckFactorForSafar360.txt" assign="lastUpdate"}
+
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default ">
             <div class="panel-heading TitleSectionsDashboard" style="cursor: pointer;" data-toggle="collapse" data-target="#ActiveBoxCloseUser">
                 <h6 style="font-weight: 500; font-size: 17px; color: #3c3939; margin: 0;">
                     لیست مشتریانی که فاکتورهایش را پرداخت نکرده و سمت کاربر ایشان بسته شده است
+					{* اگر فایل وجود داشت و محتوا داشت، آن را نمایش دهد *}
+					{if $lastUpdate}
+						<span style="font-size: 12px; color: #888; margin-right: 15px; font-weight: normal; background: #eef1f5; padding: 3px 8px; border-radius: 4px;">
+							<i class="ti-timer"></i> آخرین بررسی فاکتورها: {$lastUpdate}
+						</span>
+					{/if}
+						
                     <div class="pull-right"><i class="ti-minus"></i></div>
                 </h6>
             </div>

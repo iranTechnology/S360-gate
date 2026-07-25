@@ -1609,7 +1609,6 @@ class user extends baseController
                 ORDER BY b.creation_date_int DESC ";
 //echo $sql; die();
         $bookList = $Model->select($sql);
-        var_dump($bookList);
         $result = [] ;
         foreach ($bookList as  $key => $item ){
             $amount_buy = functions::CalculateDiscount($item['request_number']) ;
@@ -1764,7 +1763,7 @@ class user extends baseController
                     ];
 
                     $result[$key]['button_list'][] = [
-                        'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                        'title' => functions::Xmlinformation('GetTicketCounter')->__toString(),
                         'type' => 'link',
                         'link' => $bookList[$key]['dataBtnPdf'],
                     ];
@@ -1803,7 +1802,7 @@ class user extends baseController
                         if ($item['IsInternal'] != '0') {
                             $result[$key]['button_list'][] =
                                 [
-                                    'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                    'title' => functions::Xmlinformation('PassengerTicket')->__toString(),
                                     'type' => 'link',
                                     'link' => $bookList[$key]['dataBtnPdfFreeLink'],
                                 ];
@@ -2024,31 +2023,40 @@ class user extends baseController
 //                    }else{
 //                        $pagefinal = 'parvazBookingLocal';
 //                    }
-                    $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&lang=fa';
+                    $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'] . '&lang=fa';
                     $type_member = functions::TypeUser(session::getUserId());
                     if ($type_member == 'Counter') {
-                        $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'].'&lang=fa';
+                        $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'].'&lang=fa';
                         $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
                     }
 
                 }
-                $result[$key]['button_list'] = [
-                    [
-                        'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
-                        'type' => 'button' ,
-                        'function'  => "ModalPassengerExclusiveTourDetails(event.currentTarget  , ".$item['factor_number'].",'exclusivetour')" ,
-                    ],
-                    [
-                        'title' => functions::Xmlinformation('GetTicket')->__toString(),
-                        'type' => 'link',
-                        'link' => $bookList[$key]['dataBtnPdf'],
-                    ],
-                    [
-                        'title' => functions::Xmlinformation('Viewbill')->__toString(),
-                        'type' => 'link',
-                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
-                    ],
+                $result[$key]['button_list'] = [];
 
+                $result[$key]['button_list'][] = [
+                    'title' => functions::Xmlinformation('FlightTicket')->__toString(),
+                    'type' => 'link',
+                    'link' => $bookList[$key]['dataBtnPdf'],
+                ];
+
+                if ($item['successfull'] == 'book' && $item['IsInternal'] != '0') {
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('HotelWatcher')->__toString(),
+                        'type' => 'link',
+                        'link' => $bookList[$key]['dataBtnPdfFreeLink'],
+                    ];
+                }
+
+                $result[$key]['button_list'][] = [
+                    'title' => functions::Xmlinformation('Viewbill')->__toString(),
+                    'type' => 'link',
+                    'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
+                ];
+
+                $result[$key]['button_list'][] = [
+                    'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
+                    'type' => 'button',
+                    'function' => "ModalPassengerExclusiveTourDetails(event.currentTarget, " . $item['factor_number'] . ",'exclusivetour')",
                 ];
                 /* if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm' ) {
                      $result[$key]['button_list'][] =
@@ -2066,16 +2074,16 @@ class user extends baseController
 
                          ];
                  }*/
-                if ($item['successfull'] == 'book') {
-                    if ($item['IsInternal'] != '0') {
-                        $result[$key]['button_list'][] =
-                            [
-                                'title' => functions::Xmlinformation('Freeticket')->__toString(),
-                                'type' => 'link',
-                                'link' => $bookList[$key]['dataBtnPdfFreeLink'],
-                            ];
-                    }
-                }
+//                if ($item['successfull'] == 'book') {
+//                    if ($item['IsInternal'] != '0') {
+//                        $result[$key]['button_list'][] =
+//                            [
+//                                'title' => functions::Xmlinformation('PassengerTicket')->__toString(),
+//                                'type' => 'link',
+//                                'link' => $bookList[$key]['dataBtnPdfFreeLink'],
+//                            ];
+//                    }
+//                }
                 if(CLIENT_ID == 271){
                     $reservation_proof = Load::controller('reservationProof');
                     $file = $reservation_proof->getProofFile($item['request_number'] , 'Flight');
@@ -2875,11 +2883,11 @@ class user extends baseController
             $bookList[$key]['reservationProofVersa'] = '';
             if ($item['status'] == 'BookedSuccessfully') {
                 if(CLIENT_ID == 317) {
-                    $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookNewhotelshow&id=' . $item['factor_number'];
+                    $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
                 }else{
                     if ($item['isInternal'] != 0) {
 //                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
-                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookNewhotelshow&id=' . $item['factor_number'];
+                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
 
                     }else {
                         $bookList[$key]['pdfHotel']  = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookhotelshow&id=' . $item['factor_number'];
@@ -4558,7 +4566,7 @@ class user extends baseController
                             $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
 
                         }
-                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&cash=no'.'&lang=fa';
+                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&cash=no'.'&lang=fa&isPassenger=1';
 
                     }
 
@@ -4569,7 +4577,7 @@ class user extends baseController
                             'function'  => "modalPassengerDetails(event.currentTarget  , ".$item['factor_number']." , 'flight')" ,
                         ],
                         [
-                            'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                            'title' => functions::Xmlinformation('GetTicketCounter')->__toString(),
                             'type' => 'link',
                             'link' => $bookList[$key]['dataBtnPdf'],
                         ],
@@ -4600,7 +4608,7 @@ class user extends baseController
                         if ($item['IsInternal'] != '0') {
                             $result[$key]['button_list'][] =
                                 [
-                                    'title' => functions::Xmlinformation('Freeticket')->__toString(),
+                                    'title' => functions::Xmlinformation('PassengerTicket')->__toString(),
                                     'type' => 'link',
                                     'link' => $bookList[$key]['dataBtnPdfFreeLink'],
                                 ];
@@ -5119,11 +5127,11 @@ class user extends baseController
                 $bookList[$key]['reservationProofVersa'] = '';
                 if ($item['statusBook'] == 'BookedSuccessfully') {
                     if(CLIENT_ID == 317) {
-                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookNewhotelshow&id=' . $item['factor_number'];
+                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
                     }else{
                         if ($item['isInternal'] != 0) {
 //                            $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
-                            $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookNewhotelshow&id=' . $item['factor_number'];
+                            $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
 
                         }
                         else {
@@ -5607,31 +5615,41 @@ class user extends baseController
 //                        }else{
 //                            $pagefinal = 'parvazBookingLocal';
 //                        }
-                        $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&lang=fa';
+                        $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'] . '&lang=fa';
                         $type_member = functions::TypeUser(session::getUserId());
                         if ($type_member == 'Counter') {
-                            $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'].'&lang=fa';
+                            $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'].'&lang=fa';
                             $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
                         }
 
                     }
-                    $result[$key]['button_list'] = [
-                        [
-                            'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
-                            'type' => 'button' ,
-                            'function'  => "ModalPassengerExclusiveTourDetails(event.currentTarget  , ".$item['factor_number'].",'exclusivetour')" ,
-                        ],
-                        [
-                            'title' => functions::Xmlinformation('GetTicket')->__toString(),
-                            'type' => 'link',
-                            'link' => $bookList[$key]['dataBtnPdf'],
-                        ],
-                        [
-                            'title' => functions::Xmlinformation('Viewbill')->__toString(),
-                            'type' => 'link',
-//                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
-                        ],
 
+                    $result[$key]['button_list'] = [];
+
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('FlightTicket')->__toString(),
+                        'type' => 'link',
+                        'link' => $bookList[$key]['dataBtnPdf'],
+                    ];
+
+                    if ($item['statusBook'] == 'book' && $item['IsInternal'] != '0') {
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('HotelWatcher')->__toString(),
+                            'type' => 'link',
+                            'link' => $bookList[$key]['dataBtnPdfFreeLink'],
+                        ];
+                    }
+
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('Viewbill')->__toString(),
+                        'type' => 'link',
+                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
+                    ];
+
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('PassengerListProfile')->__toString(),
+                        'type' => 'button',
+                        'function' => "ModalPassengerExclusiveTourDetails(event.currentTarget, " . $item['factor_number'] . ",'exclusivetour')",
                     ];
                     /* if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm' ) {
                          $result[$key]['button_list'][] =
@@ -5649,16 +5667,7 @@ class user extends baseController
 
                              ];
                      }*/
-                    if ($item['statusBook'] == 'book') {
-                        if ($item['IsInternal'] != '0') {
-                            $result[$key]['button_list'][] =
-                                [
-                                    'title' => functions::Xmlinformation('Freeticket')->__toString(),
-                                    'type' => 'link',
-                                    'link' => $bookList[$key]['dataBtnPdfFreeLink'],
-                                ];
-                        }
-                    }
+
                     if(CLIENT_ID == 271){
                         $reservation_proof = Load::controller('reservationProof');
                         $file = $reservation_proof->getProofFile($item['request_number'] , 'Flight');

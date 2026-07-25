@@ -97,7 +97,7 @@ $(document).ready(function () {
 
 
                     if (response.success === true) {
-                        /*setTimeout(function() {
+                        setTimeout(function() {
                             // location.reload()
                             $('#uploadButton').html('لطفا صبر کنید...');
                             document.getElementById("uploadButton").disabled=true;
@@ -105,7 +105,7 @@ $(document).ready(function () {
                         setTimeout(function() {
                             // location.reload()
                             window.location = `${amadeusPath}itadmin/ticket/ticketCancellationHistory`;
-                        }, 2000)*/
+                        }, 2000)
                     }
                 },
                 error: function(response) {

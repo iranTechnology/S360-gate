@@ -645,13 +645,21 @@ function preReserveInsurance(factorNumber) {
                 }, 2000);
 
             } else {
-
+                let errorMessage =  useXmltag("Erroradvancebookingpleaseagainbitlater");
+                // if(result['errorCode']){
+                //     errorMessage = result['errorMessage']
+                // }
+                if(result['errorCode'] == '-2146233088'){
+                    errorMessage =  useXmltag("ErrorInTheIdentityOfTheStatusRegister")
+                }else{
+                    errorMessage =  useXmltag("Erroradvancebookingpleaseagainbitlater")
+                }
                 setTimeout(function () {
                     $('#final_ok_and_insert_passenger').css('background-color', 'red').text(useXmltag("Errorconfirmation"));
                     $.alert({
                         title: useXmltag("BuyTicket"),
                         icon: 'fa fa-cart-plus',
-                        content: useXmltag("Erroradvancebookingpleaseagainbitlater"),
+                        content: errorMessage,
                         rtl: true,
                         type: 'red',
 

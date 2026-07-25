@@ -100,6 +100,7 @@ abstract class mainPage extends clientAuth
                 $array_search_slug = array('slug' => $slug_name, 'section' => GDS_SWITCH);
                 $page_info=$this->getController('specialPages')->getInfoMetaTag($array_search_slug);
 
+
                 $this->pushBreadcrumb($page_info['heading'], ROOT_ADDRESS . '/' . GDS_SWITCH . '/' . $slug_name);
 
                 return $page_info;

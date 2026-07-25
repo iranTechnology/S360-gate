@@ -147,7 +147,10 @@ class accountcharge extends clientAuth
 	public function listAccountCharge($reportForExcel = null)
 	{
 
-		$time = time() - (600);
+//		$time = time() - (600);
+        $date = new DateTime();
+        $date->modify('-7 days');
+        $time = $date->getTimestamp();
 
 		$EndPostDate = $StartTimeNow = date("Y-m-d");
 		$StartPostDate = $SevenDaysAgo = date('Y-m-d', strtotime(" -7 days"));

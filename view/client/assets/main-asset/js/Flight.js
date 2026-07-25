@@ -2113,7 +2113,6 @@ function dataSearchFlight(type) {
 }
 
 function searchFlight(type , altDomain = null) {
-  console.log(type)
   let no_error = true
   let obj_url = dataSearchFlight(type)
   console.log(obj_url)

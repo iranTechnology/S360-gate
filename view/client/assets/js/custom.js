@@ -251,7 +251,7 @@ $(document).ready(function () {
             sum_heights = sum_heights + $(this).height()
             if($($('.main-fixed-bottom-js').get().reverse()[key+1]).length){
                 $($('.main-fixed-bottom-js').get().reverse()[key+1])
-                    .css({"margin-bottom":sum_heights+'px'})
+                   .css({"margin-bottom":sum_heights+'px'})
             }
             key=key+1;
         })
@@ -289,25 +289,25 @@ $(document).ready(function () {
             thiss.parent().find('.LoadingInputStyle').removeClass('d-none');
             $("#loaderSearch").show();
             $.post(amadeusPath + 'user_ajax.php',
-                {
-                    Code: Code,
-                    Type: 'origin',
-                    flag: 'OnlineSearchTourCity',
-                },
-                function (response) {
-                    setTimeout(function () {
+               {
+                   Code: Code,
+                   Type: 'origin',
+                   flag: 'OnlineSearchTourCity',
+               },
+               function (response) {
+                   setTimeout(function () {
 
-                        $('#ListOnlineTourResult').removeClass('d-none');
-                        $('#ListOnlineTourResult').html('');
-                        if (response != "") {
-                            $('#ListOnlineTourResult').append(response);
+                       $('#ListOnlineTourResult').removeClass('d-none');
+                       $('#ListOnlineTourResult').html('');
+                       if (response != "") {
+                           $('#ListOnlineTourResult').append(response);
 
-                        } else {
-                            $('#ListOnlineTourResult').append('<li>موردی یافت نشد</li>');
-                        }
-                        thiss.parent().find('.LoadingInputStyle').addClass('d-none');
-                    }, 1000);
-                });
+                       } else {
+                           $('#ListOnlineTourResult').append('<li>موردی یافت نشد</li>');
+                       }
+                       thiss.parent().find('.LoadingInputStyle').addClass('d-none');
+                   }, 1000);
+               });
         } else {
             $('#ListOnlineTourResult').append('<li>حداقل سه حرف وارد کنید</li>');
         }
@@ -443,124 +443,124 @@ $(document).ready(function () {
             }
             $.post(amadeusPath + 'captcha/securimage_check.php',
 
-                {captchaAjax: $('#signin-captcha2').val()},
+               {captchaAjax: $('#signin-captcha2').val()},
 
-                function (response) {
-                    if (response) {
-                        reloadCaptcha();
-                        $.post(amadeusPath + 'user_ajax.php',
-                            {
-                                entry: email,
-                                remember: remember,
-                                password: pass,
-                                organization: organization,
-                                setcoockie: "yes",
-                                App: is_app,
-                                flag: 'memberLogin'
-                            },
-                            function (data) {
+               function (response) {
+                   if (response) {
+                       reloadCaptcha();
+                       $.post(amadeusPath + 'user_ajax.php',
+                          {
+                              entry: email,
+                              remember: remember,
+                              password: pass,
+                              organization: organization,
+                              setcoockie: "yes",
+                              App: is_app,
+                              flag: 'memberLogin'
+                          },
+                          function (data) {
 
-                                if (data == 'limitCount') {
-                                    $.alert({
-                                        title: useXmltag("Login"),
-                                        icon: 'fa fa-sign-in',
-                                        content: useXmltag("limitCountRequest"),
-                                        rtl: true,
-                                        type: 'red'
-                                    });
-                                }
-                                if (data == 'optExpired') {
-                                    $.alert({
-                                        title: useXmltag("Login"),
-                                        icon: 'fa fa-sign-in',
-                                        content: useXmltag("optExpired"),
-                                        rtl: true,
-                                        type: 'red'
-                                    });
-                                }else {
-                                    var result = data.split(':');
+                              if (data == 'limitCount') {
+                                  $.alert({
+                                      title: useXmltag("Login"),
+                                      icon: 'fa fa-sign-in',
+                                      content: useXmltag("limitCountRequest"),
+                                      rtl: true,
+                                      type: 'red'
+                                  });
+                              }
+                              if (data == 'optExpired') {
+                                  $.alert({
+                                      title: useXmltag("Login"),
+                                      icon: 'fa fa-sign-in',
+                                      content: useXmltag("optExpired"),
+                                      rtl: true,
+                                      type: 'red'
+                                  });
+                              }else {
+                                  var result = data.split(':');
 
-                                    if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
-                                        $.alert({
-                                            title: useXmltag("Userlogin"),
-                                            icon: 'fa fa-sign-in',
-                                            content: useXmltag("Loginsuccessfully"),
-                                            rtl: true,
-                                            type: 'green'
-                                        });
-                                        $(".cd-user-modal").trigger("click");
-                                        $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
-                                        setTimeout(function () {
-                                            console.log(rootMainPath)
-                                            const urlParams = new URLSearchParams(window.location.search);
-                                            const referrer = urlParams.get('referrer');
-                                            if(referrer){
-                                                window.location.href = amadeusPathByLang + referrer;
-                                            }else{
-                                                console.log('1')
-                                                if(lang == 'fa'){
+                                  if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
+                                      $.alert({
+                                          title: useXmltag("Userlogin"),
+                                          icon: 'fa fa-sign-in',
+                                          content: useXmltag("Loginsuccessfully"),
+                                          rtl: true,
+                                          type: 'green'
+                                      });
+                                      $(".cd-user-modal").trigger("click");
+                                      $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
+                                      setTimeout(function () {
+                                          console.log(rootMainPath)
+                                          const urlParams = new URLSearchParams(window.location.search);
+                                          const referrer = urlParams.get('referrer');
+                                          if(referrer){
+                                              window.location.href = amadeusPathByLang + referrer;
+                                          }else{
+                                              console.log('1')
+                                              if(lang == 'fa'){
 
-                                                    window.location.href = clientMainDomain;
-                                                }else {
-                                                    console.log('2')
-                                                    // if(default_lang == 'en'){
-                                                    window.location.href = rootMainPath + '/' + lang ;
-                                                    // }else {
-                                                    //     window.location.href = clientMainDomain + '/' + lang;
-                                                    // }
+                                                  window.location.href = clientMainDomain;
+                                              }else {
+                                                  console.log('2')
+                                                  // if(default_lang == 'en'){
+                                                  window.location.href = rootMainPath + '/' + lang ;
+                                                  // }else {
+                                                  //     window.location.href = clientMainDomain + '/' + lang;
+                                                  // }
 
-                                                }
-                                                // console.log('clientIndexDomain',clientIndexDomain)
-
-
-                                                /*  switch (result[1]) {
-
-                                                      case 'reservationTourAuth':
-                                                          window.location.href = amadeusPathByLang + 'tourList';
-                                                          break;
-                                                      case 'AccessTourWithOutCounter':
-                                                          window.location.href = amadeusPathByLang + 'userProfile';
-                                                          break;
-                                                      case 'ticketAccess':
-                                                          window.location.href = amadeusPathByLang + 'topRouteFlight';
-                                                      default:
-                                                          window.location.href = amadeusPathByLang + 'userProfile';
-                                                          break;
-                                                  }*/
-                                            }
-                                        }, 1000);
-                                    } else {
-
-                                        $("#signin-email2").attr("data-login", "1");
-                                        $(".gds-login-error-box").removeClass('gds-login-error-none');
-                                        $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
-                                        $('html, body').animate({
-                                            scrollTop: ($('#signin-email2').offset().top - 150)
-                                        }, 500);
-                                        $("#signin-email2").focus();
-                                        $("#signin-captcha2").val('');
-                                        $("#signin-password2").val('');
-
-                                    }
-                                }
-                            })
-                    } else {
-                        $("#register_submit").val(useXmltag("SetAccount"));
-                        $(".gds-login-error-box").removeClass('gds-login-error-none');
-                        $("#register_submit").removeClass('waiting_register');
-                        reloadCaptcha();
-                        $("#signin-captcha2").focus();
-                        $("#signin-captcha2").val('');
-                        $(".message-login").html('');
-
-                        $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode"));
-                        $("#error-signin-captcha2").css("opacity", "1");
-                        $("#error-signin-captcha2").css("visibility", "visible");
-                        return false;
-                    }
+                                              }
+                                              // console.log('clientIndexDomain',clientIndexDomain)
 
 
-                });
+                                              /*  switch (result[1]) {
+
+                                                    case 'reservationTourAuth':
+                                                        window.location.href = amadeusPathByLang + 'tourList';
+                                                        break;
+                                                    case 'AccessTourWithOutCounter':
+                                                        window.location.href = amadeusPathByLang + 'userProfile';
+                                                        break;
+                                                    case 'ticketAccess':
+                                                        window.location.href = amadeusPathByLang + 'topRouteFlight';
+                                                    default:
+                                                        window.location.href = amadeusPathByLang + 'userProfile';
+                                                        break;
+                                                }*/
+                                          }
+                                      }, 1000);
+                                  } else {
+
+                                      $("#signin-email2").attr("data-login", "1");
+                                      $(".gds-login-error-box").removeClass('gds-login-error-none');
+                                      $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
+                                      $('html, body').animate({
+                                          scrollTop: ($('#signin-email2').offset().top - 150)
+                                      }, 500);
+                                      $("#signin-email2").focus();
+                                      $("#signin-captcha2").val('');
+                                      $("#signin-password2").val('');
+
+                                  }
+                              }
+                          })
+                   } else {
+                       $("#register_submit").val(useXmltag("SetAccount"));
+                       $(".gds-login-error-box").removeClass('gds-login-error-none');
+                       $("#register_submit").removeClass('waiting_register');
+                       reloadCaptcha();
+                       $("#signin-captcha2").focus();
+                       $("#signin-captcha2").val('');
+                       $(".message-login").html('');
+
+                       $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode"));
+                       $("#error-signin-captcha2").css("opacity", "1");
+                       $("#error-signin-captcha2").css("visibility", "visible");
+                       return false;
+                   }
+
+
+               });
         }
     });
 
@@ -649,73 +649,73 @@ $(document).ready(function () {
             var reagentCode = $("#reagent-code2").val();
 
             $.post(amadeusPath + 'captcha/securimage_check.php',
-                {captchaAjax: $('#signup-captcha2').val()},
-                function (data) {
-                    loadingToggle($('#register_submit'),false);
-                    if (data == true) {
-                        reloadCaptcha();
-                        $.post(amadeusPath + 'user_ajax.php',
-                            {
-                                name: name,
-                                family: family,
-                                entry: mobile,
-                                password: password,
-                                reagentCode: reagentCode,
-                                setcoockie: "yes",
-                                flag: 'memberRegister'
-                            },
-                            function (response) {
-                                // console.log(response);
-                                jsonResponse = JSON.parse(response);
-                                // console.log(jsonResponse);
-                                // result = JSON.stringify(response);
-                                if(jsonResponse.success){
-                                    let redirect_url = jsonResponse.redirect_url ? jsonResponse.redirect_url :  amadeusPathByLang + "userProfile";
-                                    $.alert({
-                                        title: useXmltag("Userlogin"),
-                                        icon: 'fa fa-cart-plus',
-                                        content: jsonResponse.message,
-                                        rtl: true,
-                                        type: 'green'
-                                    });
-                                    $(".cd-user-modal").trigger("click");
-                                    $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
-                                    setTimeout(function () {
-                                        // اگر عملیات معلق تور اختصاصی وجود دارد، صفحه فعلی را reload کن
-                                        if(localStorage.getItem('pendingExclusiveTourAction')){
-                                            window.location.reload();
-                                            return;
-                                        }
+               {captchaAjax: $('#signup-captcha2').val()},
+               function (data) {
+                   loadingToggle($('#register_submit'),false);
+                   if (data == true) {
+                       reloadCaptcha();
+                       $.post(amadeusPath + 'user_ajax.php',
+                          {
+                              name: name,
+                              family: family,
+                              entry: mobile,
+                              password: password,
+                              reagentCode: reagentCode,
+                              setcoockie: "yes",
+                              flag: 'memberRegister'
+                          },
+                          function (response) {
+                              // console.log(response);
+                              jsonResponse = JSON.parse(response);
+                              // console.log(jsonResponse);
+                              // result = JSON.stringify(response);
+                              if(jsonResponse.success){
+                                  let redirect_url = jsonResponse.redirect_url ? jsonResponse.redirect_url :  amadeusPathByLang + "userProfile";
+                                  $.alert({
+                                      title: useXmltag("Userlogin"),
+                                      icon: 'fa fa-cart-plus',
+                                      content: jsonResponse.message,
+                                      rtl: true,
+                                      type: 'green'
+                                  });
+                                  $(".cd-user-modal").trigger("click");
+                                  $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
+                                  setTimeout(function () {
+                                      // اگر عملیات معلق تور اختصاصی وجود دارد، صفحه فعلی را reload کن
+                                      if(localStorage.getItem('pendingExclusiveTourAction')){
+                                          window.location.reload();
+                                          return;
+                                      }
 
-                                        if(redirect_url != ''){
-                                            // console.log(redirect_url);
-                                            window.location.href = redirect_url;
-                                            // window.location.href = amadeusPathByLang + "userProfile";
-                                        }else{
-                                            window.location.href = amadeusPathByLang + "userProfile";
-                                        }
-                                    }, 1000);
-                                }else {
-                                    $.alert({
-                                        title: useXmltag("SetAccount"),
-                                        icon: 'fa fa-user',
-                                        content: jsonResponse.message,
-                                        rtl: true,
-                                        type: 'red'
-                                    });
-                                    $(".message-register").html(jsonResponse.message);
-                                }
+                                      if(redirect_url != ''){
+                                          // console.log(redirect_url);
+                                          window.location.href = redirect_url;
+                                          // window.location.href = amadeusPathByLang + "userProfile";
+                                      }else{
+                                          window.location.href = amadeusPathByLang + "userProfile";
+                                      }
+                                  }, 1000);
+                              }else {
+                                  $.alert({
+                                      title: useXmltag("SetAccount"),
+                                      icon: 'fa fa-user',
+                                      content: jsonResponse.message,
+                                      rtl: true,
+                                      type: 'red'
+                                  });
+                                  $(".message-register").html(jsonResponse.message);
+                              }
 
-                            })
-                    } else {
-                        reloadCaptcha();
-                        $(".gds-login-error-box").removeClass('gds-login-error-none');
-                        $("#signup-captcha2").focus();
-                        $("#signup-captcha2").val('');
-                        $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode")).css("opacity", "1").css("visibility", "visible");
-                        return false;
-                    }
-                });
+                          })
+                   } else {
+                       reloadCaptcha();
+                       $(".gds-login-error-box").removeClass('gds-login-error-none');
+                       $("#signup-captcha2").focus();
+                       $("#signup-captcha2").val('');
+                       $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode")).css("opacity", "1").css("visibility", "visible");
+                       return false;
+                   }
+               });
         }
     });
 
@@ -766,55 +766,55 @@ $(document).ready(function () {
 
 
             $.post(amadeusPath + 'user_ajax.php',
-                {
-                    entry: email,
-                    remember: remember,
-                    password: pass,
-                    organization: organization,
-                    setcoockie: "yes",
-                    flag: 'memberLogin'
-                },
-                function (data) {
+               {
+                   entry: email,
+                   remember: remember,
+                   password: pass,
+                   organization: organization,
+                   setcoockie: "yes",
+                   flag: 'memberLogin'
+               },
+               function (data) {
 
-                    if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
-                        // $(".cd-user-modal").trigger("click");
+                   if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
+                       // $(".cd-user-modal").trigger("click");
 
-                        popupLogin(useType, EntertainmentId);
+                       popupLogin(useType, EntertainmentId);
 
-                    } else {
-                        loadingToggle($('#login-submit-btn') , false);
+                   } else {
+                       loadingToggle($('#login-submit-btn') , false);
 
 
-                        /* $.post(amadeusPath + 'user_ajax.php',
-                            {
-                                email: email,
-                                remember: remember,
-                                password: pass,
-                                flag: 'agencyLogin'
-                            },
-                            function (res) {
-                                if (res.indexOf('success') > -1) { // فرد وارد شده آژانس می باشد
-                                    // $(".cd-user-modal").trigger("click");
+                       /* $.post(amadeusPath + 'user_ajax.php',
+                           {
+                               email: email,
+                               remember: remember,
+                               password: pass,
+                               flag: 'agencyLogin'
+                           },
+                           function (res) {
+                               if (res.indexOf('success') > -1) { // فرد وارد شده آژانس می باشد
+                                   // $(".cd-user-modal").trigger("click");
 
-                                    popupLogin(useType, EntertainmentId);
+                                   popupLogin(useType, EntertainmentId);
 
-                                } else {
-                                    $("#signin-email2").attr("data-login", "1");
-                                    $(".gds-login-error-box").removeClass('gds-login-error-none');
-                                    $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
-                                    $('html, body').animate({
-                                        scrollTop: ($('#signin-email2').offset().top - 150)
-                                    }, 500);
-                                }
-                            })*/
-                        $("#signin-email2").attr("data-login", "1");
-                        $(".gds-login-error-box").removeClass('gds-login-error-none');
-                        $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
-                        $('html, body').animate({
-                            scrollTop: ($('#signin-email2').offset().top - 150)
-                        }, 500);
-                    }
-                })
+                               } else {
+                                   $("#signin-email2").attr("data-login", "1");
+                                   $(".gds-login-error-box").removeClass('gds-login-error-none');
+                                   $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
+                                   $('html, body').animate({
+                                       scrollTop: ($('#signin-email2').offset().top - 150)
+                                   }, 500);
+                               }
+                           })*/
+                       $("#signin-email2").attr("data-login", "1");
+                       $(".gds-login-error-box").removeClass('gds-login-error-none');
+                       $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
+                       $('html, body').animate({
+                           scrollTop: ($('#signin-email2').offset().top - 150)
+                       }, 500);
+                   }
+               })
 
         }
     });
@@ -868,80 +868,80 @@ $(document).ready(function () {
 
             $.post(amadeusPath + 'captcha/securimage_check.php',
 
-                {captchaAjax: $('#signin-captcha2').val()},
+               {captchaAjax: $('#signin-captcha2').val()},
 
-                function (response) {
-                    if (response) {
-                        reloadCaptcha();
-                        $.post(amadeusPath + 'user_ajax.php',
-                            {
-                                email: email,
-                                remember: remember,
-                                password: pass,
-                                flag: 'loginAgency'
-                            },
-                            function (data) {
+               function (response) {
+                   if (response) {
+                       reloadCaptcha();
+                       $.post(amadeusPath + 'user_ajax.php',
+                          {
+                              email: email,
+                              remember: remember,
+                              password: pass,
+                              flag: 'loginAgency'
+                          },
+                          function (data) {
 
-                                var result = data.split(':');
+                              var result = data.split(':');
 
-                                if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
-                                    $.alert({
-                                        title: useXmltag("agencyLogin"),
-                                        icon: 'fa fa-sign-in',
-                                        content: useXmltag("Loginsuccessfully"),
-                                        rtl: true,
-                                        type: 'green'
-                                    });
-                                    $(".cd-user-modal").trigger("click");
-                                    $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
-                                    setTimeout(function () {
-                                        window.location.href = amadeusPathByLang + 'welcomeAgency';
-                                    }, 1000);
-                                } else {
+                              if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
+                                  $.alert({
+                                      title: useXmltag("agencyLogin"),
+                                      icon: 'fa fa-sign-in',
+                                      content: useXmltag("Loginsuccessfully"),
+                                      rtl: true,
+                                      type: 'green'
+                                  });
+                                  $(".cd-user-modal").trigger("click");
+                                  $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
+                                  setTimeout(function () {
+                                      window.location.href = amadeusPathByLang + 'welcomeAgency';
+                                  }, 1000);
+                              } else {
 
-                                    $.alert({
-                                        title: useXmltag("agencyLogin"),
-                                        icon: 'fa fa-sign-in',
-                                        content: useXmltag("Emailenteredpasswordincorrect"),
-                                        rtl: true,
-                                        type: 'red'
-                                    });
-                                    $("#signin-email2").attr("data-login", "1");
-                                    $(".gds-login-error-box").removeClass('gds-login-error-none');
-                                    // $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
-                                    $('html, body').animate({
-                                        scrollTop: ($('#signin-email2').offset().top - 150)
-                                    }, 500);
-                                    $("#signin-email2").focus();
-                                    $("#signin-captcha2").val('');
-                                    $("#signin-password2").val('');
+                                  $.alert({
+                                      title: useXmltag("agencyLogin"),
+                                      icon: 'fa fa-sign-in',
+                                      content: useXmltag("Emailenteredpasswordincorrect"),
+                                      rtl: true,
+                                      type: 'red'
+                                  });
+                                  $("#signin-email2").attr("data-login", "1");
+                                  $(".gds-login-error-box").removeClass('gds-login-error-none');
+                                  // $(".message-login").html(useXmltag("Emailenteredpasswordincorrect"));
+                                  $('html, body').animate({
+                                      scrollTop: ($('#signin-email2').offset().top - 150)
+                                  }, 500);
+                                  $("#signin-email2").focus();
+                                  $("#signin-captcha2").val('');
+                                  $("#signin-password2").val('');
 
-                                }
-                            })
-                    } else {
-                        $("#register_submit").val(useXmltag("SetAccount"));
-                        $(".gds-login-error-box").removeClass('gds-login-error-none');
-                        $("#register_submit").removeClass('waiting_register');
-                        reloadCaptcha();
-                        $("#signin-captcha2").focus();
-                        $("#signin-captcha2").val('');
-                        $(".message-login").html('');
+                              }
+                          })
+                   } else {
+                       $("#register_submit").val(useXmltag("SetAccount"));
+                       $(".gds-login-error-box").removeClass('gds-login-error-none');
+                       $("#register_submit").removeClass('waiting_register');
+                       reloadCaptcha();
+                       $("#signin-captcha2").focus();
+                       $("#signin-captcha2").val('');
+                       $(".message-login").html('');
 
-                        $.alert({
-                            title: useXmltag("agencyLogin"),
-                            icon: 'fa fa-sign-in',
-                            content: useXmltag("WrongSecurityCode"),
-                            rtl: true,
-                            type: 'red'
-                        });
-                        // $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode"));
-                        $("#error-signin-captcha2").css("opacity", "1");
-                        $("#error-signin-captcha2").css("visibility", "visible");
-                        return false;
-                    }
+                       $.alert({
+                           title: useXmltag("agencyLogin"),
+                           icon: 'fa fa-sign-in',
+                           content: useXmltag("WrongSecurityCode"),
+                           rtl: true,
+                           type: 'red'
+                       });
+                       // $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode"));
+                       $("#error-signin-captcha2").css("opacity", "1");
+                       $("#error-signin-captcha2").css("visibility", "visible");
+                       return false;
+                   }
 
 
-                });
+               });
         }
     });
 
@@ -967,10 +967,10 @@ $(document).ready(function () {
                 url: amadeusPath + 'user_ajax.php',
                 dataType: 'JSON',
                 data:
-                    {
-                        flag: 'checkExistSessionHistoryPassenger',
-                        checkExist: 'yes'
-                    },
+                   {
+                       flag: 'checkExistSessionHistoryPassenger',
+                       checkExist: 'yes'
+                   },
                 success: function (data) {
 
                     if (data == true) {
@@ -989,9 +989,9 @@ $(document).ready(function () {
                                             url: amadeusPath + 'user_ajax.php',
                                             dataType: 'JSON',
                                             data:
-                                                {
-                                                    flag: 'checkExistSessionHistoryPassenger',
-                                                },
+                                               {
+                                                   flag: 'checkExistSessionHistoryPassenger',
+                                               },
                                             success: function (dataPassenger) {
 
 
@@ -1123,29 +1123,29 @@ $(document).ready(function () {
         $('#result').html('');
         // selectPage = selectPage+'-'+count;
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                nameFile: newValueFilterForeign,
-                optionPage: optionPage,
-                flag: 'nextPageTicketForeign'
-            },
-            function (data) {
-                $('.lightboxContainerOpacity').hide();
-                $('#result').html(data);
+           {
+               nameFile: newValueFilterForeign,
+               optionPage: optionPage,
+               flag: 'nextPageTicketForeign'
+           },
+           function (data) {
+               $('.lightboxContainerOpacity').hide();
+               $('#result').html(data);
 
-                if ($('#currentSort').val() == 'price') {
-                    $('#priceSortSelectForeign').addClass('sorting-active-color-main');
-                    if (orderSort == 'asc') {
-                        $('#priceSortSelectForeign').addClass('rotated-icon');
-                    }
-                    $('#timeSortSelectForeign').removeClass('sorting-active-color-main').removeClass('rotated-icon');
-                } else if ($('#currentSort').val() == 'time') {
-                    $('#timeSortSelectForeign').addClass('sorting-active-color-main');
-                    if (orderSort == 'asc') {
-                        $('#timeSortSelectForeign').addClass('rotated-icon');
-                    }
-                    $('#priceSortSelectForeign').removeClass('sorting-active-color-main').removeClass('rotated-icon');
-                }
-            });
+               if ($('#currentSort').val() == 'price') {
+                   $('#priceSortSelectForeign').addClass('sorting-active-color-main');
+                   if (orderSort == 'asc') {
+                       $('#priceSortSelectForeign').addClass('rotated-icon');
+                   }
+                   $('#timeSortSelectForeign').removeClass('sorting-active-color-main').removeClass('rotated-icon');
+               } else if ($('#currentSort').val() == 'time') {
+                   $('#timeSortSelectForeign').addClass('sorting-active-color-main');
+                   if (orderSort == 'asc') {
+                       $('#timeSortSelectForeign').addClass('rotated-icon');
+                   }
+                   $('#priceSortSelectForeign').removeClass('sorting-active-color-main').removeClass('rotated-icon');
+               }
+           });
     });
 
 
@@ -1266,21 +1266,21 @@ $(document).ready(function () {
                         url: amadeusPath + 'user_ajax.php',
                         dataType: 'JSON',
                         data:
-                            {
-                                flag: 'revalidate_Fight',
-                                adt: adt,
-                                chd: chd,
-                                inf: inf,
-                                Flight: Flight,
-                                ReturnFlightID: ReturnFlightID,
-                                AirlineCode: AirlineCode,
-                                UniqueCode: UniqueCode,
-                                SourceId: SourceId,
-                                MultiWay: MultiWay,
-                                FlightDirection: FlightDirection,
-                                CurrencyCode: CurrencyCode,
-                                uniq_id: $('.selected_session_filght_Id').val()
-                            },
+                           {
+                               flag: 'revalidate_Fight',
+                               adt: adt,
+                               chd: chd,
+                               inf: inf,
+                               Flight: Flight,
+                               ReturnFlightID: ReturnFlightID,
+                               AirlineCode: AirlineCode,
+                               UniqueCode: UniqueCode,
+                               SourceId: SourceId,
+                               MultiWay: MultiWay,
+                               FlightDirection: FlightDirection,
+                               CurrencyCode: CurrencyCode,
+                               uniq_id: $('.selected_session_filght_Id').val()
+                           },
                         success: function (data) {
                             console.log('iiinja-0')
                             console.log(data)
@@ -1390,16 +1390,16 @@ $(document).ready(function () {
 
         $("#ModalPublic").fadeIn(900);
         $.post(libraryPath + 'ModalCreator.php',
-            {
-                Controller: 'RequestTicketOffline',
-                Method: 'RequestOffline',
-                Param: InfoRequest
-            },
-            function (data) {
+           {
+               Controller: 'RequestTicketOffline',
+               Method: 'RequestOffline',
+               Param: InfoRequest
+           },
+           function (data) {
 
-                $('#ModalPublicContent').html(data);
+               $('#ModalPublicContent').html(data);
 
-            });
+           });
 
     });
 
@@ -1551,25 +1551,25 @@ $(document).ready(function () {
         if (Code.length >= 3) {
             $(".SelectDeparture").show();
             $.post(amadeusPath + 'user_ajax.php',
-                {
-                    Code: Code,
-                    lang:lang,
-                    Type: 'origin',
-                    flag: 'liveSearchDestination'
-                },
-                function (response) {
-                    setTimeout(function () {
-                        $(".SelectDeparture").hide();
-                        $('#LoaderForeignDep').hide();
-                        if (response != "") {
-                            $('#ListAirPort').html(response);
-                        } else {
-                            $('#ListAirPort').html('<li>' + useXmltag("NothingFound") + '</li>');
-                        }
-                        $('#ListAirPort').show();
+               {
+                   Code: Code,
+                   lang:lang,
+                   Type: 'origin',
+                   flag: 'liveSearchDestination'
+               },
+               function (response) {
+                   setTimeout(function () {
+                       $(".SelectDeparture").hide();
+                       $('#LoaderForeignDep').hide();
+                       if (response != "") {
+                           $('#ListAirPort').html(response);
+                       } else {
+                           $('#ListAirPort').html('<li>' + useXmltag("NothingFound") + '</li>');
+                       }
+                       $('#ListAirPort').show();
 
-                    }, 10);
-                });
+                   }, 10);
+               });
         } else {
             $('#ListAirPort').html('<li>' + useXmltag("EnterThreeLetters") + '</li>');
             $('#ListAirPort').show();
@@ -1590,24 +1590,24 @@ $(document).ready(function () {
         if (Code.length >= 3) {
             $(".SelectDeparture").fadeIn('slow');
             $.post(amadeusPath + 'user_ajax.php',
-                {
-                    Code: Code,
-                    lang:lang,
-                    Type: 'destination',
-                    flag: 'liveSearchDestination'
-                },
-                function (response) {
-                    setTimeout(function () {
-                        $(".SelectDeparture").fadeOut('slow');
-                        $('#LoaderForeignReturn').hide();
-                        if (response != "") {
-                            $('#ListAirPortRetrun').html(response);
-                        } else {
-                            $('#ListAirPortRetrun').html('<li>' + useXmltag("NothingFound") + '</li>');
-                        }
-                        $('#ListAirPortRetrun').show();
-                    }, 10);
-                });
+               {
+                   Code: Code,
+                   lang:lang,
+                   Type: 'destination',
+                   flag: 'liveSearchDestination'
+               },
+               function (response) {
+                   setTimeout(function () {
+                       $(".SelectDeparture").fadeOut('slow');
+                       $('#LoaderForeignReturn').hide();
+                       if (response != "") {
+                           $('#ListAirPortRetrun').html(response);
+                       } else {
+                           $('#ListAirPortRetrun').html('<li>' + useXmltag("NothingFound") + '</li>');
+                       }
+                       $('#ListAirPortRetrun').show();
+                   }, 10);
+               });
         } else {
             $('#ListAirPortRetrun').html('<li>' + useXmltag("EnterThreeLetters") + '</li>');
             $('#ListAirPortRetrun').show();
@@ -1629,11 +1629,11 @@ $(document).ready(function () {
     var Dropdown = (function ($) {
 
         var $body = $('body'),
-            $dropdown = $body.find('.dashboard_menu'),
-            $trigger = $dropdown.find('button'),
-            $list = $dropdown.find('ul'),
-            $firstLink = $list.find('li:first a'),
-            $lastLink = $list.find('li:last a');
+           $dropdown = $body.find('.dashboard_menu'),
+           $trigger = $dropdown.find('button'),
+           $list = $dropdown.find('ul'),
+           $firstLink = $list.find('li:first a'),
+           $lastLink = $list.find('li:last a');
 
         var init = function () {
             ariaSetup();
@@ -1673,7 +1673,7 @@ $(document).ready(function () {
 
         var toggleDropdown = function () {
             var hidden = $list.attr('aria-hidden') === 'true' ? false : true,
-                expanded = !hidden;
+               expanded = !hidden;
 
             $trigger.attr('aria-expanded', expanded);
             $list.attr('aria-hidden', hidden);
@@ -1727,12 +1727,12 @@ $(document).ready(function () {
     });
 
     $.validator.addMethod(
-        'CheckNationalCode',
+       'CheckNationalCode',
 
-        function (value, element, requiredValue) {
-            return checkCodeMeli(value);
-        },
-        'Please check National Code input.'
+       function (value, element, requiredValue) {
+           return checkCodeMeli(value);
+       },
+       'Please check National Code input.'
     );
 
     //add passenger
@@ -2277,56 +2277,56 @@ $(document).ready(function () {
             }
 
             $.post(amadeusPath + 'captcha/securimage_check.php',
-                {
-                    captchaAjax: $('#signup-captcha2').val()
-                },
-                function (data) {
-                    console.log(data)
-                    if (data == true) {
-                        reloadCaptcha();
+               {
+                   captchaAjax: $('#signup-captcha2').val()
+               },
+               function (data) {
+                   console.log(data)
+                   if (data == true) {
+                       reloadCaptcha();
 
-                        $(form).ajaxSubmit({
-                            type: 'POST',
-                            url: amadeusPath + 'user_ajax.php',
-                            success: function (response) {
+                       $(form).ajaxSubmit({
+                           type: 'POST',
+                           url: amadeusPath + 'user_ajax.php',
+                           success: function (response) {
 
-                                var res = response.split(':');
+                               var res = response.split(':');
 
-                                if (response.indexOf('success') > -1) {
-                                    var statusType = 'green';
-                                } else {
-                                    var statusType = 'red';
-                                }
+                               if (response.indexOf('success') > -1) {
+                                   var statusType = 'green';
+                               } else {
+                                   var statusType = 'red';
+                               }
 
-                                $.alert({
-                                    title: useXmltag("AgencyRegistration"),
-                                    icon: 'fa fa-refresh',
-                                    content: res[1],
-                                    rtl: true,
-                                    type: statusType
-                                });
+                               $.alert({
+                                   title: useXmltag("AgencyRegistration"),
+                                   icon: 'fa fa-refresh',
+                                   content: res[1],
+                                   rtl: true,
+                                   type: statusType
+                               });
 
-                                if (response.indexOf('success') > -1) {
-                                    setTimeout(function () {
-                                        window.location = 'agencyProfile';
-                                    }, 1000);
-                                }
+                               if (response.indexOf('success') > -1) {
+                                   setTimeout(function () {
+                                       window.location = 'agencyProfile';
+                                   }, 1000);
+                               }
 
-                            }
-                        });
+                           }
+                       });
 
-                    } else {
-                        reloadCaptcha();
-                        $.alert({
-                            title: useXmltag("AgencyRegistration"),
-                            icon: 'fa fa-refresh',
-                            content: useXmltag("WrongSecurityCode"),
-                            rtl: true,
-                            type: 'red'
-                        });
-                        return false;
-                    }
-                });
+                   } else {
+                       reloadCaptcha();
+                       $.alert({
+                           title: useXmltag("AgencyRegistration"),
+                           icon: 'fa fa-refresh',
+                           content: useXmltag("WrongSecurityCode"),
+                           rtl: true,
+                           type: 'red'
+                       });
+                       return false;
+                   }
+               });
 
 
         },
@@ -2991,10 +2991,10 @@ function filterFlight(obj) {
     $.each(allTarget, function (index) {
         allTarget.hide().filter(function () {
             return (
-                ($.inArray($(this).data('time'), filter_time) >= 0 || $.inArray('all', filter_time) >= 0) &&
-                ($.inArray($(this).data('type'), filter_type) >= 0 || $.inArray('all', filter_type) >= 0) &&
-                ($.inArray($(this).data('seat'), filter_seat) >= 0 || $.inArray('all', filter_seat) >= 0) &&
-                ($.inArray($(this).data('airline'), filter_airline) >= 0 || $.inArray('all', filter_airline) >= 0)
+               ($.inArray($(this).data('time'), filter_time) >= 0 || $.inArray('all', filter_time) >= 0) &&
+               ($.inArray($(this).data('type'), filter_type) >= 0 || $.inArray('all', filter_type) >= 0) &&
+               ($.inArray($(this).data('seat'), filter_seat) >= 0 || $.inArray('all', filter_seat) >= 0) &&
+               ($.inArray($(this).data('airline'), filter_airline) >= 0 || $.inArray('all', filter_airline) >= 0)
             ) || ($(this).data('typeappticket') == 'reservation');
         }).show();
     });
@@ -3120,21 +3120,21 @@ function filterFlightForeign(obj) {
     $('#result').html('');
     // selectPage = selectPage+'-'+count;
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            nameFile: newValueFilterForeign,
-            optionPage: optionPage,
-            flag: 'nextPageTicketForeign'
-        },
-        function (data) {
-            $('.lightboxContainerOpacity').hide();
-            $('#result').html(data);
-        });
+       {
+           nameFile: newValueFilterForeign,
+           optionPage: optionPage,
+           flag: 'nextPageTicketForeign'
+       },
+       function (data) {
+           $('.lightboxContainerOpacity').hide();
+           $('#result').html(data);
+       });
 }
 
 function filterCheckboxes(elem) {
     var $filter_lists = $(".s-u-filter-item > div > ul");
     var $elem = $(elem),
-        passAllFilters = true;
+       passAllFilters = true;
     $filter_lists.each(function () {
         var classes = $(this).find(':checkbox:checked').map(function () {
             return $(this).val();
@@ -3184,10 +3184,10 @@ function forgetPass() {
     var email = $('#resetEmail2').val();
     if (email != '') {
         $.post(amadeusPath + 'user_ajax.php',
-            {email: email, flag: 'forgetPass'},
-            function (data) {
-                $("#error-resetEmail2").html(data);
-            });
+           {email: email, flag: 'forgetPass'},
+           function (data) {
+               $("#error-resetEmail2").html(data);
+           });
     }
 }
 
@@ -3204,17 +3204,17 @@ function recoverPass() {
             $('#panel-message').html(useXmltag("NewPasswordNotSameRepeating"));
         } else {
             $.post(amadeusPath + 'captcha/securimage_check.php',
-                {captchaAjax: capcha},
-                function (data) {
-                    if (data == true) {
-                        reloadCaptchaSignin2();
-                        $("#recoverForm").submit();
-                    } else {
-                        reloadCaptchaSignin2();
-                        $("#panel-message").html(useXmltag("WrongSecurityCode"));
-                        return false;
-                    }
-                })
+               {captchaAjax: capcha},
+               function (data) {
+                   if (data == true) {
+                       reloadCaptchaSignin2();
+                       $("#recoverForm").submit();
+                   } else {
+                       reloadCaptchaSignin2();
+                       $("#panel-message").html(useXmltag("WrongSecurityCode"));
+                       return false;
+                   }
+               })
 
         }
 
@@ -3228,141 +3228,141 @@ function recoverPass() {
 function checkLogin(rel_id, rec_id, com_id, price_id, dept_airport, arr_airport, origin_loc_code, desti_loc_code, dept_elaps, dept_booking_class, dept_airline_name, dept_flight_no, dept_airline_abb, dept_iata_code, dept_date, dept_time, arr_date, dept_time_part, arr_time, dept_date_j, arr_date_j, dept_con, ret_booking_class, ret_airline_name, ret_flight_no, ret_airline_abb, ret_iata_code, ret_dept_date, ret_dept_time, ret_arr_date, ret_time_part, ret_arr_time, ret_dept_date_j, ret_arr_date_j, ret_elaps, ret_con, main_adt, final_adt, tax_adt, soto_adt, quantity_adt, main_chd, final_chd, tax_chd, soto_chd, quantity_chd, main_inf, final_inf, tax_inf, soto_inf, quantity_inf, office_name, sub_system, address, index, CF, retDate, flight) {
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            rel_id: rel_id,
-            rec_id: rec_id,
-            com_id: com_id,
-            price_id: price_id,
-            dept_airport: dept_airport,
-            arr_airport: arr_airport,
-            origin_loc_code: origin_loc_code,
-            desti_loc_code: desti_loc_code,
-            dept_elaps: dept_elaps,
-            dept_booking_class: dept_booking_class,
-            dept_airline_name: dept_airline_name,
-            dept_flight_no: dept_flight_no,
-            dept_airline_abb: dept_airline_abb,
-            dept_iata_code: dept_iata_code,
-            dept_date: dept_date,
-            dept_time: dept_time,
-            arr_date: arr_date,
-            dept_time_part: dept_time_part,
-            arr_time: arr_time,
-            dept_date_j: dept_date_j,
-            arr_date_j: arr_date_j,
-            dept_con: dept_con,
-            ret_booking_class: ret_booking_class,
-            ret_airline_name: ret_airline_name,
-            ret_flight_no: ret_flight_no,
-            ret_airline_abb: ret_airline_abb,
-            ret_iata_code: ret_iata_code,
-            ret_dept_date: ret_dept_date,
-            ret_dept_time: ret_dept_time,
-            ret_arr_date: ret_arr_date,
-            ret_time_part: ret_time_part,
-            ret_arr_time: ret_arr_time,
-            ret_dept_date_j: ret_dept_date_j,
-            ret_arr_date_j: ret_arr_date_j,
-            ret_elaps: ret_elaps,
-            ret_con: ret_con,
-            main_adt: main_adt,
-            final_adt: final_adt,
-            tax_adt: tax_adt,
-            soto_adt: soto_adt,
-            quantity_adt: quantity_adt,
-            main_chd: main_chd,
-            final_chd: final_chd,
-            tax_chd: tax_chd,
-            soto_chd: soto_chd,
-            quantity_chd: quantity_chd,
-            main_inf: main_inf,
-            final_inf: final_inf,
-            tax_inf: tax_inf,
-            soto_inf: soto_inf,
-            quantity_inf: quantity_inf,
-            office_name: office_name,
-            sub_system: sub_system,
-            address: address,
-            index: index,
-            CF: CF,
-            flag: 'checkLogin'
-        },
-        function (data) {
-            if (data) {
-                if (flight == 'local') {
-                    href = amadeusPathByLang + "passengersDetail";
-                    $("#flight").val(flight);
-                } else {
-                    href = amadeusPathByLang + "passengersDetail";
-                    $("#flight").val(flight);
-                }
-                $("#formAjax").attr("action", href);
-                $("#temporary").val(data);
-                $("#formAjax").submit();
-            } else {
+       {
+           rel_id: rel_id,
+           rec_id: rec_id,
+           com_id: com_id,
+           price_id: price_id,
+           dept_airport: dept_airport,
+           arr_airport: arr_airport,
+           origin_loc_code: origin_loc_code,
+           desti_loc_code: desti_loc_code,
+           dept_elaps: dept_elaps,
+           dept_booking_class: dept_booking_class,
+           dept_airline_name: dept_airline_name,
+           dept_flight_no: dept_flight_no,
+           dept_airline_abb: dept_airline_abb,
+           dept_iata_code: dept_iata_code,
+           dept_date: dept_date,
+           dept_time: dept_time,
+           arr_date: arr_date,
+           dept_time_part: dept_time_part,
+           arr_time: arr_time,
+           dept_date_j: dept_date_j,
+           arr_date_j: arr_date_j,
+           dept_con: dept_con,
+           ret_booking_class: ret_booking_class,
+           ret_airline_name: ret_airline_name,
+           ret_flight_no: ret_flight_no,
+           ret_airline_abb: ret_airline_abb,
+           ret_iata_code: ret_iata_code,
+           ret_dept_date: ret_dept_date,
+           ret_dept_time: ret_dept_time,
+           ret_arr_date: ret_arr_date,
+           ret_time_part: ret_time_part,
+           ret_arr_time: ret_arr_time,
+           ret_dept_date_j: ret_dept_date_j,
+           ret_arr_date_j: ret_arr_date_j,
+           ret_elaps: ret_elaps,
+           ret_con: ret_con,
+           main_adt: main_adt,
+           final_adt: final_adt,
+           tax_adt: tax_adt,
+           soto_adt: soto_adt,
+           quantity_adt: quantity_adt,
+           main_chd: main_chd,
+           final_chd: final_chd,
+           tax_chd: tax_chd,
+           soto_chd: soto_chd,
+           quantity_chd: quantity_chd,
+           main_inf: main_inf,
+           final_inf: final_inf,
+           tax_inf: tax_inf,
+           soto_inf: soto_inf,
+           quantity_inf: quantity_inf,
+           office_name: office_name,
+           sub_system: sub_system,
+           address: address,
+           index: index,
+           CF: CF,
+           flag: 'checkLogin'
+       },
+       function (data) {
+           if (data) {
+               if (flight == 'local') {
+                   href = amadeusPathByLang + "passengersDetail";
+                   $("#flight").val(flight);
+               } else {
+                   href = amadeusPathByLang + "passengersDetail";
+                   $("#flight").val(flight);
+               }
+               $("#formAjax").attr("action", href);
+               $("#temporary").val(data);
+               $("#formAjax").submit();
+           } else {
 
-                $('#rel_id').val(rel_id);
-                $('#rec_id').val(rec_id);
-                $('#com_id').val(com_id);
-                $('#price_id').val(price_id);
-                $('#dept_airport').val(dept_airport);
-                $('#arr_airport').val(arr_airport);
-                $('#origin_loc_code').val(origin_loc_code);
-                $('#desti_loc_code').val(desti_loc_code);
-                $('#dept_elaps').val(dept_elaps);
-                $('#dept_booking_class').val(dept_booking_class);
-                $('#dept_airline_name').val(dept_airline_name);
-                $('#dept_airline_id').val(dept_airline_id);
-                $('#dept_flight_no').val(dept_flight_no);
-                $('#dept_airline_abb').val(dept_airline_abb);
-                $('#dept_iata_code').val(dept_iata_code);
-                $('#dept_date').val(dept_date);
-                $('#dept_time').val(dept_time);
-                $('#arr_date').val(arr_date);
-                $('#dept_time_part').val(dept_time_part);
-                $('#arr_time').val(arr_time);
-                $('#dept_date_j').val(dept_date_j);
-                $('#arr_date_j').val(arr_date_j);
-                $('#dept_con').val(dept_con);
-                $('#ret_booking_class').val(ret_booking_class);
-                $('#ret_airline_name').val(ret_airline_name);
-                $('#ret_flight_no').val(ret_flight_no);
-                $('#ret_airline_abb').val(ret_airline_abb);
-                $('#ret_iata_code').val(ret_iata_code);
-                $('#ret_dept_date').val(ret_dept_date);
-                $('#ret_dept_time').val(ret_dept_time);
-                $('#ret_arr_date').val(ret_arr_date);
-                $('#ret_time_part').val(ret_time_part);
-                $('#ret_arr_time').val(ret_arr_time);
-                $('#ret_dept_date_j').val(ret_dept_date_j);
-                $('#ret_arr_date_j').val(ret_arr_date_j);
-                $('#ret_elaps').val(ret_elaps);
-                $('#ret_con').val(ret_con);
-                $('#main_adt').val(main_adt);
-                $('#final_adt').val(final_adt);
-                $('#tax_adt').val(tax_adt);
-                $('#soto_adt').val(soto_adt);
-                $('#quantity_adt').val(quantity_adt);
-                $('#main_chd').val(main_chd);
-                $('#final_chd').val(final_chd);
-                $('#tax_chd').val(tax_chd);
-                $('#soto_chd').val(soto_chd);
-                $('#quantity_chd').val(quantity_chd);
-                $('#main_inf').val(main_inf);
-                $('#final_inf').val(final_inf);
-                $('#tax_inf').val(tax_inf);
-                $('#soto_inf').val(soto_inf);
-                $('#quantity_inf').val(quantity_inf);
-                $('#office_name').val(office_name);
-                $('#sub_system').val(sub_system);
-                $('#address').val(address);
-                $('#index').val(index);
-                $('#CF').val(CF);
-                $('#retDate').val(retDate);
-                $('#flight').val(flight);
-                $("#login-popup").trigger("click");
-            }
-        })
+               $('#rel_id').val(rel_id);
+               $('#rec_id').val(rec_id);
+               $('#com_id').val(com_id);
+               $('#price_id').val(price_id);
+               $('#dept_airport').val(dept_airport);
+               $('#arr_airport').val(arr_airport);
+               $('#origin_loc_code').val(origin_loc_code);
+               $('#desti_loc_code').val(desti_loc_code);
+               $('#dept_elaps').val(dept_elaps);
+               $('#dept_booking_class').val(dept_booking_class);
+               $('#dept_airline_name').val(dept_airline_name);
+               $('#dept_airline_id').val(dept_airline_id);
+               $('#dept_flight_no').val(dept_flight_no);
+               $('#dept_airline_abb').val(dept_airline_abb);
+               $('#dept_iata_code').val(dept_iata_code);
+               $('#dept_date').val(dept_date);
+               $('#dept_time').val(dept_time);
+               $('#arr_date').val(arr_date);
+               $('#dept_time_part').val(dept_time_part);
+               $('#arr_time').val(arr_time);
+               $('#dept_date_j').val(dept_date_j);
+               $('#arr_date_j').val(arr_date_j);
+               $('#dept_con').val(dept_con);
+               $('#ret_booking_class').val(ret_booking_class);
+               $('#ret_airline_name').val(ret_airline_name);
+               $('#ret_flight_no').val(ret_flight_no);
+               $('#ret_airline_abb').val(ret_airline_abb);
+               $('#ret_iata_code').val(ret_iata_code);
+               $('#ret_dept_date').val(ret_dept_date);
+               $('#ret_dept_time').val(ret_dept_time);
+               $('#ret_arr_date').val(ret_arr_date);
+               $('#ret_time_part').val(ret_time_part);
+               $('#ret_arr_time').val(ret_arr_time);
+               $('#ret_dept_date_j').val(ret_dept_date_j);
+               $('#ret_arr_date_j').val(ret_arr_date_j);
+               $('#ret_elaps').val(ret_elaps);
+               $('#ret_con').val(ret_con);
+               $('#main_adt').val(main_adt);
+               $('#final_adt').val(final_adt);
+               $('#tax_adt').val(tax_adt);
+               $('#soto_adt').val(soto_adt);
+               $('#quantity_adt').val(quantity_adt);
+               $('#main_chd').val(main_chd);
+               $('#final_chd').val(final_chd);
+               $('#tax_chd').val(tax_chd);
+               $('#soto_chd').val(soto_chd);
+               $('#quantity_chd').val(quantity_chd);
+               $('#main_inf').val(main_inf);
+               $('#final_inf').val(final_inf);
+               $('#tax_inf').val(tax_inf);
+               $('#soto_inf').val(soto_inf);
+               $('#quantity_inf').val(quantity_inf);
+               $('#office_name').val(office_name);
+               $('#sub_system').val(sub_system);
+               $('#address').val(address);
+               $('#index').val(index);
+               $('#CF').val(CF);
+               $('#retDate').val(retDate);
+               $('#flight').val(flight);
+               $("#login-popup").trigger("click");
+           }
+       })
 }
 
 
@@ -3457,79 +3457,79 @@ function selectPassengerLocal(idPass, moduleType,_this=null) {
         loadingToggle(_this)
     }
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            idPass: idPass,
-            flag: 'selectPassengerLocal'
-        },
-        function (data) {
-            if(_this && _this.length){
-                loadingToggle(_this,false)
-            }
-            if (data) {
-                var obj = jQuery.parseJSON(data);
-                if (obj.NationalCode) {
-                    $(".UniqNationalCode").each(function (index) {
-                        if ($(this).val() == obj.NationalCode) {
-                            found = 1;
-                        }
-                    });
-                } else {
-                    $(".UniqPassportNumber").each(function (index) {
-                        if ($(this).val() == obj.passportNumber) {
-                            found = 1;
-                        }
-                    });
-                }
-                if (!found) {
-                    var numberRow = $("#numberRow").attr('value');
+       {
+           idPass: idPass,
+           flag: 'selectPassengerLocal'
+       },
+       function (data) {
+           if(_this && _this.length){
+               loadingToggle(_this,false)
+           }
+           if (data) {
+               var obj = jQuery.parseJSON(data);
+               if (obj.NationalCode) {
+                   $(".UniqNationalCode").each(function (index) {
+                       if ($(this).val() == obj.NationalCode) {
+                           found = 1;
+                       }
+                   });
+               } else {
+                   $(".UniqPassportNumber").each(function (index) {
+                       if ($(this).val() == obj.passportNumber) {
+                           found = 1;
+                       }
+                   });
+               }
+               if (!found) {
+                   var numberRow = $("#numberRow").attr('value');
 
-                    if (moduleType == 'insurance' && obj.birthday_fa != $("#birthday" + numberRow).val()) {
-                        $.alert({
-                            title: useXmltag("Passengerlist"),
-                            icon: 'fa fa-refresh',
-                            content: useXmltag("DateBirthDoesNotMatch"),
-                            rtl: true,
-                            type: 'red',
-                        });
+                   if (moduleType == 'insurance' && obj.birthday_fa != $("#birthday" + numberRow).val()) {
+                       $.alert({
+                           title: useXmltag("Passengerlist"),
+                           icon: 'fa fa-refresh',
+                           content: useXmltag("DateBirthDoesNotMatch"),
+                           rtl: true,
+                           type: 'red',
+                       });
 
 
-                    } else {
-                        safeSet("#gender" + numberRow, obj.gender, true);
-                        safeSet("#nameEn" + numberRow, obj.name_en);
-                        safeSet("#familyEn" + numberRow, obj.family_en);
-                        safeSet("#nameFa" + numberRow, obj.name);
-                        safeSet("#familyFa" + numberRow, obj.family);
-                        safeSet("#birthdayEn" + numberRow, obj.birthday);
-                        safeSet("#birthday" + numberRow, obj.birthday_fa);
-                        safeSet("#NationalCode" + numberRow, obj.NationalCode);
-                        safeSet("#passportCountry" + numberRow, obj.passportCountry);
-                        safeSet("#passportNumber" + numberRow, obj.passportNumber);
-                        safeSet("#passportExpire" + numberRow, obj.passportExpire);
-                        var pcSelector = "#passportCountry" + numberRow;
-                        if ($(pcSelector).length > 0) {
-                            var selectedText = $(pcSelector + " option:selected").text();
-                            var containerSelector = "#select2-passportCountry" + numberRow + "-container";
-                            if ($(containerSelector).length > 0) {
-                                $(containerSelector).html(selectedText);
-                            }
-                        }
+                   } else {
+                       safeSet("#gender" + numberRow, obj.gender, true);
+                       safeSet("#nameEn" + numberRow, obj.name_en);
+                       safeSet("#familyEn" + numberRow, obj.family_en);
+                       safeSet("#nameFa" + numberRow, obj.name);
+                       safeSet("#familyFa" + numberRow, obj.family);
+                       safeSet("#birthdayEn" + numberRow, obj.birthday);
+                       safeSet("#birthday" + numberRow, obj.birthday_fa);
+                       safeSet("#NationalCode" + numberRow, obj.NationalCode);
+                       safeSet("#passportCountry" + numberRow, obj.passportCountry);
+                       safeSet("#passportNumber" + numberRow, obj.passportNumber);
+                       safeSet("#passportExpire" + numberRow, obj.passportExpire);
+                       var pcSelector = "#passportCountry" + numberRow;
+                       if ($(pcSelector).length > 0) {
+                           var selectedText = $(pcSelector + " option:selected").text();
+                           var containerSelector = "#select2-passportCountry" + numberRow + "-container";
+                           if ($(containerSelector).length > 0) {
+                               $(containerSelector).html(selectedText);
+                           }
+                       }
 
-                    }
+                   }
 
-                    $(".s-u-close-last-p").trigger("click");
+                   $(".s-u-close-last-p").trigger("click");
 
-                } else {
-                    $.alert({
-                        title: useXmltag("Passengerlist"),
-                        icon: 'fa fa-refresh',
-                        content: useXmltag("NoPermissionDuplicateNationalCode"),
-                        rtl: true,
-                        type: 'red',
-                    });
-                    $(".s-u-close-last-p").trigger("click");
-                }
-            }
-        })
+               } else {
+                   $.alert({
+                       title: useXmltag("Passengerlist"),
+                       icon: 'fa fa-refresh',
+                       content: useXmltag("NoPermissionDuplicateNationalCode"),
+                       rtl: true,
+                       type: 'red',
+                   });
+                   $(".s-u-close-last-p").trigger("click");
+               }
+           }
+       })
 }
 
 function safeSet(selector, value, isSelect = false) {
@@ -3696,23 +3696,23 @@ function creditBuy(Obj, link, inputs) {
                                     form.setAttribute("action", link);
 
                                     $.each(inputs,
-                                        function (i, item) {
-                                            if (typeof item === 'object' && item !== null) {
-                                                $.each(item, function (j, item2) {
-                                                    var hiddenField = document.createElement("input");
-                                                    hiddenField.setAttribute("type", "hidden");
-                                                    hiddenField.setAttribute("name", i + '[' + j + ']');
-                                                    hiddenField.setAttribute("value", item2);
-                                                    form.appendChild(hiddenField);
-                                                });
-                                            } else {
-                                                var hiddenField = document.createElement("input");
-                                                hiddenField.setAttribute("type", "hidden");
-                                                hiddenField.setAttribute("name", i);
-                                                hiddenField.setAttribute("value", item);
-                                                form.appendChild(hiddenField);
-                                            }
-                                        });
+                                       function (i, item) {
+                                           if (typeof item === 'object' && item !== null) {
+                                               $.each(item, function (j, item2) {
+                                                   var hiddenField = document.createElement("input");
+                                                   hiddenField.setAttribute("type", "hidden");
+                                                   hiddenField.setAttribute("name", i + '[' + j + ']');
+                                                   hiddenField.setAttribute("value", item2);
+                                                   form.appendChild(hiddenField);
+                                               });
+                                           } else {
+                                               var hiddenField = document.createElement("input");
+                                               hiddenField.setAttribute("type", "hidden");
+                                               hiddenField.setAttribute("name", i);
+                                               hiddenField.setAttribute("value", item);
+                                               form.appendChild(hiddenField);
+                                           }
+                                       });
 
                                     var hiddenField = document.createElement("input");
                                     hiddenField.setAttribute("type", "hidden");
@@ -3887,23 +3887,23 @@ function memberCreditBuy(Obj, link, inputs) {
                                     form.setAttribute("action", link);
 
                                     $.each(inputs,
-                                        function (i, item) {
-                                            if (typeof item === 'object' && item !== null) {
-                                                $.each(item, function (j, item2) {
-                                                    var hiddenField = document.createElement("input");
-                                                    hiddenField.setAttribute("type", "hidden");
-                                                    hiddenField.setAttribute("name", i + '[' + j + ']');
-                                                    hiddenField.setAttribute("value", item2);
-                                                    form.appendChild(hiddenField);
-                                                });
-                                            } else {
-                                                var hiddenField = document.createElement("input");
-                                                hiddenField.setAttribute("type", "hidden");
-                                                hiddenField.setAttribute("name", i);
-                                                hiddenField.setAttribute("value", item);
-                                                form.appendChild(hiddenField);
-                                            }
-                                        });
+                                       function (i, item) {
+                                           if (typeof item === 'object' && item !== null) {
+                                               $.each(item, function (j, item2) {
+                                                   var hiddenField = document.createElement("input");
+                                                   hiddenField.setAttribute("type", "hidden");
+                                                   hiddenField.setAttribute("name", i + '[' + j + ']');
+                                                   hiddenField.setAttribute("value", item2);
+                                                   form.appendChild(hiddenField);
+                                               });
+                                           } else {
+                                               var hiddenField = document.createElement("input");
+                                               hiddenField.setAttribute("type", "hidden");
+                                               hiddenField.setAttribute("name", i);
+                                               hiddenField.setAttribute("value", item);
+                                               form.appendChild(hiddenField);
+                                           }
+                                       });
 
                                     var hiddenField = document.createElement("input");
                                     hiddenField.setAttribute("type", "hidden");
@@ -3967,116 +3967,116 @@ function getResultTicketLocal(origin, destination, dept_date, return_date, class
 
     $('.ticket-loader').fadeIn("slow");
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            flag: 'getResultTicketLocal',
-            origin: origin,
-            destination: destination,
-            dept_date: dept_date,
-            return_date: return_date,
-            classf: classf,
-            adult: adult,
-            child: child,
-            infant: infant,
-            foreign: foreign,
-            lang: lang,
-            searchFlightNumber: flightNumber
-        },
-        function (data) {
-            if (data) {
-                $('#resultFake').remove();
-                $('#result').html(data);
-                $('#result').fadeIn();
+       {
+           flag: 'getResultTicketLocal',
+           origin: origin,
+           destination: destination,
+           dept_date: dept_date,
+           return_date: return_date,
+           classf: classf,
+           adult: adult,
+           child: child,
+           infant: infant,
+           foreign: foreign,
+           lang: lang,
+           searchFlightNumber: flightNumber
+       },
+       function (data) {
+           if (data) {
+               $('#resultFake').remove();
+               $('#result').html(data);
+               $('#result').fadeIn();
 
-                if($('.showListSort').length  > 0)
-                {
-                    $('.silence_span').removeClass('ph-item2').html($('.showListSort').length + ' ' + useXmltag("NumberFlightFound"));
-                }
-
-
-                if (flightNumber != '') {
-                    flightNumber = flightNumber.toString();
-                    //$('div.international-available-box').hide();
-                    //$('div.' + flightNumber).show();
-                    $('#sortFlightInternal').remove();
-                    $('#s-u-filter-wrapper-ul').remove();
-
-                    var allTicket = [];
-                    $("div.international-available-box").each(function (index) {
-                        var flightNo = $(this).data('flightno').toString();
-                        var flight_type = $(this).data('type');
-                        var flight_airline = $(this).data('airline');
-
-                        var replaceFlightNumber = flightNumber.toString().replace(flight_airline, '');
+               if($('.showListSort').length  > 0)
+               {
+                   $('.silence_span').removeClass('ph-item2').html($('.showListSort').length + ' ' + useXmltag("NumberFlightFound"));
+               }
 
 
-                        // console.log('flightNumber=>'+flightNumber);
-                        // console.log('flightNo=>'+flightNo);
-                        // console.log('replace=>'+replaceFlightNumber);
-                        // console.log('*********************');
+               if (flightNumber != '') {
+                   flightNumber = flightNumber.toString();
+                   //$('div.international-available-box').hide();
+                   //$('div.' + flightNumber).show();
+                   $('#sortFlightInternal').remove();
+                   $('#s-u-filter-wrapper-ul').remove();
+
+                   var allTicket = [];
+                   $("div.international-available-box").each(function (index) {
+                       var flightNo = $(this).data('flightno').toString();
+                       var flight_type = $(this).data('type');
+                       var flight_airline = $(this).data('airline');
+
+                       var replaceFlightNumber = flightNumber.toString().replace(flight_airline, '');
 
 
-                        if (((flightNumber === flightNo) || (flightNo === replaceFlightNumber)) && flight_type == 'system') {
-
-                            var price = parseInt($(this).data('price'));
-                            var current = $(this).parent();
-                            allTicket.push({
-                                'content': current.html(),
-                                'price': price
-                            });
-                        }
-                    });
-                    for (var i = 0; i < parseInt(allTicket.length); i++) {
-                        key = i;
-                        for (var j = i; j < parseInt(allTicket.length); j++) {
-                            if (allTicket[j]['price'] <= allTicket[key]['price']) {
-                                var temp = allTicket[i];
-                                allTicket[i] = allTicket[j];
-                                allTicket[j] = temp;
-                            }
-                        }
-                    }
-                }
-
-                setTimeout(function () {
-                    if (flightNumber != '') {
-                        // console.log(allTicket);
-                        $('#sortFlightInternal').remove();
-                        $('#s-u-filter-wrapper-ul').remove();
-                        $('div.international-available-box').hide();
-                        $(".items").append('<div class="showListSort">' + allTicket[0]['content'] + '</div>');
-                    }
-
-                    // $('#priceSortSelect').trigger("click");
-                    $('.f-loader-check').fadeOut("slow");
-                    // $('.ticket-loader').fadeOut("slow");
-
-                }, 100);
+                       // console.log('flightNumber=>'+flightNumber);
+                       // console.log('flightNo=>'+flightNo);
+                       // console.log('replace=>'+replaceFlightNumber);
+                       // console.log('*********************');
 
 
-            }
+                       if (((flightNumber === flightNo) || (flightNo === replaceFlightNumber)) && flight_type == 'system') {
+
+                           var price = parseInt($(this).data('price'));
+                           var current = $(this).parent();
+                           allTicket.push({
+                               'content': current.html(),
+                               'price': price
+                           });
+                       }
+                   });
+                   for (var i = 0; i < parseInt(allTicket.length); i++) {
+                       key = i;
+                       for (var j = i; j < parseInt(allTicket.length); j++) {
+                           if (allTicket[j]['price'] <= allTicket[key]['price']) {
+                               var temp = allTicket[i];
+                               allTicket[i] = allTicket[j];
+                               allTicket[j] = temp;
+                           }
+                       }
+                   }
+               }
+
+               setTimeout(function () {
+                   if (flightNumber != '') {
+                       // console.log(allTicket);
+                       $('#sortFlightInternal').remove();
+                       $('#s-u-filter-wrapper-ul').remove();
+                       $('div.international-available-box').hide();
+                       $(".items").append('<div class="showListSort">' + allTicket[0]['content'] + '</div>');
+                   }
+
+                   // $('#priceSortSelect').trigger("click");
+                   $('.f-loader-check').fadeOut("slow");
+                   // $('.ticket-loader').fadeOut("slow");
+
+               }, 100);
 
 
-        });
+           }
+
+
+       });
 }
 
 
 function goToResultFakeFlight(origin, destination, depDate, Type, flightNumber) {
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            flag: 'getResultTicketFake',
-            origin: origin,
-            destination: destination,
-            dept_date: depDate,
-            Type: Type,
-            flightNumber: flightNumber
-        },
-        function (data) {
-            if (data) {
-                $("#resultFake").html(data);
-            }
+       {
+           flag: 'getResultTicketFake',
+           origin: origin,
+           destination: destination,
+           dept_date: depDate,
+           Type: Type,
+           flightNumber: flightNumber
+       },
+       function (data) {
+           if (data) {
+               $("#resultFake").html(data);
+           }
 
-        })
+       })
 }
 
 /**
@@ -4092,42 +4092,42 @@ function getResultTicketPortal(origin, destination, dept_date, return_date, clas
     $('.ticket-loader').fadeIn("slow");
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            flag: 'getResultTicketPortal',
-            origin: origin,
-            destination: destination,
-            dept_date: dept_date,
-            return_date: return_date,
-            classf: classf,
-            adult: adult,
-            child: child,
-            infant: infant,
-            page: page,
-            count: count,
-            foreign: foreign,
-            lang: lang
-        },
-        function (data) {
-            if (data) {
-                $('#resultFake').remove();
+       {
+           flag: 'getResultTicketPortal',
+           origin: origin,
+           destination: destination,
+           dept_date: dept_date,
+           return_date: return_date,
+           classf: classf,
+           adult: adult,
+           child: child,
+           infant: infant,
+           page: page,
+           count: count,
+           foreign: foreign,
+           lang: lang
+       },
+       function (data) {
+           if (data) {
+               $('#resultFake').remove();
 
-                //  $('#priceSortSelect').trigger("click");
-                setTimeout(function () {
-                    $("#result").html(data);
-                    $('.f-loader-check').hide();
-                    $('#result').fadeIn();
+               //  $('#priceSortSelect').trigger("click");
+               setTimeout(function () {
+                   $("#result").html(data);
+                   $('.f-loader-check').hide();
+                   $('#result').fadeIn();
 
-                    $('.silence_span').removeClass('ph-item2').html($('.international-available-box').length + ' ' + useXmltag("NumberFlightFound"));
+                   $('.silence_span').removeClass('ph-item2').html($('.international-available-box').length + ' ' + useXmltag("NumberFlightFound"));
 
 
-                }, 10);
+               }, 10);
 
-                setTimeout(function () {
-                    loadArticles('Flight', destination)
-                }, 1000);
-            }
+               setTimeout(function () {
+                   loadArticles('Flight', destination)
+               }, 1000);
+           }
 
-        })
+       })
 
 }
 
@@ -4164,16 +4164,16 @@ function isAlfabetKeyFields(evt, Input) {
 
 function signout(typeUser) {
     $.post(amadeusPath + 'user_ajax.php',
-        {flag: 'signout'},
-        function (data) {
-            /*if(typeUser !=undefined && typeUser=='agency')
-            {
-                window.location.href = amadeusPathByLang + "loginAgency";
-            }else{
-                window.location.href = amadeusPathByLang + "loginUser";
-            }*/
-            window.location.href = clientMainDomain  ;
-        }
+       {flag: 'signout'},
+       function (data) {
+           /*if(typeUser !=undefined && typeUser=='agency')
+           {
+               window.location.href = amadeusPathByLang + "loginAgency";
+           }else{
+               window.location.href = amadeusPathByLang + "loginUser";
+           }*/
+           window.location.href = clientMainDomain  ;
+       }
     )
 }
 
@@ -4183,7 +4183,7 @@ function gregorian_to_jalali(gy, gm, gd) {
     gy -= (gy <= 1600) ? 621 : 1600;
     gy2 = (gm > 2) ? (gy + 1) : gy;
     days = (365 * gy) + (parseInt((gy2 + 3) / 4)) - (parseInt((gy2 + 99) / 100))
-        + (parseInt((gy2 + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
+       + (parseInt((gy2 + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
     jy += 33 * (parseInt(days / 12053));
     days %= 12053;
     jy += 4 * (parseInt(days / 1461));
@@ -4276,15 +4276,15 @@ function goNextDay(one_way, origin, destination, dept_date, return_date, classf,
 function select_Airport(language='fa') {
     var Departure = $('#origin_local').val();
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            Departure: Departure,
-            flag: "select_Airport",
-            language: language,
-        },
-        function (data) {
-            $('#destination_local').html(data);
-            $('#destination_local').select2('open');
-        })
+       {
+           Departure: Departure,
+           flag: "select_Airport",
+           language: language,
+       },
+       function (data) {
+           $('#destination_local').html(data);
+           $('#destination_local').select2('open');
+       })
 }
 
 /**
@@ -4433,153 +4433,153 @@ function checkfildLocal(currentDate, numAdult, numChild, numInfant, uniq_id,_thi
         var IdMember = '';
         var SourceIdFlight = $('#SourceIdFlight').val();
         setTimeout(
-            function () {
-                $.post(amadeusPath + 'user_ajax.php',
-                    {
-                        mobile: mob,
-                        telephone: tel,
-                        Email: email_buyer,
-                        flag: "register_memeber"
-                    },
-                    function (reponse) {
+           function () {
+               $.post(amadeusPath + 'user_ajax.php',
+                  {
+                      mobile: mob,
+                      telephone: tel,
+                      Email: email_buyer,
+                      flag: "register_memeber"
+                  },
+                  function (reponse) {
 
-                        var res = reponse.split(':');
-                        if (reponse.indexOf('success') > -1) {
-                            $('#IdMember').val(res[1]);
-                            IdMember = $('#IdMember').val();
-                            var dataForm = $('#formPassengerDetailLocal').serialize();
-                            setTimeout(function () {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: amadeusPath + 'user_ajax.php',
-                                    dataType: 'JSON',
-                                    data:
-                                        {
-                                            flag: 'PreReserve',
-                                            uniq_id: uniq_id,
-                                            NumCount: NumberPassenger,
-                                            dataForm: dataForm
-                                        },
-                                    success: function (data) {
-                                        var RequestNumber = {};
-                                        if (data.total_status == 'success') {
-                                            if (typeof data.dept !== 'undefined') {
-                                                $('#RequestNumber_dept').val(data.dept.result_request_number);
-                                                $('#factor_number_Flight').val(data.dept.result_factor_number);
-                                                RequestNumber['dept'] = $('#RequestNumber_dept').val();
-                                            }
-                                            if (typeof data.return !== 'undefined') {
-                                                $('#RequestNumber_return').val(data.return.result_request_number);
-                                                RequestNumber['return'] = $('#RequestNumber_return').val();
-                                            }
-                                            if (typeof data.TwoWay !== 'undefined') {
-                                                $('#RequestNumber_TwoWay').val(data.TwoWay.result_request_number);
-                                                RequestNumber['TwoWay'] = $('#RequestNumber_TwoWay').val();
-                                                $('#factor_number_Flight').val(data.TwoWay.result_factor_number);
-                                            }
+                      var res = reponse.split(':');
+                      if (reponse.indexOf('success') > -1) {
+                          $('#IdMember').val(res[1]);
+                          IdMember = $('#IdMember').val();
+                          var dataForm = $('#formPassengerDetailLocal').serialize();
+                          setTimeout(function () {
+                              $.ajax({
+                                  type: 'POST',
+                                  url: amadeusPath + 'user_ajax.php',
+                                  dataType: 'JSON',
+                                  data:
+                                     {
+                                         flag: 'PreReserve',
+                                         uniq_id: uniq_id,
+                                         NumCount: NumberPassenger,
+                                         dataForm: dataForm
+                                     },
+                                  success: function (data) {
+                                      var RequestNumber = {};
+                                      if (data.total_status == 'success') {
+                                          if (typeof data.dept !== 'undefined') {
+                                              $('#RequestNumber_dept').val(data.dept.result_request_number);
+                                              $('#factor_number_Flight').val(data.dept.result_factor_number);
+                                              RequestNumber['dept'] = $('#RequestNumber_dept').val();
+                                          }
+                                          if (typeof data.return !== 'undefined') {
+                                              $('#RequestNumber_return').val(data.return.result_request_number);
+                                              RequestNumber['return'] = $('#RequestNumber_return').val();
+                                          }
+                                          if (typeof data.TwoWay !== 'undefined') {
+                                              $('#RequestNumber_TwoWay').val(data.TwoWay.result_request_number);
+                                              RequestNumber['TwoWay'] = $('#RequestNumber_TwoWay').val();
+                                              $('#factor_number_Flight').val(data.TwoWay.result_factor_number);
+                                          }
 
-                                            if (typeof data.multi_destination !== 'undefined') {
-                                                $('#RequestNumber_multi_destination').val(data.multi_destination.result_request_number);
-                                                RequestNumber['multi_destination'] = $('#RequestNumber_multi_destination').val();
-                                                $('#factor_number_Flight').val(data.multi_destination.result_factor_number);
-                                            }
-                                            var RequestNumberJsonEncoded = JSON.stringify(RequestNumber);
-
-
-                                            bookFlight(RequestNumberJsonEncoded, IdMember, SourceIdFlight);
+                                          if (typeof data.multi_destination !== 'undefined') {
+                                              $('#RequestNumber_multi_destination').val(data.multi_destination.result_request_number);
+                                              RequestNumber['multi_destination'] = $('#RequestNumber_multi_destination').val();
+                                              $('#factor_number_Flight').val(data.multi_destination.result_factor_number);
+                                          }
+                                          var RequestNumberJsonEncoded = JSON.stringify(RequestNumber);
 
 
-                                            /*setTimeout(
-                                                function () {
-                                                    $('#loader_check').hide();
-                                                    $('#formPassengerDetailLocal').submit();
-                                                }, 2000);*/
+                                          bookFlight(RequestNumberJsonEncoded, IdMember, SourceIdFlight);
 
-                                        } else {
-                                            if(_this && _this.length){
-                                                loadingToggle(_this,false);
-                                            }
-                                            if (typeof data.dept !== 'undefined') {
-                                                var message = data.dept.result_message;
-                                            }
-                                            if (typeof data.return !== 'undefined') {
-                                                var message = data.return.result_message;
-                                            }
-                                            if (typeof data.TwoWay !== 'undefined') {
-                                                var message = data.TwoWay.result_message;
-                                            }
-                                            if (typeof data.multi_destination !== 'undefined') {
-                                                var message = data.multi_destination.result_message;
-                                            }
-                                            $.confirm({
-                                                title: useXmltag('BuyTicket'),
-                                                content: message,
-                                                type: 'blue',
-                                                typeAnimated: true,
-                                                buttons: {
-                                                    tryAgain: {
-                                                        text: useXmltag('Repeatsearch'),
-                                                        btnClass: 'btn-green',
-                                                        action: function () {
 
-                                                            let url_research = $('.cancel-passenger').attr('data-url');
-                                                            window.location.href = url_research;
-                                                        }
-                                                    },
-                                                    close: {
-                                                        text: useXmltag('searchReturnToMainPage'),
-                                                        btnClass: 'btn-red',
-                                                        action: function () {
+                                          /*setTimeout(
+                                              function () {
+                                                  $('#loader_check').hide();
+                                                  $('#formPassengerDetailLocal').submit();
+                                              }, 2000);*/
 
-                                                            window.location.href = rootMainPath ;
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                            $('#loader_check').hide();
-                                            $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+                                      } else {
+                                          if(_this && _this.length){
+                                              loadingToggle(_this,false);
+                                          }
+                                          if (typeof data.dept !== 'undefined') {
+                                              var message = data.dept.result_message;
+                                          }
+                                          if (typeof data.return !== 'undefined') {
+                                              var message = data.return.result_message;
+                                          }
+                                          if (typeof data.TwoWay !== 'undefined') {
+                                              var message = data.TwoWay.result_message;
+                                          }
+                                          if (typeof data.multi_destination !== 'undefined') {
+                                              var message = data.multi_destination.result_message;
+                                          }
+                                          $.confirm({
+                                              title: useXmltag('BuyTicket'),
+                                              content: message,
+                                              type: 'blue',
+                                              typeAnimated: true,
+                                              buttons: {
+                                                  tryAgain: {
+                                                      text: useXmltag('Repeatsearch'),
+                                                      btnClass: 'btn-green',
+                                                      action: function () {
 
-                                            return false;
-                                        }
-                                    }
-                                });
-                            }, 100);
-                        } else {
-                            if(_this && _this.length){
-                                loadingToggle(_this,false);
-                            }
-                            $('#loader_check').addClass('d-none');
-                            $('#send_data').removeAttr('disabled').css('padding-right', '3px').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
-                            $.confirm({
-                                title: useXmltag('BuyTicket'),
-                                content: res[1],
-                                type: 'red',
-                                typeAnimated: true,
-                                buttons: {
-                                    tryAgain: {
-                                        text: useXmltag('Repeatsearch'),
-                                        btnClass: 'btn-green',
-                                        action: function () {
+                                                          let url_research = $('.cancel-passenger').attr('data-url');
+                                                          window.location.href = url_research;
+                                                      }
+                                                  },
+                                                  close: {
+                                                      text: useXmltag('searchReturnToMainPage'),
+                                                      btnClass: 'btn-red',
+                                                      action: function () {
 
-                                            let url_research = $('.cancel-passenger').attr('data-url');
-                                            window.location.href = url_research;
-                                        }
-                                    },
-                                    close: {
-                                        text: useXmltag('searchReturnToMainPage'),
-                                        btnClass: 'btn-red',
-                                        action: function () {
+                                                          window.location.href = rootMainPath ;
+                                                      }
+                                                  }
+                                              }
+                                          });
+                                          $('#loader_check').hide();
+                                          $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
 
-                                            window.location.href = rootMainPath ;
-                                        }
-                                    }
-                                }
-                            });
+                                          return false;
+                                      }
+                                  }
+                              });
+                          }, 100);
+                      } else {
+                          if(_this && _this.length){
+                              loadingToggle(_this,false);
+                          }
+                          $('#loader_check').addClass('d-none');
+                          $('#send_data').removeAttr('disabled').css('padding-right', '3px').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+                          $.confirm({
+                              title: useXmltag('BuyTicket'),
+                              content: res[1],
+                              type: 'red',
+                              typeAnimated: true,
+                              buttons: {
+                                  tryAgain: {
+                                      text: useXmltag('Repeatsearch'),
+                                      btnClass: 'btn-green',
+                                      action: function () {
 
-                            return false;
-                        }
-                    });
-            }, 1000);
+                                          let url_research = $('.cancel-passenger').attr('data-url');
+                                          window.location.href = url_research;
+                                      }
+                                  },
+                                  close: {
+                                      text: useXmltag('searchReturnToMainPage'),
+                                      btnClass: 'btn-red',
+                                      action: function () {
+
+                                          window.location.href = rootMainPath ;
+                                      }
+                                  }
+                              }
+                          });
+
+                          return false;
+                      }
+                  });
+           }, 1000);
     } else {
         $.confirm({
             title: useXmltag("ErrorEnteringInformation"),
@@ -4596,11 +4596,11 @@ function checkfildLocal(currentDate, numAdult, numChild, numInfant, uniq_id,_thi
             }
         });
         setTimeout(
-            function () {
-                $('#loader_check').addClass('d-none');
-                $('#send_data').removeAttr('disabled').css('opacity', '1').css('padding-right', '3px').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+           function () {
+               $('#loader_check').addClass('d-none');
+               $('#send_data').removeAttr('disabled').css('opacity', '1').css('padding-right', '3px').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
 
-            }, 2000);
+           }, 2000);
 
     }
 
@@ -4624,55 +4624,55 @@ function RunPreReserveEntertainment(EntertainmentId , thiss) {
     var IdMember = '';
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            mobile: mob,
-            telephone: tel,
-            Email: Email_Address,
-            flag: "register_memeber"
-        },
-        function (reponse) {
-            var res = reponse.split(':');
-            if (reponse.indexOf('success') > -1) {
-                $('#IdMember').val(res[1]);
-                IdMember = $('#IdMember').val();
-                var dataForm = $('#formPassengerDetailEntertainment').serialize();
-                setTimeout(function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: amadeusPath + 'entertainment_ajax.php',
-                        dataType: 'JSON',
-                        data:
-                            {
-                                flag: 'PreReserve',
-                                EntertainmentId: EntertainmentId,
-                                NumCount: $('#CountPeople').val(),
-                                dataForm: dataForm
-                            },
-                        success: function (data) {
+       {
+           mobile: mob,
+           telephone: tel,
+           Email: Email_Address,
+           flag: "register_memeber"
+       },
+       function (reponse) {
+           var res = reponse.split(':');
+           if (reponse.indexOf('success') > -1) {
+               $('#IdMember').val(res[1]);
+               IdMember = $('#IdMember').val();
+               var dataForm = $('#formPassengerDetailEntertainment').serialize();
+               setTimeout(function () {
+                   $.ajax({
+                       type: 'POST',
+                       url: amadeusPath + 'entertainment_ajax.php',
+                       dataType: 'JSON',
+                       data:
+                          {
+                              flag: 'PreReserve',
+                              EntertainmentId: EntertainmentId,
+                              NumCount: $('#CountPeople').val(),
+                              dataForm: dataForm
+                          },
+                       success: function (data) {
 
-                            busy = 0;
+                           busy = 0;
 
-                            $('[name="EntertainmentFactorNumber"]').val(data.factor_number);
-                            $("#formPassengerDetailEntertainment").attr("action", amadeusPathByLang + 'passengerDetailReservationEntertainment');
-                            $("#formPassengerDetailEntertainment").submit();
-                        }
-                    });
-                }, 100);
-            } else {
-                busy = 0;
-                loadingToggle(thiss,false)
-                $('#loader_check').hide();
-                $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
-                $.alert({
-                    title: useXmltag("BuyTicket"),
-                    icon: 'fa shopping-cart',
-                    content: res[1],
-                    rtl: true,
-                    type: 'red'
-                });
-                return false;
-            }
-        });
+                           $('[name="EntertainmentFactorNumber"]').val(data.factor_number);
+                           $("#formPassengerDetailEntertainment").attr("action", amadeusPathByLang + 'passengerDetailReservationEntertainment');
+                           $("#formPassengerDetailEntertainment").submit();
+                       }
+                   });
+               }, 100);
+           } else {
+               busy = 0;
+               loadingToggle(thiss,false)
+               $('#loader_check').hide();
+               $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+               $.alert({
+                   title: useXmltag("BuyTicket"),
+                   icon: 'fa shopping-cart',
+                   content: res[1],
+                   rtl: true,
+                   type: 'red'
+               });
+               return false;
+           }
+       });
 }
 
 function PreReserveEntertainment(EntertainmentId, thiss) {
@@ -4718,9 +4718,9 @@ function PreReserveEntertainment(EntertainmentId, thiss) {
         }
 
         var maxDate =
-            y + '-' +
-            (m < 10 ? '0' + m : m) + '-' +
-            d;
+           y + '-' +
+           (m < 10 ? '0' + m : m) + '-' +
+           d;
 
         // فقط چک سقف ۶ ماه
         if (startDate > maxDate) {
@@ -4819,10 +4819,10 @@ function PreReserveEntertainment(EntertainmentId, thiss) {
             url: amadeusPath + 'entertainment_ajax.php',
             dataType: 'JSON',
             data:
-                {
-                    flag: 'checkUserLogin',
+               {
+                   flag: 'checkUserLogin',
 
-                },
+               },
             success: function (data) {
 
 
@@ -4851,10 +4851,10 @@ function PreReserveEntertainment(EntertainmentId, thiss) {
 
         loadingToggle(thiss,false)
         setTimeout(
-            function () {
-                $('#loader_check').hide();
-                $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
-            }, 2000);
+           function () {
+               $('#loader_check').hide();
+               $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+           }, 2000);
 
     }
 
@@ -4957,10 +4957,10 @@ function PreRquestEntertainment(EntertainmentId, thiss) {
             url: amadeusPath + 'entertainment_ajax.php',
             dataType: 'JSON',
             data:
-                {
-                    flag: 'checkUserLogin',
+               {
+                   flag: 'checkUserLogin',
 
-                },
+               },
             success: function (data) {
 
                 if (data.result_status == 'success') {
@@ -4988,10 +4988,10 @@ function PreRquestEntertainment(EntertainmentId, thiss) {
 
         loadingToggle(thiss,false)
         setTimeout(
-            function () {
-                $('#loader_check').hide();
-                $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
-            }, 2000);
+           function () {
+               $('#loader_check').hide();
+               $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+           }, 2000);
 
     }
 
@@ -5092,59 +5092,59 @@ function RunPreRequestEntertainment(EntertainmentId, thiss) {
     var IdMember = '';
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            mobile: mob,
-            Email: Email_Address,
-            flag: "register_memeber"
-        },
-        function (reponse) {
-            var res = reponse.split(':');
-            if (reponse.indexOf('success') > -1) {
-                $('#IdMember').val(res[1]);
-                IdMember = $('#IdMember').val();
-                var dataForm = $('#formPassengerDetailEntertainmentForRequest').serialize();
+       {
+           mobile: mob,
+           Email: Email_Address,
+           flag: "register_memeber"
+       },
+       function (reponse) {
+           var res = reponse.split(':');
+           if (reponse.indexOf('success') > -1) {
+               $('#IdMember').val(res[1]);
+               IdMember = $('#IdMember').val();
+               var dataForm = $('#formPassengerDetailEntertainmentForRequest').serialize();
 
-                setTimeout(function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: amadeusPath + 'entertainment_ajax.php',
-                        dataType: 'JSON',
-                        data:
-                            {
-                                flag: 'PreRequest',
-                                EntertainmentId: EntertainmentId,
-                                dataForm: dataForm
-                            },
-                        success: function (data) {
+               setTimeout(function () {
+                   $.ajax({
+                       type: 'POST',
+                       url: amadeusPath + 'entertainment_ajax.php',
+                       dataType: 'JSON',
+                       data:
+                          {
+                              flag: 'PreRequest',
+                              EntertainmentId: EntertainmentId,
+                              dataForm: dataForm
+                          },
+                       success: function (data) {
 
-                            busy = 0;
+                           busy = 0;
 
-                            $('[name="factorNumber"]').val(data.factor_number);
-                            $('[name="serviceName"]').val(data.service_name);
-                            $("#formPassengerDetailEntertainmentForRequest").attr("action", amadeusPathByLang + 'factorRequest');
-                            $("#formPassengerDetailEntertainmentForRequest").submit();
-
-
+                           $('[name="factorNumber"]').val(data.factor_number);
+                           $('[name="serviceName"]').val(data.service_name);
+                           $("#formPassengerDetailEntertainmentForRequest").attr("action", amadeusPathByLang + 'factorRequest');
+                           $("#formPassengerDetailEntertainmentForRequest").submit();
 
 
-                        }
-                    });
-                }, 100);
-            } else {
-                busy = 0;
-                loadingToggle(thiss,false)
-                $('#loader_check').hide();
-                $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
-                $.alert({
-                    title: useXmltag("BuyTicket"),
-                    icon: 'fa shopping-cart',
-                    content: res[1],
-                    rtl: true,
-                    type: 'red'
-                });
-                return false;
-            }
-        });
+
+
+                       }
+                   });
+               }, 100);
+           } else {
+               busy = 0;
+               loadingToggle(thiss,false)
+               $('#loader_check').hide();
+               $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+               $.alert({
+                   title: useXmltag("BuyTicket"),
+                   icon: 'fa shopping-cart',
+                   content: res[1],
+                   rtl: true,
+                   type: 'red'
+               });
+               return false;
+           }
+       });
 }
 
 
@@ -5186,9 +5186,9 @@ function bookFlight(RequestNumber, IdMember, SourceId) {
         CaptchaCodeToEnglishNumber = CaptchaCode.replace(/[٠١٢٣٤٥٦٧٨٩]/g, function (d) {
             return d.charCodeAt(0) - 1632;
         })
-            .replace(/[۰۱۲۳۴۵۶۷۸۹]/g, function (d) {
-                return d.charCodeAt(0) - 1776;
-            });
+           .replace(/[۰۱۲۳۴۵۶۷۸۹]/g, function (d) {
+               return d.charCodeAt(0) - 1776;
+           });
 
     } else {
         var CaptchaCodeToEnglishNumber = '';
@@ -5200,9 +5200,9 @@ function bookFlight(RequestNumber, IdMember, SourceId) {
         CaptchaCodeReturnToEnglishNumber = CaptchaCodeReturn.replace(/[٠١٢٣٤٥٦٧٨٩]/g, function (d) {
             return d.charCodeAt(0) - 1632;
         })
-            .replace(/[۰۱۲۳۴۵۶۷۸۹]/g, function (d) {
-                return d.charCodeAt(0) - 1776;
-            });
+           .replace(/[۰۱۲۳۴۵۶۷۸۹]/g, function (d) {
+               return d.charCodeAt(0) - 1776;
+           });
 
     } else {
         var CaptchaCodeReturnToEnglishNumber = '';
@@ -5244,23 +5244,23 @@ function bookFlight(RequestNumber, IdMember, SourceId) {
         url: amadeusPath + 'user_ajax.php',
         dataType: 'JSON',
         data:
-            {
-                flag: 'bookFlight',
-                RequestNumber: RequestNumber,
-                IdMember: IdMember,
-                SourceId: SourceId,
-                CaptchaCode: CaptchaCodeToEnglishNumber,
-                CaptchaReturnCode: CaptchaCodeReturnToEnglishNumber
-            },
+           {
+               flag: 'bookFlight',
+               RequestNumber: RequestNumber,
+               IdMember: IdMember,
+               SourceId: SourceId,
+               CaptchaCode: CaptchaCodeToEnglishNumber,
+               CaptchaReturnCode: CaptchaCodeReturnToEnglishNumber
+           },
         success: function (data) {
 
             if (data.total_status == 'success') {
 
                 setTimeout(
-                    function () {
-                        $('#loader_check').hide();
-                        $('#formPassengerDetailLocal').submit();
-                    }, 2000);
+                   function () {
+                       $('#loader_check').hide();
+                       $('#formPassengerDetailLocal').submit();
+                   }, 2000);
 
             }
             else {
@@ -5441,14 +5441,14 @@ function convertNumber(arg) {
 function checkNumber(evt, Input) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
     if ($.inArray(charCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-        // Allow: Ctrl/cmd+A
-        charCode == 65 ||
-        // Allow: Ctrl/cmd+C
-        charCode == 67 ||
-        // Allow: Ctrl/cmd+X
-        charCode == 88 ||
-        // Allow: home, end, left, right
-        (charCode >= 35 && charCode <= 39)) {
+       // Allow: Ctrl/cmd+A
+       charCode == 65 ||
+       // Allow: Ctrl/cmd+C
+       charCode == 67 ||
+       // Allow: Ctrl/cmd+X
+       charCode == 88 ||
+       // Allow: home, end, left, right
+       (charCode >= 35 && charCode <= 39)) {
         // let it happen, don't do anything
         return true;
     }
@@ -5523,13 +5523,13 @@ function Adult_members(currentDate, numAdult) {
         var passportExpire = $("#passportExpireA" + i);
         var birthdayEn = $("#birthdayEnA" + i);
 
-        /*        var scrollToElement = function (elementId) {
-                    console.log('scroll started');
-                    $([document.documentElement, document.body]).animate({
-                        scrollTop: $("#" + elementId).offset().top - 120
-                    }, 1000);
-                    console.log('scroll ended');
-                };*/
+/*        var scrollToElement = function (elementId) {
+            console.log('scroll started');
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#" + elementId).offset().top - 120
+            }, 1000);
+            console.log('scroll ended');
+        };*/
 
         GenderSelector.removeClass('border-danger');
         nameFa.removeClass('border-danger');
@@ -5687,22 +5687,22 @@ function Adult_members(currentDate, numAdult) {
             if (National_Code != "") {
                 if (!z1.test(convertedCode)) {
                     messageElement.html('<br>' + useXmltag("NationalCodeNumberOnly"));
-                    /*                    $([document.documentElement, document.body]).animate({
-                                            scrollTop: messageElement.offset().top + 100
-                                        }, 1000);*/
+/*                    $([document.documentElement, document.body]).animate({
+                        scrollTop: messageElement.offset().top + 100
+                    }, 1000);*/
                     error = 1;
                 } else if ((National_Code.toString().length != 10)) {
-                    /*                    $([document.documentElement, document.body]).animate({
-                                            scrollTop: messageElement.offset().top + 100
-                                        }, 1000);*/
+/*                    $([document.documentElement, document.body]).animate({
+                        scrollTop: messageElement.offset().top + 100
+                    }, 1000);*/
                     messageElement.html('<br>' + useXmltag("OnlyTenDigitsNationalCode"));
                     error = 1;
                 } else {
                     var NCode = checkCodeMeli(convertNumber(National_Code));
                     if (!NCode) {
-                        /*                        $([document.documentElement, document.body]).animate({
-                                                    scrollTop: messageElement.offset().top + 100
-                                                }, 1000);*/
+/*                        $([document.documentElement, document.body]).animate({
+                            scrollTop: messageElement.offset().top + 100
+                        }, 1000);*/
                         messageElement.html('<br>' + useXmltag("EnteredCationalCodeNotValid"));
                         error = 1;
                     }
@@ -5722,9 +5722,9 @@ function Adult_members(currentDate, numAdult) {
 
             console.assert(((currentDate- n) > 378691200),'error in birthday');
             if ((currentDate - n) < 378691200) { // 12سال =(12*365+3)*24*60*60
-                /*                $([document.documentElement, document.body]).animate({
-                                    scrollTop: messageElement.offset().top + 100
-                                }, 1000);*/
+/*                $([document.documentElement, document.body]).animate({
+                    scrollTop: messageElement.offset().top + 100
+                }, 1000);*/
                 messageElement.html(useXmltag("BirthEnteredNotCorrect"));
                 error = 1;
             }
@@ -5918,22 +5918,22 @@ function Chd_memebrs(currentDate, numChild) {
             if (National_Code != "") {
                 if (!z1.test(convertedCode)) {
                     messageElement.html('<br>' + useXmltag("NationalCodeNumberOnly"));
-                    /*                    $([document.documentElement, document.body]).animate({
-                                            scrollTop: messageElement.offset().top + 100
-                                        }, 1000);*/
+/*                    $([document.documentElement, document.body]).animate({
+                        scrollTop: messageElement.offset().top + 100
+                    }, 1000);*/
                     error = 1;
                 } else if ((National_Code.toString().length != 10)) {
-                    /*                    $([document.documentElement, document.body]).animate({
-                                            scrollTop: messageElement.offset().top + 100
-                                        }, 1000);*/
+/*                    $([document.documentElement, document.body]).animate({
+                        scrollTop: messageElement.offset().top + 100
+                    }, 1000);*/
                     messageElement.html('<br>' + useXmltag("OnlyTenDigitsNationalCode"));
                     error = 1;
                 } else {
                     var NCode = checkCodeMeli(convertNumber(National_Code));
                     if (!NCode) {
-                        /*                        $([document.documentElement, document.body]).animate({
-                                                    scrollTop: messageElement.offset().top + 100
-                                                }, 1000);*/
+/*                        $([document.documentElement, document.body]).animate({
+                            scrollTop: messageElement.offset().top + 100
+                        }, 1000);*/
                         messageElement.html('<br>' + useXmltag("EnteredCationalCodeNotValid"));
                         error = 1;
                     }
@@ -5954,9 +5954,9 @@ function Chd_memebrs(currentDate, numChild) {
             var n = Math.round(d.getTime() / 1000);
 
             if ((currentDate - n) < 63072000 || 378691200 < (currentDate - n)) {// 2سال = 2*365*24*60*60  , 12سال =(12*365+3)*24*60*60
-                /*                $([document.documentElement, document.body]).animate({
-                                    scrollTop: messageElement.offset().top + 100
-                                }, 1000);*/
+/*                $([document.documentElement, document.body]).animate({
+                    scrollTop: messageElement.offset().top + 100
+                }, 1000);*/
                 messageElement.html(useXmltag("BirthEnteredNotCorrect"));
                 error = 1;
             }
@@ -6146,22 +6146,22 @@ function Inf_members(currentDate, numInfant) {
             if (National_Code != "") {
                 if (!z1.test(convertedCode)) {
                     messageElement.html('<br>' + useXmltag("NationalCodeNumberOnly"));
-                    /*                    $([document.documentElement, document.body]).animate({
-                                            scrollTop: messageElement.offset().top + 100
-                                        }, 1000);*/
+/*                    $([document.documentElement, document.body]).animate({
+                        scrollTop: messageElement.offset().top + 100
+                    }, 1000);*/
                     error = 1;
                 } else if ((National_Code.toString().length != 10)) {
-                    /*                    $([document.documentElement, document.body]).animate({
-                                            scrollTop: messageElement.offset().top + 100
-                                        }, 1000);*/
+/*                    $([document.documentElement, document.body]).animate({
+                        scrollTop: messageElement.offset().top + 100
+                    }, 1000);*/
                     messageElement.html('<br>' + useXmltag("OnlyTenDigitsNationalCode"));
                     error = 1;
                 } else {
                     var NCode = checkCodeMeli(convertNumber(National_Code));
                     if (!NCode) {
-                        /*                        $([document.documentElement, document.body]).animate({
-                                                    scrollTop: messageElement.offset().top + 100
-                                                }, 1000);*/
+/*                        $([document.documentElement, document.body]).animate({
+                            scrollTop: messageElement.offset().top + 100
+                        }, 1000);*/
                         messageElement.html('<br>' + useXmltag("EnteredCationalCodeNotValid"));
                         error = 1;
                     }
@@ -6181,9 +6181,9 @@ function Inf_members(currentDate, numInfant) {
             var d = new Date(array[0]);
             var n = Math.round(d.getTime() / 1000);
             if ((currentDate - n) > 63072000) { // 2سال = 2*365*24*60*60
-                /*                $([document.documentElement, document.body]).animate({
-                                    scrollTop: messageElement.offset().top + 100
-                                }, 1000);*/
+/*                $([document.documentElement, document.body]).animate({
+                    scrollTop: messageElement.offset().top + 100
+                }, 1000);*/
                 messageElement.html(useXmltag("BirthEnteredNotCorrect"));
                 error = 1;
             }
@@ -6215,12 +6215,12 @@ function goToBank(Obj, link, inputs) {
         url: amadeusPath + 'user_ajax.php',
         dataType: 'JSON',
         data:
-            {
-                flag: 'checkMemberCredit',
-                priceToPay: price_to_pay,
-                typeApplication: inputs.typeApplication,
-                creditUse: $("input[name='chkCreditUse']:checked").val()
-            },
+           {
+               flag: 'checkMemberCredit',
+               priceToPay: price_to_pay,
+               typeApplication: inputs.typeApplication,
+               creditUse: $("input[name='chkCreditUse']:checked").val()
+           },
         success: function (data) {
 
             credit_status = data.result_status;
@@ -6246,7 +6246,7 @@ function goToBank(Obj, link, inputs) {
                     inputs['redirectUrl'] = $('#redirectUrl').val();
                     link = amadeusPath + 'goToBankSamanInsurance';
                 }
-
+console.log(inputs)
                 $.ajax({
                     type: 'POST',
                     url: amadeusPath + 'user_ajax.php',
@@ -6734,53 +6734,53 @@ function LoginOfPanel() {
         // send  for logon
         if (error == 0) {
             $.post(amadeusPath + 'captcha/securimage_check.php',
-                {captchaAjax: $('#signup-captcha2').val()},
-                function (response) {
-                    if (response == true) {
-                        reloadCaptcha();
-                        $.post(amadeusPath + 'user_ajax.php',
-                            {
-                                email: email,
-                                remember: remember,
-                                password: pass,
-                                organization: organization,
-                                setcoockie: "yes",
-                                flag: 'memberLogin'
-                            },
-                            function (data) {
+               {captchaAjax: $('#signup-captcha2').val()},
+               function (response) {
+                   if (response == true) {
+                       reloadCaptcha();
+                       $.post(amadeusPath + 'user_ajax.php',
+                          {
+                              email: email,
+                              remember: remember,
+                              password: pass,
+                              organization: organization,
+                              setcoockie: "yes",
+                              flag: 'memberLogin'
+                          },
+                          function (data) {
 
-                                var result = data.split(':');
+                              var result = data.split(':');
 
-                                if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
-                                    $.alert({
-                                        title: useXmltag("Userlogin"),
-                                        icon: 'fa fa-cart-plus',
-                                        content: useXmltag("Loginsuccessfully"),
-                                        rtl: true,
-                                        type: 'green'
-                                    });
-                                    $(".cd-user-modal").trigger("click");
-                                    $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"))
-                                    // setTimeout(function () {
-                                    //     if (result[1] == 'ticketAccess') {
-                                    //         window.location.href = amadeusPathByLang + 'topRouteFlight';
-                                    //     } else {
-                                    //         window.location.href = amadeusPathByLang + 'userProfile';
-                                    //     }
-                                    // }, 1000);
-                                } else {
-                                    $("#signin-email2").attr("data-login", "1");
-                                    $(".message-login").html(useXmltag("Sendinginformation"));
-                                }
-                            })
-                    } else {
-                        reloadCaptcha();
-                        $("#error-signup-captcha2").html(useXmltag("EnteredPhraseNotCorrect"));
-                        $("#error-signup-captcha2").css("opacity", "1");
-                        $("#error-signup-captcha2").css("visibility", "visible");
-                        return false;
-                    }
-                });
+                              if (data.indexOf('success') > -1) { // فرد وارد شده کانتر یا مشتری آنلاین می باشد
+                                  $.alert({
+                                      title: useXmltag("Userlogin"),
+                                      icon: 'fa fa-cart-plus',
+                                      content: useXmltag("Loginsuccessfully"),
+                                      rtl: true,
+                                      type: 'green'
+                                  });
+                                  $(".cd-user-modal").trigger("click");
+                                  $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"))
+                                  // setTimeout(function () {
+                                  //     if (result[1] == 'ticketAccess') {
+                                  //         window.location.href = amadeusPathByLang + 'topRouteFlight';
+                                  //     } else {
+                                  //         window.location.href = amadeusPathByLang + 'userProfile';
+                                  //     }
+                                  // }, 1000);
+                              } else {
+                                  $("#signin-email2").attr("data-login", "1");
+                                  $(".message-login").html(useXmltag("Sendinginformation"));
+                              }
+                          })
+                   } else {
+                       reloadCaptcha();
+                       $("#error-signup-captcha2").html(useXmltag("EnteredPhraseNotCorrect"));
+                       $("#error-signup-captcha2").css("opacity", "1");
+                       $("#error-signup-captcha2").css("visibility", "visible");
+                       return false;
+                   }
+               });
         } else {
             return false;
         }
@@ -6878,88 +6878,88 @@ function RegisterOfPanel() {
     // send  for insert in DB
     if (error == 0) {
         $.post(amadeusPath + 'captcha/securimage_check.php',
-            {captchaAjax: $('#signup-captcha2').val()},
-            function (data) {
-                if (data == true) {
-                    reloadCaptcha();
-                    $.post(amadeusPath + 'user_ajax.php',
-                        {
-                            name: name,
-                            family: family,
-                            mobile: mobile,
-                            email: email,
-                            reagentCode: reagentCode,
-                            setcoockie: "yes",
-                            flag: 'memberRegister'
-                        },
-                        function (response) {
-                            // console.log(response);
-                            jsonResponse = JSON.parse(response);
+           {captchaAjax: $('#signup-captcha2').val()},
+           function (data) {
+               if (data == true) {
+                   reloadCaptcha();
+                   $.post(amadeusPath + 'user_ajax.php',
+                      {
+                          name: name,
+                          family: family,
+                          mobile: mobile,
+                          email: email,
+                          reagentCode: reagentCode,
+                          setcoockie: "yes",
+                          flag: 'memberRegister'
+                      },
+                      function (response) {
+                          // console.log(response);
+                          jsonResponse = JSON.parse(response);
 
-                            // result = JSON.stringify(response);
-                            if(jsonResponse.success){
-                                let redirect_url = jsonResponse.redirect_url ? jsonResponse.redirect_url :  amadeusPathByLang + "userProfile";
-                                $.alert({
-                                    title: useXmltag("Userlogin"),
-                                    icon: 'fa fa-cart-plus',
-                                    content: useXmltag("Loginsuccessfully"),
-                                    rtl: true,
-                                    type: 'green'
-                                });
-                                $(".cd-user-modal").trigger("click");
-                                $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
-                                setTimeout(function () {
+                          // result = JSON.stringify(response);
+                          if(jsonResponse.success){
+                              let redirect_url = jsonResponse.redirect_url ? jsonResponse.redirect_url :  amadeusPathByLang + "userProfile";
+                              $.alert({
+                                  title: useXmltag("Userlogin"),
+                                  icon: 'fa fa-cart-plus',
+                                  content: useXmltag("Loginsuccessfully"),
+                                  rtl: true,
+                                  type: 'green'
+                              });
+                              $(".cd-user-modal").trigger("click");
+                              $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
+                              setTimeout(function () {
 
-                                    if(redirect_url != ''){
-                                        // console.log(redirect_url);
-                                        window.location.href = redirect_url;
-                                        // window.location.href = amadeusPathByLang + "userProfile";
-                                    }else{
-                                        window.location.href = amadeusPathByLang + "userProfile";
-                                    }
-                                }, 1000);
-                            }else {
-                                var res = response.split(':');
-                                if (response.indexOf('success') > -1) {
-                                    $.alert({
-                                        title: useXmltag("Userlogin"),
-                                        icon: 'fa fa-cart-plus',
-                                        content: useXmltag("Loginsuccessfully"),
-                                        rtl: true,
-                                        type: 'green'
-                                    });
-                                    $(".cd-user-modal").trigger("click");
-                                    $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
-                                    setTimeout(function () {
-                                        window.location.href = amadeusPathByLang + "userProfile";
-                                    }, 1000);
-                                } else {
-                                    $.alert({
-                                        title: useXmltag("SetAccount"),
-                                        icon: 'fa fa-user',
-                                        content: res[1],
-                                        rtl: true,
-                                        type: 'red'
-                                    });
-                                    $(".message-register").html(res[1]);
-                                    $("#register_submit").val(useXmltag("SetAccount"));
-                                    $("#register_submit").removeClass('waiting_register');
-                                }
-                            }
-                        })
-                } else {
-                    $("#register_submit").val(useXmltag("SetAccount"));
-                    $("#register_submit").removeClass('waiting_register');
-                    reloadCaptcha();
-                    $(".gds-login-error-box").removeClass('gds-login-error-none');
-                    $("#signup-captcha2").focus();
-                    $("#signup-captcha2").val('');
-                    $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode"));
-                    $("#error-signup-captcha2").css("opacity", "1");
-                    $("#error-signup-captcha2").css("visibility", "visible");
-                    return false;
-                }
-            })
+                                  if(redirect_url != ''){
+                                      // console.log(redirect_url);
+                                      window.location.href = redirect_url;
+                                      // window.location.href = amadeusPathByLang + "userProfile";
+                                  }else{
+                                      window.location.href = amadeusPathByLang + "userProfile";
+                                  }
+                              }, 1000);
+                          }else {
+                              var res = response.split(':');
+                              if (response.indexOf('success') > -1) {
+                                  $.alert({
+                                      title: useXmltag("Userlogin"),
+                                      icon: 'fa fa-cart-plus',
+                                      content: useXmltag("Loginsuccessfully"),
+                                      rtl: true,
+                                      type: 'green'
+                                  });
+                                  $(".cd-user-modal").trigger("click");
+                                  $('.full-width').css('opacity', '0.5').text(useXmltag("Sendinginformation"));
+                                  setTimeout(function () {
+                                      window.location.href = amadeusPathByLang + "userProfile";
+                                  }, 1000);
+                              } else {
+                                  $.alert({
+                                      title: useXmltag("SetAccount"),
+                                      icon: 'fa fa-user',
+                                      content: res[1],
+                                      rtl: true,
+                                      type: 'red'
+                                  });
+                                  $(".message-register").html(res[1]);
+                                  $("#register_submit").val(useXmltag("SetAccount"));
+                                  $("#register_submit").removeClass('waiting_register');
+                              }
+                          }
+                      })
+               } else {
+                   $("#register_submit").val(useXmltag("SetAccount"));
+                   $("#register_submit").removeClass('waiting_register');
+                   reloadCaptcha();
+                   $(".gds-login-error-box").removeClass('gds-login-error-none');
+                   $("#signup-captcha2").focus();
+                   $("#signup-captcha2").val('');
+                   $("#error-signin-captcha2").html(useXmltag("WrongSecurityCode"));
+                   $("#error-signup-captcha2").css("opacity", "1");
+                   $("#error-signup-captcha2").css("visibility", "visible");
+                   return false;
+               }
+           })
     } else {
         return false;
     }
@@ -7322,35 +7322,35 @@ function cancel_user_buy(id) {
                 btnClass: 'btn-green',
                 action: function () {
                     $.post(amadeusPath + 'user_ajax.php',
-                        {
-                            id: id,
-                            flag: 'cancel_user_buy'
-                        },
-                        function (data) {
-                            var res = data.split(':');
-                            if (data.indexOf('success') > -1) {
+                       {
+                           id: id,
+                           flag: 'cancel_user_buy'
+                       },
+                       function (data) {
+                           var res = data.split(':');
+                           if (data.indexOf('success') > -1) {
 
-                                $.alert({
-                                    title: useXmltag("CancelPurchase"),
-                                    icon: 'fa fa-trash',
-                                    content: res[1],
-                                    rtl: true,
-                                    type: 'green',
-                                });
-                                setTimeout(function () {
-                                    $('#cancelbyuser-' + id).removeClass('btn-danger').addClass('btn-warning').removeClass('fa-times').addClass('fa-refresh').removeAttr('onclick').attr('onclick', ' return false ').attr('title', useXmltag("CancellationRequestSubmitted"));
-                                }, 1000);
-                            } else {
-                                $.alert({
-                                    title: useXmltag("CancelPurchase"),
-                                    icon: 'fa fa-trash',
-                                    content: res[1],
-                                    rtl: true,
-                                    type: 'red',
-                                });
-                            }
+                               $.alert({
+                                   title: useXmltag("CancelPurchase"),
+                                   icon: 'fa fa-trash',
+                                   content: res[1],
+                                   rtl: true,
+                                   type: 'green',
+                               });
+                               setTimeout(function () {
+                                   $('#cancelbyuser-' + id).removeClass('btn-danger').addClass('btn-warning').removeClass('fa-times').addClass('fa-refresh').removeAttr('onclick').attr('onclick', ' return false ').attr('title', useXmltag("CancellationRequestSubmitted"));
+                               }, 1000);
+                           } else {
+                               $.alert({
+                                   title: useXmltag("CancelPurchase"),
+                                   icon: 'fa fa-trash',
+                                   content: res[1],
+                                   rtl: true,
+                                   type: 'red',
+                               });
+                           }
 
-                        });
+                       });
                 }
             },
             cancel: {
@@ -7390,37 +7390,37 @@ function ChangePassword() {
                 function (response) {
                     if (response == true) {*/
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                old_pass: oldpass,
-                new_pass: newpass,
-                conf_pass: confpass,
-                flag: 'ChangePass'
-            },
-            function (data) {
-                var res = data.split(':');
-                if (data.indexOf('success') > -1) {
+           {
+               old_pass: oldpass,
+               new_pass: newpass,
+               conf_pass: confpass,
+               flag: 'ChangePass'
+           },
+           function (data) {
+               var res = data.split(':');
+               if (data.indexOf('success') > -1) {
 
-                    $.alert({
-                        title: useXmltag("Changpassword"),
-                        icon: 'fa fa-trash',
-                        content: res[1],
-                        rtl: true,
-                        type: 'green',
-                    });
-                    setTimeout(function () {
-                        $('#ChangePass')[0].reset();
-                    }, 1000);
-                } else {
-                    $.alert({
-                        title: useXmltag("Changpassword"),
-                        icon: 'fa fa-trash',
-                        content: res[1],
-                        rtl: true,
-                        type: 'red',
-                    });
-                }
+                   $.alert({
+                       title: useXmltag("Changpassword"),
+                       icon: 'fa fa-trash',
+                       content: res[1],
+                       rtl: true,
+                       type: 'green',
+                   });
+                   setTimeout(function () {
+                       $('#ChangePass')[0].reset();
+                   }, 1000);
+               } else {
+                   $.alert({
+                       title: useXmltag("Changpassword"),
+                       icon: 'fa fa-trash',
+                       content: res[1],
+                       rtl: true,
+                       type: 'red',
+                   });
+               }
 
-            });
+           });
         /*} else {
             $.alert({
                 title: useXmltag("Changpassword"),
@@ -7470,60 +7470,60 @@ function recovery_pass() {
 
         $.post(amadeusPath + 'captcha/securimage_check.php',
 
-            {captchaAjax: $('#signin-captcha2').val()},
+           {captchaAjax: $('#signin-captcha2').val()},
 
-            function (response) {
-                if (response == true) {
-                    $('#loaderTracking').fadeIn(700);
-                    $.post(amadeusPath + 'user_ajax.php',
-                        {
-                            email: email,
-                            flag: 'RecoveryPass'
-                        },
-                        function (data) {
-                            var res = data.split(':');
-                            if (data.indexOf("success") > -1) {
-                                $.alert({
-                                    title: useXmltag("ForgetPassword"),
-                                    icon: 'fa fa-check',
-                                    content: res[1],
-                                    rtl: true,
-                                    type: 'green',
-                                });
+           function (response) {
+               if (response == true) {
+                   $('#loaderTracking').fadeIn(700);
+                   $.post(amadeusPath + 'user_ajax.php',
+                      {
+                          email: email,
+                          flag: 'RecoveryPass'
+                      },
+                      function (data) {
+                          var res = data.split(':');
+                          if (data.indexOf("success") > -1) {
+                              $.alert({
+                                  title: useXmltag("ForgetPassword"),
+                                  icon: 'fa fa-check',
+                                  content: res[1],
+                                  rtl: true,
+                                  type: 'green',
+                              });
 
-                                $('.user-form-style_js').removeAttr('disabled');
-                                $('.user-form-style_js input').removeAttr('disabled');
+                              $('.user-form-style_js').removeAttr('disabled');
+                              $('.user-form-style_js input').removeAttr('disabled');
 
-                                $('#loaderTracking').fadeOut(700);
+                              $('#loaderTracking').fadeOut(700);
 
-                            } else {
-                                $.alert({
-                                    title: useXmltag("ForgetPassword"),
-                                    icon: 'fa fa-times',
-                                    content: res[1],
-                                    rtl: true,
-                                    type: 'red',
-                                });
+                          } else {
+                              $.alert({
+                                  title: useXmltag("ForgetPassword"),
+                                  icon: 'fa fa-times',
+                                  content: res[1],
+                                  rtl: true,
+                                  type: 'red',
+                              });
 
-                                $('.user-form-style_js').attr('disabled', 'disabled');
-                                $('.user-form-style_js input').prop("disabled", true);
+                              $('.user-form-style_js').attr('disabled', 'disabled');
+                              $('.user-form-style_js input').prop("disabled", true);
 
-                                $('#loaderTracking').fadeOut(700);
-                            }
+                              $('#loaderTracking').fadeOut(700);
+                          }
 
-                        });
-                } else {
-                    reloadCaptcha();
-                    $.alert({
-                        title: useXmltag("ForgetPassword"),
-                        icon: 'fa fa-dismiss',
-                        content: useXmltag("WrongSecurityCode"),
-                        rtl: true,
-                        type: 'red',
-                    });
+                      });
+               } else {
+                   reloadCaptcha();
+                   $.alert({
+                       title: useXmltag("ForgetPassword"),
+                       icon: 'fa fa-dismiss',
+                       content: useXmltag("WrongSecurityCode"),
+                       rtl: true,
+                       type: 'red',
+                   });
 
-                }
-            });
+               }
+           });
     }
 }
 
@@ -7548,37 +7548,37 @@ function recovery_pass_check_number() {
     } else {
         $('#loaderTracking').fadeIn(700);
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                code: code,
-                flag: 'RecoveryPassCheckCode'
-            },
-            function (data) {
-                var res = data.split(':');
-                if (data.indexOf("success") > -1) {
-                    $.alert({
-                        title: useXmltag("ForgetPassword"),
-                        // title: 'کد ، مطابقت داشت',
-                        icon: 'fa fa-check',
-                        content: res[1],
-                        rtl: true,
-                        type: 'green',
-                    });
+           {
+               code: code,
+               flag: 'RecoveryPassCheckCode'
+           },
+           function (data) {
+               var res = data.split(':');
+               if (data.indexOf("success") > -1) {
+                   $.alert({
+                       title: useXmltag("ForgetPassword"),
+                       // title: 'کد ، مطابقت داشت',
+                       icon: 'fa fa-check',
+                       content: res[1],
+                       rtl: true,
+                       type: 'green',
+                   });
 
-                    $('#loaderTracking').fadeOut(700);
+                   $('#loaderTracking').fadeOut(700);
 
-                } else {
-                    $.alert({
-                        title: useXmltag("ForgetPassword"),
-                        icon: 'fa fa-times',
-                        content: res[1],
-                        rtl: true,
-                        type: 'red',
-                    });
+               } else {
+                   $.alert({
+                       title: useXmltag("ForgetPassword"),
+                       icon: 'fa fa-times',
+                       content: res[1],
+                       rtl: true,
+                       type: 'red',
+                   });
 
-                    $('#loaderTracking').fadeOut(700);
-                }
+                   $('#loaderTracking').fadeOut(700);
+               }
 
-            });
+           });
     }
 }
 
@@ -7619,36 +7619,36 @@ function ChangePassForRecovery() {
         });
     } else {
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                new_pass: newpass,
-                key: member_id,
-                flag: 'ChangePassRecovery'
-            },
-            function (data) {
-                var res = data.split(':');
-                if (data.indexOf('success') > -1) {
+           {
+               new_pass: newpass,
+               key: member_id,
+               flag: 'ChangePassRecovery'
+           },
+           function (data) {
+               var res = data.split(':');
+               if (data.indexOf('success') > -1) {
 
-                    $.alert({
-                        title: useXmltag("Changpassword"),
-                        icon: 'fa fa-trash',
-                        content: res[1],
-                        rtl: true,
-                        type: 'green',
-                    });
-                    setTimeout(function () {
-                        $("#RecoverPassword").trigger('reset');
-                    }, 1000);
-                } else {
-                    $.alert({
-                        title: useXmltag("Changpassword"),
-                        icon: 'fa fa-trash',
-                        content: res[1],
-                        rtl: true,
-                        type: 'red',
-                    });
-                }
+                   $.alert({
+                       title: useXmltag("Changpassword"),
+                       icon: 'fa fa-trash',
+                       content: res[1],
+                       rtl: true,
+                       type: 'green',
+                   });
+                   setTimeout(function () {
+                       $("#RecoverPassword").trigger('reset');
+                   }, 1000);
+               } else {
+                   $.alert({
+                       title: useXmltag("Changpassword"),
+                       icon: 'fa fa-trash',
+                       content: res[1],
+                       rtl: true,
+                       type: 'red',
+                   });
+               }
 
-            });
+           });
     }
 
 }
@@ -7670,16 +7670,16 @@ function SendTrackingInfo() {
     });
 
     if (isLogin) {
-        if (request_number == "") {
+    if (request_number == "") {
 
-            $.alert({
-                title: useXmltag("TrackOrder"),
-                icon: 'fa fa-times',
-                content: useXmltag("EnterRequiredInformation"),
-                rtl: true,
-                type: 'red'
-            });
-            $('#request_number').css("background", "red");
+        $.alert({
+            title: useXmltag("TrackOrder"),
+            icon: 'fa fa-times',
+            content: useXmltag("EnterRequiredInformation"),
+            rtl: true,
+            type: 'red'
+        });
+        $('#request_number').css("background", "red");
             return false;
         }
     } else {
@@ -7702,38 +7702,38 @@ function SendTrackingInfo() {
         }
     }
 
-    $('#loaderTracking').show(500);
+        $('#loaderTracking').show(500);
 
-    $.post(amadeusPath + 'user_ajax.php',
-        {
-            request_number: request_number,
-            phone_number: phone_number,
-            typeSearch: typeSearch,
-            flag: 'trackingInfo'
-        },
-        function (data) {
-            console.log(typeof data);
-            console.log(data)
-            console.log(data.length)
-            if (data.length > 2 ) {
-                $('#submitInfoTracking').attr('onclick', 'return false');
-                $('#submitInfoTracking').attr('disabled', 'disabled');
-                setTimeout(function () {
-                    $('#loaderTracking').hide();
-                    $('#trListReserve').fadeIn(500).css('margin-top', '20px').html(data);
-                }, 2500);
-            } else {
-                $.alert({
-                    title: useXmltag("TrackOrder"),
-                    icon: 'fa fa-times',
-                    content: useXmltag("NoInformationFound"),
-                    rtl: true,
-                    type: 'red'
-                });
-                $('#loaderTracking').hide(1500);
-            }
+        $.post(amadeusPath + 'user_ajax.php',
+           {
+               request_number: request_number,
+               phone_number: phone_number,
+               typeSearch: typeSearch,
+               flag: 'trackingInfo'
+           },
+           function (data) {
+               console.log(typeof data);
+               console.log(data)
+               console.log(data.length)
+               if (data.length > 2 ) {
+                   $('#submitInfoTracking').attr('onclick', 'return false');
+                   $('#submitInfoTracking').attr('disabled', 'disabled');
+                   setTimeout(function () {
+                       $('#loaderTracking').hide();
+                       $('#trListReserve').fadeIn(500).css('margin-top', '20px').html(data);
+                   }, 2500);
+               } else {
+                   $.alert({
+                       title: useXmltag("TrackOrder"),
+                       icon: 'fa fa-times',
+                       content: useXmltag("NoInformationFound"),
+                       rtl: true,
+                       type: 'red'
+                   });
+                   $('#loaderTracking').hide(1500);
+               }
 
-        });
+           });
 
 
 }
@@ -7760,33 +7760,33 @@ function SendTrackingRequestInfo() {
         $('#loaderTrackingRequest').show(500);
 
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                request_service_number: request_service_number,
-                typeSearchRequest: typeSearchRequest,
-                flag: 'trackingRequestInfo'
-            },
-            function (data) {
+           {
+               request_service_number: request_service_number,
+               typeSearchRequest: typeSearchRequest,
+               flag: 'trackingRequestInfo'
+           },
+           function (data) {
 
-                if (data.length > 2) {
-                    $('#submitInfoTrackingRequest').attr('onclick', 'return false');
-                    $('#submitInfoTrackingRequest').attr('disabled', 'disabled');
-                    setTimeout(function () {
-                        $('#FormTrackingRequest').fadeOut(100);
-                        $('#loaderTrackingRequest').hide();
-                        $('#trListRequestService').fadeIn(500).css('margin-top', '20px').html(data);
-                    }, 2500);
-                } else {
-                    $.alert({
-                        title: useXmltag("TrackRequestService"),
-                        icon: 'fa fa-times',
-                        content: useXmltag("NoInformationRequestFound"),
-                        rtl: true,
-                        type: 'red'
-                    });
-                    $('#loaderTrackingRequest').hide(1500);
-                }
+               if (data.length > 2) {
+                   $('#submitInfoTrackingRequest').attr('onclick', 'return false');
+                   $('#submitInfoTrackingRequest').attr('disabled', 'disabled');
+                   setTimeout(function () {
+                       $('#FormTrackingRequest').fadeOut(100);
+                       $('#loaderTrackingRequest').hide();
+                       $('#trListRequestService').fadeIn(500).css('margin-top', '20px').html(data);
+                   }, 2500);
+               } else {
+                   $.alert({
+                       title: useXmltag("TrackRequestService"),
+                       icon: 'fa fa-times',
+                       content: useXmltag("NoInformationRequestFound"),
+                       rtl: true,
+                       type: 'red'
+                   });
+                   $('#loaderTrackingRequest').hide(1500);
+               }
 
-            });
+           });
     }
 
 }
@@ -7798,13 +7798,13 @@ function SendEmploymentInfo($requestId) {
     if (requestId) {
         $('#ModalPublicContentRrequest').show(500);
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                request_service_number: requestId,
-                flag: 'trackingRequestAllInfo'
-            },
-            function (data) {
-                $('#ModalPublicContentRrequest').html(data);
-            });
+           {
+               request_service_number: requestId,
+               flag: 'trackingRequestAllInfo'
+           },
+           function (data) {
+               $('#ModalPublicContentRrequest').html(data);
+           });
     }
 }
 
@@ -7818,17 +7818,17 @@ function modalList(RequestNumber) {
     }, 3000);
 
     $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'user',
-            Method: 'ModalShow',
-            Param: RequestNumber
-        },
-        function (data) {
+       {
+           Controller: 'user',
+           Method: 'ModalShow',
+           Param: RequestNumber
+       },
+       function (data) {
 
-            $('#ModalPublicContent').html(data);
+           $('#ModalPublicContent').html(data);
 
 
-        });
+       });
 //
 //    $('.loaderPublic').fadeIn(700);
 //
@@ -7890,43 +7890,43 @@ function SendEmailForOther() {
         });
     } else {
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                email: Email,
-                request_number: request_number,
-                flag: 'SendEmailForOther'
-            },
-            function (data) {
-                var res = data.split(':');
-                if (data.indexOf('success') > -1) {
-                    $.alert({
-                        title: useXmltag("Sendemail"),
-                        icon: 'fa fa-check',
-                        content: res[1],
-                        rtl: true,
-                        type: 'green',
-                    });
-                    setTimeout(function () {
-                        $("#ModalSendEmail").fadeOut(700);
-                        $('#loaderTracking').fadeOut(500);
-                        $('#SendEmailForOther').attr("disabled", false);
-                        $('#SendForOthers').val(' ');
-                    }, 1000);
+           {
+               email: Email,
+               request_number: request_number,
+               flag: 'SendEmailForOther'
+           },
+           function (data) {
+               var res = data.split(':');
+               if (data.indexOf('success') > -1) {
+                   $.alert({
+                       title: useXmltag("Sendemail"),
+                       icon: 'fa fa-check',
+                       content: res[1],
+                       rtl: true,
+                       type: 'green',
+                   });
+                   setTimeout(function () {
+                       $("#ModalSendEmail").fadeOut(700);
+                       $('#loaderTracking').fadeOut(500);
+                       $('#SendEmailForOther').attr("disabled", false);
+                       $('#SendForOthers').val(' ');
+                   }, 1000);
 
-                } else {
-                    $.alert({
-                        title: useXmltag("Sendemail"),
-                        icon: 'fa fa-times',
-                        content: res[1],
-                        rtl: true,
-                        type: 'red',
-                    });
-                    $('#SendEmailForOther').attr("disabled", false);
-                    $('#loaderTracking').fadeOut(500);
+               } else {
+                   $.alert({
+                       title: useXmltag("Sendemail"),
+                       icon: 'fa fa-times',
+                       content: res[1],
+                       rtl: true,
+                       type: 'red',
+                   });
+                   $('#SendEmailForOther').attr("disabled", false);
+                   $('#loaderTracking').fadeOut(500);
 
 
-                }
+               }
 
-            });
+           });
     }
 }
 
@@ -7940,15 +7940,15 @@ function ModalCancelUser(type, RequestNumber) {
     }, 1500);
 
     $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'user',
-            Method: 'ModalCancel',
-            Param: RequestNumber,
-            ParamId: type
-        },
-        function (data) {
-            $('#ModalPublicContent').html(data);
-        });
+       {
+           Controller: 'user',
+           Method: 'ModalCancel',
+           Param: RequestNumber,
+           ParamId: type
+       },
+       function (data) {
+           $('#ModalPublicContent').html(data);
+       });
 }
 
 function ModalCancelBus(RequestNumber) {
@@ -7961,16 +7961,16 @@ function ModalCancelBus(RequestNumber) {
     }, 1500);
 
     $.post(libraryPath + 'ModalCreatorBus.php',
-        {
-            Controller: 'user',
-            Method: 'ModalCancel',
-            Param: RequestNumber
-        },
-        function (data) {
+       {
+           Controller: 'user',
+           Method: 'ModalCancel',
+           Param: RequestNumber
+       },
+       function (data) {
 
-            $('#ModalPublicContent').html(data);
+           $('#ModalPublicContent').html(data);
 
-        });
+       });
 }
 
 function SelectReason(Obj) {
@@ -8052,58 +8052,58 @@ function SelectUser(RequestNumber,_this=null) {
         if (NationalCodes != "" && Reasons != "") {
             loading.style.display = 'inline-block';
             $.post(amadeusPath + 'user_ajax.php',
-                {
-                    NationalCodes: NationalCodes,
-                    Reasons: Reasons,
-                    FactorNumber: FactorNumber,
-                    RequestNumber: RequestNumber,
-                    MemberId: MemberId,
-                    AccountOwner: AccountOwner,
-                    CardNumber: CardNumber,
-                    NameBank: NameBank,
-                    backCredit: backCredit,
-                    PercentNoMatter: PercentNoMatter,
-                    typeService: typeService,
-                    flag: 'RequestCancelUser'
-                },
-                function (data) {
-                    var res = data.split(':');
-                    if (data.indexOf('success') > -1) {
-                        $.alert({
-                            title: useXmltag("SendCancellationRequest"),
-                            icon: 'fa fa-check',
-                            content: res[1],
-                            rtl: true,
-                            type: 'green',
-                        });
-                        // $('#btn-information').addClass('displayN');
-                        // $('#btn-information').attr("disabled", false);
-                        $("#btn-information ").attr('disabled', 'disabled');
-                        setTimeout(function () {
+               {
+                   NationalCodes: NationalCodes,
+                   Reasons: Reasons,
+                   FactorNumber: FactorNumber,
+                   RequestNumber: RequestNumber,
+                   MemberId: MemberId,
+                   AccountOwner: AccountOwner,
+                   CardNumber: CardNumber,
+                   NameBank: NameBank,
+                   backCredit: backCredit,
+                   PercentNoMatter: PercentNoMatter,
+                   typeService: typeService,
+                   flag: 'RequestCancelUser'
+               },
+               function (data) {
+                   var res = data.split(':');
+                   if (data.indexOf('success') > -1) {
+                       $.alert({
+                           title: useXmltag("SendCancellationRequest"),
+                           icon: 'fa fa-check',
+                           content: res[1],
+                           rtl: true,
+                           type: 'green',
+                       });
+                       // $('#btn-information').addClass('displayN');
+                       // $('#btn-information').attr("disabled", false);
+                       $("#btn-information ").attr('disabled', 'disabled');
+                       setTimeout(function () {
 
-                            $('#cancelbyuser-' + RequestNumber).removeClass('btn btn-danger fa fa-times').addClass('btn btn-warning fa fa-refresh').removeAttr('onclick').attr("title", useXmltag("InvestigatingRequest"));
-                            $("#ModalPublic").fadeOut(700);
+                           $('#cancelbyuser-' + RequestNumber).removeClass('btn btn-danger fa fa-times').addClass('btn btn-warning fa fa-refresh').removeAttr('onclick').attr("title", useXmltag("InvestigatingRequest"));
+                           $("#ModalPublic").fadeOut(700);
 
-                        }, 1000);
+                       }, 1000);
 
-                    }
-                    else {
-                        $.alert({
-                            title: useXmltag("SendCancellationRequest"),
-                            icon: 'fa fa-times',
-                            content: res[1],
-                            rtl: true,
-                            type: 'red',
-                        });
-                        $('#SendEmailForOther').attr("disabled", false);
-                        $('#loaderTracking').fadeOut(500);
-                    }
-                }
+                   }
+                   else {
+                       $.alert({
+                           title: useXmltag("SendCancellationRequest"),
+                           icon: 'fa fa-times',
+                           content: res[1],
+                           rtl: true,
+                           type: 'red',
+                       });
+                       $('#SendEmailForOther').attr("disabled", false);
+                       $('#loaderTracking').fadeOut(500);
+                   }
+               }
             )
-                .always(function () {
-                    loading.style.display = 'none';
-                    console.log("تست سلام")
-                });
+               .always(function () {
+                   loading.style.display = 'none';
+                   console.log("تست سلام")
+               });
         }
         else {
             $.alert({
@@ -8138,17 +8138,17 @@ function ModalTrackingCancelTicket(RequestNumber, id) {
     }, 1500);
 
     $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'user',
-            Method: 'ModalTrackingCancelTicket',
-            Param: RequestNumber,
-            ParamId: id
-        },
-        function (data) {
+       {
+           Controller: 'user',
+           Method: 'ModalTrackingCancelTicket',
+           Param: RequestNumber,
+           ParamId: id
+       },
+       function (data) {
 
-            $('#ModalPublicContent').html(data);
+           $('#ModalPublicContent').html(data);
 
-        });
+       });
 }
 
 
@@ -8199,21 +8199,21 @@ function reversOriginDestination() {
     if (desti !== "") {
 
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                Departure: desti,
-                flag: "select_Airport",
-            },
-            function (data) {
-                $('#destination_local').html(data);
-                setTimeout(function () {
-                    $("select#origin_local option:selected").val(desti);
-                    $("select#destination_local option:selected").val(origin);
-                    $("select#origin_local option:selected").text(destiTxt);
-                    $("select#destination_local option:selected").text(originTxt);
-                    $("span#select2-origin_local-container").text(destiTxt);
-                    $("span#select2-destination_local-container").text(originTxt);
-                }, 10);
-            })
+           {
+               Departure: desti,
+               flag: "select_Airport",
+           },
+           function (data) {
+               $('#destination_local').html(data);
+               setTimeout(function () {
+                   $("select#origin_local option:selected").val(desti);
+                   $("select#destination_local option:selected").val(origin);
+                   $("select#origin_local option:selected").text(destiTxt);
+                   $("select#destination_local option:selected").text(originTxt);
+                   $("span#select2-origin_local-container").text(destiTxt);
+                   $("span#select2-destination_local-container").text(originTxt);
+               }, 10);
+           })
 
     } else {
         alert(useXmltag("SpecifyDestination"));
@@ -8258,22 +8258,22 @@ function LowestPriceFlight(dateRequest, Departure_Code, Arrival_Code, adult, chi
 
     $('#TextLight').fadeIn();
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            dateRequest: dateRequest,
-            Departure_Code: Departure_Code,
-            Arrival_Code: Arrival_Code,
-            adult: adult,
-            child: child,
-            infant: infant,
-            typeSelect: typeSelect,
-            flag: "MinimumPriceFlight"
-        },
-        function (data) {
-            $('#MinimumPriceCallApi').html(data);
-            setTimeout(function () {
-                $('#TextLight').fadeOut();
-            }, 2000);
-        })
+       {
+           dateRequest: dateRequest,
+           Departure_Code: Departure_Code,
+           Arrival_Code: Arrival_Code,
+           adult: adult,
+           child: child,
+           infant: infant,
+           typeSelect: typeSelect,
+           flag: "MinimumPriceFlight"
+       },
+       function (data) {
+           $('#MinimumPriceCallApi').html(data);
+           setTimeout(function () {
+               $('#TextLight').fadeOut();
+           }, 2000);
+       })
 
 }
 
@@ -8294,20 +8294,20 @@ function InfoShowOneFlight(CabinType, AdtPrice, ChdPrice, InfPrice, Airline, Fli
 
     $(".LoadLightbox").show();
     $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'resultLocal',
-            Method: 'infoFlight',
-            Param: dataInfo
-        },
-        function (data) {
-            setTimeout(function () {
-                $(".LoadLightbox").hide();
-                $(".price-Box").addClass("displayBlock");
-                $("#lightboxContainer").addClass("displayBlock");
-                $('#ShowInfoFlightCabinType').html(data);
-            }, 1000);
+       {
+           Controller: 'resultLocal',
+           Method: 'infoFlight',
+           Param: dataInfo
+       },
+       function (data) {
+           setTimeout(function () {
+               $(".LoadLightbox").hide();
+               $(".price-Box").addClass("displayBlock");
+               $("#lightboxContainer").addClass("displayBlock");
+               $('#ShowInfoFlightCabinType').html(data);
+           }, 1000);
 
-        });
+       });
 }
 
 
@@ -8372,28 +8372,28 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
         url: amadeusPath + 'user_ajax.php',
         dataType: 'JSON',
         data:
-            {
-                flag: 'checkDiscountCode',
-                discountCode: discountCode,
-                serviceType: serviceType,
-                currencyCode: currencyCode,
-                typeApplication:typeApplication
-            },
-        success: function (data) {
+           {
+               flag: 'checkDiscountCode',
+               discountCode: discountCode,
+               serviceType: serviceType,
+               currencyCode: currencyCode,
+               typeApplication:typeApplication
+           },
+            success: function (data) {
             if (data.result_status == 'success') {
                 var display_discount_currency = $('.dispalyTypeCurrency');
 
-                if( data.typeDiscount === 'percent'){
-                    var price_after_discount = price_before_discount - (price_before_discount * data.discountAmount / 100);
-                    display_discount_currency.text('%');
-                }
-                else{
-                    var price_after_discount = price_before_discount - data.discountAmount;
-                    if (price_after_discount % 1 !== 0) {
-                        price_after_discount = price_after_discount.toFixed(2); //float
+                    if( data.typeDiscount === 'percent'){
+                        var price_after_discount = price_before_discount - (price_before_discount * data.discountAmount / 100);
+                        display_discount_currency.text('%');
                     }
-                    display_discount_currency.text(typeCurrency);
-                }
+                    else{
+                        var price_after_discount = price_before_discount - data.discountAmount;
+                        if (price_after_discount % 1 !== 0) {
+                            price_after_discount = price_after_discount.toFixed(2); //float
+                        }
+                        display_discount_currency.text(typeCurrency);
+                    }
 
 
 
@@ -8414,7 +8414,8 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                             discountAmount: data.discountAmount,
                             factorNumber: factorNumber,
                             serviceType: serviceType,
-                            typeDiscount: data.typeDiscount
+                            typeDiscount: data.typeDiscount,
+                            typeApplication:typeApplication
                         },
                     success: function (data) {
 
@@ -8635,12 +8636,12 @@ function checkMemberCredit(typeApplication = null) {
             url: amadeusPath + 'user_ajax.php',
             dataType: 'JSON',
             data:
-                {
-                    flag: 'checkMemberCredit',
-                    priceToPay: price_to_pay,
-                    typeApplication: typeApplication,
-                    creditUse: $("input[name='chkCreditUse']:checked").val()
-                },
+               {
+                   flag: 'checkMemberCredit',
+                   priceToPay: price_to_pay,
+                   typeApplication: typeApplication,
+                   creditUse: $("input[name='chkCreditUse']:checked").val()
+               },
             success: function (data) {
 
                 if (data.result_status === 'none_credit' || data.result_status === 'half_credit') {
@@ -8654,9 +8655,9 @@ function checkMemberCredit(typeApplication = null) {
                 // }
 
                 // if (data.result_status === 'none_credit' || data.result_status === 'full_credit') {
-                $(".creditText").html(data.result_message[0]);
-                $('.onlinePaymentBox').addClass('hidden');
-                $('.disabledButtonPayOnline').addClass('hidden');
+                    $(".creditText").html(data.result_message[0]);
+                    $('.onlinePaymentBox').addClass('hidden');
+                    $('.disabledButtonPayOnline').addClass('hidden');
                 // }
                 $('.creditText').removeClass('hidden');
                 $('.go_bank_click').addClass('hidden');
@@ -8734,10 +8735,10 @@ function ConvertCurrency(Code, Icon, Title) {
             url: amadeusPath + 'user_ajax.php',
             dataType: 'JSON',
             data:
-                {
-                    flag: 'CurrencyEquivalent',
-                    ValCurrency: ValCurrency
-                },
+               {
+                   flag: 'CurrencyEquivalent',
+                   ValCurrency: ValCurrency
+               },
             success: function (response) {
 
                 $(".CurrencyCal").each(function (index) {
@@ -8764,10 +8765,10 @@ function ConvertCurrency(Code, Icon, Title) {
             url: amadeusPath + 'user_ajax.php',
             dataType: 'JSON',
             data:
-                {
-                    flag: 'CurrencyEquivalent',
-                    ValCurrency: '0'
-                },
+               {
+                   flag: 'CurrencyEquivalent',
+                   ValCurrency: '0'
+               },
             success: function (response) {
 
                 $(".CurrencyCal").each(function (index) {
@@ -8794,33 +8795,33 @@ function ChangePriceStepFinal() {
     var factorNumber = $('#ChangePriceStepFinal').attr('data-factorNumber');
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            AmountAdded: ValuePrice,
-            factorNumber: factorNumber,
-            flag: 'AmountAdded'
-        },
-        function (data) {
+       {
+           AmountAdded: ValuePrice,
+           factorNumber: factorNumber,
+           flag: 'AmountAdded'
+       },
+       function (data) {
 
-            var Res = data.split(':');
-            if (data.indexOf('SuccessToAmountAdded') > -1) {
-                $.alert({
-                    title: useXmltag("AddPrice"),
-                    icon: 'fa fa-refresh',
-                    content: Res[1],
-                    rtl: true,
-                    type: 'green'
-                });
-            } else {
-                $.alert({
-                    title: useXmltag("AddPrice"),
-                    icon: 'fa fa-refresh',
-                    content: Res[1],
-                    rtl: true,
-                    type: 'red'
-                });
-            }
+           var Res = data.split(':');
+           if (data.indexOf('SuccessToAmountAdded') > -1) {
+               $.alert({
+                   title: useXmltag("AddPrice"),
+                   icon: 'fa fa-refresh',
+                   content: Res[1],
+                   rtl: true,
+                   type: 'green'
+               });
+           } else {
+               $.alert({
+                   title: useXmltag("AddPrice"),
+                   icon: 'fa fa-refresh',
+                   content: Res[1],
+                   rtl: true,
+                   type: 'red'
+               });
+           }
 
-        });
+       });
 }
 
 
@@ -9094,12 +9095,12 @@ $(document).ready(function () {
                 if (data.id != '0') {
 
                     $('.SubmitNewComment').before('<div class="card w-100 InfoCommentBox mb-3" >\n' +
-                        '  <div class="card-header">' + useXmltag("SubmitNewReplyFor") + ' <span class="close CloseInfoCommentBox">&times;</span></div>\n' +
-                        '  <div class="card-body">\n' +
-                        '    <h5 class="card-title">' + data.name + '</h5>\n' +
-                        '    <p class="card-text">' + data.text + '</p>\n' +
-                        '  </div>\n' +
-                        '</div>').find('input[name="parent_id"]').val(data.id);
+                       '  <div class="card-header">' + useXmltag("SubmitNewReplyFor") + ' <span class="close CloseInfoCommentBox">&times;</span></div>\n' +
+                       '  <div class="card-body">\n' +
+                       '    <h5 class="card-title">' + data.name + '</h5>\n' +
+                       '    <p class="card-text">' + data.text + '</p>\n' +
+                       '  </div>\n' +
+                       '</div>').find('input[name="parent_id"]').val(data.id);
                     $('.SubmitNewComment').find('.btnSubmitCommentBox').find('button').html(useXmltag("SubmitNewCommentReply"));
 
                     $.smoothScroll({
@@ -9198,19 +9199,19 @@ function requestSms() {
 function get_routs() {
     var departure = $('#origin_local').val();
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            flag: 'get_routs',
-            departure: departure,
-        },
-        function (data) {
+       {
+           flag: 'get_routs',
+           departure: departure,
+       },
+       function (data) {
 
-            $('#destination_local').html(data);
-            setTimeout(function () {
+           $('#destination_local').html(data);
+           setTimeout(function () {
 
-                $('#destination_local').removeAttr('disabled');
-                $('#destination_local').select2('open');
-            }, 10);
-        });
+               $('#destination_local').removeAttr('disabled');
+               $('#destination_local').select2('open');
+           }, 10);
+       });
 }
 
 function Email123(str, NameDiv) {
@@ -9371,31 +9372,31 @@ function goToPage(nameFile, selectPage, count, origin, destination, adult, child
         'destination': destination,
     }
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            nameFile: nameFile,
-            optionPage: optionPage,
-            flag: 'nextPageTicketForeign'
-        },
-        function (data) {
-            $('.lightboxContainerOpacity').fadeOut("slow");
-            $('#result').html(data);
-        });
+       {
+           nameFile: nameFile,
+           optionPage: optionPage,
+           flag: 'nextPageTicketForeign'
+       },
+       function (data) {
+           $('.lightboxContainerOpacity').fadeOut("slow");
+           $('#result').html(data);
+       });
 }
 
 function pricePay(factorNumber,type) {
     var checkDuplicate = 'no' ;
     if((typeof factorNumber !== 'undefined') && type == 'flight'){
         $.post(amadeusPath + 'user_ajax.php',
-            {
-                factorNumber: factorNumber,
-                flag: 'checkDuplicate724'
-            },
-            function (data) {
-                if(data=='yes')
-                {
-                    checkDuplicate = 'yes';
-                }
-            });
+           {
+               factorNumber: factorNumber,
+               flag: 'checkDuplicate724'
+           },
+           function (data) {
+               if(data=='yes')
+               {
+                   checkDuplicate = 'yes';
+               }
+           });
     }
 
     setTimeout(function () {
@@ -9630,16 +9631,16 @@ function modalCancelBuy(typeApplication, factorNumber) {
     $('.loaderPublic').fadeIn();
 
     $.post(libraryPath + 'modalCancelBuy.php',
-        {
-            typeApplication: typeApplication,
-            factorNumber: factorNumber,
-            methodName: 'showModalCancelBuy'
-        },
-        function (data) {
-            $('.loaderPublic').fadeOut(150);
-            $("#ModalPublic").fadeIn(150);
-            $('#ModalPublicContent').html(data);
-        });
+       {
+           typeApplication: typeApplication,
+           factorNumber: factorNumber,
+           methodName: 'showModalCancelBuy'
+       },
+       function (data) {
+           $('.loaderPublic').fadeOut(150);
+           $("#ModalPublic").fadeIn(150);
+           $('#ModalPublicContent').html(data);
+       });
 }
 
 
@@ -9710,11 +9711,11 @@ function registerCancelBuy(factor_number, typeApp) {
         type: 'POST',
         url: amadeusPath + 'user_ajax.php',
         data:
-            {
-                factor_number: factor_number,
-                typeApp: typeApp,
-                flag: "flagRegisterCancelBuy"
-            },
+           {
+               factor_number: factor_number,
+               typeApp: typeApp,
+               flag: "flagRegisterCancelBuy"
+           },
         success: function (data) {
 
             var res = data.split(':');
@@ -9765,12 +9766,12 @@ function getUserAccount() {
                 type: 'POST',
                 url: amadeusPath + 'user_ajax.php',
                 data:
-                    {
-                        Origin: origin,
-                        Destination: destination,
-                        type: typePage,
-                        flag: "fifteenFlight"
-                    },
+                   {
+                       Origin: origin,
+                       Destination: destination,
+                       type: typePage,
+                       flag: "fifteenFlight"
+                   },
                 success: function (data) {
                     $('#showDataFlight ').html(data);
                     $('.flightFifteen').fadeOut("slow");
@@ -9837,12 +9838,12 @@ function ShowModalOfFlights(origin, destination, searchType) {
         type: 'POST',
         url: amadeusPath + 'user_ajax.php',
         data:
-            {
-                Origin: origin,
-                Destination: destination,
-                searchType: searchType,
-                flag: "fifteenFlightModalView"
-            },
+           {
+               Origin: origin,
+               Destination: destination,
+               searchType: searchType,
+               flag: "fifteenFlightModalView"
+           },
         success: function (data) {
 
             $('#ModalOfFifteenFlights .modal-content').html(data);
@@ -9872,31 +9873,31 @@ function reserveEntertainmentTemprory(factorNumber) {
     $('#loader_check').css("display", "block");
 
     $.post(amadeusPath + 'entertainment_ajax.php',
-        {
-            factorNumber: factorNumber,
-            flag: "preReserveEntertainment"
-        },
-        function (data) {
+       {
+           factorNumber: factorNumber,
+           flag: "preReserveEntertainment"
+       },
+       function (data) {
 
-            var result = data.split(":");
-            if (data.indexOf('error') > -1) {
+           var result = data.split(":");
+           if (data.indexOf('error') > -1) {
 
-                $('#messageBook').html(result[1]);
+               $('#messageBook').html(result[1]);
 
-            } else if (data.indexOf('success') > -1) {
+           } else if (data.indexOf('success') > -1) {
 
-                setTimeout(function () {
-                    $('#final_ok_and_insert_passenger').removeAttr("onclick").attr("disabled", true).css('cursor', 'not-allowed').text(useXmltag("Accepted"));
+               setTimeout(function () {
+                   $('#final_ok_and_insert_passenger').removeAttr("onclick").attr("disabled", true).css('cursor', 'not-allowed').text(useXmltag("Accepted"));
 
-                    $('.main-pay-content').css('display','flex');
-                    $('#loader_check').css("display", "none");
-                    $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow');
-                }, 2000);
+                   $('.main-pay-content').css('display','flex');
+                   $('#loader_check').css("display", "none");
+                   $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow');
+               }, 2000);
 
-            }
+           }
 
 
-        });
+       });
 
 
 }
@@ -9907,9 +9908,9 @@ function SendDataToClub() {
         type: 'POST',
         url: amadeusPath + 'user_ajax.php',
         data:
-            {
-                flag: 'sendDataToClub',
-            },
+           {
+               flag: 'sendDataToClub',
+           },
         success: function (dataPassenger) {
             console.log(dataPassenger);
         }
@@ -10041,203 +10042,203 @@ function  sendDataToPrereservePackage(currentDate, numAdult, numChild, numInfant
         var IdMember = '';
         var SourceIdFlight = $('#SourceIdFlight').val();
         setTimeout(
-            function () {
-                $.post(amadeusPath + 'user_ajax.php',
-                    {
-                        mobile: mob,
-                        telephone: tel,
-                        Email: Email_Address,
-                        flag: "register_memeber"
-                    },
-                    function (reponse) {
-                        var res = reponse.split(':');
-                        if (reponse.indexOf('success') > -1) {
-                            $('#IdMember').val(res[1]);
-                            IdMember = $('#IdMember').val();
-                            var typeReserve = $('#typeReserve').val();
-                            var factorNumberHotel = $('#factorNumber').val();
-                            console.log('factor_number=>'+factorNumberHotel);
-                            var dataForm = $('#formPassengerDetailPackage').serialize();
-                            setTimeout(function () {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: amadeusPath + 'user_ajax.php',
-                                    dataType: 'JSON',
-                                    data:
-                                        {
-                                            flag: 'PreReservePackage',
-                                            uniq_id: uniq_id,
-                                            NumCount: NumberPassenger,
-                                            dataForm: dataForm,
-                                            factorNumber :factorNumberHotel
-                                        },
-                                    success: function (data) {
-                                        console.log(data);
-                                        var RequestNumber = {};
+           function () {
+               $.post(amadeusPath + 'user_ajax.php',
+                  {
+                      mobile: mob,
+                      telephone: tel,
+                      Email: Email_Address,
+                      flag: "register_memeber"
+                  },
+                  function (reponse) {
+                      var res = reponse.split(':');
+                      if (reponse.indexOf('success') > -1) {
+                          $('#IdMember').val(res[1]);
+                          IdMember = $('#IdMember').val();
+                          var typeReserve = $('#typeReserve').val();
+                          var factorNumberHotel = $('#factorNumber').val();
+                          console.log('factor_number=>'+factorNumberHotel);
+                          var dataForm = $('#formPassengerDetailPackage').serialize();
+                          setTimeout(function () {
+                              $.ajax({
+                                  type: 'POST',
+                                  url: amadeusPath + 'user_ajax.php',
+                                  dataType: 'JSON',
+                                  data:
+                                     {
+                                         flag: 'PreReservePackage',
+                                         uniq_id: uniq_id,
+                                         NumCount: NumberPassenger,
+                                         dataForm: dataForm,
+                                         factorNumber :factorNumberHotel
+                                     },
+                                  success: function (data) {
+                                      console.log(data);
+                                      var RequestNumber = {};
 
-                                        if (data.total_status == 'success') {
-                                            if (typeof data.TwoWay !== 'undefined') {
-                                                $('#RequestNumber_TwoWay').val(data.TwoWay.result_request_number);
-                                                var requestNumberFlight = $('#RequestNumber_TwoWay').val();
-                                                RequestNumber['TwoWay'] = requestNumberFlight;
-                                                $('#factor_number_Flight').val(data.TwoWay.result_factor_number);
-                                            }
+                                      if (data.total_status == 'success') {
+                                          if (typeof data.TwoWay !== 'undefined') {
+                                              $('#RequestNumber_TwoWay').val(data.TwoWay.result_request_number);
+                                              var requestNumberFlight = $('#RequestNumber_TwoWay').val();
+                                              RequestNumber['TwoWay'] = requestNumberFlight;
+                                              $('#factor_number_Flight').val(data.TwoWay.result_factor_number);
+                                          }
 
-                                            var RequestNumber = JSON.stringify(RequestNumber) ;
-                                            var SourceId = JSON.stringify(SourceIdFlight) ;
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: amadeusPath + 'user_ajax.php',
-                                                dataType: 'JSON',
-                                                data:
-                                                    {
-                                                        flag: 'bookFlight',
-                                                        RequestNumber: RequestNumber,
-                                                        IdMember: IdMember,
-                                                        SourceId: SourceId,
-                                                    },
-                                                success: function (data) {
-                                                    if (data.total_status == 'success') {
-                                                        $.ajax({
-                                                            type: 'POST',
-                                                            url: amadeusPath + 'user_ajax.php',
-                                                            dataType: 'JSON',
-                                                            data:
-                                                                {
-                                                                    flag: 'prereserveHotel',
-                                                                    formData: dataForm,
-                                                                },
-                                                            success: function (data) {
-                                                                console.log(data)
-                                                                if(data.status == 'success')
-                                                                {
-                                                                    var factorNumber = $('#factorNumber').val();
-                                                                    var typeApplication = $('#typeApplication').val();
-                                                                    var RequestNumberHotel = $('#RequestNumberHotel').val();
-                                                                    var temporary = $('#temporary').val();
-                                                                    $.ajax({
-                                                                        type: 'POST',
-                                                                        url: amadeusPath + 'user_ajax.php',
-                                                                        dataType: 'JSON',
-                                                                        data:
-                                                                            {
-                                                                                flag: 'bookHotel',
-                                                                                factorNumber: factorNumber,
-                                                                                typeApplication: typeApplication,
-                                                                                requestNumber: RequestNumberHotel
-                                                                            },
-                                                                        success: function (data) {
-                                                                            console.log(data);
-                                                                            if(data.book == 'yes')
-                                                                            {
-                                                                                var form = document.getElementById('SendDataToPackageFactor');
-                                                                                form.setAttribute('method',"post");
-                                                                                form.setAttribute('action',amadeusPathByLang + 'factorPackage');
+                                          var RequestNumber = JSON.stringify(RequestNumber) ;
+                                          var SourceId = JSON.stringify(SourceIdFlight) ;
+                                          $.ajax({
+                                              type: 'POST',
+                                              url: amadeusPath + 'user_ajax.php',
+                                              dataType: 'JSON',
+                                              data:
+                                                 {
+                                                     flag: 'bookFlight',
+                                                     RequestNumber: RequestNumber,
+                                                     IdMember: IdMember,
+                                                     SourceId: SourceId,
+                                                 },
+                                              success: function (data) {
+                                                  if (data.total_status == 'success') {
+                                                      $.ajax({
+                                                          type: 'POST',
+                                                          url: amadeusPath + 'user_ajax.php',
+                                                          dataType: 'JSON',
+                                                          data:
+                                                             {
+                                                                 flag: 'prereserveHotel',
+                                                                 formData: dataForm,
+                                                             },
+                                                          success: function (data) {
+                                                              console.log(data)
+                                                              if(data.status == 'success')
+                                                              {
+                                                                  var factorNumber = $('#factorNumber').val();
+                                                                  var typeApplication = $('#typeApplication').val();
+                                                                  var RequestNumberHotel = $('#RequestNumberHotel').val();
+                                                                  var temporary = $('#temporary').val();
+                                                                  $.ajax({
+                                                                      type: 'POST',
+                                                                      url: amadeusPath + 'user_ajax.php',
+                                                                      dataType: 'JSON',
+                                                                      data:
+                                                                         {
+                                                                             flag: 'bookHotel',
+                                                                             factorNumber: factorNumber,
+                                                                             typeApplication: typeApplication,
+                                                                             requestNumber: RequestNumberHotel
+                                                                         },
+                                                                      success: function (data) {
+                                                                          console.log(data);
+                                                                          if(data.book == 'yes')
+                                                                          {
+                                                                              var form = document.getElementById('SendDataToPackageFactor');
+                                                                              form.setAttribute('method',"post");
+                                                                              form.setAttribute('action',amadeusPathByLang + 'factorPackage');
 
-                                                                                //input 1
-                                                                                var hiddenField = document.createElement("input");
-                                                                                hiddenField.setAttribute("type", "hidden");
-                                                                                hiddenField.setAttribute("name", "RequestNumberFlight");
-                                                                                hiddenField.setAttribute("value", requestNumberFlight);
-                                                                                form.appendChild(hiddenField);
-                                                                                //input 2
-                                                                                var hiddenField = document.createElement("input");
-                                                                                hiddenField.setAttribute("type", "hidden");
-                                                                                hiddenField.setAttribute("name", "factorNumberHotel");
-                                                                                hiddenField.setAttribute("value", factorNumber);
-                                                                                form.appendChild(hiddenField);
+                                                                              //input 1
+                                                                              var hiddenField = document.createElement("input");
+                                                                              hiddenField.setAttribute("type", "hidden");
+                                                                              hiddenField.setAttribute("name", "RequestNumberFlight");
+                                                                              hiddenField.setAttribute("value", requestNumberFlight);
+                                                                              form.appendChild(hiddenField);
+                                                                              //input 2
+                                                                              var hiddenField = document.createElement("input");
+                                                                              hiddenField.setAttribute("type", "hidden");
+                                                                              hiddenField.setAttribute("name", "factorNumberHotel");
+                                                                              hiddenField.setAttribute("value", factorNumber);
+                                                                              form.appendChild(hiddenField);
 
-                                                                                //input 3
-                                                                                var hiddenField = document.createElement("input");
-                                                                                hiddenField.setAttribute("type", "hidden");
-                                                                                hiddenField.setAttribute("name", "temporary");
-                                                                                hiddenField.setAttribute("value", temporary);
-                                                                                form.appendChild(hiddenField);
+                                                                              //input 3
+                                                                              var hiddenField = document.createElement("input");
+                                                                              hiddenField.setAttribute("type", "hidden");
+                                                                              hiddenField.setAttribute("name", "temporary");
+                                                                              hiddenField.setAttribute("value", temporary);
+                                                                              form.appendChild(hiddenField);
 
-                                                                                //input 4
-                                                                                var hiddenField = document.createElement("input");
-                                                                                hiddenField.setAttribute("type", "hidden");
-                                                                                hiddenField.setAttribute("name", "type");
-                                                                                hiddenField.setAttribute("value", 'package');
-                                                                                form.appendChild(hiddenField);
-                                                                                console.log(form);
+                                                                              //input 4
+                                                                              var hiddenField = document.createElement("input");
+                                                                              hiddenField.setAttribute("type", "hidden");
+                                                                              hiddenField.setAttribute("name", "type");
+                                                                              hiddenField.setAttribute("value", 'package');
+                                                                              form.appendChild(hiddenField);
+                                                                              console.log(form);
 
-                                                                                form.submit();
-                                                                                document.body.removeChild(form);
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                }
-                                                            }
-                                                        });
-                                                    }else {
-                                                        setTimeout(function () {
-                                                            var error_message = '';
-                                                            var error_code = '';
-                                                            if (data.TwoWay.result_status == 'error') {
+                                                                              form.submit();
+                                                                              document.body.removeChild(form);
+                                                                          }
+                                                                      }
+                                                                  });
+                                                              }
+                                                          }
+                                                      });
+                                                  }else {
+                                                      setTimeout(function () {
+                                                          var error_message = '';
+                                                          var error_code = '';
+                                                          if (data.TwoWay.result_status == 'error') {
 
-                                                                if (typeof data.TwoWay.result_message == 'object') {
-                                                                    error_message = Object.values(data.TwoWay.result_message)
-                                                                } else {
-                                                                    error_message = data.TwoWay.result_message;
+                                                              if (typeof data.TwoWay.result_message == 'object') {
+                                                                  error_message = Object.values(data.TwoWay.result_message)
+                                                              } else {
+                                                                  error_message = data.TwoWay.result_message;
 
-                                                                }
+                                                              }
 
-                                                                error_code = data.TwoWay.result_code;
+                                                              error_code = data.TwoWay.result_code;
 
 
-                                                            }
-                                                            $.alert({
-                                                                title: useXmltag("Note"),
-                                                                icon: 'fa fa-cart-plus',
-                                                                content: error_message + '<br />' + useXmltag("RedSearchBtnReSearchPath"),
-                                                                rtl: true,
-                                                                type: 'red'
-                                                            })
-                                                        }, 1000);
-                                                    }
+                                                          }
+                                                          $.alert({
+                                                              title: useXmltag("Note"),
+                                                              icon: 'fa fa-cart-plus',
+                                                              content: error_message + '<br />' + useXmltag("RedSearchBtnReSearchPath"),
+                                                              rtl: true,
+                                                              type: 'red'
+                                                          })
+                                                      }, 1000);
+                                                  }
 
-                                                }
-                                            });
+                                              }
+                                          });
 
-                                        } else {
-                                            if (typeof data.TwoWay !== 'undefined') {
-                                                var message = data.TwoWay.result_message;
-                                            }
+                                      } else {
+                                          if (typeof data.TwoWay !== 'undefined') {
+                                              var message = data.TwoWay.result_message;
+                                          }
 
-                                            $.alert({
-                                                title: useXmltag("BuyTicket"),
-                                                icon: 'fa shopping-cart',
-                                                content: message,
-                                                rtl: true,
-                                                type: 'red'
-                                            });
-                                            return false;
-                                        }
-                                    }
-                                });
-                            }, 100);
-                        } else {
-                            $('#loader_check').hide();
-                            $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
-                            $.alert({
-                                title: useXmltag("BuyTicket"),
-                                icon: 'fa shopping-cart',
-                                content: res[1],
-                                rtl: true,
-                                type: 'red'
-                            });
-                            return false;
-                        }
-                    });
-            }, 500);
+                                          $.alert({
+                                              title: useXmltag("BuyTicket"),
+                                              icon: 'fa shopping-cart',
+                                              content: message,
+                                              rtl: true,
+                                              type: 'red'
+                                          });
+                                          return false;
+                                      }
+                                  }
+                              });
+                          }, 100);
+                      } else {
+                          $('#loader_check').hide();
+                          $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+                          $.alert({
+                              title: useXmltag("BuyTicket"),
+                              icon: 'fa shopping-cart',
+                              content: res[1],
+                              rtl: true,
+                              type: 'red'
+                          });
+                          return false;
+                      }
+                  });
+           }, 500);
     } else {
         setTimeout(
-            function () {
-                $('#loader_check').hide();
-                $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
+           function () {
+               $('#loader_check').hide();
+               $('#send_data').removeAttr('disabled').css('opacity', '1').css('cursor', 'pointer').val(useXmltag("NextStepInvoice"));
 
-            }, 2000);
+           }, 2000);
 
     }
 }
@@ -10249,11 +10250,11 @@ jQuery.fn.extend({
             type: 'POST',
             url: amadeusPath + 'user_ajax.php',
             data:
-                {
-                    flag: 'get_master_rate',
-                    record_id: record_id,
-                    table_name: table_name
-                },
+               {
+                   flag: 'get_master_rate',
+                   record_id: record_id,
+                   table_name: table_name
+               },
             success: function (data) {
                 var obj = jQuery.parseJSON(data);
 
@@ -10268,17 +10269,17 @@ jQuery.fn.extend({
                         className = 'ratingActive'
                     }
                     btns = '<input class="btnrating" data-attr="' + i + '" type="radio" name="rating" id="rating-' + i + '">\n' +
-                        '<label for="rating-' + i + '" class="' + className + '"></label>' + btns;
+                       '<label for="rating-' + i + '" class="' + className + '"></label>' + btns;
 
                 }
 
 
                 var html = '<div class="rating">\n' +
-                    '<input type="hidden" id="selected_rating_' + table_name + '" name="selected_rating" value="' + obj.average + '" required="required">\n' +
-                    btns +
-                    '\n' +
-                    '</div>\n' +
-                    '<span class="d-block mt-2 text-center text-info raterDetail"></span>';
+                   '<input type="hidden" id="selected_rating_' + table_name + '" name="selected_rating" value="' + obj.average + '" required="required">\n' +
+                   btns +
+                   '\n' +
+                   '</div>\n' +
+                   '<span class="d-block mt-2 text-center text-info raterDetail"></span>';
                 thiss.html(html);
                 $('.raterDetail').html(obj.average + '/' + '5')
                 $(".btnrating").on('click', (function (e) {
@@ -10297,16 +10298,16 @@ jQuery.fn.extend({
                         type: 'POST',
                         url: amadeusPath + 'user_ajax.php',
                         data:
-                            {
-                                flag: 'new_master_rate',
-                                value: selected_value,
-                                record_id: record_id,
-                                table_name: table_name
-                            },
+                           {
+                               flag: 'new_master_rate',
+                               value: selected_value,
+                               record_id: record_id,
+                               table_name: table_name
+                           },
                         success: function (data) {
                             var obj2 = jQuery.parseJSON(data);
                             $('.raterDetail').html(useXmltag('ThanksVote') + '</br>' +
-                                obj2.average + '/' + '5')
+                               obj2.average + '/' + '5')
                         }
                     });
 
@@ -10587,34 +10588,34 @@ function sendInfoReservationFlightForeign(flight_id) {
     $('#btnReservationFlight_' + flight_id).css('opacity', '0.5').text(useXmltag("Pending"));
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            flag: "CheckLogged"
-        },
-        function (data) {
-            if (data.indexOf('SuccessLogging') > -1) {
+       {
+           flag: "CheckLogged"
+       },
+       function (data) {
+           if (data.indexOf('SuccessLogging') > -1) {
 
-                setTimeout(function () {
-                    SendInfoLoginToPrivate(flight_id);
-                }, 1000);
+               setTimeout(function () {
+                   SendInfoLoginToPrivate(flight_id);
+               }, 1000);
 
 
-            } else {
-                $('#noLoginBuy').val(useXmltag("Purchasewithoutregistration"));
-                setTimeout(function () {
-                    var isShowLoginPopup = $('#isShowLoginPopup').val();
-                    var useTypeLoginPopup = $('#useTypeLoginPopup').val();
-                    if (isShowLoginPopup == '' || isShowLoginPopup == '1') {
-                        $('#flight_id_private').val(flight_id);
-                        $("#login-popup").trigger("click");
-                    } else {
-                        SendInfoLoginToPrivate(flight_id);
+           } else {
+               $('#noLoginBuy').val(useXmltag("Purchasewithoutregistration"));
+               setTimeout(function () {
+                   var isShowLoginPopup = $('#isShowLoginPopup').val();
+                   var useTypeLoginPopup = $('#useTypeLoginPopup').val();
+                   if (isShowLoginPopup == '' || isShowLoginPopup == '1') {
+                       $('#flight_id_private').val(flight_id);
+                       $("#login-popup").trigger("click");
+                   } else {
+                       SendInfoLoginToPrivate(flight_id);
 
-                    }
-                    $(this).removeAttr('disabled', true).css('opacity', '1').text(useXmltag("Selection"));
-                }, 1000);
-            }
+                   }
+                   $(this).removeAttr('disabled', true).css('opacity', '1').text(useXmltag("Selection"));
+               }, 1000);
+           }
 
-        });
+       });
 
     $('#btnReservationFlight_' + flight_id).removeAttr('disabled', true).css('opacity', '1').text(useXmltag("Selection"));
 
@@ -10686,26 +10687,26 @@ function showTicketInformation() {
     var InfPriceWithDiscount = $('#InfPriceWithDiscount').val();
 
     $.post(amadeusPath + 'hotel_ajax.php',
-        {
-            CabinType: CabinType,
-            AdtPrice: AdtPrice,
-            PriceWithDiscount: PriceWithDiscount,
-            ChdPrice: ChdPrice,
-            ChdPriceWithDiscount: ChdPriceWithDiscount,
-            InfPrice: InfPrice,
-            InfPriceWithDiscount: InfPriceWithDiscount,
-            flag: 'showTicketInformation'
-        },
-        function (data) {
+       {
+           CabinType: CabinType,
+           AdtPrice: AdtPrice,
+           PriceWithDiscount: PriceWithDiscount,
+           ChdPrice: ChdPrice,
+           ChdPriceWithDiscount: ChdPriceWithDiscount,
+           InfPrice: InfPrice,
+           InfPriceWithDiscount: InfPriceWithDiscount,
+           flag: 'showTicketInformation'
+       },
+       function (data) {
 
-            setTimeout(function () {
-                $(".LoadLightbox").hide();
-                $(".price-Box").addClass("displayBlock");
-                $("#lightboxContainer").addClass("displayBlock");
-                $('#ShowInfoFlightCabinType').html(data);
-            }, 1000);
+           setTimeout(function () {
+               $(".LoadLightbox").hide();
+               $(".price-Box").addClass("displayBlock");
+               $("#lightboxContainer").addClass("displayBlock");
+               $('#ShowInfoFlightCabinType').html(data);
+           }, 1000);
 
-        });
+       });
 
 }
 
@@ -10769,38 +10770,38 @@ function checkTicketReservation(currentDate, numAdult, numChild, numInfant) {
     if (error1 == 0 && error2 == 0 && error3 == 0 && error4 == 0 && error5 == 0) {
 // alert('ssss')
         $.post(amadeusPath + 'hotel_ajax.php',
-            {
-                mobile: mob,
-                telephone: tel,
-                Email: Email_Address,
-                flag: "register_memeberHotel"
-            },
-            function (data) {
+           {
+               mobile: mob,
+               telephone: tel,
+               Email: Email_Address,
+               flag: "register_memeberHotel"
+           },
+           function (data) {
 
-                if (data != "") {
+               if (data != "") {
 
-                    $('#IdMember').val(data);
+                   $('#IdMember').val(data);
 
-                    $('#loader_check').show();
-                    $('#send_data').attr('disabled', 'disabled').css('opacity', '0.5').css('cursor', 'progress').val(useXmltag("Pending"));
+                   $('#loader_check').show();
+                   $('#send_data').attr('disabled', 'disabled').css('opacity', '0.5').css('cursor', 'progress').val(useXmltag("Pending"));
 
-                    setTimeout(
-                        function () {
-                            $('#loader_check').hide();
-                            $('#formPassengerDetailTicketReservation').submit();
-                        }, 3000);
+                   setTimeout(
+                      function () {
+                          $('#loader_check').hide();
+                          $('#formPassengerDetailTicketReservation').submit();
+                      }, 3000);
 
-                } else {
-                    $.alert({
-                        title: useXmltag("BuyTicket"),
-                        icon: 'fa shopping-cart',
-                        content: useXmltag('ErrorWhenReserve'),
-                        rtl: true,
-                        type: 'red'
-                    });
-                    return false;
-                }
-            });
+               } else {
+                   $.alert({
+                       title: useXmltag("BuyTicket"),
+                       icon: 'fa shopping-cart',
+                       content: useXmltag('ErrorWhenReserve'),
+                       rtl: true,
+                       type: 'red'
+                   });
+                   return false;
+               }
+           });
     }
 
 }
@@ -10824,41 +10825,41 @@ function reserveTicket(FactorNumber, IdMember) {
     $('#loader_check').css("display", "block");
 
     $.post(amadeusPath + 'user_ajax.php',
-        {
-            FactorNumber: FactorNumber,
-            IdMember: IdMember,
-            flag: "TicketReserve"
-        },
-        function (data) {
+       {
+           FactorNumber: FactorNumber,
+           IdMember: IdMember,
+           flag: "TicketReserve"
+       },
+       function (data) {
 
-            if (data.indexOf('SuccessBookTicket') > -1) {
+           if (data.indexOf('SuccessBookTicket') > -1) {
 
-                setTimeout(function () {
-                    $('#final_ok_and_insert_passenger').removeAttr("onclick").attr("disabled", true).css('cursor', 'not-allowed').text(useXmltag("Accepted"));
+               setTimeout(function () {
+                   $('#final_ok_and_insert_passenger').removeAttr("onclick").attr("disabled", true).css('cursor', 'not-allowed').text(useXmltag("Accepted"));
 
-                    $('.main-pay-content').show();
-                    $('.s-u-passenger-wrapper-change').show();
-                    $('#loader_check').css("display", "none");
-                    $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow');
-                }, 2000);
+                   $('.main-pay-content').show();
+                   $('.s-u-passenger-wrapper-change').show();
+                   $('#loader_check').css("display", "none");
+                   $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow');
+               }, 2000);
 
-            } else {
+           } else {
 
-                setTimeout(function () {
-                    $('#final_ok_and_insert_passenger').css('background-color', 'red').text(useXmltag("Errorconfirmation"));
-                    // $('#messageBook').html(data);
-                    $.alert({
-                        title: useXmltag("BuyTicket"),
-                        icon: 'fa fa-cart-plus',
-                        content: data,
-                        rtl: true,
-                        type: 'red'
-                    })
-                }, 1000);
-            }
+               setTimeout(function () {
+                   $('#final_ok_and_insert_passenger').css('background-color', 'red').text(useXmltag("Errorconfirmation"));
+                   // $('#messageBook').html(data);
+                   $.alert({
+                       title: useXmltag("BuyTicket"),
+                       icon: 'fa fa-cart-plus',
+                       content: data,
+                       rtl: true,
+                       type: 'red'
+                   })
+               }, 1000);
+           }
 
 
-        });
+       });
 
 
 }
@@ -10874,15 +10875,15 @@ function modalListForReservationTicket(requestNumber) {
     }, 3000);
 
     $.post(libraryPath + 'ModalCreatorForReservationTicket.php',
-        {
-            Controller: 'user',
-            Method: 'ModalShow',
-            Param: requestNumber
-        },
-        function (data) {
-            $('#ModalPublicContent').html(data);
+       {
+           Controller: 'user',
+           Method: 'ModalShow',
+           Param: requestNumber
+       },
+       function (data) {
+           $('#ModalPublicContent').html(data);
 
-        });
+       });
 }
 
 
@@ -10895,16 +10896,16 @@ function modalCancelReservationTicket(requestNumber) {
     }, 1500);
 
     $.post(libraryPath + 'ModalCreatorForReservationTicket.php',
-        {
-            Controller: 'user',
-            Method: 'setCancelReservationTicket',
-            Param: requestNumber
-        },
-        function (data) {
+       {
+           Controller: 'user',
+           Method: 'setCancelReservationTicket',
+           Param: requestNumber
+       },
+       function (data) {
 
-            $('#ModalPublicContent').html(data);
+           $('#ModalPublicContent').html(data);
 
-        });
+       });
 }
 
 function requestCancelReservationTicket(requestNumber, percentCancel) {
@@ -10927,46 +10928,46 @@ function requestCancelReservationTicket(requestNumber, percentCancel) {
         if (nationalCodes != "" && reasons != "") {
 
             $.post(amadeusPath + 'hotel_ajax.php',
-                {
-                    nationalCodes: nationalCodes,
-                    requestNumber: requestNumber,
-                    percentCancel: percentCancel,
-                    percentNoMatter: percentNoMatter,
-                    accountOwner: accountOwner,
-                    cardNumber: cardNumber,
-                    nameBank: nameBank,
-                    reasons: reasons,
-                    flag: 'requestCancelReservationTicket'
-                },
-                function (data) {
-                    let res = data.split(':');
-                    if (data.indexOf('success') > -1) {
+               {
+                   nationalCodes: nationalCodes,
+                   requestNumber: requestNumber,
+                   percentCancel: percentCancel,
+                   percentNoMatter: percentNoMatter,
+                   accountOwner: accountOwner,
+                   cardNumber: cardNumber,
+                   nameBank: nameBank,
+                   reasons: reasons,
+                   flag: 'requestCancelReservationTicket'
+               },
+               function (data) {
+                   let res = data.split(':');
+                   if (data.indexOf('success') > -1) {
 
-                        $.alert({
-                            title: useXmltag("SendCancellationRequest"),
-                            icon: 'fa fa-check',
-                            content: res[1],
-                            rtl: true,
-                            type: 'green',
-                        });
-                        setTimeout(function () {
-                            $('#cancelbyuser-' + requestNumber).removeClass('btn btn-danger fa fa-times').addClass('btn btn-warning fa fa-refresh').removeAttr('onclick').attr("title", useXmltag("InvestigatingRequest"));
-                            $("#ModalPublic").fadeOut(700);
-                        }, 1000);
+                       $.alert({
+                           title: useXmltag("SendCancellationRequest"),
+                           icon: 'fa fa-check',
+                           content: res[1],
+                           rtl: true,
+                           type: 'green',
+                       });
+                       setTimeout(function () {
+                           $('#cancelbyuser-' + requestNumber).removeClass('btn btn-danger fa fa-times').addClass('btn btn-warning fa fa-refresh').removeAttr('onclick').attr("title", useXmltag("InvestigatingRequest"));
+                           $("#ModalPublic").fadeOut(700);
+                       }, 1000);
 
-                    } else {
-                        $.alert({
-                            title: useXmltag("SendCancellationRequest"),
-                            icon: 'fa fa-times',
-                            content: res[1],
-                            rtl: true,
-                            type: 'red',
-                        });
-                        $('#SendEmailForOther').attr("disabled", false);
-                        $('#loaderTracking').fadeOut(500);
-                    }
+                   } else {
+                       $.alert({
+                           title: useXmltag("SendCancellationRequest"),
+                           icon: 'fa fa-times',
+                           content: res[1],
+                           rtl: true,
+                           type: 'red',
+                       });
+                       $('#SendEmailForOther').attr("disabled", false);
+                       $('#loaderTracking').fadeOut(500);
+                   }
 
-                });
+               });
 
         } else {
             $.alert({
@@ -11015,7 +11016,7 @@ function fireToast(status,title,text,time=4000){
 }
 function goto(id) {
     const top =
-        document.getElementById(id).offsetTop - 40
+       document.getElementById(id).offsetTop - 40
     window.scrollTo({
         top: top,
         left: 0,
@@ -11217,11 +11218,11 @@ function goToBankApp() {
         url: amadeusPath + 'user_ajax.php',
         dataType: 'JSON',
         data:
-            {
-                flag: 'checkMemberCredit',
-                priceToPay: price_to_pay,
-                creditUse: $("input[name='chkCreditUse']:checked").val()
-            },
+           {
+               flag: 'checkMemberCredit',
+               priceToPay: price_to_pay,
+               creditUse: $("input[name='chkCreditUse']:checked").val()
+           },
         success: function (data) {
 
             credit_status = data.result_status;
@@ -11297,20 +11298,20 @@ function modalForReservationProof(requestNumber , type) {
     }, 3000);
 
     $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'reservationProof',
-            Method: 'ModalShowProof',
-            Param: {
-                requestNumber : requestNumber,
-                type : type
-            }
-        },
-        function (data) {
+       {
+           Controller: 'reservationProof',
+           Method: 'ModalShowProof',
+           Param: {
+               requestNumber : requestNumber,
+               type : type
+           }
+       },
+       function (data) {
 
-            $('#ModalPublicContent').html(data);
+           $('#ModalPublicContent').html(data);
 
 
-        });
+       });
 //
 //    $('.loaderPublic').fadeIn(700);
 //
@@ -11321,62 +11322,62 @@ function otpLogin(_this,entryInput){
 
     loadingToggle(_this,true)
     $.post(amadeusPath + 'captcha/securimage_check.php',
-        {captchaAjax: $('#signin-captcha2').val()},
-        function (data) {
+       {captchaAjax: $('#signin-captcha2').val()},
+       function (data) {
 
-            if (data == true) {
-                reloadCaptcha();
-
-
-                $.ajax({
-                    type: 'POST',
-                    url: amadeusPath + 'ajax',
-                    dataType: 'json',
-                    data: JSON.stringify({
-                        method: 'callCreate',
-                        className: 'verificationCode',
-                        is_json: true,
-                        entry: entryInput.val()
-                    }),
-                    success: function(response) {
-                        loadingToggle(_this,false)
-                        // console.log('response', response)
-                        $.alert({
-                            title: useXmltag("Login"),
-                            icon: 'fa fa-sign-in',
-                            content: useXmltag("optSent"),
-                            rtl: true,
-                            type: 'green'
-                        });
-                    },
-                    error: function(error) {
-                        loadingToggle(_this,false)
-                        console.log('error', error)
-                        $.alert({
-                            title: useXmltag("Login"),
-                            icon: 'fa fa-sign-in',
-                            content: useXmltag("ErrorDetectingUser"),
-                            rtl: true,
-                            type: 'red'
-                        });
-                    },
-                })
-
-            } else {
-                reloadCaptcha();
-                loadingToggle(_this,false)
-                $.alert({
-                    title: useXmltag("Login"),
-                    icon: 'fa fa-sign-in',
-                    content: useXmltag("WrongSecurityCode"),
-                    rtl: true,
-                    type: 'red'
-                });
+           if (data == true) {
+               reloadCaptcha();
 
 
-                return false;
-            }
-        });
+               $.ajax({
+                   type: 'POST',
+                   url: amadeusPath + 'ajax',
+                   dataType: 'json',
+                   data: JSON.stringify({
+                       method: 'callCreate',
+                       className: 'verificationCode',
+                       is_json: true,
+                       entry: entryInput.val()
+                   }),
+                   success: function(response) {
+                       loadingToggle(_this,false)
+                       // console.log('response', response)
+                       $.alert({
+                           title: useXmltag("Login"),
+                           icon: 'fa fa-sign-in',
+                           content: useXmltag("optSent"),
+                           rtl: true,
+                           type: 'green'
+                       });
+                   },
+                   error: function(error) {
+                       loadingToggle(_this,false)
+                       console.log('error', error)
+                       $.alert({
+                           title: useXmltag("Login"),
+                           icon: 'fa fa-sign-in',
+                           content: useXmltag("ErrorDetectingUser"),
+                           rtl: true,
+                           type: 'red'
+                       });
+                   },
+               })
+
+           } else {
+               reloadCaptcha();
+               loadingToggle(_this,false)
+               $.alert({
+                   title: useXmltag("Login"),
+                   icon: 'fa fa-sign-in',
+                   content: useXmltag("WrongSecurityCode"),
+                   rtl: true,
+                   type: 'red'
+               });
+
+
+               return false;
+           }
+       });
 
 
 
@@ -11390,7 +11391,7 @@ function shareBtn(title){
         }).then(() => {
             console.log('Thanks for sharing!');
         })
-            .catch(console.error);
+           .catch(console.error);
     }
 }
 
@@ -11592,15 +11593,15 @@ function ModalUserList(type, RequestNumber) {
     }, 1500);
 
     $.post(libraryPath + 'ModalCreator.php',
-        {
-            Controller: 'user',
-            Method: 'ModalUserList',
-            Param: RequestNumber,
-            ParamId: type
-        },
-        function (data) {
-            $('#ModalPublicContent').html(data);
-        });
+       {
+           Controller: 'user',
+           Method: 'ModalUserList',
+           Param: RequestNumber,
+           ParamId: type
+       },
+       function (data) {
+           $('#ModalPublicContent').html(data);
+       });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

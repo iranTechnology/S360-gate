@@ -205,10 +205,13 @@
                                 section='tour'}
                             </div>
                         {/if}
-                        <a id="fileUrlPackage" target="_blank" href="" class="parent-share-tour d-none file_package">
+    {if $objResult->arrayTour['infoTour']['tour_file']}
+
+                        <a id="fileUrlPackage" target="_blank" href='{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$objResult->arrayTour['infoTour']['tour_file']}' class="parent-share-tour file_package">
                             <i class="fa-light fa-download"></i>
                             <span>##PackageTour##</span>
                         </a>
+    {/if}
                         <a onclick="shareBtn('{$objResult->arrayTour['infoTour'][$objFunctions->ChangeIndexNameByLanguage($smarty.const.SOFTWARE_LANG,'tour_name')]}')"
                            class="parent-share-tour">
                             <i class="fa-light fa-share-nodes"></i>
@@ -630,10 +633,18 @@
                                         </div>
                                         <div>
                                             {/literal}
+
+                                            {assign var="typeMember" value=$objFunctions->infoMember($objResult->arrayTour['infoTour']['user_id'])}
+                                            {assign var="mobileDisplay" value=$smarty.const.CLIENT_MOBILE}
+
+                                            {if $typeMember['tour_contact_display'] == '1'}
+                                                {assign var="mobileDisplay" value=$typeMember['mobile']}
+                                            {/if}
+
                                             {if $objFunctions->isEnableSetting('mobile')}
-                                                <a class='a_phone_for_tour' href='tel:{$smarty.const.CLIENT_PHONE}'>
+                                                <a class='a_phone_for_tour' href='tel:{$mobileDisplay}'>
                                                     <i><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M480.3 320.3L382.1 278.2c-21.41-9.281-46.64-3.109-61.2 14.95l-27.44 33.5c-44.78-25.75-82.29-63.25-108-107.1l33.55-27.48c17.91-14.62 24.09-39.7 15.02-61.05L191.7 31.53c-10.16-23.2-35.34-35.86-59.87-30.19l-91.25 21.06C16.7 27.86 0 48.83 0 73.39c0 241.9 196.7 438.6 438.6 438.6c24.56 0 45.53-16.69 50.1-40.53l21.06-91.34C516.4 355.5 503.6 330.3 480.3 320.3zM463.9 369.3l-21.09 91.41c-.4687 1.1-2.109 3.281-4.219 3.281c-215.4 0-390.6-175.2-390.6-390.6c0-2.094 1.297-3.734 3.344-4.203l91.34-21.08c.3125-.0781 .6406-.1094 .9531-.1094c1.734 0 3.359 1.047 4.047 2.609l42.14 98.33c.75 1.766 .25 3.828-1.25 5.062L139.8 193.1c-8.625 7.062-11.25 19.14-6.344 29.14c33.01 67.23 88.26 122.5 155.5 155.5c9.1 4.906 22.09 2.281 29.16-6.344l40.01-48.87c1.109-1.406 3.187-1.938 4.922-1.125l98.26 42.09C463.2 365.2 464.3 367.3 463.9 369.3z"/></svg></i>
-                                                    {$smarty.const.CLIENT_MOBILE}
+                                                    {$mobileDisplay}
                                                 </a>
                                             {/if}
                                             {literal}

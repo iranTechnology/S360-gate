@@ -5886,14 +5886,12 @@ class bookshowTest extends clientAuth {
                 $price_with_change = $this->getController('BookingHotelNew')->getPriceWithChange($hotel['factor_number']);
                 $DataAllPrice = '<span style="text-decoration: line-through;">'.  number_format($price_with_change) .'</span><br/>';
             }
-
-            if($hotel['total_price'] === 'percent'){
+            if($hotel['type_discount'] === 'percent'){
                 $DataAllPrice .=  number_format( $hotel['total_price'] - ($hotel['total_price'] * $hotel['discount_code_amount'] / 100 ) );
             }
             else{
                 $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_code_amount'] );
             }
-
             if (!empty($hotel['discount_code_amount']) && $hotel['discount_code_amount'] != 0) {
                 $DataAllPrice .=  '<br><del>' . number_format( $hotel['total_price'] ) . '</del>';
             }

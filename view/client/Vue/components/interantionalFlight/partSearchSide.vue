@@ -352,10 +352,6 @@ export default {
 
   },
   methods: {
-<<<<<<< HEAD
-
-=======
->>>>>>> f43f0f187b910d1edff55301edca4b30e36e9a36
     isPersianDate(dateStr) {
       // if(dateStr === undefined || dateStr === ''){
       //   dateStr = now()
@@ -818,11 +814,6 @@ export default {
         if (after) {
           let _this = this
           if (_this.dataSearch) {
-<<<<<<< HEAD
-            console.log(_this.dataSearch)
-            console.log(_this.dataSearch.arrival_date_en)
-=======
->>>>>>> f43f0f187b910d1edff55301edca4b30e36e9a36
             _this.title_origin_city = `${_this.dataSearch.airport_departure}`
             _this.iata_origin = _this.dataSearch.origin
             _this.title_arrival_city = `${_this.dataSearch.airport_arrival}`
@@ -831,10 +822,6 @@ export default {
             _this.multi_way =  (_this.other_data_search.MultiWay == 'TwoWay') ? true : false;
             _this.date_departure =  _this.dataSearch.departure_date_en
             _this.date_return =  _this.other_data_search.arrival_date_en
-<<<<<<< HEAD
-
-=======
->>>>>>> f43f0f187b910d1edff55301edca4b30e36e9a36
             _this.getPopularFlights()
             if(!_this.is_stored_local_storage) {
               _this.setSearchedStorage()

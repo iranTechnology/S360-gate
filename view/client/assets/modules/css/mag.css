@@ -1322,7 +1322,9 @@ a.badge-primary.focus, a.badge-primary:focus {
 }
 
 p:has(img) {
-    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
 }
 
 .main-img-banner , .parent_box_right input{

@@ -35,6 +35,7 @@ class ApiTour extends clientAuth
                 exit();
             }
             $providers = $this->getClientProviders();
+            return json_encode($providers);
                 if(!empty($providers)){
                     $this->providers = $providers[0];
                     return $this->$method($content);
@@ -325,7 +326,7 @@ class ApiTour extends clientAuth
 
     public function detail($content) {
         $tour = $this->getTour($content['tour_id']);
-        
+
 
         if (!empty($tour)) {
             $vehicle = $this->typeVehicles($content['tour_id']);
@@ -1354,9 +1355,9 @@ WHERE
 
          $sql="SELECT * FROM reservation_facilities_tb WHERE is_del='no' AND id IN ({$implode_facilities})";
          $hotel_facilities = $this->admin_controller->ConectDbClient($sql, $this->providers, "SelectAll", "", "", "");
-        
+
         return $hotel_facilities ;
-        
+
     }
 
     private function getHotelGalleryById($hotel_id) {

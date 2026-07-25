@@ -311,72 +311,72 @@ function ModalShowBook(reserveType, factorNumber) {
 
     if(reserveType == 'Flight'){
         $.post(libraryPath + 'ModalCreator.php',
-            {
-                Controller: 'bookshow',
-                Method: 'ModalShowBook',
-                Param: factorNumber
-            },
-            function (data) {
-                $('#ModalPublic').html(data);
-            });
+        {
+            Controller: 'bookshow',
+            Method: 'ModalShowBook',
+            Param: factorNumber
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
     }
     else if(reserveType == 'Hotel')
     {
         $.post(libraryPath + 'ModalCreatorForHotel.php',
-            {
-                Controller: 'bookhotelshow',
-                Method: 'ModalShowBook',
-                Param: factorNumber
-            },
-            function (data) {
-                $('#ModalPublic').html(data);
-            });
+        {
+            Controller: 'bookhotelshow',
+            Method: 'ModalShowBook',
+            Param: factorNumber
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
     }
     else if(reserveType == 'Insurance')
     {
         $.post(libraryPath + 'ModalCreator.php',
-            {
-                Controller: 'bookingInsurance',
-                Method: 'ModalShowInsuranceBook',
-                Param: factorNumber
-            },
-            function (data) {
-                $('#ModalPublic').html(data);
-            });
+        {
+            Controller: 'bookingInsurance',
+            Method: 'ModalShowInsuranceBook',
+            Param: factorNumber
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
     }
     else if(reserveType == 'Europcar')
     {
         $.post(libraryPath + 'ModalCreatorForEuropcar.php',
-            {
-                Method: 'ModalShowBook',
-                factorNumber: factorNumber
-            },
-            function (data) {
-                $('#ModalPublic').html(data);
-            });
+        {
+            Method: 'ModalShowBook',
+            factorNumber: factorNumber
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
     }
     else if(reserveType == 'Tour')
     {
         $.post(libraryPath + 'ModalCreatorForTour.php',
-            {
-                Method: 'ModalShowBook',
-                factorNumber: factorNumber
-            },
-            function (data) {
-                $('#ModalPublic').html(data);
-            });
+        {
+            Method: 'ModalShowBook',
+            factorNumber: factorNumber
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
     }
     else if(reserveType == 'Visa')
     {
         $.post(libraryPath + 'ModalCreator.php',
-            {
-                Controller: 'bookingVisa',
-                Method: 'ModalShowVisaBook',
-                Param: factorNumber
-            },
-            function (data) {
-                $('#ModalPublic').html(data);
-            });
+        {
+            Controller: 'bookingVisa',
+            Method: 'ModalShowVisaBook',
+            Param: factorNumber
+        },
+        function (data) {
+            $('#ModalPublic').html(data);
+        });
     }
 }
 

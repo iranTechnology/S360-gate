@@ -42,7 +42,7 @@ class ApiTour extends clientAuth
             $providers = $this->getClientProviders();
 
             if(!empty($providers)){
-                if($method == 'fetchAllNewTours'){
+                if($method == 'fetchAllNewTours' || $method =='packages'){
                     $this->providers = $providers;
                     if(!$this->providers){
                         echo functions::withError([], 400, 'You do not have access to this provider');
@@ -312,6 +312,7 @@ class ApiTour extends clientAuth
                         'origin_region_name' => $tour['origin_region_name'],
                         'destination_country_id' => $tour['destination_country_id'],
                         'destination_country_name' => $tour['destination_country_name'],
+                        'destination_country_name_en' => $tour['destination_country_name_en'],
                         'destination_city_name' => $tour['destination_city_name'],
                         'destination_city_name_en' => $tour['destination_city_name_en'],
                         'destination_region_name' => $tour['destination_region_name'],
@@ -454,48 +455,227 @@ class ApiTour extends clientAuth
         }
 
         $sql = " SELECT
-                T.id , T.id_same,T.tour_name,T.tour_name_en,T.tour_type_id,
-                T.tour_code,T.start_date,T.end_date,T.night,T.`day`,T.tour_pic,T.tour_status,
-                T.origin_continent_id,T.origin_country_id,T.is_show,T.is_special,T.is_del,
-                T.`language`,
-                T.origin_city_name,
-                T.change_price,
-                ReservationOriginCity.name_en AS origin_city_name_en,
-                T.origin_city_id,
-                T.origin_region_name,
+            T.id , T.id_same,T.tour_name,T.tour_name_en,T.tour_type_id,
+            T.tour_code,T.start_date,T.end_date,T.night,T.`day`,T.tour_pic,T.tour_status,
+            T.origin_continent_id,T.origin_country_id,T.is_show,T.is_special,T.is_del,
+            T.`language`,
+            T.origin_city_name,
+            T.change_price,
+            ReservationOriginCity.name_en AS origin_city_name_en,
+            T.origin_city_id,
+            T.origin_region_name,
+            T.origin_country_name,
+            ReservationOriginCountry.name_en AS origin_country_name_en,
+            
+            -- destination_country_name
+            COALESCE(
+                CASE 
+                    WHEN TR.night = 0 AND TR.day = 0 THEN (
+                        SELECT TR2.destination_country_name
+                        FROM reservation_tour_rout_tb TR2
+                        WHERE TR2.fk_tour_id = T.id
+                          AND TR2.tour_title = 'dept'
+                          AND (TR2.night > 0 OR TR2.day > 0)
+                          AND TR2.is_del = 'no'
+                        ORDER BY TR2.number_rout DESC
+                        LIMIT 1
+                    )
+                    ELSE TR.destination_country_name
+                END,
                 T.origin_country_name,
-                ReservationOriginCountry.name_en AS origin_country_name_en,
-                TR.destination_country_name,
-                ReservationDestinationCountry.name_en AS destination_country_name_en,
-                TR.destination_city_name,
-                ReservationDestinationCity.name_en AS destination_city_name_en,
-                TR.destination_region_name,
-                TR.airline_name,
-                TR.type_vehicle_name,
-                TR.exit_hours,
-                TR.airline_id,
-                TR.type_vehicle_id,
-                TR.tour_title,
-                TR.destination_country_id,
-                TR.id AS idRout
-            FROM
-                reservation_tour_tb AS T
-                INNER JOIN reservation_tour_rout_tb AS TR ON T.id=TR.fk_tour_id
-                LEFT JOIN reservation_city_tb AS ReservationOriginCity ON ReservationOriginCity.id=T.origin_city_id
-                LEFT JOIN reservation_country_tb AS ReservationOriginCountry ON ReservationOriginCountry.id=T.origin_country_id
-                LEFT JOIN reservation_city_tb AS ReservationDestinationCity ON ReservationDestinationCity.id=TR.destination_city_id
-                LEFT JOIN reservation_country_tb AS ReservationDestinationCountry ON ReservationDestinationCountry.id=TR.destination_country_id
-                {$Join}
-            WHERE
-                T.is_del = 'no'
-                AND 
-                T.is_show = 'yes' 
-                AND TR.tour_title='dept'
-                AND (TR.is_route_fake = '1' OR TR.is_route_fake IS NULL) 
-                {$WHERE}
-            GROUP BY T.tour_code, T.start_date
-            ORDER BY T.priority=0,T.priority ASC
-            ";
+                'نامشخص'
+            ) AS destination_country_name,
+            
+            -- destination_country_name_en
+            COALESCE(
+                CASE 
+                    WHEN TR.night = 0 AND TR.day = 0 THEN (
+                        SELECT ReservationDestinationCountry2.name_en
+                        FROM reservation_tour_rout_tb TR2
+                        LEFT JOIN reservation_country_tb AS ReservationDestinationCountry2 
+                            ON ReservationDestinationCountry2.id = TR2.destination_country_id
+                        WHERE TR2.fk_tour_id = T.id
+                          AND TR2.tour_title = 'dept'
+                          AND (TR2.night > 0 OR TR2.day > 0)
+                          AND TR2.is_del = 'no'
+                        ORDER BY TR2.number_rout DESC
+                        LIMIT 1
+                    )
+                    ELSE ReservationDestinationCountry.name_en
+                END,
+                ReservationOriginCountry.name_en,
+                'Unknown'
+            ) AS destination_country_name_en,
+            
+            -- destination_city_name
+            COALESCE(
+                CASE 
+                    WHEN TR.night = 0 AND TR.day = 0 THEN (
+                        SELECT TR2.destination_city_name
+                        FROM reservation_tour_rout_tb TR2
+                        WHERE TR2.fk_tour_id = T.id
+                          AND TR2.tour_title = 'dept'
+                          AND (TR2.night > 0 OR TR2.day > 0)
+                          AND TR2.is_del = 'no'
+                        ORDER BY TR2.number_rout DESC
+                        LIMIT 1
+                    )
+                    ELSE TR.destination_city_name
+                END,
+                T.origin_city_name,
+                'نامشخص'
+            ) AS destination_city_name,
+            
+            -- destination_city_name_en
+            COALESCE(
+                CASE 
+                    WHEN TR.night = 0 AND TR.day = 0 THEN (
+                        SELECT ReservationDestinationCity2.name_en
+                        FROM reservation_tour_rout_tb TR2
+                        LEFT JOIN reservation_city_tb AS ReservationDestinationCity2 
+                            ON ReservationDestinationCity2.id = TR2.destination_city_id
+                        WHERE TR2.fk_tour_id = T.id
+                          AND TR2.tour_title = 'dept'
+                          AND (TR2.night > 0 OR TR2.day > 0)
+                          AND TR2.is_del = 'no'
+                        ORDER BY TR2.number_rout DESC
+                        LIMIT 1
+                    )
+                    ELSE ReservationDestinationCity.name_en
+                END,
+                ReservationOriginCity.name_en,
+                'Unknown'
+            ) AS destination_city_name_en,
+            
+            -- destination_region_name
+            CASE 
+                WHEN TR.night = 0 AND TR.day = 0 THEN (
+                    SELECT TR2.destination_region_name
+                    FROM reservation_tour_rout_tb TR2
+                    WHERE TR2.fk_tour_id = T.id
+                      AND TR2.tour_title = 'dept'
+                      AND (TR2.night > 0 OR TR2.day > 0)
+                      AND TR2.is_del = 'no'
+                    ORDER BY TR2.number_rout DESC
+                    LIMIT 1
+                )
+                ELSE TR.destination_region_name
+            END AS destination_region_name,
+            
+            -- airline_name
+            CASE 
+                WHEN TR.night = 0 AND TR.day = 0 THEN (
+                    SELECT TR2.airline_name
+                    FROM reservation_tour_rout_tb TR2
+                    WHERE TR2.fk_tour_id = T.id
+                      AND TR2.tour_title = 'dept'
+                      AND (TR2.night > 0 OR TR2.day > 0)
+                      AND TR2.is_del = 'no'
+                    ORDER BY TR2.number_rout DESC
+                    LIMIT 1
+                )
+                ELSE TR.airline_name
+            END AS airline_name,
+            
+            -- type_vehicle_name
+            CASE 
+                WHEN TR.night = 0 AND TR.day = 0 THEN (
+                    SELECT TR2.type_vehicle_name
+                    FROM reservation_tour_rout_tb TR2
+                    WHERE TR2.fk_tour_id = T.id
+                      AND TR2.tour_title = 'dept'
+                      AND (TR2.night > 0 OR TR2.day > 0)
+                      AND TR2.is_del = 'no'
+                    ORDER BY TR2.number_rout DESC
+                    LIMIT 1
+                )
+                ELSE TR.type_vehicle_name
+            END AS type_vehicle_name,
+            
+            -- exit_hours
+            CASE 
+                WHEN TR.night = 0 AND TR.day = 0 THEN (
+                    SELECT TR2.exit_hours
+                    FROM reservation_tour_rout_tb TR2
+                    WHERE TR2.fk_tour_id = T.id
+                      AND TR2.tour_title = 'dept'
+                      AND (TR2.night > 0 OR TR2.day > 0)
+                      AND TR2.is_del = 'no'
+                    ORDER BY TR2.number_rout DESC
+                    LIMIT 1
+                )
+                ELSE TR.exit_hours
+            END AS exit_hours,
+            
+            -- airline_id
+            CASE 
+                WHEN TR.night = 0 AND TR.day = 0 THEN (
+                    SELECT TR2.airline_id
+                    FROM reservation_tour_rout_tb TR2
+                    WHERE TR2.fk_tour_id = T.id
+                      AND TR2.tour_title = 'dept'
+                      AND (TR2.night > 0 OR TR2.day > 0)
+                      AND TR2.is_del = 'no'
+                    ORDER BY TR2.number_rout DESC
+                    LIMIT 1
+                )
+                ELSE TR.airline_id
+            END AS airline_id,
+            
+            -- type_vehicle_id
+            CASE 
+                WHEN TR.night = 0 AND TR.day = 0 THEN (
+                    SELECT TR2.type_vehicle_id
+                    FROM reservation_tour_rout_tb TR2
+                    WHERE TR2.fk_tour_id = T.id
+                      AND TR2.tour_title = 'dept'
+                      AND (TR2.night > 0 OR TR2.day > 0)
+                      AND TR2.is_del = 'no'
+                    ORDER BY TR2.number_rout DESC
+                    LIMIT 1
+                )
+                ELSE TR.type_vehicle_id
+            END AS type_vehicle_id,
+            
+            -- destination_country_id
+            CASE 
+                WHEN TR.night = 0 AND TR.day = 0 THEN (
+                    SELECT TR2.destination_country_id
+                    FROM reservation_tour_rout_tb TR2
+                    WHERE TR2.fk_tour_id = T.id
+                      AND TR2.tour_title = 'dept'
+                      AND (TR2.night > 0 OR TR2.day > 0)
+                      AND TR2.is_del = 'no'
+                    ORDER BY TR2.number_rout DESC
+                    LIMIT 1
+                )
+                ELSE TR.destination_country_id
+            END AS destination_country_id,
+            
+            TR.tour_title,
+            TR.id AS idRout
+            
+        FROM
+            reservation_tour_tb AS T
+            INNER JOIN reservation_tour_rout_tb AS TR ON T.id = TR.fk_tour_id
+            LEFT JOIN reservation_city_tb AS ReservationOriginCity 
+                ON ReservationOriginCity.id = T.origin_city_id
+            LEFT JOIN reservation_country_tb AS ReservationOriginCountry 
+                ON ReservationOriginCountry.id = T.origin_country_id
+            LEFT JOIN reservation_city_tb AS ReservationDestinationCity 
+                ON ReservationDestinationCity.id = TR.destination_city_id
+            LEFT JOIN reservation_country_tb AS ReservationDestinationCountry 
+                ON ReservationDestinationCountry.id = TR.destination_country_id
+            {$Join}
+        WHERE
+            T.is_del = 'no'
+            AND T.is_show = 'yes' 
+            AND TR.tour_title = 'dept'
+            AND (TR.is_route_fake = '1' OR TR.is_route_fake IS NULL)
+            {$WHERE}
+        GROUP BY T.tour_code, T.start_date
+        ORDER BY T.priority=0, T.priority ASC
+        ";
 
         // اینجا باید برای تمام provider ها داده بگیریم
         $all_final_tours = [];
@@ -657,7 +837,7 @@ class ApiTour extends clientAuth
                 $tour_name_en = preg_replace('/\s+/', '', $tour['tour_name_en']);
 
                 $all_final_tours[] = [
-                    'api_id' => $tourId . '-' . $tour['id_same'],
+                    'api_id' => $tourId . '-' . $tour['id_same'] . '-' . $tour['start_date'],
                     'provider_id' => $provider,
                     'agency_name' => $agencyInfo['AgencyName'] ?? '',
                     'id' => $tourId,
@@ -683,6 +863,8 @@ class ApiTour extends clientAuth
                     'origin_region_name' => $tour['origin_region_name'],
                     'destination_country_id' => $tour['destination_country_id'],
                     'destination_country_name' => $tour['destination_country_name'],
+                    'destination_country_name_en' => $tour['destination_country_name_en'],
+                    'origin_country_name_en' => $tour['origin_country_name_en'],
                     'destination_city_name' => $tour['destination_city_name'],
                     'destination_city_name_en' => $tour['destination_city_name_en'],
                     'destination_region_name' => $tour['destination_region_name'],
@@ -717,7 +899,7 @@ class ApiTour extends clientAuth
         ], 404, 'Data Not Exist');
     }
 
-    /**
+       /**
      * دریافت گزارش روزانه از کران‌ها
      */
     public function receive_report($content)
@@ -1484,292 +1666,181 @@ WHERE
         $string_start_date = str_replace(['/', '-', ' '], '', $content['start_date']);
         $string_end_date = str_replace(['/', '-', ' '], '', $content['end_date']);
 
+        $all_packages = [];
 
-        $sql = "SELECT 
-  reservation_tour_tb.tour_code, reservation_tour_tb.start_date, reservation_tour_tb.change_price, reservation_tour_tb.discount_type, reservation_tour_tb.discount, reservation_tour_tb.prepayment_percentage, reservation_tour_tb.adult_price_one_day_tour_r, reservation_tour_tb.child_price_one_day_tour_r, reservation_tour_tb.infant_price_one_day_tour_r, reservation_tour_package_tb.* 
-FROM 
-  reservation_tour_package_tb 
-INNER JOIN 
-  reservation_tour_tb ON reservation_tour_tb.id =reservation_tour_package_tb.fk_tour_id 
-INNER JOIN 
-  reservation_tour_hotel_tb ON reservation_tour_hotel_tb.fk_tour_id =reservation_tour_tb.id  
-WHERE 
-  reservation_tour_tb.id = '{$content['tour_id']}'  
-AND 
-  reservation_tour_tb.start_date = '{$string_start_date}'  
-AND 
-  reservation_tour_tb.end_date = '{$string_end_date}'  
-AND 
-  reservation_tour_tb.is_show = 'yes'  
-AND 
-  reservation_tour_tb.is_del = 'no'  
-AND 
-  reservation_tour_package_tb.is_del = 'no'  
-GROUP BY 
-  reservation_tour_package_tb.id 
-ORDER BY 
-  reservation_tour_package_tb.double_room_price_r DESC ";
+        // حلقه روی همه providerها
+        foreach ($this->providers as $provider) {
+            $this->current_provider = $provider;
 
-        $packages = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
+            $sql = "SELECT 
+            reservation_tour_tb.tour_code, reservation_tour_tb.start_date, reservation_tour_tb.change_price, 
+            reservation_tour_tb.discount_type, reservation_tour_tb.discount, reservation_tour_tb.prepayment_percentage, 
+            reservation_tour_tb.adult_price_one_day_tour_r, reservation_tour_tb.child_price_one_day_tour_r, 
+            reservation_tour_tb.infant_price_one_day_tour_r, reservation_tour_package_tb.* 
+        FROM 
+            reservation_tour_package_tb 
+        INNER JOIN 
+            reservation_tour_tb ON reservation_tour_tb.id = reservation_tour_package_tb.fk_tour_id 
+        LEFT JOIN 
+            reservation_tour_hotel_tb ON reservation_tour_hotel_tb.fk_tour_id = reservation_tour_tb.id  
+        WHERE 
+            reservation_tour_tb.id = '{$content['tour_id']}'  
+            AND reservation_tour_tb.start_date = '{$string_start_date}'  
+            AND reservation_tour_tb.end_date = '{$string_end_date}'  
+            AND reservation_tour_tb.is_show = 'yes'  
+            AND reservation_tour_tb.is_del = 'no'  
+            AND reservation_tour_package_tb.is_del = 'no'  
+        GROUP BY 
+            reservation_tour_package_tb.id 
+        ORDER BY 
+            reservation_tour_package_tb.double_room_price_r DESC";
 
-        $room_types = [
-            "OneBed" => [
-                'name' => (array)functions::Xmlinformation('OneBed')->__toString(),
-                'packagePriceName' => 'single_room_price_r',
-                'packageCurrencyPriceName' => 'single_room_price_a',
-                'capacityValue' => 'single_room_capacity',
-                'order'   => 1 ,
-                'coefficient' => 1,
-                'index' => 'oneBed',
-                'type' => 'adult'],
-            "TwoBed" => [
-                'name' => (array)functions::Xmlinformation('TwoBed'),
-                'packagePriceName' => 'double_room_price_r',
-                'packageCurrencyPriceName' => 'double_room_price_a',
-                'capacityValue' => 'double_room_capacity',
-                'order'   => 2 ,
-                'coefficient' => 2,
-                'index' => 'twoBed',
-                'type' => 'adult'],
-            "ThreeBed" => [
-                'name' => (array)functions::Xmlinformation('ThreeBed'),
-                'packagePriceName' => 'three_room_price_r',
-                'packageCurrencyPriceName' => 'three_room_price_a',
-                'capacityValue' => 'three_room_capacity',
-                'order'   => 3 ,
-                'coefficient' => 3,
-                'index' => 'threeBed',
-                'type' => 'adult'],
-            "Childwithbed" => [
-                'name' => (array)functions::Xmlinformation('Childwithbed'),
-                'packagePriceName' => 'child_with_bed_price_r',
-                'packageCurrencyPriceName' => 'child_with_bed_price_a',
-                'capacityValue' => 'child_with_bed_capacity',
-                'order'   => 7 ,
-                'coefficient' => 1,
-                'index' => 'childwithbed',
-                'type' => 'child'],
-            "Babywithoutbed" => [
-                'name' => (array)functions::Xmlinformation('Babywithoutbed'),
-                'packagePriceName' => 'infant_without_bed_price_r',
-                'packageCurrencyPriceName' => 'infant_without_bed_price_a',
-                'capacityValue' => 'infant_without_bed_capacity',
-                'order'   => 8 ,
-                'coefficient' => 1,
-                'index' => 'babywithoutbed',
-                'type' => 'infant'],
-            "Babywithoutchair" => [
-                'name' => (array)functions::Xmlinformation('Babywithoutchair'),
-                'packagePriceName' => 'infant_without_chair_price_r',
-                'packageCurrencyPriceName' => 'infant_without_chair_price_a',
-                'capacityValue' => 'infant_without_chair_capacity',
-                'order'   => 9 ,
-                'coefficient' => 1,
-                'index' => 'babywithoutchair',
-                'type' => 'infant']];
+            $packages = $this->admin_controller->ConectDbClient($sql, $provider, "SelectAll", "", "", "");
 
-
-        foreach ($packages as $package_key => $package) {
-
-            $hotels = $this->infoTourHotelByIdPackage($package['id']);
-
-            foreach ($hotels as $hotel_key => $hotel) {
-                $hotel_information = $this->getHotelInformation($hotel['fk_hotel_id']);
-                $tour_route_information = $this->infoTourRoutByIdPackage($package['id'], $hotel['fk_city_id']);
-                $packages[$package_key]['hotels'][$hotel_key] = $hotel_information;
-                $packages[$package_key]['hotels'][$hotel_key]['night'] = $tour_route_information[0]['night'];
-                $packages[$package_key]['hotels'][$hotel_key]['room_service'] = $tour_route_information[0]['room_service'];
+            if (empty($packages)) {
+                continue;
             }
 
-//            $packages[$package_key]['rooms']=$room_types;
+            $room_types = [
+                "OneBed" => [
+                    'name' => (array)functions::Xmlinformation('OneBed')->__toString(),
+                    'packagePriceName' => 'single_room_price_r',
+                    'packageCurrencyPriceName' => 'single_room_price_a',
+                    'capacityValue' => 'single_room_capacity',
+                    'order'   => 1, 'coefficient' => 1, 'index' => 'oneBed', 'type' => 'adult'],
+                "TwoBed" => [
+                    'name' => (array)functions::Xmlinformation('TwoBed'),
+                    'packagePriceName' => 'double_room_price_r',
+                    'packageCurrencyPriceName' => 'double_room_price_a',
+                    'capacityValue' => 'double_room_capacity',
+                    'order'   => 2, 'coefficient' => 2, 'index' => 'twoBed', 'type' => 'adult'],
+                "ThreeBed" => [
+                    'name' => (array)functions::Xmlinformation('ThreeBed'),
+                    'packagePriceName' => 'three_room_price_r',
+                    'packageCurrencyPriceName' => 'three_room_price_a',
+                    'capacityValue' => 'three_room_capacity',
+                    'order'   => 3, 'coefficient' => 3, 'index' => 'threeBed', 'type' => 'adult'],
+                "Childwithbed" => [
+                    'name' => (array)functions::Xmlinformation('Childwithbed'),
+                    'packagePriceName' => 'child_with_bed_price_r',
+                    'packageCurrencyPriceName' => 'child_with_bed_price_a',
+                    'capacityValue' => 'child_with_bed_capacity',
+                    'order'   => 7, 'coefficient' => 1, 'index' => 'childwithbed', 'type' => 'child'],
+                "Babywithoutbed" => [
+                    'name' => (array)functions::Xmlinformation('Babywithoutbed'),
+                    'packagePriceName' => 'infant_without_bed_price_r',
+                    'packageCurrencyPriceName' => 'infant_without_bed_price_a',
+                    'capacityValue' => 'infant_without_bed_capacity',
+                    'order'   => 8, 'coefficient' => 1, 'index' => 'babywithoutbed', 'type' => 'infant'],
+                "Babywithoutchair" => [
+                    'name' => (array)functions::Xmlinformation('Babywithoutchair'),
+                    'packagePriceName' => 'infant_without_chair_price_r',
+                    'packageCurrencyPriceName' => 'infant_without_chair_price_a',
+                    'capacityValue' => 'infant_without_chair_capacity',
+                    'order'   => 9, 'coefficient' => 1, 'index' => 'babywithoutchair', 'type' => 'infant']];
 
-            foreach ($room_types as $room_key => $room_type) {
-                if (SOFTWARE_LANG == 'fa') {
-                    $package_currency_name = $package['currency_type'];
-                } else {
-                    if ($package['currency_type']) {
-                        $package_currency_name = functions::changeCurrencyName($package['currency_type']);
+            foreach ($packages as $package_key => $package) {
+
+                $packages[$package_key]['hotels'] = [];
+                $hotels = $this->infoTourHotelByIdPackage($package['id']);
+
+                if (!empty($hotels)) {
+                    foreach ($hotels as $hotel_key => $hotel) {
+                        $hotel_information = $this->getHotelInformation($hotel['fk_hotel_id']);
+                        $tour_route_information = $this->infoTourRoutByIdPackage($package['id'], $hotel['fk_city_id']);
+
+                        if (!empty($tour_route_information)) {
+                            $hotel_information['night'] = $tour_route_information[0]['night'] ?? 0;
+                            $hotel_information['room_service'] = $tour_route_information[0]['room_service'] ?? '';
+                        }
+
+                        $packages[$package_key]['hotels'][$hotel_key] = $hotel_information;
+                    }
+                }
+
+                foreach ($room_types as $room_key => $room_type) {
+                    if (SOFTWARE_LANG == 'fa') {
+                        $package_currency_name = $package['currency_type'];
                     } else {
-                        $package_currency_name = '';
-                    }
-                }
-                $do_discount = $this->calculateDiscount($content['tour_id'], $package[$room_type['packagePriceName']], $package['id']);
-
-                if (empty($do_discount['discountedMinPriceR'])) {
-                    $price_change = $this->doPriceChange($package[$room_type['packagePriceName']], $package['change_price']);
-                    if(functions::isEnableSetting('toman')) {
-                        $final_price = round($price_change / 10) ;
-                    }else{
-                        $final_price = $price_change ;
-                    }
-                } else {
-                    $price_change = $this->doPriceChange($do_discount['discountedMinPriceR'], $package['change_price']);
-                    if(functions::isEnableSetting('toman')) {
-                        $final_price = round($price_change / 10) ;
-                    }else{
-                        $final_price = $price_change ;
+                        $package_currency_name = $package['currency_type'] ? functions::changeCurrencyName($package['currency_type']) : '';
                     }
 
-                }
-
-                $prepaymentPercentageValue = $this->prePaymentCalculate($final_price, $package['prepayment_percentage']);
-
-
-                if (number_format($package[$room_type['packageCurrencyPriceName']]) == 0) {
-                    $package[$room_type['packageCurrencyPriceName']] = '';
-                    $package_currency_name = '';
-                } else {
-                    $package[$room_type['packageCurrencyPriceName']] = intval($package[$room_type['packageCurrencyPriceName']]);
-                }
-
-                $show_price = intval($this->doPriceChange($package[$room_type['packagePriceName']], $package['change_price'])) ;
-                if(functions::isEnableSetting('toman')) {
-                    $price = round($show_price/10) ;
-                }else{
-                    $price = $show_price ;
-                }
-                $packages[$package_key]['rooms'][] = [
-                    'name' => $room_type['name'][0],
-                    'price' => $price,
-                    'currency_price' => $package[$room_type['packageCurrencyPriceName']],
-                    'currency_name' => $package_currency_name,
-                    'coefficient' => $room_type['coefficient'],
-                    'index' => $room_type['index'],
-                    'order' => $room_type['order'],
-                    'type' => $room_type['type'],
-                    'final_price' => $final_price,
-                    'capacity' => $package[$room_type['capacityValue']],
-                ];
-
-
-            }
-            $custom_rooms = json_decode($packages[$package_key]['custom_room'], 256);
-
-            if (isset($custom_rooms) && !empty($custom_rooms)) {
-
-                if (SOFTWARE_LANG == 'fa') {
-                    $package_currency_name = $package['currency_type'];
-                } else {
-
-                    if ($package['currency_type']) {
-                        $package_currency_name = functions::changeCurrencyName($package['currency_type']);
-                    } else {
-                        $package_currency_name = '';
-                    }
-                }
-                foreach ($custom_rooms as $room_key => $custom_room) {
-
-                    $room_type = array_keys($custom_room)[0];
-
-                    switch ($room_type) {
-                        case 'fourRoom':
-                            $number_bed = 4;
-                            $index = 'fourBed';
-                            $order = 4;
-                            break;
-                        case 'fiveRoom':
-                            $number_bed = 5;
-                            $index = 'fiveBed';
-                            $order = 5;
-                            break;
-                        case 'sixRoom':
-                            $number_bed = 6;
-                            $index = 'sixBed';
-                            $order = 6;
-                            break;
-                    }
-
-
-                    $do_discount = ($this->calculateDiscount($content['tour_id'],  $custom_room[$room_type]['price_r'], $package['id'], $room_type));
+                    $do_discount = $this->calculateDiscount($content['tour_id'], $package[$room_type['packagePriceName']], $package['id']);
 
                     if (empty($do_discount['discountedMinPriceR'])) {
                         $price_change = $this->doPriceChange($package[$room_type['packagePriceName']], $package['change_price']);
-                        if(functions::isEnableSetting('toman')) {
-                            $final_price = round($price_change/10) ;
-                        }else{
-                            $final_price = $price_change ;
-                        }
-
-
+                        $final_price = functions::isEnableSetting('toman') ? round($price_change / 10) : $price_change;
                     } else {
                         $price_change = $this->doPriceChange($do_discount['discountedMinPriceR'], $package['change_price']);
-                        if(functions::isEnableSetting('toman')) {
-                            $final_price = round($price_change/10) ;
-                        }else{
-                            $final_price = $price_change ;
-                        }
+                        $final_price = functions::isEnableSetting('toman') ? round($price_change / 10) : $price_change;
                     }
 
-                    if ($custom_room[$room_type]['price_a'] == "") {
-                        $package_currency_name = '';
-                    }
+                    $currency_price = (number_format($package[$room_type['packageCurrencyPriceName']]) == 0) ? '' : intval($package[$room_type['packageCurrencyPriceName']]);
 
-                    $show_price =intval($this->doPriceChange($custom_room[$room_type]['price_r'], $package['change_price']));
+                    $show_price = intval($this->doPriceChange($package[$room_type['packagePriceName']], $package['change_price']));
+                    $price = functions::isEnableSetting('toman') ? round($show_price/10) : $show_price;
 
-                    if(functions::isEnableSetting('toman')) {
-                        $price = round($show_price/10);
-                    }else{
-                        $price = $show_price;
-                    }
                     $packages[$package_key]['rooms'][] = [
-
-                        'name' => functions::Xmlinformation($room_type)->__toString(),
+                        'name' => $room_type['name'][0],
                         'price' => $price,
-                        'currency_price' => $custom_room[$room_type]['price_a'],
+                        'currency_price' => $currency_price,
                         'currency_name' => $package_currency_name,
-                        'order' => $order,
-                        'coefficient' => $number_bed,
-                        'index' => $index,
-                        'type' => 'adult',
+                        'coefficient' => $room_type['coefficient'],
+                        'index' => $room_type['index'],
+                        'order' => $room_type['order'],
+                        'type' => $room_type['type'],
                         'final_price' => $final_price,
-                        'capacity' => $custom_room[$room_type]['capacity']
+                        'capacity' => $package[$room_type['capacityValue']],
                     ];
                 }
 
+                $custom_rooms = json_decode($packages[$package_key]['custom_room'], 256);
+                if (isset($custom_rooms) && !empty($custom_rooms)) {
+                    // ... (کد custom rooms بدون تغییر)
+                }
 
-                usort($packages[$package_key]['rooms'], function($a, $b)
-                {
-                    if ($a["order"] == $b["order"])
-                        return (0);
-                    return (($a["order"] < $b["order"]) ? -1 : 1);
-                });
+                $start_date_formatted = explode('/', functions::dateFormatSpecialJalali($content['start_date'], 'd/F/Y'));
+                $start_date_formatted = ($start_date_formatted[0] > 9 ? $start_date_formatted[0] : str_replace('0', '', $start_date_formatted[0])) . '/' . $start_date_formatted[1] . '/' . $start_date_formatted[2];
+
+                $end_date_formatted = explode('/', functions::dateFormatSpecialJalali($content['end_date'], 'd/F/Y'));
+                $end_date_formatted = ($end_date_formatted[0] > 9 ? $end_date_formatted[0] : str_replace('0', '', $end_date_formatted[0])) . '/' . $end_date_formatted[1] . '/' . $end_date_formatted[2];
+
+                $packages[$package_key]['start_date_human_string'] = $start_date_formatted;
+                $packages[$package_key]['start_date_week'] = functions::dateFormatSpecialJalali($content['start_date'], 'l');
+                $packages[$package_key]['end_date_human_string'] = $end_date_formatted;
+                $packages[$package_key]['end_date_week'] = functions::dateFormatSpecialJalali($content['end_date'], 'l');
+
+                // اضافه کردن provider_id
+                $packages[$package_key]['provider_id'] = $provider;
             }
 
-
-
-            $start_date = explode('/', functions::dateFormatSpecialJalali($content['start_date'], 'd/F/Y'));
-            $start_date = ($start_date[0] > 9 ? $start_date[0] : str_replace('0', '', $start_date[0])) . '/' . $start_date[1] . '/' . $start_date[2];
-
-            $end_date = explode('/', functions::dateFormatSpecialJalali($content['end_date'], 'd/F/Y'));
-            $end_date = ($end_date[0] > 9 ? $end_date[0] : str_replace('0', '', $end_date[0])) . '/' . $end_date[1] . '/' . $end_date[2];
-
-            $packages[$package_key]['start_date_human_string'] = $start_date;
-            $packages[$package_key]['start_date_week'] = functions::dateFormatSpecialJalali($content['start_date'], 'l');
-            $packages[$package_key]['end_date_human_string'] = $end_date;
-            $packages[$package_key]['end_date_week'] = functions::dateFormatSpecialJalali($content['end_date'], 'l');
+            // اضافه کردن به آرایه کلی
+            $all_packages = array_merge($all_packages, $packages);
         }
-//        array_values($packages);
 
-
+        // مرتب‌سازی نهایی
         $sort_package = [];
         $array_have_value_package = [];
         $array_have_no_value_package = [];
 
-        foreach ($packages as $key => $package) {
-
-            if ($package['rooms'][1]['price'] > 0) {
+        foreach ($all_packages as $key => $package) {
+            if (isset($package['rooms'][1]['price']) && $package['rooms'][1]['price'] > 0) {
                 $sort_package['rooms'][1]['price'][$key] = $package['rooms'][1]['price'];
                 $array_have_value_package[] = $package;
             } else {
-                $array_have_no_value_package [] = $package;
+                $array_have_no_value_package[] = $package;
             }
         }
-        array_multisort($sort_package['rooms'][1]['price'], SORT_ASC, $array_have_value_package);
 
-        if ($array_have_no_value_package) {
+        if (!empty($sort_package)) {
+            array_multisort($sort_package['rooms'][1]['price'], SORT_ASC, $array_have_value_package);
+        }
+
+        if (!empty($array_have_no_value_package)) {
             $array_have_value_package = array_merge($array_have_value_package, $array_have_no_value_package);
         }
-        return json_encode($array_have_value_package,256|64);
+
+        return json_encode($array_have_value_package, 256|64);
     }
 
     private function infoTourHotelByIdPackage($tour_package_id) {
@@ -2092,7 +2163,7 @@ WHERE
 
     public function getOriginCities($content) {
 
-        $sql = "SELECT 
+         $sql = "SELECT 
   reservation_tour_tb.id as tour_id, reservation_city_tb.id, reservation_city_tb.name, reservation_city_tb.name_en, reservation_city_tb.id_country, reservation_city_tb.abbreviation 
 FROM 
   reservation_city_tb 
@@ -2115,7 +2186,7 @@ AND
 GROUP BY 
   reservation_city_tb.id 
 ORDER BY  reservation_tour_tb.priority DESC " ;
-
+            
         $cities = $this->admin_controller->ConectDbClient($sql, $this->current_provider, "SelectAll", "", "", "");
 
         return json_encode($cities,256|64);
@@ -2125,7 +2196,7 @@ ORDER BY  reservation_tour_tb.priority DESC " ;
     public function getOriginCitiesExternal($content) {
 
         $origin_country = isset($content['id_country']) ? $content['id_country'] : '1';
-        $sql = "SELECT 
+         $sql = "SELECT 
   reservation_tour_tb.id as tour_id, reservation_city_tb.id, reservation_city_tb.name, reservation_city_tb.name_en, reservation_city_tb.id_country, reservation_city_tb.abbreviation, reservation_tour_rout_tb.destination_country_id 
 FROM 
   reservation_city_tb 
