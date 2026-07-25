@@ -51,10 +51,7 @@
               {{ useXmltag('On') }}
               <span class=" bold counthotel">{{ data_search.name_arrival}}</span>
             </p>
-            <p class="counthotel txt12 mt-2">{{data_search.DateFlightWithName}} </p>
-            <p class="counthotel text-center txt12 dir-ltr" v-if="this.isPersianDate(data_search.departureDate)">{{this.formatDate(data_search.departure_date_en)}} </p>
-            <p class="counthotel text-center text-sm-flight dir-ltr" v-else>{{this.formatDatePersian(data_search.departureDate)}}</p>
-
+            <p class="counthotel txt12">{{data_search.DateFlightWithName}} </p>
             <div class="silence_span ph-item2" v-if="countFlights > 0">{{ countFlights }} {{
               useXmltag('NumberFlightFound')}}
             </div>
@@ -267,37 +264,24 @@
           <div class="s-u-form-block s-u-num-inp s-u-num-inp-change width100 ">
             <div class="s-u-form-date-wrapper">
               <div class="s-u-date-pick">
-                <div class="s-u-jalali s-u-jalali-change calender-overflow-inherit date-picker-internal-flight">
+                <div class="s-u-jalali s-u-jalali-change calender-overflow-inherit">
                   <i class="zmdi zmdi-calendar-note site-main-text-color"></i>
-
                   <template>
-                    <date-picker v-model="date_departure" :inputFormat="!isPersianDate(data_search.departureDate) ? 'YYYY-MM-DD' : format_datepicker"
-                                 :auto-submit="true" :locale="!isPersianDate(data_search.departureDate) ? 'en' : lang_datepicker"
-                                 :from="dateNow('-')"
-                                 mode="single"
+                    <date-picker v-model="date_departure" :inputFormat="format_datepicker"
+                                 :auto-submit="true" :locale="lang_datepicker"
+                                 :from="dateNow('-')"  mode="single"
                                  :column="1"
                                  name="dept_date"
                                  id="dept_date_local" :styles="styles"
                                  :position="'bottom'"
                                  :auto-position="false"
-
                     >
                       <template #icon></template>
                     </date-picker>
-                    <div class="ml-2 flight-date-mildai" v-if="dateGregorianDept">
-
-                      ({{dateGregorianDept }})
-
-
-                    </div>
-
-
                   </template>
-
                 </div>
               </div>
             </div>
-
           </div>
 
 
@@ -305,28 +289,20 @@
                :class="(multi_way) ? 'showHidden' :'hidden'">
             <div class="s-u-form-date-wrapper">
               <div class="s-u-date-pick">
-                <div class="s-u-jalali s-u-jalali-change calender-overflow-inherit date-picker-international-flight ">
+                <div class="s-u-jalali s-u-jalali-change calender-overflow-inherit">
                   <i class="zmdi zmdi-calendar-note site-main-text-color"></i>
-
                   <template>
-                    <date-picker v-model="date_return" :inputFormat="!isPersianDate(data_search.departureDate) ? 'YYYY-MM-DD' : format_datepicker"
+                    <date-picker v-model="date_return" :inputFormat="format_datepicker"
                                  :auto-submit="true"
                                  :column="1"
-                                 mode="single" :locale="!isPersianDate(data_search.departureDate) ? 'en' : lang_datepicker"
+                                 mode="single" :locale="lang_datepicker"
                                  :placeholder="`${useXmltag('Returndate')}`" name="dept_date_return"
                                  id="dept_date_local_return"  :styles="styles"
                                  :position="'bottom'"
                                  :auto-position="false"
                     >
                       <template #icon></template>
-
                     </date-picker>
-                    <div class="ml-2 flight-date-mildai" v-if="dateGregorianReturn">
-                      ({{ dateGregorianReturn }})
-                    </div>
-
-
-
                   </template>
                 </div>
               </div>
@@ -403,18 +379,6 @@
             </button>
           </div>
         </form>
-<!--        <div class="mb-1 px-2 pb-2">-->
-<!--          <div class="border rounded-md p-2" v-if="data_search.departure_date_en || data_search.departure_date">-->
-<!--          <p>{{ useXmltag('Datetravelwent') }}</p>-->
-<!--          <p class="counthotel ">{{this.formatDate(data_search.departure_date_en)}} </p>-->
-<!--            <p class="counthotel text12">({{data_search.DateFlightWithName}})</p>-->
-<!--          </div>-->
-<!--          <div class="border rounded-md p-2 mt-1" v-if="data_search.arrival_date_en || data_search.arrival_date">-->
-<!--            <p>{{ useXmltag('Datewentback') }}</p>-->
-<!--            <p class="counthotel ">{{this.formatDate(data_search.arrival_date_en)}} </p>-->
-<!--            <p class="counthotel text12">({{data_search.DateFlightReturnWithName}})</p>-->
-<!--          </div>-->
-<!--        </div>-->
         <div class="message_error_portal"></div>
       </div>
       <div class="s-u-filter-wrapper s-u-filter-wrapper-fo">
@@ -423,36 +387,26 @@
 
 
           <!-- pricefilter -->
-<!--          <li class="s-u-filter-item" data-group="flight-price">-->
-<!--                           <span class="s-u-filter-title">-->
-<!--                           <i class="zmdi zmdi-money site-main-text-color-drck"></i>  {{ useXmltag('Price') }}</span>-->
-<!--            <div class="s-u-filter-content slider_range_parent ">-->
-<!--              <vue-slider v-model="value_price" :tooltip="'always'"  :min="min_price_props" :max="max_price_props" @change="priceRangeSlider(value_price)">-->
-<!--                <template v-slot:tooltip="{value}">-->
-<!--                  <div class="vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top site-bg-main-color  site-border-main-color">{{ value| formatNumber }}</div>-->
-<!--                </template>-->
-
-<!--                <template v-slot:process="{ start, end, style, index }">-->
-<!--                  <div class="vue-slider-process vue-slider-dot-tooltip-inner site-bg-main-color" :style="[style]">-->
-<!--                    &lt;!&ndash; Can add custom elements here &ndash;&gt;-->
-<!--                  </div>-->
-<!--                </template>-->
-<!--              </vue-slider>-->
-
-<!--            </div>-->
-<!--          </li>-->
           <li class="s-u-filter-item" data-group="flight-price">
                            <span class="s-u-filter-title">
-                           <i class="zmdi zmdi-money site-main-text-color-drck"></i>  {{ useXmltag('Price') + ' (' + useXmltag('Rial') + ')' }}</span>
+                           <i class="zmdi zmdi-money site-main-text-color-drck"></i>  {{ useXmltag('Price') }}</span>
             <div class="s-u-filter-content slider_range_parent ">
-              <div class="text-center d-flex justify-content-between align-items-center m-auto w-100">
-                <span>{{value_price[1] | formatNumber }}</span>
-                <span>-</span>
-                <span>{{value_price[0] | formatNumber }}</span>
-              </div>
-              <vue-slider v-model="value_price" :tooltip="'none'" :min="min_price_props" :max="max_price_props"
+              <vue-slider v-model="value_price" :tooltip="'always'" :min="min_price_props" :max="max_price_props"
                           @change="priceRangeSlider(value_price)">
+                <template v-slot:tooltip="{value}">
+                  <div
+                    class="vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top site-bg-main-color  site-border-main-color">
+                    {{ value| formatNumber }}
+                  </div>
+                </template>
+
+                <template v-slot:process="{ start, end, style, index }">
+                  <div class="vue-slider-process vue-slider-dot-tooltip-inner site-bg-main-color" :style="[style]">
+                    <!-- Can add custom elements here -->
+                  </div>
+                </template>
               </vue-slider>
+
             </div>
           </li>
 
@@ -461,7 +415,7 @@
                  <div class="d-flex align-items-center justify-content-between p-0 w-100">
                     <label for="duplicateFlightSwitch" style="margin:0 !important;">
                        <i class="fa fa-eraser FlightRepetitionCount site-main-text-color-drck" style="font-size:13px !important"></i>
-                       <span class="" style="font-weight:500 !important;font-size:13px">{{ useXmltag('FlightRepetitionShow') }}</span>
+                       <span class="" style="font-weight:500 !important;font-size:13px">{{ useXmltag('FlightRepetition') }}</span>
                     </label>
 
                     <span
@@ -472,7 +426,7 @@
     'site-bg-filter-color',
     'filter-to-check',
     'duplicateFlightSwitch',
-    !duplicateFlight ? 'checked' : ''
+    duplicateFlight ? 'checked' : ''
   ]"                    @click="toggleDuplicateFlights">
     </span>
 
@@ -698,11 +652,8 @@
         multi_way_check: false,
         is_search: false,
         is_arrival_search: false,
-        dateGregorianDept: null,
-        dateGregorianReturn: null,
         format_datepicker: 'jYYYY-jMM-jDD',
         lang_datepicker: 'fa',
-        is_persion_date:false,
         svg_icon_1: `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' version='1.1' x='0' y='0' viewBox='0 0 907.62 907.619' style='enable-background:new 0 0 512 512' xml:space='preserve' class=''><g><g xmlns='http://www.w3.org/2000/svg'><path d='M591.672,907.618c28.995,0,52.5-23.505,52.5-52.5V179.839l42.191,41.688c10.232,10.11,23.567,15.155,36.898,15.155   c13.541,0,27.078-5.207,37.347-15.601c20.379-20.625,20.18-53.865-0.445-74.244L626.892,15.155C617.062,5.442,603.803,0,589.993,0   c-0.104,0-0.211,0-0.314,0.001c-13.923,0.084-27.244,5.694-37.03,15.6l-129.913,131.48c-20.379,20.625-20.18,53.865,0.445,74.244   c20.626,20.381,53.866,20.181,74.245-0.445l41.747-42.25v676.489C539.172,884.113,562.677,907.618,591.672,907.618z'></path><path d='M315.948,0c-28.995,0-52.5,23.505-52.5,52.5v676.489l-41.747-42.25c-20.379-20.625-53.62-20.825-74.245-0.445   c-20.625,20.379-20.825,53.619-0.445,74.244l129.912,131.479c9.787,9.905,23.106,15.518,37.029,15.601   c0.105,0.001,0.21,0.001,0.315,0.001c13.81,0,27.07-5.442,36.899-15.155L484.44,760.78c20.625-20.379,20.824-53.619,0.445-74.244   c-20.379-20.626-53.62-20.825-74.245-0.445l-42.192,41.688V52.5C368.448,23.505,344.943,0,315.948,0z' style=''></path></g></g></svg>`,
         svg_icon_2: `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0' y='0' viewBox='0 0 512 512' style='enable-background:new 0 0 512 512' xml:space='preserve' class=''><g transform='matrix(-1,-1.2246467991473532e-16,1.2246467991473532e-16,-1,512,512)'><g xmlns='http://www.w3.org/2000/svg'><g><path d='M374.108,373.328c-7.829-7.792-20.492-7.762-28.284,0.067L276,443.557V20c0-11.046-8.954-20-20-20    c-11.046,0-20,8.954-20,20v423.558l-69.824-70.164c-7.792-7.829-20.455-7.859-28.284-0.067c-7.83,7.793-7.859,20.456-0.068,28.285    l104,104.504c0.006,0.007,0.013,0.012,0.019,0.018c7.792,7.809,20.496,7.834,28.314,0.001c0.006-0.007,0.013-0.012,0.019-0.018    l104-104.504C381.966,393.785,381.939,381.121,374.108,373.328z' style='' class=''></path></g></g></g></svg>`,
         styles: {
@@ -730,227 +681,6 @@
       }
     },
     methods: {
-
-      isPersianDate(dateStr) {
-
-        const cleanDate = dateStr;
-
-        // 2) تطابق الگوی YYYY-MM-DD
-        const regex = /^(\d{4})-(\d{2})-(\d{2})$/;
-        const match = cleanDate.match(regex);
-        if (!match) return false;
-
-        const year  = parseInt(match[1], 10);
-        const month = parseInt(match[2], 10);
-        const day   = parseInt(match[3], 10);
-
-        // 3) محدوده سال (قابل تنظیم)
-        if (year < 1200 || year > 1600) return false;
-
-        // 4) محدوده ماه
-        if (month < 1 || month > 12) return false;
-
-        // 5) تشخیص دقیق سال کبیسهٔ جلالی (محاسبه نجومی رسمی ایران)
-        const isLeapJalali = (jy) => {
-          // الگوریتم دقیق موسسه ژئوفیزیک
-          const breaks = [
-            -61, 9, 38, 199, 426, 686, 756, 818,
-            1111, 1181, 1210, 1635, 2060, 2097,
-            2192, 2262, 2324, 2394, 2456, 3178
-          ];
-          let bl = breaks.length;
-          let gy = jy + 621;
-          let leapJ = -14;
-          let jp = breaks[0];
-
-          let jm, jump, leap, n, i;
-
-          for (i = 1; i < bl; i++) {
-            jm = breaks[i];
-            jump = jm - jp;
-            if (jy < jm) {
-              leapJ += Math.floor((jy - jp) / 33) * 8 + Math.floor(((jy - jp) % 33) / 4);
-              leap = (jump % 33 === 4 && jump - (jump / 33) * 33 === 4) ? 1 : 0;
-              if ((jump % 33) === 4) leap++;
-              break;
-            }
-            leapJ += Math.floor(jump / 33) * 8 + Math.floor((jump % 33) / 4);
-            jp = jm;
-          }
-          n = jy - jp;
-          leapJ += Math.floor(n / 33) * 8 + Math.floor((n % 33) / 4);
-          if ((n % 33) === 4) leapJ++;
-          const leapG = Math.floor(gy / 4) - Math.floor((gy / 100)) + Math.floor((gy / 400));
-          return ((leapJ + 1) % 33 === 1);
-        };
-
-        const leap = isLeapJalali(year);
-
-        // 6) تعداد روزهای هر ماه
-        const daysInMonth = [
-          31, 31, 31, 31, 31, 31, // فروردین تا شهریور
-          30, 30, 30, 30, 30,     // مهر تا بهمن
-          leap ? 30 : 29          // اسفند
-        ];
-
-        // 7) چک نهایی تعداد روز
-        if (day < 1 || day > daysInMonth[month - 1]) return false;
-
-        return true;
-      },
-      formatDatePersian(gDateStr) {
-        const toJalali = (gy, gm, gd) => {
-          const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
-          let jy = (gy <= 1600) ? 0 : 979;
-          gy -= (gy <= 1600) ? 621 : 1600;
-          const gy2 = (gm > 2) ? (gy + 1) : gy;
-
-          let days = (365 * gy) + Math.floor((gy2 + 3) / 4)
-              - Math.floor((gy2 + 99) / 100)
-              + Math.floor((gy2 + 399) / 400)
-              - 80 + gd + g_d_m[gm - 1];
-
-          jy += 33 * Math.floor(days / 12053);
-          days %= 12053;
-
-          jy += 4 * Math.floor(days / 1461);
-          days %= 1461;
-
-          if (days > 365) {
-            jy += Math.floor((days - 1) / 365);
-            days = (days - 1) % 365;
-          }
-
-          const jm = (days < 186) ? 1 + Math.floor(days / 31)
-              : 7 + Math.floor((days - 186) / 30);
-
-          const jd = 1 + ((days < 186) ? (days % 31)
-              : ((days - 186) % 30));
-
-          return [jy, jm, jd];
-        };
-
-        const daysOfWeek = [
-          "یکشنبه",
-          "دوشنبه",
-          "سه‌شنبه",
-          "چهارشنبه",
-          "پنج‌شنبه",
-          "جمعه",
-          "شنبه"
-        ];
-
-        const months = [
-          "فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور",
-          "مهر","آبان","آذر","دی","بهمن","اسفند"
-        ];
-
-        const englishToPersianDigits = (str) =>
-            str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
-
-        // تبدیل تاریخ میلادی به آبجکت Date
-        const [y, m, d] = gDateStr.split("-").map(Number);
-        const date = new Date(y, m - 1, d);
-
-        const weekday = daysOfWeek[date.getDay()];
-
-        // تبدیل به جلالی
-        const [jy, jm, jd] = toJalali(y, m, d);
-
-        return `${weekday}, ${englishToPersianDigits(jd.toString())} ${months[jm - 1]} ${englishToPersianDigits(jy.toString())}`;
-      },
-      formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = date.toLocaleString('en-US', { month: 'short' });
-    const day = date.getDate();
-    return `${day} ${month} ${year}`;
-  },
-      convertPersianDateToGregorian(persianDateString) {
-        // جدا کردن سال، ماه و روز از تاریخ شمسی
-        const parts = persianDateString.split('-');
-        const persianYear = parseInt(parts[0]);
-        const persianMonth = parseInt(parts[1]);
-        const persianDay = parseInt(parts[2]);
-
-        // تبدیل تاریخ شمسی به میلادی (این قسمت نیاز به پیاده‌سازی دقیق دارد)
-        // این یک پیاده‌سازی ساده است و ممکن است برای همه تاریخ‌ها دقیق نباشد
-        const gregorianDate = new Date(
-            persianYear,
-            persianMonth - 1, // ماه در جاوااسکریپت از 0 شروع می‌شود
-            persianDay
-        );
-
-        return gregorianDate;
-      },
-      convertGregorianToPersian(gDate) {
-        // ورودی مثلاً: "2024-04-10"
-        const [year, month, day] = gDate.split('-').map(Number);
-
-        const date = new Date(year, month - 1, day);
-        const time = date.getTime();
-
-        // تبدیل زمان به شمسی با استفاده از toLocaleDateString
-        const persianString = new Date(time).toLocaleDateString('fa-IR', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        // خروجی فارسی مثل "۱۴۰۳/۰۱/۲۱" → تبدیل به اعداد عربی (1403-01-21)
-        return persianString
-            .replace(/\u0660/g, '0').replace(/\u0661/g, '1').replace(/\u0662/g, '2')
-            .replace(/\u0663/g, '3').replace(/\u0664/g, '4').replace(/\u0665/g, '5')
-            .replace(/\u0666/g, '6').replace(/\u0667/g, '7').replace(/\u0668/g, '8')
-            .replace(/\u0669/g, '9')
-            .replace(/\//g, '-');
-      },
-      detectDateTypeFromDateFlightWithName(dateFlightWithName) {
-        if (!dateFlightWithName) {
-          return false // اگر فیلد خالی بود
-        }
-
-        // لیست نام ماه‌های شمسی
-        const persianMonths = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
-        // لیست نام ماه‌های میلادی
-        const gregorianMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        // لیست نام روزهای هفته میلادی (برای اطمینان بیشتر)
-        const gregorianWeekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        // لیست نام روزهای هفته شمسی (برای اطمینان بیشتر)
-        const persianWeekDays = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
-
-
-        // بررسی وجود نام ماه‌های شمسی
-        for (const month of persianMonths) {
-          if (dateFlightWithName.includes(month)) {
-            return true;
-          }
-        }
-
-        // بررسی وجود نام ماه‌های میلادی
-        for (const month of gregorianMonths) {
-          if (dateFlightWithName.includes(month)) {
-            return false;
-          }
-        }
-
-        // بررسی وجود نام روزهای هفته میلادی (اگر ماه پیدا نشد)
-        for (const day of gregorianWeekDays) {
-          if (dateFlightWithName.includes(day)) {
-            return false;
-          }
-        }
-
-        // بررسی وجود نام روزهای هفته شمسی (اگر ماه پیدا نشد)
-        for (const day of persianWeekDays) {
-          if (dateFlightWithName.includes(day)) {
-            return true;
-          }
-        }
-
-
-        return false;
-      },
        clearArrivalInput() {
           this.title_arrival_city_search = '';
           this.iata_arrival = null;
@@ -1313,7 +1043,10 @@
         this.$emit('filterFlights', value, 'airline')
       },
       seatClassFilterFlight(value) {
+          console.log('🔵 [SIDEBAR] seatClassFilterFlight called with value:', value);
+          console.log('🔵 [SIDEBAR] Current seatClassFilter prop:', this.seatClassFilter);
           this.$emit('filterFlights', value, 'seat_class')
+          console.log('✅ [SIDEBAR] Emitted filterFlights event with value:', value);
       },
       priceRangeSlider(value) {
         this.$emit('filterPriceFlights', value, 'price_sidebar')
@@ -1525,60 +1258,15 @@
         }
       })
 
-
     },
     watch: {
-        date_departure(newVal) {
-
-        if (!newVal) {
-          this.dateGregorianDept = null;
-          return;
-        }
-
-        // تشخیص: آیا میلادی است؟
-
-        if (!this.detectDateTypeFromDateFlightWithName(this.data_search.DateFlightWithName)) {
-
-          // ورودی میلادی است → تبدیل به شمسی
-          this.dateGregorianDept = this.convertGregorianToPersian(newVal);
-        } else {
-          // ورودی شمسی است → تبدیل به میلادی
-          const gregorianDate = this.convertPersianDateToGregorian(newVal);
-          const year = gregorianDate.getFullYear();
-          const month = String(gregorianDate.getMonth() + 1).padStart(2, '0'); // 01, 02, ...
-          const day = String(gregorianDate.getDate()).padStart(2, '0'); // 01, 02, ...
-
-          this.dateGregorianDept = `${year}-${month}-${day}`;
-        }
-
-
-      },
-      date_return(newVal) {
-        if (!newVal) {
-          this.dateGregorianReturn = null;
-          return;
-        }
-
-        if (!this.detectDateTypeFromDateFlightWithName(this.data_search.DateFlightWithName)) {
-          // ورودی میلادی است → تبدیل به شمسی
-          this.dateGregorianReturn = this.convertGregorianToPersian(newVal);
-        } else {
-          // ورودی شمسی است → تبدیل به میلادی
-          const gregorianDate = this.convertPersianDateToGregorian(newVal);
-          const year = gregorianDate.getFullYear();
-          const month = String(gregorianDate.getMonth() + 1).padStart(2, '0'); // 01, 02, ...
-          const day = String(gregorianDate.getDate()).padStart(2, '0'); // 01, 02, ...
-
-          this.dateGregorianReturn = `${year}-${month}-${day}`;
-        }
-
-
-      },
       'dataSearch': {
         handler: function(after, before) {
           if (after) {
             let _this = this
-
+            console.log('🔵 [SIDEBAR-DATASEARCH] dataSearch changed:', this.dataSearch)
+            console.log('🔵 [SIDEBAR-DATASEARCH] Before:', before)
+            console.log('🔵 [SIDEBAR-DATASEARCH] After:', after)
               if (this.dataSearch) {
                 this.data_search = this.dataSearch.dataSearch
 
@@ -1615,7 +1303,6 @@
         },
         deep: true,
         immediate: true,
-
       },
       price() {
         if (this.price) {
@@ -1678,9 +1365,7 @@
 
       }
 
-      console.log('dataaaaa: ' , this.data_search)
     },
-
     computed:{
   /*    date_departure(){
 
@@ -1721,7 +1406,5 @@
    right: auto !important;
    transform: none !important;
 }
-.text-sm-flight{
-  font-size:12px !important;
-}
+
 </style>

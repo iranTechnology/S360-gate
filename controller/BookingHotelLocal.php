@@ -129,14 +129,12 @@ class BookingHotelLocal extends clientAuth
         $this->factor_number = $factorNumber;
 
         $sql = " SELECT * FROM book_hotel_local_tb 
-            WHERE factor_number='{$factorNumber}' AND (status='PreReserve' OR status='bank') GROUP BY factor_number ";
+            WHERE factor_number='{$factorNumber}' AND status='PreReserve' GROUP BY factor_number ";
         $Hotel = $Model->load($sql);
-        $this->hotelInfo = $Hotel;
 
         $this->hotelId = $Hotel['hotel_id'];
         $this->type_application = $Hotel['type_application'];
-
-
+        $this->hotelInfo = $Hotel;
 
 
         #region [api or reservation or externalApi]
@@ -192,7 +190,10 @@ class BookingHotelLocal extends clientAuth
                 if ($objSms) {
                     $sms = " رزرو هتل، شماره رزرو: {$factorNumber} - " . CLIENT_NAME;
                     $cellArray = array(
+                        'fanipor' => '09129409530',
+                        'afraze' => '09916211232',
                         'abasi2' => '09057078341',
+                        'bahrami' => '09351252904',
 
                     );
                     foreach ($cellArray as $cellNumber) {
@@ -309,21 +310,14 @@ class BookingHotelLocal extends clientAuth
                 if ($Hotel['hotel_payments_price']>0 && $Hotel['payment_status']=='') {
                     $data['status'] = 'Requested';
                     $data['payment_status'] = 'prePayment';
-                    $this->hotelInfo['status'] = 'Requested';
-                    $this->hotelInfo['payment_status'] = 'prePayment';
                 }else{
                     $data['status'] = 'BookedSuccessfully';
-                    $this->hotelInfo['status'] = 'BookedSuccessfully';
 //                    $data['payment_status'] = 'fullPayment';
                 }
                 $data['pnr'] = $code;
                 $data['payment_date'] = Date('Y-m-d H:i:s');
                 $data['payment_type'] = 'credit';
                 $data['creation_date_int'] = time();
-                $this->hotelInfo['pnr'] = $code;
-                $this->hotelInfo['payment_date'] = Date('Y-m-d H:i:s');
-                $this->hotelInfo['payment_type'] = 'credit';
-                $this->hotelInfo['creation_date_int'] = time();
 
                 $condition = " factor_number='{$factorNumber}' ";
                 $Model->setTable('book_hotel_local_tb');

@@ -13,7 +13,7 @@
       <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-3">
        <div class="parent-item-footer parent-item-footer-responsive">
         <div class="img-box-footer">
-         <img alt="footer-logo" id="footerLogo" src="project_files/images/logo.png"/>
+         <img alt="footer-logo" src="project_files/images/logo.png"/>
 {*         <div class="text-logo-footer">*}
 {*        <span>*}
 {*         شرکت مسافرتی*}
@@ -176,14 +176,9 @@
          <a href="javascript:">
           <img alt="namad-2" src="project_files/images/certificate3.png"/>
          </a>
-         {if !empty($about.enamad_id) && !empty($about.enamad_code)}
-          <a referrerpolicy="origin" target="_blank"
-             href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
-           <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
-                alt="اینماد"
-                style="cursor:pointer">
+         <a href="javascript:">
+          <img alt="namad-2" src="project_files/images/enamad.png"/>
          </a>
-         {/if}
 {*         <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=643555&Code=OzKoNcBdA3d0Mi6jycMayk83o867uRGX'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=643555&Code=OzKoNcBdA3d0Mi6jycMayk83o867uRGX' alt='' style='cursor:pointer' code='OzKoNcBdA3d0Mi6jycMayk83o867uRGX'></a>*}
 
 {*         <a href="javascript:">*}

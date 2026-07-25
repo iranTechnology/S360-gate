@@ -744,22 +744,4 @@ class ModelBase {
         echo ($this->sqlFormat($this->query));
         die();
     }
-
-    public function beginTransaction()
-    {
-        return $this->_pdo->beginTransaction();
-    }
-
-    public function commit()
-    {
-        return $this->_pdo->commit();
-    }
-
-    public function rollback()
-    {
-        return $this->_pdo->rollBack();
-    }
-    public function getPDO() {
-        return $this->_pdo;
-    }
 }

@@ -8,7 +8,7 @@
 <main>
     {include file="include_files/search-box.tpl"}
     {include file="include_files/hotel-ghods.tpl"}
-    {include file="include_files/news.tpl"}
+    {include file="include_files/news-letters.tpl"}
 {*    {include file="include_files/other.tpl"}*}
     {include file="include_files/about-us.tpl"}
 </main>

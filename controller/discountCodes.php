@@ -68,7 +68,6 @@ class discountCodes extends clientAuth
         $jmkEndDate = dateTimeSetting::jmktime(0, 0, 0, $explodeEndDate[1], $explodeEndDate[2], $explodeEndDate[0]);
 
         $data['title'] = filter_var($param['Title'], FILTER_SANITIZE_STRING);
-        $data['typeDiscount'] = $param['typeDiscount'] ? $param['typeDiscount'] : 'cash';
         $data['amount'] = filter_var($param['Amount'], FILTER_VALIDATE_INT);
         $data['stock'] = (!$isGroup ? filter_var($param['Stock'], FILTER_VALIDATE_INT) : '1');
         $data['startDateInt'] = $jmkStartDate;
@@ -159,10 +158,10 @@ class discountCodes extends clientAuth
                 foreach ($selectedServices as $service) {
                     $check_exist_service = $this->hasThisServiceWithTitle($groupCode, $service);
                     if (!$check_exist_service) {
-                        $dataServices['discountGroupCode'] = $groupCode;
-                        $dataServices['serviceTitle'] = $service;
-                        $dataServices['service_group'] = $this->getServiceDiscountGroupTitle($service);
-                        $this->getModel('discountCodesServicesModel')->insertLocal($dataServices);//discount_codes_services_tb
+                            $dataServices['discountGroupCode'] = $groupCode;
+                            $dataServices['serviceTitle'] = $service;
+                            $dataServices['service_group'] = $this->getServiceDiscountGroupTitle($service);
+                            $this->getModel('discountCodesServicesModel')->insertLocal($dataServices);//discount_codes_services_tb
                     }
 
                 }
@@ -172,7 +171,7 @@ class discountCodes extends clientAuth
                     $check_exist_service = $this->hasThisServiceWithTitle($groupCode, $service_unselect);
 
                     if (!in_array($service_unselect, $selectedServices) && $check_exist_service) {
-                        $this->getModel('discountCodesServicesModel')->delete("discountGroupCode='{$groupCode}' AND serviceTitle='{$service_unselect}'");
+                            $this->getModel('discountCodesServicesModel')->delete("discountGroupCode='{$groupCode}' AND serviceTitle='{$service_unselect}'");
                     }
                 }
 
@@ -277,85 +276,23 @@ class discountCodes extends clientAuth
     public function DiscountCodesUseAdd($discountCode, $memberId, $serviceTitle, $factorNumber) {
         $Model = Load::library('Model');
 
-        $getPendingCode = $this->getModel('discountCodesUsedModel')
-            ->get(['id'], true)
-            ->where('discountCode', $discountCode)
-            ->where('serviceTitle', $serviceTitle)
-            ->where('factorNumber', $factorNumber)
-            ->where('status', 'pending')
-            ->find();
+        $data['discountCode'] = $discountCode;
+        $data['memberId'] = $memberId;
+        $data['serviceTitle'] = $serviceTitle;
+        $data['factorNumber'] = $factorNumber;
+        $data['status'] = 'pending';
+        $data['creationDateInt'] = time();
 
-        if ($getPendingCode) {
-            $data_update['status'] = 'success';
-            $resultUpdate = $this->getModel('discountCodesUsedModel')
-                ->update($data_update,"id='{$getPendingCode['id']}'");
+        $Model->setTable('discount_codes_used_tb');
+        $resultInsert = $Model->insertLocal($data);
 
-            if (isset($resultUpdate) && $resultUpdate) {
-                return 'success';
-            } else {
-                return 'error';
-            }
+        if (isset($resultInsert) && $resultInsert) {
+            return 'success';
         } else {
-            $data['discountCode'] = $discountCode;
-            $data['memberId'] = $memberId;
-            $data['serviceTitle'] = $serviceTitle;
-            $data['factorNumber'] = $factorNumber;
-            $data['status'] = 'success';
-            $data['creationDateInt'] = time();
-
-            $Model->setTable('discount_codes_used_tb');
-            $resultInsert = $Model->insertLocal($data);
-
-            if (isset($resultInsert) && $resultInsert) {
-                return 'success';
-            } else {
-                return 'error';
-            }
+            return 'error';
         }
     }
     #endregion
-
-
-    public function DiscountCodesUseAddPending($discountCode, $memberId, $serviceTitle, $factorNumber) {
-        $Model = Load::library('Model');
-
-        $getPendingCode = $this->getModel('discountCodesUsedModel')
-            ->get(['id'], true)
-            ->where('discountCode', $discountCode)
-            ->where('serviceTitle', $serviceTitle)
-            ->where('factorNumber', $factorNumber)
-            ->where('status', 'pending')
-            ->find();
-
-        if ($getPendingCode) {
-            $data_update['status'] = 'pending';
-            $resultUpdate = $this->getModel('discountCodesUsedModel')
-                ->update($data_update,"id='{$getPendingCode['id']}'");
-
-            if (isset($resultUpdate) && $resultUpdate) {
-                return 'success';
-            } else {
-                return 'error';
-            }
-        } else {
-            $data['discountCode'] = $discountCode;
-            $data['memberId'] = $memberId;
-            $data['serviceTitle'] = $serviceTitle;
-            $data['factorNumber'] = $factorNumber;
-            $data['status'] = 'pending';
-            $data['creationDateInt'] = time();
-
-            $Model->setTable('discount_codes_used_tb');
-            $resultInsert = $Model->insertLocal($data);
-
-            if (isset($resultInsert) && $resultInsert) {
-                return 'success';
-            } else {
-                return 'error';
-            }
-        }
-
-    }
 
     #region DiscountCodesUseConfirm: set discount code use from pending to success by factor number couse it's unique
     public function DiscountCodesUseConfirm($factorNumber) {
@@ -372,7 +309,7 @@ class discountCodes extends clientAuth
     #endregion
 
     #region CheckDiscountCode: check if specified discount code not used by this person
-    public function CheckDiscountCode($discountCode, $memberId, $serviceTitle, $currencyCode = null,$typeApplication = null) {
+    public function CheckDiscountCode($discountCode, $memberId, $serviceTitle, $currencyCode = null) {
         $Model = Load::library('Model');
         $jmkTodayDate = dateTimeSetting::jmktime();
 
@@ -385,7 +322,7 @@ class discountCodes extends clientAuth
             $serviceTitleCondition = " DCS.serviceTitle = '{$serviceTitle}' ";
         }
 
-        $sqlCode = "SELECT DC.id, DC.title, DC.code, DC.amount, DC.typeDiscount, DC.isActive, DC.stock, DC.startDateInt, DC.endDateInt, DC.organizationID, DCS.serviceTitle,
+        $sqlCode = "SELECT DC.id, DC.title, DC.code, DC.amount, DC.isActive, DC.stock, DC.startDateInt, DC.endDateInt, DC.organizationID, DCS.serviceTitle,
                     (SELECT COUNT(id) FROM discount_codes_used_tb WHERE discountCode = '{$discountCode}' AND status = 'success' AND serviceTitle = '{$serviceTitle}') AS used,
                     (SELECT COUNT(id) FROM discount_codes_used_tb WHERE discountCode = '{$discountCode}' AND status = 'success' AND serviceTitle = '{$serviceTitle}' AND memberId = '{$memberId}') AS usedByMember
                     FROM discount_codes_tb AS DC INNER JOIN discount_codes_services_tb AS DCS ON DC.groupCode = DCS.discountGroupCode 
@@ -393,15 +330,9 @@ class discountCodes extends clientAuth
         $resultCode = $Model->load($sqlCode);
 
 
-
         $output = array();
         if (!empty($resultCode) && ($info_member['fk_counter_type_id'] == '5' || ($info_member['fk_counter_type_id'] != '5' && $resultCode['is_allow_counter']))) {
 
-            if($typeApplication != 'reservation' && $resultCode['typeDiscount'] != 'cash'){
-                $output['result_status'] = 'error';
-                $output['result_message'] = 'کد تخفیف مورد نظر نامعتبر است';
-            }
-            else{
             if ($resultCode['isActive'] == 'yes' && $jmkTodayDate >= $resultCode['startDateInt'] && $jmkTodayDate <= $resultCode['endDateInt']) {
 
                 if ($resultCode['usedByMember'] == 0) {
@@ -410,13 +341,12 @@ class discountCodes extends clientAuth
 
                         //change currency of discount code amount if needed
                         $amount = functions::CurrencyCalculate($resultCode['amount'], $currencyCode);
-                            $typeCurrency =  $resultCode['typeDiscount'] === 'cash' ? $amount['TypeCurrency'] : '%';
+
                         $output['result_status'] = 'success';
-                            $output['result_message'] = 'کد تخفیف ' . $resultCode['title'] . ' به میزان ' . functions::numberFormat($amount['AmountCurrency']) . ' ' . $typeCurrency;
+                        $output['result_message'] = 'کد تخفیف ' . $resultCode['title'] . ' به مبلغ ' . functions::numberFormat($amount['AmountCurrency']) . ' ' . $amount['TypeCurrency'];
                         $output['discountCode'] = $resultCode['code'];
                         $output['discountAmount'] = $amount['AmountCurrency'];
                         $output['discountService'] = $resultCode['serviceTitle'];
-                        $output['typeDiscount'] = $resultCode['typeDiscount'];
 
                     } else {
                         $output['result_status'] = 'error';
@@ -432,8 +362,6 @@ class discountCodes extends clientAuth
                 $output['result_status'] = 'error';
                 $output['result_message'] = 'اعتبار کد تخفیف مورد نظر به پایان رسیده است';
             }
-            }
-
 
         } else {
             $output['result_status'] = 'error';
@@ -471,8 +399,7 @@ class discountCodes extends clientAuth
 
     #region reduceAmountViaDiscountCode: reduce given amount via a specified discount code
     public function reduceAmountViaDiscountCode($amount, $factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null) {
-        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode,null);
-
+        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode);
         if ($discountResult['result_status'] == 'success') {
             $addResult = $this->DiscountCodesUseAdd($discountCode, $memberId, $discountResult['discountService'], $factorNumber);
             if ($addResult == 'success') {
@@ -483,16 +410,6 @@ class discountCodes extends clientAuth
         return $amount;
     }
     #endregion
-
-    public function reduceAmountViaDiscountCodePending($factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null) {
-        $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode,null);
-        $addResult = '';
-        if ($discountResult['result_status'] == 'success') {
-            $addResult = $this->DiscountCodesUseAddPending($discountCode, $memberId, $discountResult['discountService'], $factorNumber);
-        }
-
-        return $addResult;
-    }
 
     /**
      * @param $param
@@ -746,7 +663,7 @@ class discountCodes extends clientAuth
 
 
     public function getAllCodeDiscountUsed() {
-        return  $this->getModel('discountCodesUsedModel')->get()->where('status','success')->all();
+       return  $this->getModel('discountCodesUsedModel')->get()->where('status','success')->all();
 
     }
 
@@ -765,24 +682,24 @@ class discountCodes extends clientAuth
     }
 
     public function getDiscountCodeWithPoint($param) {
-        $get_discount_code = $this->getDiscountCodeById($param['id_discount']);
+            $get_discount_code = $this->getDiscountCodeById($param['id_discount']);
 
-        if(!empty($get_discount_code)){
-            $check_exist_point = $this->getController('historyPointClub')->getPointClubMember(Session::getUserId());
-            if($check_exist_point > $get_discount_code['limit_point_club']) {
-                $data_to_discount_Codes['point'] = $get_discount_code['limit_point_club'];
-                $data_to_discount_Codes['discount_code'] = $get_discount_code['code'];
-                $data_to_discount_Codes['factor_number'] = 'CHD'.rand(000,999);
-                $insert_decrease_point = $this->getController('historyPointClub')->decreasePointForConvertToDiscountCode($data_to_discount_Codes);
-                if($insert_decrease_point){
-                    $data_update_discount_code['stock'] = $get_discount_code['stock']-1 ;
-                    $this->getModel('DiscountCodesModel')->update($data_update_discount_code,"id='{$param['id_discount']}'");
-                    return functions::withSuccess($data_to_discount_Codes,200,'دریافت کد تخفیف با موفقیت انجام شد');
+            if(!empty($get_discount_code)){
+                $check_exist_point = $this->getController('historyPointClub')->getPointClubMember(Session::getUserId());
+                if($check_exist_point > $get_discount_code['limit_point_club']) {
+                    $data_to_discount_Codes['point'] = $get_discount_code['limit_point_club'];
+                    $data_to_discount_Codes['discount_code'] = $get_discount_code['code'];
+                    $data_to_discount_Codes['factor_number'] = 'CHD'.rand(000,999);
+                    $insert_decrease_point = $this->getController('historyPointClub')->decreasePointForConvertToDiscountCode($data_to_discount_Codes);
+                    if($insert_decrease_point){
+                        $data_update_discount_code['stock'] = $get_discount_code['stock']-1 ;
+                        $this->getModel('DiscountCodesModel')->update($data_update_discount_code,"id='{$param['id_discount']}'");
+                        return functions::withSuccess($data_to_discount_Codes,200,'دریافت کد تخفیف با موفقیت انجام شد');
+                    }
+                    return functions::withError(null,401,'امتیاز شما به حد کافی نمی باشد');
                 }
-                return functions::withError(null,401,'امتیاز شما به حد کافی نمی باشد');
             }
-        }
-        return functions::withError(null,401,'خطا در دریافت کد تخفیف،لطفا با پشتیبانی تماس حاصل نمایید');
+            return functions::withError(null,401,'خطا در دریافت کد تخفیف،لطفا با پشتیبانی تماس حاصل نمایید');
     }
 
 

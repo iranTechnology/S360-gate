@@ -15,320 +15,59 @@ jQuery.fn.dataTable.Api.register('sum()', function() {
 
 
 
-// function reportContent()
-// {
-//     var $url  = amadeusPath + 'ajax';
-//     var $data = JSON.stringify({
-//         className: 'reportContentClient',
-//         method: 'index',
-//         start_date:$('#date_of').val(),
-//         end_date:$('#to_date').val()
-//     });
-//
-//     var $table =  $('#list-content-table')
-//     var $thead = $table.find('thead')
-//     var $tbody = $table.find('tbody')
-//     var $tfoot = $table.find('tfoot')
-//
-//     var $temp = '';
-//     $('body').append('<div class="mask"><span class="loader"></span></div>')
-//
-//     $tbody.empty()
-//
-//     $.post($url,$data,function(response)
-//     {
-//         console.log(response)
-//
-//         const dataArray = Object.values(response);
-//         dataArray.sort((a, b) => b.CountSuccess - a.CountSuccess);
-//         console.log(dataArray)
-//
-//         var counter = 1;
-//         // متغیرهای جمع کل
-//         var totalNews = 0;
-//         var totalMag = 0;
-//         var totalSpecialPages = 0;
-//         var totalTourInternal = 0;
-//         var totalTourForeigner = 0;
-//         var totalSuccess = 0;
-//
-//         $.each(dataArray,function(index,value)
-//         {
-//             // جمع زدن مقادیر
-//             totalNews += parseInt(value['CountNews']['count']) || 0;
-//             totalMag += parseInt(value['CountMag']['count']) || 0;
-//             totalSpecialPages += parseInt(value['CountSpecialPages']['count']) || 0;
-//             totalTourInternal += parseInt(value['CountTourInternal']['count']) || 0;
-//             totalTourForeigner += parseInt(value['CountTourForeigner']['count']) || 0;
-//             totalSuccess += parseInt(value['CountSuccess']) || 0;
-//
-//             $temp += '<tr>' +
-//                 '<td>'+counter+'</td>' +
-//                 '<td>'+value['ClinetName']+'</td>' +
-//                 '<td>'+value['CountNews']['count']+'</td>' +
-//                 '<td>'+value['CountMag']['count']+'</td>' +
-//                 '<td>'+value['CountSpecialPages']['count']+'</td>' +
-//                 '<td>-</td>' +
-//                 '<td>-</td>' +
-//                 '<td>'+value['CountTourInternal']['count']+'</td>' +
-//                 '<td>'+value['CountTourForeigner']['count']+'</td>' +
-//                 '<td>'+ value['CountSuccess'] +'</td>' +
-//                 '</tr>'
-//
-//             counter++;
-//         })
-//
-//         // ساخت tfoot با جمع کل
-//         var $tfootHtml = '<tfoot style="background-color: #f2f2f2; font-weight: bold;">' +
-//             '<tr>' +
-//             '<td colspan="2">جمع کل</td>' +
-//             '<td>'+ totalNews +'</td>' +
-//             '<td>'+ totalMag +'</td>' +
-//             '<td>'+ totalSpecialPages +'</td>' +
-//             '<td>-</td>' +
-//             '<td>-</td>' +
-//             '<td>'+ totalTourInternal +'</td>' +
-//             '<td>'+ totalTourForeigner +'</td>' +
-//             '<td>'+ totalSuccess +'</td>' +
-//             '</tr>' +
-//             '</tfoot>';
-//
-//         $('body').find('.mask').remove()
-//         $tbody.append($temp);
-//
-//         // حذف tfoot قبلی و اضافه کردن tfoot جدید
-//         $table.find('tfoot').remove();
-//         $table.append($tfootHtml);
-//     })
-// }
-
-
-
-
 function reportContent()
 {
-    var $url  = amadeusPath + 'ajax';
-    var $data = JSON.stringify({
-        className: 'reportContentClient',
-        method: 'index',
-        start_date:$('#date_of').val(),
-        end_date:$('#to_date').val()
-    });
+  var $url  = amadeusPath + 'ajax';
+  var $data = JSON.stringify({
+    className: 'reportContentClient',
+    method: 'index',
+    start_date:$('#date_of').val(),
+    end_date:$('#to_date').val()
+  });
 
-    var $table = $('#list-content-table');
-    var $thead = $table.find('thead');
-    var $tbody = $table.find('tbody');
-    var $tfoot = $table.find('tfoot');
+  var $table =  $('#list-content-table')
+  var $thead = $table.find('thead')
+  var $tbody = $table.find('tbody')
 
-    var $temp = '';
-    $('body').append('<div class="mask"><span class="loader"></span></div>');
 
-    $tbody.empty();
-    $tfoot.remove();
+  var $temp = '';
+  $('body').append('<div class="mask"><span class="loader"></span></div>')
 
-    $.post($url, $data, function(response)
+  $tbody.empty()
+  $.post($url,$data,function(response)
+  {
+    console.log(response)
+
+    const dataArray = Object.values(response);
+    dataArray.sort((a, b) => b.CountSuccess - a.CountSuccess);
+  console.log(dataArray)
+   var counter = 1;
+    $.each(dataArray,function(index,value)
     {
-        console.log(response);
 
-        const dataArray = Object.values(response);
+      $temp += '<tr>' +
+                '<td>'+counter+'</td>' +
+                '<td>'+value['ClinetName']+'</td>' +
+                '<td>'+value['CountNews']['count']+'</td>' +
+                '<td>'+value['CountMag']['count']+'</td>' +
+                '<td>'+value['CountSpecialPages']['count']+'</td>' +
+                '<td>-</td>' +
+                '<td>-</td>' +
+                '<td>'+value['CountTourInternal']['count']+'</td>' +
+                '<td>'+value['CountTourForeigner']['count']+'</td>' +
+                '<td>'+ value['CountSuccess'] +'</td>' +
+               '</tr>'
 
-        // ذخیره داده‌ها در متغیر گلوبال برای استفاده در sort
-        window.reportData = dataArray;
-        window.currentSort = { column: 'CountSuccess', direction: 'desc' };
-
-        // مرتب‌سازی اولیه بر اساس CountSuccess
-        sortAndRenderTable();
-
-        $('body').find('.mask').remove();
-
-        // اضافه کردن event listener برای کلیک روی هدرها
-        setupSortableHeaders();
-    });
-}
-
-// تابع مرتب‌سازی و نمایش جدول
-function sortAndRenderTable()
-{
-    var $tbody = $('#list-content-table tbody');
-    var $tfoot = $('#list-content-table tfoot');
-
-    $tbody.empty();
-    $tfoot.remove();
-
-    // کپی آرایه برای مرتب‌سازی
-    var sortedData = [...window.reportData];
-
-    // مرتب‌سازی بر اساس currentSort
-    var sortCol = window.currentSort.column;
-    var sortDir = window.currentSort.direction;
-
-    sortedData.sort(function(a, b) {
-        var valA, valB;
-
-        // تعیین مقادیر بر اساس ستون
-        switch(sortCol) {
-            case 'ClinetName':
-                valA = a['ClinetName'] || '';
-                valB = b['ClinetName'] || '';
-                return sortDir === 'asc' ?
-                    valA.localeCompare(valB, 'fa') :
-                    valB.localeCompare(valA, 'fa');
-
-            case 'CountNews':
-                valA = parseInt(a['CountNews']?.['count']) || 0;
-                valB = parseInt(b['CountNews']?.['count']) || 0;
-                break;
-
-            case 'CountMag':
-                valA = parseInt(a['CountMag']?.['count']) || 0;
-                valB = parseInt(b['CountMag']?.['count']) || 0;
-                break;
-
-            case 'CountSpecialPages':
-                valA = parseInt(a['CountSpecialPages']?.['count']) || 0;
-                valB = parseInt(b['CountSpecialPages']?.['count']) || 0;
-                break;
-
-            case 'CountTourInternal':
-                valA = parseInt(a['CountTourInternal']?.['count']) || 0;
-                valB = parseInt(b['CountTourInternal']?.['count']) || 0;
-                break;
-
-            case 'CountTourForeigner':
-                valA = parseInt(a['CountTourForeigner']?.['count']) || 0;
-                valB = parseInt(b['CountTourForeigner']?.['count']) || 0;
-                break;
-
-            case 'CountSuccess':
-            default:
-                valA = parseInt(a['CountSuccess']) || 0;
-                valB = parseInt(b['CountSuccess']) || 0;
-                break;
-        }
-
-        return sortDir === 'asc' ? valA - valB : valB - valA;
-    });
-
-    // محاسبه جمع‌ها
-    var totalNews = 0;
-    var totalMag = 0;
-    var totalSpecialPages = 0;
-    var totalTourInternal = 0;
-    var totalTourForeigner = 0;
-    var totalSuccess = 0;
-
-    var counter = 1;
-    var $temp = '';
-
-    $.each(sortedData, function(index, value)
-    {
-        totalNews += parseInt(value['CountNews']?.['count']) || 0;
-        totalMag += parseInt(value['CountMag']?.['count']) || 0;
-        totalSpecialPages += parseInt(value['CountSpecialPages']?.['count']) || 0;
-        totalTourInternal += parseInt(value['CountTourInternal']?.['count']) || 0;
-        totalTourForeigner += parseInt(value['CountTourForeigner']?.['count']) || 0;
-        totalSuccess += parseInt(value['CountSuccess']) || 0;
-
-        $temp += '<tr>' +
-            '<td>'+ counter +'</td>' +
-            '<td>'+ value['ClinetName'] +'</td>' +
-            '<td>'+ (value['CountNews']?.['count'] || 0) +'</td>' +
-            '<td>'+ (value['CountMag']?.['count'] || 0) +'</td>' +
-            '<td>'+ (value['CountSpecialPages']?.['count'] || 0) +'</td>' +
-            '<td>-</td>' +
-            '<td>-</td>' +
-            '<td>'+ (value['CountTourInternal']?.['count'] || 0) +'</td>' +
-            '<td>'+ (value['CountTourForeigner']?.['count'] || 0) +'</td>' +
-            '<td>'+ (value['CountSuccess'] || 0) +'</td>' +
-            '</tr>';
-
-        counter++;
-    });
-
+      counter++;
+    }
+    )
+    $('body').find('.mask').remove()
     $tbody.append($temp);
 
-    // ساخت و اضافه کردن tfoot
-    var $tfootHtml = '<tfoot style="background-color: #f2f2f2; font-weight: bold;">' +
-        '<tr>' +
-        '<td colspan="2">جمع کل</td>' +
-        '<td>'+ totalNews +'</td>' +
-        '<td>'+ totalMag +'</td>' +
-        '<td>'+ totalSpecialPages +'</td>' +
-        '<td>-</td>' +
-        '<td>-</td>' +
-        '<td>'+ totalTourInternal +'</td>' +
-        '<td>'+ totalTourForeigner +'</td>' +
-        '<td>'+ totalSuccess +'</td>' +
-        '</tr>' +
-        '</tfoot>';
+  })
 
-    $('#list-content-table').append($tfootHtml);
 }
 
-// تنظیم هدرهای قابل کلیک
-function setupSortableHeaders()
-{
-    // اضافه کردن کلاس و آیکون به هدرها
-    var sortableColumns = [
-        { index: 2, name: 'CountNews' },
-        { index: 3, name: 'CountMag' },
-        { index: 4, name: 'CountSpecialPages' },
-        { index: 7, name: 'CountTourInternal' },
-        { index: 8, name: 'CountTourForeigner' },
-        { index: 9, name: 'CountSuccess' },
-        { index: 1, name: 'ClinetName' }
-    ];
-
-    var $headers = $('#list-content-table thead th');
-
-    $headers.css('cursor', 'default');
-
-    sortableColumns.forEach(function(col) {
-        $headers.eq(col.index).css('cursor', 'pointer')
-            .addClass('sortable-header')
-            .attr('data-sort', col.name)
-            .off('click')
-            .on('click', function() {
-                var sortColumn = $(this).attr('data-sort');
-
-                // تغییر جهت مرتب‌سازی
-                if (window.currentSort.column === sortColumn) {
-                    window.currentSort.direction =
-                        window.currentSort.direction === 'asc' ? 'desc' : 'asc';
-                } else {
-                    window.currentSort.column = sortColumn;
-                    window.currentSort.direction = 'desc'; // پیش‌فرض نزولی
-                }
-
-                // بروزرسانی آیکون‌ها
-                updateSortIcons();
-
-                // مرتب‌سازی و نمایش
-                sortAndRenderTable();
-            });
-    });
-
-    updateSortIcons();
-}
-
-// بروزرسانی آیکون‌های sort
-function updateSortIcons()
-{
-    $('#list-content-table thead th.sortable-header').each(function() {
-        var $th = $(this);
-        var sortCol = $th.attr('data-sort');
-
-        // حذف آیکون قبلی
-        $th.find('.sort-icon').remove();
-
-        if (sortCol === window.currentSort.column) {
-            var icon = window.currentSort.direction === 'asc' ? ' ▲' : ' ▼';
-            $th.append('<span class="sort-icon">' + icon + '</span>');
-        } else {
-            $th.append('<span class="sort-icon" style="color: #ccc;"> ⇅</span>');
-        }
-    });
-}
 $('body').on('click','#clinet_content',function(e)
 {
   reportContent()
@@ -360,13 +99,6 @@ $('body').on('click','#transactions',function(e){
 
 function reportSales(response)
 {
-    console.log('12. reportSales شروع شد');
-    console.log('13. ورودی reportSales:', typeof response, response);
-    if ($('#list-sales-table').length === 0) {
-        console.error('14. جدول list-sales-table پیدا نشد!');
-        return;
-    }
-    console.log('15. جدول پیدا شد');
   $("#list-sales-table").find('thead').empty()
 
   var $temp = '';
@@ -463,98 +195,31 @@ function reportSales(response)
 
 
 $(document).ready(function() {
-    var OutAjax = '';
+	var OutAjax='';
 
-    function CallAjax() {
-        // نمایش لودینگ
-        // showLoading();
-        // $('body').append('<div class="mask"><span class="loader"></span></div>')
-        $('#list-sales-table thead').empty();
-        $('#list-sales-table tbody').empty();
+	function CallAjax(){
+		let ajax_request = {
+			  url: amadeusPath + 'ajax',
+			  type: 'POST',
+			  dataType: 'text',
 
-        let ajax_request = {
-            url: amadeusPath + 'ajax',
-            type: 'POST',
-            dataType: 'text',
-            data: JSON.stringify({
-                className: 'reportAllSales',
-                method: 'retrieveInformation',
-                start_date: $('#date_of').val(),
-                end_date: $('#to_date').val()
-            }),
-            success: function(response) {
+			  data:  JSON.stringify({
+					  className: 'reportAllSales',
+					  method: 'retrieveInformation',
+					  start_date:$('#date_of').val(),
+					  end_date:$('#to_date').val()
+				}),
+			  success: function(response) {
+           reportSales(response)
+				},
+			error: function(xhr, status, error) {
+				console.log('Error: ' + error) // در صورت بروز خطا، خطا را چاپ کنید
+				console.log('Response: ' + xhr.responseText) // اگر سرور پیامی ارسال کرد، آن را چاپ کنید
+			},
+		};
+		$.ajax(ajax_request)
+	}
 
-                reportSales(response);
-                // مخفی کردن لودینگ بعد از موفقیت
-                reportContent()
-                // hideLoading();
-                // location.reload();
-                // $('body').find('.mask').remove()
-            },
-            error: function(xhr, status, error) {
-                console.log('Error: ' + error);
-                console.log('Response: ' + xhr.responseText);
-                // مخفی کردن لودینگ در صورت خطا
-                hideLoading();
-                // $('body').find('.mask').remove()
-            }
-        };
-        $.ajax(ajax_request);
-    }
-
-    function showLoading() {
-        if ($('#loading-overlay').length === 0) {
-            $('body').append(`
-            <div id="loading-overlay" style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                z-index: 9999;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            ">
-                <div style="
-                    background: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    text-align: center;
-                ">
-                    <div class="spinner"></div>
-                    <p style="margin-top: 10px;">در حال بارگذاری...</p>
-                </div>
-            </div>
-        `);
-
-            $('<style>')
-                .prop('type', 'text/css')
-                .html(`
-                .spinner {
-                    width: 50px;
-                    height: 50px;
-                    border: 4px solid #f3f3f3;
-                    border-top: 4px solid #3498db;
-                    border-radius: 50%;
-                    animation: spin 1s linear infinite;
-                    margin: 0 auto;
-                }
-                
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
-            `)
-                .appendTo('head');
-        } else {
-            $('#loading-overlay').show();
-        }
-    }
-    function hideLoading() {
-        $('#loading-overlay').hide();
-    }
 	CallAjax()
 	/*
   var sales_table = $('#list-sales-table');
@@ -713,6 +378,5 @@ $(document).ready(function() {
 		//$.ajax(ajax_request);
 		CallAjax();
 	});
-
 
 })//end document

@@ -316,6 +316,10 @@ class onlinePayment extends clientAuth {
 //
 //            $cellArray = array(
 //
+//                'bahrami' => '09351252904',
+//                'araste' => '09211559872',
+//                'afraze' => '09916211232',
+//                'fannipor' => '09129409530',
 //                'abasi2' => '09057078341',
 //
 //            );
@@ -358,7 +362,13 @@ class onlinePayment extends clientAuth {
 
 
             $cellArray = array(
+                'afraze' => '09916211232',
                 'abasi2' => '09057078341',
+                'bahrami' => '09351252904',
+                'fanipor' => '09129409530',
+                'araste' => '09211559872',
+
+
             );
             foreach ($cellArray as $cellNumber) {
                 $smsArray = array(

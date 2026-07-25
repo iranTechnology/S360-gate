@@ -11,7 +11,7 @@
             <div class="col-xs-12 cbox-count-passenger-ch adult-number-js">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-6">
-                        <div class="type-of-count-passenger"><h6> ##Adult## </h6> ##OlderThanTwelve##
+                        <div class="type-of-count-passenger"><h6> ##Child## </h6> ##BetweenTwoAndTwelve##
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-6">

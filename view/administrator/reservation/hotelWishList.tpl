@@ -1,5 +1,5 @@
 {load_presentation_object filename="bookhotelshow" assign="objbook"}
-{*{assign var="expiredBook" value=$objbook->checkForExpired()}*}
+{assign var="expiredBook" value=$objbook->checkForExpired()}
 
 {if strpos($expiredBook,'Success') neq false}
     <script type="text/javascript">
@@ -107,204 +107,190 @@
 
                         {assign var="TotalPrice" value="0"}
                         {foreach key=key item=item from=$objbook->hotelWishList()}
-                            {$number = $number + 1}
-                            {assign var="rooms" value=$objbook->InformationOfEachReservation($item.factor_number)}
-                            {$TotalPrice = $TotalPrice + $item.total_price}
+                        {$number = $number + 1}
+                        {assign var="rooms" value=$objbook->InformationOfEachReservation($item.factor_number)}
+                        {$TotalPrice = $TotalPrice + $item.total_price}
 
 
-                            <tr id="del-{$item.id}">
-                                <td>{$number}</td>
-                                <td>{$item.city_name}</td>
-                                <td>{$item.hotel_name}</td>
-                                <td>
-                                    {$objFunctions->showDate('Y-m-d H:i:s',$item.creation_date_int)|replace:' ':'<hr style="margin:3px" />'}
-                                    {*{if $item.payment_date neq ''}
-                                        {$objFunctions->set_date_payment($item.payment_date)|replace:' ':'<hr style="margin:3px" />'}
-                                    {/if}*}
-                                </td>
-                                <td>{$item.start_date}<br>{$item.end_date}<br>{$item.number_night} شب</td>
-                                <td>
-                                    {$item.factor_number}
-                                    <hr style="margin:3px">
-                                    {if $item.type_application eq 'reservation'}هتل رزرواسیون
-                                    {elseif $item.type_application eq 'reservation_app'}هتل رزرواسیون<br>(خرید از اَپلیکیشن)
-                                    {elseif $item.type_application eq 'api' && $item.serviceTitle eq 'PublicLocalHotel'}هتل اشتراکی
-                                    {elseif $item.type_application eq 'api' && $item.serviceTitle eq 'PrivateLocalHotel'}هتل اختصاصی
-                                    {elseif $item.type_application eq 'api_app'}هتل اشتراکی<br>(خرید از اَپلیکیشن)
-                                    {/if}
-                                </td>
-                                <td>
-                                    {if $item.type_discount eq 'percent'}
-                                        {($item.total_price - ($item.total_price * $item.discount_code_amount / 100))|number_format:0:".":","}
-                                        {if !empty($item.discount_code_amount) && $item.discount_code_amount neq 0}
-                                            <br><del>{$item.total_price|number_format:0:".":","}</del>
-                                        {/if}
-                                    {else}
-                                        {($item.total_price - $item.discount_code_amount)|number_format:0:".":","}
-                                        {if !empty($item.discount_code_amount) && $item.discount_code_amount neq 0}
-                                            <br><del>
-                                            {$item.total_price|number_format:0:".":","}
-                                        </del>
-                                        {/if}
-                                    {/if}
-                                </td>
+                        <tr id="del-{$item.id}">
+                            <td>{$number}</td>
+                            <td>{$item.city_name}</td>
+                            <td>{$item.hotel_name}</td>
+                            <td>
+                                {$objFunctions->showDate('Y-m-d H:i:s',$item.creation_date_int)|replace:' ':'<hr style="margin:3px" />'}
+                                {*{if $item.payment_date neq ''}
+                                    {$objFunctions->set_date_payment($item.payment_date)|replace:' ':'<hr style="margin:3px" />'}
+                                {/if}*}
+                            </td>
+                            <td>{$item.start_date}<br>{$item.end_date}<br>{$item.number_night} شب</td>
+                            <td>
+                                {$item.factor_number}
+                                <hr style="margin:3px">
+                                {if $item.type_application eq 'reservation'}هتل رزرواسیون
+                                {elseif $item.type_application eq 'reservation_app'}هتل رزرواسیون<br>(خرید از اَپلیکیشن)
+                                {elseif $item.type_application eq 'api' && $item.serviceTitle eq 'PublicLocalHotel'}هتل اشتراکی
+                                {elseif $item.type_application eq 'api' && $item.serviceTitle eq 'PrivateLocalHotel'}هتل اختصاصی
+                                {elseif $item.type_application eq 'api_app'}هتل اشتراکی<br>(خرید از اَپلیکیشن)
+                                {/if}
+                            </td>
+                            <td>{$item.total_price|number_format:0:".":","}</td>
 
-                                <td>
-                                    <div class="button-box">
-                                        <button type="button" class="btn btn-default btn-outline"
-                                                title="" data-toggle="popover"
-                                                data-placement="top" data-content="{$rooms['room']}"
-                                                data-original-title="اتاق های رزرو شده">{$item.room_count}</button>
-                                    </div>
-                                </td>
+                            <td>
+                                <div class="button-box">
+                                    <button type="button" class="btn btn-default btn-outline"
+                                            title="" data-toggle="popover"
+                                            data-placement="top" data-content="{$rooms['room']}"
+                                            data-original-title="اتاق های رزرو شده">{$item.room_count}</button>
+                                </div>
+                            </td>
 
-                                <td>
-                                    {if $item.member_name neq ''}
-                                        {$item.member_name}
-                                    {else}
-                                        {$item.passenger_leader_room_fullName}
-                                    {/if}
-                                </td>
-                                <td>
-                                    <div class="btn-group m-r-10">
+                            <td>
+                                {if $item.member_name neq ''}
+                                    {$item.member_name}
+                                {else}
+                                    {$item.passenger_leader_room_fullName}
+                                {/if}
+                            </td>
+                            <td>
+                                <div class="btn-group m-r-10">
 
-                                        <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  عملیات <span class="caret"></span></button>
+                                    <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light" type="button">  عملیات <span class="caret"></span></button>
 
-                                        <ul role="menu" class="dropdown-menu animated flipInY">
-                                            <li>
-                                                <div class="pull-left">
-                                                    <div class="pull-left margin-10">
-                                                        <a onclick="ModalShowBookForHotel('{$item.factor_number}');return false" data-toggle="modal" data-target="#ModalPublic">
-                                                            <i style="margin: 5px auto;"  class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye"
+                                    <ul role="menu" class="dropdown-menu animated flipInY">
+                                        <li>
+                                            <div class="pull-left">
+                                                <div class="pull-left margin-10">
+                                                    <a onclick="ModalShowBookForHotel('{$item.factor_number}');return false" data-toggle="modal" data-target="#ModalPublic">
+                                                        <i style="margin: 5px auto;"  class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye"
+                                                           data-toggle="tooltip" data-placement="top" title=""
+                                                           data-original-title="مشاهده خرید"></i>
+                                                    </a>
+                                                </div>
+
+                                                {if $item.type_application eq 'reservation'}
+                                                <div class="pull-left margin-10">
+                                                    <a onclick="sendEmailForHotelBroker('{$item.factor_number}', '{$item.hotel_id}');return false" title="ارسال واچر به کارگزار">
+                                                        <i style="margin: 5px auto;"  class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-reply"
+                                                           data-toggle="tooltip" data-placement="top" title=""
+                                                           data-original-title="ارسال واچر به کارگزار">
+                                                        </i>
+                                                    </a>
+                                                </div>
+                                                {/if}
+
+                                                {if $item.status eq 'OnRequest'}
+                                                <div class="pull-left margin-10">
+                                                    <a onclick="ajaxCheckOfflineStatus('{$item.request_number}');return false" title="بررسی وضعیت">
+                                                        <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c tooltip-warning fa fa-refresh"
+                                                           data-toggle="tooltip" data-placement="top" title=""
+                                                           data-original-title="بررسی وضعیت">
+                                                        </i>
+                                                    </a>
+                                                </div>
+                                                {*<div class="pull-left margin-10">
+                                                    <a onclick="confirmationHotelReservation('{$item.factor_number}', '{$item.type_application}');return false" title="مشاهده اطلاعات خرید" >
+                                                        <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-check"
+                                                           data-toggle="tooltip" data-placement="top" title=""
+                                                           data-original-title="تایید رزرو">
+                                                        </i>
+                                                    </a>
+                                                </div>*}
+
+                                                <div class="pull-left margin-10">
+                                                        <a onclick="newConfirmationHotelReserve('{$item.factor_number}', '{$item.type_application}');return false" title="مشاهده اطلاعات خرید" >
+                                                            <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-check"
                                                                data-toggle="tooltip" data-placement="top" title=""
-                                                               data-original-title="مشاهده خرید"></i>
-                                                        </a>
-                                                    </div>
-
-                                                    {if $item.type_application eq 'reservation'}
-                                                        <div class="pull-left margin-10">
-                                                            <a onclick="sendEmailForHotelBroker('{$item.factor_number}', '{$item.hotel_id}');return false" title="ارسال واچر به کارگزار">
-                                                                <i style="margin: 5px auto;"  class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-reply"
-                                                                   data-toggle="tooltip" data-placement="top" title=""
-                                                                   data-original-title="ارسال واچر به کارگزار">
-                                                                </i>
-                                                            </a>
-                                                        </div>
-                                                    {/if}
-
-                                                    {if $item.status eq 'OnRequest'}
-                                                        <div class="pull-left margin-10">
-                                                            <a onclick="ajaxCheckOfflineStatus('{$item.request_number}');return false" title="بررسی وضعیت">
-                                                                <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c tooltip-warning fa fa-refresh"
-                                                                   data-toggle="tooltip" data-placement="top" title=""
-                                                                   data-original-title="بررسی وضعیت">
-                                                                </i>
-                                                            </a>
-                                                        </div>
-                                                        {*<div class="pull-left margin-10">
-                                                            <a onclick="confirmationHotelReservation('{$item.factor_number}', '{$item.type_application}');return false" title="مشاهده اطلاعات خرید" >
-                                                                <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-check"
-                                                                   data-toggle="tooltip" data-placement="top" title=""
-                                                                   data-original-title="تایید رزرو">
-                                                                </i>
-                                                            </a>
-                                                        </div>*}
-
-                                                        <div class="pull-left margin-10">
-                                                            <a onclick="newConfirmationHotelReserve('{$item.factor_number}', '{$item.type_application}');return false" title="مشاهده اطلاعات خرید" >
-                                                                <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-check"
-                                                                   data-toggle="tooltip" data-placement="top" title=""
-                                                                   data-original-title="تایید رزرو">
-                                                                </i>
-                                                            </a>
-                                                        </div>
-                                                        <div class="pull-left margin-10">
-                                                            <a onclick="cancelHotelReservation('{$item.factor_number}', '{$item.type_application}');return false" title="مشاهده اطلاعات خرید" >
-                                                                <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-danger btn-1c  tooltip-danger fa fa-times "
-                                                                   data-toggle="tooltip" data-placement="top" title=""
-                                                                   data-original-title="لغو درخواست">
-                                                                </i>
-                                                            </a>
-                                                        </div>
-                                                        <div class="pull-left margin-10">
-                                                            <a href="#" data-factor="{$item.factor_number}"  class="admin_checked" title="{if $item.admin_checked == 1}درحال بررسی {else}منتظر تایید{/if}">
-                                                                <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-check-circle "
-                                                                   data-toggle="tooltip" data-placement="top" title="{if $item.admin_checked}درحال بررسی {else}منتظر تایید{/if}">
-                                                                </i>
-                                                            </a>
-                                                        </div>
-                                                    {/if}
-
-                                                    <div class="pull-left margin-10">
-                                                        <a href="{$smarty.const.SERVER_HTTP}{$objbook->ShowAddressClient($smarty.const.CLIENT_ID)}/gds/ehotelReservation&num={$item.factor_number}"
-                                                           target="_blank"
-                                                           title="مشاهده اطلاعات خرید" >
-                                                            <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-print "
-                                                               data-toggle="tooltip" data-placement="top" title=""
-                                                               data-original-title="مشاهده اطلاعات خرید">
+                                                               data-original-title="تایید رزرو">
                                                             </i>
                                                         </a>
                                                     </div>
-
+                                                <div class="pull-left margin-10">
+                                                    <a onclick="cancelHotelReservation('{$item.factor_number}', '{$item.type_application}');return false" title="مشاهده اطلاعات خرید" >
+                                                        <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-danger btn-1c  tooltip-danger fa fa-times "
+                                                           data-toggle="tooltip" data-placement="top" title=""
+                                                           data-original-title="لغو درخواست">
+                                                        </i>
+                                                    </a>
                                                 </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                                <div class="pull-left margin-10">
+                                                        <a href="#" data-factor="{$item.factor_number}"  class="admin_checked" title="{if $item.admin_checked == 1}درحال بررسی {else}منتظر تایید{/if}">
+                                                            <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-check-circle "
+                                                               data-toggle="tooltip" data-placement="top" title="{if $item.admin_checked}درحال بررسی {else}منتظر تایید{/if}">
+                                                            </i>
+                                                        </a>
+                                                </div>
+                                                {/if}
 
-                                    {if $smarty.const.TYPE_ADMIN eq '1'}
-                                        <hr style='margin:3px'>
-                                        {if $item.agency_name neq ''}{$item.agency_name}{else}{$objFunctions->ClientName($item.client_id)}{/if}
-                                    {/if}
+                                                <div class="pull-left margin-10">
+                                                    <a href="{$smarty.const.SERVER_HTTP}{$objbook->ShowAddressClient($smarty.const.CLIENT_ID)}/gds/ehotelReservation&num={$item.factor_number}"
+                                                       target="_blank"
+                                                       title="مشاهده اطلاعات خرید" >
+                                                        <i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-print "
+                                                           data-toggle="tooltip" data-placement="top" title=""
+                                                           data-original-title="مشاهده اطلاعات خرید">
+                                                        </i>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                {if $smarty.const.TYPE_ADMIN eq '1'}
+                                    <hr style='margin:3px'>
+                                    {if $item.agency_name neq ''}{$item.agency_name}{else}{$objFunctions->ClientName($item.client_id)}{/if}
+                                {/if}
 
 
-                                </td>
+                            </td>
 
-                                <td>
-                                    {if $item.status eq 'BookedSuccessfully'}
-                                        <a class="btn btn-success cursor-default" onclick="return false;"> رزرو قطعی</a>
-                                    {elseif $item.status eq 'PreReserve'}
-                                        <a class="btn btn-warning cursor-default" onclick="return false;">پیش رزرو</a>
-                                    {elseif $item.status eq 'bank' && $item.tracking_code_bank eq ''}
-                                        <a class="btn btn-danger cursor-default" onclick="return false;">پرداخت اینترنتی نا موفق</a>
-                                    {elseif $item.status eq 'Cancelled' && $item.admin_checked eq '1'}
-                                        <a class="btn btn-danger cursor-default" onclick="return false;">لغو درخواست</a>
-                                    {elseif $item.status eq 'Cancelled' && $item.admin_checked eq '0'}
-                                        <a class="btn btn-danger cursor-default" onclick="return false;">لغو درخواست به دلیل محدودیت زمانی</a>
-                                    {elseif $item.status eq 'OnRequest'}
-                                        {if $item.admin_checked eq '1'}
-                                            <a class="btn btn-primary cursor-default" onclick="return false;">در حال بررسی</a>
+                            <td>
+                                {if $item.status eq 'BookedSuccessfully'}
+                                    <a class="btn btn-success cursor-default" onclick="return false;"> رزرو قطعی</a>
+                                {elseif $item.status eq 'PreReserve'}
+                                    <a class="btn btn-warning cursor-default" onclick="return false;">پیش رزرو</a>
+                                {elseif $item.status eq 'bank' && $item.tracking_code_bank eq ''}
+                                    <a class="btn btn-danger cursor-default" onclick="return false;">پرداخت اینترنتی نا موفق</a>
+                                {elseif $item.status eq 'Cancelled' && $item.admin_checked eq '1'}
+                                    <a class="btn btn-danger cursor-default" onclick="return false;">لغو درخواست</a>
+                                {elseif $item.status eq 'Cancelled' && $item.admin_checked eq '0'}
+                                    <a class="btn btn-danger cursor-default" onclick="return false;">لغو درخواست به دلیل محدودیت زمانی</a>
+                                {elseif $item.status eq 'OnRequest'}
+                                    {if $item.admin_checked eq '1'}
+                                        <a class="btn btn-primary cursor-default" onclick="return false;">در حال بررسی</a>
                                         {else}
-                                            <a class="btn btn-primary cursor-default" onclick="return false;">منتظر تایید مدیر</a>
-                                        {/if}
+                                        <a class="btn btn-primary cursor-default" onclick="return false;">منتظر تایید مدیر</a>
+                                    {/if}
+                                {else}
+                                    <a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>
+                                {/if}
+
+                                {if $item.type_application eq 'reservation'}
+                                    <hr style="margin:3px">
+
+                                    {if $item.status_confirm_hotel eq 'Ok'}
+                                        تایید شده توسط هتل
+                                    {elseif $item.status_confirm_hotel eq 'No'}
+                                        رد درخواست توسط هتل
+                                    {elseif $item.status_confirm_hotel eq 'Cancel'}
+                                        لغو درخواست توسط هتل
+                                    {elseif $item.status_confirm_hotel eq 'sendMail'}
+                                        ایمیل برای کارگزار هتل ارسال شده. پاسخی از سمت هتل دریافت نشده.
                                     {else}
-                                        <a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>
+                                        ایمیلی برای کارگزار هتل ارسال نشده است.
                                     {/if}
+                                {/if}
 
-                                    {if $item.type_application eq 'reservation'}
-                                        <hr style="margin:3px">
+                            </td>
 
-                                        {if $item.status_confirm_hotel eq 'Ok'}
-                                            تایید شده توسط هتل
-                                        {elseif $item.status_confirm_hotel eq 'No'}
-                                            رد درخواست توسط هتل
-                                        {elseif $item.status_confirm_hotel eq 'Cancel'}
-                                            لغو درخواست توسط هتل
-                                        {elseif $item.status_confirm_hotel eq 'sendMail'}
-                                            ایمیل برای کارگزار هتل ارسال شده. پاسخی از سمت هتل دریافت نشده.
-                                        {else}
-                                            ایمیلی برای کارگزار هتل ارسال نشده است.
-                                        {/if}
-                                    {/if}
+                        </tr>
 
-                                </td>
-
-                            </tr>
-
-                            <tr class="displayN">
-                                <td colspan="11">
-                                    <p id="error-log-response-{$item.factor_number}"></p>
-                                </td>
-                            </tr>
+                        <tr class="displayN">
+                            <td colspan="11">
+                                <p id="error-log-response-{$item.factor_number}"></p>
+                            </td>
+                        </tr>
 
                         {/foreach}
                         </tbody>
@@ -334,12 +320,12 @@
 
 {if $smarty.post.checkBoxAdvanceSearch neq ''}
 {literal}
-    <script type="text/javascript">
-        $('document').ready(function () {
-            $('.showAdvanceSearch').fadeIn();
-            $('#checkBoxAdvanceSearch').attr('checked',true);
-        });
-    </script>
+<script type="text/javascript">
+    $('document').ready(function () {
+        $('.showAdvanceSearch').fadeIn();
+        $('#checkBoxAdvanceSearch').attr('checked',true);
+    });
+</script>
 {/literal}
 {/if}
 <script type="text/javascript" src="assets/JsFiles/bookhotelshow.js"></script>

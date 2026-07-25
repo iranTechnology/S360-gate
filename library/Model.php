@@ -639,6 +639,7 @@ class Model {
 			return $prepared->fetchAll( PDO::FETCH_ASSOC );
 		}
 
+
 		$prepared = $this->_pdo->prepare( $this->query );
 		$prepared->execute();
 		
@@ -1139,24 +1140,4 @@ class Model {
             default: return true;
         }
     }
-
-    public function beginTransaction()
-    {
-        return $this->_pdo->beginTransaction();
-    }
-
-    public function commit()
-    {
-        return $this->_pdo->commit();
-    }
-
-    public function rollback()
-    {
-        return $this->_pdo->rollBack();
-    }
-
-    public function getPDO() {
-        return $this->_pdo;
-    }
-
 }

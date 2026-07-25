@@ -8,9 +8,7 @@
   <div :class="[
   'international-available-item',
   flight.is_private == 'private' ? 'border-is-private' : ''
-]"
-       style="padding:0 !important;"
-  >
+]">
                         <div class="international-available-info">
                             <div class="international-available-item-right-Cell ">
                                 <div class="right_busin_div" v-if="flight.seat_class_en=='business'">
@@ -27,19 +25,9 @@
                                 <out-put-flight :data_search="data_search" :flight="flight" :showOfferFlights="showOfferFlights"></out-put-flight>
 
                             </div>
-                            <price-flight :data_search="data_search" :flight="flight" @open-sidebar="openSidebar" :isProcessingFlightSelection="isProcessingFlightSelection"></price-flight>
-<!--                            <detail-flight  :data_search="data_search" :flight="flight" :showSidebar="showSidebar" :openSidebar='openSidebar' :closeSidebar="closeSidebar"></detail-flight>-->
-                          <detail-flight
-                              ref="detailFlight"
-                              :data_search="data_search"
-                              :flight="flight"
-                              :showSidebarInternal="showSidebarInternal"
-                              :openSidebar="openSidebar"
-                              :closeSidebar="closeSidebar"
-                              :isProcessingFlightSelection="isProcessingFlightSelection"
-                              :flightKey="key_flight"
-                              @update:isProcessingFlightSelection="isProcessingFlightSelection = $event">
-                          </detail-flight>
+                            <price-flight :data_search="data_search" :flight="flight"></price-flight>
+                            <detail-flight :data_search="data_search" :flight="flight"></detail-flight>
+
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -63,31 +51,12 @@
         },
         data() {
             return {
-              showSidebarInternal: false,
-              isProcessingFlightSelection:false,
 
             }
         },
         methods: {
-          openSidebar() {
 
-
-            // اگر در حال پردازش هستیم
-            if (this.isProcessingFlightSelection) {
-              return;
-            }
-
-            this.showSidebarInternal = true;
-          },
-          closeSidebar() {
-            this.showSidebarInternal = false;
-            document.body.style.overflow = '';
-          },
-
-        },
-
-
-
+        }
 
 
     }

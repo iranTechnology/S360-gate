@@ -5,25 +5,11 @@
 {$objPartner->showedit($smarty.const.CLIENT_ID)}
 {$objbook->ticket_sell_in_time()}
 <div class="container-fluid" >
-<div class="row bg-title" style="margin-top:50px !important;">
+<div class="row bg-title" style="margin-top:55px !important;">
 
         <!-- باکس هشدار سمت چپ (عریض تر) -->
-
-    <div class="d-flex gap-5 justify-content-center align-items-center">
-
-        <div class="">
-            <div class="border border-ccc p-3 rounded-md d-flex justify-content-center" style="border-radius: 14px;font-size:13px">
-                <span> میزان اعتبار حساب شما: </span>
-                <p class="text-center m-0 p-0">
-                    {assign var="total_credit" value=$objTransaction->getCredit()}
-                    {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}
-
-                </p>
-
-            </div>
-        </div>
-        <div class="">
-            <div class="border border-ccc p-3 rounded-md" style="border-radius: 14px;font-size:13px">
+        <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 pull-left">
+            <div class="custom-alert">
                 پیامک‌های اطلاع‌رسانی تغییرات رزرو به شماره
                 <a>{$objPartner->list['Mobile']}</a> ارسال می‌شود
             </div>
@@ -31,13 +17,12 @@
 
 
 
-    </div>
         <!-- خانه سمت راست (کوچیک تر) -->
-{*        <div class="col-lg-6 col-md-5 col-sm-5 col-xs-12 pull-right">*}
-{*            <ol class="breadcrumb FloatRight">*}
-{*                <li><a href="http://192.168.1.100/gds/itadmin/admin">خانه</a></li>*}
-{*            </ol>*}
-{*        </div>*}
+        <div class="col-lg-8 col-md-5 col-sm-5 col-xs-12 pull-right">
+            <ol class="breadcrumb FloatRight">
+                <li><a href="http://192.168.1.100/gds/itadmin/admin">خانه</a></li>
+            </ol>
+        </div>
 
     </div>
     {if $smarty.const.TYPE_ADMIN neq '1' && $smarty.const.CLIENT_ID neq '166'  && $smarty.const.memberIdCounterInAdmin eq ''}{*   domain safar360.com  تو پنل آآژنس و کانتر هم دیده نشود*}
@@ -76,10 +61,10 @@
         {include file="view/administrator/reports/wholeSystemSalesInformation.tpl"}<!-- 1404/04/16 -->
     {/if}
     
-    <div class="row white-box mx-1 border border-ccc" style="padding-top: 30px;">
+    <div class="row" style="background: #fafbfc; padding-top: 30px;">
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div class="panel panel-danger">
-                <div class="panel-heading TitleSectionsDashboard" style=" border-radius:14px">
+                <div class="panel-heading TitleSectionsDashboard">
                     <h6 style='font-weight: 500;font-size: 17px; color: #3c3939; '>
                         <i class="fa fa-exclamation-triangle"></i>
                         همکار گرامی به نکات زیر توجه فرمایید
@@ -117,34 +102,34 @@
 
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
             <div class="panel panel-info ">
-{*                <div class="panel-heading TitleSectionsDashboard">*}
-{*                    <h6 style='font-weight: 50;font-size: 17px; color: #3c3939; line-height: 20px;'>*}
+                <div class="panel-heading TitleSectionsDashboard">
+                    <h6 style='font-weight: 50;font-size: 17px; color: #3c3939; line-height: 20px;'>
 
-{*                        میزان اعتبار حساب شما*}
-{*                        <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a></div>*}
-{*                    </h6>*}
-{*                </div>*}
+                        میزان اعتبار حساب شما
+                        <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a></div>
+                    </h6>
+                </div>
                 <div class="panel-wrapper collapse in panel-body-down" aria-expanded="true">
-{*                    <div class="panel-body ">*}
-{*                        <p class="OpacityZero">*}
-{*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
-{*                            {$total_credit|number_format} ریال -{if*}
-{*                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
+                    <div class="panel-body ">
+                        <p class="OpacityZero">
+                            {assign var="total_credit" value=$objTransaction->getCredit()}
+                            {$total_credit|number_format} ریال -{if
+                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}
 
-{*                        </p>*}
-{*                        <p class="text-center FontSize26">*}
-{*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
-{*                            {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
+                        </p>
+                        <p class="text-center FontSize26">
+                            {assign var="total_credit" value=$objTransaction->getCredit()}
+                            {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}
 
-{*                        </p>*}
-{*                        <p class="OpacityZero">*}
-{*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
-{*                            {$total_credit|number_format} ریال -{if*}
-{*                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
+                        </p>
+                        <p class="OpacityZero">
+                            {assign var="total_credit" value=$objTransaction->getCredit()}
+                            {$total_credit|number_format} ریال -{if
+                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}
 
-{*                        </p>*}
-{*                        <p></p>*}
-{*                    </div>*}
+                        </p>
+                        <p></p>
+                    </div>
 
                     <style>
                         .help-download {

@@ -94,94 +94,36 @@ $(document).ready(function () {
         minDate: 'Y/M/D',
         showButtonPanel: !0,
         onSelect: function(dateText){
-            // بستن drawer در موبایل
-            if(window.innerWidth <= 576){
-                setTimeout(()=>{
-                    closeMobileDrawerDatePicker();
-                }, 100);
-            }
-
-            // تنظیم minDate برای تاریخ برگشت
             $(".returnCalendar").datepicker('option', 'minDate', dateText);
-
-            // دریافت وضعیت disabled فیلدها
-            let disabled_arrival_date_internal = $("#arrival_date_internal").prop('disabled');
-            let disabled_arrival_date_international = $("#arrival_date_international").prop('disabled');
+            let disabled_arrival_date_internal = $("#arrival_date_internal").is(":disabled")
+            let disabled_arrival_date_international = $("#arrival_date_international").is(":disabled")
             let attr = $('.switch-input-js').attr('select_type');
 
-            // ========== مدیریت تاریخ برگشت داخلی ==========
-            if(!disabled_arrival_date_internal) {
-                // اگر غیرفعال نیست، فوکوس به فیلد برگشت داخلی
+            if(!disabled_arrival_date_internal && disabled_arrival_date_internal != 'undefided') {
                 setTimeout(function(){
-                    $('#arrival_date_internal').focus();
-                }, 200);
-
-                // در موبایل، drawer تاریخ برگشت را باز کن
-                if(window.innerWidth <= 576){
-                    setTimeout(() => {
-                        setupMobileDrawerElementsDatePicker('ret');
-                        openMobileDrawerDatePicker();
-                    }, 200);
-                }
-            }
-            // اگر disabled است و attr undefined باشد، باکس مسافر را نشان بده
-            else if(disabled_arrival_date_internal && attr === undefined){
-                showPassengerBox();
+                    $('#arrival_date_internal').trigger('click').focus();
+                },200)
+            }if(disabled_arrival_date_internal &&  attr === undefined ){
+                $('.box-of-count-passenger-boxes-js').find('.down-count-passenger').addClass('fa-caret-up')
+                $('.cbox-count-passenger-js').show();
             }
 
-            // ========== مدیریت تاریخ برگشت بین‌المللی ==========
-            if(!disabled_arrival_date_international) {
-                // اگر غیرفعال نیست، فوکوس به فیلد برگشت بین‌المللی
+            if(!disabled_arrival_date_international && disabled_arrival_date_international != 'undefided') {
                 setTimeout(function(){
                     $('#arrival_date_international').trigger('click').focus();
-                }, 200);
+                },200)
+            }else if(disabled_arrival_date_international &&  attr !== undefined){
+                $('.box-of-count-passenger-boxes-js').find('.down-count-passenger').addClass('fa-caret-up')
+                $('.cbox-count-passenger-js').show();
             }
-            // اگر disabled است و attr مقدار دارد، باکس مسافر را نشان بده
-            else if(disabled_arrival_date_international && attr !== undefined){
-                showPassengerBox();
-            }
+
         },
-        beforeShow: function(input, inst) {
-            // اصلاح: بررسی وجود تابع سفارشی
-            if (typeof window.customDatepickerBeforeShow === 'function') {
-                window.customDatepickerBeforeShow(input, true);
-            } else if (typeof e === 'function') {
-                // برای حفظ سازگاری اگر تابع e جایی تعریف شده
-                e(input, true);
-            } else {
-                // رفتار پیش‌فرض - کاری نکن
-                console.log("تابع سفارشی beforeShow تعریف نشده است");
-            }
-
-            const $datepickerContainer = inst.dpDiv;
-
-            // تنظیم z-index به 2000
-            setTimeout(function() {
-                // روش اول: استفاده از setProperty با !important
-                $datepickerContainer.get(0).style.setProperty('z-index', '2000', 'important');
-
-                // روش دوم: مستقیم روی عنصر
-                var dpDiv = document.getElementById('ui-datepicker-div');
-                if(dpDiv) {
-                    dpDiv.style.setProperty('z-index', '2000', 'important');
-                }
-
-            }, 10);            // حذف کلاس‌های قبلی
-            $datepickerContainer.removeClass(function(index, className) {
-                return className.match(/^mobile-datepicker-for-/) ? className : '';
-            });
-
-            // اضافه کردن کلاس‌های مورد نیاز
-            $datepickerContainer.addClass('mobile-datepicker INH_class_Datepicker');
-            console.log('کلاس‌های datepicker اضافه شدند.');
+        beforeShow: function(n) {
+            e(n, !0);
+            $("#ui-datepicker-div").addClass("INH_class_Datepicker")
         }
     });
 
-// تابع کمکی برای نمایش باکس مسافر
-    function showPassengerBox() {
-        $('.box-of-count-passenger-boxes-js').find('.down-count-passenger').addClass('fa-caret-up');
-        $('.cbox-count-passenger-js').show();
-    }
     $('.deptCalendar-en').datepicker({
         regional: '',
         numberOfMonths: numberOfMonthsResponsive,
@@ -223,48 +165,12 @@ $(document).ready(function () {
         minDate: $('.deptCalendar').val(),
         showButtonPanel: !0,
         onSelect: function(dateText){
-            console.log(dateText , 'aaaaaaaaaaa')
-            setTimeout(()=>{
-                closeMobileDrawerDatePicker()
-            },100)
             $('.cbox-count-passenger-js').show();
         },
-        beforeShow: function(input, inst) {
-            // ورودی 'input' و 'inst' را برای دسترسی بهتر اضافه کردم
-            // اطمینان از اینکه تابع e تعریف شده است
-            if (typeof e === 'function') {
-                e(input, !0);
-            } else {
-                console.error("تابع e تعریف نشده است.");
-            }
-
-            const $datepickerContainer = inst.dpDiv; // دسترسی به المنت اصلی تاریخ‌نگار
-
-            // حذف کلاس‌های قبلی که با mobile-datepicker-for- شروع می‌شوند (اگر وجود دارند)
-            $datepickerContainer.removeClass(function(index, className) {
-                if (className.match(/^mobile-datepicker-for-/)) {
-                    return className;
-                }
-            });
-
-            // اضافه کردن کلاس mobile-datepicker
-            $datepickerContainer.addClass('mobile-datepicker');
-            console.log('کلاس mobile-datepicker اضافه شد.');
-            setTimeout(function() {
-                // روش اول: استفاده از setProperty با !important
-                $datepickerContainer.get(0).style.setProperty('z-index', '2000', 'important');
-
-                // روش دوم: مستقیم روی عنصر
-                var dpDiv = document.getElementById('ui-datepicker-div');
-                if(dpDiv) {
-                    dpDiv.style.setProperty('z-index', '2000', 'important');
-                }
-
-            }, 10);
-            // اضافه کردن کلاس INH_class_Datepicker
-            $datepickerContainer.addClass("INH_class_Datepicker");
-            console.log('کلاس INH_class_Datepicker اضافه شد.');
-        }
+        beforeShow: function(n) {
+            e(n, !0);
+            $("#ui-datepicker-div").addClass("INH_class_Datepicker")
+        },
     });
 
     $('.returnCalendar-en').datepicker({
@@ -273,9 +179,6 @@ $(document).ready(function () {
         minDate: $('.deptCalendar-en').val(),
         showButtonPanel: !0,
         onSelect: function(dateText){
-            setTimeout(()=>{
-                closeMobileDrawerDatePicker()
-            },100)
             $('.cbox-count-passenger-js').show();
         },
         beforeShow: function(n) {
@@ -363,40 +266,11 @@ $(document).ready(function () {
         minDate: 'Y/M/D',
         showButtonPanel: !0,
         onSelect: function(dateText){
-            setTimeout(()=>{
-            closeMobileBusDrawerDatePicker();
-            },100)
             $(".shamsiReturnCalendar").datepicker('option', 'minDate', dateText);
         },
-
-        beforeShow: function(input, inst) {
-            // e(n, !0);
+        beforeShow: function(n) {
+            e(n, !0);
             $("#ui-datepicker-div").addClass("INH_class_Datepicker")
-            // ورودی 'input' و 'inst' را برای دسترسی بهتر اضافه کردم
-            // اطمینان از اینکه تابع e تعریف شده است
-            if (typeof e === 'function') {
-                e(input, !0);
-            } else {
-                console.error("تابع e تعریف نشده است.");
-            }
-
-            const $datepickerContainer = inst.dpDiv; // دسترسی به المنت اصلی تاریخ‌نگار
-
-            // حذف کلاس‌های قبلی که با mobile-datepicker-for- شروع می‌شوند (اگر وجود دارند)
-            $datepickerContainer.removeClass(function(index, className) {
-                if (className.match(/^mobile-datepicker-for-/)) {
-                    return className;
-                }
-            });
-
-            // اضافه کردن کلاس mobile-datepicker
-            $datepickerContainer.addClass('mobile-datepicker');
-            console.log('کلاس mobile-datepicker اضافه شد.');
-
-            // اضافه کردن کلاس INH_class_Datepicker
-            $datepickerContainer.addClass("INH_class_Datepicker");
-            console.log('کلاس INH_class_Datepicker اضافه شد.');
-
         }
     });
     $('.shamsiReturnCalendar').datepicker({
@@ -494,15 +368,11 @@ $(document).ready(function () {
         }
     });
 
-
     var datepicker_type= '';
-
-
 
     $('.init-shamsi-datepicker').on('click',function(e){
 
         datepicker_type = $(this).data('type')
-
 
     })
     $('.init-miladi-datepicker').on('click',function(e){
@@ -569,10 +439,6 @@ $(document).ready(function () {
         minDate: 'Y/M/D',
         showButtonPanel: !0,
         onSelect: function(dateText){
-            setTimeout(()=>{
-                closeMobileHotelDrawerDatePicker()
-            },200)
-
             $(".init-shamsi-return-datepicker").datepicker('option', 'minDate', dateText);
             // datepicker_type=$(this).data('type')
             console.log('datepicker_type==>',datepicker_type);
@@ -580,75 +446,19 @@ $(document).ready(function () {
             $(".init-shamsi-return-datepicker[data-type='"+datepicker_type+"']").val('');
             setTimeout(function(){
                 console.log('dddd')
-                if(window.innerWidth <= 576){
-
-
-                    $(`#endDateForHotelLocal`).datepicker().focus();
-                    setupMobileHotelDrawerElementsDatePicker('retu')
-
-                    setTimeout(()=>{
-                          openMobileHotelDrawerDatePicker('retu' , 'internal')
-                        $(`#endDateForHotelLocal`).datepicker().focus();
-                        },200)
-
-
-                        setTimeout(() => {
-                            openMobileHotelDrawerDatePicker()
-                            $("#endDateForExternalHotelInternational").focus();
-                        }, 100);
-
-
-                }else{
-                    $("#endDateForHotelLocal").trigger('click')
-                    $("#endDateForHotelLocal").focus();
-                    $("#endDateForExternalHotelInternational").trigger('click')
-                    $("#endDateForExternalHotelInternational").focus();
-                    $("#endDateForHotelLocal2").trigger('click')
-                    $("#endDateForHotelLocal2").focus();
-                }
-
+                $("#endDateForHotelLocal").trigger('click')
+                $("#endDateForHotelLocal").focus();
+                $("#endDateForExternalHotelInternational").trigger('click')
+                $("#endDateForExternalHotelInternational").focus();
+                $("#endDateForHotelLocal2").trigger('click')
+                $("#endDateForHotelLocal2").focus();
             },500)
         },
-        beforeShow: function(input, inst) { // ورودی 'input' و 'inst' را برای دسترسی بهتر اضافه کردم
-            // اطمینان از اینکه تابع e تعریف شده است
-            if (typeof e === 'function') {
-                e(input, !0);
-            } else {
-                console.error("تابع e تعریف نشده است.");
-            }
-
-            const $datepickerContainer = inst.dpDiv; // دسترسی به المنت اصلی تاریخ‌نگار
-
-            // حذف کلاس‌های قبلی که با mobile-datepicker-for- شروع می‌شوند (اگر وجود دارند)
-            $datepickerContainer.removeClass(function(index, className) {
-                if (className.match(/^mobile-datepicker-for-/)) {
-                    return className;
-                }
-            });
-
-            // اضافه کردن کلاس mobile-datepicker
-            $datepickerContainer.addClass('mobile-datepicker');
-            console.log('کلاس mobile-datepicker اضافه شد.');
-            setTimeout(function() {
-                // روش اول: استفاده از setProperty با !important
-                $datepickerContainer.get(0).style.setProperty('z-index', '2000', 'important');
-
-                // روش دوم: مستقیم روی عنصر
-                var dpDiv = document.getElementById('ui-datepicker-div');
-                if(dpDiv) {
-                    dpDiv.style.setProperty('z-index', '2000', 'important');
-                }
-
-            }, 10);
-            // اضافه کردن کلاس INH_class_Datepicker
-            $datepickerContainer.addClass("INH_class_Datepicker");
-            console.log('کلاس INH_class_Datepicker اضافه شد.');
-
+        beforeShow: function(n) {
+            e(n, !0);
+            $("#ui-datepicker-div").addClass("INH_class_Datepicker")
         }
-    })
-
-
-
+    });
     $('.init-miladi-datepicker').datepicker({
         regional: '',
         numberOfMonths: numberOfMonthsResponsive,
@@ -672,28 +482,13 @@ $(document).ready(function () {
     });
     $('.init-shamsi-return-datepicker').datepicker({
         numberOfMonths: numberOfMonthsResponsive,
-        minDate: $(".check-in-date-js[data-type='"+$(this).data('type')+"']").val(),
+        minDate: $(".check-in-date-js[data-type='"+datepicker_type+"']").val(),
         showRange: true,
         showButtonPanel: !0,
         onSelect: function (dateTextReturn) {
-            closeMobileHotelDrawerDatePicker()
-            console.log('retuen stop==>', $(".check-in-date-js[data-type='"+$(this).data('type')+"']").val())
-            console.log('retuen==>',$(this).data('type'))
-            if(window.innerWidth <= 576){
-                setTimeout(() => {
-                    // closeMobileHotelDrawerDatePicker()
-                //     closeMobileHotelDrawerDatePicker();
-                //     setupMobileHotelDrawerElementsDatePicker('retu')
-                //     openMobileHotelDrawerDatePicker('retu' , 'internal')
-                }, 100);
-
-            }
-
-
-            let shamsi_dept = $(".init-shamsi-datepicker[data-type='"+$(this).data('type')+"']").val();
-
-            console.log('shamsi_dept' , $(this).data('type'))
-
+            console.log('retuen stop==>', $(".check-in-date-js[data-type='"+datepicker_type+"']").val())
+            console.log('retuen==>',datepicker_type)
+            let shamsi_dept = $(".init-shamsi-datepicker[data-type='"+datepicker_type+"']").val();
 
             let dayDiff = convertJalaliToGregorianDatePicker(dateTextReturn,shamsi_dept);
 
@@ -727,41 +522,9 @@ $(document).ready(function () {
             $("."+datepicker_type+"-my-hotels-rooms-js").addClass('active_p');
 
         },
-        beforeShow: function(input, inst) { // ورودی 'input' و 'inst' را برای دسترسی بهتر اضافه کردم
-            // اطمینان از اینکه تابع e تعریف شده است
-            if (typeof e === 'function') {
-                e(input, !0);
-            } else {
-                console.error("تابع e تعریف نشده است.");
-            }
-
-            const $datepickerContainer = inst.dpDiv; // دسترسی به المنت اصلی تاریخ‌نگار
-
-            // حذف کلاس‌های قبلی که با mobile-datepicker-for- شروع می‌شوند (اگر وجود دارند)
-            $datepickerContainer.removeClass(function(index, className) {
-                if (className.match(/^mobile-datepicker-for-/)) {
-                    return className;
-                }
-            });
-
-            // اضافه کردن کلاس mobile-datepicker
-            $datepickerContainer.addClass('mobile-datepicker');
-            console.log('کلاس mobile-datepicker اضافه شد.');
-            setTimeout(function() {
-                // روش اول: استفاده از setProperty با !important
-                $datepickerContainer.get(0).style.setProperty('z-index', '2000', 'important');
-
-                // روش دوم: مستقیم روی عنصر
-                var dpDiv = document.getElementById('ui-datepicker-div');
-                if(dpDiv) {
-                    dpDiv.style.setProperty('z-index', '2000', 'important');
-                }
-
-            }, 10);
-            // اضافه کردن کلاس INH_class_Datepicker
-            $datepickerContainer.addClass("INH_class_Datepicker");
-            console.log('کلاس INH_class_Datepicker اضافه شد.');
-
+        beforeShow: function(n) {
+            e(n, !0);
+            $("#ui-datepicker-div").addClass("INH_class_Datepicker");
         }
     });
     $('.init-miladi-return-datepicker').datepicker({
@@ -1136,8 +899,6 @@ $(document).ready(function () {
 
 
 function convertJalaliToGregorianDatePicker(jDate,elem) {
-    console.log('sssss' , jDate)
-    console.log('ssssseee' , elem)
     var date1 = elem;
     var date2 = jDate;
     var res1 = jalaliToGregorian(date1, '-');
@@ -1156,28 +917,15 @@ function convertJalaliToGregorianDatePicker(jDate,elem) {
     return result;
 }
 
-function jalaliToGregorian(jDate, delimiter) {
-
-    console.log(jDate)
-
-    // اعتبارسنجی ورودی
-    if (!jDate) return '';
-
-    if (typeof delimiter === 'undefined') delimiter = '-';
-
-    try {
-        var dateSplitted = jDate.split(delimiter);
-        if (dateSplitted.length !== 3) return '';
-
-        gD = jalaliObject.jalaliToGregorian(dateSplitted[0], dateSplitted[1], dateSplitted[2]);
-        if (!gD) return '';
-
-        gResult = gD[0] + "-" + gD[1] + "-" + gD[2];
-        return gResult;
-    } catch(e) {
-        console.error('jalaliToGregorian error:', e);
-        return '';
+function jalaliToGregorian(jDate,delimiter){
+    if(typeof delimiter === 'undefided'){
+        delimiter = '-';
     }
+    var dateSplitted = jDate.split(delimiter)
+    gD = jalaliObject.jalaliToGregorian(dateSplitted[0], dateSplitted[1], dateSplitted[2]);
+    gResult = gD[0] + "-" + gD[1] + "-" + gD[2];
+    // // console.log(gResult);
+    return gResult;
 }
 function gregorianToJalali(gy, gm, gd) {
     let g_d_m = [0, 31, ((gy % 4 === 0 && gy % 100 !== 0) || gy % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];

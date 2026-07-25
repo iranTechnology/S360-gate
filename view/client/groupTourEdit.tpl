@@ -109,10 +109,10 @@
                         <span class='d-flex'>
                               <i class="zmdi zmdi-account-box-mail zmdi-hc-fw mart5"></i> ##Defualtinformationtour##
                         </span>
-{*                        {assign var="check_offline" value=$objFunctions->checkClientConfigurationAccess('offline_tour')}*}
-{*                        {assign var="check_online" value=$objFunctions->checkClientConfigurationAccess('online_tour')}*}
+                        {assign var="check_offline" value=$objFunctions->checkClientConfigurationAccess('offline_tour')}
+                        {assign var="check_online" value=$objFunctions->checkClientConfigurationAccess('online_tour')}
 
-{*                        {if $check_offline eq true  && $check_online eq true}*}
+                        {if $check_offline eq true  && $check_online eq true}
                              <div class='d-flex'>
                                 <div class="form-check">
                                   <input class="form-check-input" type="radio" name="is_request" id="isRequest1" {if $infoTour['is_request'] eq '0'}checked{/if} value="false">
@@ -127,11 +127,11 @@
                                   </label>
                                 </div>
                             </div>
-{*                             {elseif $check_offline eq true && $infoTour['is_request'] eq '1'}*}
-{*                                 <input type="hidden"  id="is_request" name="is_request" value="true">*}
-{*                             {else}*}
-{*                                <input type="hidden"  id="is_request" name="is_request" value="false">*}
-{*                             {/if}*}
+                             {elseif $check_offline eq true && $infoTour['is_request'] eq '1'}
+                                 <input type="hidden"  id="is_request" name="is_request" value="true">
+                             {else}
+                                <input type="hidden"  id="is_request" name="is_request" value="false">
+                             {/if}
                     </span>
                     <div class="panel-default-change site-border-main-color">
 
@@ -1218,14 +1218,11 @@
                                                         onchange="listAirlineByDataAttr($(this))">
                                                     <option value="" disabled="disabled">##Selection##</option>
                                                     {foreach $objBasic->SelectAll('reservation_type_of_vehicle_tb') as $typeVehicle}
-                                                        <option value="{$typeVehicle['id']}" {if $rout['type_vehicle_id'] eq $typeVehicle['id']}selected{/if}>
-                                                            {$typeVehicle['name']}
-                                                        </option>
+                                                        <option value="{$typeVehicle['id']}"
+                                                                {if $rout['type_vehicle_id'] eq $typeVehicle['id']}selected{/if}>{$typeVehicle['name']}</option>
                                                     {/foreach}
                                                 </select>
                                             </div>
-
-{*                                                {var_dump($objPublic->listTransportCompaniesNoTag($rout['type_vehicle_id']))}*}
 
                                             <div class="s-u-passenger-item ">
                                                 <label for="airline{$numberRout}"
@@ -1237,24 +1234,8 @@
                                                         data-values="name,id"
                                                         class="select2 change_counter_js">
                                                     <option value="" disabled="disabled">##Selection##</option>
-                                                    {foreach $objPublic->listTransportCompaniesNoTag($rout['type_vehicle_id']) as $Companies}
-                                                        <option value="{$Companies['id']}" {if $rout['airline_id'] eq $Companies['id']}selected{/if}>
-
-                                                            {if !empty($Companies['name_fa'])}
-                                                            {$Companies['name_fa']}
-                                                                {elseif !empty($Companies['name'])}
-                                                                {$Companies['name']}
-                                                            {elseif !empty($Companies['name_en'])}
-                                                                {$Companies['name_en']}
-                                                            {/if}
-
-                                                            {if !empty($Companies['abbreviation'])}
-                                                            ({$Companies['abbreviation']})
-                                                            {/if}
-                                                        </option>
-                                                    {/foreach}
-{*                                                    <option value="{$rout['airline_id']}"*}
-{*                                                            selected>{$rout['airline_name']}</option>*}
+                                                    <option value="{$rout['airline_id']}"
+                                                            selected>{$rout['airline_name']}</option>
                                                 </select>
                                             </div>
 

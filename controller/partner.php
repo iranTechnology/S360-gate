@@ -327,11 +327,5 @@ class partner extends clientAuth
             ->all();
         return $List;
     }
-
-    public function getFavicon(){
-        $res =$this->infoClient(CLIENT_ID);
-        $favicon = 'http://' . $res['Domain'] . '/gds/pic/' . $res['Favicon'];
-        return $favicon;
-    }
 }
 

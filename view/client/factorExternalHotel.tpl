@@ -278,7 +278,7 @@
                                     <span class="input-group-btn">
                                         <input type="hidden" name="priceWithoutDiscountCode"
                                                id="priceWithoutDiscountCode" value="{$amountCurrency.AmountCurrency}"/>
-                                        <button type="button" onclick="setDiscountCode('{$serviceType}', '{$currencyCode}' , {$factorNumber})"
+                                        <button type="button" onclick="setDiscountCode('{$serviceType}', '{$currencyCode}')"
                                                 class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">##Reviewapplycode##  </button>
                                     </span>
                                     </div>

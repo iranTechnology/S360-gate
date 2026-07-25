@@ -36,9 +36,9 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'ShowRoomHotel') {
     }
 
     $resultHotelLocal = Load::controller('resultHotelLocal');
-
-    /** @var resultHotelLocal $resultHotelLocal */
-    $SearchHotelRoom = $resultHotelLocal->getHotelRoomForAjax($param);
+	
+	/** @var resultHotelLocal $resultHotelLocal */
+	$SearchHotelRoom = $resultHotelLocal->getHotelRoomForAjax($param);
     $Room_byHotel    = $resultHotelLocal->getHotelRoomPricesForAjax($param);
 
     $resultShowHotelRoomPrices = '';
@@ -571,7 +571,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == "nextStepReserveHotel") {
 if (isset($_POST['flag']) && $_POST['flag'] == "register_memeberHotel") {
 
     $Local = Load::library('apiHotelLocal');
-    echo  $Local->registerPassengerOnline();
+   echo  $Local->registerPassengerOnline();
 }
 
 if (isset($_POST['flag']) && $_POST['flag'] == 'HotelReserve') {
@@ -732,9 +732,9 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'FillComboRoute') {
 
 }
 if (isset($_POST['flag']) && $_POST['flag'] == 'insert_flyNumber') {
-    $controller = Load::controller('reservationTicket');
-    unset($_POST['flag']);
-    echo $controller->InsertFlyNumber($_POST);
+   $controller = Load::controller('reservationTicket');
+   unset($_POST['flag']);
+   echo $controller->InsertFlyNumber($_POST);
 }
 if (isset($_POST['flag']) && $_POST['flag'] == 'EditFlyNumber') {
 
@@ -826,7 +826,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'EditGallery') {
 
 }
 if (isset($_POST['flag']) && $_POST['flag'] == 'insert_hotelRoom') {
-    /** @var reservationBasicInformation $controller */
+	/** @var reservationBasicInformation $controller */
     $controller = Load::controller('reservationBasicInformation');
     unset($_POST['flag']);
     echo $controller->InsertHotelRoom($_POST);
@@ -929,9 +929,9 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'cancelHotelReservation') {
     echo $Result->cancelHotelReservation($_POST['factor_number'], $_POST['type_application']);
 }
 if (isset($_POST['flag']) && $_POST['flag'] == 'confirmationHotelReservation') {
-
+	
     /** @var reservationHotel $Result */
-    $Result = Load::controller('reservationHotel');
+	$Result = Load::controller('reservationHotel');
     unset($_POST['flag']);
     echo $Result->confirmationHotelReservation($_POST['factor_number'], $_POST['type_application']);
 }
@@ -954,11 +954,11 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'ConfirmHotel') {
     echo $Result->ConfirmHotel($_POST);
 }
 if (isset($_POST['flag']) && $_POST['flag'] == 'checkForConfirmHotel') {
-    //var_dump('checkForConfirmHotel-checkForConfirmHotel-checkForConfirmHotel');
+  //var_dump('checkForConfirmHotel-checkForConfirmHotel-checkForConfirmHotel');
     functions::insertLog('come confirm hotel','Hotels/smsHotel');
 
     /** @var detailHotel $Result */
-    $Result = Load::controller('detailHotel');
+	$Result = Load::controller('detailHotel');
     unset($_POST['flag']);
 
     $resultCheck = $Result->GetDataFromReport($_POST);
@@ -967,20 +967,20 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'checkForConfirmHotel') {
         echo $resultCheck;
     } else {
         $resultCheck = json_decode($resultCheck,true);
-        if($resultCheck['book'] == 'OnRequest'){
-            if($resultCheck['admin_checked'] == 0){
-                echo 'OnRequest';
-                return;
-            }else{
-                echo 'AdminChecking';
-                return;
-            }
-        }elseif($resultCheck['book'] == 'Cancelled'){
-            echo 'Cancelled';
-            return;
-        }elseif($resultCheck['book'] == 'PreReserve'){
-            echo 'PreReserve';
+      if($resultCheck['book'] == 'OnRequest'){
+        if($resultCheck['admin_checked'] == 0){
+          echo 'OnRequest';
+          return;
+        }else{
+          echo 'AdminChecking';
+          return;
         }
+      }elseif($resultCheck['book'] == 'Cancelled'){
+        echo 'Cancelled';
+        return;
+      }elseif($resultCheck['book'] == 'PreReserve'){
+        echo 'PreReserve';
+      }
         echo json_encode($resultCheck);
     }
 
@@ -1092,42 +1092,6 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'searchCityHotelForInternalHotel'
 
     echo $result->searchCityInternalHotel($_POST );
 }
-
-
-if (isset($_POST['flag']) && $_POST['flag'] == 'searchCityHotelForInternalAndExternalHotel') {
-    unset($_POST['flag']);
-
-    $searchHotel = Load::controller('searchHotel');
-    $resultExternal = Load::controller('resultExternalHotel');
-
-    $internalResult = $searchHotel->searchCityInternalHotel($_POST);
-    $externalResult = $resultExternal->searchCity($_POST['inputSearchValue'], $_POST['json']);
-
-    $internalArray = json_decode($internalResult, true);
-    $externalArray = json_decode($externalResult, true);
-
-    // ساختار نهایی
-    $response = [];
-
-    // اضافه کردن نتایج داخلی با همان ساختار قبلی
-    if (is_array($internalArray)) {
-        $response = $internalArray; // ابتدا ساختار داخلی را مبنا قرار بده
-    }
-
-    // اضافه کردن نتایج خارجی به صورت جداگانه
-    if (is_array($externalArray) && !empty($externalArray)) {
-        $response['external'] = $externalArray;
-    }
-
-    // اگر فقط نتایج خارجی وجود دارد و داخلی خالی است
-    if (empty($response) && is_array($externalArray)) {
-        $response = $externalArray;
-    }
-
-//    functions::insertLog(json_encode($response), '000shojaee');
-    echo json_encode($response);
-}
-
 
 if (isset($_POST['flag']) && $_POST['flag'] == 'popularCityForInternalHotel') {
     unset($_POST['flag']);
@@ -1298,6 +1262,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'createPayButton') {
         'typeApplication' => $_POST['typeApplication'],
         'paymentStatus'=>'fullPayment'
     );
+
     if ($_POST['currencyCode'] > 0) {
 
         $paymentPriceCurrency = functions::CurrencyCalculate($_POST['paymentPrice'], $_POST['currencyCode'], $_POST['currencyEquivalent']);
@@ -1438,15 +1403,15 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'getInfoRoomExternalHotel') {
     if (!empty($resultRoom['CancelationRules'])){
         foreach ($resultRoom['CancelationRules'] as $room){
             $result .= '<span>'
-                . '<p>Deadline Date: ' . $room['DeadlineDate'] . '</p>'
-                . '<p>Canx Fee Amount: ' . $room['CanxFeeAmount'] . '</p>'
-                . '<p>Description: ' . $room['Description'] . '</p>'
-                . '</span>';
+                        . '<p>Deadline Date: ' . $room['DeadlineDate'] . '</p>'
+                        . '<p>Canx Fee Amount: ' . $room['CanxFeeAmount'] . '</p>'
+                        . '<p>Description: ' . $room['Description'] . '</p>'
+                    . '</span>';
         }
     } else {
         $result .= '<span style="text-align: center;margin-top: 10px;">'
-            . '<p>اطلاعات کنسلی در دسترس نمیباشد لطفا جهت کسب اطلاعات بیشتر با پشتیبانی تماس حاصل فرمایید</p>'
-            . '</span>';
+                    . '<p>اطلاعات کنسلی در دسترس نمیباشد لطفا جهت کسب اطلاعات بیشتر با پشتیبانی تماس حاصل فرمایید</p>'
+                . '</span>';
     }
     echo $result;
 }
@@ -1476,125 +1441,125 @@ if(isset($_POST['flag']) && $_POST['flag'] == 'searchHotel')
 
 if(isset($_POST['flag']) && $_POST['flag'] == 'detailHotel')
 {
-    unset($_POST['flag']);
+	unset($_POST['flag']);
 
-    $objHotel = Load::controller('detailHotel');
-    echo $objHotel->Detail($_POST);
+	$objHotel = Load::controller('detailHotel');
+	echo $objHotel->Detail($_POST);
 }
 if(isset($_POST['flag']) && $_POST['flag'] == 'directDetailHotel')
 {
 
-    unset($_POST['flag']);
+	unset($_POST['flag']);
 
 
-    $objHotel = Load::controller('detailHotel');
+	$objHotel = Load::controller('detailHotel');
     header( "Content-type: application/json" );
-    echo  functions::clearJsonHiddenCharacters(json_encode($objHotel->DirectDetail($_POST),256|16));
+echo  functions::clearJsonHiddenCharacters(json_encode($objHotel->DirectDetail($_POST),256|16));
 
 }
 if(isset($_POST['flag']) && $_POST['flag'] == 'getPrices')
 {
-    unset($_POST['flag']);
+	unset($_POST['flag']);
     /** @var detailHotel $objHotel */
-    $objHotel = Load::controller('detailHotel');
-    echo $objHotel->getPrices($_POST);
+	$objHotel = Load::controller('detailHotel');
+	echo $objHotel->getPrices($_POST);
 }
 if(isset($_POST['flag']) && $_POST['flag'] == 'getCancellationPolicy')
 {
-    unset($_POST['flag']);
+	unset($_POST['flag']);
     /** @var detailHotel $objHotel */
-    $objHotel = Load::controller('detailHotel');
-    echo $objHotel->getCancellationPolicy($_POST);
+	$objHotel = Load::controller('detailHotel');
+	echo $objHotel->getCancellationPolicy($_POST);
 }
 
 if(isset($_POST['flag']) && $_POST['flag'] == 'searchboxHotels'){
-    Load::autoload('searchboxHotels');
-    $searchboxHotels = new searchboxHotels();
-    echo $searchboxHotels->searchboxHotels($_POST);
+	Load::autoload('searchboxHotels');
+	$searchboxHotels = new searchboxHotels();
+	echo $searchboxHotels->searchboxHotels($_POST);
 }
 
 if (isset($_POST['flag']) && $_POST['flag'] == "nextStepReserveApiHotel") {
 
-    unset($_POST['flag']);
-    $objHotel = Load::controller('apiHotelLocal');
-    $result = $objHotel->NextStepReserveHotel($_POST);
-
-    if (isset($_POST['dataTypeResult']) && $_POST['dataTypeResult'] == 'json'){
-        unset($_POST['dataTypeResult']);
-        $arrayResult = explode(":", $result);
-        $dataJson['message'] = $arrayResult[0];
-        $dataJson['factorNumber'] = trim($arrayResult[1]);
-        echo json_encode($dataJson);
-
-    } else {
-        echo $result;
-    }
+	unset($_POST['flag']);
+	$objHotel = Load::controller('apiHotelLocal');
+	$result = $objHotel->NextStepReserveHotel($_POST);
+	
+	if (isset($_POST['dataTypeResult']) && $_POST['dataTypeResult'] == 'json'){
+		unset($_POST['dataTypeResult']);
+		$arrayResult = explode(":", $result);
+		$dataJson['message'] = $arrayResult[0];
+		$dataJson['factorNumber'] = trim($arrayResult[1]);
+		echo json_encode($dataJson);
+		
+	} else {
+		echo $result;
+	}
 }
 
 if (isset($_POST['flag']) && $_POST['flag'] == "nextStepReserveApiHotelNew") {
 
 
 
-    unset($_POST['flag']);
+	unset($_POST['flag']);
     /** @var detailHotel $objHotel */
     $objHotel = Load::controller('detailHotel');
 
-    $result = $objHotel->insertTemporaryHotel($_POST);
+	$result = $objHotel->insertTemporaryHotel($_POST);
 
-    if (isset($_POST['dataTypeResult']) && $_POST['dataTypeResult'] == 'json'){
-        unset($_POST['dataTypeResult']);
-        $arrayResult = explode(":", $result);
-        $dataJson['message'] = $arrayResult[0];
-        $dataJson['factorNumber'] = trim($arrayResult[1]);
+	if (isset($_POST['dataTypeResult']) && $_POST['dataTypeResult'] == 'json'){
+		unset($_POST['dataTypeResult']);
+		$arrayResult = explode(":", $result);
+		$dataJson['message'] = $arrayResult[0];
+		$dataJson['factorNumber'] = trim($arrayResult[1]);
 
-        echo json_encode($dataJson);
-
-    } else {
-        echo $result;
-    }
+		echo json_encode($dataJson);
+		
+	} else {
+		echo $result;
+	}
 }
 
 
 if (isset($_POST['flag']) && $_POST['flag'] == "register_memeberNewHotel") {
 
-    $objHotel = Load::controller('detailHotel');
-    $objHotel->registerPassengerOnline();
+	$objHotel = Load::controller('detailHotel');
+	$objHotel->registerPassengerOnline();
 }
 
 
 if (isset($_POST['flag']) && $_POST['flag'] == 'HotelReserveNew') {
 
-    unset($_POST['flag']);
-
-    Load::autoload('detailHotel');
-    $controller = new detailHotel();
-    echo $controller->HotelReserveNew($_POST);
-    exit();
+	unset($_POST['flag']);
+	
+	Load::autoload('detailHotel');
+	$controller = new detailHotel();
+	echo $controller->HotelReserveNew($_POST);
+	exit();
 }
 if (isset($_POST['flag']) && $_POST['flag'] == 'GetDataFromReport') {
     functions::insertLog(' GetDataFromReport hotel','Hotels/smsHotel');
-    unset($_POST['flag']);
-
-    Load::autoload('detailHotel');
-    $controller = new detailHotel();
-    echo $controller->GetDataFromReport($_POST);
-    exit();
+	unset($_POST['flag']);
+	
+	Load::autoload('detailHotel');
+	$controller = new detailHotel();
+	echo $controller->GetDataFromReport($_POST);
+	exit();
 }
 
 if(isset($_POST['flag']) && $_POST['flag'] == 'checkOfflineStatus'){
-    unset($_POST['flag']);
-    Load::autoload('detailHotel');
-    $controller = new detailHotel();
-    echo $controller->checkOfflineStatus($_POST['request_number']);
-    exit();
+	unset($_POST['flag']);
+	Load::autoload('detailHotel');
+	$controller = new detailHotel();
+	echo $controller->checkOfflineStatus($_POST['request_number']);
+	exit();
 }
 
 if(isset($_POST['flag']) && $_POST['flag'] == 'admin_checked'){
     unset($_POST['flag']);
-    Load::autoload('detailHotel');
-    $controller = new detailHotel();
-    echo $controller->adminCheckedStatus($_POST);
-    exit();
+	Load::autoload('detailHotel');
+	$controller = new detailHotel();
+	echo $controller->adminCheckedStatus($_POST);
+	exit();
 }
 if(isset($_POST['flag']) && $_POST['flag'] == 'flightExternalRoutesDefault'){
 
@@ -1627,7 +1592,7 @@ if(isset($_POST['flag']) && $_POST['flag'] == 'flightExternalRoutesDefault'){
 
     }
 
-
+    				
 
 
     echo  json_encode($result ) ;

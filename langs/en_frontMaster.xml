@@ -11,7 +11,6 @@
   <EnterHotelName>Enter the name hotel</EnterHotelName>
   <FlightRepetition>Eliminate duplicate flights</FlightRepetition>
   <FlightRepetitionCount>Duplicate flight added to search results</FlightRepetitionCount>
-  <FlightRepetitionShow>show duplicate flights</FlightRepetitionShow>
   <PleaseselectthedesiredpassengerCancel>Please select the passenger whose purchase you want to cancel.</PleaseselectthedesiredpassengerCancel>
   <Namepersion>Name (Farsi only)</Namepersion>
   <Nameenglish>Name</Nameenglish>
@@ -86,7 +85,7 @@
   <Reportbuytour>Tor Report Purchase Reports</Reportbuytour>
   <codeTour>The tour code</codeTour>
   <organizer>organizer</organizer>
-  <lock>preserved</lock>
+
   <Deletetourdates>Delete current tour dates</Deletetourdates>
   <Tourpackagechanges>Tour Package Changes</Tourpackagechanges>
   <ProblemreservationTour>Bug in the tour booking process</ProblemreservationTour>
@@ -151,9 +150,6 @@
   <Yourrequesthascanceledtolackof>Due to the hotel's capacity, your request has been canceled.</Yourrequesthascanceledtolackof>
   <Youcanbookanotherhotel>You can book another hotel.</Youcanbookanotherhotel>
   <Dearguestsuccessfullyregisteredbooking>Dear guest, Your hotel request has been successfully registered. You will be notified at least 10 minutes later. </Dearguestsuccessfullyregisteredbooking>
-  <Dearguestsuccessfullyregisteredbookingreservation>
-    Dear user, your hotel request has been successfully registered in the system. If your request is approved, you will be notified via SMS.
-  </Dearguestsuccessfullyregisteredbookingreservation>
   <HotelMoreDetailWithFactorNumber>You can enter the latest booking status by entering the invoice number in the purchase tracking section, and if the booking is confirmed, you can complete your purchase.</HotelMoreDetailWithFactorNumber>
   <Usehotelshoppingpaymentbooking>Use the hotel shopping follow link to complete the purchase and payment of the booking. </Usehotelshoppingpaymentbooking>
   <Arrivaldatehotel>Hotel Arrival date</Arrivaldatehotel>
@@ -335,12 +331,9 @@
   <Wentflight>Flight</Wentflight>
   <Returnflight>Return Flight</Returnflight>
   <Selectionflight>Book</Selectionflight>
-  <SelectionAndDetailflight>flight detail and buy</SelectionAndDetailflight>
-
   <Numflight>Flight Number</Numflight>
   <Informationflight>Flight Information</Informationflight>
   <Flight>Flight</Flight>
-  <ExclusiveTour>Flight</ExclusiveTour>
   <Flightlength>Flight Length</Flightlength>
   <Flighttime>duration</Flighttime>
   <FlightNumber>Flight Number</FlightNumber>
@@ -532,8 +525,6 @@
   <Cancelbecauseperson>Consell because of personal</Cancelbecauseperson>
   <Delaymorethantwohours>Delay more than 2 hours</Delaymorethantwohours>
   <specialoffer>Special Offer</specialoffer>
-  <specialoffer2>Offer</specialoffer2>
-
   <TravelerGuard>Traveler Guard</TravelerGuard>
   <Typepassenger>Passenger Type</Typepassenger>
   <Membershipnumber>Membership Number</Membershipnumber>
@@ -797,8 +788,6 @@
   <Startprice>Starting price from</Startprice>
   <Car>Vehicle</Car>
   <Baseprice>price</Baseprice>
-  <Price>price</Price>
-
   <BaseStartTime>time</BaseStartTime>
   <PriceLTM>Low to High</PriceLTM>
   <PriceMTL>Price from high to low</PriceMTL>
@@ -831,7 +820,6 @@
   <Type>Type</Type>
   <Graphicdesignpurchaseconstraint>A graphic design has been set for your purchase restrictions.</Graphicdesignpurchaseconstraint>
   <Sendinformation>Send Information</Sendinformation>
-  <CancelRequestByPassenger>I’m cancelling it</CancelRequestByPassenger>
   <BecauseOf>because</BecauseOf>
   <EidToEid>Eid to Eid</EidToEid>
   <WorldCup>World Cup</WorldCup>
@@ -848,7 +836,6 @@
   <Sale>Sale</Sale>
   <PnrCode>Number pnr</PnrCode>
   <CharterType>Charter</CharterType>
-  <Charter>Charter</Charter>
   <BusinessType>Business</BusinessType>
   <SystemType>Schedule</SystemType>
   <EconomicsType>Economics</EconomicsType>
@@ -1485,7 +1472,6 @@
   <Choosereasonfortheconsole>Choose the consellation reason ...</Choosereasonfortheconsole>
   <Canselforpersonalreasons>Console for personal reasons</Canselforpersonalreasons>
   <AbandonedbyAirline>Cancellation by Airline</AbandonedbyAirline>
-  <missedFlight>I missed my flight - No Show</missedFlight>
   <delayTrain>Delays in train</delayTrain>
   <Idonotcareaboutthepercentagepenaltypleasebesurecancel>
     Canceled regardless of the penalty percentage
@@ -1517,7 +1503,6 @@
   <CompletePayment>To complete the process, please click on the Payment option</CompletePayment>
   <MessagePaymentByCreditUser>The amount of payment after credit is calculated @@creditPayment@@ Rials, please select a bank account to pay your account balance</MessagePaymentByCreditUser>
   <ZeroCredit>Unfortunately, your credit is 0 Rials.</ZeroCredit>
-  <notEnoughCredit>Insufficient credit to pay the loan</notEnoughCredit>
   <AccessDenied>You do not have access to this section</AccessDenied>
   <AwardDiscountCode>Congratulations; you received our discount code @@CodeDiscount@@ from @@title@@</AwardDiscountCode>
   <SendEmailForOther>If you wish to send a booking to someone else, enter the email of the person in the box below and click on the submit button</SendEmailForOther>
@@ -1715,9 +1700,6 @@
   <OsafarPegasusTicketsOnlineBooking>Pegasus Ticket Booking Online</OsafarPegasusTicketsOnlineBooking>
   <OsafarDashboard>Dashboard</OsafarDashboard>
   <OsafarRefund>Refund</OsafarRefund>
-  <OsafarRefundother>Refund for other passengers</OsafarRefundother>
-  <OsafarRefundPending>Refund Pending</OsafarRefundPending>
-  <OsafarRefundClosed>Your refund is closed</OsafarRefundClosed>
   <OsafarEnterClub>Entering the Travel Club</OsafarEnterClub>
   <OsafarEmeraldGettingGuide>Emerald Getting Guide</OsafarEmeraldGettingGuide>
   <OsafarWelcomeUserName>Dear friend @@ getNameUser @@ welcome</OsafarWelcomeUserName>
@@ -2004,7 +1986,7 @@
   <EkhtiarRial>Rial</EkhtiarRial>
   <EkhtiarUserLogin>Login</EkhtiarUserLogin>
   <EkhtiarUserRegister>Register</EkhtiarUserRegister>
-  <GoharFlight>Flight</GoharFlight>
+  <GoharFlight> </GoharFlight>
   <GoharTours>Tours</GoharTours>
   <GoharLocalTours>Local Tours</GoharLocalTours>
   <GoharLocalLastSeen>Take a look Tour</GoharLocalLastSeen>
@@ -2451,8 +2433,6 @@
   <ViewMore>View more</ViewMore>
   <RelatedArticles>Related articles</RelatedArticles>
   <OfTotal>of total</OfTotal>
-  <processingPrintFlight>Processing</processingPrintFlight>
-  <pendingPrintFlight>Pending issuance</pendingPrintFlight>
   <CustomRequiredAssets>Required attachment files</CustomRequiredAssets>
   <AreYouSureWantChangeTourRoutes>Are you sure about editing the tour destinations?</AreYouSureWantChangeTourRoutes>
   <ByUpdateTourRoutesYouNeedToCreateNewPackage>Note: After editing the destination, the previous package is deleted, and you must define a new package.</ByUpdateTourRoutesYouNeedToCreateNewPackage>
@@ -2753,7 +2733,6 @@
   <enterYourOpinion>Enter your opinion</enterYourOpinion>
   <DearagencyServices>Dear colleague, fill out the following form and send it to get ticket sales agent, tour, hotel and tourism services of @@agency@@ tour.</DearagencyServices>
   <YourTrackingCode>Your tracking code </YourTrackingCode>
-  <TrackingCodeEnd>Tracking Code</TrackingCodeEnd>
   <YourRequestHasBeenSuccessfullyRegistered>Your request has been successfully registered</YourRequestHasBeenSuccessfullyRegistered>
   <FlightFrom>flights from</FlightFrom>
   <To>to</To>
@@ -3047,14 +3026,6 @@
   <Instagram>Instagram</Instagram>
   <Whatsapp>Whatsapp</Whatsapp>
   <Youtube>Youtube</Youtube>
-  <Aparat>Aparat</Aparat>
-  <Facebook>Facebook</Facebook>
-  <Linkedin>Linkedin</Linkedin>
-  <Twitter>Twitter</Twitter>
-  <Bale>Bale</Bale>
-  <Eita>Eita</Eita>
-  <Rubika>Rubika</Rubika>
-  <Pinterest>Pinterest</Pinterest>
   <Enterthetext>Enter the text of your message in this section...</Enterthetext>
   <Mylocation>Location on the map</Mylocation>
   <dateType>Date search type</dateType>
@@ -3234,113 +3205,4 @@
   <errorPaymentFlightMessage>The payment process has encountered a problem. If the amount is not deducted from your credit or account, try again</errorPaymentFlightMessage>
   <pendingFlight>Awaiting issuance</pendingFlight>
   <upperThanTwoHundredAndFifty>The credit increase cannot exceed 2,500,000,000 Rials</upperThanTwoHundredAndFifty>
-  <NameCip>Name Service</NameCip>
-  <moreImage>more images</moreImage>
-
-  <!--  panel admin  (en ar fa) -->
-  <PA_HOME>home</PA_HOME>
-  <PA_Ab_TITLE>About Us</PA_Ab_TITLE>
-  <PA_Ab_LANG>Language</PA_Ab_LANG>
-  <PA_Ab_SUBJECT>Subject</PA_Ab_SUBJECT>
-  <PA_Ab_BANNER>Banner Image</PA_Ab_BANNER>
-  <PA_Ab_VIDEOLINK>Video Link</PA_Ab_VIDEOLINK>
-  <PA_Ab_COMMENTVIDEOLINK>Place only the video link here.</PA_Ab_COMMENTVIDEOLINK>
-  <PA_Ab_SOIALMEDIA>Social Media</PA_Ab_SOIALMEDIA>
-  <PA_Ab_CLUB>Your Customer Club Title</PA_Ab_CLUB>
-  <PA_Ab_AboutCUSTOMER>About Your Customer Club</PA_Ab_AboutCUSTOMER>
-  <PA_Ab_DELIMG>Delete Image</PA_Ab_DELIMG>
-  <PA_Ab_SUBMIT>Update</PA_Ab_SUBMIT>
-  <PA_AB_UPDATEDMSG>About us information edited</PA_AB_UPDATEDMSG>
-  <PA_AB_NOCHANGE>No changes made</PA_AB_NOCHANGE>
-  <PA_AB_UPDATEDMSG>Your “About Us” information was updated</PA_AB_UPDATEDMSG>
-  <PA_AB_NOCHANGE>but you haven’t made any changes!</PA_AB_NOCHANGE>
-
-  <PA_CO_LIST>Contact List</PA_CO_LIST>
-  <PA_CO_LISTTITLE>In the list below, you can view all your contacts.</PA_CO_LISTTITLE>
-  <PA_CO_RESULTTABLE>Show _MENU_ entries</PA_CO_RESULTTABLE>
-<PA_CO_RESULTTABLE2>Show</PA_CO_RESULTTABLE2>
-  <PA_CO_REQUESTDETAIL>Request Details</PA_CO_REQUESTDETAIL>
-  <PA_CO_STATUSNOTSEEN> Not Reviewed</PA_CO_STATUSNOTSEEN>
-  <PA_CO_STATUSSEEN>Viewed</PA_CO_STATUSSEEN>
-  <PA_CO_STATUSACCEPT>Accepted</PA_CO_STATUSACCEPT>
-  <PA_CO_STATUSREJECT>Rejected</PA_CO_STATUSREJECT>
-  <PA_CO_DT_INFO>Showing _START_ to _END_ of _TOTAL_ entries</PA_CO_DT_INFO>
-  <PA_CO_DT_PREVIOUS>Previous</PA_CO_DT_PREVIOUS>
-  <PA_CO_DT_NEXT>Next</PA_CO_DT_NEXT>
-  <PA_CO_PAGEEDIT>Contact Us Request List</PA_CO_PAGEEDIT>
-  <PA_CO_TITLEDETAIL>View all submitted information in this section</PA_CO_TITLEDETAIL>
-  <PA_CO_ADMINRESULT>Admin Review Result</PA_CO_ADMINRESULT>
-  <PA_CO_REQUESTDATE>Request Registration Date</PA_CO_REQUESTDATE>
-  <PA_CO_ADMINNOTE>Admin Note</PA_CO_ADMINNOTE>
-  <PA_CO_REQUESTTEXT>Request Text</PA_CO_REQUESTTEXT>
-
-  <PA_BUY_LIST>Purchase Report</PA_BUY_LIST>
-  <PA_BUY_HISTORY>Purchase History</PA_BUY_HISTORY>
-  <PA_COM_BUY_HISTORY>You can view all purchase records in this list</PA_COM_BUY_HISTORY>
-  <PA_BUY_DATES>Start Date (Purchase)</PA_BUY_DATES>
-  <PA_BUY_DATEE>End Date (Purchase)</PA_BUY_DATEE>
-  <PA_BUY_DATERS>Start Date (Reservation)</PA_BUY_DATERS>
-  <PA_BUY_DATERE>End Date (Reservation)</PA_BUY_DATERE>
-  <PA_BUY_PNR>Enter PNR</PA_BUY_PNR>
-  <PA_BUY_REQUEST>Enter Tracking Code (Starts with 14)</PA_BUY_REQUEST>
-  <PA_BUY_NUMBERFLIGHT>Flight Number (Including Flight Date)</PA_BUY_NUMBERFLIGHT>
-  <PA_BUY_NationalCode>Enter Passenger National ID</PA_BUY_NationalCode>
-  <PA_BUY_DATEFLIGHT>Enter Search Flight Date</PA_BUY_DATEFLIGHT>
-  <PA_BUY_BUTFILTER>Apply Filter</PA_BUY_BUTFILTER>
-  <PA_BUY_DownloadExcelFile>Download Excel File</PA_BUY_DownloadExcelFile>
-  <PA_BUY_Pid>PID</PA_BUY_Pid>
-  <PA_BUY_USER>User</PA_BUY_USER>
-  <PA_BUY_Provider>Purchase from provider</PA_BUY_Provider>
-  <PA_BUY_Commission>Commission</PA_BUY_Commission>
-  <PA_BUY_CommissionProvider>Provider commission</PA_BUY_CommissionProvider>
-  <PA_BUY_Yourprofit>Your profit</PA_BUY_Yourprofit>
-  <PA_BUYFrom>Purchase from</PA_BUYFrom>
-  <PA_BUY_MarkCOUNTER>Counter markup</PA_BUY_MarkCOUNTER>
-  <PA_BUY_MarkAgency>Agency markup</PA_BUY_MarkAgency>
-  <Exclusive>Exclusive</Exclusive>
-  <Shared>Shared</Shared>
-  <PrivatePad>Private Pad</PrivatePad>
-  <SharedPad>Shared Pad</SharedPad>
-  <ExclusiveReservation>Exclusive Reservation</ExclusiveReservation>
-  <TravelGateway>Safar360 Gateway</TravelGateway>
-  <OwnGateway>Own Gateway</OwnGateway>
-  <MainUser>Main User</MainUser>
-  <ApplicationWord>Application</ApplicationWord>
-  <EnglishTicket>English Ticket</EnglishTicket>
-  <EnglishTicketNoPrice>English Ticket (No Price)</EnglishTicketNoPrice>
-  <GuestUser>Guest User</GuestUser>
-  <Counter>Counter</Counter>
-  <FinalConfirmationStatus>The passenger has not used the final confirmation</FinalConfirmationStatus>
-  <CancelingPurchase>Cancel Purchase</CancelingPurchase>
-  <PaymentWaitingStatus>The passenger has been redirected to the payment gateway and the system is waiting for the return from the bank. This purchase will be completed only if the bank provides the payment confirmation code to the system.</PaymentWaitingStatus>
-  <CreditPaymentSelection>Select Credit Option</CreditPaymentSelection>
-  <ExclusiveBooking>Exclusive Booking</ExclusiveBooking>
-  <ServerRedirectLink>Click here to continue your purchase from Server 5</ServerRedirectLink>
-  <BookingInProgress>Booking in progress</BookingInProgress>
-  <PartnerAgency>Partner Agency</PartnerAgency>
-  <ReservationTicket>Reservation Ticket</ReservationTicket>
-  <ViewNotes>View Notes</ViewNotes>
-  <InsufficientCredit>Insufficient Credit</InsufficientCredit>
-  <SecurityCodeError>Security Code Error</SecurityCodeError>
-  <MobileNumberError>Mobile Number Error</MobileNumberError>
-  <NationalIdError>National ID Error</NationalIdError>
-  <DuplicateRequestError>Duplicate Request Error</DuplicateRequestError>
-  <PassengerNationalityError>Passenger Nationality Error</PassengerNationalityError>
-  <PassportExpiryError>Passport Expiration Error</PassportExpiryError>
-  <PassportError>Passport Error</PassportError>
-  <DuplicateErrorRequest>Duplicate Error Request</DuplicateErrorRequest>
-  <BadRequestError>Bad Request Error</BadRequestError>
-  <CreditSelection>Credit Selection</CreditSelection>
-  <InquiryHotel>On-Request Hotel</InquiryHotel>
-  <NoReservation>No Reservation</NoReservation>
-  <NoStatus>No Status</NoStatus>
-  <NoRecordsFound>No Records Found</NoRecordsFound>
-  <TotalRecords>Total Records</TotalRecords>
-  <UploadInvoice>Upload Invoice</UploadInvoice>
-  <PassengerSale>Sale to Passenger</PassengerSale>
-  <PassengerOnline>Passenger Online</PassengerOnline>
-  <SeatCount>Number of Seats</SeatCount>
-<ReceiveInfoError>Error receiving information</ReceiveInfoError>
-  <PhoneNumberBuyer>The mobile number you used to make the purchase.</PhoneNumberBuyer>
-
 </Main>

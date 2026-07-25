@@ -1,5 +1,6 @@
 {load_presentation_object filename="listCancelUser" assign="objCancelUser"}
 
+
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
@@ -18,12 +19,18 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="white-box">
+                <h3 class="box-title m-b-0">جستجوی افزایش قیمت بلیط توسط کانتر ها  </h3>
+
+                <p class="text-muted m-b-30"> شما با استفاده از فرم زیر میتوانید سوابق را در تاریخ های مورد نظرتان جستجو
+                    کنید
+                </p>
+
                 <form id="SearchTicketHistory" method="post"
                       action="{$smarty.const.rootAddress}userTicketCancellationHistory">
 
                     <div class="form-group col-sm-6 ">
                         <label for="date_of" class="control-label">از تاریخ</label>
-                        <input type="text" class="form-control datepicker" name="date_of" value="{if $smarty.post.date_of neq ''} {$smarty.post.date_of} {else}{$objCancelUser->twoWeeksAgoJalali}{/if}"
+                        <input type="text" class="form-control datepicker" name="date_of" value="{if $smarty.post.date_of neq ''} {$smarty.post.date_of} {else}{$objFunctions->timeNow()}{/if}"
                                id="date_of" placeholder="تاریخ شروع جستجو را وارد نمائید">
                     </div>
 
@@ -36,6 +43,7 @@
                     </div>
 
                     <div class="form-group col-sm-6">
+                        <label for="RequestNumber" class="control-label">pnr</label>
                         <input type="text" class="form-control " name="pnr"
                                value="{$smarty.post.pnr}" id="pnr"
                                placeholder="pnr را وارد نمائید">
@@ -43,6 +51,7 @@
                     </div>
 
                     <div class="form-group col-sm-6">
+                        <label for="RequestNumber" class="control-label">شماره بلیط</label>
                         <input type="text" class="form-control " name="eticket_number"
                                value="{$smarty.post.eticket_number}" id="eticket_number"
                                placeholder="شماره بلیط را وارد نمائید">
@@ -50,24 +59,26 @@
                     </div>
 
                     <div class="form-group col-sm-6">
+                        <label for="RequestNumber" class="control-label">شماره رزرو</label>
                         <input type="text" class="form-control " name="RequestNumber"
                                value="{$smarty.post.RequestNumber}" id="RequestNumber"
                                placeholder="شماره رزرو را وارد نمائید">
 
                     </div>
-                    
+
                     <div class="form-group col-sm-6">
+                        <label for="Status" class="control-label">وضعیت</label>
                         <select name="Status" id="Status" class="form-control">
-                        <option value="">انتخاب وضعیت</option>
-                        <option value="RequestMember">درخواست کاربر</option>
-                        <option value="ConfirmCancel">تایید شده</option>
-                        <option value="RequestClient">در انتظار تعیین درصد</option>
-                        <option value="SetCancelClient">رد درخواست کاربر</option>
-                        <option value="SetIndemnity">تعیین درصد جریمه</option>
-                        <option value="ConfirmClient">در انتظار واریز تامیین کننده</option>
-                        <option value="SetFailedIndemnity">رد درصد توسط آژانس</option>
-                        <option value="close">بسته شد</option>
-                    </select>
+                            <option value="">انتخاب کنید</option>
+                            <option value="RequestMember">درخواست کاربر</option>
+                            <option value="ConfirmCancel">تایید شده</option>
+                            <option value="RequestClient">در انتظار تعیین درصد</option>
+                            <option value="SetCancelClient">رد درخواست کاربر</option>
+                            <option value="SetIndemnity">تعیین درصد جریمه</option>
+                            <option value="ConfirmClient">در انتظار واریز تامیین کننده</option>
+                            <option value="SetFailedIndemnity">رد درصد توسط آژانس</option>
+                            <option value="close">بسته شد</option>
+                        </select>
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -99,14 +110,16 @@
                             <th>ردیف</th>
                             <th>دلیل <br> درخواست</th>
                             <th>شماره <br> رزرو</th>
-{*                            <th>نوع <br> درخواست</th>*}
-                            <th> درخواست کاربر</th>
-                            <th>ارسال به کارگزار</th>
-                            <th> تایید/رد درخواست</th>
-{*                            <th>درصد <br> جریمه</th>*}
-                            <th>مبلغ استرداد (ریال)</th>
+                            {*                            <th>نوع <br> درخواست</th>*}
+                            <th>تاریخ <br> درخواست کاربر</th>
+                            <th>تاریخ ارسال <br> به کارگزار</th>
+                            <th>تاریخ تایید/رد درخواست</th>
+                            {*                            <th>درصد <br> جریمه</th>*}
+                            <th>مبلغ <br> استرداد</th>
                             <th style="width: 227px; text-align: center">عملیات</th>
                             <th>وضعیت <br> درخواست</th>
+
+
                         </tr>
                         </thead>
                         <tbody>
@@ -146,90 +159,72 @@
 
                                             </a>
                                         {if $item.pnr neq ''}
-                                          <a href="#"
-                                            class="btn btn-info yn">
+                                            <a href="#"
+                                               class="btn btn-info yn">
                                                 {$item.pnr}
                                             </a>
                                         {/if}
                                     </span>
                                     {if $item.TypeCancel eq 'bus'}
                                         <span class='badge badge-info'>
-                                            {$item.FactorNumber}
-                                        </span>
-                                    {/if}
-
-                                    {if $item.TypeCancel eq 'flight'}
-                                        <br/>
-                                         <span >
-                                            {$item.origin_city} - {$item.desti_city} - {$item.airline_name} -
-                                        </span>
-                                        <span dir="ltr">
-                                            ({$item.date_flight})
-                                        </span>
-                                    {/if}
-
-                                    {if $item.TypeCancel eq 'hotel'}
-                                        <br/>
-                                        <span >
-                                            {$item.city_name} - {$item.hotel_name}
-                                        </span>
+                                        {$item.FactorNumber}
+                                    </span>
                                     {/if}
                                 </td>
-                                
-
-{*                                <td>*}
-
-{*                                    {if $item.TypeCancel eq 'flight' || $item.TypeCancel eq '' }*}
-{*                                        پرواز-*}
-{*                                        {if $typeFlight eq 'PrivateSystem'}*}
-{*                                            سیستمی اختصاصی*}
-
-{*                                        {elseif $typeFlight eq 'PublicSystem'}*}
-{*                                            سیستمی اشتراکی*}
-{*                                        {elseif $typeFlight eq 'charter'}*}
-{*                                            چارتری*}
-{*                                        {elseif $typeFlight eq 'reservation'}*}
-{*                                            رزرواسیون*}
-{*                                        {/if}*}
-{*                                    {elseif $item.TypeCancel eq 'train'}*}
-{*                                        قطار*}
-{*                                    {elseif $item.TypeCancel eq 'bus'}*}
-{*                                        اتوبوس*}
-{*                                    {elseif $item.TypeCancel eq 'hotel'}*}
-{*                                        هتل*}
-{*                                    {elseif $item.TypeCancel eq 'insurance'}*}
-{*                                        بیمه*}
-{*                                    {elseif $item.TypeCancel eq 'tour'}*}
-{*                                        تور*}
-{*                                    {/if}*}
 
 
-{*                                </td>*}
-                                <td class="text-center">
-                                    {$objDate->jdate('Y-m-d', $item.DateRequestMemberInt)}<br>
-                                    {$objDate->jdate('H:i:s', $item.DateRequestMemberInt)}
+                                {*                                <td>*}
+
+                                {*                                    {if $item.TypeCancel eq 'flight' || $item.TypeCancel eq '' }*}
+                                {*                                        پرواز-*}
+                                {*                                        {if $typeFlight eq 'PrivateSystem'}*}
+                                {*                                            سیستمی اختصاصی*}
+
+                                {*                                        {elseif $typeFlight eq 'PublicSystem'}*}
+                                {*                                            سیستمی اشتراکی*}
+                                {*                                        {elseif $typeFlight eq 'charter'}*}
+                                {*                                            چارتری*}
+                                {*                                        {elseif $typeFlight eq 'reservation'}*}
+                                {*                                            رزرواسیون*}
+                                {*                                        {/if}*}
+                                {*                                    {elseif $item.TypeCancel eq 'train'}*}
+                                {*                                        قطار*}
+                                {*                                    {elseif $item.TypeCancel eq 'bus'}*}
+                                {*                                        اتوبوس*}
+                                {*                                    {elseif $item.TypeCancel eq 'hotel'}*}
+                                {*                                        هتل*}
+                                {*                                    {elseif $item.TypeCancel eq 'insurance'}*}
+                                {*                                        بیمه*}
+                                {*                                    {elseif $item.TypeCancel eq 'tour'}*}
+                                {*                                        تور*}
+                                {*                                    {/if}*}
+
+
+                                {*                                </td>*}
+                                <td dir="ltr" class="text-left">
+                                    {$objDate->jdate('Y-m-d (H:i:s)', $item.DateRequestMemberInt)}
                                 </td>
-                                <td class="text-center">
+                                <td dir="ltr" class="text-left">
                                     {if $item.DateRequestCancelClientInt neq '0'}
-                                        {$objDate->jdate('Y-m-d', $item.DateRequestCancelClientInt)}<br>
-                                        {$objDate->jdate('H:i:s', $item.DateRequestCancelClientInt)}
-                                    {else}---{/if}
+                                        {$objDate->jdate('Y-m-d (H:i:s)', $item.DateRequestCancelClientInt)} {else}---{/if}
                                 </td>
-                                <td class="text-center">
-                                    {if $item.DateSetCancelInt neq '0' || $item.DateConfirmCancelInt neq '0' || $item.DateSetFailedIndemnityInt neq '0'}
+                                <td dir="ltr" class="text-left">
+                                    {if $item.DateSetCancelInt neq '0' || $item.DateConfirmCancelInt neq '0' ||
+                                    $item.DateSetFailedIndemnityInt neq '0'}
 
                                         {if $item.Status eq 'SetCancelClient'}
-                                            {$objDate->jdate('Y-m-d', $item.DateSetCancelInt)}<br>
-                                            {$objDate->jdate('H:i:s', $item.DateSetCancelInt)}
+
+                                            {$objDate->jdate('Y-m-d (H:i:s)', $item.DateSetCancelInt)}
 
                                         {elseif $item.Status eq 'ConfirmCancel'}
-                                            {$objDate->jdate('Y-m-d', $item.DateConfirmCancelInt)}<br>
-                                            {$objDate->jdate('H:i:s', $item.DateConfirmCancelInt)}
+
+                                            {$objDate->jdate('Y-m-d (H:i:s)', $item.DateConfirmCancelInt)}
 
                                         {elseif $item.Status eq 'SetFailedIndemnity'}
-                                            {$objDate->jdate('Y-m-d', $item.DateSetFailedIndemnityInt)}<br>
-                                            {$objDate->jdate('H:i:s', $item.DateSetFailedIndemnityInt)}
+
+                                            {$objDate->jdate('Y-m-d (H:i:s)', $item.DateSetFailedIndemnityInt)}
                                         {/if}
+
 
                                     {else}
                                         -----
@@ -248,22 +243,22 @@
                                 {*                                        -----*}
                                 {*                                    {/if}*}
                                 {*                                </td>*}
-{*                                <td>*}
+                                {*                                <td>*}
 
-                                    {*                                    {if $item.ReasonMember eq 'CancelByAirline' || $item.ReasonMember eq 'DelayTwoHours'}*}
-                                    {*                                        <span class="yn">---</span>*}
-                                    {*                                    {else}*}
-                                    {*                                        <span class="yn">{$item.PercentIndemnity}%</span>*}
-                                    {*                                    {/if}*}
+                                {*                                    {if $item.ReasonMember eq 'CancelByAirline' || $item.ReasonMember eq 'DelayTwoHours'}*}
+                                {*                                        <span class="yn">---</span>*}
+                                {*                                    {else}*}
+                                {*                                        <span class="yn">{$item.PercentIndemnity}%</span>*}
+                                {*                                    {/if}*}
 
-{*                                    {if $item.PercentIndemnity neq  0 }*}
-{*                                        <span class="yn">{$item.PercentIndemnity}%</span>*}
-{*                                    {else}*}
-{*                                        <span class="yn">---</span>*}
+                                {*                                    {if $item.PercentIndemnity neq  0 }*}
+                                {*                                        <span class="yn">{$item.PercentIndemnity}%</span>*}
+                                {*                                    {else}*}
+                                {*                                        <span class="yn">---</span>*}
 
-{*                                    {/if}*}
+                                {*                                    {/if}*}
 
-{*                                </td>*}
+                                {*                                </td>*}
                                 <td>
 
                                     {*                                    {if $item.PercentIndemnity neq 0}*}
@@ -272,13 +267,13 @@
                                     {*                                        -----*}
                                     {*                                    {/if}*}
                                     {if $item.PriceIndemnity neq 0}
-                                        <span class="yn">{$item.PriceIndemnity|number_format} </span>
+                                        <span class="yn">{$item.PriceIndemnity|number_format} &nbsp;ریال</span>
                                     {else}
                                         -----
                                     {/if}
                                 </td>
-
                                 {if ($item.pid_private eq '1' and $item.TypeCancel eq 'flight') || ($item.type_application eq 'reservation' and $item.TypeCancel eq 'hotel')}
+
                                     <td>
                                         {if $item.Status eq 'ConfirmCancel'}
                                             <span data-toggle="popover" data-placement="top" data-content="برای دریافت رسید کنسلی کلیک کنید"
@@ -307,11 +302,11 @@
 
                                                 </a>
                                             </span>
-                                            <!--<div class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-bookmark-check popoverBox  popover-success"
+                                            <div class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-bookmark-check popoverBox  popover-success"
                                                  data-placement="top" style="cursor:context-menu"
                                                  data-toggle="popover" title="تایید نهایی"
                                                  data-content="این درخواست از سوی کارگزار به تایید نهایی رسیده">
-                                            </div>-->
+                                            </div>
                                         {else}
                                             <div class="btn-group m-r-10">
 
@@ -373,7 +368,7 @@
                                                                 </div>
                                                             </div>
                                                         </li>
-                                                  {*  {elseif $item.Status eq 'SetIndemnity'}
+                                                    {elseif $item.Status eq 'SetIndemnity'}
                                                         <li>
                                                             <div class="pull-left">
                                                                 <div class="pull-left margin-10">
@@ -385,7 +380,7 @@
 
                                                                 </div>
                                                             </div>
-                                                        </li>*}
+                                                        </li>
                                                     {elseif $item.Status eq 'ConfirmClient' }
                                                         <li>
                                                             <div class="pull-left">
@@ -402,7 +397,7 @@
                                                                 </div>
                                                             </div>
                                                         </li>
-                                                   {* {elseif $item.Status eq 'SetFailedIndemnity'}
+                                                    {elseif $item.Status eq 'SetFailedIndemnity'}
                                                         <li>
                                                             <div class="pull-left">
                                                                 <div class="pull-left margin-10">
@@ -429,7 +424,6 @@
                                                                 </div>
                                                             </div>
                                                         </li>
-                                                     *}
                                                     {/if}
 
 
@@ -522,11 +516,11 @@
                                                       class="popoverBox  popover-success"
                                                       data-content="با زدن این دکمه ،کادری برای شما باز میشود که می توانید توضیحات خود را نوشته و در خواست خود را به سمت کارگزار هدایت کنید">
 
-                                                           <a onclick="ShowModalConfirmCancel('{$item.RequestNumber}', '{$item.id}'); return false"
-                                                              class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-check "
-                                                              id="RequestMember-{$item.id}" data-toggle="modal"
-                                                              data-target="#ModalPublic"></a>
-                                                 </span>
+                                               <a onclick="ShowModalConfirmCancel('{$item.RequestNumber}', '{$item.id}'); return false"
+                                                  class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-check "
+                                                  id="RequestMember-{$item.id}" data-toggle="modal"
+                                                  data-target="#ModalPublic"></a>
+                                            </span>
                                                 <span id="FailedCancelRequestUser-{$item.id}" title="  رد درخواست کاربر"
                                                       data-toggle="popover" data-placement="top"
                                                       class="popoverBox  popover-danger"
@@ -539,18 +533,16 @@
                                                         ></a>
 
                                             </span>
-                                           {*
-                                               {elseif $item.Status eq 'SetCancelClient'}
-                                                    <a class="fcbtn btn btn-outline  popoverBox  popover-danger btn-danger btn-1c mdi  mdi-do-not-disturb"
-                                                       title="رد درخواست توسط آژانس"
-                                                       data-toggle="popover" data-placement="top"
-                                                       data-content="شما قبلا این در خواست را رد کرده اید،برای اقدام مجدد ،می بایستی کاربر خریدار مجددا اقدام به ارسال درخواست کنسلی نماید"></a>
-                                                {elseif $item.Status eq 'RequestClient'}
-                                                    <a class="fcbtn btn btn-outline  popoverBox  popover-warning btn-warning btn-1c mdi  mdi-autorenew"
-                                                       title="در حال بررسی توسط کارگزار"
-                                                       data-toggle="popover" data-placement="top"
-                                                       data-content="درخواست شما به سمت کارگزار هدایت شده است،منتظر اعلام پاسخ باشید"></a>
-                                             *}
+                                            {elseif $item.Status eq 'SetCancelClient'}
+                                                <a class="fcbtn btn btn-outline  popoverBox  popover-danger btn-danger btn-1c mdi  mdi-do-not-disturb"
+                                                   title="رد درخواست توسط آژانس"
+                                                   data-toggle="popover" data-placement="top"
+                                                   data-content="شما قبلا این در خواست را رد کرده اید،برای اقدام مجدد ،می بایستی کاربر خریدار مجددا اقدام به ارسال درخواست کنسلی نماید"></a>
+                                            {elseif $item.Status eq 'RequestClient'}
+                                                <a class="fcbtn btn btn-outline  popoverBox  popover-warning btn-warning btn-1c mdi  mdi-autorenew"
+                                                   title="در حال بررسی توسط کارگزار"
+                                                   data-toggle="popover" data-placement="top"
+                                                   data-content="درخواست شما به سمت کارگزار هدایت شده است،منتظر اعلام پاسخ باشید"></a>
                                             {elseif $item.Status eq 'SetIndemnity'}
                                                 <a onclick="ConfirmAgencyForPercent('{$item.RequestNumber}', '{$item.id}', '{$item.TypeCancel}') ; return false"
                                                    class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-check-circle-outline popoverBox  popover-success"
@@ -566,37 +558,34 @@
                                                    data-toggle="popover" id="FailedPercent-{$item.id}"
                                                    data-content=" با زدن این دکمه مراحل کنسلی متوقف شده ،و می بایستی برای اقدام مجدد،کاربر مجددا درخواست داده و مراحل طی شود"></a>
                                               </span>
-                                            {*{elseif $item.Status eq 'ConfirmClient' }*
-                                              <div class="fcbtn btn btn-outline btn-info btn-1c mdi mdi-timer popoverBox  popover-info"
+                                            {elseif $item.Status eq 'ConfirmClient' }
+                                                <div class="fcbtn btn btn-outline btn-info btn-1c mdi mdi-timer popoverBox  popover-info"
                                                      style="cursor:context-menu" data-placement="top"
                                                      data-toggle="popover" title="انتظار تایید نهایی"
                                                      data-content=" شما در صد اعلامی از سوی کارگزار را تایید کرده اید،لطفا  منتظر تایید نهایی باشید">
 
                                                 </div>
-                                                {elseif $item.Status eq 'SetFailedIndemnity' }
-                                                     <div class="fcbtn btn btn-outline btn-danger btn-1c mdi mdi-close-octagon-outline popoverBox  popover-danger"
-                                                          style="cursor:context-menu"
-                                                          data-toggle="popover" title="رد درصد توسط آژانس" data-placement="top"
-                                                          data-content=" شما در صد اعلامی از سوی کارگزار را رد کرده اید">
+                                            {elseif $item.Status eq 'SetFailedIndemnity' }
+                                                <div class="fcbtn btn btn-outline btn-danger btn-1c mdi mdi-close-octagon-outline popoverBox  popover-danger"
+                                                     style="cursor:context-menu"
+                                                     data-toggle="popover" title="رد درصد توسط آژانس" data-placement="top"
+                                                     data-content=" شما در صد اعلامی از سوی کارگزار را رد کرده اید">
 
-                                                     </div>
-                                                 {elseif $item.Status eq 'ConfirmCancel' }
-                                                     <div class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-bookmark-check popoverBox  popover-success"
-                                                          data-placement="top" style="cursor:context-menu"
-                                                          data-toggle="popover" title="تایید نهایی"
-                                                          data-content="این درخواست از سوی کارگزار به تایید نهایی رسیده">
-                                                     </div>
-                                                 *}
-                                                 {/if}
-                                                 {*/if*}
+                                                </div>
+                                            {elseif $item.Status eq 'ConfirmCancel' }
+                                                <div class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-bookmark-check popoverBox  popover-success"
+                                                     data-placement="top" style="cursor:context-menu"
+                                                     data-toggle="popover" title="تایید نهایی"
+                                                     data-content="این درخواست از سوی کارگزار به تایید نهایی رسیده">
+                                                </div>
+                                            {/if}
+                                            {*/if*}
 
                                         {/if}
 
 
                                     </td>
                                 {/if}
-
-
                                 <td>
                                     {if $typeFlight eq 'reservation'}
 
@@ -612,26 +601,34 @@
 
                                         {if $item.Status eq 'RequestMember'}
                                             <div class="btn btn-primary" disabled="disabled" style="cursor: context-menu;"
-                                                 id="RequestMemberText-{$item.id}"> مسافر درخواست کنسلی دارد </div>
+                                                 id="RequestMemberText-{$item.id}">درخواست
+                                                کاربر
+                                            </div>
                                         {elseif $item.Status eq 'SetCancelClient'}
-                                            <div class="btn btn-danger" disabled="disabled" style="cursor: context-menu;"> درخواست کاربر رد شد </div>
+                                            <div class="btn btn-danger" disabled="disabled" style="cursor: context-menu;">رد
+                                                درخواست
+                                                کاربر
+                                            </div>
                                         {elseif $item.Status eq 'RequestClient'}
-                                            <div class="btn btn-warning" disabled="disabled" style="cursor: context-menu;">در انتظار تعیین جریمه توسط تامین کننده </div>
+                                            <div class="btn btn-warning" disabled="disabled" style="cursor: context-menu;">در انتظار تعیین درصد </div>
                                         {elseif $item.Status eq 'SetIndemnity'}
                                             <div class="btn btn-warning btn-percent" disabled="disabled"
                                                  id="ConfirmPercentBtn-{$item.id}" style="cursor: context-menu;">تعیین درصد جریمه</div>
                                         {elseif $item.Status eq 'ConfirmClient' }
                                             <div class="btn btn-info btn-confirmClient " disabled="disabled"
-                                                 style="cursor: context-menu;">در انتظار واریز مبلغ توسط تامین کننده
+                                                 style="cursor: context-menu;">در انتظار واریز تامین کننده
                                             </div>
                                         {elseif $item.Status eq 'SetFailedIndemnity' }
-                                            <div class="btn btn-danger" disabled="disabled" style="cursor: context-menu;"> رد درصد  توسط آژانس </div>
+                                            <div class="btn btn-danger" disabled="disabled" style="cursor: context-menu;">رد
+                                                درصد
+                                                توسط آژانس
+                                            </div>
                                         {elseif $item.Status eq 'close' }
-                                            <div id="SetFailedIndemnity" class="btn btn-dark cursor-default" disabled="disabled" style="background-color: black; color: white;">بسته شد</div>
+                                            <div id="SetFailedIndemnity" class="btn btn-danger cursor-default" disabled="disabled">بسته شد</div>
 
                                         {elseif $item.Status eq 'ConfirmCancel'}
                                             {if ($item.pid_private eq '0' and $item.TypeCancel eq 'flight') || ($item.type_application neq 'reservation' and $item.TypeCancel eq 'hotel')}
-                                                <div class="btn btn-success" disabled="disabled" style="cursor: context-menu;"> به اعتبار شما واریز شد </div>
+                                                <div class="btn btn-success" disabled="disabled" style="cursor: context-menu;">تایید شده</div>
                                             {/if}
                                             {if $item.confirmTransferWallet eq 'none' && $item.backCredit eq 'on' }
                                                 {*                                            <div class="btn btn-primary"   onclick="ModalConfirmAdminReturnUserWallet('{$item.RequestNumber}', '{$item.id}' , '{$item.PriceIndemnity}' , '{$item.MemberId}');return false" disabled="disabled" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">انتقال به کیف پول</div>*}
@@ -646,11 +643,11 @@
                                                 </div>
                                             {elseif  ($item.confirmTransferWallet eq 'ReturnWallet' || $item.confirmTransferWallet eq 'ReturnWalletCounter' ||  $item.confirmTransferWallet eq 'ReturnBankCart') && $item.backCredit eq 'on'}
                                                 {if $item.confirmTransferWallet eq 'ReturnWallet'}
-                                                    <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به کیف پول کاربر برگردانده شد</div>
+                                                    <div class="btn btn-info" disabled="disabled" style="cursor: context-menu;font-size:10px ; margin-top:2px">به کیف پول کاربر برگردانده شد</div>
                                                 {elseif $item.confirmTransferWallet eq 'ReturnWalletCounter'}
-                                                    <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به اعتبار کانتر برگردانده شد</div>
+                                                    <div class="btn btn-info" disabled="disabled" style="cursor: context-menu;font-size:10px ; margin-top:2px">به اعتبار کانتر برگردانده شد</div>
                                                 {elseif $item.confirmTransferWallet eq 'ReturnBankCart'}
-                                                    <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به درخواست کاربر به کارت واریز شد</div>
+                                                    <div class="btn btn-info" disabled="disabled" style="cursor: context-menu;font-size:10px ; margin-top:2px">به درخواست کاربر به کارت واریز شد</div>
                                                 {else}
                                                     {*                                                 <div class="btn btn-info" disabled="disabled" style="cursor: context-menu;font-size:10px ; margin-top:2px">به کیف پول کاربر برگردانده شد</div>*}
                                                 {/if}

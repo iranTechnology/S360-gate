@@ -42,13 +42,4 @@ class configFlight extends clientAuth
 
     }
 
-    public function getConfigAirline($airlineId) {
-
-        $conf = $this->getModel('configFlightModel')
-            ->get()
-            ->where('airlineId',$airlineId)
-            ->all();
-        return $conf;
-    }
-
 }

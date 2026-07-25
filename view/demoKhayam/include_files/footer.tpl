@@ -1,16 +1,15 @@
-{load_presentation_object filename="aboutUs" assign="objAbout"}
-{assign var="about"  value=$objAbout->getData()}
+
 {assign var='AdditionalData' value=$smarty.const.ADDITIONAL_DATA|json_decode:true}
 {assign var=dateNow value=dateTimeSetting::jdate("Ymd", "", "", "", "en")}
 {if $smarty.session.layout neq 'pwa'}
     {if $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotel && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintTicket && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservation && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservationAhuan}
         <footer>
-            <div class="container">
+            <div class="container-fluid">
                 <div class="parent-footer-pabpa">
                     <div class="item1-footer-pabpa">
                         <div class="data_phone">
                             <a href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}" class="footer_logo">
-                                <img  id="footerLogo"  src="project_files/images/logo-foot.png" alt="loggo-foot">
+                                <img src="project_files/images/logo-foot.png" alt="loggo-foot">
                             </a>
                             <p class="phone_num">
                                 <i class="far fa-phone"></i>
@@ -33,9 +32,18 @@
 {*                            </p>*}
                             <p class="email_site">
                                 <i class="far fa-envelope"></i>
+                                {foreach key=key item=item from=$AdditionalData}
+
                                         <a href="mailto:{$smarty.const.CLIENT_EMAIL}">
-                                            {$smarty.const.CLIENT_EMAIL}
+                                            {if $item.title eq 'ایمیل:'}
+                                                {$item.body}
+                                            {/if}
+
+                                            {if $item.title eq 'شماره واتس‌آپ و تلگرام:'}
+                                                    {$item.title} {$item.body}
+                                            {/if}
                                         </a>
+                                {/foreach}
                             </p>
                         </div>
                     </div>
@@ -45,7 +53,7 @@
                                 تورهای سفر 360
                             </h4>
                             <ul class="">
-                                {assign var="internal_tour_params" value=['limit'=> '5','dateNow' => $dateNow , 'category' => '18']}
+                                {assign var="internal_tour_params" value=['type'=>'','limit'=> '10','dateNow' => $dateNow,'category' => '4']}
                                 {assign var='internalTours' value=$obj_main_page->getToursReservation($internal_tour_params)}
                                 {foreach key=key_tour item=item_tour from=$internalTours}
                                     <li>
@@ -128,15 +136,9 @@
 -->
 
                         <a href="https://caa.gov.ir/"><img src="project_files/images/certificate2.png" alt="namad-1"></a>
-                        {if !empty($about.enamad_id) && !empty($about.enamad_code)}
-                            <a referrerpolicy="origin" target="_blank"
-                               href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
-                                <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
-                                     alt="اینماد"
-                                     style="cursor:pointer">
+                        <a href="javascript:">
+                            <img alt="namad-2" src="project_files/images/enamad.png"/>
                         </a>
-                        {/if}
-
                         <!--
                         <a href="http://www.aira.ir/"><img src="project_files/images/certificate3.png" alt="namad-2"></a>
 -->

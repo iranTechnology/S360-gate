@@ -48,11 +48,8 @@
                   {{ useXmltag('On') }}
                   <span class=" bold counthotel">{{ data_search.name_arrival}}</span>
                </p>
-               <p class="counthotel txt12 mt-2">{{data_search.DateFlightWithName}} </p>
-              <p class="counthotel text-center txt12 dir-ltr" v-if="isPersianDate(data_search.departureDate)">{{formatDate(data_search.departure_date_en)}} </p>
-              <p class="counthotel text-center text-sm-flight dir-ltr" v-else>{{this.formatDatePersian(data_search.departureDate)}}</p>
-
-              <div class="silence_span ph-item2" v-if="countFlights > 0">{{ countFlights }} {{
+               <p class="counthotel txt12">{{data_search.DateFlightWithName}} </p>
+               <div class="silence_span ph-item2" v-if="countFlights > 0">{{ countFlights }} {{
                      useXmltag('NumberFlightFound')}}
                </div>
             </div>
@@ -83,40 +80,24 @@
                <span class="s-u-close-filter"></span>
 
                <!-- pricefilter -->
-<!--               <li class="s-u-filter-item" data-group="flight-price">-->
-<!--                           <span class="s-u-filter-title">-->
-<!--                           <i class="zmdi zmdi-money site-main-text-color-drck"></i>  {{ useXmltag('Price') }}</span>-->
-<!--                  <div class="s-u-filter-content slider_range_parent ">-->
-<!--                     <vue-slider v-model="value_price" :tooltip="'always'"  :min="min_price_props" :max="max_price_props" @change="priceRangeSlider(value_price)">-->
-<!--                        <template v-slot:tooltip="{value}">-->
-<!--                           <div class="vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top site-bg-main-color  site-border-main-color">{{ value| formatNumber }}</div>-->
-<!--                        </template>-->
-
-<!--                        <template v-slot:process="{ start, end, style, index }">-->
-<!--                           <div class="vue-slider-process vue-slider-dot-tooltip-inner site-bg-main-color" :style="[style]">-->
-<!--                              &lt;!&ndash; Can add custom elements here &ndash;&gt;-->
-<!--                           </div>-->
-<!--                        </template>-->
-<!--                     </vue-slider>-->
-
-<!--                  </div>-->
-<!--               </li>-->
-
-
-              <li class="s-u-filter-item" data-group="flight-price">
+               <li class="s-u-filter-item" data-group="flight-price">
                            <span class="s-u-filter-title">
-                           <i class="zmdi zmdi-money site-main-text-color-drck"></i>  {{ useXmltag('Price') + ' (' + useXmltag('Rial') + ')' }}</span>
-                <div class="s-u-filter-content slider_range_parent ">
-                  <div class="text-center d-flex justify-content-between align-items-center m-auto w-100">
-                    <span>{{value_price[1] | formatNumber }}</span>
-                    <span>-</span>
-                    <span>{{value_price[0] | formatNumber }}</span>
+                           <i class="zmdi zmdi-money site-main-text-color-drck"></i>  {{ useXmltag('Price') }}</span>
+                  <div class="s-u-filter-content slider_range_parent ">
+                     <vue-slider v-model="value_price" :tooltip="'always'"  :min="min_price_props" :max="max_price_props" @change="priceRangeSlider(value_price)">
+                        <template v-slot:tooltip="{value}">
+                           <div class="vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top site-bg-main-color  site-border-main-color">{{ value| formatNumber }}</div>
+                        </template>
+
+                        <template v-slot:process="{ start, end, style, index }">
+                           <div class="vue-slider-process vue-slider-dot-tooltip-inner site-bg-main-color" :style="[style]">
+                              <!-- Can add custom elements here -->
+                           </div>
+                        </template>
+                     </vue-slider>
+
                   </div>
-                  <vue-slider v-model="value_price" :tooltip="'none'"  :min="min_price_props" :max="max_price_props"
-                              @change="priceRangeSlider(value_price)">
-                  </vue-slider>
-                </div>
-              </li>
+               </li>
                <!-- flight duplicate filter -->
 
                <li class="s-u-filter-item p-2 py-3">
@@ -124,7 +105,7 @@
                      <div class="d-flex align-items-center justify-content-between p-0 w-100">
                         <label for="duplicateFlightSwitch" style="margin:0 !important;">
                            <i class="fa fa-eraser FlightRepetitionCount site-main-text-color-drck" style="font-size:13px !important"></i>
-                           <span class="" style="font-weight:500 !important;font-size:13px">{{ useXmltag('FlightRepetitionShow') }}</span>
+                           <span class="" style="font-weight:500 !important;font-size:13px">{{ useXmltag('FlightRepetition') }}</span>
                         </label>
 
                         <span
@@ -135,7 +116,7 @@
     'site-bg-filter-color',
     'filter-to-check',
     'duplicateFlightSwitch',
-    !duplicateFlight ? 'checked' : ''
+    duplicateFlight ? 'checked' : ''
   ]"                    @click="toggleDuplicateFlights">
     </span>
 
@@ -390,144 +371,6 @@ export default {
       }
    },
    methods: {
-     formatDate(dateString) {
-       const date = new Date(dateString);
-       const year = date.getFullYear();
-       const month = date.toLocaleString('en-US', { month: 'short' });
-       const day = date.getDate();
-       return `${day} ${month} ${year}`;
-     },
-     isPersianDate(dateStr) {
-       if (dateStr === undefined || dateStr === null || typeof dateStr !== 'string') {
-         dateStr = dateNow('-')
-       }
-       const cleanDate = dateStr;
-
-       // 2) تطابق الگوی YYYY-MM-DD
-       const regex = /^(\d{4})-(\d{2})-(\d{2})$/;
-       const match = cleanDate.match(regex);
-       if (!match) return false;
-
-       const year  = parseInt(match[1], 10);
-       const month = parseInt(match[2], 10);
-       const day   = parseInt(match[3], 10);
-
-       // 3) محدوده سال (قابل تنظیم)
-       if (year < 1200 || year > 1600) return false;
-
-       // 4) محدوده ماه
-       if (month < 1 || month > 12) return false;
-
-       // 5) تشخیص دقیق سال کبیسهٔ جلالی (محاسبه نجومی رسمی ایران)
-       const isLeapJalali = (jy) => {
-         // الگوریتم دقیق موسسه ژئوفیزیک
-         const breaks = [
-           -61, 9, 38, 199, 426, 686, 756, 818,
-           1111, 1181, 1210, 1635, 2060, 2097,
-           2192, 2262, 2324, 2394, 2456, 3178
-         ];
-         let bl = breaks.length;
-         let gy = jy + 621;
-         let leapJ = -14;
-         let jp = breaks[0];
-
-         let jm, jump, leap, n, i;
-
-         for (i = 1; i < bl; i++) {
-           jm = breaks[i];
-           jump = jm - jp;
-           if (jy < jm) {
-             leapJ += Math.floor((jy - jp) / 33) * 8 + Math.floor(((jy - jp) % 33) / 4);
-             leap = (jump % 33 === 4 && jump - (jump / 33) * 33 === 4) ? 1 : 0;
-             if ((jump % 33) === 4) leap++;
-             break;
-           }
-           leapJ += Math.floor(jump / 33) * 8 + Math.floor((jump % 33) / 4);
-           jp = jm;
-         }
-         n = jy - jp;
-         leapJ += Math.floor(n / 33) * 8 + Math.floor((n % 33) / 4);
-         if ((n % 33) === 4) leapJ++;
-         const leapG = Math.floor(gy / 4) - Math.floor((gy / 100)) + Math.floor((gy / 400));
-         return ((leapJ + 1) % 33 === 1);
-       };
-
-       const leap = isLeapJalali(year);
-
-       // 6) تعداد روزهای هر ماه
-       const daysInMonth = [
-         31, 31, 31, 31, 31, 31, // فروردین تا شهریور
-         30, 30, 30, 30, 30,     // مهر تا بهمن
-         leap ? 30 : 29          // اسفند
-       ];
-
-       // 7) چک نهایی تعداد روز
-       if (day < 1 || day > daysInMonth[month - 1]) return false;
-
-       return true;
-     },
-     formatDatePersian(gDateStr) {
-       const toJalali = (gy, gm, gd) => {
-         const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
-         let jy = (gy <= 1600) ? 0 : 979;
-         gy -= (gy <= 1600) ? 621 : 1600;
-         const gy2 = (gm > 2) ? (gy + 1) : gy;
-
-         let days = (365 * gy) + Math.floor((gy2 + 3) / 4)
-             - Math.floor((gy2 + 99) / 100)
-             + Math.floor((gy2 + 399) / 400)
-             - 80 + gd + g_d_m[gm - 1];
-
-         jy += 33 * Math.floor(days / 12053);
-         days %= 12053;
-
-         jy += 4 * Math.floor(days / 1461);
-         days %= 1461;
-
-         if (days > 365) {
-           jy += Math.floor((days - 1) / 365);
-           days = (days - 1) % 365;
-         }
-
-         const jm = (days < 186) ? 1 + Math.floor(days / 31)
-             : 7 + Math.floor((days - 186) / 30);
-
-         const jd = 1 + ((days < 186) ? (days % 31)
-             : ((days - 186) % 30));
-
-         return [jy, jm, jd];
-       };
-
-       const daysOfWeek = [
-         "یکشنبه",
-         "دوشنبه",
-         "سه‌شنبه",
-         "چهارشنبه",
-         "پنج‌شنبه",
-         "جمعه",
-         "شنبه"
-       ];
-
-       const months = [
-         "فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور",
-         "مهر","آبان","آذر","دی","بهمن","اسفند"
-       ];
-
-       const englishToPersianDigits = (str) =>
-           str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
-
-       // تبدیل تاریخ میلادی به آبجکت Date
-       const [y, m, d] = gDateStr.split("-").map(Number);
-       const date = new Date(y, m - 1, d);
-
-       const weekday = daysOfWeek[date.getDay()];
-
-       // تبدیل به جلالی
-       const [jy, jm, jd] = toJalali(y, m, d);
-
-       return `${weekday}, ${englishToPersianDigits(jd.toString())} ${months[jm - 1]} ${englishToPersianDigits(jy.toString())}`;
-     },
-
       activateSeatClassFilter(classFlight) {
         // DO NOT emit to parent if this is initial load from URL
         // The parent (main.vue) already set the filter in created()
@@ -686,7 +529,7 @@ export default {
                if (price === null || price === undefined || price === Infinity) {
                   return;
                }
-              // console.log('price -> >>>>>> ' , price)
+
                if (!map.has(key)) {
                   map.set(key, f);
                } else {
@@ -828,9 +671,3 @@ export default {
 
 }
 </script>
-<style>
-.text-sm-flight{
-  font-size:12px !important;
-
-}
-</style>

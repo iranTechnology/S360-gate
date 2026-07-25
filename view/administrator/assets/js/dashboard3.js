@@ -29,32 +29,17 @@ function checkGRSCredit(){
         }
     });
 }
-function checkCityNetCredit(){
-    $.ajax({
-        type: 'POST',
-        url: amadeusPath + 'user_ajax.php',
-        data:
-            {
-                flag: 'checkCityNetCredit',
-            },
-        success: function (data) {
-            $('#CityNetCredit').html(data)
-        }
-    });
-}
 $(document).ready(function () {
 
 
     $(".select2").select2();
     // checkCreditSeven();
     checkGRSCredit();
-    checkCityNetCredit()
-
+    //
     if(typeAdmin == 1 && adminFile !== "" && adminFile === 'itadmin') {
             // Set intervals only if adminFile is not empty and is 'itadmin'
             // setInterval(checkCreditSeven, 120000);
             setInterval(checkGRSCredit, 600000);
-           setInterval(checkCityNetCredit, 600000);
     }
 
 
@@ -82,11 +67,9 @@ $(document).ready(function () {
             }
 
             var someFormattedDate = y + '-' + mm + '-' + dd;
-            $(".datepickerReturn").datepicker('option', 'maxDate', null);
+            $(".datepickerReturn").datepicker('option', 'maxDate', someFormattedDate);
         },
     });
-
-
 
     $(".datepicker-miladi").datepicker({
         dateFormat: "yy-mm-dd",

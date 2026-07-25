@@ -1705,7 +1705,6 @@ table.dataTable thead .sorting:after {
     background: #fff;
     padding: 25px;
     margin-bottom: 30px;
-    border-radius: 14px;
 }
 
 .login-box .white-box {
@@ -1734,8 +1733,7 @@ table.dataTable thead .sorting:after {
     border-radius: 0;
     font-weight: 500;
     font-size: 16px;
-    padding: 20px 25px;
-
+    padding: 20px 25px
 }
 
 .panel .panel-heading .panel-title {
@@ -1773,14 +1771,12 @@ table.dataTable thead .sorting:after {
     height: auto;
     background: #fafbfc;
     border-radius: 0 0 12px 12px;
-    border-radius: 14px;
 }
 
  .modern-notice {
      padding: 20px;
      background: #fafbfc;
-     border-radius: 14px;
-     margin-top:5px;
+     border-radius: 0 0 12px 12px;
  }
 
 .modern-notice ul {
@@ -6806,7 +6802,7 @@ ul.wallet-list li a:hover {
 }
 
 .sidebar:hover .sidebar-head {
-    width: 293px
+    width: 240px
 }
 
 .sidebar .label {
@@ -6857,7 +6853,7 @@ ul.wallet-list li a:hover {
 
 #side-menu li a {
     color: #97999f;
-    width: 293px
+    width: 250px
 }
 
 #side-menu li a:focus {
@@ -19084,7 +19080,7 @@ ul.pro-amenities li span i {
     }
 
     .sidebar:hover {
-        width: 293px
+        width: 240px
     }
 
     .navbar-static-top {
@@ -20156,21 +20152,21 @@ div.dataTables_filter, div.dataTables_paginate {
     flex-wrap: wrap;
     gap: 10px;
     padding: 5px;
-    margin: 0px 0px 0px 0px;
+    margin: 0px 30px 0px 0px;
     box-sizing: border-box;
 }
 
 .BoxResultCurlAsli {
-    /*flex: 0 1 400px;*/
+    flex: 0 1 400px;
     min-height: 40px;
-    margin: 1px;
-    padding: 10px;
+    margin: 5px;
+    padding: 5px;
     text-align: center;
+    border-radius: 5px;
     font: normal 12px/24px Yekan, Tahoma, Geneva, sans-serif;
     direction: rtl !important;
     background-color: #fff;
     box-sizing: border-box;
-    border-radius: 14px;
 }
 
 /* نمایش ندادن divهای خالی */
@@ -20356,88 +20352,6 @@ textarea.form-control {
 .media04{
     position: relative;
     top: -26px;
-}
-#chatNotifCount {
-    position: absolute;
-    top: 6px;
-    right: 2px;
-
-    background: #ff0000;
-    color: white;
-
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-
-    font-size: 11px;
-    text-align: center;
-    line-height: 18px; /* مهم: عدد کاملاً وسط */
-    padding: 0;        /* مهم: بیضی نمی‌شود */
-    font-weight: bold;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.bell-shake {
-    animation: bellShake 1.2s infinite;
-    transform-origin: top center;
-}
-
-@keyframes bellShake {
-    0% { transform: rotate(0); }
-    20% { transform: rotate(15deg); }
-    40% { transform: rotate(-15deg); }
-    60% { transform: rotate(10deg); }
-    80% { transform: rotate(-10deg); }
-    100% { transform: rotate(0); }
-}
-
-
-.dropdown-messages a:hover {
-    background: #f0f0f0;
-    text-decoration: none;
-}
-
-.dropdown-messages .dropdown-header {
-    background: #fafafa;
-}
-
-#chatNotificationDropdown .fa-bell {
-    transition: 0.2s;
-}
-
-#chatNotificationDropdown:hover .fa-bell {
-    color: #007bff;
-}
-.language-selector {
-    /* برای اینکه آیتم ها در یک خط باشند */
-    display: flex; /* یا inline-flex */
-    align-items: center; /* برای تراز عمودی آیکون و متن */
-    margin-top: 10px; /* فاصله از بالای لینک اخبار */
-    margin-left: 30px; /* یا مقدار دلخواه برای جلو بردن نسبت به اخبار */
-    white-space: nowrap; /* جلوگیری از رفتن آیتم ها به خط بعد در صورت کمبود فضا */
-}
-
-.language-selector i {
-    margin-left: 5px; /* فاصله آیکون از کلمه "مدیریت" */
-    margin-right: 5px; /* فاصله آیکون از کلمه "مدیریت" */
-}
-
-.language-selector span {
-    /*  margin-left: 5px; فاصله کلمه "مدیریت" از آیکون */
-    margin-right: 27px; /* فاصله کلمه "مدیریت" از لینک های زبان */
-}
-
-.language-selector a {
-    margin-left: 8px; /* فاصله بین لینک های زبان */
-    text-decoration: none; /* حذف خط زیر لینک ها در صورت نیاز */
-    /* استایل های دیگر برای لینک های زبان */
-}
-.language-selector a.active{
-    border-bottom: 2px solid #1abc9c; /* رنگ دلخواه */
-    padding-bottom: 4px;
 }
 
 @media (max-width: 768px) {

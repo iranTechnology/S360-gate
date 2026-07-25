@@ -8,8 +8,8 @@
                     <div class="parent-footer-iran w-100">
                         <div class="item-footer item-footer1">
                             <div class="parent-item-footer parent-item-footer-responsive box-item-footer2">
-                                <a class="__logo_class__ nav-header" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                                    <img alt="{$obj->Title_head()}" class="logo" src="project_files/images/logo.png" />
+                                <a class="__logo_class__ nav-header" >
+                                    <img alt="img-logo" class="logo" src="project_files/images/logo.png" />
                                     <div class="d-flex flex-column">
                                         <h4>
                                             تجربه زیارتی متفاوت
@@ -253,7 +253,7 @@
                 <div class="container">
                     <div class="parent-iran-tech">
                         <p>
-                            کپی هر محتوایی از سایت و سوشال مدیای <a href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">کاروان سادات</a> تنها با مجوز کتبی و ذکر منبع برای مقاصد
+                            کپی هر محتوایی از سایت و سوشال مدیای کاروان سادات تنها با مجوز کتبی و ذکر منبع برای مقاصد
                             غیر تجاری امکان پذیر میباشد.
                         </p>
                         <div class="parent-text-iran-tech">

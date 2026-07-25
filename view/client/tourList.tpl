@@ -1,18 +1,5 @@
 
 {if in_array($smarty.const.CLIENT_ID, $objFunctions->newLogin())}
-    <style>
-        #globalBlocker {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.25);
-            backdrop-filter: blur(2px);
-            z-index: 2000; /* خیلی بالا */
-            display: none;
-        }
-    </style>
 <main>
     <section class="profile_section mt-3 mb-3 row">
         <div class="container">
@@ -251,8 +238,6 @@
 
                                 <a data-title="ویرایش" href="{$smarty.const.ROOT_ADDRESS}/groupTourEdit&id={$item['id_same']}"
                                    class="btn_action site-bg-main-color fa fa-pencil-square-o tooltip_w"></a>
-                                <a data-title="کپی" onclick="duplicateTour('{$item.id_same}', 'id_same'); return false;"
-                                   class="btn_action site-bg-main-color fa fa-copy tooltip_w"></a>
                                 <a data-title="حذف" onclick="logicalDeletion('{$item.id_same}', 'id_same'); return false;"
                                    class="btn_action site-bg-main-color fa fa-times tooltip_w"></a>
                             </td>
@@ -267,7 +252,6 @@
             </table>
             </div>
         </div>
-        <div id="globalBlocker"></div>
     {literal}
         <script type="text/javascript">
             $(document).ready(function () {

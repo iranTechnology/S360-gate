@@ -27,7 +27,7 @@ class userBookmarks extends clientAuth
         $this->total_bookmarks = count($this->bookmarks);
     }
 
-    public function addBookmark($title, $url , $clientID = CLIENT_ID , $sort = 0)
+    public function addBookmark($title, $url)
     {
 
         if (empty($title) || empty($url)) {
@@ -39,13 +39,14 @@ class userBookmarks extends clientAuth
             return array('success' => false, 'message' => 'لینک وارد شده معتبر نیست');
         }
 
+        $clientId = CLIENT_ID;
         $model = $this->getModel('userBookmarksModel');
 
         $data = array(
-            'client_id' => $clientID,
+            'client_id' => $clientId,
             'title' => "$title",
             'url' => "$url",
-            'sort_order' => $sort ? $sort :  $this->total_bookmarks
+            'sort_order' => $this->total_bookmarks
         );
 
 

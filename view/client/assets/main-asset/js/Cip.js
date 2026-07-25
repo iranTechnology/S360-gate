@@ -36,17 +36,17 @@ function showAirportList(inputElement) {
    let filtered = cipAirportsList.filter(function(item) {
       if (!search_value) return true;
       return item.AirportFa.includes(search_value) ||
-         item.AirportEn.toLowerCase().includes(search_value) ||
-         item.AirportAr.includes(search_value) ||
-         item.DepartureCode.toLowerCase().includes(search_value);
+          item.AirportEn.toLowerCase().includes(search_value) ||
+          item.AirportAr.includes(search_value) ||
+          item.DepartureCode.toLowerCase().includes(search_value);
    });
 
    let html = '';
 
    filtered.forEach(function(item) {
       let airport_name = (lang === 'fa') ? item.AirportFa :
-         (lang === 'ar') ? (item.AirportAr || item.AirportEn) :
-            item.AirportEn;
+          (lang === 'ar') ? (item.AirportAr || item.AirportEn) :
+              item.AirportEn;
 
       let json_value = JSON.stringify(item);
 
@@ -54,7 +54,7 @@ function showAirportList(inputElement) {
                    <div class='div_c_sr'>
                        <i class="svg_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M272 192C272 236.2 236.2 272 192 272C147.8 272 112 236.2 112 192C112 147.8 147.8 112 192 112C236.2 112 272 147.8 272 192zM192 160C174.3 160 160 174.3 160 192C160 209.7 174.3 224 192 224C209.7 224 224 209.7 224 192C224 174.3 209.7 160 192 160zM384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192H384zM192 48C112.5 48 48 112.5 48 192C48 204.4 52.49 223.6 63.3 249.2C73.78 274 88.66 301.4 105.8 329.1C134.2 375.3 167.2 419.1 192 451.7C216.8 419.1 249.8 375.3 278.2 329.1C295.3 301.4 310.2 274 320.7 249.2C331.5 223.6 336 204.4 336 192C336 112.5 271.5 48 192 48V48z"/></svg></i>
                        <span class='c-text'>${airport_name}</span>
-                       (${item.DepartureCode})
+                       <em>(${item.DepartureCode})</em>
                    </div>
                </li>`;
    });
@@ -101,8 +101,8 @@ function onAirportSelect(item, element) {
    origin = item.DepartureCode || item.Departure_Code || null;
 
    let airport_name = (lang === 'fa') ? item.AirportFa :
-      (lang === 'ar') ? (item.AirportAr || item.AirportEn) :
-         item.AirportEn;
+       (lang === 'ar') ? (item.AirportAr || item.AirportEn) :
+           item.AirportEn;
 
    $('#route_origin_all').val(airport_name);
    $('#list_airport_origin_cip').hide().empty();
@@ -117,16 +117,16 @@ function onAirportSelect(item, element) {
    $flightSelect.append(new Option('', '', true, true));
 
    let options = (item.CountryFa === 'ایران' || item.CountryEn === 'Iran')
-      ? [
-         { value: 'dom_inbound', text: 'پرواز داخلی  (ورودی به فرودگاه)' },
-         { value: 'dom_outbound', text: 'پرواز داخلی  (خروجی از فرودگاه)' },
-         { value: 'intl_inbound', text: 'پرواز بین المللی  (ورودی به فرودگاه)' },
-         { value: 'intl_outbound', text: 'پرواز بین المللی  (خروجی از فرودگاه)' }
-      ]
-      : [
-         { value: 'intl_inbound', text: 'پرواز بین المللی  (ورودی به فرودگاه)' },
-         { value: 'intl_outbound', text: 'پرواز بین المللی  ( خروجی از فرودگاه)' }
-      ];
+       ? [
+          { value: 'dom_inbound', text: 'پرواز داخلی  (ورودی به فرودگاه)' },
+          { value: 'dom_outbound', text: 'پرواز داخلی  (خروجی از فرودگاه)' },
+          { value: 'intl_inbound', text: 'پرواز بین المللی  (ورودی به فرودگاه)' },
+          { value: 'intl_outbound', text: 'پرواز بین المللی  (خروجی از فرودگاه)' }
+       ]
+       : [
+          { value: 'intl_inbound', text: 'پرواز بین المللی  (ورودی به فرودگاه)' },
+          { value: 'intl_outbound', text: 'پرواز بین المللی  ( خروجی از فرودگاه)' }
+       ];
 
    options.forEach(opt => {
       $flightSelect.append(new Option(opt.text, opt.value));
@@ -204,9 +204,9 @@ function checkAdultAndChildCip(number_adult, number_child) {
 }
 function checkEmptyFieldCip(origin , TripType ,  FlightType) {
    if (
-      origin === '' ||
-      TripType == '' ||
-      FlightType == ''
+       origin === '' ||
+       TripType == '' ||
+       FlightType == ''
 
    ) {
       $.alert({
@@ -240,9 +240,9 @@ function dataSearchCip() {
    let number_infant = parseInt($('.internal-infant-js').val())
    let departure_date_cip = $('#dateForCip').val()
    checkSearchCipFieldsValues(
-      { value: origin, name: 'فرودگاه مبدا' },
-      { value: flightType, name: 'نوع پرواز' },
-      { value: departure_date_cip, name: 'تاریخ ورود' }
+       { value: origin, name: 'فرودگاه مبدا' },
+       { value: flightType, name: 'نوع پرواز' },
+       { value: departure_date_cip, name: 'تاریخ ورود' }
    );
    let tripType = flightType === "intl_outbound" || flightType === "intl_inbound" ? "international" : "domestic"
    let flightTypeNew = (flightType === "dom_outbound" || flightType === "intl_outbound" ) ? "outbound" : "inbound"
@@ -258,32 +258,25 @@ function dataSearchCip() {
    }
 }
 
-function searchFormCip(obj , altDomain = null) {
+function searchFormCip(obj) {
    let count_passenger = `${obj.number_adult}-${obj.number_child}-${obj.number_infant}`
-   let url;
-   if (altDomain != null) {
-      url = `${altDomain}/gds/fa/search-cip/${origin}/${obj.departure_date}/${obj.flightType}&${obj.TripType}/${count_passenger}`;
-   } else {
-      url = `${amadeusPathByLang}search-cip/${origin}/${obj.departure_date}/${obj.flightType}&${obj.TripType}/${count_passenger}`;
-   }
+   let url = `${amadeusPathByLang}search-cip/${origin}/${obj.departure_date}/${obj.flightType}&${obj.TripType}/${count_passenger}`;
    const form = $('#cip_form')[0];
 
    let target = form.target || '_self';
-
-   console.log('url: ' , url)
 
    window.open(url, target);
 
 }
 
-function searchCip(altDomain = null) {
+function searchCip() {
    let no_error = true
    let obj_url = dataSearchCip()
    no_error = checkCountAdultCip(obj_url.number_adult)
    if (no_error) {
       no_error = checkCountAdultVsInfantCip(
-         obj_url.number_adult,
-         obj_url.number_infant,
+          obj_url.number_adult,
+          obj_url.number_infant,
       )
    }
    if (no_error) {
@@ -291,16 +284,17 @@ function searchCip(altDomain = null) {
    }
    if (no_error) {
       no_error = checkEmptyFieldCip(
-         obj_url.origin,
-         obj_url.FlightType,
-         obj_url.TripType
+          obj_url.origin,
+          obj_url.FlightType,
+          obj_url.TripType
       )
    }
    if (no_error) {
-         searchFormCip(obj_url , altDomain)
+      searchFormCip(obj_url)
 
    }
-   
+
+
 }
 
 // =============================================== end search ==============================================

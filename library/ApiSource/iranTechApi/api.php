@@ -649,8 +649,7 @@ class api extends clientAuth
 
                 }
 
-            }
-            else {
+            } else {
                 error_log('try show Response equal in time=> ' . date('Y/m/d H:i:s') . ' ' . 'With RequestNumber' . $dataInfo['code']  . " \n", 3, LOGS_DIR . 'log_method_reserve_Api.txt');
                 $resultFinal['Messages'] = array(
                     'errorCode' => '000006',
@@ -666,8 +665,7 @@ class api extends clientAuth
                 $ReserveTicket = $resultFinal;
             }
 
-        }
-        else {
+        } else {
             $resultFinal['Messages'] = array(
                 'errorCode' => '000005',
                 'errorMessage' => 'ErrorInternalSystem',

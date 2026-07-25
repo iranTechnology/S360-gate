@@ -76,27 +76,27 @@
 
 $(document).ready(function () {
     if($(window).width() > 576){
-        // $('#Flight-tab').click(function (){
-        //     $('.banner-demo').css('background-image', 'url("images/flight-bg-js.jpg")');
-        // });
-        // $('#Hotel-tab').click(function (){
-        //     $('.banner-demo').css('background-image', 'url("images/hotel-bg-js.jpg")');
-        // });
-        // $('#Bus-tab').click(function (){
-        //     $('.banner-demo').css('background-image', 'url("images/bus-bg-js.jpg")');
-        // });
-        // $('#Insurance-tab').click(function (){
-        //     $('.banner-demo').css('background-image', 'url("images/bimeh-bg-js.jpg")');
-        // });
-        // $('#Tour-tab').click(function (){
-        //     $('.banner-demo').css('background-image', 'url("images/tour-bg-js.jpg")');
-        // });
-        // $('#Entertainment-tab').click(function (){
-        //     $('.banner-demo').css('background-image', 'url("images/tafrihat-bg-js.jpg")');
-        // });
-        // $('#Visa-tab').click(function (){
-        //     $('.banner-demo').css('background-image', 'url("images/visa-bg-js.jpg")');
-        // });
+        $('#Flight-tab').click(function (){
+            $('.banner-demo').css('background-image', 'url("images/flight-bg-js.jpg")');
+        });
+        $('#Hotel-tab').click(function (){
+            $('.banner-demo').css('background-image', 'url("images/hotel-bg-js.jpg")');
+        });
+        $('#Bus-tab').click(function (){
+            $('.banner-demo').css('background-image', 'url("images/bus-bg-js.jpg")');
+        });
+        $('#Insurance-tab').click(function (){
+            $('.banner-demo').css('background-image', 'url("images/bimeh-bg-js.jpg")');
+        });
+        $('#Tour-tab').click(function (){
+            $('.banner-demo').css('background-image', 'url("images/tour-bg-js.jpg")');
+        });
+        $('#Entertainment-tab').click(function (){
+            $('.banner-demo').css('background-image', 'url("images/tafrihat-bg-js.jpg")');
+        });
+        $('#Visa-tab').click(function (){
+            $('.banner-demo').css('background-image', 'url("images/visa-bg-js.jpg")');
+        });
     }    $(".select2 , .select-route-bus-js , .default-select2 , .gasht-type-js , .select-route-bus-js , .select2_in").select2();
     $(".switch-input-tour-js").on("change", function () {
         if (this.checked && this.value === "1") {

@@ -6,32 +6,25 @@
                     {{ useXmltag('Returnflight')}}
                 </span>
         <template v-for="detail_flight in return_detail_flight">
-          <div class="international-available-airlines-details">
             <div class=" international-available-airlines-detail  site-border-right-main-color" >
-              <div class="d-flex align-items-center gap-4 w-100">
                 <div class="international-available-airlines-logo-detail foreign " :class='`${detail_flight.airline.airline_code}`'>
                     <div class="logo-airline-ico-foreign"></div>
+                </div>
 
-                </div>
-                <div>
-                  <span class="airline_s mr-2">
-<!--                       <i>{{ useXmltag('Airline')}}</i>-->
-                      {{ detail_flight.airline.airline_name}} ({{detail_flight.airline.airline_code}})
-                    </span>
-                </div>
-              </div>
                 <div class="international-available-airlines-info-detail side-logo-detail">
-
+                    <span class="airline_s">
+                       <i>{{ useXmltag('Airline')}}</i>
+                      {{ detail_flight.airline.airline_name}} ({{detail_flight.airline.airline_code}}) <em>|</em>
+                    </span>
                   <span class="airline_s" v-show="detail_flight.airline.airline_code_operator != null ">
                        <i>{{ useXmltag('AirlineOperator') }}</i>
                       {{detail_flight.airline.airline_code_operator }} <em>|</em>
                     </span>
 
-                    <span class="flightnumber_s">
-                      <i>{{ useXmltag('Numflight')}} :</i>
-                      {{ detail_flight.flight_number}} <em>|</em>
-                    </span>
-                  <span class="text-nowrap" v-if="detail_flight.cabin_type !=''">  {{ useXmltag('Classrate')}} :<i class="openL ml-1 mr-0">{{ detail_flight.cabin_type}} </i> <em>|</em></span>
+<!--                    <span class="flightnumber_s">-->
+<!--                      <i>{{ useXmltag('Numflight')}} :</i>-->
+<!--                      {{ detail_flight.flight_number}} <em>-</em>-->
+<!--                    </span>-->
 
                     <span class="seatClass_s">{{ detail_flight.seat_class}}</span>
 
@@ -41,7 +34,6 @@
                 </div>
             </div>
             <div class="international-available-airlines-detail site-border-right-main-color">
-              <div class="d-flex w-100 align-items-center justify-content-between">
                 <div class="airlines-detail-box-foreign origin-detail-box">
                     <span class="open  displayb mr-4 ml-4">
                         {{ detail_flight.departure.departure_city}}({{detail_flight.departure.departure_code}})
@@ -49,14 +41,13 @@
                     <span class="open  displayb mr-4 ml-4"> {{ detail_flight.departure.departure_airport}}</span>
                     <span class="openB  displayb mr-4 ml-4">{{ detail_flight.departure_time}}</span>
                 </div>
-                <span ><svg id="Capa_1" viewBox="0 0 24 24" width="30px" height="30px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg></span>
 
                 <div class="airlines-detail-box-foreign destination-detail-box">
                     <span class="open  displayb mr-4 ml-4">{{ detail_flight.arrival.arrival_city}}({{ detail_flight.arrival.arrival_code}})</span>
                     <span class="open  displayb mr-4 ml-4">{{ detail_flight.arrival.arrival_airport}}</span>
                     <span class="openB  displayb mr-4 ml-4" v-if="detail_flight.arrival_date !=null">{{ detail_flight.arrival_time}} </span>
                 </div>
-              </div>
+
                 <div class="airlines-detail-box details-detail-box ">
                                       <span class="w-100 cursor-pointer" v-if=" detail_flight.source_id =='14'"    @click='getBaggage()'>
                                             <i class="capacity_s">{{ detail_flight.baggage.baggage_statement}} </i>
@@ -66,13 +57,12 @@
                                        {{ useXmltag('Permissibleamount')}} : <i class="iranNum">   <span class="capacity_s">{{ detail_flight.baggage.baggage_statement}} </span></i>
                                     </span>
 
-<!--                    <span class="padt0 iranL  lh18 displayb" v-if="detail_flight.cabin_type !=''">-->
-<!--                        {{ useXmltag('Classrate')}}:<i class="openL">{{ detail_flight.cabin_type}} </i>-->
-<!--                    </span>-->
+                    <span class="padt0 iranL  lh18 displayb" v-if="detail_flight.cabin_type !=''">
+                        {{ useXmltag('Classrate')}}:<i class="openL">{{ detail_flight.cabin_type}} </i>
+                    </span>
 
                 </div>
             </div>
-          </div>
            <div class="international-available-airlines-detail airlines-stops-time " v-if="detail_flight.is_transit">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill airlines-stops-time-svg" viewBox="0 0 16 16">
                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
@@ -155,10 +145,7 @@
 
               return `${h} ساعت و ${m} دقیقه`;
            }
-        },
-        // wacth(){
-        //   console.log(detail_flight.flight_number)
-        // }
+        }
     }
 </script>
 

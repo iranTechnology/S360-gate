@@ -2,8 +2,8 @@
     <div class="form-group destination_start">
         <div class="s-u-in-out-wrapper raft raft-change change-bor w-100">
             <input id="autoComplateSearchIN" name="autoComplateSearchIN"
-                   class="inputSearchForeign w-100 form-control" type="text" value=""
-                   placeholder='##Destination##'
+                   class="inputSearchForeign w-100" type="text" value=""
+                   placeholder='##Selectdestination##'
                    autocomplete="off"
                    onkeyup="searchCity('hotel')"
                    onclick="openBoxPopular('hotel')">

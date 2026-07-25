@@ -6,8 +6,8 @@
 <footer class="position-relative i_modular_footer">
  <div class="div-footer-parent">
   <div class="container">
-   <div class="margin-top-footer">
-    <div>
+   <div class="d-flex flex-wrap margin-top-footer">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-0">
      <div class="parent-item-footer parent-item-footer-responsive">
       <div class="img-box-footer">
        <img alt="footer-logo" class="__logo_class__" src="project_files/images/logo.png"/>
@@ -56,7 +56,7 @@
       </div>
      </div>
     </div>
-    <div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-6 p-0">
      <div class="box-item-footer text-right">
       <h3>
        خدمات
@@ -135,7 +135,7 @@
       </ul>
      </div>
     </div>
-    <div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-6 p-0">
      <div class="box-item-footer text-right">
       <h3>
        دسترسی آسان
@@ -214,7 +214,7 @@
       </ul>
      </div>
     </div>
-    <div>
+    <div class="col-lg-2 col-md-6 col-sm-12 col-12 p-0">
      <div class="parent-namad">
       <h3>
        مجوزها
@@ -229,15 +229,9 @@
        <a href="javascript:">
         <img alt="namad-2" src="project_files/images/certificate3.png"/>
        </a>
-       {if !empty($about.enamad_id) && !empty($about.enamad_code)}
-        <a referrerpolicy="origin" target="_blank"
-           href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
-         <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
-              alt="اینماد"
-              style="cursor:pointer">
+       <a href="javascript:">
+        <img alt="namad-2" src="project_files/images/enamad.png"/>
        </a>
-       {/if}
-
       </div>
      </div>
     </div>

@@ -68,7 +68,7 @@ class members extends clientAuth {
             )
         ));
     }
-    public function memberInsert($data) {
+    public function memberInsert($data , $sendMsg = true) {
         $exist_member = $this->members_model->getMemberByUserName($data);
 
         if (!$exist_member || ($exist_member['is_member'] == 0)) {
@@ -100,6 +100,8 @@ class members extends clientAuth {
                 if($data['reagentCode']){
                     $this->setPointReagentCode($data['reagentCode'], $info_member);
                 }
+
+                if ($sendMsg) {
 
                 if(SOFTWARE_LANG == 'fa') {
                     //sms
@@ -155,6 +157,8 @@ class members extends clientAuth {
                     mail($to, $subject, $message, $headers);
                 }
 
+                }
+
                 $resLogin = $this->memberLogin($data['entry'], $data['password'], 'off', '0', 'byRegister');
                 if ($resLogin && isset($data['Type']) && strtolower($data['Type']) == 'app') {
                     return  $this->ReturnOutLoginApp($info_member);
@@ -171,9 +175,10 @@ class members extends clientAuth {
             return functions::toJson(['success' => false, 'message' => functions::Xmlinformation('RegistrationFailedTryAgain')->__toString(), 'position' => 'resError', 'redirect_url' => '']);
         }
 
-        if (isset($data['Type']) && strtolower($data['Type']) == 'app' && $exist_member && $exist_member['is_member'] == 1) {
-            return $this->ReturnOutLoginApp($exist_member);
-        }
+//        if (isset($data['Type']) && strtolower($data['Type']) == 'app' && $exist_member && $exist_member['is_member'] == 1) {
+//            return $this->ReturnOutLoginApp($exist_member);
+//        }
+
         else if(SOFTWARE_LANG == 'fa') {
             return functions::toJson(['success' => false, 'message' => functions::Xmlinformation('MobileIsDuplicate')->__toString(), 'position' => 'ExistsUser', 'redirect_url' => '']);
         }else{
@@ -191,7 +196,7 @@ class members extends clientAuth {
      *
      * @return bool|string
      */
-    public function memberLogin($entry, $password, $remember = 'off', $organizationLevel = 0, $isEnableClub) {
+    public function memberLogin($entry, $password, $remember = 'off', $organizationLevel = 0, $isEnableClub , $sendMsg = true) {
 
         $data_login['entry'] = $entry ;
         $data_login['password']  = functions::encryptPassword($password) ;
@@ -245,7 +250,7 @@ class members extends clientAuth {
                 setcookie('password', $password, time() - 3600, ("/"));
             }
 
-            if(SOFTWARE_LANG == 'fa'  && CLIENT_ID == '271') {
+            if(SOFTWARE_LANG == 'fa'  && CLIENT_ID == '271' && $sendMsg) {
                 //sms
                 $smsController = Load::controller('smsServices');
                 $objSms = $smsController->initService('0');
@@ -528,9 +533,6 @@ class members extends clientAuth {
             if (!empty($data['id_departments'])) {
                 $data_update['id_departments'] = trim($data['id_departments']);
             }
-            if (!empty($data['tour_contact_display'])) {
-                $data_update['tour_contact_display'] = trim($data['tour_contact_display']);
-            }
             $result = $model->updateWithBind($data_update, ['id' => $user['id']]);
             if ($result) {
                 return 'success : ویرایش با موفقیت انجام شد';
@@ -582,8 +584,7 @@ class members extends clientAuth {
             'accessAdmin' => trim($members['accessAdmin']),
             'card_number' => $this->generateCardNumber(),
             'register_date' => Date('Y-m-d H:i:s'),
-            'id_departments'=> trim($members['id_departments']),
-            'tour_contact_display'=> trim($members['tour_contact_display'])
+            'id_departments'=> trim($members['id_departments'])
         ];
         $insert_result = $this->members_model->insertWithBind($data_insert);
 
@@ -769,12 +770,8 @@ class members extends clientAuth {
      *
      * @return 0 for passengers online or counter without credit and return number for counter that thiers agensy have credit
      */
-    public function getCredit($memberId = '') {
-        if (empty($memberId)) {
-            $info_member = functions::infoAgencyByMemberId(Session::getUserId());
-        } else {
-            $info_member = functions::infoAgencyByMemberId($memberId);
-        }
+    public function getCredit() {
+        $info_member = functions::infoAgencyByMemberId(Session::getUserId());
         $userAgencyId = $info_member['fk_agency_id'];
 
         if ($userAgencyId == '0') {  //counter without agency (maybe online passenger)
@@ -1118,42 +1115,42 @@ class members extends clientAuth {
 //                return 'error : خطا در ثبت درخواست، لطفا مجددا اقدام نمائید';
 //            }
 
-//            $mail = new PHPMailer(true);
+            $mail = new PHPMailer(true);
 
-//            $agency = $this->getModel('clientsModel')->get()->where('id', CLIENT_ID)->find();
-//
-//            $subject = $agency['AgencyName'] . " - ";
-//            $subject .= "بلیط پرواز ";
-//            $subject .= $res_model['origin_city'];
-//            $subject .= " به ";
-//            $subject .= $res_model['desti_city'];
-//
-//            $message = "رزرو شما با موفقیت صادر شد، جهت دریافت بلیط روی لینک زیر کلیک نمایید :\r\n";
-//
-//            $target = (SOFTWARE_LANG == 'fa') ? 'parvazBookingLocal' : 'ticketForeign';
-//            $message .= $agency['MainDomain'] . "/gds/pdf&target=" . $target . "&id=" . $request_number;
+            $agency = $this->getModel('clientsModel')->get()->where('id', CLIENT_ID)->find();
+
+            $subject = $agency['AgencyName'] . " - ";
+            $subject .= "بلیط پرواز ";
+            $subject .= $res_model['origin_city'];
+            $subject .= " به ";
+            $subject .= $res_model['desti_city'];
+
+            $message = "رزرو شما با موفقیت صادر شد، جهت دریافت بلیط روی لینک زیر کلیک نمایید :\r\n";
+
+            $target = (SOFTWARE_LANG == 'fa') ? 'parvazBookingLocal' : 'ticketForeign';
+            $message .= $agency['MainDomain'] . "/gds/pdf&target=" . $target . "&id=" . $request_number;
 
 
             try {
-//                $mail = new PHPMailer(true);
-//                $mail->SMTPDebug = 0;
-//                $mail->isSMTP();
-//                $mail->Host       = 'smtp.gmail.com';
-//                $mail->SMTPAuth   = true;
-//                $mail->Username   = 'generaltravel2000@gmail.com';
-//                $mail->Password   = 'atcaqnobmlsjcywc';
-//                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-//                $mail->Port       = 587;
-//
-//                $mail->setFrom('generaltravel2000@gmail.com', $agency['AgencyName']);
-//                $mail->addAddress($email);
-//
-//                $mail->isHTML(true);
-//                $mail->CharSet = 'UTF-8';
-//                $mail->Subject = $subject;
-//                $mail->Body    = $message;
-//
-//                $mailSend = $mail->send();
+                $mail = new PHPMailer(true);
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'generaltravel2000@gmail.com';
+                $mail->Password   = 'atcaqnobmlsjcywc';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = 587;
+
+                $mail->setFrom('generaltravel2000@gmail.com', $agency['AgencyName']);
+                $mail->addAddress($email);
+
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Subject = $subject;
+                $mail->Body    = $message;
+
+                $mailSend = $mail->send();
 
 
                 return 'success : درخواست شما با موفقیت ارسال شد';
@@ -2123,111 +2120,6 @@ class members extends clientAuth {
                 return true;
         }
         return false;
-    }
-    public function AdmincallMemberLogin($params) {
-
-        //todo fix remember me checkbox
-        $result =  $this->AdminmemberLogin($params['entry'],$params['password'],'off',0,false);
-        if($result){
-            return true;
-        }
-        return false;
-    }
-    /**
-     * @param $entry
-     * @param $password
-     * @param string $remember
-     * @param int $organizationLevel
-     *
-     * @param $isEnableClub
-     *
-     * @return bool|string
-     */
-    public function AdminMemberLogin($entry, $password, $remember = 'off', $organizationLevel = 0, $isEnableClub , $sendMsg = true) {
-
-        $data_login['entry'] = $entry ;
-        $data_login['password']  = $password ;
-
-        $result = $this->members_model->getMemberByUserAndPassword($data_login);
-
-        if(!$result){
-
-            if(SOFTWARE_LANG === 'fa'){
-                $validateResult= $this->getController('verificationCode')->validateCode($entry,$password);
-
-                if($validateResult['status']){
-                    $result=$this->members_model->getMemberByUserName($data_login);
-                }else{
-                    if($validateResult['message']){
-                        return $validateResult['message'];
-                    }
-                }
-            }else{
-                $result=$this->members_model->getMemberByUserName($data_login);
-            }
-        }
-
-        if ($result['fk_counter_type_id'] != 5) {
-            $agencyInfo = functions::infoAgencyByMemberId($result['id']);
-            $result = $agencyInfo['active'] == 'on' ? $result : array();
-        }
-        if (empty($result)) {
-            return false;
-        } else {
-            Session::LoginDo($result['name'] . ' ' . $result['family'], $result['id'], $result['card_number']);
-
-            Session::setCounterTypeId($result['fk_counter_type_id']);
-            if ($organizationLevel != 0) {
-                Session::setOrganization($organizationLevel);
-            }
-
-
-            if (isset($_POST['setcoockie']) && $_POST['setcoockie'] == "yes") {
-                setcookie('LoginPanel', 'Yes', time() + (86400 * 30), '/', null, 0);
-            }
-
-            if ($remember == 'on') {
-                $login_time = 3600 * 24;
-                setcookie('email', $entry, time() + $login_time, ("/"));
-                setcookie('password', $password, time() + $login_time, ("/"));
-            } else {
-                $entry = " ";
-                $password = " ";
-                setcookie('email', $entry, time() - 3600, ("/"));
-                setcookie('password', $password, time() - 3600, ("/"));
-            }
-
-            if(SOFTWARE_LANG == 'fa'  && CLIENT_ID == '271' && $sendMsg) {
-                //sms
-                $smsController = Load::controller('smsServices');
-                $objSms = $smsController->initService('0');
-
-                if ($objSms) {
-                    $messageVariables = array(
-                        'sms_name' => $result['name'] . ' ' . $result['family'],
-                        'sms_agency' => CLIENT_NAME,
-                        'sms_agency_mobile' => CLIENT_MOBILE,
-                        'sms_agency_phone' => CLIENT_PHONE,
-                        'sms_agency_email' => CLIENT_EMAIL,
-                        'sms_agency_address' => CLIENT_ADDRESS,
-                    );
-
-                    $smsArray = array(
-                        'smsMessage' => $smsController->getUsableMessage('memberLogin', $messageVariables),
-                        'cellNumber' => $result['mobile'],
-                        'smsMessageTitle' => 'memberLogin',
-                        'memberID' => (!empty($result['id']) ? $result['id'] : ''),
-                        'receiverName' => $messageVariables['sms_name'],
-                    );
-
-                    $smsController->sendSMS( $smsArray );
-                }
-            }
-
-            return functions::withSuccess($result['id'],200,'ورود با موفقیت انجام شد');
-        }
-        //        }
-
     }
 
     public function callMemberRegister($params) {

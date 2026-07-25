@@ -120,12 +120,15 @@ class bookingBusShow extends clientAuth
                 $sql.=" AND (payment_type = 'credit' OR payment_type = 'member_credit')";
             }
         }
-        /*1405/2/30 غیرفعال شذ
+
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
+
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
+
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
-           $sql .= " AND serviceTitle IN ({$check_access})";
-        }*/
+            
+            $sql .= " AND serviceTitle IN ({$check_access})";
+        }
 
         $sql.=" GROUP BY passenger_factor_num ORDER BY creation_date_int DESC ";
 
@@ -164,53 +167,48 @@ class bookingBusShow extends clientAuth
 
             $creation_date_int=dateTimeSetting::jdate('Y-m-d (H:i:s)', $book['creation_date_int']);
             $expPaymentDate=[];
-            if(!empty($book['payment_date'])) {
-                if (LANG_PANEL_ADMIN == 'fa') {
-                    $paymentDate = functions::set_date_payment($book['payment_date']);
-                    $expPaymentDate = explode(" ", $paymentDate);
-                }
-                else{//en ar
-                    $expPaymentDate = explode(" ", $book['payment_date']);
-                }
+            if(!empty($book['payment_date'])){
+                $paymentDate=functions::set_date_payment($book['payment_date']);
+                $expPaymentDate=explode(" ", $paymentDate);
             }
             if(!empty($book['member_name'])){
                 $memberName=$book['member_name'];
             }else{
-                $memberName=functions::Xmlinformation("PassengerOnline");
+                $memberName='مسافرآنلاین';
             }
             switch($book['status']){
                 case 'book':
-                    $status=(string)functions::Xmlinformation("Definitivereservation");
+                    $status='رزرو قطعی';
                     break;
                 case 'temporaryReservation':
-                    $status=(string)functions::Xmlinformation("Temporaryreservation");
+                    $status='رزرو موقت';
                     break;
                 case 'prereserve':
-                    $status=(string)functions::Xmlinformation("lock");
+                    $status='پیش رزرو';
                     break;
                 case 'bank':
-                    $status=(string)functions::Xmlinformation("NavigateToPort");
+                    $status='هدایت به درگاه';
                     break;
                 case 'cancel':
-                    $status=(string)functions::Xmlinformation("Cancle");
+                    $status='کنسل';
                     break;
                 case 'error':
-                    $status=(string)functions::Xmlinformation("reserveError");
+                    $status='خطا';
                     break;
                 case 'nothing':
-                    $status=(string)functions::Xmlinformation("Unknown");
+                    $status='نامشخص';
                     break;
                 default:
-                    $status=(string)functions::Xmlinformation("Unknown");
+                    $status='نامشخص';
                     break;
             }
 
             if (strpos($book['WebServiceType'], 'private') === 0) {
-                $service_type = functions::Xmlinformation("Exclusive");
+                $service_type = 'اختصاصی';
             } elseif (strpos($book['WebServiceType'], 'public') === 0) {
-                $service_type = functions::Xmlinformation("Shared");
+                $service_type = 'اشتراکی';
             } else {
-                $service_type = '<del>'.functions::Xmlinformation("Exclusive").' - '.functions::Xmlinformation("Shared").'</del>';
+                $service_type = '<del> اشتراکی - اختصاصی</del>';
             }
 
             $dataRows[$k]['NumberColumn']=$numberColumn-1;
@@ -218,21 +216,8 @@ class bookingBusShow extends clientAuth
             $dataRows[$k]['PaymentTime']=$expPaymentDate[1];
             $dataRows[$k]['MemberName']=$memberName;
             $dataRows[$k]['MemberMobile']=$book['member_mobile'];
-            if(LANG_PANEL_ADMIN=='fa') {
-                $dataRows[$k]['OriginName'] = $book['OriginCity'];
-                $dataRows[$k]['DestinationCity'] = $book['DestinationCity'];
-            }else{//en ar
-                $OriginCity =$this->getModel('airportModel')
-                    ->get(['DepartureCode'])
-                    ->where('DepartureCityFa',$book['OriginCity'])
-                    ->find();
-                $DestinationCity =$this->getModel('airportModel')
-                    ->get(['DepartureCode'])
-                    ->where('DepartureCityFa',$book['DestinationCity'])
-                    ->find();
-                $dataRows[$k]['OriginName'] = $OriginCity['DepartureCode'];
-                $dataRows[$k]['DestinationCity'] = $DestinationCity['DepartureCode'];
-            }
+            $dataRows[$k]['OriginName']=$book['OriginCity'];
+            $dataRows[$k]['DestinationCity']=$book['DestinationCity'];
             $dataRows[$k]['DateMove']=$book['DateMove'];
             $dataRows[$k]['TimeMove']=$book['TimeMove'];
             $dataRows[$k]['BaseCompany']=$book['BaseCompany'];
@@ -881,12 +866,15 @@ $pdfContent .= '</tr>
                 $sql.=" AND (payment_type = 'credit' OR payment_type = 'member_credit')";
             }
         }
-        /* 1405_2_30 غیرفعال شذ
+
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
+
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
+
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
+
             $sql .= " AND serviceTitle IN ({$check_access})";
-        }*/
+        }
 
         $sql.=" GROUP BY passenger_factor_num ORDER BY creation_date_int DESC ";
 

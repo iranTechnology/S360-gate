@@ -105,11 +105,8 @@ class agency  extends clientAuth {
 		$data['active'] = ( isset($agency['hasSite']) && $agency['hasSite'] == 1 ) ? 'off' : 'on';
 
 		//logo
-        if(!empty($data['logo'])){
-            $data['logo'] = $this->uploadPic('logo');
-            $status_upload = !empty($data['logo']) ? true : false;
-        }
-
+        $data['logo'] = $this->uploadPic('logo');
+        $status_upload = !empty($data['logo']) ? true : false;
 
         // license
         if (isset($_FILES['license']) && $_FILES['license'] != "") {
@@ -129,12 +126,10 @@ class agency  extends clientAuth {
         $status_upload = !empty($data['aboutMePic']) ? true : false;
         }
 
-//		if ( $status_upload ) {
+		if ( $status_upload ) {
             $data['time_limit_credit'] = functions::FormatDateJalali($agency['time_limit_credit']);
 			$result = $this->agencyModel()->insertWithBind( $data );
-
-
-        if ( $result ) {
+			if ( $result ) {
 
                 if (isset($_FILES['gallery_files']) && $_FILES['gallery_files'] != "") {
                     $separated_files = functions::separateFiles('gallery_files');
@@ -190,9 +185,9 @@ class agency  extends clientAuth {
 			} else {
 				return "error : خطا در ثبت آژانس";
 			}
-//		} else {
-//			return "error:خطا در ثبت آژانس هنگام اپلود عکس ";
-//		}
+		} else {
+			return "error:خطا در ثبت آژانس هنگام اپلود عکس ";
+		}
 
 
 	}
@@ -1057,7 +1052,4 @@ class agency  extends clientAuth {
             return null;
         }
     }
-
-
-
 }

@@ -131,7 +131,7 @@ function getEntertainmentSubCategories(obj) {
    })
 }
 
-function searchEntertainment(altDomain = null) {
+function searchEntertainment() {
    const form = document.getElementById('submit_tafrih_form');
    const is_new_tab = form.target === '_blank';
 
@@ -154,12 +154,6 @@ function searchEntertainment(altDomain = null) {
    category_entertainment = category_entertainment.val()
    sub_category_entertainment = sub_category_entertainment.val()
 
-   let url;
-   if (altDomain != null) {
-      url = `${altDomain}/gds/fa/resultEntertainment/${entertainment_destination_country}/${entertainment_city}/${sub_category_entertainment}`;
-   } else {
-      url = `${amadeusPathByLang}resultEntertainment/${entertainment_destination_country}/${entertainment_city}/${sub_category_entertainment}`;
-   }
-
+   let url = `${amadeusPathByLang}resultEntertainment/${entertainment_destination_country}/${entertainment_city}/${sub_category_entertainment}`
    openLink(url, is_new_tab)
 }

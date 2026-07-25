@@ -147,8 +147,8 @@ const store = new Vuex.Store({
     seatClassFilter: [],
     minPriceAirline: [],
     price: [],
-    requestNumber: null,
-    requestNumberNoData: null,
+    // requestNumber: null,
+    // requestNumberNoData: null,
     setDataSearch:[],
     mobileHeaderSearchBox: true,
     formDataSearch:[],
@@ -162,6 +162,7 @@ const store = new Vuex.Store({
     data_cities_arrival_internal:[],
     popular_internal_flights : [],
     popular_international_flights : [],
+    search_sources : [],
     isTodayDate : true,
     time_filter : ['all_time'] ,
     stop_filter : ['all_stop'] ,
@@ -170,7 +171,6 @@ const store = new Vuex.Store({
     type_flight_filter : ['all_type_flight'] ,
     check_min_max_price : true,
     price_filter_flight: [0,0],
-    selectedFlightId: null,
     lang : 'fa',
     tours : {
       loading:false,
@@ -200,9 +200,6 @@ const store = new Vuex.Store({
     //   if (!state.flights.dept) state.flights.dept = [];
     //   state.flights.dept = uniqueFlights;
     // },
-    setSelectedFlightId(state, flightId) {
-      state.selectedFlightId = flightId;
-    },
 
     setInternationalFlights(state, flights) {
       state.flights = flights;
@@ -256,12 +253,12 @@ const store = new Vuex.Store({
     setPrice(state, price) {
       state.price = price;
     },
-    requestNumber(state, requestNumber) {
-      state.requestNumber = requestNumber;
-    },
-     requestNumberNoData(state, requestNumberNoData) {
-        state.requestNumberNoData = requestNumberNoData;
-     },
+    // requestNumber(state, requestNumber) {
+    //   state.requestNumber = requestNumber;
+    // },
+    //  requestNumberNoData(state, requestNumberNoData) {
+    //     state.requestNumberNoData = requestNumberNoData;
+    //  },
     setCheckComplete(state, isComplete) {
       state.isComplete = isComplete;
     },
@@ -704,6 +701,9 @@ const store = new Vuex.Store({
     setPopularInternationalFlights(state, data_popular_flight) {
       state.popular_international_flights = data_popular_flight;
     },
+    setSearchSources(state,search_sources){
+      state.search_sources = search_sources ;
+    },
     setTourList(state,data){
       state.tours.list = data ;
     },
@@ -793,8 +793,8 @@ const store = new Vuex.Store({
           commit("setSeatClassFilter", response.data.data.seat_class_filter);
           commit("setMinPriceAirline", response.data.data.min_price_airline);
           commit("setPrice", response.data.data.price);
-          commit("requestNumber", response.data.data.request_number);
-
+          // commit("requestNumber", response.data.data.request_number);
+          // commit("requestNumberNoData", response.data.data.dept);
 
           if(payload.method == 'flightInternal') {
             commit("setCheckComplete", response.data.data.dept.is_complete);
@@ -811,9 +811,6 @@ const store = new Vuex.Store({
 
         })
         .catch(function (error) {
-          commit("requestNumberNoData", error.response.data.data.dept);
-
-
           commit("setDefaultLoader", false);
           commit("setFlights", []);
         });
@@ -1143,6 +1140,24 @@ const store = new Vuex.Store({
       }
     },
     // endregion
+
+    async getSearchSources({ commit }, payload){
+      axios.post(
+        amadeusPath + 'ajax', {
+          className: 'newApiFlight',
+          method: payload.method,
+          limit : 5
+        },
+        {
+          'Content-Type': 'application/json',
+        })
+        .then(function(response) {
+
+          commit("setSearchSources", response.data.data);
+        }).catch(function(error) {
+        console.log(error);
+      });
+    },
 
     async isCounter({ commit }){
 

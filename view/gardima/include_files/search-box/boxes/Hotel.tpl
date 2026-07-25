@@ -1,7 +1,7 @@
 <div class="__box__ tab-pane  {if $active} active {/if}" id="Hotel">
 {include file="./sections/Hotel/international/btn_radio_internal_external.tpl"}
 <div class="d_flex flex-wrap internal-hotel-js" id="internal_hotel">
-<form class="d_contents" data-action="s360online.iran-tech.com/" id="internal_hotel_form" method="post" name="gdsHotelLocal" target="_top">
+<form class="d_contents" data-action="s360online.iran-tech.com/" id="internal_hotel_form" method="post" name="gdsHotelLocal" target="_blank">
 {include file="./sections/Hotel/internal/destination_city.tpl"}
 {include file="./sections/Hotel/internal/check_in_date.tpl"}
 {include file="./sections/Hotel/internal/check_out_date.tpl"}
@@ -12,7 +12,7 @@
 </form>
 </div>
 <div class="flex-wrap international-hotel-js" id="international_hotel">
-<form class="d_contents" data-action="https://s360online.iran-tech.com/" id="international_hotel_form" method="post" target="_top">
+<form class="d_contents" data-action="https://s360online.iran-tech.com/" id="international_hotel_form" method="post" target="_blank">
 {include file="./sections/Hotel/international/destination_city.tpl"}
 {include file="./sections/Hotel/international/check_in_date.tpl"}
 {include file="./sections/Hotel/international/check_out_date.tpl"}

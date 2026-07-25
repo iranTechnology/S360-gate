@@ -1,5 +1,5 @@
 {if $obj_main_page->isLogin() }
-    ##userAccount##
+    ##Welcomeing##
 {else}
     ##OsafarLogin## / ##OsafarSetAccount##
 {/if}

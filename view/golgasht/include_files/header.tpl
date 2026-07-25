@@ -40,7 +40,7 @@
 
 {*    <link rel='canonical' href='https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}' />*}
 
-    <base href="https://{$smarty.const.CLIENT_DOMAIN}/"/>
+    <base href="{$smarty.const.CLIENT_DOMAIN}"/>
 <link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
 
 
@@ -106,10 +106,6 @@
                 })(window,document,'script','dataLayer','GTM-PG54RTWG');
     </script>
     <!-- End Google Tag Manager -->
-
-        <script type="text/javascript">
-        !function(){var i="jhJSB1",d=document,g=d.createElement("script"),s="https://www.goftino.com/widget/"+i,l=localStorage.getItem("goftino_"+i);g.type="text/javascript",g.async=!0,g.src=l?s+"?o="+l:s;d.getElementsByTagName("head")[0].appendChild(g);}();
-        </script>
 
 
     <!-- Google Tag Manager (noscript) -->

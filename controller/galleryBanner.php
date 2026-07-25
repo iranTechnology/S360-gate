@@ -140,21 +140,6 @@ class galleryBanner extends clientAuth {
 
     }
 
-    public function insertGalleryBannerFromCopy($params) {
-        $dataGalleryBanner = [
-            'link' => $params['link'] ?? '',
-            'pic' => $params['pic'],
-            'title' => $params['title'] ?? 'بنر',
-            'description' => $params['description'] ?? '',
-            'iframe_code' => $params['iframe_code'] ?? '',
-            'language' => $params['language'] ?? 'fa',
-            'is_active' => true,
-            'created_at' => date('Y-m-d H:i:s', time()),
-        ];
-
-        $insert = $this->getModel('galleryBannerModel')->insertWithBind($dataGalleryBanner);
-        return $insert;
-    }
 
     public function updateGalleryBanner($params) {
         /** @var galleryBannerModel $gallery_banner_model */
@@ -287,21 +272,6 @@ class galleryBanner extends clientAuth {
         return functions::withError('', 404, 'درخواست شما معتبر نمی باشد');
 
     }
-
-    public function changeIsShowBanner($data_update) {
-
-            $data_update_status['is_show_banner'] = $data_update['is_show_banner'];
-            $result_update_gallery_banner = $this->getModel('galleryBannerModel')->updateWithBind($data_update_status ,null);
-            if ($result_update_gallery_banner) {
-                $data_update_status_text = $data_update_status['is_show_banner'] === 0 ? 'نمایش بنر به صورت خدمات سرچ باکس تغییر یافت': 'نمایش بنر به صورت اسلایدر تغییر یافت';
-                return functions::withSuccess('', 200, $data_update_status_text);
-            }
-            return functions::withError('', 400, 'خطا در تغییر نمایش گالری بنر ');
-
-
-    }
-
-
 
     public function changeOrder($params){
         if (isset($params['data'])) {

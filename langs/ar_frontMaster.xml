@@ -87,7 +87,6 @@
   <Reportbuytour>      تقرير سجلات شراء جولة   </Reportbuytour>
   <codeTour>كود الكروب</codeTour>
   <organizer>منظم</organizer>
-  <lock>الحجز المسبق</lock>
   <Deletetourdates>حذف تواريخ الكروبات</Deletetourdates>
   <Tourpackagechanges>تغيير الجولات السياحية</Tourpackagechanges>
   <ProblemreservationTour>خطأ أثناء عملية الحجز</ProblemreservationTour>
@@ -152,9 +151,6 @@
   <Yourrequesthascanceledtolackof>تم إلغاء طلبك بسبب عدم توفر غرف متاحة في الفندق.</Yourrequesthascanceledtolackof>
   <Youcanbookanotherhotel>يمكنك حجز فندق آخر.</Youcanbookanotherhotel>
   <Dearguestsuccessfullyregisteredbooking>عزيزي الضيف ، تم تسجيل طلب فندقك بنجاح في النظام. سيتم اخبارك خلال 10 دقائق من نتيجة الحجز النهائي.</Dearguestsuccessfullyregisteredbooking>
-  <Dearguestsuccessfullyregisteredbookingreservation>
-    عزيزي المستخدم، تم تسجيل طلبك الفندقي بنجاح في النظام. في حال الموافقة على طلبك، سيتم إعلامك عبر رسالة نصية قصيرة.
-  </Dearguestsuccessfullyregisteredbookingreservation>
   <HotelMoreDetailWithFactorNumber> </HotelMoreDetailWithFactorNumber>
   <Usehotelshoppingpaymentbooking>استخدم الرابط "تتبع شراء الفنادق" لإكمال الحجز والدفع.</Usehotelshoppingpaymentbooking>
   <Arrivaldatehotel>تاريخ الوصول</Arrivaldatehotel>
@@ -844,7 +840,6 @@
   <Sale>بيع</Sale>
   <PnrCode>رقم PNR</PnrCode>
   <CharterType>تجاري</CharterType>
-  <Charter>تجار</Charter>
   <BusinessType>رجال اعمال</BusinessType>
   <SystemType>حكومي</SystemType>
   <EconomicsType>اقتصاد</EconomicsType>
@@ -1524,7 +1519,6 @@
   <CompletePayment>لإكمال العملية ، يرجى النقر فوق خيار الدفع</CompletePayment>
   <MessagePaymentByCreditUser>الدفع بعد الرصيد هو   @@creditPayment@@ ، يرجى اختيار منفذ مصرفي لدفع رصيدك</MessagePaymentByCreditUser>
   <ZeroCredit>للأسف ، رصيدك هو 0 دولار</ZeroCredit>
-  <notEnoughCredit>عدم كفاية الرصيد لسداد القرض</notEnoughCredit>
   <AccessDenied>ليس لديك حق الوصول إلى هذا القسم</AccessDenied>
   <AwardDiscountCode>تهانينا ؛ لقد تلقيت @@CodeDiscount@@ كود الخصم  @@title@@</AwardDiscountCode>
   <SendEmailForOther>إذا كنت ترغب في إرسال حجز إلى شخص آخر ، فأدخل البريد الإلكتروني للشخص المعني في المربع أدناه وانقر على زر الإرسال.</SendEmailForOther>
@@ -2458,8 +2452,6 @@
   <RelatedArticles>مقالات ذات صلة</RelatedArticles>
   <RelatedNews>أخبار ذات صلة</RelatedNews>
   <OfTotal>من المجموع الكلي</OfTotal>
-  <processingPrintFlight>قيد المعالجة</processingPrintFlight>
-  <pendingPrintFlight>قيد الإصدار</pendingPrintFlight>
   <CustomRequiredAssets>ملفات المرفقات المطلوبة</CustomRequiredAssets>
   <AreYouSureWantChangeTourRoutes>هل أنت متأكد من تعديل وجهات الجولة؟</AreYouSureWantChangeTourRoutes>
   <ByUpdateTourRoutesYouNeedToCreateNewPackage>ملاحظة: بعد تحرير الوجهة ، يتم حذف الحزمة السابقة ، ويجب عليك تحديد حزمة جديدة.</ByUpdateTourRoutesYouNeedToCreateNewPackage>
@@ -2763,7 +2755,6 @@
   <enterYourOpinion>أدخل رأيك</enterYourOpinion>
   <DearagencyServices>زميلي العزيز، املأ النموذج التالي وأرسله للحصول على وكيل مبيعات التذاكر والخدمات السياحية والفندقية @@agency@@.</DearagencyServices>
   <YourTrackingCode>رمز التتبع الخاص بك </YourTrackingCode>
-  <TrackingCodeEnd>رمز التتبع</TrackingCodeEnd>
   <YourRequestHasBeenSuccessfullyRegistered>لقد تم تسجيل طلبك بنجاح</YourRequestHasBeenSuccessfullyRegistered>
 
   <FlightFrom>رحلات جوية من</FlightFrom>
@@ -3076,21 +3067,16 @@
   <supportteamwillrespond>وسوف يقوم فريق الدعم بالرد عليك في أقرب وقت ممكن.</supportteamwillrespond>
   <KeepInTouchtwo>كن على تواصل معنا</KeepInTouchtwo>
   <Followusonsocial>تابعونا على الشبكات الاجتماعية:</Followusonsocial>
-  <Telegram>Telegram</Telegram>
-  <Instagram>Instagram</Instagram>
-  <Whatsapp>Whatsapp</Whatsapp>
+  <Telegram>برقية</Telegram>
+  <Instagram>انستغرام</Instagram>
+  <Whatsapp>واتس اب</Whatsapp>
   <Youtube>Youtube</Youtube>
-  <Aparat>Aparat</Aparat>
-  <Facebook>Facebook</Facebook>
-  <Linkedin>Linkedin</Linkedin>
-  <Twitter>Twitter</Twitter>
-  <Bale>Bale</Bale>
-  <Eita>Eita</Eita>
-  <Rubika>Rubika</Rubika>
-  <Pinterest>Pinterest</Pinterest>
   <Enterthetext>أدخل نص رسالتك في هذا القسم...</Enterthetext>
   <Mylocation>الموقع على الخريطة</Mylocation>
   <dateType>نوع البحث عن التاريخ </dateType>
+
+
+
   <IncreaseUserWallet>زيادة مصداقية المدير </IncreaseUserWallet>
   <DecreaseUserWallet>تقليل الائتمان للمدير </DecreaseUserWallet>
   <DecreaseUser>تخفيض الائتمان </DecreaseUser>
@@ -3251,114 +3237,4 @@
   <errorPaymentFlightMessage>حدثت مشكلة أثناء عملية الدفع. إذا لم يتم خصم المبلغ من رصيدك أو حسابك، فحاول مرة أخرى</errorPaymentFlightMessage>
   <pendingFlight>في انتظار الإصدار</pendingFlight>
   <upperThanTwoHundredAndFifty>لا يجوز أن تتجاوز الزيادة في الائتمان 2,500,000,000 ريال</upperThanTwoHundredAndFifty>
-  <moreImage>المزيد من الصور</moreImage>
-
-  <!--  panel admin  (en ar fa) -->
-  <PA_HOME>المنزل</PA_HOME>
-  <PA_Ab_TITLE>من نحن</PA_Ab_TITLE>
-  <PA_Ab_LANG>اللغة</PA_Ab_LANG>
-  <PA_Ab_SUBJECT>العنوان</PA_Ab_SUBJECT>
-  <PA_Ab_BANNER>صورة البانر</PA_Ab_BANNER>
-  <PA_Ab_VIDEOLINK>رابط الفيديو</PA_Ab_VIDEOLINK>
-  <PA_Ab_COMMENTVIDEOLINK>ضع الرابط الخاص بالفيديو فقط هنا.</PA_Ab_COMMENTVIDEOLINK>
-  <PA_Ab_SOIALMEDIA>وسائل التواصل الاجتماعي</PA_Ab_SOIALMEDIA>
-  <PA_Ab_CLUB>عنوان نادي عملائك</PA_Ab_CLUB>
-  <PA_Ab_AboutCUSTOMER>حول نادي عملائك</PA_Ab_AboutCUSTOMER>
-  <PA_Ab_DELIMG>حذف الصورة</PA_Ab_DELIMG>
-  <PA_Ab_SUBMIT>تحديث</PA_Ab_SUBMIT>
-  <PA_AB_UPDATEDMSG>تم تعديل معلومات عنا</PA_AB_UPDATEDMSG>
-  <PA_AB_NOCHANGE>لم يتم إجراء أي تغييرات</PA_AB_NOCHANGE>
-  <PA_AB_UPDATEDMSG>تم تحديث معلومات “من نحن”.</PA_AB_UPDATEDMSG>
-  <PA_AB_NOCHANGE>لم تُغيّر شيئاً!</PA_AB_NOCHANGE>
-
-  <PA_CO_LIST>قائمة جهات الاتصال</PA_CO_LIST>
-  <PA_CO_LISTTITLE>في القائمة أدناه، يمكنك عرض جميع جهات الاتصال الخاصة بك.</PA_CO_LISTTITLE>
-  <PA_CO_RESULTTABLE>عرض _MENU_ نتيجة</PA_CO_RESULTTABLE>
-<PA_CO_RESULTTABLE2>عرض</PA_CO_RESULTTABLE2>
-  <PA_CO_REQUESTDETAIL>تفاصيل الطلب</PA_CO_REQUESTDETAIL>
-  <PA_CO_STATUSNOTSEEN>غير مفحوص</PA_CO_STATUSNOTSEEN>
-  <PA_CO_STATUSSEEN>تمت المشاهدة</PA_CO_STATUSSEEN>
-  <PA_CO_STATUSACCEPT> تم القبول</PA_CO_STATUSACCEPT>
-  <PA_CO_STATUSREJECT>مرفوض</PA_CO_STATUSREJECT>
-  <PA_CO_DT_INFO>عرض _START_ إلى _END_ من أصل _TOTAL_ نتيجة</PA_CO_DT_INFO>
-  <PA_CO_DT_PREVIOUS>السابق</PA_CO_DT_PREVIOUS>
-  <PA_CO_DT_NEXT>التالي</PA_CO_DT_NEXT>
-  <PA_CO_PAGEEDIT>قائمة طلبات اتصل بنا</PA_CO_PAGEEDIT>
-  <PA_CO_TITLEDETAIL>عرض جميع المعلومات المرسلة في هذا القسم</PA_CO_TITLEDETAIL>
-  <PA_CO_ADMINRESULT>نتيجة مراجعة المشرف</PA_CO_ADMINRESULT>
-  <PA_CO_REQUESTDATE>تاريخ تسجيل هذا الطلب</PA_CO_REQUESTDATE>
-  <PA_CO_ADMINNOTE>ملاحظة المشرف</PA_CO_ADMINNOTE>
-  <PA_CO_REQUESTTEXT>نص الطلب</PA_CO_REQUESTTEXT>
-
-  <PA_BUY_LIST>تقرير الشراء</PA_BUY_LIST>
-  <PA_BUY_HISTORY>سجل المشتريات</PA_BUY_HISTORY>
-  <PA_COM_BUY_HISTORY>يمكنك مشاهدة جميع سجلات الشراء في هذه القائمة</PA_COM_BUY_HISTORY>
-  <PA_BUY_DATES>تاريخ البدء (الشراء)</PA_BUY_DATES>
-  <PA_BUY_DATEE>تاريخ الانتهاء (الشراء)</PA_BUY_DATEE>
-  <PA_BUY_DATERS>تاريخ البدء (الحجز)</PA_BUY_DATERS>
-  <PA_BUY_DATERE>تاريخ الانتهاء (الحجز)</PA_BUY_DATERE>
-  <PA_BUY_PNR>أدخل رقم الحجز (PNR)</PA_BUY_PNR>
-  <PA_BUY_REQUEST>أدخل رمز التتبع (يبدأ بـ 14)</PA_BUY_REQUEST>
-  <PA_BUY_NUMBERFLIGHT>رقم الرحلة (مع تاريخ الرحلة)</PA_BUY_NUMBERFLIGHT>
-  <PA_BUY_NationalCode>أدخل الرقم الوطني للمسافر</PA_BUY_NationalCode>
-  <PA_BUY_DATEFLIGHT>أدخل تاريخ رحلة البحث</PA_BUY_DATEFLIGHT>
-  <PA_BUY_BUTFILTER>تطبيق الفلتر</PA_BUY_BUTFILTER>
-  <PA_BUY_DownloadExcelFile>تحميل ملف إكسل</PA_BUY_DownloadExcelFile>
-  <PA_BUY_Pid>PID</PA_BUY_Pid>
-  <PA_BUY_USER>المستخدم</PA_BUY_USER>
-  <PA_BUY_Provider>شراء من المزوّد</PA_BUY_Provider>
-  <PA_BUY_Commission>العمولة</PA_BUY_Commission>
-  <PA_BUY_CommissionProvider>عمولة المزوّد</PA_BUY_CommissionProvider>
-  <PA_BUY_Yourprofit>ربحك</PA_BUY_Yourprofit>
-  <PA_BUYFrom>شراء من</PA_BUYFrom>
-  <PA_BUY_MarkCOUNTER>هامش الكاونتر</PA_BUY_MarkCOUNTER>
-  <PA_BUY_MarkAgency>هامش الوكالة</PA_BUY_MarkAgency>
-  <Exclusive>حصري</Exclusive>
-  <Shared>مشترك</Shared>
-  <PrivatePad>منصة خاصة</PrivatePad>
-  <SharedPad>منصة مشتركة</SharedPad>
-  <ExclusiveReservation>حجز حصري</ExclusiveReservation>
-  <TravelGateway>بوابة سفر360</TravelGateway>
-  <OwnGateway>بوابته الخاصة</OwnGateway>
-  <MainUser>المستخدم الرئيسي</MainUser>
-  <ApplicationWord>تطبيق</ApplicationWord>
-  <EnglishTicket>تذكرة إنجليزية</EnglishTicket>
-  <EnglishTicketNoPrice>تذكرة إنجليزية بدون سعر</EnglishTicketNoPrice>
-  <GuestUser>مستخدم ضيف</GuestUser>
-  <Counter>کاونتر</Counter>
-  <FinalConfirmationStatus>المسافر لم يستخدم التأكيد النهائي</FinalConfirmationStatus>
-  <CancelingPurchase>إلغاء الشراء</CancelingPurchase>
-  <PaymentWaitingStatus>تم تحويل المسافر إلى بوابة الدفع الإلكتروني، والنظام في انتظار العودة من البنك. لن تكتمل عملية الشراء هذه إلا إذا قام البنك بتزويد النظام برمز تأكيد الدفع.</PaymentWaitingStatus>
-  <CreditPaymentSelection>اختيار خيار الائتمان</CreditPaymentSelection>
-  <ExclusiveBooking>حجز حصري</ExclusiveBooking>
-  <ServerRedirectLink>انقر هنا لمتابعة عملية الشراء من السيرفر 5</ServerRedirectLink>
-  <BookingInProgress>جاري الحجز</BookingInProgress>
-  <PartnerAgency>الوكالة الشريكة</PartnerAgency>
-  <ReservationTicket>تذكرة الحجز</ReservationTicket>
-  <ViewNotes>عرض الملاحظات</ViewNotes>
-  <InsufficientCredit>الرصيد غير كافٍ</InsufficientCredit>
-  <SecurityCodeError>خطأ في رمز الأمان</SecurityCodeError>
-  <MobileNumberError>خطأ في رقم الجوال</MobileNumberError>
-  <NationalIdError>خطأ في الرقم الوطني</NationalIdError>
-  <DuplicateRequestError>خطأ تكرار الطلب</DuplicateRequestError>
-  <PassengerNationalityError>خطأ في جنسية المسافر</PassengerNationalityError>
-  <PassportExpiryError>خطأ في انتهاء صلاحية جواز السفر</PassportExpiryError>
-  <PassportError>خطأ في جواز السفر</PassportError>
-  <DuplicateErrorRequest>خطأ تكرار الطلب </DuplicateErrorRequest>
-  <BadRequestError>خطأ في الطلب</BadRequestError>
-  <CreditSelection>الاختيار الائتماني</CreditSelection>
-  <InquiryHotel>فندق قيد الاستعلام</InquiryHotel>
-  <NoReservation>بدون حجز</NoReservation>
-  <NoStatus>بدون حالة</NoStatus>
-  <NoRecordsFound>لم يتم العثور على سجلات</NoRecordsFound>
-  <TotalRecords>إجمالي السجلات</TotalRecords>
-  <UploadInvoice>تحميل الفاتورة</UploadInvoice>
-  <PassengerSale>البيع للمسافر</PassengerSale>
-  <PassengerOnline>مسافر أونلاين</PassengerOnline>
-  <SeatCount>عدد المقاعد</SeatCount>
-<ReceiveInfoError>خطأ في استلام المعلومات</ReceiveInfoError>
-  <ReservedRooms>الغرف المحجوزة</ReservedRooms>
-  <HotelBooking>حجز فندق في إنجلترا</HotelBooking>
-  <PhoneNumberBuyer>رقم الهاتف المحمول الذي استخدمته لإجراء عملية الشراء.</PhoneNumberBuyer>
-
 </Main>

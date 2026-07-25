@@ -12,11 +12,7 @@ class Admin extends baseController
 
     public $message = '';  //message that show after login
     public $config;
-    private $validTime = 5;
-    private $expired = 'expired';
-    private $used = 'used';
-    private $unused = 'unused';
-    private $verificationCodeModel;
+
     public function __construct() {
 
 
@@ -25,7 +21,6 @@ class Admin extends baseController
 //            var_dump(Session::getAgencyPartnerLoginToAdmin());
 //            die();
 //        }
-        $this->verificationCodeModel = $this->getModel('verificationCodeModel');
     }
 
     public function loginAdmin($info_login)
@@ -105,36 +100,27 @@ class Admin extends baseController
     {
 
 
-//        $old_pass = functions::encryptPassword($info['old_pass']);
+        $old_pass = functions::encryptPassword($info['old_pass']);
         Load::autoload('ModelBase');
         $ModelBase = new ModelBase();
-        $customer_model = $this->getModel('userPassCustomersModel');
 
         $sql = "SELECT * FROM login_tb WHERE client_id='{$info['client_id']}'";
-        $sql_client_tb =  "SELECT * FROM clients_tb WHERE id='{$info['client_id']}'";
-        $client_tb = $ModelBase->load($sql_client_tb);
         $client = $ModelBase->load($sql);
         if (!empty($client)) {
-//            $sqlCheckPass = "SELECT * FROM login_tb WHERE password='{$old_pass}'";
-//            $clientCheckPass = $ModelBase->load($sqlCheckPass);
-//            if (!empty($clientCheckPass)) {
-
+            $sqlCheckPass = "SELECT * FROM login_tb WHERE password='{$old_pass}'";
+            $clientCheckPass = $ModelBase->load($sqlCheckPass);
+            if (!empty($clientCheckPass)) {
                 $data['password'] = functions::encryptPassword($info['new_pass']);
                 $ModelBase->setTable('login_tb');
                 $res = $ModelBase->update($data, "client_id='{$info['client_id']}'");
-
-            $data1['password'] = $info['new_pass'];
-            $update = $customer_model->updateWithBind($data1, ['user_name' => $client_tb['Email']]);
-
-
                 if ($res) {
                     return 'success : رمز عبور شما با موفقیت تغییر یافت';
                 } else {
                     return 'error : خطا در ثبت اطلاعات';
                 }
-//            } else {
-//                return 'error: رمز عبور قدیم اشتباه است';
-//            }
+            } else {
+                return 'error: رمز عبور قدیم اشتباه است';
+            }
         } else {
 
             return 'error: خطا در شناسایی کاربر';
@@ -389,20 +375,8 @@ class Admin extends baseController
 
     public function LinkAdminMenu()
     {
-       $title='title';
-       if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']=='en') {
-           $title='titleEn';
-       }
-       else if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']=='ar') {
-           $title='titleAr';
-       }
+        return $this->getModel('menuAdminModel')->get(['id','url','accessCustomer','title','parentId','classIcon'])->all();
 
-        $result=$this->getModel('menuAdminModel')
-            ->get(['id','url','accessCustomer',$title.' as title','parentId','classIcon']);
-        if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']!='fa') {
-            $result->where('other_lang','Yes');
-        }
-        return $result->all();
     }
     #endregion
 
@@ -410,11 +384,7 @@ class Admin extends baseController
     #region accessMenuCounter
     public function accessMenuCounter($idMenu, $idMember)
     {
-        $result = $this->getModel('accessMenuCounterModel')
-            ->get(['isAccess'])
-            ->where('IdMember',$idMember)
-            ->where('idMenu',$idMenu)
-            ->find();
+        $result = $this->getModel('accessMenuCounterModel')->get(['isAccess'])->where('IdMember',$idMember)->where('idMenu',$idMenu)->find();
         //WHERE IdMember='{$idMember}' AND idMenu ='{$idMenu}'
         return ($result['isAccess'] == '1' && !empty($result));
     }
@@ -475,11 +445,12 @@ class Admin extends baseController
     public function ListAllMenuForManagers()
     {
         $ResultMenu= $this->getModel('menuAdminModel')
-            ->get(['id','title','parentId','url','other_lang'])
+            ->get(['id','title','parentId','url'])
             ->where('accessCustomer','1')
             ->all();
 
         $menus = [];
+
         // سطح ۱: سر دسته اصلی
         foreach ($ResultMenu as $menu) {
             if ($menu['parentId'] == 0) {
@@ -487,7 +458,6 @@ class Admin extends baseController
                     'id' => $menu['id'],
                     'title' => $menu['title'],
                     'url' => $menu['url'],
-                    'other_lang' => $menu['other_lang'],
                     'children' => []
                 ];
             }
@@ -500,7 +470,6 @@ class Admin extends baseController
                     'id' => $menu['id'],
                     'title' => $menu['title'],
                     'url' => $menu['url'],
-                    'other_lang' => $menu['other_lang'],
                     'children' => []
                 ];
             }
@@ -513,8 +482,7 @@ class Admin extends baseController
                     $parent['children'][$menu['parentId']]['children'][] = [
                         'id' => $menu['id'],
                         'title' => $menu['title'],
-                        'url' => $menu['url'],
-                        'other_lang' => $menu['other_lang']
+                        'url' => $menu['url']
                     ];
                 }
             }
@@ -584,7 +552,7 @@ class Admin extends baseController
         $data['accessCustomer'] = $params['accessCustomer'];
         $data['classIcon'] = $params['classIcon'];
         $data['parentId'] = (!empty($params['subMenu'])) ? $params['subMenu'] : $params['mainMenu'];
-        $data['other_lang'] = $params['other_lang'];
+
         $result = $ModelBase->insertLocal($data);
 
         if ($result) {
@@ -694,222 +662,6 @@ class Admin extends baseController
 
     }
     #endregion
-
-    private function store($entry, $code) {
-
-        $verificationCodeModel = $this->getModel('verificationCodeModel');
-        $abbasi = $verificationCodeModel->insertWithBind([
-            'entry' => $entry,
-            'code' => $code,
-            'status' => $this->unused
-        ]);
-
-        return $abbasi;
-    }
-    public function changeStatus($validate_id, $status) {
-        return $this->verificationCodeModel->updateWithBind([
-            'status' => $status
-        ], [
-            'id' => $validate_id
-        ]);
-    }
-    public function sendAdminLoginOtp($params) {
-        // محدودیت تعداد درخواست در IP
-        $ip = $_SERVER['REMOTE_ADDR'];
-        if (isset($_SESSION['otp_send_count'][$ip]) && $_SESSION['otp_send_count'][$ip] > 3) {
-            return functions::withError(null, 400, 'تعداد درخواست‌های شما بیش از حد مجاز است. لطفاً 5 دقیقه دیگر تلاش کنید');
-        }
-
-        $username = filter_var($params['username'] ?? '', 513);
-        $type_manager = filter_var($params['type_manager'] ?? '', 513);
-
-        $admin = $this->getAdminByUsername($username, $type_manager);
-
-        if (!$admin) {
-            return functions::withError(null, 400, 'کاربری با این مشخصات یافت نشد');
-        }
-
-        $mobile = $admin['mobile'] ?? $admin['Mobile'] ?? '';
-
-        if (empty($mobile)) {
-            return functions::withError(null, 400, 'برای این کاربر شماره موبایل ثبت نشده است');
-        }
-
-        // تولید کد
-        $code = rand(1000, 9999);
-
-        // ذخیره در دیتابیس و حذف کدهای قبلی
-        $storeResult = $this->store($mobile, $code);
-
-        if (!$storeResult) {
-            return functions::withError(null, 400, 'خطا در ذخیره کد تایید');
-        }
-
-        $_SESSION['admin_otp'] = [
-            'code' => $code,
-            'username' => $username,
-            'type_manager' => $type_manager,
-            'mobile' => $mobile,
-            'expire_at' => time() + 120,
-            'created_at' => time()
-        ];
-
-        // شمارش درخواست
-        $_SESSION['otp_send_count'][$ip] = ($_SESSION['otp_send_count'][$ip] ?? 0) + 1;
-        $_SESSION['otp_send_time'][$ip] = time();
-
-        // ارسال پیامک
-        $smsController = $this->getController('smsServices');
-        $objSms = $smsController->initService('1');
-
-        if ($objSms) {
-            $smsArray = [
-                'smsMessage' => "کد ورود شما به پنل مدیریت: {$code}\nاین کد تا 2 دقیقه اعتبار دارد.",
-                'cellNumber' => $mobile
-            ];
-
-//             $res= $smsController->sendSMS($smsArray);
-            $smsMessage= ['verification_code_forgot_admin'=>$code];
-            $verification_code_pattern  =   $smsController->getPattern('verification_code');
-            $res= $smsController->smsByPattern('bcotpctu7g73qby', array($mobile), $smsMessage);
-
-        }
-
-        return functions::withSuccess([
-            'expire_at' => 120
-        ], 200, 'کد تایید به شماره موبایل شما ارسال شد');
-    }
-
-
-    public function loginAdminWithOtp($params) {
-        if (Session::adminIsLogin()) {
-            return functions::withError(null, 400, 'شما قبلاً وارد سیستم شده‌اید');
-        }
-
-        $otp_code = filter_var($params['otp_code'] ?? '', 513);
-        $username = filter_var($params['username'] ?? '', 513);
-        $type_manager = filter_var($params['type_manager'] ?? '', 513);
-        $client_id = filter_var($params['client_id'] ?? '', 513);
-        $member = filter_var($params['member'] ?? 0, 513);
-
-        // اعتبارسنجی کد
-        if (empty($otp_code) || strlen($otp_code) != 4) {
-            return functions::withError(null, 400, 'کد وارد شده معتبر نیست');
-        }
-
-        if (isset($_SESSION['otp_attempts']) && $_SESSION['otp_attempts'] >= 5) {
-            return functions::withError(null, 400, 'تعداد تلاش‌های شما بیش از حد مجاز است');
-        }
-
-        // بررسی وجود کد در سشن
-        if (!isset($_SESSION['admin_otp'])) {
-            return functions::withError(null, 400, 'درخواست نامعتبر، لطفا مجددا تلاش کنید');
-        }
-
-        $otp_data = $_SESSION['admin_otp'];
-
-        // بررسی انقضای کد
-        if (time() > $otp_data['expire_at']) {
-            unset($_SESSION['admin_otp']);
-            return functions::withError(null, 400, 'کد تایید منقضی شده است، لطفا مجددا تلاش کنید');
-        }
-
-        // بررسی صحت کد
-        if ($otp_data['code'] != $otp_code) {
-            return functions::withError(null, 400, 'کد وارد شده نادرست است');
-        }
-
-        // بررسی تطابق نام کاربری
-        if ($otp_data['username'] != $username) {
-            return functions::withError(null, 400, 'اطلاعات کاربری نامعتبر است');
-        }
-
-        $validateRecord = $this->verificationCodeModel->get()
-            ->where('entry', $otp_data['mobile'])
-            ->where('code', $otp_data['code'])
-            ->where('status', $this->unused)
-            ->find();
-        
-        if (!$validateRecord) {
-            return functions::withError(null, 400, 'کد نامعتبر یا قبلاً استفاده شده است');
-        }
-
-        if ($type_manager == 'main_manager') {
-
-            $this->changeStatus($validateRecord['id'], $this->used);
-            Session::adminLoginDo();
-            setcookie('UserName', $username, time() + 3600 * 24 * 5, '/');
-            setcookie('Password', '', time() - 3600, '/');
-
-            unset($_SESSION['admin_otp']);
-
-            return functions::withSuccess(null, 200, 'شما با موفقیت وارد پنل مدیریت شدید');
-
-        }
-        return functions::withError(null, 400, 'لطفا نوع کاربر مدیریت برای ورود را مشخص نمائید');
-    }
-
-
-
-    public function getAdminByUsername($username, $type_manager) {
-        $Model = Load::library('ModelBase');
-
-        $email = CLIENT_MAIN_DOMAIN;
-        $query = "SELECT id, Email as username, Mobile as mobile 
-              FROM clients_tb 
-              WHERE MainDomain= '".$email. "' OR Domain= '".$email. "'
-              LIMIT 1";
-
-        $res = $Model->select($query);
-
-        if ($res && !empty($res)) {
-            if (isset($res['id'])) {
-                return $res;
-            }
-            if (is_array($res) && isset($res[0])) {
-                return $res[0];
-            }
-            return $res;
-        }
-
-        return null;
-    }
-    public function StatusMenuOtherLang($idMenu,$isAccess)
-    {
-        $other_lang='No';
-        if($isAccess=='1')$other_lang='Yes';
-        $data = [
-            'other_lang' => $other_lang
-        ];
-        // بررسی وجود رکورد
-        $resultMenu= $this->getModel('menuAdminModel')
-            ->get(['id'])
-            ->where('id',$idMenu)
-            ->find();
-        if ($resultMenu['id']>0) {
-            // رکورد موجود است → آپدیت
-            $resUpdate = $this->getModel('menuAdminModel')
-                ->updateWithBind($data, [
-                    'id' => $idMenu
-                ]);
-            if ($resUpdate) {
-                return 'Success:وضعیت زیان دیگر با موفقیت انجام شد';
-            }
-
-            return 'Error:خطا در تغییر وضعیت';
-        } else {
-            return 'Error:خطا در تغییر وضعیت';
-        }
-    }
-
-    public function setLangPanelAdmin($lang)
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        $_SESSION['lang_panel_admin'] = $lang;
-        exit();
-    }
 
 }
 

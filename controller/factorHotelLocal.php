@@ -1,844 +1,900 @@
-
-<link href="assets/css/jquery.counter-analog.css" rel="stylesheet" type="text/css"/>
-{load_presentation_object filename="factorHotelLocal" assign="objFactor"}
-{load_presentation_object filename="resultHotelLocal" assign="objResult"}
-<!-- can't submit refresh -->
-{$objFactor->statusRefresh()}
-
-{load_presentation_object filename="members" assign="objMember"}
-{$objMember->get()}
-
-
-{**اضافه کردن اطلاعات مسافران به جدول و گرفتن اطلاعات مربوط به مسافران**}
-{if $smarty.post.typeApplication eq 'reservation'}
-{$objFactor->registerPassengersReservationHotel()}
-{$listOneDayTour = $objResult->getInfoReserveOneDayTour($smarty.post.factorNumber)}
-{else}
-{$objFactor->registerPassengersHotel()}
-{/if}
-{if $objFactor->error eq true}
-<div class="s-u-content-result">
-    <div id="lightboxContainer" class="lightboxContainerOpacity"></div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 s-u-passenger-wrapper-change ">
-            <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color">
-                ##Note## <i class="zmdi zmdi-alert-circle mart10  zmdi-hc-fw"></i>
-            </span>
-        <div class="s-u-result-wrapper">
-            <span class="s-u-result-item-change direcR iranR txt12 txtRed">{$objFactor->errorMessage}</span>
-        </div>
-    </div>
-    <div class="Clr"></div>
-</div>
-{else}
-
-{$objFactor->getPassengersHotel()}
-<div class="s-u-content-result">
-
-    <div id="lightboxContainer" class="lightboxContainerOpacity"></div>
-
-
-
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 s-u-passenger-wrapper-change">
-        {if $objFactor->temproryHotel['prepayment_percentage'] neq 0}
-        {*                {$objFactor->temproryHotel['prepayment_percentage']}aaaaaaaaaaaa*}
-        {assign var="paymentStatusValue" value='prePayment'}
-        {else}
-        {assign var="paymentStatusValue" value='fullPayment'}
-        {*                {$objFactor->temproryHotel['prepayment_percentage']}bbbbbbbbb*}
-        {/if}
-        <input type="hidden" name="typeApplication" id="typeApplication"
-               value="{$objFactor->temproryHotel['type_application']}">
-
-        <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color">
-            <i class="zmdi zmdi-account-box-mail zmdi-hc-fw mart10"></i> ##Invoice##
-                {*<i class="ravis-icon-hotel zmdi-hc-fw mart10"></i> {$objFactor->temproryHotel['hotel_name']}*}
-        </span>
-
-        <div class="hotel-booking-room marb0">
-
-            <div class="col-md-3 nopad">
-
-                {if $objFactor->temproryHotel['type_application'] eq 'reservation'}
-                <div class="ribbon-special-hotel"><span><i> ##Specialhotel## </i></span></div>
-                {/if}
-
-                <div class="hotel-booking-room-image">
-                    <a>
-                        <img src="{$objFactor->temproryHotel['hotel_pictures']}" alt="hotel-image">
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-md-9 pl-0 ">
-                <div class="hotel-booking-room-content">
-                    <div class="hotel-booking-room-text">
-                        <b class="hotel-booking-room-name"> {$objFactor->temproryHotel['hotel_name']} </b>
-
-                        <span class="hotel-star">
-                        {for $s=1 to $objFactor->temproryHotel['hotel_starCode']}
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        {/for}
-                                {for $ss=$s to 5}
-                                    <i class="fa fa-star-o" aria-hidden="true"></i>
-                                {/for}
-                        </span>
-
-                        <span class="hotel-booking-room-content-location ">
-                          {$objFactor->temproryHotel['hotel_address']}
-                       </span>
-                        <!--                            <p class="hotel-booking-roomm-description hotel-result-item-rule">
-                            <span class="fa fa-bell-o"></span>
-                            {$objFactor->temproryHotel['hotel_rules']}
-                        </p>-->
-                    </div>
-
-                    <div class="hotel-booking-room-text">
-                        <ul>
-                            <li class="hotel-check-text"><i class="fa fa-calendar-times-o"></i> ##Enterdate## :
-                                <span class="hotel-check-date"
-                                      dir="rtl">{$objFactor->temproryHotel['start_date']}</span></li>
-                            <li class="hotel-check-text"><i class="fa fa-calendar-check-o"></i> ##Exitdate## :
-                                <span class="hotel-check-date"
-                                      dir="rtl">{$objFactor->temproryHotel['end_date']}</span></li>
-                            <li class="hotel-check-text"><i
-                                    class="fa fa-bed"></i> {$objFactor->temproryHotel['number_night']} ##Night##
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-        <div class="clear"></div>
-        <div class="hotel-booking-room">
-
-            <h4 class="tableOrderHeadTitle site-bg-main-color">
-                <span>##Listroom##</span>
-            </h4>
-
-            <div class="table-responsive ov position-relative room_table">
-
-                <div class="table_hotel_nz">
-                    <div class="thead_hotel">
-                        <div class="tr_hotel">
-                            <div class="th_hotel">##Specifications##</div>
-                            <div  class="th_hotel hidden-xs">##Service##</div>
-                            <div  class="th_hotel">##Price##</div>
-                        </div>
-                    </div>
-                    <div class="tbody_hotel">
-
-                        {assign var="TotalPrice" value=""}
-                        {foreach  $objFactor->temproryHotel['room'] as $i=>$room}
-
-                        {$TotalPrice = $TotalPrice + $room['room_price']}
-
-                        <div class="tr_hotel hotel_room_row">
-                            <div class="th_hotel">
-                                {assign var="everyNightCurrency" value=$objFunctions->CurrencyCalculate($room.price_current, $smarty.post.CurrencyCode)}
-                                {if $everyNightCurrency gt 0 AND $objFactor->temproryHotel.number_night gt 0}
-                                <div class="box_pricees">
-                                    <div class="detail_room_hotel detail_room_hotel_new">
-                                        {for $night_number =0; $night_number < $objFactor->temproryHotel.number_night; $night_number++}
-                                        {assign var='night_date' value=$objFunctions->DateAddDay($smarty.post.startDate_reserve,$night_number)}
-                                        <div class="details">
-                                            <div class="AvailableSeprate site-bg-main-color site-bg-color-border-right-b ">{$night_date}</div>
-                                            <div class="seprate">
-                                                                        <span><b>{$room['price_current']|number_format}</b>##Rial## <i class="fa fa-male checkIcon"></i>
-                                                                            <span class="tooltip-price">##Adult##</span>
-                                                                        </span>
-                                                {if $room.TotalPriceBedEXT gt 0 AND $room.ExtraBedCount gt 0}
-                                                <span><b>{$room.TotalPriceBedEXT|number_format}</b>##Rial## <i class="fa fa-bed checkIcon"></i>
-                                                                    <span class="tooltip-price">##Extrabed##</span>
-                                                                </span>
-                                                {/if}
-                                                {if $room.TotalPriceBedCHD gt 0 AND $room.ExtraChildBedCount gt 0}
-                                                <span><b>{$room.TotalPriceBedCHD|number_format}</b>##Rial## <i class="fas fa-baby-carriage"></i>
-                                                                    <span class="tooltip-price">##Child##</span>
-                                                                </span>
-                                                {/if}
-                                            </div>
-                                        </div>
-                                        {/for}
-                                    </div>
-                                </div>
-                                {/if}
-                                <span class="roomsTitle  extra-title-bed">{$room['room_name']}</span>
-                                <div class="rooms-element d-flex justify-content-center  extra-title-bed"">
-                                {$objFunctions->StrReplaceInXml(['@@count@@'=>{$room['room_count']}],'RoomCountNumber')}
-                            </div>
-                            {if $room.child_room_count gt 0}
-                            <div class="extra-bed-element d-flex justify-content-center extra-title-bed">
-                                <div class="extra-bed-count">
-                                                    <span class='d-flex mx-1' >
-                                                        {$room['child_room_count']}
-                                                    </span>
-                                </div>
-                                <span class="extra-bed-title">
-                                                    ##HotelExtraChild##
-                                                </span>
-                            </div>
-                            {/if}
-
-                            {if $room['extra_bed_count'] gt 0}
-                            <div class="extra-bed-element d-flex justify-content-center extra-title-bed">
-                                <div class="extra-bed-count">
-                                                    <span class='d-flex mx-1' >
-                                                        {$room['extra_bed_count']}
-                                                    </span>
-                                </div>
-                                <span class="extra-bed-title">
-                                                  ##HotelExtraBed##
-                                                </span>
-                            </div>
-                            {/if}
-                            <input type="hidden" name="RoomCount{$room['room_id']}" id="RoomCount{$room['IdRoom']}" value="{$room['room_count']}">
-                        </div>
-                        <div class="th_hotel hidden-xs">
-                            <ul class="HotelRoomFeatureList">
-                                {if $room.Dinner neq 'yes' and $room.Breakfast neq 'yes' and $room.Lunch neq 'yes' }
-                                ---
-                                {else}
-                                {if $room['Breakfast'] eq 'yes'}
-                                <li class="Breakfast"><i class="fa fa-coffee"></i> ##Breakfast##</li>
-                                {/if}
-                                {if $room['Lunch'] eq 'yes'}
-                                <li class="Breakfast"><i class="fa fa-cutlery"></i> ##Lunch##</li>
-                                {/if}
-                                {if $room['Dinner'] eq 'yes'}
-                                <li class="Breakfast"><i class="fa fa-cutlery"></i> ##Dinner##</li>
-                                {/if}
-                                {/if}
-                            </ul>
-                        </div>
-
-                        <div class="th_hotel totalRoomCurrency_hotel">
-                            {assign var="totalRoomCurrency" value=$objFunctions->CurrencyCalculate($room['room_price'], $smarty.post.CurrencyCode)}
-                            <div class="extra-prices">
-                                {*
-                                {$objFunctions->numberFormat($totalRoomCurrency.AmountCurrency)}
-                                <i>{$totalRoomCurrency.TypeCurrency}</i>
-                                <span class=" plus_price_room" title="جزییات قیمت برای هر اتاق">
-                                                 <i class="far fa-list-alt"></i>
-                                             </span>*}
-                                <span class="extra-price-value">&nbsp;</span>
-                                <span class="extra-price-value">
-                                                {math equation="x * y * z" x=$room.price_current y=$room.room_count z=$objFactor->temproryHotel.number_night assign=totalPrice}
-                                                {$totalPrice|number_format}
-                                                {$totalRoomCurrency.TypeCurrency}
-                                            </span>
-                                {if $room['child_room_count'] > 0}
-                                <span class="extra-price-value">
-                                                        {math equation="x * y * z" x=$room.child_room_price y=$room.child_room_count z=$objFactor->temproryHotel.number_night assign=totalPriceECHD}
-                                                    {$totalPriceECHD|number_format}
-                                                    {$totalRoomCurrency.TypeCurrency}
-                                                    </span>
-                                {/if}
-                                {if $room['extra_bed_count'] > 0}
-                                <span class="extra-price-value">
-                                                        {math equation="x * y * z" x=$room.extra_bed_price y=$room.extra_bed_count z=$objFactor->temproryHotel.number_night assign=totalPriceEXT}
-                                                    {$totalPriceEXT|number_format}
-                                                    {$totalRoomCurrency.TypeCurrency}
-                                                    </span>
-                                {/if}
-
-                            </div>
-                        </div>
-                    </div>
-
-                    {/foreach}
-
-                </div>
-            </div>
-        </div>
-
-
-        <div class="DivTotalPrice ">
-            {assign var="paymentPriceCurrency" value=$objFunctions->CurrencyCalculate($objFactor->paymentPrice, $smarty.post.CurrencyCode)}
-            <div class="fltl">##Totalamount## :
-                <span>{$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}</span>
-                <i>{$paymentPriceCurrency.TypeCurrency}</i>
-            </div>
-            {if $objFactor->temproryHotel['prepayment_percentage'] neq 0}
-            <div class="fltl">
-                <i>
-                    {$objFactor->temproryHotel['prepayment_percentage']}
-                </i>
-                <i>%  ##PrePayment## :</i>
-                <i>{$objFunctions->numberFormat($objFactor->temproryHotel['hotel_payments_price'])}</i>
-                <i>{$paymentPriceCurrency.TypeCurrency}</i>
-
-            </div>
-            {/if}
-        </div>
-    </div>
-
-    {if $smarty.post.typeApplication eq 'reservation' && $listOneDayTour neq ''}
-    <h4 class="tableOrderHeadTitle site-bg-main-color">
-        <span>##Onedayspatrollist##</span>
-    </h4>
-    <div class="rp-tableOrder site-border-main-color">
-        <table>
-            <thead>
-            <tr class="Hotel-tableOrderHead">
-                <th class="Hotel-tableOrderHead-c1">##Titletour##</th>
-                <th class="Hotel-tableOrderHead-c6">##TotalPrice## (##Rial##)</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            {foreach  $listOneDayTour  as $val}
-            <tr>
-                <td class="Hotel-tableOrderHead">
-                    <h5 class="roomsTitle">{$val['title']}</h5>
-                </td>
-
-                <td class="Hotel-tableOrderHead">
-                    {assign var="roomFinalCurrency" value=$objFunctions->CurrencyCalculate($val['price'], $smarty.post.CurrencyCode)}
-                    <div class="roomFinalPrice ">{$objFunctions->numberFormat($roomFinalCurrency.AmountCurrency)} {$roomFinalCurrency.TypeCurrency}</div>
-                </td>
-            </tr>
-            {/foreach}
-
-            </tbody>
-        </table>
-    </div>
-    {/if}
-
-
-
-</div>
-
-<div class="clear"></div>
-
-
-<div class="main-Content-bottom Dash-ContentL-B">
-    <div class="main-Content-bottom-table Dash-ContentL-B-Table">
-        {if $objFactor->temproryHotel['passenger'][0]['passenger_name'] neq ''}
-        <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title l-p-p-header l-p-p-header-change site-bg-main-color">
-            <i class="icon-table"></i>
-            <h3>##Listpassengers##</h3>
-        </div>
-        <div class="table-responsive">
-            <table id="passengers" class="display" cellspacing="0" width="100%">
-
-                <thead>
-                <tr>
-                    <th>##Ages##</th>
-                    <th>##Name##</th>
-                    <th>##Nameenglish##</th>
-                    <th>##Family##</th>
-                    <th>##Familyenglish##</th>
-                    <th>##Happybirthday##</th>
-                    <th>##Numpassport##/##Nationalnumber##</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                {foreach $objFactor->temproryHotel['passenger'] as $i=>$passenger}
-                <tr>
-                    <td>{$passenger['title_flat_type']}</td>
-                    <td>
-                        <p>{$passenger['passenger_name']}</p>
-                    </td>
-                    <td>
-                        <p>{$passenger['passenger_name_en']}</p>
-                    </td>
-                    <td>
-                        <p>{$passenger['passenger_family']}</p>
-                    </td>
-                    <td>
-                        <p>{$passenger['passenger_family_en']}</p>
-                    </td>
-                    <td>
-                        <p>{if !$passenger['passenger_birthday']} {$passenger['passenger_birthday_en']} {else} {$passenger['passenger_birthday']}{/if}</p>
-                    </td>
-                    <td>
-                        <p>{if $passenger['passenger_national_code'] eq ''}{$passenger['passportNumber']}{else}{$passenger['passenger_national_code']}{/if}</p>
-                    </td>
-                </tr>
-                {/foreach}
-
-                </tbody>
-
-
-            </table>
-        </div>
-        {elseif $objFactor->temproryHotel['type_application'] eq 'reservation'}
-        <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title l-p-p-header l-p-p-header-change site-bg-main-color">
-            <i class="icon-table"></i>
-            <h3>##TravelerGuard##</h3>
-        </div>
-        <div class="Dash-ContentL-Title-leader">
-            <span class="leaderRoom-Title">  ##Namefamily##  :</span>
-            <span class="leaderRoom">{$objFactor->temproryHotel['passenger_leader_fullName']}</span>
-            <span class="leaderRoom-Title">##Telephone## :</span>
-            <span class="leaderRoom">{$objFactor->temproryHotel['passenger_leader_tell']}</span>
-        </div>
-        {/if}
-    </div>
-</div>
-</div>
-<div class="clear"></div>
-
-<!--  برای رزرو یک اتاق یا بیشتر به صورت موقت، و بازگرداندن یک شماره درخواست و شماره ( پی ان آر ) برای اعمال دستورات بر روی این رزرو-->
-<input type="hidden" value="" name="RequestNumber" id="RequestNumber">
-<input type="hidden" value="" name="RequestPNR" id="RequestPNR">
-<input type="hidden" value="" name="total_price" id="total_price">
-<input type="hidden" name="paymentPrice" id="paymentPrice" value="{$objFactor->paymentPrice}">
-</div>
-<div class="clear"></div>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 s-u-passenger-wrapper-change"
-     style="padding: 0">
-    <div class="s-u-result-wrapper">
-        <div class="s-u-result-item-change direcR iranR txt12 txtRed s-u-result-item-RulsCheck">
-            <div style="text-align: right">
-                {assign var="serviceType" value=$objFunctions->TypeServiceHotel($smarty.post.typeApplication)} {* لازم برای انتخاب نوع بانک *}
-                {if $objSession->IsLogin() && $objMember->list['fk_counter_type_id'] =='5'}
-                <div class="s-u-result-item-RulsCheck-item">
-                    {*                            <input class="FilterHoteltype Show_all FilterHoteltypeName-top" id="discount_code" name=""*}
-                                                         {*                                   value="" type="checkbox">*}
-                    {*                            <label class="FilterHoteltypeName site-main-text-color-a" for="discount_code">##Ihavediscountcodewantuse##</label>*}
-
-                    <div class="col-sm-12  parent-discount  ">
-                        <div class="discount-code-new">
-                            <div class="title-discount-code">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M200.3 81.5C210.9 61.5 231.9 48 256 48s45.1 13.5 55.7 33.5C317.1 91.7 329 96.6 340 93.2c21.6-6.6 46.1-1.4 63.1 15.7s22.3 41.5 15.7 63.1c-3.4 11 1.5 22.9 11.7 28.2c20 10.6 33.5 31.6 33.5 55.7s-13.5 45.1-33.5 55.7c-10.2 5.4-15.1 17.2-11.7 28.2c6.6 21.6 1.4 46.1-15.7 63.1s-41.5 22.3-63.1 15.7c-11-3.4-22.9 1.5-28.2 11.7c-10.6 20-31.6 33.5-55.7 33.5s-45.1-13.5-55.7-33.5c-5.4-10.2-17.2-15.1-28.2-11.7c-21.6 6.6-46.1 1.4-63.1-15.7S86.6 361.6 93.2 340c3.4-11-1.5-22.9-11.7-28.2C61.5 301.1 48 280.1 48 256s13.5-45.1 33.5-55.7C91.7 194.9 96.6 183 93.2 172c-6.6-21.6-1.4-46.1 15.7-63.1S150.4 86.6 172 93.2c11 3.4 22.9-1.5 28.2-11.7zM256 0c-35.9 0-67.8 17-88.1 43.4c-33-4.3-67.6 6.2-93 31.6s-35.9 60-31.6 93C17 188.2 0 220.1 0 256s17 67.8 43.4 88.1c-4.3 33 6.2 67.6 31.6 93s60 35.9 93 31.6C188.2 495 220.1 512 256 512s67.8-17 88.1-43.4c33 4.3 67.6-6.2 93-31.6s35.9-60 31.6-93C495 323.8 512 291.9 512 256s-17-67.8-43.4-88.1c4.3-33-6.2-67.6-31.6-93s-60-35.9-93-31.6C323.8 17 291.9 0 256 0zM192 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm160 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM337 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L175 303c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L337 209z"></path></svg>
-                                <h2>##RegisterDiscountCode##</h2>
-                            </div>
-                            <div class="discount-code-data">
-                                <h3>##IfYouHaveAdiscountCode##</h3>
-                                <div class="form-discount-code">
-                                    <input type="text" placeholder="##Codediscount## ..." id="discount-code">
-                                    <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
-                                           value="{$paymentPriceCurrency.AmountCurrency}"/>
-                                    <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}' , {$objFactor->temproryHotel['factor_number']} , '{$smarty.post.typeApplication}' , '{$paymentPriceCurrency.TypeCurrency}')" class="site-bg-main-color">
-                                        ##Apply##
-                                    </button>
-                                </div>
-                                <span class="discount-code-error"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            {*                            <div class="info-box__price info-box__item pull-left">
-                                <div class="item-discount">
-                                    <span class="item-discount__label">##Amountpayable## :</span>
-                                    <span class="price__amount-price price-after-discount-code">{$objFunctions->numberFormat($objDetail->Amount)}</span>
-                                    <span class="price__unit-price">{$objDetail->AdtPriceType[$direction]}</span>
-                                </div>
-                            </div>*}
-                            <div class="a-takhfif-box">
-                                <div class="a-takhfif-box-inner">
-                                    <div class="a-takhfif-before">
-                                        <span>##PreviousPrice##</span>
-                                        <span>
-                                                    {$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}
-                                                <i>{$paymentPriceCurrency.TypeCurrency}</i>
-                                                </span>
-                                    </div>
-                                    <div class="a-takhfif-offer">
-                                        <span>##DiscountAmount##</span>
-                                        <span><span class="discountAmount">0</span>
-                                                <i class="dispalyTypeCurrency">{$paymentPriceCurrency.TypeCurrency}</i></span>
-                                    </div>
-                                    <div class="a-takhfif-after">
-                                        <span>##FinalAmount##</span>
-                                        <span class="price-after-discount-code">
-                                                    {$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}
-                                                <i>{$paymentPriceCurrency.TypeCurrency}</i>
-                                                </span>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        {*                                <div class="row separate-part-discount align-items-center">*}
-                            {*                                    <div class="col-sm-6 col-xs-12">*}
-                                {*                                        <label for="discount-code">##Codediscount## :</label>*}
-                                {*                                        <input type="text" id="discount-code" class="form-control" name="discount-code">*}
-                                {*                                    </div>*}
-                            {*                                    <div class="col-sm-2 col-xs-12 align-self-end">*}
-                                {*                                    <span class="input-group-btn">*}
-{*                                        <input type="hidden" name="priceWithoutDiscountCode"*}
-                                                 {*                                               id="priceWithoutDiscountCode"*}
-                                                 {*                                               value="{$paymentPriceCurrency.AmountCurrency}"/>*}
-{*                                        <button type="button"*}
-                                                  {*                                                onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}')"*}
-                                                  {*                                                class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">##Reviewapplycode##  </button>*}
-{*                                    </span>*}
-                                {*                                    </div>*}
-                            {*                                    <div class="col-sm-4 col-xs-12">*}
-                                {*                                        <span class="discount-code-error"></span>*}
-                                {*                                    </div>*}
-                            {*                                </div>*}
-                        {*                                <div class="row separate-part-discount">*}
-                            {*                                    <div class="info-box__price info-box__item pull-left">*}
-                                {*                                        <div class="item-discount">*}
-                                    {*                                            <span class="item-discount__label">##Amountpayable## :</span>*}
-                                    {*                                            <span class="price__amount-price price-after-discount-code">{$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}</span>*}
-                                    {*                                            <span class="price__unit-price">{$paymentPriceCurrency.TypeCurrency}</span>*}
-                                    {*                                        </div>*}
-                                {*                                    </div>*}
-                            {*                                </div>*}
-                    </div>
-                </div>
-                {/if}
-                <div class="s-u-result-item-RulsCheck-item d-flex justify-content-between flex-sm-row flex-column">
-                    <div class="d-flex">
-                        <input class="FilterHoteltype Show_by_filters FilterHoteltypeName-top" id="RulsCheck"
-                               name="heck_list1" value="" type="checkbox">
-                        <label class="FilterHoteltypeName site-main-text-color-a " for="RulsCheck">
-                            <a class="txtRed" href="{$smarty.const.URL_RULS}" target="_blank">##Seerules## </a>
-                            ##IhavestudiedIhavenoobjection##
-                        </label>
-                    </div>
-                    <div class="btn-final-confirmation" id="btn-final-Reserve">
-                        <div class="next_hotel__">
-                            <a href="" onclick="return false" class="f-loader-check loaderfactors" id="loader_check"
-                               style="display:none"></a>
-                            <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-bg-main-color"
-                               id="final_ok_and_insert_passenger"
-                               onclick="ReserveTemprory('{$smarty.post.factorNumber}', '{$smarty.post.typeApplication}')">##Approvefinal## </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<input type="hidden" name="timeConfirmHotel" id="timeConfirmHotel" value="">
-
-<div id="messageBook" class="error-flight"></div>
-<!-- OnRequest -->
-<div id="cancelHotel" class="displayN">
-    <div class="main-cancel-box s-u-p-factor-bank s-u-p-factor-bank-change">
-        <h4 class="site-bg-main-color site-bg-color-border-bottom site-main-button-flat-color">
-            ##Cancelrequest##</h4>
-        <div class="s-u-select-bank mart30">
-            <span> ##Yourrequesthascanceledtolackof##</span>
-            <span class="author"><i>##Youcanbookanotherhotel##</i></span>
-        </div>
-        <div class="s-u-select-update-wrapper">
-            <a class="s-u-select-update s-u-select-update-change site-main-button-flat-color"
-               onclick="backToResultHotelLocal('{$objFactor->city}', '{$objFactor->startDate}', '{$objFactor->numberNight}')">
-                ##Anotherhotel## </a>
-        </div>
-    </div>
-</div>
-<div id="onRequestOnlinePassenger" class="displayN">
-    <div class="Attention Attention-change">
-        <div class="s-u-select-bank mart30 marb30 bg-yellow">
-            <input type="hidden" name="factorNumber" id="factorNumber"
-                   value="{$objFactor->temproryHotel['factor_number']}">
-            <span class="author">
-                    <i class="bg-yellow"> ##Dearguestsuccessfullyregisteredbookingreservation##</i>
-                </span>
-            <div class="msg">
-                {*                <span class="box-offline-reserve offline-reserve-msg">*}
-{*                    <span class="msg-time">*}
-{*                       <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"*}
-                              {*                            style="direction: ltr">10:00</div>*}
-{*                    </span>*}
-{*                </span>*}
-                <span class="box-offline-reserve offline-factorNumber w-100"> ##Invoicenumber##: {$objFactor->temproryHotel['factor_number']}</span>
-            </div>
-        </div>
-    </div>
-    <div class="btn-final-confirmation">
-        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color"
-           onclick="backToResultHotelLocal('{$objFactor->city}', '{$objFactor->startDate}', '{$objFactor->numberNight}')">
-            ##Return## </a>
-    </div>
-</div>
-<div id="onRequest" class="displayN">
-    <div class="Attention Attention-change">
-        <div class="s-u-select-bank mart30 marb30 bg-yellow">
-            <input type="hidden" name="factorNumber" id="factorNumber"
-                   value="{$objFactor->temproryHotel['factor_number']}">
-            <span class="author">
-                <i class="bg-yellow"> ##Dearguestsuccessfullyregisteredbooking##</i>
-            </span>
-            <div class="msg">
-                <span class="box-offline-reserve offline-reserve-msg">##Usehotelshoppingpaymentbooking##</span>
-                <span class="box-offline-reserve offline-factorNumber"> ##Invoicenumber##: {$objFactor->temproryHotel['factor_number']}</span>
-            </div>
-        </div>
-    </div>
-    <div class="btn-final-confirmation">
-        <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color"
-           onclick="backToResultHotelLocal('{$objFactor->city}', '{$objFactor->startDate}', '{$objFactor->numberNight}')">
-            ##Return## </a>
-    </div>
-</div>
-<div id="confirmHotel" class="displayN">
-    <div class="Attention Attention-change">
-        <div class="s-u-select-bank mart30 marb30 bg-yellow">
-                <span class="author">
-                    <i class="alert alert-success"> ##Dearguestrequestapprovedbookingfee##</i>
-                </span>
-
-
-            <div>
-                <div class="msg">
-                    {*                        <span class="box-offline-reserve offline-reserve-msg">*}
-{*                            <span class="msg-time">*}
-{*                                <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"*}
-                                       {*                                     style="direction: ltr">10:00</div>*}
-{*                            </span>*}
-{*                        </span>*}
-                    <span class="box-offline-reserve offline-factorNumber w-100"> ##Invoicenumber##: {$objFactor->temproryHotel['factor_number']}</span>
-                </div>
-                <div class="s-u-check-tracking-code">
-                    <p>
-                        ##Usehotelshoppingpaymentbooking##
-                    </p>
-                    <a class="s-u-check-step s-u-select-flight-change s-u-submit-passenger-Buyer txt15 lh40 site-main-button-color"
-                       href="{$smarty.const.ROOT_ADDRESS}/UserTracking">
-                        ##TrackOrder## </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- bank connect -->
-<div class="main-pay-content">
-
-    <!-- payment methods drop down -->
-    {assign var="memberCreditPermition" value="0"}
-    {if $objSession->IsLogin() && $objMember->list['fk_counter_type_id'] == '5'}
-    {$memberCreditPermition = "1"}
-    {/if}
-
-    {assign var="counterCreditPermition" value="0"}
-    {if $objSession->IsLogin() && $objMember->list['fk_counter_type_id'] != '5'}
-    {$counterCreditPermition = "1"}
-    {/if}
-    {if $objFactor->temproryHotel['hotel_payments_price']>0}
-    {assign var="bankInputs" value=['flag' => 'check_credit_hotel', 'factorNumber' => $objFactor->temproryHotel['factor_number'], 'typeApplication' => $smarty.post.typeApplication, 'typeTrip' => 'hotelLocal', 'paymentPrice' => $objFactor->temproryHotel['hotel_payments_price'] , 'paymentStatus' => $paymentStatusValue, 'serviceType' => $serviceType]}
-    {else}
-    {assign var="bankInputs" value=['flag' => 'check_credit_hotel', 'factorNumber' => $objFactor->temproryHotel['factor_number'], 'typeApplication' => $smarty.post.typeApplication, 'typeTrip' => 'hotelLocal', 'paymentPrice' => $objFactor->paymentPrice , 'paymentStatus' => $paymentStatusValue, 'serviceType' => $serviceType]}
-    {/if}
-    {assign var="bankAction" value="`$smarty.const.ROOT_ADDRESS`/goBankHotelLocal"}
-
-    {assign var="creditInputs" value=['flag' => 'buyByCreditHotelLocal', 'factorNumber' => $objFactor->temproryHotel['factor_number'], 'paymentStatus' => $paymentStatusValue, 'typeApplication' => $smarty.post.typeApplication , 'serviceType' => $serviceType]}
-    {assign var="creditAction" value="`$smarty.const.ROOT_ADDRESS`/returnBankHotelLocal"}
-
-    {assign var="currencyPermition" value="0"}
-    {if $smarty.const.ISCURRENCY && $smarty.post.CurrencyCode > 0}
-    {$currencyPermition = "1"}
-    {assign var="currencyInputs" value=['flag' => 'check_credit_hotel', 'factorNumber' => $objFactor->temproryHotel['factor_number'], 'typeApplication' => $smarty.post.typeApplication, 'typeTrip' => 'hotelLocal', 'paymentPrice' => $objFactor->paymentPrice , 'paymentStatus' => $paymentStatusValue, 'serviceType' => $serviceType, 'amount' => $paymentPriceCurrency.AmountCurrency, 'currencyCode' => $smarty.post.CurrencyCode]}
-    {assign var="currencyAction" value="`$smarty.const.ROOT_ADDRESS`/returnBankHotelLocal"}
-    {/if}
-
-    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`paymentMethods.tpl"}
-    <!-- payment methods drop down -->
-
-</div>
-<!--BACK TO TOP BUTTON-->
-<div class="backToTop"></div>
-{literal}
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.plus_price_room i').click(function () {
-            $(this).parents('.hotel_room_row').find('.box_pricees').toggle();
-            $(this).toggleClass('fa fa-times')
-            $(this).toggleClass('far fa-list-alt')
-        });
-        $('.table-responsive').bind('click', function (e) {
-            e.stopPropagation();
-        });
-        $('body').click(function () {
-            $('.box_pricees').hide();
-            $('.plus_price_room i').removeClass('fa fa-times')
-            $('.plus_price_room i').addClass('far fa-list-alt')
-        });
-        $(this).find(".price-pop").click(function () {
-
-            $(".price-Box").toggleClass("displayBlock");
-            $("#lightboxContainer").addClass("displayBlock");
-        });
-        $(this).find(".closeBtn").click(function () {
-
-            $(".price-Box").removeClass("displayBlock");
-            $("#lightboxContainer").removeClass("displayBlock");
-        });
-        $("div#lightboxContainer").click(function () {
-
-            $(".price-Box").removeClass("displayBlock");
-            $("#lightboxContainer").removeClass("displayBlock");
-        });
-        $(this).find(".Cancellation-pop").click(function () {
-
-            $(".Cancellation-Box").toggleClass("displayBlock");
-            $("#lightboxContainer").addClass("displayBlock");
-        });
-        $(this).find(".closeBtn").click(function () {
-
-            $(".Cancellation-Box").removeClass("displayBlock");
-            $("#lightboxContainer").removeClass("displayBlock");
-        });
-        $("div#lightboxContainer").click(function () {
-
-            $(".Cancellation-Box").removeClass("displayBlock");
-            $("#lightboxContainer").removeClass("displayBlock");
-        });
-        // $('body').delegate('.DetailSelectTicket','click', function(e) {
-        $('.DetailSelectTicket').on('click', function (e) {
-            $(this).parent().siblings('.DetailSelectTicketContect').slideToggle('fast');
-        });
-
-    });
-</script>
-{/literal}
-{literal}
-<!-- jQuery Site Scipts -->
-<script src="assets/js/script.js"></script>
-<script src="assets/js/jdate.min.js" type="text/javascript"></script>
-<script src="assets/js/jdate.js" type="text/javascript"></script>
-<script src="assets/js/jquery.counter.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-    function timeForConfirmHotel() {
-
-        setInterval(function () {
-
-            var timeConfirmHotel = $('#timeConfirmHotel').val();
-
-            if (timeConfirmHotel == 'yes') {
-
-                var factorNumber = $('#factorNumber').val();
-                $.post(amadeusPath + 'hotel_ajax.php',
-                    {
-                        factorNumber: factorNumber,
-                        flag: "checkForConfirmHotel"
-                    },
-                    function (data) {
-
-                        if (data.indexOf('PreReserve') > -1) {
-                            $('#timeConfirmHotel').val('no');
-                            $('#AdminChecking').addClass('displayN');
-                            $('#onRequest').addClass('displayN');
-                            $('#onRequestOnlinePassenger').addClass('displayN');
-                            $('#confirmHotel').removeClass('displayN');
-                            $('#btn-final-confirmation').removeClass('displayN');
-                            $('.counterBank').counter({});
-                            setTimeout(function () {
-                                $('#final_ok_and_insert_passenger').removeAttr("onclick").attr("disabled", true).css('cursor', 'not-allowed').text('##Accepted##');
-
-                                $('.s-u-p-factor-bank-change').show();
-                                $('#loader_check').css("display", "none");
-                                $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow');
-                            }, 2000);
-
-                        } else if (data.indexOf('Cancelled') > -1) {
-                            $('#timeConfirmHotel').val('no');
-                            $('#onRequest').addClass('displayN');
-                            $('#onRequestOnlinePassenger').addClass('displayN');
-                            $('#AdminChecking').addClass('displayN');
-                            $('#cancelHotel').removeClass('displayN');
-                        } else if (data.indexOf('AdminChecking') > -1) {
-                            $('#timeConfirmHotel').val('no');
-                            $('#factor_bank').addClass('displayN');
-                            $('#confirmHotel').addClass('displayN');
-                            $('#onRequest').addClass('displayN');
-                            $('#onRequestOnlinePassenger').addClass('displayN');
-                            $('#cancelHotel').addClass('displayN');
-                            $('#AdminChecking').removeClass('displayN');
-                        }
-
-
-                    });
-
-            }
-
-        }, 60000);
-
+<?php
+/**
+ * Class factorHotelLocal
+ * @property factorHotelLocal $factorHotelLocal
+ */
+
+
+class factorHotelLocal extends apiHotelLocal
+{
+    public $adultArr = array();
+    public $IsLogin ;
+    public $count_basket ;
+    public $city ;
+    public $numberNight ;
+    public $startDate ;
+    public $paymentPrice ;
+    public $paymentPriceOneDayTour ;
+    public $counterTypeId = '';
+    public $counterName = '';
+    public $counterId = '';
+    public $serviceDiscount = array();
+    public $error = false;
+    public $errorMessage = '';
+
+
+    public function __construct()
+    {
+        $this->IsLogin = Session::IsLogin();
+        if ($this->IsLogin){
+            $this->counterId = functions::getCounterTypeId($_SESSION['userId']);
+            $this->serviceDiscount['api'] = functions::ServiceDiscount($this->counterId, 'PublicLocalHotel');
+        }else {
+            $this->counterId = '5';
+        }
     }
 
 
-    /*$('.counter').on('counterStop', function () {
+    public function statusRefresh(){
+        session_start();
+        if(isset($_SESSION['StatusRefresh']) && trim($_SESSION['StatusRefresh'])==$_POST['StatusRefresh']){
+            // can't submit refresh
+            unset($_SESSION['StatusRefresh']);
+            unset($_SESSION['FactorNumberForHotelBooking']);
+            unset($_SESSION['FactorNumber']);
+            header('Location: ' . ROOT_ADDRESS . '/resultHotelLocal/' . $_POST['idCity_Reserve'] . '/' . $_POST['StartDate_Reserve'] . '/' . $_POST['Nights_Reserve'] );
+            exit();
+        }
+        else{
+            $_SESSION['StatusRefresh'] = $_POST['StatusRefresh'];
+        }
+    }
 
-        var factorNumber = $('#factorNumber').val();
-        $.post(amadeusPath + 'hotel_ajax.php',
-            {
-                factorNumber: factorNumber,
-                flag: "checkForConfirmHotel"
-            },
-            function (data) {
+    public function registerPassengersHotel($formData = null)
+    {
+        if (!empty($formData)){
+            $_POST = $formData;
+            $_POST['passenger_leader_room'] = $_POST['Mobile'];
+        }
+        $this->IsLogin = Session::IsLogin();
 
-                if (data.indexOf('PreReserve') > -1) {
+        $factorNumber = $_POST['factorNumber'];
+        $typeApplication = $_POST['typeApplication'];
+        $IdMember = $_POST['idMember'];
 
-                    $('#onRequestOnlinePassenger').addClass('displayN');
-                    $('#confirmHotel').removeClass('displayN');
-                    $('.counterBank').counter({});
-                    setTimeout(function () {
-                        $('#final_ok_and_insert_passenger').removeAttr("onclick").attr("disabled", true).css('cursor', 'not-allowed').text('##Accepted##');
+        $Model = Load::library('Model');
+        $ModelBase = Load::library('ModelBase');
+        $passengerController = Load::controller('passengers');
 
-                        $('.s-u-p-factor-bank-change').show();
-                        $('#loader_check').css("display", "none");
-                        $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow');
-                    }, 2000);
+        $objClientAuth = Load::library('clientAuth');
+        $objClientAuth->apiHotelAuth();
+        $sourceId = $objClientAuth->sourceId;
+        //$sourceId = '6';
+        $serviceTitle = functions::TypeServiceHotel($typeApplication);
+        $irantechCommission = Load::controller('irantechCommission');
+        $it_commission = $irantechCommission->getCommission($serviceTitle, $sourceId);
 
-                } else if (data.indexOf('Cancelled') > -1) {
+        $errorResult = [];
+        $i = 1;
+        while (isset($_POST["genderA" . $i])) {
 
-                    $('#onRequestOnlinePassenger').addClass('displayN');
-                    $('#cancelHotel').removeClass('displayN');
+            if (!empty($formData)){
+                $_POST['birthdayA' . $i] = $formData['YearJalaliA' . $i] . '-' . $formData['MonthJalaliA' . $i] . '-' . $formData['DayJalaliA' . $i];
+                $_POST['birthdayEnA' . $i] = $formData['YearMiladiA' . $i] . '-' . $formData['MonthMiladiA' . $i] . '-' . $formData['DayMiladiA' . $i];
+            }
+
+            $sql_check_temprory = "
+                SELECT
+                    type_of_price_change,
+                    agency_commission_price_type,
+                    SUM( agency_commission ) AS agency_commission_sum,
+                    SUM( price_online_current ) AS price_online_current_sum,
+                    SUM( price_board_current ) AS price_board_current_sum,
+                    SUM( price_current ) AS price_current_sum,
+                    SUM( price_foreign_current ) AS price_foreign_current_sum 
+                FROM
+                    temprory_hotel_local_tb 
+                WHERE
+                    factor_number = '{$_POST['factorNumber']}' 
+                    AND room_id = '{$_POST['Id_Select_Room' . $i]}'
+                            ";
+
+            error_log($sql_check_temprory,3,LOGS_DIR.'sqlTest.txt');
+            $price_room = $Model->load($sql_check_temprory);
+            if (!empty($price_room) && $price_room['price_current_sum'] > 0 && $price_room['price_online_current_sum'] > 0){
+
+                $this->adultArr[$i]['gender'] = $_POST["genderA" . $i];
+                $this->adultArr[$i]['name_en'] = $_POST["nameEnA" . $i];
+                $this->adultArr[$i]['family_en'] = $_POST["familyEnA" . $i];
+                $this->adultArr[$i]['name'] = $_POST["nameFaA" . $i];
+                $this->adultArr[$i]['family'] = $_POST["familyFaA" . $i];
+                $this->adultArr[$i]['NationalCode'] = $_POST["NationalCodeA" . $i];
+                $this->adultArr[$i]['fk_members_tb_id'] = $_POST["idMember"];
+                $this->adultArr[$i]['passportCountry'] = $_POST["passportCountryA" . $i];
+                $this->adultArr[$i]['passportNumber'] = $_POST["passportNumberA" . $i];
+                $this->adultArr[$i]['passportExpire'] = $_POST["passportExpireA" . $i];
+                $this->adultArr[$i]['passenger_leader_room'] = $_POST["passenger_leader_room"];
+                $this->adultArr[$i]['passenger_leader_room_fullName'] = $_POST["passenger_leader_room_fullName"];
+                $this->adultArr[$i]['passenger_leader_room_email'] = $_POST["passenger_leader_room_email"];
+                $this->adultArr[$i]['passenger_leader_room_postalcode'] = $_POST["passenger_leader_room_postalcode"];
+                $this->adultArr[$i]['passenger_leader_room_address'] = $_POST["passenger_leader_room_address"];
+                $this->adultArr[$i]['BedType'] = $_POST["BedType" . $i];
+                $this->adultArr[$i]['Id_Select_Room'] = $_POST["Id_Select_Room" . $i];
+
+                if (isset($_POST["timeEnteringRoom" . $i])) {
+                    $this->adultArr[$i]['time_entering_room'] = $_POST["timeEnteringRoom" . $i];
+                }
+
+                $this->adultArr[$i]['room_price'] = $price_room['price_current_sum'];
+                $this->adultArr[$i]['room_bord_price'] = $price_room['price_board_current_sum'];
+                $this->adultArr[$i]['room_online_price'] = $price_room['price_online_current_sum'];
+
+                if ($_POST["passengerNationalityA" . $i] == '0') {
+                    $this->adultArr[$i]['birthday_fa'] = $_POST["birthdayA" . $i];
+                    $this->adultArr[$i]['birthday'] = '';
+
+                } else{
+                    $this->adultArr[$i]['birthday_fa'] = '';
+                    $this->adultArr[$i]['birthday'] = $_POST["birthdayEnA" . $i];
+                }
+
+                $this->adultArr[$i]['agency_commission'] = $price_room['agency_commission_sum'];
+                $this->adultArr[$i]['agency_commission_price_type'] = $price_room['agency_commission_price_type'];
+                $this->adultArr[$i]['type_of_price_change'] = $price_room['type_of_price_change'];
+
+                if ($this->IsLogin) {
+                    $passengerAddArray = array(
+                        'passengerName' => $this->adultArr[$i]['name'],
+                        'passengerNameEn' => $this->adultArr[$i]['name_en'],
+                        'passengerFamily' => $this->adultArr[$i]['family'],
+                        'passengerFamilyEn' => $this->adultArr[$i]['family_en'],
+                        'passengerGender' => $this->adultArr[$i]['gender'],
+                        'passengerBirthday' => $this->adultArr[$i]['birthday_fa'],
+                        'passengerNationalCode' => $this->adultArr[$i]['NationalCode'],
+                        'passengerBirthdayEn' => $this->adultArr[$i]['birthday'],
+                        'passengerPassportCountry' => $this->adultArr[$i]['passportCountry'],
+                        'passengerPassportNumber' => $this->adultArr[$i]['passportNumber'],
+                        'passengerPassportExpire' => $this->adultArr[$i]['passportExpire'],
+                        'memberID' => $this->adultArr[$i]['fk_members_tb_id'],
+                        'passengerNationality' => $_POST["passengerNationalityA" . $i]
+                    );
+                    $passengerController->insert($passengerAddArray);
+                }
+
+                if(ISCURRENCY && $_POST['CurrencyCode'] > 0){
+                    $Currency = Load::controller('currencyEquivalent');
+                    $InfoCurrency = $Currency->InfoCurrency($_POST['CurrencyCode']);
+                }
+
+                $this->adultArr[$i]['currency_code'] = $_POST['CurrencyCode'];
+                $this->adultArr[$i]['currency_equivalent'] = !empty($InfoCurrency) ? $InfoCurrency['EqAmount'] : '0';
+
+                parent::FirstBookHotel($this->adultArr[$i], $IdMember, $factorNumber, $typeApplication, $it_commission);
+
+            } else {
+                $errorResult [] = 0;
+            }
+
+
+
+            $i++;
+        }
+
+        if (in_array('0', $errorResult)){
+            $this->error = true;
+            $this->errorMessage = 'کاربر گرامی متاسفانه در روند رزرو مشکلی پیش آمده است. لطفا مجددا تلاش کنید.';
+        }
+
+    }
+
+    public function getPassengersHotel($formData = null)
+    {
+        if (!empty($formData)){
+            $_POST = $formData;
+        }
+
+        $this->city = $_POST['idCity_Reserve'];
+        $this->numberNight = $_POST['Nights_Reserve'];
+        $this->startDate = $_POST['StartDate_Reserve'];
+
+        $Model = Load::library('Model');
+        $ModelBase = Load::library('ModelBase');
+
+        $sql_temprory_hotel = " SELECT * FROM book_hotel_local_tb 
+                                WHERE 
+                                    factor_number ='{$_POST['factorNumber']}' 
+                                ORDER BY 
+                                    room_id, flat_type ";
+        $result_temprory_hotel = $Model->select($sql_temprory_hotel);
+
+
+        $sql_hotel = "
+                    SELECT * from reservation_hotel_tb
+                    where id = '{$result_temprory_hotel[0]['hotel_id']}'
+                ";
+        $reservation_hotel = $Model->load($sql_hotel);
+
+        $AuxiliaryVariableRoom = $result_temprory_hotel[0]['room_id']; // Group by room
+        $indexRoom = 0;
+        $room_price = 0;
+        $room_price_api = 0;
+        $totalPrice = 0;
+        $totalPriceApi = 0;
+        $bed_price = 0;
+        $ext = 0;
+        if($reservation_hotel['user_id']) {
+            $start_date  = str_replace('-' , '/' ,$result_temprory_hotel[0]['start_date']) ;
+            $priceChanges = functions::getMarketHotelPriceChange($reservation_hotel['id'] , $this->counterId,  $start_date,'marketplaceHotel' );
+            $discount_hotel = functions::marketServiceDiscount($this->counterId,'marketplaceHotel' , $reservation_hotel['id']);
+        }
+
+
+        foreach ($result_temprory_hotel as $k=>$hotel){
+
+            //Group by room
+            if ($AuxiliaryVariableRoom != $hotel['room_id']){
+
+                $AuxiliaryVariableRoom = $hotel['room_id'];
+                $indexRoom = 0;
+                $room_price = 0;
+                $bed_price = 0;
+                $ext = 0;
+            }
+
+
+            //info hotel
+            if ($k==0){
+
+
+                $this->temproryHotel['factor_number'] = $hotel['factor_number'];
+                $this->temproryHotel['passenger_leader_tell'] = $hotel['passenger_leader_room'];
+                $this->temproryHotel['passenger_leader_fullName'] = $hotel['passenger_leader_room_fullName'];
+                $this->temproryHotel['passenger_leader_room_email'] = $hotel['passenger_leader_room_email'];
+                $this->temproryHotel['passenger_leader_room_postalcode'] = $hotel['passenger_leader_room_postalcode'];
+                $this->temproryHotel['passenger_leader_room_address'] = $hotel['passenger_leader_room_address'];
+
+                $this->temproryHotel['city_name'] = $hotel['city_name'];
+                $this->temproryHotel['hotel_id'] = $hotel['hotel_id'];
+                $this->temproryHotel['hotel_name'] = $hotel['hotel_name'];
+                $this->temproryHotel['hotel_address'] = $hotel['hotel_address'];
+                $this->temproryHotel['hotel_starCode'] = $hotel['hotel_starCode'];
+                $this->temproryHotel['prepayment_percentage'] = $_POST['prepaymentPercentage'];
+                $this->temproryHotel['hotel_payments_price'] = $hotel['hotel_payments_price'];
+                if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar'){
+                    $this->temproryHotel['start_date'] = functions::ConvertToMiladi($hotel['start_date']);
+                    $this->temproryHotel['end_date'] = functions::ConvertToMiladi($hotel['end_date']);
+                } else {
+                    $this->temproryHotel['start_date'] = $hotel['start_date'];
+                    $this->temproryHotel['end_date'] = $hotel['end_date'];
+                }
+                $this->temproryHotel['number_night'] = $hotel['number_night'];
+                $this->temproryHotel['type_application'] = $hotel['type_application'];
+                $this->temproryHotel['hotel_rules'] = $hotel['hotel_rules'];
+                $this->temproryHotel['hotel_pictures'] = ($hotel['type_application']=='api' || $hotel['type_application']=='api_app') ? "{$hotel['hotel_pictures']}" : ROOT_ADDRESS_WITHOUT_LANG."/pic/{$hotel['hotel_pictures']}" ;
+
+                $indexRoom = 0; $room_price = 0; $room_price_api = 0; $bed_price = 0; $ext = 0;
+
+            }
+
+            //info passenger
+            $this->temproryHotel['passenger'][$k]['passenger_name'] = $hotel['passenger_name'];
+            $this->temproryHotel['passenger'][$k]['passenger_family'] = $hotel['passenger_family'];
+            $this->temproryHotel['passenger'][$k]['passenger_name_en'] = $hotel['passenger_name_en'];
+            $this->temproryHotel['passenger'][$k]['passenger_family_en'] = $hotel['passenger_family_en'];
+            $this->temproryHotel['passenger'][$k]['passenger_birthday'] = $hotel['passenger_birthday'];
+            $this->temproryHotel['passenger'][$k]['passenger_birthday_en'] = $hotel['passenger_birthday_en'];
+            $this->temproryHotel['passenger'][$k]['passenger_national_code'] = $hotel['passenger_national_code'];
+            $this->temproryHotel['passenger'][$k]['passportNumber'] = $hotel['passportNumber'];
+            if($reservation_hotel['user_id']) {
+                $this->temproryHotel['passenger'][$k]['room_price'] = $hotel['room_price'] = functions::calculateHotelPrice($priceChanges,$discount_hotel,$hotel['room_price'], true);
+            }else{
+                $this->temproryHotel['passenger'][$k]['room_price'] = $hotel['room_price'];
+            }
+
+            $this->temproryHotel['passenger'][$k]['room_name'] = $hotel['room_name'];
+            $this->temproryHotel['passenger'][$k]['room_id'] = $hotel['room_id'];
+
+            //api or reservation
+            if ($hotel['type_application']=='api' || $hotel['type_application']=='api_app'){
+
+                $this->temproryHotel['passenger'][$k]['title_flat_type'] = functions::Xmlinformation('HeadOfRoom');
+
+                $room_price_api = $hotel['room_price'] * $hotel['room_count'];
+
+                if ($hotel['type_of_price_change'] == 'increase' && $hotel['agency_commission_price_type'] == 'cost') {
+                    $room_price = ($hotel['room_price'] + $hotel['agency_commission']) * $hotel['room_count'];
+
+                } elseif ($hotel['type_of_price_change'] == 'decrease' && $hotel['agency_commission_price_type'] == 'cost') {
+                    $room_price = ($hotel['room_price'] - $hotel['agency_commission']) * $hotel['room_count'];
+
+                } elseif ($hotel['type_of_price_change'] == 'increase' && $hotel['agency_commission_price_type'] == 'percent') {
+                    $room_price = (($hotel['room_price'] * $hotel['agency_commission'] / 100) + $hotel['room_price']) * $hotel['room_count'];
+
+                } elseif ($hotel['type_of_price_change'] == 'decrease' && $hotel['agency_commission_price_type'] == 'percent') {
+                    $room_price = (($hotel['room_price'] * $hotel['agency_commission'] / 100) - $hotel['room_price']) * $hotel['room_count'];
 
                 } else {
-
-                    $.post(amadeusPath + 'hotel_ajax.php',
-                        {
-                            factorNumber: factorNumber,
-                            flag: "cancelReserveHotel"
-                        },
-                        function (data) {
-
-                            $('#factor_bank').addClass('displayN');
-                            $('#confirmHotel').addClass('displayN');
-                            $('#onRequestOnlinePassenger').addClass('displayN');
-                            $('#cancelHotel').removeClass('displayN');
-
-                        });
-
+                    $room_price = $hotel['room_price'] * $hotel['room_count'];
                 }
 
 
-            });
+                if (!empty($this->serviceDiscount['api']) && $this->serviceDiscount['api']['off_percent']>0){
+                    $room_price = $room_price - (($room_price * $this->serviceDiscount['api']['off_percent']) / 100);
+                }
 
-    });*/
+
+            }else {
+
+                switch ($hotel['flat_type']) {
+                    case 'DBL':
+                        $room_price += $hotel['room_price'] * $hotel['room_count'];
+                        $this->temproryHotel['passenger'][$k]['title_flat_type'] = functions::Xmlinformation("BaseBedForRomm");
+                        break;
+                    case 'EXT':
+                        $room_price += $hotel['room_price'];
+                        $totalPrice += $bed_price += $hotel['room_price'];
+                        $this->temproryHotel['passenger'][$k]['title_flat_type'] = functions::Xmlinformation("ExtrabedAdult");
+                        $ext++;
+                        break;
+                    case 'ECHD':
+                        $room_price += $hotel['room_price'];
+                        $totalPrice += $bed_price += $hotel['room_price'];
+                        $this->temproryHotel['passenger'][$k]['title_flat_type'] = functions::Xmlinformation("Extrabedchild");
+                        $ext++;
+                        break;
+                    default:
+                        $this->temproryHotel['passenger'][$k]['title_flat_type'] = '';
+                }
 
 
-    $('.counterBank').on('counterStop', function () {
+            }
 
-        var factorNumber = $('#factorNumber').val();
-        $.post(amadeusPath + 'hotel_ajax.php',
-            {
-                factorNumber: factorNumber,
-                flag: "cancelReserveHotel"
-            },
-            function (data) {
+            //info room
+            if ($indexRoom==0){
 
-                $.alert({
-                    title: '##Reservationhotel##',
-                    icon: 'fa fa-times',
-                    content: "##Yourhotelreservationdeadlineexpiredrestart##",
-                    rtl: true,
-                    type: 'red'
-                });
-                location.href = '{/literal}{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}{literal}';
+                if ($hotel['type_application']=='api' || $hotel['type_application']=='api_app'){
+                    $price_current = $hotel['price_current'];
+                    if (!empty($this->serviceDiscount['api']) && $this->serviceDiscount['api']['off_percent']>0){
+                        $price_current = $price_current - (($price_current * $this->serviceDiscount['api']['off_percent']) / 100);
+                    }
+                }else {
+                    $price_current = $hotel['price_current'];
+                }
 
-            });
+                // ======= دریافت اطلاعات وعده‌ها از جدول قیمت اتاق =======
+                $hotelId = $hotel['hotel_id'];
+                $roomId  = $hotel['room_id'];
+                $startDate = $hotel['start_date'];
+                $endDate   = $hotel['end_date'];
 
-    });
+                $startDateSql = str_replace(['-', '/'], '', $startDate);
+                $endDateSql   = str_replace(['-', '/'], '', $endDate);
+                $sql_meal = "
+                        SELECT
+                            RP.breakfast, RP.lunch, RP.dinner
+                        FROM 
+                            reservation_hotel_room_prices_tb RP 
+                        WHERE 
+                            RP.id_hotel='{$hotelId}' AND
+                            RP.id_room='{$roomId}' AND
+                            RP.is_del='no' AND
+                            RP.user_type='{$this->counterId}' AND
+                            RP.date>='{$startDateSql}' AND RP.date<'{$endDateSql}'
+                        GROUP BY RP.date
+                    ";
+                    $ResultHotelRoom = $Model->select($sql_meal);
 
-</script>
-<!-- modal login    -->
-<script type="text/javascript" src="assets/js/modal-login.js"></script>
-{/literal}
+                    // اگر داده‌ای بود، بررسی کنیم آیا در هیچ روزی yes داریم یا نه
+                    $hasBreakfast = $hasLunch = $hasDinner = 'no';
+                    if (!empty($ResultHotelRoom)) {
+                        foreach ($ResultHotelRoom as $meal) {
+                            if ($meal['breakfast'] == 'yes') $hasBreakfast = 'yes';
+                            if ($meal['lunch'] == 'yes') $hasLunch = 'yes';
+                            if ($meal['dinner'] == 'yes') $hasDinner = 'yes';
+                        }
+                    }
 
-{/if}
+
+                $this->temproryHotel['room'][$hotel['room_id']]['room_name'] = $hotel['room_name'];
+                $this->temproryHotel['room'][$hotel['room_id']]['max_capacity_count_room'] = $hotel['max_capacity_count_room'];
+                $this->temproryHotel['room'][$hotel['room_id']]['room_count'] = $hotel['room_count'];
+                $this->temproryHotel['room'][$hotel['room_id']]['price_current'] = $price_current;
+                $this->temproryHotel['room'][$hotel['room_id']]['child_room_count'] = $hotel['child_count'];
+                $this->temproryHotel['room'][$hotel['room_id']]['child_room_price'] = $hotel['child_price'];
+                $this->temproryHotel['room'][$hotel['room_id']]['extra_bed_count'] = $hotel['extra_bed_count'];
+                $this->temproryHotel['room'][$hotel['room_id']]['extra_bed_price'] = $hotel['extra_bed_price'];
+                $this->temproryHotel['room'][$hotel['room_id']]['room_price'] = $room_price;
+                $this->temproryHotel['room'][$hotel['room_id']]['Breakfast'] = $hasBreakfast;
+                $this->temproryHotel['room'][$hotel['room_id']]['Lunch'] = $hasLunch;
+                $this->temproryHotel['room'][$hotel['room_id']]['Dinner'] = $hasDinner;
+                $totalPrice += $room_price;
+                $totalPriceApi += $room_price_api;
+            }
+            $this->temproryHotel['room'][$hotel['room_id']]['flat_ext_count'] = $ext;
+            $indexRoom++;
+        }
+
+        if ($hotel['type_application']=='api' || $hotel['type_application']=='api_app'){
+            $this->paymentPrice = $totalPrice;
+
+            // payment price hotel
+            $d['total_price'] = $totalPrice;
+            $d['total_price_api'] = $totalPriceApi;
+
+            $Condition = "factor_number='{$_POST['factorNumber']}' ";
+            $Model->setTable("book_hotel_local_tb");
+            $Model->update($d, $Condition);
+
+            $ModelBase->setTable("report_hotel_tb");
+            $ModelBase->update($d, $Condition);
+        } else {
+            $this->paymentPrice = round($result_temprory_hotel[0]['total_price']);
+        }
+    }
+    public function prePaymentCalculate( $price, $pre_payment_percentage )  {
+//        var_dump($price);
+//die;
+        return (( $price * $pre_payment_percentage ) / 100);
+    }
+
+    public function registerPassengersReservationHotel($formData = null)
+    {
+
+        if (!empty($formData)){
+            $_POST = $formData;
+            $_POST['passenger_leader_room'] = $_POST['Mobile'];
+        }
+
+
+        $this->IsLogin = Session::IsLogin();
+
+        $Model = Load::library('Model');
+        $ModelBase = Load::library('ModelBase');
+        $passengerController = Load::controller('passengers');
+
+        $factorNumber = $_POST["factorNumber"];
+        $IdMember = $_POST['idMember'];
+        $typeApplication = $_POST['typeApplication'];
+
+        if (isset($_POST['resumeReserve']) && $_POST['resumeReserve']) {
+            $isResumeRequest = true;
+            $factorNumber = filter_var($_POST['factorNumber'], FILTER_SANITIZE_STRING);
+            $idMember = filter_var($_POST['oldIdMember'], FILTER_SANITIZE_STRING);
+
+
+        } else {
+            $isResumeRequest = false;
+            $factorNumber = filter_var($_POST['factorNumber'], FILTER_SANITIZE_STRING);
+            $idMember = filter_var($_POST['idMember'], FILTER_SANITIZE_STRING);
+        }
+
+
+        // info hotel
+        $resultInfoHotel = parent::infoHotel($_POST["Hotel_Reserve"]);
+
+        $prepaymentPercentageValue = $this->prePaymentCalculate($_POST['TotalPrice_Reserve'], $resultInfoHotel['prepayment_percentage']);
+
+
+        $objClientAuth = Load::library('clientAuth');
+        $objClientAuth->reservationHotelAuth();
+        $sourceId = $objClientAuth->sourceId;
+        //$sourceId = '5';
+        $isExternal = '';
+        if ($resultInfoHotel['countryId'] != 1) {
+            $isExternal = 'yes';
+        }
+        $serviceTitle = functions::TypeServiceHotel($typeApplication, $isExternal);
+        $irantechCommission = Load::controller('irantechCommission');
+        $it_commission = $irantechCommission->getCommission($serviceTitle, $sourceId);
+
+        // تشکیل آرایه با اندیس کد اتاق و مقدار تعداد اتاق انتخاب شده
+        $countRoom = array();
+        $exp_RoomTypeCodes = explode(",", $_POST['RoomTypeCodes_Reserve']);
+        $exp_NumberOfRooms = explode(",", $_POST['NumberOfRooms_Reserve']);
+
+        for($c=0; $c<count($exp_RoomTypeCodes); $c++){
+            if ($exp_NumberOfRooms[$c] != ''){
+                $countRoom[$exp_RoomTypeCodes[$c]] = $exp_NumberOfRooms[$c];
+            }
+        }
+
+        $infoHotel['start_date'] = $_POST["StartDate_Reserve"];
+        $infoHotel['end_date'] = $_POST["EndDate_Reserve"];
+        $infoHotel['number_night'] = $_POST["Nights_Reserve"];
+        $infoHotel['total_price'] = $_POST["TotalPrice_Reserve"];
+      
+
+
+        $infoHotel['city_id'] = $resultInfoHotel['city_id'];
+        $infoHotel['city_name'] = $resultInfoHotel['city_name'];
+        $infoHotel['hotel_id'] = $resultInfoHotel['hotel_id'];
+        $infoHotel['hotel_name'] = $resultInfoHotel['hotel_name'];
+        $infoHotel['hotel_name_en'] = (isset($resultInfoHotel['hotel_name_en']) && $resultInfoHotel['hotel_name_en'] != '') ? $resultInfoHotel['hotel_name_en'] : '';
+        $infoHotel['hotel_address'] = $resultInfoHotel['address'];
+        $infoHotel['hotel_logo'] = $resultInfoHotel['logo'];
+        $infoHotel['hotel_address_en'] = '';
+        $infoHotel['hotel_telNumber'] = $resultInfoHotel['tel_number'];
+        $infoHotel['hotel_starCode'] = $resultInfoHotel['star_code'];
+        $infoHotel['hotel_entryHour'] = $resultInfoHotel['entry_hour'];
+        $infoHotel['hotel_leaveHour'] = $resultInfoHotel['leave_hour'];
+        $infoHotel['hotel_pictures'] = $resultInfoHotel['logo'];
+        $infoHotel['hotel_rules'] = $resultInfoHotel['cancellation_conditions'];
+
+        // info transfer_went and transfer_back
+        if (isset($_POST['isTransfer']) && $_POST['isTransfer'] == true){
+            $infoHotel['isTransfer'] = $_POST['isTransfer'];
+            $infoHotel['origin'] = $_POST['origin'];
+            $infoHotel['flight_date_went'] = $_POST['flight_date_went'];
+            $infoHotel['airline_went'] = $_POST['airline_went'];
+            $infoHotel['flight_number_went'] = $_POST['flight_number_went'];
+            $infoHotel['hour_went'] = $_POST['minutes_went'] . ':' . $_POST['hour_went'] ;
+            $infoHotel['flight_date_back'] = $_POST['flight_date_back'];
+            $infoHotel['airline_back'] = $_POST['airline_back'];
+            $infoHotel['flight_number_back'] = $_POST['flight_number_back'];
+            $infoHotel['hour_back'] = $_POST['minutes_back'] . ':' . $_POST['hour_back'] ;
+        }
+
+        $sql = " SELECT * FROM members_tb WHERE id='{$idMember}'";
+        $user = $Model->load($sql);
+
+
+
+        if(!$isResumeRequest){
+            $infoHotel['member_id'] = $user['id'];
+            $infoHotel['member_name'] = empty($user['name'])?$_POST['requestedMemberName']:$user['name'] . ' ' . $user['family'];
+            $infoHotel['member_mobile'] = empty($user['mobile'])?$_POST['requestedMemberPhoneNumber']:$user['mobile'];
+            $infoHotel['member_phone'] = $user['telephone'];
+            $infoHotel['member_email'] = $user['email'];
+        }
+        $total_price_api = 0 ;
+        $discount =  0;
+        if($resultInfoHotel['user_id']){
+            $res = functions::getMarketHotelPriceChange( $resultInfoHotel['hotel_id'] , $this->counterId, $_POST["StartDate_Reserve"], 'marketplaceHotel' );
+            $discount_hotel = functions::marketServiceDiscount($this->counterId,'marketplaceHotel' , $resultInfoHotel['hotel_id']);
+            $i = 1;
+            while (isset($_POST["room_id" . $i])) {
+                $resultInfoHotelRoom = parent::infoHotelRoom($_POST["Hotel_Reserve"], $_POST["room_id" . $i], $_POST["StartDate_Reserve"], $_POST["EndDate_Reserve"], $_POST['flat_type' . $i]);
+
+                $this_hotel_calculate_price = functions::calculateHotelPrice($res,$discount_hotel, $resultInfoHotelRoom['board_price']);
+                $total_price_api += $this_hotel_calculate_price['price_with_increase_change'] ;
+                $discount = $this_hotel_calculate_price['discount_amount'];
+                $i++;
+            }
+        }
+
+        if( $resultInfoHotel['is_request'] == '1') {
+
+            if(!$isResumeRequest){
+                $i = 1;
+                while (isset($_POST["room_id" . $i])) {
+
+                    $this->adultArr[$i]['roommate'] = $_POST["roommate" . $i];
+                    $this->adultArr[$i]['room_id'] = $_POST["room_id" . $i];
+                    $this->adultArr[$i]['hotel_room_prices_id'] = $_POST["IdHotelRoomPrice" . $i];
+                    $this->adultArr[$i]['flat_type'] = $_POST["flat_type" . $i];
+
+                    // info hotel room
+                    $resultInfoHotelRoom = parent::infoHotelRoom($_POST["Hotel_Reserve"], $_POST["room_id" . $i], $_POST["StartDate_Reserve"], $_POST["EndDate_Reserve"], $_POST['flat_type' . $i]);
+
+                    $infoHotel['room_id'] = $resultInfoHotelRoom['room_id'];
+                    $infoHotel['room_name'] = $resultInfoHotelRoom['room_name'];
+                    $infoHotel['room_name_en'] = $resultInfoHotelRoom['room_name_en'];
+                    $infoHotel['room_capacity'] = $resultInfoHotelRoom['room_capacity'];
+                    $infoHotel['maximum_extra_beds'] = $resultInfoHotelRoom['maximum_extra_beds'];
+                    $infoHotel['maximum_extra_chd_beds'] = $resultInfoHotelRoom['maximum_extra_chd_beds'];
+                    $infoHotel['remaining_capacity'] = $resultInfoHotelRoom['remaining_capacity'];
+                    $infoHotel['price_current'] = $resultInfoHotelRoom['online_price_1night'];
+                    $infoHotel['date_current'] = $resultInfoHotelRoom['date_current'];
+                    $infoHotel['extra_bed_count'] = $_POST["extraBedCount" . $i];
+                    $infoHotel['child_count'] = $_POST["ExtraChildBedCount" . $i];
+                    $infoHotel['extra_bed_price'] = $_POST["ExtChildBedCount" . $i];
+                    $infoHotel['child_price'] = $_POST["extraChildBedPrice" . $i];
+                    $infoHotel['services_discount'] = $discount;
+                    $infoHotel['total_price_api'] = $total_price_api;
+
+                    $IsLogin = Session::IsLogin();
+                    if ($IsLogin || $_POST['guestUserStatus']=='yes'){
+                        $infoHotel['room_price'] = $resultInfoHotelRoom['online_price'];
+                        $infoHotel['room_online_price'] = $resultInfoHotelRoom['online_price'];
+                        $infoHotel['room_bord_price'] = $resultInfoHotelRoom['board_price'];
+                    }else {
+                        $infoHotel['room_price'] = $resultInfoHotelRoom['board_price'];
+                        $infoHotel['room_online_price'] = $resultInfoHotelRoom['board_price'];
+                        $infoHotel['room_bord_price'] = $resultInfoHotelRoom['board_price'];
+                    }
+
+                    $infoHotel['room_count'] = $countRoom[$_POST["room_id" . $i]];
+                    $infoHotel['max_capacity_count_room'] = '';
+
+                    $infoHotel['agency_commission'] = '';
+                    $infoHotel['agency_commission_price_type'] = '';
+                    $infoHotel['type_of_price_change'] = '';
+
+                    if(ISCURRENCY && $_POST['CurrencyCode'] > 0){
+                        $Currency = Load::controller('currencyEquivalent');
+                        $InfoCurrency = $Currency->InfoCurrency($_POST['CurrencyCode']);
+                    }
+
+                    $this->adultArr[$i]['currency_code'] = $_POST['CurrencyCode'];
+                    $this->adultArr[$i]['currency_equivalent'] = !empty($InfoCurrency) ? $InfoCurrency['EqAmount'] : '0';
+
+                    // insert in to book table
+                    parent::firstBookReservationHotel($this->adultArr[$i], $IdMember, $factorNumber, $infoHotel, $typeApplication, $it_commission, $serviceTitle);
+                    $i++;
+
+                }
+            }
+            else{
+                $i = 1;
+                $sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number = '{$factorNumber}' OR pnr = '{$factorNumber}' OR request_number = '$factorNumber' ";
+
+                $bookHotel = $Model->select($sql);
+
+                while (isset($_POST["nameEnA" . $i])) {
+
+                    if (!empty($formData)){
+                        $_POST['birthdayA' . $i] = $formData['YearJalaliA' . $i] . '-' . $formData['MonthJalaliA' . $i] . '-' . $formData['DayJalaliA' . $i];
+                        $_POST['birthdayEnA' . $i] = $formData['YearMiladiA' . $i] . '-' . $formData['MonthMiladiA' . $i] . '-' . $formData['DayMiladiA' . $i];
+                    }
+
+                    $this->adultArr[$i]['gender'] = $_POST["genderA" . $i];
+                    $this->adultArr[$i]['name'] = $_POST["nameFaA" . $i];
+                    $this->adultArr[$i]['family'] = $_POST["familyFaA" . $i];
+                    $this->adultArr[$i]['name_en'] = $_POST["nameEnA" . $i];
+                    $this->adultArr[$i]['family_en'] = $_POST["familyEnA" . $i];
+                    $this->adultArr[$i]['NationalCode'] = $_POST["NationalCodeA" . $i];
+                    $this->adultArr[$i]['fk_members_tb_id'] = $_POST["IdMember"];
+                    $this->adultArr[$i]['passportCountry'] = (isset($_POST["passportCountry" . $i]) && $_POST["passportCountry" . $i] != '') ? $_POST["passportCountry" . $i] : '';
+                    $this->adultArr[$i]['passportNumber'] = (isset($_POST["passportNumber" . $i]) && $_POST["passportNumber" . $i] != '') ? $_POST["passportNumber" . $i] : '';
+                    $this->adultArr[$i]['passportExpire'] = (isset($_POST["passportExpire" . $i]) && $_POST["passportExpire" . $i] != '') ? $_POST["passportExpire" . $i] : '';
+
+                    if ($_POST["passengerNationalityA" . $i] == '0') {
+                        $this->adultArr[$i]['birthday_fa'] = $_POST["birthdayA" . $i];
+                        $this->adultArr[$i]['birthday'] = '';
+                    } else{
+                        $this->adultArr[$i]['birthday_fa'] = '';
+                        $this->adultArr[$i]['birthday'] = $_POST["birthdayEnA" . $i];
+                    }
+
+                    $this->adultArr[$i]['passenger_leader_room'] = $_POST["passenger_leader_room"];
+                    $this->adultArr[$i]['passenger_leader_room_fullName'] = $_POST["passenger_leader_room_fullName"];
+                    $this->adultArr[$i]['passenger_leader_room_email'] = $_POST["passenger_leader_room_email"];
+                    $this->adultArr[$i]['passenger_leader_room_postalcode'] = $_POST["passenger_leader_room_postalcode"];
+                    $this->adultArr[$i]['passenger_leader_room_address'] = $_POST["passenger_leader_room_address"];
+
+                    if ($this->IsLogin) {
+                        $passengerAddArray = array(
+                            'passengerName' => $this->adultArr[$i]['name'],
+                            'passengerNameEn' => $this->adultArr[$i]['name_en'],
+                            'passengerFamily' => $this->adultArr[$i]['family'],
+                            'passengerFamilyEn' => $this->adultArr[$i]['family_en'],
+                            'passengerGender' => $this->adultArr[$i]['gender'],
+                            'passengerBirthday' => $this->adultArr[$i]['birthday_fa'],
+                            'passengerNationalCode' => $this->adultArr[$i]['NationalCode'],
+                            'passengerBirthdayEn' => $this->adultArr[$i]['birthday'],
+                            'passengerPassportCountry' => $this->adultArr[$i]['passportCountry'],
+                            'passengerPassportNumber' => $this->adultArr[$i]['passportNumber'],
+                            'passengerPassportExpire' => $this->adultArr[$i]['passportExpire'],
+                            'memberID' => $this->adultArr[$i]['fk_members_tb_id'],
+                            'passengerNationality' => $_POST["passengerNationalityA" . $i]
+                        );
+                        $passengerController->insert($passengerAddArray);
+                    }
+
+                    // insert in to book table
+                    parent::updateReservationHotelOnRequest($this->adultArr[$i], $IdMember, $factorNumber, $typeApplication  , $bookHotel[$i-1]['id']);
+
+                    $i++;
+                }
+            }
+
+
+        }else {
+
+            $i = 1;
+            while (isset($_POST["nameEnA" . $i])) {
+
+                if (!empty($formData)){
+                    $_POST['birthdayA' . $i] = $formData['YearJalaliA' . $i] . '-' . $formData['MonthJalaliA' . $i] . '-' . $formData['DayJalaliA' . $i];
+                    $_POST['birthdayEnA' . $i] = $formData['YearMiladiA' . $i] . '-' . $formData['MonthMiladiA' . $i] . '-' . $formData['DayMiladiA' . $i];
+                }
+
+                $this->adultArr[$i]['gender'] = $_POST["genderA" . $i];
+                $this->adultArr[$i]['name'] = $_POST["nameFaA" . $i];
+                $this->adultArr[$i]['family'] = $_POST["familyFaA" . $i];
+                $this->adultArr[$i]['name_en'] = $_POST["nameEnA" . $i];
+                $this->adultArr[$i]['family_en'] = $_POST["familyEnA" . $i];
+                $this->adultArr[$i]['NationalCode'] = $_POST["NationalCodeA" . $i];
+                $this->adultArr[$i]['fk_members_tb_id'] = $_POST["IdMember"];
+                $this->adultArr[$i]['passportCountry'] = (isset($_POST["passportCountry" . $i]) && $_POST["passportCountry" . $i] != '') ? $_POST["passportCountry" . $i] : '';
+                $this->adultArr[$i]['passportNumber'] = (isset($_POST["passportNumber" . $i]) && $_POST["passportNumber" . $i] != '') ? $_POST["passportNumber" . $i] : '';
+                $this->adultArr[$i]['passportExpire'] = (isset($_POST["passportExpire" . $i]) && $_POST["passportExpire" . $i] != '') ? $_POST["passportExpire" . $i] : '';
+
+                if ($_POST["passengerNationalityA" . $i] == '0') {
+                    $this->adultArr[$i]['birthday_fa'] = $_POST["birthdayA" . $i];
+                    $this->adultArr[$i]['birthday'] = '';
+                } else{
+                    $this->adultArr[$i]['birthday_fa'] = '';
+                    $this->adultArr[$i]['birthday'] = $_POST["birthdayEnA" . $i];
+                }
+
+                $this->adultArr[$i]['passenger_leader_room'] = $_POST["passenger_leader_room"];
+                $this->adultArr[$i]['passenger_leader_room_fullName'] = $_POST["passenger_leader_room_fullName"];
+                $this->adultArr[$i]['passenger_leader_room_email'] = $_POST["passenger_leader_room_email"];
+                $this->adultArr[$i]['passenger_leader_room_postalcode'] = $_POST["passenger_leader_room_postalcode"];
+                $this->adultArr[$i]['passenger_leader_room_address'] = $_POST["passenger_leader_room_address"];
+                $this->adultArr[$i]['roommate'] = $_POST["roommate" . $i];
+                $this->adultArr[$i]['room_id'] = $_POST["room_id" . $i];
+                $this->adultArr[$i]['child_count'] = $_POST["ExtraChildBedCount" . $i];
+                $this->adultArr[$i]['child_count'] = $_POST["extraBedCount" . $i];
+                $this->adultArr[$i]['extra_bed_price'] = $_POST["ExtChildBedCount" . $i];
+                $this->adultArr[$i]['hotel_room_prices_id'] = $_POST["IdHotelRoomPrice" . $i];
+                $this->adultArr[$i]['flat_type'] = $_POST["flat_type" . $i];
+
+
+
+                if ($this->IsLogin) {
+                    $passengerAddArray = array(
+                        'passengerName' => $this->adultArr[$i]['name'],
+                        'passengerNameEn' => $this->adultArr[$i]['name_en'],
+                        'passengerFamily' => $this->adultArr[$i]['family'],
+                        'passengerFamilyEn' => $this->adultArr[$i]['family_en'],
+                        'passengerGender' => $this->adultArr[$i]['gender'],
+                        'passengerBirthday' => $this->adultArr[$i]['birthday_fa'],
+                        'passengerNationalCode' => $this->adultArr[$i]['NationalCode'],
+                        'passengerBirthdayEn' => $this->adultArr[$i]['birthday'],
+                        'passengerPassportCountry' => $this->adultArr[$i]['passportCountry'],
+                        'passengerPassportNumber' => $this->adultArr[$i]['passportNumber'],
+                        'passengerPassportExpire' => $this->adultArr[$i]['passportExpire'],
+                        'memberID' => $this->adultArr[$i]['fk_members_tb_id'],
+                        'passengerNationality' => $_POST["passengerNationalityA" . $i]
+                    );
+                    $passengerController->insert($passengerAddArray);
+                }
+
+                // info hotel room
+                $resultInfoHotelRoom = parent::infoHotelRoom($_POST["Hotel_Reserve"], $_POST["room_id" . $i], $_POST["StartDate_Reserve"], $_POST["EndDate_Reserve"], $_POST['flat_type' . $i]);
+
+
+                $infoHotel['room_id'] = $resultInfoHotelRoom['room_id'];
+                $infoHotel['room_name'] = $resultInfoHotelRoom['room_name'];
+                $infoHotel['room_name_en'] = $resultInfoHotelRoom['room_name_en'];
+                $infoHotel['room_capacity'] = $resultInfoHotelRoom['room_capacity'];
+                $infoHotel['maximum_extra_beds'] = $resultInfoHotelRoom['maximum_extra_beds'];
+                $infoHotel['maximum_extra_chd_beds'] = $resultInfoHotelRoom['maximum_extra_chd_beds'];
+                $infoHotel['remaining_capacity'] = $resultInfoHotelRoom['remaining_capacity'];
+                $infoHotel['price_current'] = $resultInfoHotelRoom['online_price_1night'];
+                $infoHotel['date_current'] = $resultInfoHotelRoom['date_current'];
+                //$infoHotel['extra_bed_count'] = $_POST["extraBedCount" . $i];
+                // $infoHotel['child_count'] = $_POST["ExtraChildBedCount" . $i];
+                //$infoHotel['extra_bed_price'] = $_POST["ExtChildBedCount" . $i];
+                //$infoHotel['child_price'] = $_POST["extraChildBedPrice" . $i];
+                $infoHotel['extra_bed_count'] = isset($_POST["ExtBedCount{$_POST["room_id" . $i]}"]) ? $_POST["ExtBedCount{$_POST["room_id" . $i]}"] : 0;
+                $infoHotel['extra_bed_price'] = isset($_POST["ExtBedPricePerUnit{$_POST["room_id" . $i]}"]) ? $_POST["ExtBedPricePerUnit{$_POST["room_id" . $i]}"] : 0;
+                $infoHotel['child_count'] = isset($_POST["ExtraChildBedCount{$_POST["room_id" . $i]}"]) ? $_POST["ExtraChildBedCount{$_POST["room_id" . $i]}"] : 0;
+                $infoHotel['child_price'] = isset($_POST["ExtraChildBedPricePerUnit{$_POST["room_id" . $i]}"]) ? $_POST["ExtraChildBedPricePerUnit{$_POST["room_id" . $i]}"] : 0;
+
+                $infoHotel['hotel_payments_price'] = $prepaymentPercentageValue;
+                $infoHotel['prepayment_percentage'] = $resultInfoHotel['prepayment_percentage'];
+                $infoHotel['services_discount'] = $discount;
+                $infoHotel['total_price_api'] = $total_price_api;
+
+                $IsLogin = Session::IsLogin();
+                if ($IsLogin || $_POST['guestUserStatus']=='yes'){
+                    $infoHotel['room_price'] = $resultInfoHotelRoom['online_price'];
+                    $infoHotel['room_online_price'] = $resultInfoHotelRoom['online_price'];
+                    $infoHotel['room_bord_price'] = $resultInfoHotelRoom['board_price'];
+                }else {
+                    $infoHotel['room_price'] = $resultInfoHotelRoom['board_price'];
+                    $infoHotel['room_online_price'] = $resultInfoHotelRoom['board_price'];
+                    $infoHotel['room_bord_price'] = $resultInfoHotelRoom['board_price'];
+                }
+
+                $infoHotel['room_count'] = $countRoom[$_POST["room_id" . $i]];
+                $infoHotel['max_capacity_count_room'] = '';
+
+                $infoHotel['agency_commission'] = '';
+                $infoHotel['agency_commission_price_type'] = '';
+                $infoHotel['type_of_price_change'] = '';
+
+                if(ISCURRENCY && $_POST['CurrencyCode'] > 0){
+                    $Currency = Load::controller('currencyEquivalent');
+                    $InfoCurrency = $Currency->InfoCurrency($_POST['CurrencyCode']);
+                }
+
+                $this->adultArr[$i]['currency_code'] = $_POST['CurrencyCode'];
+                $this->adultArr[$i]['currency_equivalent'] = !empty($InfoCurrency) ? $InfoCurrency['EqAmount'] : '0';
+
+                // insert in to book table
+                parent::firstBookReservationHotel($this->adultArr[$i], $IdMember, $factorNumber, $infoHotel, $typeApplication, $it_commission, $serviceTitle);
+
+                $i++;
+            }
+        }
+
+
+
+        // ثبت درخواست تور یک روزه
+        $amountR = 0; $amountA = 0;
+        if (isset($_POST['isOneDayTour']) && $_POST['isOneDayTour'] == True){
+            for($ii=1;$ii<=$_POST['countOneDayTour'];$ii++){
+
+                if ($_POST['adtNumR'.$ii] > 0){
+
+                    $sql_check = " SELECT id FROM reservation_book_one_day_tour_tb WHERE fk_factor_number ='{$factorNumber}' AND fk_id_one_day_tour ='{$_POST['idOneDayTour'.$ii]}' ";
+                    $book_check = $Model->load($sql_check);
+
+                    if (empty($book_check)){
+
+                        $OneDayTour['fk_factor_number'] = $factorNumber;
+                        $OneDayTour['fk_id_one_day_tour '] = $_POST['idOneDayTour'.$ii];
+                        $OneDayTour['num_adt_r'] = $_POST['adtNumR'.$ii];
+                        $OneDayTour['num_chd_r'] = $_POST['chdNumR'.$ii];
+                        $OneDayTour['num_inf_r'] = $_POST['infNumR'.$ii];
+                        $OneDayTour['num_adt_a'] = '0';
+                        $OneDayTour['num_chd_a'] = '0';
+                        $OneDayTour['num_inf_a'] = '0';
+                        /*$OneDayTour['num_adt_a'] = $_POST['adtNumA'.$ii];
+                        $OneDayTour['num_chd_a'] = $_POST['chdNumA'.$ii];
+                        $OneDayTour['num_inf_a'] = $_POST['infNumA'.$ii];*/
+
+                        $Model->setTable('reservation_book_one_day_tour_tb');
+                        $Model->insertLocal($OneDayTour);
+                    }
+
+                    $amountR = $amountR + ($_POST['adtNumR'.$ii]*$_POST['adtPriceR'.$ii]);
+                    if (isset($_POST['chdNumR'.$ii])){$amountR = $amountR + ($_POST['chdNumR'.$ii]*$_POST['chdPriceR'.$ii]);}
+                    if (isset($_POST['infNumRs'.$ii])){$amountR = $amountR + ($_POST['infNumR'.$ii]*$_POST['infPriceR'.$ii]);}
+                    //$amountA = $amountA + ($_POST['adtNumA'.$ii]*$_POST['adtPriceA'.$ii])+($_POST['chdNumA'.$ii]*$_POST['chdPriceA'.$ii])+($_POST['infNumA'.$ii]*$_POST['infPriceA'.$ii]);
+
+                }
+
+            }
+        }
+
+
+
+        $this->paymentPriceOneDayTour = $amountR;
+        //$this->paymentPrice = $this->paymentPrice + $amountR;
+        // payment price hotel
+        $total_price['total_price'] = $_POST["TotalPrice_Reserve"] + $amountR;
+        if(!$isResumeRequest && $resultInfoHotel['is_request'] == '1') {
+            $total_price['status'] = 'OnRequest';
+        }
+
+        $Condition = "factor_number='{$factorNumber}' ";
+        $Model->setTable("book_hotel_local_tb");
+        $Model->update($total_price, $Condition);
+
+        $ModelBase->setTable("report_hotel_tb");
+        $ModelBase->update($total_price, $Condition);
+
+
+
+    }
+
+    public function CreditCustomer()
+    {
+        $Model = Load::library('Model');
+
+        if ($this->IsLogin) {
+
+            $SqlMember = "SELECT * FROM members_tb WHERE id='{$_SESSION["userId"]}'";
+            $member = $Model->load($SqlMember);
+            $agencyID = $member['fk_agency_id'];
+
+            $sql_charge = "SELECT sum(credit) AS total_charge FROM credit_detail_tb WHERE type='increase' AND fk_agency_id='{$agencyID}'";
+            $charge = $Model->load($sql_charge);
+            $total_charge = $charge['total_charge'];
+
+            $sql_buy = "SELECT sum(credit) AS total_buy FROM credit_detail_tb WHERE type='decrease' AND fk_agency_id='{$agencyID}'";
+            $buy = $Model->load($sql_buy);
+            $total_buy = $buy['total_buy'];
+
+            $total_transaction = $total_charge - $total_buy;
+            return $total_transaction;
+        }
+    }
+
+
+}

@@ -9,7 +9,7 @@
 {assign var="services" value=$objSearchService->checkAccessService(true,$client_id)}
 {assign var="services_order" value=$objSearchService->checkAccessService(true,$client_id)}
 
-{assign var="avalable_services" value=['Bus','Flight','Insurance','Tour','Hotel','Train','Visa','Entertainment','Europcar','GashtTransfer','Package','exclusiveTour','Cip']}
+{assign var="avalable_services" value=['Bus','Flight','Insurance','Tour','Hotel','Train','Visa','Entertainment']}
 
 
 <div class="container-fluid">
@@ -29,7 +29,9 @@
                         <tr>
                             <th>اولویت</th>
                             <th>خدمات</th>
-                            <th>ویرایش ( اولویت )</th>
+                            <th>ویرایش</th>
+
+
                         </tr>
                         </thead>
                         <tbody>

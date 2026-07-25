@@ -6,7 +6,7 @@
             </div>
 
           <div class="international-available-airlines-log-info pt-2">
-            <div class="sandali-span2 iranL text-dark">{{ each_airline_flight.airline_name}} <span class="d-none d-md-block">({{each_airline_flight.airline}})</span></div>
+            <div class="sandali-span2 iranL text-dark">{{ each_airline_flight.airline_name}} ({{each_airline_flight.airline}})</div>
           </div>
 
 <!--          <div class="international-available-airlines-log-info pt-2 site-main-text-color" v-if="each_airline_flight.capacity > 0">-->

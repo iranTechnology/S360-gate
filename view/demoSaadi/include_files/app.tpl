@@ -2,7 +2,7 @@
     <div class="container">
         <div class="parent-app row d-flex flex-wrap align-items-center">
             <div class="app-text col-lg-6 col-md-6-12 col-sm-12 col-12 text-right">
-                <h3> اپلیکیشن سعدی </h3>
+                <h3> اپلیکیشن سفر 360 </h3>
                 <h4 class="mt-3"> سریع‌تر و مطمئن‌تر به سفر بروید </h4>
                 <p>
                     با استفاده از اپلیکیشن ایران تکنولوژِی در هر کجا که هستید جهان در
@@ -10,16 +10,17 @@
                     دلخواه تان، سفری به یاد ماندنی را برای خود و خانواده تان رقم بزنید.
                 </p>
                 <div class="parent-btn-app">
-                    <a href="/apk/safar360.apk" class="">
+                    <a href="" class="">
                         <img src="project_files/images/download-apk.png" alt="app">
                     </a>
                     <a href="" class="">
                         <img src="project_files/images/bazar.png" alt="app">
                     </a>
-                    <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/app" class="">
+                    <a href="" class="">
                         <img src="project_files/images/install-pwa.png" alt="app">
                     </a>
                 </div>
+                <img src="project_files/images/appImg-ris.png" alt="app-img">
             </div>
             <div class="app-img col-lg-6 col-md-6-12 col-sm-12 col-12 ">
                 <img src="project_files/images/appImg.png" alt="app-img">

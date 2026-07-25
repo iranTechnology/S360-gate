@@ -1,5 +1,10 @@
 <?php
 
+//error_reporting(1);
+//error_reporting(E_ALL | E_STRICT);
+//@ini_set('display_errors', 1);
+//@ini_set('display_errors', 'on');
+
 class functions {
 
 
@@ -537,13 +542,6 @@ class functions {
         return number_format($total_transaction) .' '. self::Xmlinformation('Rial');
     }
 
-    public static function CalculateMemberCredit() {
-        $objUser = Load::controller( 'user' );
-        $credit = $objUser->getCreditMember();
-
-        return number_format($credit) .' '. self::Xmlinformation('Rial');
-    }
-
     #endregion
 
 
@@ -1026,13 +1024,8 @@ class functions {
     #region Xmlinformation
 
     public static function Xmlinformation( $tagname ) {
-        if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']!='') {//agar admin hast file xml ==> fa ar en
-            $lang=LANG_PANEL_ADMIN;
-        }
-        else{
-            $lang=SOFTWARE_LANG;
-        }
-        $xmldata = simplexml_load_file( SITE_ROOT . "/langs/" . $lang . "_frontMaster.xml" );
+     
+        $xmldata = simplexml_load_file( SITE_ROOT . "/langs/" . SOFTWARE_LANG . "_frontMaster.xml" );
 
         return  empty( $xmldata->$tagname ) ? "" : $xmldata->$tagname;
 
@@ -3450,7 +3443,7 @@ class functions {
         $model = new Model();
 
         $query  = "SELECT DC.amount FROM discount_codes_used_tb AS DCU INNER JOIN discount_codes_tb AS DC ON DCU.discountCode = DC.code
-                  WHERE DCU.factorNumber = '{$factorNumber}'";
+                  WHERE DCU.factorNumber = '{$factorNumber}' AND DCU.status = 'success'";
         $result = $model->load( $query );
 
         if ( ! empty( $result ) ) {
@@ -9210,14 +9203,7 @@ class functions {
 
     #region timeNow
     public static function timeNow() {
-        if (defined('LANG_PANEL_ADMIN') && in_array(LANG_PANEL_ADMIN, ['en', 'ar'])) {
-            // Gregorian date
-            return date("Y-m-d");
-        } else {
-            // Jalali date
         return dateTimeSetting::jdate( "Y-m-d", time(), '', '', 'en' );
-    }
-        // return dateTimeSetting::jdate( "Y-m-d", time(), '', '', 'en' );
     }
     public static function daysAgo($days) {
         return dateTimeSetting::jdate(
@@ -9249,7 +9235,7 @@ class functions {
      * @return bool
      */
     public static function isTestServer( $host = '' ) {
-        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir');
+        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir','localhost');
         $res     = false;
         if ( ! empty( $host ) ) {
             if ( is_array( $host ) ) {
@@ -11545,10 +11531,6 @@ class functions {
     }
     public static function getGrsCharge($param) {
         $detailHotel   = Load::controller( 'detailHotel' );
-        return $detailHotel->getProfile($param);
-    }
-    public static function getCityNetCharge($param) {
-        $detailHotel   = Load::controller( 'newApiFlight' );
         return $detailHotel->getProfile($param);
     }
     public static function calculatePercentage($price, $percentage) {

@@ -20,20 +20,20 @@
                            <div class="selectedTicket" v-show="this.$store.state.typeTripFlight === 'return'">
                                <h5 class="raft-ticket">
                                    <a @click="backTrip()"><i class="zmdi zmdi-close site-secondary-text-color"></i></a>
-                                   {{ useXmltag("TicketSelected") }}
+                                   {{useXmltag("TicketSelected")}}
                                </h5>
                                <div id="myList1" class="showListSort">
 
 
                                </div>
-<!--                               <div class="twowayWarning">-->
+                               <div class="twowayWarning">
 <!--                                   <p>{{useXmltag('Payattentionfollowingpoints')}}</p>-->
 <!--                                   <ul>-->
 <!--                                       <li>{{ useXmltag('DueLimitationsTwoWayAgreementBetweenIran')}}</li>-->
 <!--                                       <li>{{ useXmltag('TermsAirlinesCharterFlightsLessThanPercentLikely')}}</li>-->
 <!--                                   </ul>-->
-<!--                                  <p>{{useXmltag('twowayWarningSentence')}}</p>-->
-<!--                               </div>-->
+                                  <p>{{useXmltag('twowayWarningSentence')}}</p>
+                               </div>
                                <h5 class="bargasht-ticket">{{useXmltag('SelectReturnTicket')}}</h5>
                            </div>
 

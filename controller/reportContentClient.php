@@ -59,9 +59,6 @@ class reportContentClient extends clientAuth
                             intval($CountSpecialPages['count']);
 
 
-            if ($CountSuccess > 0 ){
-
-
                 self::$reports[$client['id']] =
                     [
                         'CountNews' => $CountNews,
@@ -72,8 +69,6 @@ class reportContentClient extends clientAuth
                         'ClinetName' => $ClinetName,
                         'CountSuccess' => $CountSuccess
                     ];
-            }
-
 
                        /*   'CountHotelInternal' => $this->CountHotelInternal($client['id']),
                        'CountHotelForeigner' => $this->CountHotelForeigner($client['id']),*/
@@ -92,20 +87,10 @@ class reportContentClient extends clientAuth
     public function clients()
     {
         $model = $this->getModel('clientsModel');
-//        $result = $model->get("DISTINCT DbName, id, AgencyName", true);
+        $result = $model->get("id,AgencyName", true);
 
-        $result = $model->get("id, AgencyName, DbName", true)->all();
-
-        $unique = [];
-        foreach ($result as $item) {
-            if (!isset($unique[$item['DbName']])) {
-                $unique[$item['DbName']] = $item;
-            }
-        }
-        $result = array_values($unique);
-        return $result;
-//        $sql = $result->toSql();
-//        return $result->all();
+        $sql = $result->toSql();
+        return $result->all();
     }
 
     public function CountArticle($clientID)

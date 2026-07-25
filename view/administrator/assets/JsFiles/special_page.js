@@ -1,11 +1,3 @@
-function getQueryParam(param) {
-  var urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(param);
-}
-let bannerValue = getQueryParam('banner');
-
-
-
 $(document).ready(function() {
   $('.dropify').dropify()
   $('#addSpecialPage').validate({
@@ -125,13 +117,7 @@ $(document).ready(function() {
           if (response.success === true) {
             setTimeout(function() {
               // location.reload()
-         
-              if(bannerValue == 1){
-                window.location = `${amadeusPath}itadmin/galleryBanner/list`;
-              }else{
-                window.location = `${amadeusPath}itadmin/special_page/list`;
-              }
-
+              window.location = `${amadeusPath}itadmin/special_page/list`;
             }, 1000)
           }
         },
@@ -232,10 +218,6 @@ function removeSpecialPageImage(_this,page_id,src_name,type) {
       dataType: "JSON",
       success: function (response) {
         if (response.success === true) {
-
-          let currentCount = $('#preview-gallery .dropzone-parent-box').length;
-          $('.image-count, [data-count]').attr('data-count', currentCount);
-          
           _this.parent().parent().remove()
           $.toast({
             heading: "حذف مطلب",
@@ -318,6 +300,13 @@ function deleteImageSpecial(id){
     },
   });
 }
+
+
+
+
+
+
+
 
 
 

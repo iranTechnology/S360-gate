@@ -9,7 +9,7 @@
         font-family: inherit;
         direction: rtl;
         margin-top: 5px;
-        margin-bottom: 21px;
+        margin-bottom: 30px;
         /*box-shadow: 0 10px 30px rgba(0,0,0,0.05);*/
     }
 

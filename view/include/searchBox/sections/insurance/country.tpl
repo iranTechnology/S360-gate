@@ -1,7 +1,7 @@
 {assign var="countries" value=$obj_main_page->countryInsurance()}
 <div class="col-lg-3 col-md-6 col-sm-6 col-12 col_search">
     <div class="form-group">
-        <select data-placeholder="##Destination##"
+        <select data-placeholder="##CountryName## ##Destination##"
                 name="insurance_destination_country"
                 id="insurance_destination_country"
                 class="select2_in  select2-hidden-accessible insurance-destination-country-js"

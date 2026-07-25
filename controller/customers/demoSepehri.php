@@ -1,56 +1,43 @@
 <?php
 
-//    error_reporting(1);
-//    error_reporting(E_ALL | E_STRICT);
-//    @ini_set('display_errors', 1);
-//    @ini_set('display_errors', 'on');
-
 class demoSepehri extends mainPage {
 
     public function __construct() {
 
         parent::__construct();
-        $this->icons_json =  json_decode($this->icons_json, true);
     }
-
-    public $icons_json = '{
-         "Flight": {"icon": "<i class=\"fa-light fa-plane\"></i>", "name": "هواپیما"},
-          "Hotel": {"icon": "<i class=\"fa-light fa-hotel\"></i>", "name": "هتل"},
-          "Tour": {"icon": "<i class=\"fa-light fa-suitcase-rolling\"></i>", "name": "تور"},
-           "Bus": {"icon": "<i class=\"fa-light fa-bus\"></i>", "name": "اتوبوس"},
-            "Insurance": {"icon": "<i class=\"fa-light fa-hospital\"></i>", "name": "بیمه"},
-            "Train": {"icon": "<i class=\"fa-light fa-train\"></i>", "name": "قطار"},
-            "Visa": {"icon": "<i class=\"fa-light fa-passport\"></i>", "name": "ویزا"},
-            "Package": {"icon": "<i class=\"fa-light fa-suitcase\"></i>", "name": "پکیج"},
-            "Entertainment": {"icon": "<i class=\"fa-light fa-umbrella-beach\"></i>", "name": "تفریحات"},
-            "Cip": {"icon": "<i class=\"fa-light fa-concierge-bell\"></i>", "name": "تشریفات"},
-            "Europcar": {"icon": "<i class=\"fa-light fa-car\"></i>", "name": "خودرو"}
-               }';
-
-
 
     public function classTabsSearchBox($service_name) {
         switch ($service_name) {
-            case 'Flight_internal':
+            case 'Flight':
                 return 'fa-light fa-plane-circle-check';
                 break;
-            case 'Flight_external':
-                return 'fa-light fa-plane-circle-check';
-                break;
-            case 'Hotel_internal':
+            case 'Hotel':
                 return 'fa-light fa-bell-concierge';
                 break;
-            case 'Hotel_external':
-                return 'fa-light fa-bell-concierge';
+            case 'Train':
+                return 'fa-light fa-train';
+                break;
+            case 'Package':
+                return 'fa-light fa-tree-palm';
                 break;
             case 'Bus':
                 return 'fa-light fa-bus';
                 break;
-            case 'Tour_internal':
+            case 'Tour':
                 return 'fa-light fa-suitcase-rolling';
                 break;
-            case 'Tour_external':
-                return 'fa-light fa-suitcase-rolling';
+            case 'Insurance':
+                return 'fa-light fa-umbrella-beach';
+                break;
+            case 'GashtTransfer':
+                return 'fa-light fa-cars';
+                break;
+            case 'Europcar':
+                return 'fa-light fa-car';
+                break;
+            case 'Entertainment':
+                return 'fa-light fa-tree-city';
                 break;
             case 'Visa':
                 return 'fa-light fa-book-atlas';
@@ -62,39 +49,88 @@ class demoSepehri extends mainPage {
         }
     }
 
-    public function newClassTabsSearchBox($service_name) {
-        return $this->getServicesFromIds($this->icons_json)[$service_name];
-    }
-
-    public function getServicesFromIds($json_array) {
-        $icon_array = $this->getItemsBykeyFromJsonServicesArray($json_array, 'icon');
-        $new_array = [];
-        foreach ($icon_array as $id => $icon) {
-            $service = str_replace(['_internal', '_external'], '', $id);
-            $new_array[$service][$id] = $icon;
-        }
-        return $new_array;
-    }
-
-    public function getItemsBykeyFromJsonServicesArray($json_array, $key) {
-        $array = $json_array;
-        $new_array = [];
-        foreach ($array as $service => $val) {
-            $new_array[$service] = $val[$key];
-        }
-        return $new_array;
-    }
-
-
     public function nameTabsSearchBox($service_name) {
-        $result_array = $this->getItemsBykeyFromJsonServicesArray($this->icons_json, 'name');
-        return $result_array[$service_name];
-    }
+        switch ($service_name) {
+            case 'Flight':
+                return functions::Xmlinformation("Airplane") ;
+                break;
+            case 'Hotel':
+                return functions::Xmlinformation("Hotel") ;
+                break;
+            case 'Train':
+                return functions::Xmlinformation("Train") ;
+                break;
+            case 'Package':
+                return functions::Xmlinformation("Flight") . '+' . functions::Xmlinformation("Hotel") ;
+                break;
+            case 'Bus':
+                return functions::Xmlinformation("Bus") ;
+                break;
+            case 'Tour':
+                return functions::Xmlinformation("Tour") ;
+                break;
+            case 'Insurance':
+                return functions::Xmlinformation("Insurance") ;
+                break;
+            case 'GashtTransfer':
+                return functions::Xmlinformation("GashtTransfer") ;
+                break;
+            case 'Europcar':
+                return functions::Xmlinformation("Carrental") ;
+                break;
+            case 'Entertainment':
+                return functions::Xmlinformation("Entertainment") ;
+                break;
+            case 'Visa':
+                return functions::Xmlinformation("ImmigrationVisa") ;
+                break;
+            default:
+                return '';
 
+
+        }
+    }
 
     public function nameBoxSearchBox($service_name) {
-        $result_array = $this->getItemsBykeyFromJsonServicesArray($this->icons_json, 'name');
-        return $result_array[$service_name];
+        switch ($service_name) {
+            case 'Flight':
+                return functions::Xmlinformation("foreingIranFlightsTickets") ;
+                break;
+            case 'Hotel':
+                return functions::Xmlinformation("foreigneIranHotel") ;
+                break;
+            case 'Train':
+                return functions::Xmlinformation("trainTicket") ;
+                break;
+            case 'Package':
+                return functions::Xmlinformation("flightHotelpackage") ;
+                break;
+            case 'Bus':
+                return functions::Xmlinformation("Busticket") ;
+                break;
+            case 'Tour':
+                return functions::Xmlinformation("foreigneIranTours") ;
+                break;
+            case 'Insurance':
+                return functions::Xmlinformation("travelInsurance") ;
+                break;
+            case 'GashtTransfer':
+                return functions::Xmlinformation("GashtTransfer") ;
+                break;
+            case 'Europcar':
+                return functions::Xmlinformation("S360Car") ;
+                break;
+            case 'Entertainment':
+                return functions::Xmlinformation("S360Entertainment") ;
+                break;
+            case 'Visa':
+                return functions::Xmlinformation("Visa") ;
+                break;
+            default:
+                return '';
+
+
+        }
     }
 
 }

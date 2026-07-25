@@ -408,5 +408,3 @@ function generateBirthDate(ageGroup){
 
 //----------------------end passenger Count js-----------------------------//
 
-$('.banner-demo').addClass('container');
-$('.banner-demo-1').addClass('container');

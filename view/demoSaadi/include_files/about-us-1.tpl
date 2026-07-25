@@ -1,13 +1,10 @@
-{load_presentation_object filename="aboutUs" assign="objAbout"}
-{assign var="about"  value=$objAbout->getData()}
-
 <section class="i_modular_about_us about-ghods">
  <div class="container">
   <div class="parent-about">
    <div class="about-text position-relative">
     <img alt="img-about" class="img-taj" src="project_files/images/taj.png"/>
     <h3 class="nastaliq">
-     آشنایی با سعدی
+     آشنایی با سفر360
     </h3>
     <h2>
      جاذبه‌های توریستی در سراسر جهان با راهنمای گردشگری ما به همراه تجاربی بی‌نظیر و جذاب

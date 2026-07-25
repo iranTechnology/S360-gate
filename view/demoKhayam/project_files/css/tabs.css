@@ -266,6 +266,7 @@
 }
 
 .col_search input {
+    font-family: "yekanbakhmedium", serif;
     padding: 10px 15px 10px 5px;
     border-radius: 10px;
     height: 50px;
@@ -323,10 +324,6 @@
     width: 50%;
     margin: 0;
     position: relative
-}
-
-#Cip .date_search .form-group {
-    width: 100%;
 }
 
 .date_search i.fal, .search_col i.fal {
@@ -583,12 +580,11 @@
 }
 
 .text-count-passenger {
-    color: #8e8e8e !important;
+    color: #5d5d5d !important;
     top: 0;
     right: 5px;
-    font-size: 13px;
-    text-align: right;
-    line-height: 19px;
+    font-size: 14px;
+    text-align: right
 }
 
 .cbox-count-passenger {
@@ -1742,7 +1738,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
         row-gap: 35px !important;
         padding: 20px;
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 
     #searchBoxTabs .nav-item {
@@ -1764,12 +1760,6 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 }
 
 @media (max-width: 769px) {
-    .search_box {
-        margin-top: -190px;
-    }
-    #searchBoxTabs {
-        grid-template-columns: repeat(4, 1fr);
-    }
     #searchBoxTabs a span h4 {
         margin-top: 9px !important
     }
@@ -1786,9 +1776,6 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 }
 
 @media (max-width: 575px) {
-    .search_box {
-        margin-top: 20px;
-    }
     #searchBoxContent {
         padding: 10px !important
     }
@@ -1844,7 +1831,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 
     #searchBoxTabs {
         display: grid;
-        grid-template-columns:repeat(4, 1fr);
+        grid-template-columns:repeat(3, 1fr);
         grid-template-rows:1fr;
         grid-column-gap: 10px;
         grid-row-gap: 20px
@@ -1859,8 +1846,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
     #searchBoxTabs .nav-item {
         display: flex;
         align-items: center;
-        justify-content: center;
-        min-width: 80px;
+        justify-content: center
     }
 
     .cntr {
@@ -1893,7 +1879,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
 
 @media (max-width: 576px) {
     .search_box_div {
-        /*border: none;*/
+        border: none;
     }
     .parent-text-train-link h4 {
         font-size: 16px;
@@ -1998,7 +1984,7 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
     cursor: pointer;
     text-align: right;
     font-size: 14px;
-    color: #8e8e8e;
+    color: #737373;
     margin-top:13px
 }
 
@@ -2119,5 +2105,5 @@ input#coupe[type=checkbox]:checked:focus + label:before, input#coupe[type=checkb
     padding:10px !important;
 }
 .hotel_passenger_picker ul li, .hotel_local_passenger_picker ul li, .package_passenger_picker ul li{
-    color:#8e8e8e !important;
+    color:#5d5d5d !important;
  }

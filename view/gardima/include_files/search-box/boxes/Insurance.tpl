@@ -4,7 +4,7 @@
 </div>
 <div class="col-md-12 col-12">
 <div class="row">
-<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsInsurance" method="post" name="gdsInsurance" target="_top">
+<form class="d_contents" data-action="://s360online.iran-tech.com/" id="gdsInsurance" method="post" name="gdsInsurance" target="_blank">
 <div class="col-lg-3 col-md-4 col-sm-6 col-12 col_search p-1">
 <div class="form-group">
 <select aria-hidden="true" class="select2_in select2-hidden-accessible insurance-destination-country-js" data-placeholder="نام کشور مقصد" id="insurance_destination_country" name="insurance_destination_country" tabindex="-1">

@@ -1,5 +1,7 @@
 {load_presentation_object filename="specialPages" assign="objSpecialPages"}
 {assign var="page" value=$objSpecialPages->unSlugPage($smarty.const.PAGE_TITLE)}
+
+
 {*{$page|var_dump}*}
 <link rel="stylesheet" href="assets/modules/css/visa-page.css">
 
@@ -19,7 +21,6 @@
 
     {*    item page*}
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/pages/item.tpl" page=$page objSpecialPages=$objSpecialPages}
-
     <link rel="stylesheet" href="assets/modules/css/jquery.fancybox.min.css">
     <script src="assets/modules/js/jquery.fancybox.min.js"></script>
     <script src="assets/modules/js/page.js"></script>

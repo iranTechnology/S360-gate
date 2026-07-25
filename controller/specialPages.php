@@ -201,28 +201,6 @@ class specialPages extends positions
                 ];
 
             }
-        }else {
-            if (isset($params['main_file']) && !empty($params['main_file']) && empty($main_file['src'])) {
-
-                if (is_string($params['main_file'])) {
-                    $decoded = json_decode($params['main_file'], true);
-                    if (is_array($decoded) && isset($decoded['src'])) {
-                        $main_file = $decoded;
-                    } else {
-                        $main_file = [
-                            'src' => $params['main_file'],
-                            'alt' => $params['main_file_alt']
-                        ];
-                    }
-                }
-                elseif (is_array($params['main_file'])) {
-                    $main_file = $params['main_file'];
-                }
-
-                if (empty($main_file['alt'])) {
-                    $main_file['alt'] = $params['main_file_alt'];
-                }
-            }
         }
 
         $data['attach_files'] = $attach_files ? json_encode($attach_files, true) : null;
@@ -257,10 +235,6 @@ class specialPages extends positions
 
     public function getSpecialPages() {
         return $this->special_pages_model->get()->where('deleted_at', null, 'IS')->orderBy('id', 'DESC')->all(false);
-    }
-
-    public function getSpecialPagesWherePosition() {
-        return $this->special_pages_model->get()->where('deleted_at', null, 'IS')->where('position' , null,'IS NOT')->orderBy('id', 'DESC')->all(false);
     }
 
     public function removeSpecialPage($params) {

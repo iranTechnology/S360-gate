@@ -310,7 +310,8 @@
 }
 
 .search_box{
-  width: 100%;
+  width: 1130px;
+  margin: -132px auto;
 }
 
 
@@ -340,6 +341,10 @@
   padding: 0;
   margin: 0;
   transition: all ease .4s;
+}
+
+#searchBoxTabs .nav-link.active div h4 {
+  color: $mainColor;
 }
 
 #searchBoxTabs .nav-link.active{
@@ -1851,9 +1856,6 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 }
 
 @media (max-width: 576px) {
-  .search_box {
-    margin-top: 60px;
-  }
   .switch_routs {
     top: 39px;
     left: 9px;

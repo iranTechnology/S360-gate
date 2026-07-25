@@ -31,14 +31,14 @@
 
                     <div class="form-group col-sm-6 ">
                         <label for="Title" class="control-label">عنوان تخفیف </label>
-                        <input type="text" class="form-control" id="Title" name="Title" value="{$discountInfo['title']}" readonly="readonly"
+                        <input type="text" class="form-control" id="Title" name="Title" value="{$discountInfo['title']}"
                                placeholder="عنوان تخفیف را وارد نمائید">
                     </div>
 
                     <div class="form-group col-sm-6">
-                        <label for="Amount" class="control-label">میزان تخفیف {if $discountInfo['typeDiscount'] neq 'cash'}(درصدی){/if}}</label>
-                        <input type="text" class="form-control" id="Amount" name="Amount" value="{$discountInfo['amount']}" readonly="readonly"
-                               placeholder="میزان تخفیف را وارد نمائید">
+                        <label for="Amount" class="control-label">مبلغ تخفیف</label>
+                        <input type="text" class="form-control" id="Amount" name="Amount" value="{$discountInfo['amount']}"
+                               placeholder="مبلغ تخفیف را وارد نمائید">
                     </div>
 
                     <div class="form-group col-sm-6">
@@ -68,15 +68,15 @@
 
 
 
-{*                    <div class="form-group col-sm-12">*}
-{*                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="{$discountInfo['is_allow_counter']}" {if $discountInfo['is_allow_counter'] eq '1'}checked="checked"{/if} />*}
-{*                        <label for="is_allow_counter" class="control-label">*}
-{*                            مجاز برای استفاده کانتر ها*}
-{*                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'*}
-{*                                  data-toggle="tooltip" data-placement="left"*}
-{*                                  title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>*}
-{*                        </label>*}
-{*                    </div>*}
+                    <div class="form-group col-sm-12">
+                        <input type="checkbox" name="is_allow_counter" id="is_allow_counter" value="{$discountInfo['is_allow_counter']}" {if $discountInfo['is_allow_counter'] eq '1'}checked="checked"{/if} />
+                        <label for="is_allow_counter" class="control-label">
+                            مجاز برای استفاده کانتر ها
+                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
+                                  data-toggle="tooltip" data-placement="left"
+                                  title="در صورتیکه می خواهید  کانتر ها اجازه ی استفاده از این کد تخفیف را داشته باشد این گزینه را فعال نمایید"></span>
+                        </label>
+                    </div>
                     <div class="form-group col-sm-12">
                         <input type="checkbox" name="is_consume" id="is_consume"  onclick="showAmountPointDiscountCode()" value="{$discountInfo['is_consume']}" {if $discountInfo['is_consume'] eq '1'}checked="checked"{/if} />
                         <label for="is_allow_counter" class="control-label">

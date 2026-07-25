@@ -2,7 +2,7 @@
 
 class paystar {
 
-    private $apiBase = 'https://core.paystar.ir/api/pardakht/';
+    private $apiBase = 'https://api.paystar.shop/api/pardakht/';
     private $gatewayId;
     private $amount;
     private $orderId;
@@ -40,7 +40,7 @@ class paystar {
     }
 
     public function verifyPayment( $params ) {
-        $logFile = 'logs/logBankPaystar_request.txt';
+        $logFile = 'logs/logBankPaystar_request.txt'; // مسیر فایل لاگ
         $logData = $this->findTokenFromLog($logFile, $params['gateway_id'], $params['order_id']);
         if (!$logData || !$logData['token'] || !$logData['amount']) {
             return [
@@ -59,12 +59,7 @@ class paystar {
         ];
 
         $this->gatewayId = $params['gateway_id'];
-        functions::insertLog('callAPI$data: ' . json_encode($data) , '0abbasi');
-
         $response = $this->callAPI('verify', $data);
-
-        functions::insertLog('callAPI$response: ' . json_encode($response) , '0abbasi');
-
 
         if ( isset($response['status']) && $response['status'] == 1 ) {
             return [
@@ -115,55 +110,49 @@ class paystar {
     }
     public function findTokenFromLog($filePath, $gatewayId, $orderId) {
         if (!file_exists($filePath)) {
-            return null;
+            return null; // فایل وجود ندارد
         }
 
-        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        if ($lines === false) {
-            return null;
+        $handle = fopen($filePath, "r");
+        if (!$handle) {
+            return null; // خطا در باز کردن فایل
         }
 
-        // معکوس کردن آرایه برای جستجو از انتها
-        $lines = array_reverse($lines);
+        $result = null;
 
-        foreach ($lines as $line) {
-            if (strpos($line, 'requestPayment') === false) {
-                continue;
-            }
+        while (($line = fgets($handle)) !== false) {
+            if (strpos($line, 'requestPayment') !== false) {
+                $pos = strpos($line, 'requestPayment : ');
+                if ($pos !== false) {
+                    $jsonStr = substr($line, $pos + strlen('requestPayment : '));
+                    $jsonStr = trim($jsonStr);
+                    $data = json_decode($jsonStr, true);
 
-            $pos = strpos($line, 'requestPayment : ');
-            if ($pos === false) {
-                continue;
-            }
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        continue; // JSON نامعتبر
+                    }
 
-            $jsonStr = trim(substr($line, $pos + strlen('requestPayment : ')));
-            $data = json_decode($jsonStr, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                continue;
-            }
-
-            if (!isset($data['params']['gateway_id'], $data['params']['order_id'])) {
-                continue;
-            }
-
-            if ($data['params']['gateway_id'] !== $gatewayId || $data['params']['order_id'] !== $orderId) {
-                continue;
-            }
-
-            if (isset($data['request_payment']['data']['token'])) {
-                return [
-                    'token'   => $data['request_payment']['data']['token'],
-                    'amount'  => $data['params']['amount'] ?? null,
-                    'link'    => $data['request_payment']['data']['link'] ?? null,
-                    'order_id' => $data['params']['order_id'],
-                    'gateway_id' => $data['params']['gateway_id']
-                ];
+                    if (
+                        isset($data['params']['gateway_id'], $data['params']['order_id']) &&
+                        $data['params']['gateway_id'] === $gatewayId &&
+                        $data['params']['order_id'] === $orderId
+                    ) {
+                        if (isset($data['request_payment']['data']['token'])) {
+                            $result = [
+                                'token'  => $data['request_payment']['data']['token'],
+                                'amount' => $data['params']['amount'] ?? null
+                            ];
+                            break;
+                        }
+                    }
+                }
             }
         }
 
-        return null;
+        fclose($handle);
+        return $result;
     }
+
 
 }
 ?>

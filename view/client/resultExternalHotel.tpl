@@ -63,8 +63,6 @@
 </div>
 <input type='hidden' name='sort_hotel_type' id='sort_hotel_type' value='{$which_sort[0]['title_en']}'>
 <div class="row minW-100 external_h w-100 m-auto">
-    <div id="requestNumber">
-    </div>
     <div class="col-lg-3 col-md-12  col-12 col-padding-5">
         <div class="parent_sidebar">
             <!-- Change Currency Box -->
@@ -772,16 +770,6 @@
     </div>
 </div>
 
-<style>
-    #requestNumber {
-        position: absolute;
-        z-index: 1000;
-        color: transparent;
-        top: 90px;
-        left: 0;
-    }
-</style>
-
 
 {literal}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -1087,3 +1075,4 @@
         });
     </script>
 {/literal}
+

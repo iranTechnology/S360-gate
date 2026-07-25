@@ -11,7 +11,7 @@ class listCancelUser extends clientAuth
     public $id = '';
     public $list;
     public $edit;
-    public $twoWeeksAgoJalali;
+
     public $transactions;
 
     public function __construct()
@@ -19,10 +19,6 @@ class listCancelUser extends clientAuth
         $this->transactions = $this->getModel('transactionsModel');
         $this->admin = Load::controller('admin');
 
-        // 2 هفته آینده (میلادی)
-        $twoWeeksAgoGregorian = date('Y-m-d', strtotime('-2 weeks'));
-        // تبدیل به شمسی
-        $this->twoWeeksAgoJalali = dateTimeSetting::jdate('Y-m-d', strtotime($twoWeeksAgoGregorian));
     }
 
     public function listCancelLocal()
@@ -41,13 +37,7 @@ SELECT
     book.pnr, 
     book.eticket_number, 
     book.pid_private,
-                    book.origin_city,
-                    book.desti_city,
-                    book.airline_name,
-                    book.date_flight,
-                    hotel.type_application,
-                    hotel.city_name,
-                    hotel.hotel_name        
+    hotel.type_application
 FROM cancel_ticket_details_tb AS cancel
 LEFT JOIN book_local_tb AS book 
     ON book.request_number = cancel.RequestNumber
@@ -84,6 +74,13 @@ WHERE 1=1
             $sql .= " AND cancel.Status ='{$_POST['Status']}'";
         }
         $sql .="GROUP BY cancel.DateRequestMemberInt DESC";
+
+
+
+//            var_dump($sql);
+//            die();
+
+
         $res = $Model->select($sql);
 
 
@@ -137,21 +134,6 @@ WHERE 1=1
             $result = $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
 
             if ($result) {
-                if ($InfoCancel['TypeCancel'] == 'hotel') {
-                    $bookHotelData = $this->getModel('bookHotelLocalModel')
-                        ->get(['type_application'])->where('factor_number' , $InfoCancel['FactorNumber'])->find();
-                    if ($bookHotelData['type_application'] == 'reservation') {
-                        $data = ['status' => 'Cancelled'];
-                        $where = ['factor_number' => $InfoCancel['FactorNumber']];
-                        $UpdateBookHotelData = $this->getModel('bookHotelLocalModel')
-                            ->updateWithBind($data, $where);
-                        if ($UpdateBookHotelData) {
-                            $UpdateReportHotelData = $this->getModel('reportHotelModel')
-                                ->updateWithBind($data, $where);
-                        }
-                    }
-                }
-
 
                 $smsController = Load::controller('smsServices');
                 $objSms = $smsController->initService('1');
@@ -218,8 +200,7 @@ WHERE 1=1
                             );
                             $smsController->sendSMS($smsArray);
                         }
-                    }
-                    if($InfoCancel['TypeCancel']=='hotel'){
+                    } if($InfoCancel['TypeCancel']=='hotel'){
                         $sql = "
                         SELECT member_mobile , factor_number , hotel_name
                         FROM book_hotel_local_tb
@@ -253,8 +234,7 @@ WHERE 1=1
                     }
 
                     return 'success : درصد تعیین شده با موفقیت ثبت شد';
-                }
-                else {
+                } else {
                     return 'error : خطا در ثبت درصد ،لطفا مجددا تلاش نمائید';
                 }
             } else {

@@ -1,7 +1,7 @@
 <div class="col-lg-2 col-md-6 col-sm-6 col-12 col_search col_with_route">
     {assign var='cities' value=$obj_main_page->trainListCity()}
     <div class="form-group">
-            <select data-placeholder="##Origin##"
+            <select data-placeholder="مبدأ ( نام شهر)"
                     name="origin_train"
                     id="origin_train"
                     class="select2_in  select2-hidden-accessible origin-train-js"

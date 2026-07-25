@@ -34,21 +34,14 @@
                 <form id="changePassword" method="post">
                     <input type="hidden" name="client_id" value="{$smarty.const.CLIENT_ID}">
                     <input type="hidden" name="flag" value="ChangePassword">
-{*                    <div class="form-group col-sm-6 ">*}
+                    <div class="form-group col-sm-6 ">
 
-{*                        <label for="old_pass" class="control-label">رمز عبور قدیمی</label>*}
-{*                        <input type="password" class="form-control" id="old_pass" name="old_pass"*}
-{*                               placeholder="رمز عبور قدیمی را وارد نمائید">*}
-
-{*                    </div>*}
-
-
-                    <div class="form-group col-sm-12">
-                        <label for="username" class="control-label">نام کاربری</label>
-                        <input type="text" class="form-control disabled" id="username"
-                             value="{$smarty.const.CLIENT_EMAIL}" disabled readonly>
+                        <label for="old_pass" class="control-label">رمز عبور قدیمی</label>
+                        <input type="password" class="form-control" id="old_pass" name="old_pass"
+                               placeholder="رمز عبور قدیمی را وارد نمائید">
 
                     </div>
+
 
                     <div class="form-group col-sm-6">
                         <label for="new_pass" class="control-label">رمز عبور جدید</label>

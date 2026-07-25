@@ -492,7 +492,7 @@ class ApiHotel extends clientAuth
         if ( count( $Rooms ) != count( $Passengers ) ) {
             $this->showError( 400, 'اطلاعات وارد شده صحیح نیست', 'BK-005', 'Please Post Each room a passenger', 'لطفا برای هر اتاق یک سرگروه ارسال کنید'.count( $Passengers ).'-'.count($Rooms) );
         }*/
-        $data['Buyer']['Mobile'] = '09123493154';
+        $data['Buyer']['Mobile'] = '09129409530';
 
         $apiResult = $this->processRequest('post', 'Book', $data, true);
 		if ( !isset($apiResult['Success']) || $apiResult['Success'] != true || $apiResult['StatusCode'] != 200 ) {

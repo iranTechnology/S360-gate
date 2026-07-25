@@ -1,4 +1,4 @@
-<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if}" id="GashtTransfer">
+<div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="GashtTransfer">
             {include file="./sections/gashtTransfer/btn_radio_internal_external.tpl"}
     <div class='col-12'>
         <div id="gasht_div" class="row gasht-js" >

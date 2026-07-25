@@ -13,14 +13,6 @@ class sources extends clientAuth
             ->all();
         return $sourceList;
     }
-    public function listAllSourceByType($type) {
-        $sourceList = $this->getModel('sourceModel')
-            ->get()
-            ->where('isActive' , 1)
-            ->where('sourceType' , $type)
-            ->all();
-        return $sourceList;
-    }
     public function SourceStatus($params)
     {
         if (isset($params['source_id'])) {

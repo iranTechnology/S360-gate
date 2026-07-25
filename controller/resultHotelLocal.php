@@ -58,8 +58,10 @@ class resultHotelLocal extends apiHotelLocal
     public $serviceDiscount = array();
 
 
+
     public function __construct()
     {
+
 
 
         parent::__construct();
@@ -93,10 +95,10 @@ class resultHotelLocal extends apiHotelLocal
     {
 
         $isMiladi = false;
-        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($startDate, "0", "4") > 2000) {
+        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($startDate, "0", "4") > 2000){
             $isMiladi = true;
             $sDate_miladi = $startDate;
-        } else {
+        }else{
             $sDate_miladi = functions::ConvertToMiladi($startDate);
 
         }
@@ -104,8 +106,9 @@ class resultHotelLocal extends apiHotelLocal
         $sDate_miladi = str_replace("-", "", $sDate_miladi);
 
 
-        $result = date('Y-m-d', strtotime($sDate_miladi . ",+$nightCount day"));
-        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || $isMiladi) {
+
+        $result = date('Y-m-d', strtotime( $sDate_miladi . ",+$nightCount day"));
+        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || $isMiladi){
 
             $y = substr($result, 0, 4);
             $m = substr($result, 4, 2);
@@ -201,15 +204,16 @@ class resultHotelLocal extends apiHotelLocal
                 WHERE RSHotel.id='{$idHotel}' ";
         $result = $Model->Load($sql);
 
-        if ($result['country'] == 1) {
-            $Countery = 'internal';
-        } else {
-            $Countery = 'external';
+        if($result['country'] == 1){
+            $Countery='internal';
+        }else{
+            $Countery='external';
 
         }
 
 
-        return "http://safar360.com/HotelImages/$Countery/" . strtolower($result['CityNameEn']) . "/" . strtolower(preg_replace("![^a-z0-9]+!i", "-", $result['name_en'])) . "/medium/" . $idHotel . "-0.jpg";
+
+        return "http://safar360.com/HotelImages/$Countery/".strtolower($result['CityNameEn'])."/".strtolower( preg_replace( "![^a-z0-9]+!i", "-", $result['name_en'] ) )."/medium/".$idHotel."-0.jpg";
 
     }
 
@@ -318,7 +322,7 @@ class resultHotelLocal extends apiHotelLocal
 
         $prices = $Model->select($sql);
         $minPrice = 0;
-        foreach ($prices as $price) {
+        foreach ($prices as $price){
             $minPrice += $price['minPrice'];
         }
 
@@ -385,7 +389,7 @@ class resultHotelLocal extends apiHotelLocal
         $arrayPrice = array();
         $index = 0;
 
-        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($startDate, "0", "4") > 2000) {
+        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($startDate, "0", "4") > 2000){
             $startDate = functions::ConvertToJalali($startDate);
             $endDate = functions::ConvertToJalali($endDate);
         }
@@ -577,7 +581,7 @@ class resultHotelLocal extends apiHotelLocal
                         while ($sDate < $eDate) {
                             if (isset($arrayRoomPrice[$sDate]) && $arrayRoomPrice[$sDate] != '') {
                                 $minPrice += min($arrayRoomPrice[$sDate]);
-                            } else {
+                            }else {
                                 $price = end($arrayRoomPrice);
                                 $minPrice += min($price);
                             }
@@ -620,13 +624,13 @@ class resultHotelLocal extends apiHotelLocal
 
                     if (isset($Hotel['pic']) && $Hotel['pic'] != '') {
                         $urlPic = $Hotel['pic'];
-                        if ($Hotel['country'] == 1) {
-                            $HotelCountery = 'internal';
-                        } else {
-                            $HotelCountery = 'external';
+                        if($Hotel['country'] == 1){
+                            $HotelCountery='internal';
+                        }else{
+                            $HotelCountery='external';
 
                         }
-                        $urlPic = SERVER_HTTP . $_SERVER['HTTP_HOST'] . "/imageExternalHotel/hotelImages/iran/" . strtolower($Hotel['CityNameEn']) . "/" . strtolower(preg_replace("![^a-z0-9]+!i", "-", $Hotel['hotel_name_en'])) . "/medium/" . $Hotel['hotel_id'] . "-0.jpg";
+                        $urlPic = SERVER_HTTP.$_SERVER['HTTP_HOST']."/imageExternalHotel/hotelImages/iran/".strtolower($Hotel['CityNameEn'])."/".strtolower( preg_replace( "![^a-z0-9]+!i", "-", $Hotel['hotel_name_en'] ) )."/medium/".$Hotel['hotel_id']."-0.jpg";
 
                     } else {
                         $urlPic = ROOT_ADDRESS_WITHOUT_LANG . '/pic/hotel-nophoto.jpg';
@@ -721,7 +725,8 @@ class resultHotelLocal extends apiHotelLocal
                 }
             }
 
-        } elseif ($typeApplication == 'api') {
+        }
+        elseif ($typeApplication == 'api') {
 
             $resultHotel = parent::Hotel($idHotel);
 
@@ -981,7 +986,7 @@ class resultHotelLocal extends apiHotelLocal
 
                 if ($n == 0) {
                     $this->temproryHotel[$c] = $temproryHotel;
-                    if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($startDate, "0", "4") > 2000) {
+                    if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($startDate, "0", "4") > 2000){
                         $this->temproryHotel[$c]['start_date'] = functions::ConvertToMiladi($temproryHotel['start_date']);
                         $this->temproryHotel[$c]['end_date'] = functions::ConvertToMiladi($temproryHotel['end_date']);
                     }
@@ -1187,10 +1192,10 @@ class resultHotelLocal extends apiHotelLocal
         $sDateMiladi = str_replace("-", "", $dateMiladi);
         $result = date('Ymd', strtotime("" . $sDateMiladi . ",+ 1 day"));
 
-        if (SOFTWARE_LANG == 'fa') {
+        if (SOFTWARE_LANG == 'fa'){
 
             return functions::ConvertToJalali($result);
-        } else {
+        }else{
 
             $y = substr($result, 0, 4);
             $m = substr($result, 4, 2);
@@ -1300,19 +1305,13 @@ class resultHotelLocal extends apiHotelLocal
         $this->transfer_went = $ResultHotel['transfer_went'];
         $this->transfer_back = $ResultHotel['transfer_back'];
     }
-
     // واکشی اطلاعات کامل اتاق های یک هتل رزرواسیون، توسط کد آن هتل
     function getHotelRoom($idHotel)
     {
-        $Model = Load::library('Model');
 
-        $sql = "
-    SELECT *
-    FROM reservation_hotel_room_tb
-    WHERE id_hotel='{$idHotel}'
-    AND is_del='no'
-    ORDER BY CAST(room_capacity AS UNSIGNED) ASC
-";
+
+        $Model = Load::library('Model');
+        $sql = " SELECT * FROM reservation_hotel_room_tb WHERE id_hotel='{$idHotel}' AND is_del='no' ";
 
         $ResultHotelRoom = $Model->select($sql);
 
@@ -1331,7 +1330,7 @@ class resultHotelLocal extends apiHotelLocal
     {
         $Model = Load::library('Model');
 
-        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($param['startDate'], "0", "4") > 2000) {
+        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($param['startDate'], "0", "4") > 2000){
             $param['startDate'] = functions::ConvertToJalali($param['startDate']);
             $param['endDate'] = functions::ConvertToJalali($param['endDate']);
         }
@@ -1387,7 +1386,7 @@ class resultHotelLocal extends apiHotelLocal
     {
 
         $isMiladi = false;
-        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($StartDate, "0", "4") > 2000) {
+        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($StartDate, "0", "4") > 2000){
             $StartDate = functions::ConvertToJalali($StartDate);
             $EndDate = functions::ConvertToJalali($EndDate);
             $isMiladi = true;
@@ -1412,6 +1411,7 @@ class resultHotelLocal extends apiHotelLocal
                     is_del='no' ";
 
 
+
         $result_Hotel_AllRoomPrice = $Model->select($sql);
 
 
@@ -1421,28 +1421,28 @@ class resultHotelLocal extends apiHotelLocal
                  WHERE 
                     id='{$idHotel}' AND is_del='no' ";
 
-        $Hotel = $Model->load($sql_hotel);
+        $Hotel  = $Model->load($sql_hotel);
 
-        if ($Hotel['user_id']) {
-            $priceChanges = functions::getMarketHotelPriceChange($idHotel, $this->counterId, $StartDate, 'marketplaceHotel');
-            $discount_hotel = functions::marketServiceDiscount($this->counterId, 'marketplaceHotel', $idHotel);
+        if($Hotel['user_id']) {
+            $priceChanges = functions::getMarketHotelPriceChange($idHotel , $this->counterId, $StartDate, 'marketplaceHotel' );
+            $discount_hotel = functions::marketServiceDiscount($this->counterId,'marketplaceHotel' , $idHotel);
         }
 
 
         foreach ($result_Hotel_AllRoomPrice as $room) {
 
             $date = substr($room['date'], "0", "4") . '-' . substr($room['date'], "4", "2") . '-' . substr($room['date'], "6", "2");
-            if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || $isMiladi) {
+            if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || $isMiladi){
                 $date = functions::ConvertToMiladi($date);
             }
-            if ($Hotel['user_id'] && ($priceChanges || $discount_hotel)) {
+            if($Hotel['user_id'] && ($priceChanges || $discount_hotel)) {
 
                 $calculated = self::calculateRoomPrice($room, $priceChanges, $discount_hotel);
 
             }
             $currencyPriceWithDiscount = $room['currency_price'];
             $currency_amount_with_discount = null;
-            if ($room['currency_price'] > 0 && isset($room['discount']) && $room['discount'] > 0) {
+            if($room['currency_price'] > 0 && isset($room['discount']) && $room['discount'] > 0){
                 $currencyPriceWithDiscount = $currencyPriceWithDiscount * (100 - $room['discount']) / 100;
                 $currency_amount_with_discount = functions::CalculateCurrencyPrice([
                     'price' => $currencyPriceWithDiscount,
@@ -1472,33 +1472,30 @@ class resultHotelLocal extends apiHotelLocal
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['SpecificDescription'] = $specific_description;
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['OtherServices'] = $other_services;
 
-                if (isset($calculated)) {
+                if(isset($calculated)) {
 
                     $online_price = $calculated['Online'];
                     $board_price = $calculated['afterChange'];
 
 
-                } else {
+                }else{
 
                     $online_price = $room['online_price'];
                     $board_price = $room['board_price'];
                 }
 
-                if ($room['currency_price'] > 0) {
+                if($room['currency_price'] > 0) {
 
-                    if ($currency_amount_with_discount) {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/
-                            $currency_amount_with_discount['AmountCurrency'];
-                    } else {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
+                    if($currency_amount_with_discount){
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                    }else{
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                     }
 
-                } else {
+                }
+                else {
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = $online_price;
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = $board_price;
 
@@ -1507,39 +1504,35 @@ class resultHotelLocal extends apiHotelLocal
 
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceCurrencyForView'] = $currency_amount_with_out_discount['AmountCurrency'];
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['CurrencyTypeForView'] = $room['currency_type'];
-                if (isset($calculated)) {
-                    $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['Discount'] = $calculated['Discount']['off_percent'] + $room['discount'];
-                } else {
+                if(isset($calculated)) {
+                    $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['Discount'] = $calculated['Discount']['off_percent'] +  $room['discount'];
+                }else {
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['Discount'] = $room['discount'];
                 }
 
 
                 if ($this->IsLogin || $room['guest_user_status'] == 'yes') {
-                    if (isset($calculated)) {
+                    if(isset($calculated)) {
                         $online_price = $calculated['Online'];
                         $board_price = $calculated['Board'];
-                    } else {
+                    }else{
                         $online_price = $room['online_price'];
                         $board_price = $room['board_price'];
                     }
-                    if ($room['currency_price'] > 0) {
+                    if($room['currency_price'] > 0 ) {
                         /*$currency_amount = functions::CalculateCurrencyPrice( [
                             'price' => $currencyPriceWithDiscount ,
                             'currency_type' => $room['currency_type']
                         ]);*/
 
-                        if ($currency_amount_with_discount) {
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                                $currency_amount_with_out_discount['AmountCurrency'];
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                                $currency_amount_with_discount['AmountCurrency'];
-                        } else {
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                                $currency_amount_with_out_discount['AmountCurrency'];
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                                $currency_amount_with_out_discount['AmountCurrency'];
+                        if($currency_amount_with_discount){
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline']  = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                        }else{
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                         }
-                    } else {
+                    }else {
                         $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = $online_price;
                         $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = $board_price;
                     }
@@ -1547,45 +1540,42 @@ class resultHotelLocal extends apiHotelLocal
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = 'yes';
 
                 } else {
-                    if (isset($calculated)) {
+                    if(isset($calculated)) {
                         $online_price = $calculated['Online'];
                         $board_price = $calculated['Board'];
-                    } else {
+                    }else{
                         $online_price = $room['online_price'];
-                        $board_price = $room['board_price'];
+                        $board_price =  $room['board_price'];
                     }
-                    if ($room['currency_price'] > 0) {
-                        /*                        $currency_amount = functions::CalculateCurrencyPrice( [
-                                                    'price' => $currencyPriceWithDiscount ,
-                                                    'currency_type' => $room['currency_type']
-                                                ] );*/
-                        if ($currency_amount_with_discount) {
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                                $currency_amount_with_out_discount['AmountCurrency'];
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                                $currency_amount_with_discount['AmountCurrency'];
-                        } else {
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                                $currency_amount_with_out_discount['AmountCurrency'];
-                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                                $currency_amount_with_out_discount['AmountCurrency'];
+                    if($room['currency_price'] > 0 ) {
+/*                        $currency_amount = functions::CalculateCurrencyPrice( [
+                            'price' => $currencyPriceWithDiscount ,
+                            'currency_type' => $room['currency_type']
+                        ] );*/
+                        if($currency_amount_with_discount){
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline']  = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                        }else{
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                            $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                         }
 
 
-                    } else {
+                    }else {
                         $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = $board_price;
                         $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = $board_price;
                     }
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = 'no';
 
                 }
-            } elseif (($room['flat_type'] == 'ECHD')) {
-                if (isset($calculated)) {
+            }elseif (($room['flat_type'] == 'ECHD'))
+            {
+                if(isset($calculated)) {
                     $online_price = $calculated['Online'];
                     $board_price = $calculated['Board'];
-                } else {
+                }else{
                     $online_price = $room['online_price'];
-                    $board_price = $room['board_price'];
+                    $board_price =  $room['board_price'];
                 }
 
                 // اضافه کردن شرط برای کاربران لاگین شده/مهمان
@@ -1597,36 +1587,28 @@ class resultHotelLocal extends apiHotelLocal
                     $final_board_price = $board_price;
                 }
 
-                if ($room['currency_price'] > 0) {
-                    /*                    $currency_amount = functions::CalculateCurrencyPrice( [
-                                            'price' => $currencyPriceWithDiscount ,
-                                            'currency_type' => $room['currency_type']
-                                        ] );*/
-                    if ($currency_amount_with_discount) {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                            $currency_amount_with_discount['AmountCurrency'];
-                    } else {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
+                if($room['currency_price'] > 0 ) {
+/*                    $currency_amount = functions::CalculateCurrencyPrice( [
+                        'price' => $currencyPriceWithDiscount ,
+                        'currency_type' => $room['currency_type']
+                    ] );*/
+                    if($currency_amount_with_discount){
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline']  = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                    }else{
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                     }
-                    if ($currency_amount_with_discount) {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/
-                            $currency_amount_with_discount['AmountCurrency'];
-                    } else {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
+                    if($currency_amount_with_discount){
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                    }else{
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                     }
 
 
-                } else {
+                }else {
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = $final_online_price;
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = $final_board_price;
 
@@ -1644,13 +1626,14 @@ class resultHotelLocal extends apiHotelLocal
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceCurrencyForView'] = $room['currency_price'];
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['CurrencyTypeForView'] = $room['currency_type'];
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = ($this->IsLogin || $room['guest_user_status'] == 'yes') ? 'yes' : 'no';
-            } elseif (($room['flat_type'] == 'EXT')) {
-                if (isset($calculated)) {
+            }elseif (($room['flat_type'] == 'EXT'))
+            {
+                if(isset($calculated)) {
                     $online_price = $calculated['Online'];
                     $board_price = $calculated['Board'];
-                } else {
+                }else{
                     $online_price = $room['online_price'];
-                    $board_price = $room['board_price'];
+                    $board_price =  $room['board_price'];
                 }
 
                 // اضافه کردن شرط برای کاربران لاگین شده/مهمان
@@ -1662,35 +1645,27 @@ class resultHotelLocal extends apiHotelLocal
                     $final_board_price = $board_price;
                 }
 
-                if ($room['currency_price'] > 0) {
-                    /*                    $currency_amount = functions::CalculateCurrencyPrice( [
-                                            'price' => $currencyPriceWithDiscount ,
-                                            'currency_type' => $room['currency_type']
-                                        ] );*/
-                    if ($currency_amount_with_discount) {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                            $currency_amount_with_discount['AmountCurrency'];
-                    } else {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
+                if($room['currency_price'] > 0 ) {
+/*                    $currency_amount = functions::CalculateCurrencyPrice( [
+                        'price' => $currencyPriceWithDiscount ,
+                        'currency_type' => $room['currency_type']
+                    ] );*/
+                    if($currency_amount_with_discount){
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline']  = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                    }else{
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                     }
-                    if ($currency_amount_with_discount) {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/
-                            $currency_amount_with_discount['AmountCurrency'];
-                    } else {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
+                    if($currency_amount_with_discount){
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                    }else{
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoardForView'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnlineForView'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                     }
 
-                } else {
+                }else {
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = $final_online_price;
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = $final_board_price;
 
@@ -1708,32 +1683,29 @@ class resultHotelLocal extends apiHotelLocal
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = ($this->IsLogin || $room['guest_user_status'] == 'yes') ? 'yes' : 'no';
 
 
-            } else {
-                if (isset($calculated)) {
+            }
+            else {
+                if(isset($calculated)) {
                     $online_price = $calculated['Online'];
                     $board_price = $calculated['Board'];
-                } else {
+                }else{
                     $online_price = $room['online_price'];
-                    $board_price = $room['board_price'];
+                    $board_price =  $room['board_price'];
                 }
-                if ($room['currency_price'] > 0) {
-                    /*                    $currency_amount = functions::CalculateCurrencyPrice( [
-                                            'price' => $currencyPriceWithDiscount ,
-                                            'currency_type' => $room['currency_type']
-                                        ] );*/
-                    if ($currency_amount_with_discount) {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                            $currency_amount_with_discount['AmountCurrency'];
-                    } else {
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
-                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/
-                            $currency_amount_with_out_discount['AmountCurrency'];
+                if($room['currency_price'] > 0 ) {
+/*                    $currency_amount = functions::CalculateCurrencyPrice( [
+                        'price' => $currencyPriceWithDiscount ,
+                        'currency_type' => $room['currency_type']
+                    ] );*/
+                    if($currency_amount_with_discount){
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline']  = /*$online_price +*/ $currency_amount_with_discount['AmountCurrency'];
+                    }else{
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = /*$board_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
+                        $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = /*$online_price +*/ $currency_amount_with_out_discount['AmountCurrency'];
                     }
 
-                } else {
+                }else {
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceOnline'] = $online_price;
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceBoard'] = $board_price;
                 }
@@ -1825,7 +1797,7 @@ class resultHotelLocal extends apiHotelLocal
 
         $Model = Load::library('Model');
 
-        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($param['startDate_reserve'], "0", "4") > 2000) {
+        if (SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr($param['startDate_reserve'], "0", "4") > 2000){
             $param['startDate_reserve'] = functions::ConvertToJalali($param['startDate_reserve']);
             $param['endDate_reserve'] = functions::ConvertToJalali($param['endDate_reserve']);
         }
@@ -1846,39 +1818,52 @@ class resultHotelLocal extends apiHotelLocal
                 $TotalRoomId .= $roomId . "/";
 
                 $sql = "
-SELECT
-    RP.id_room, RP.date, RP.discount, RP.board_price, RP.online_price, RP.flat_type,
-    RP.fromAge, RP.toAge, RP.discount_status,
-    RP.currency_type, HR.room_name, HR.room_capacity,
-    HR.room_name_en, HR.maximum_extra_beds, HR.maximum_extra_chd_beds, RP.id_country,
-    RP.breakfast, RP.lunch, RP.dinner, RP.id as IdHotelRoomPrice, RP.guest_user_status,
-    ECHD.online_price AS cost_chd,
-    EXT.online_price AS cost_ext
-FROM reservation_hotel_room_prices_tb RP
-LEFT JOIN reservation_hotel_room_tb HR ON RP.id_room=HR.id_room AND HR.id_hotel=RP.id_hotel
-LEFT JOIN reservation_hotel_room_prices_tb ECHD 
-    ON ECHD.id_hotel = RP.id_hotel 
-    AND ECHD.id_room = RP.id_room 
-    AND ECHD.date = RP.date 
-    AND ECHD.flat_type = 'ECHD'
-    AND ECHD.is_del = 'no'
-    AND ECHD.user_type = RP.user_type
-LEFT JOIN reservation_hotel_room_prices_tb EXT 
-    ON EXT.id_hotel = RP.id_hotel 
-    AND EXT.id_room = RP.id_room 
-    AND EXT.date = RP.date 
-    AND EXT.flat_type = 'EXT'
-    AND EXT.is_del = 'no'
-    AND EXT.user_type = RP.user_type
-WHERE 
-    RP.id_hotel='{$hotelId}' AND
-    RP.id_room='{$roomId}' AND
-    RP.is_del='no' AND
-    RP.user_type='{$this->counterId}' AND
-    RP.date>='{$startDate}' AND RP.date<'{$endDate}' AND
-    RP.flat_type='DBL'
-ORDER BY RP.date                     "
-                ;
+                SELECT
+                        RP.id_room, RP.date, RP.discount, RP.board_price, RP.online_price, RP.flat_type,
+                        RP.fromAge,RP.toAge,RP.discount_status,
+                        RP.currency_price, RP.currency_type, HR.room_name, HR.room_capacity,
+                        HR.room_name_en, HR.maximum_extra_beds, HR.maximum_extra_chd_beds, RP.id_country,
+                        RP.breakfast, RP.lunch, RP.dinner, RP.id as IdHotelRoomPrice, RP.guest_user_status,
+                     (
+                        select CRP.online_price
+                            from 
+                                     reservation_hotel_room_prices_tb CRP LEFT JOIN reservation_hotel_room_tb CHR ON CRP.id_room=CHR.id_room
+                            where  
+                                     CRP.id_hotel='{$hotelId}' AND 
+                                     CRP.id_room='{$roomId}' AND 
+                                     CRP.is_del='no' AND 
+                                     CRP.user_type='{$this->counterId}' AND 
+                                     CRP.flat_type='ECHD' AND 
+                                     CRP.date=RP.date
+                            group by
+                                        CRP.flat_type
+                        ) as cost_chd
+                        ,
+                     (
+                        select ERP.online_price
+                            from 
+                                     reservation_hotel_room_prices_tb ERP LEFT JOIN reservation_hotel_room_tb EHR ON ERP.id_room=EHR.id_room
+                            where  
+                                     ERP.id_hotel='{$hotelId}' AND 
+                                     ERP.id_room='{$roomId}' AND 
+                                     ERP.is_del='no' AND 
+                                     ERP.user_type='{$this->counterId}' AND 
+                                     ERP.flat_type='EXT' AND 
+                                     ERP.date=RP.date
+                            group by
+                                        ERP.flat_type
+                        ) as cost_ext
+                     FROM 
+                        reservation_hotel_room_prices_tb RP 
+                        LEFT JOIN reservation_hotel_room_tb HR ON RP.id_room=HR.id_room AND HR.id_hotel=RP.id_hotel
+                     WHERE 
+                        RP.id_hotel='{$hotelId}' AND
+                        RP.id_room='{$roomId}' AND
+                        RP.is_del='no' AND
+                        RP.user_type='{$this->counterId}' AND
+                        RP.date>='{$startDate}' AND RP.date<'{$endDate}'
+                     GROUP BY RP.date";
+
 
 
                 $ResultHotelRoom = $Model->select($sql);
@@ -1889,9 +1874,9 @@ ORDER BY RP.date                     "
                     where id = '{$hotelId}'
                 ";
                 $hotel = $Model->load($sql_hotel);
-                if ($hotel['user_id']) {
-                    $priceChanges = functions::getMarketHotelPriceChange($hotelId, $this->counterId, $startDate, 'marketplaceHotel');
-                    $discount_hotel = functions::marketServiceDiscount($this->counterId, 'marketplaceHotel', $hotelId);
+                if($hotel['user_id']) {
+                    $priceChanges = functions::getMarketHotelPriceChange($hotelId , $this->counterId, $startDate, 'marketplaceHotel' );
+                    $discount_hotel = functions::marketServiceDiscount($this->counterId,'marketplaceHotel' , $hotelId);
                 }
 
 
@@ -1941,18 +1926,18 @@ ORDER BY RP.date                     "
                             $this->temproryHotelRoom[$roomId]['Lunch'] = $val['lunch'];
                             $this->temproryHotelRoom[$roomId]['Dinner'] = $val['dinner'];
 
-                            $selected_price = $val[$selectField];
-                            $ext_price = $val['cost_ext'];
-                            $child_price = $val['cost_chd'];
-                            if ($hotel['user_id']) {
-                                $selected_price = functions::calculateHotelPrice($priceChanges, $discount_hotel, $val[$selectField], true);
-                                $ext_price = functions::calculateHotelPrice($priceChanges, $discount_hotel, $val['cost_ext'], true);
-                                $child_price = functions::calculateHotelPrice($priceChanges, $discount_hotel, $val['cost_chd'], true);
+                            $selected_price = $val[$selectField]  ;
+                            $ext_price = $val['cost_ext']  ;
+                            $child_price = $val['cost_chd']  ;
+                            if($hotel['user_id']) {
+                                $selected_price = functions::calculateHotelPrice($priceChanges,$discount_hotel,$val[$selectField] , true);
+                                $ext_price = functions::calculateHotelPrice($priceChanges,$discount_hotel,$val['cost_ext'] , true);
+                                $child_price = functions::calculateHotelPrice($priceChanges,$discount_hotel,$val['cost_chd'] , true);
                             }
 
-                            if ($val['online_price'] > 0) {
+                            if($val['currency_price'] > 0 ) {
                                 $currency_amount = functions::CalculateCurrencyPrice([
-                                    'price' => $val['online_price'],
+                                    'price' => $val['currency_price'],
                                     'currency_type' => $val['currency_type']
                                 ]);
 
@@ -1962,8 +1947,7 @@ ORDER BY RP.date                     "
                                 $RoomPrice1night = $val[$selectField] + $currency_amount['AmountCurrency'];
                                 $this->temproryHotelRoom[$roomId]['fromAge'] = $val['fromAge'];
                                 $this->temproryHotelRoom[$roomId]['toAge'] = $val['toAge'];
-                            }
-                            else {
+                            }else {
                                 $this->temproryHotelRoom[$roomId]['OnlinePriceDBL'] = $selected_price;
                                 $this->temproryHotelRoom[$roomId]['OnlinePriceEXT'] = $ext_price;
                                 $this->temproryHotelRoom[$roomId]['OnlinePriceECHD'] = $child_price;
@@ -1974,13 +1958,13 @@ ORDER BY RP.date                     "
 
                             // اگر تخت اضافه بزرگسال انتخاب شده بود
                             if (isset($param['ExtraBed' . $roomId]) && $param['ExtraBed' . $roomId] > 0) {
-                                if ($val['online_price'] > 0) {
+                                if($val['currency_price'] > 0 ) {
                                     $currency_amount = functions::CalculateCurrencyPrice([
-                                        'price' => $val['online_price'],
+                                        'price' => $val['currency_price'],
                                         'currency_type' => $val['currency_type']
                                     ]);
                                     $RoomPrice1night += $ext_price + $currency_amount['AmountCurrency'];
-                                } else {
+                                }else {
                                     $RoomPrice1night += $ext_price;
                                 }
 
@@ -1988,13 +1972,13 @@ ORDER BY RP.date                     "
                             // اگر تخت اضافه کودک انتخاب شده بود
                             if (isset($param['ExtraChildBed' . $roomId]) && $param['ExtraChildBed' . $roomId] > 0) {
 
-                                if ($val['online_price'] > 0) {
+                                if($val['currency_price'] > 0 ) {
                                     $currency_amount = functions::CalculateCurrencyPrice([
-                                        'price' => $val['online_price'],
+                                        'price' => $val['currency_price'],
                                         'currency_type' => $val['currency_type']
                                     ]);
                                     $RoomPrice1night += $child_price + $currency_amount['AmountCurrency'];
-                                } else {
+                                }else {
                                     $RoomPrice1night += $child_price;
                                 }
 
@@ -2002,28 +1986,27 @@ ORDER BY RP.date                     "
 
                         }
 
-
-                        if ($val['online_price'] > 0) {
+                        if($val['currency_price'] > 0 ) {
                             $currency_amount = functions::CalculateCurrencyPrice([
-                                'price' => $val['online_price'],
+                                'price' => $val['currency_price'],
                                 'currency_type' => $val['currency_type']
                             ]);
-                            $totalPriceBedDBL += $selected_price + $currency_amount['AmountCurrency'];
-                        }
-                        else {
+                            $totalPriceBedDBL += $selected_price+ $currency_amount['AmountCurrency'];
+                        }else {
                             $totalPriceBedDBL += $selected_price;
                         }
 
 
+
                         // اگر تخت اضافه بزرگسال انتخاب شده بود
                         if (isset($param['ExtraBed' . $roomId]) && $param['ExtraBed' . $roomId] > 0) {
-                            if ($val['online_price'] > 0) {
+                            if($val['currency_price'] > 0 ) {
                                 $currency_amount = functions::CalculateCurrencyPrice([
-                                    'price' => $val['online_price'],
+                                    'price' => $val['currency_price'],
                                     'currency_type' => $val['currency_type']
                                 ]);
-                                $totalPriceBedEXT += $ext_price + $currency_amount['AmountCurrency'];
-                            } else {
+                                $totalPriceBedEXT +=$ext_price+ $currency_amount['AmountCurrency'];
+                            }else {
                                 $totalPriceBedEXT += $ext_price;
                             }
 
@@ -2031,13 +2014,13 @@ ORDER BY RP.date                     "
                         // اگر تخت اضافه کودک انتخاب شده بود
                         if (isset($param['ExtraChildBed' . $roomId]) && $param['ExtraChildBed' . $roomId] > 0) {
 
-                            if ($val['online_price'] > 0) {
+                            if($val['currency_price'] > 0 ) {
                                 $currency_amount = functions::CalculateCurrencyPrice([
-                                    'price' => $val['online_price'],
+                                    'price' => $val['currency_price'],
                                     'currency_type' => $val['currency_type']
                                 ]);
-                                $totalPriceBedCHD += $child_price + $currency_amount['AmountCurrency'];
-                            } else {
+                                $totalPriceBedCHD += $child_price+ $currency_amount['AmountCurrency'];
+                            }else {
                                 $totalPriceBedCHD += $child_price;
                             }
 
@@ -2054,24 +2037,22 @@ ORDER BY RP.date                     "
                         $totalPriceBedEXT = 0;
                     }
 
+
                     if (isset($param['priceRoomEXT' . $roomId]) && $param['priceRoomEXT' . $roomId] > 0) {
-                        $totalPriceBedRoomECHD = $param['priceRoomECHD' . $roomId] * $param['RoomCountECHD' . $roomId];
+                        $totalPriceBedRoomECHD= $param['priceRoomECHD' . $roomId] * $param['RoomCountECHD' . $roomId];
                     } else {
                         $totalPriceBedEXT = 0;
                     }
-
                     if (isset($param['priceRoomEXT' . $roomId]) && $param['priceRoomEXT' . $roomId] > 0) {
                         $totalPriceBedRoomEXT = $param['priceRoomEXT' . $roomId] * $param['RoomCountEXT' . $roomId];
                     } else {
                         $totalPriceBedEXT = 0;
                     }
-
                     if (isset($param['ExtraChildBed' . $roomId]) && $param['ExtraChildBed' . $roomId] > 0) {
                         $totalPriceBedCHD = $param['ExtraChildBed' . $roomId] * $totalPriceBedCHD;
                     } else {
                         $totalPriceBedCHD = 0;
                     }
-
                     $this->temproryHotelRoom[$roomId]['TotalPriceBedDBL'] = $totalPriceBedDBL;
                     $this->temproryHotelRoom[$roomId]['TotalPriceBedEXT'] = $totalPriceBedEXT;
                     $this->temproryHotelRoom[$roomId]['TotalPriceBedCHD'] = $totalPriceBedCHD;
@@ -2082,8 +2063,7 @@ ORDER BY RP.date                     "
                     $this->temproryHotelRoom[$roomId]['ECHD'] = $param['fkECHD' . $roomId];
 
 
-                }
-                else {
+                } else {
 
                     $this->errorUserType = "true";
                 }
@@ -2196,6 +2176,8 @@ ORDER BY RP.date                     "
     }
 
 
+
+
     #region SetPriorityParentDeparture
 
     public function SetPriorityParentDeparture($Param)
@@ -2277,21 +2259,20 @@ ORDER BY RP.date                     "
 
     public function RandomHotelList($params = array())
     {
-        Load::library('ApiHotelCore');
+        Load::library( 'ApiHotelCore' );
         $ApiHotelCore = new ApiHotelCore();
 
-        $result = $ApiHotelCore->RandomHotelList($params);
-        $result = json_decode($result, true);
-        if ($result['Result'] && $result['Success'] && $params['chunked_value']) {
-            $result = array_chunk($result['Result'], $params['chunked_value']);
+        $result = $ApiHotelCore->RandomHotelList( $params );
+        $result = json_decode($result,true);
+        if($result['Result'] && $result['Success'] && $params['chunked_value']){
+            $result = array_chunk($result['Result'],$params['chunked_value']);
             return $result;
         }
 
         return $result['Result'];
     }
 
-    public function getFullDetail($params)
-    {
+    public function getFullDetail($params) {
         return parent::ReservationHotel($params['idHotel_reserve']);
     }
 
@@ -2301,17 +2282,14 @@ ORDER BY RP.date                     "
     }
 
     #region getFactorNumber
-    public function getFactorNumber()
-    {
-        $factorNumber = dateTimeSetting::jdate("Ymd", '', '', '', 'en') . mt_rand(00, 99) . substr(time(), 7, 10);
+    public function getFactorNumber() {
+        $factorNumber = dateTimeSetting::jdate( "Ymd", '', '', '', 'en' ) . mt_rand( 00, 99 ) . substr( time(), 7, 10 );
 
         return $factorNumber;
     }
-
     #endregion
 
-    public function registerBookRecord($params)
-    {
+    public function registerBookRecord($params) {
         /** @var factorTourLocal $factorController */
         $factorController = $this->getController('factorHotelLocal');
 
@@ -2321,11 +2299,10 @@ ORDER BY RP.date                     "
         return $params['factorNumber'];
     }
 
-    public function apiGetHotelWebservice($params)
-    {
+    public function apiGetHotelWebservice($params) {
 
-        $result = [];
-        if ($params['type'] == 'internal') {
+        $result = [] ;
+        if($params['type'] == 'internal') {
             $hotel_ids = array(
                 "934",
                 "1028",
@@ -2344,12 +2321,12 @@ ORDER BY RP.date                     "
                 "832",
                 "140",
             );
-            $params['HotelIds'] = $hotel_ids;
-            $params['IsInternal'] = true;
-            if (isset($params['star_code'])) {
+            $params['HotelIds'] = $hotel_ids ;
+            $params['IsInternal'] = true ;
+            if(isset($params['star_code'])) {
                 $params['star_code'] = $params['star_code'];
             }
-        } else {
+        }else {
             $city_ids = array(
                 "23595",
                 "23607",
@@ -2365,33 +2342,32 @@ ORDER BY RP.date                     "
                 "26582",
                 "75286"
             );
-            $params['CityIds'] = $city_ids;
-            $params['IsInternal'] = false;
+            $params['CityIds'] = $city_ids ;
+            $params['IsInternal'] = false ;
         }
 
 
-        Load::library('ApiHotelCore');
+        Load::library( 'ApiHotelCore' );
         $ApiHotelCore = new ApiHotelCore();
-        $response = $ApiHotelCore->RandomHotelList($params);
+        $response = $ApiHotelCore->RandomHotelList($params)  ;
 
-        $response = json_decode($response, true);
+        $response = json_decode($response , true) ;
 
-        if (isset($response['StatusCode']) && $response['StatusCode'] == '200') {
-            $result = $response['Result'];
+        if(isset($response['StatusCode']) && $response['StatusCode'] == '200'){
+            $result = $response['Result'] ;
             return functions::withSuccess($result);
-        } else {
+        }else{
             return functions::withError($response, 404);
         }
 
     }
 
-    public static function prePaymentCalculate($price, $pre_payment_percentage)
-    {
+    public static function prePaymentCalculate( $price, $pre_payment_percentage )  {
         //        if ($pre_payment_percentage == 0) return '0';
-        return (($price * $pre_payment_percentage) / 100);
+        return (( $price * $pre_payment_percentage ) / 100);
     }
 
-    private function calculateRoomPrice($price = [], $priceChanges = [], $discount)
+    private function calculateRoomPrice($price = [], $priceChanges = [] , $discount)
     {
 
 
@@ -2418,6 +2394,7 @@ ORDER BY RP.date                     "
         echo Load::plog($result);
         return $result;
     }*/
+
 
 
     public function SetHotelSepehrGlobalId($Param)
@@ -2493,7 +2470,6 @@ ORDER BY RP.date                     "
         }
 
     }
-
     function getSepehrHotelInfo($sepehrCode)
     {
         $Model = Load::library('Model');
@@ -2515,6 +2491,7 @@ ORDER BY RP.date                     "
 
         return $Model->select($sql);
     }
+
 
 
     function getSepehrHotelDetailInfo($sepehrCode)

@@ -149,9 +149,9 @@ class resultLocal extends apiLocal
         if (!isset($ResultApiPrev['message'])) {
             ?>
             <span class="flight-Day-Prev" id="flight_Day_Prev"><a
-                        onclick="showModal('<?php echo $param['code'] ?>', '<?php echo $param['arrivalCode'] ?>', '<?php echo $dateStartPrev ?>');"><i
-                            class="fa fa-angle-double-right"
-                            style="margin: 0px 5px"></i>'.<?php echo functions::Xmlinformation("twelvedaysago") ?>
+                    onclick="showModal('<?php echo $param['code'] ?>', '<?php echo $param['arrivalCode'] ?>', '<?php echo $dateStartPrev ?>');"><i
+                        class="fa fa-angle-double-right"
+                        style="margin: 0px 5px"></i>'.<?php echo functions::Xmlinformation("twelvedaysago") ?>
                     .'</a></span>
 
             <?php
@@ -166,9 +166,9 @@ class resultLocal extends apiLocal
         if (!isset($ResultApiNext['message'])) {
             ?>
             <span class="flight-Day-Next" id="flight_Day_Next"><a
-                        onclick="showModal('<?php echo $param['code'] ?>', '<?php echo $param['arrivalCode'] ?>', '<?php echo $dateNow ?>');">'.<?php echo functions::Xmlinformation("twelvedayslater") ?>
+                    onclick="showModal('<?php echo $param['code'] ?>', '<?php echo $param['arrivalCode'] ?>', '<?php echo $dateNow ?>');">'.<?php echo functions::Xmlinformation("twelvedayslater") ?>
                     .'<i
-                            class="fa fa-angle-double-left" style="margin: 0px 5px"></i></a></span>
+                        class="fa fa-angle-double-left" style="margin: 0px 5px"></i></a></span>
 
             <?php
         }
@@ -454,30 +454,12 @@ class resultLocal extends apiLocal
             // این بخش که مربوط به عدم نمایش پرواز های بالاتر از نرخ مصوب بود ، کامنت شد چون دیگر یک همچین چیزی وجود ندارد ، اگر مجددا تصمیم بر برگرداندن این ویژگی شد میبایست خط پایین از کامنتی در آید و همچنین متغییر $check_price_limit همیشه true ندهید و شرط هایی که به صورت کامنت شده قبلا بود در آن برگردانده شود
 //            $price_check = $this->getController('checkLimitPrice')->getChecKLimits($data_check_limit);
 
-            $airLinePriceController = $this->getController('airLinePriceController');
-            $settingLimitPriceFlight = $this->getModel('reservationSettingModel')->getByTitle('limitPriceFlight');
-
-            $isEnableLimit = $settingLimitPriceFlight['enable'] == '1';
-
-
-            $prices_limit_route = $airLinePriceController->getRoutePrices($flights[0]['departure_code'] , $flights[0]['arrival_code']);
-
-            $limits = [];
-
-            foreach ($prices_limit_route as $row) {
-                $limits[$row['airline_uniqe_iata']][$row['fare_class']] = (float)$row['ceiling_price'];
-            }
-
-
             foreach ($flights as $rec) {
+                $flight_type = isset($rec['FlightType_li']) ? $rec['FlightType_li'] : $rec['flight_type_li'];
 
-
-                $flight_type = $rec['flight_type_li'];
-                $airlineId = $rec['airline'];
-                $fareClass = $rec['seat_class_en']; // economy / business / premium_economy
-                $price     = $rec['price']['adult']['with_discount'] == 0 ? $rec['price']['adult']['price'] : $rec['price']['adult']['with_discount'];
+                $price_check_each_flight = isset($rec['price'])? $rec['price']['adult']['price'] : $rec['AdtPrice'] ;
                 // در صورتی که لاگین باشد و کانتر باشد یاااا جدول چک لیمیت قیمت خالی باشد یااااا پرواز سیستمی باشد یااااا قیمت پرواز از قیمت لیمیت کمتر باشد یاااااا قیمت پرواز صفر باشد(تکمیل ظرفیت باشد) یااااااا بر اساس خواسته مدیریت یا پشتیبانی استثنا شده باشد،اجازه نمایش دارد
-//                $check_price_limit =
+                $check_price_limit = true
 // (
 //                    (Session::IsLogin() && Session::getCounterTypeId() !='5')
 //                    || empty($price_check)
@@ -486,21 +468,9 @@ class resultLocal extends apiLocal
 //                    || ((intval($price_check['price']) >= intval($price_check_each_flight)) && ((Session::IsLogin() && Session::getCounterTypeId() =='5') || !Session::IsLogin()))
 //                    || $price_check_each_flight==0
 //                    ||(in_array(CLIENT_ID,functions::expectCheckLimitPrice())))
-// ;
+ ;
 
 
-                $check_price_limit = true;
-                if ($isEnableLimit) {
-                    if ( (Session::IsLogin() && Session::getCounterTypeId() !='1') ||  !(Session::IsLogin())) {
-                        if ($flight_type == 'charter') {
-                            if (isset($limits[$airlineId][$fareClass])) {
-                                if ($price > $limits[$airlineId][$fareClass]) {
-                                    $check_price_limit = false;
-                                }
-                            }
-                        }
-                    }
-                }
 
                 if($check_price_limit)
                 {
@@ -510,39 +480,42 @@ class resultLocal extends apiLocal
                     $source_id_flight= isset($rec['SourceId']) ? $rec['SourceId'] : $rec['source_id'];
 
                     $data_check_status_airline = array(
-                            'selected_config'=>$data_extra['list_config_airline'][$flight_type][$airline_iata],
-                            'source_id'=> $source_id_flight
+                        'selected_config'=>$data_extra['list_config_airline'][$flight_type][$airline_iata],
+                        'source_id'=> $source_id_flight
                     );
 
                     $statusConfigAirline = $this->getController('configFlight')->checkStatusConfigAirline($data_check_status_airline);
 
-                        //  در صورتی که ایرلاین اشتراکی باشد و مروبط به سرور 5(پیشرو)  ویا سرور 14 (پرتو) و sourceId پرواز با یکی از sourceId های چدول کانفیگ پرواز که اشتراکی هستند برابر باشد در غیر این صورت اختصاصی هستند
+                    if ($airline->checkTypeAirline($flight_type, $airline_iata)){
 
-                        // در تاریخ 24 دی 1404 کامنت شد
+                      //  در صورتی که ایرلاین اشتراکی باشد و مروبط به سرور 5(پیشرو)  ویا سرور 14 (پرتو) و sourceId پرواز با یکی از sourceId های چدول کانفیگ پرواز که اشتراکی هستند برابر باشد در غیر این صورت اختصاصی هستند
+
+                       // در تاریخ 24 دی 1404 کامنت شد
 
 //                        if($statusConfigAirline=='public'){
 
-                        if(($source_id_flight !='1' || $source_id_flight!='14')
+                            if(($source_id_flight !='1' || $source_id_flight!='14')
                                 && ($source_id_flight == $airline_config_list[$flight_type][$airline_iata]['sourceId']
-                                        ||  $source_id_flight == $airline_config_list[$flight_type][$airline_iata]['sourceReplaceId']))
-                        {
-                            $array_public_flights[] = $rec;
-                            $array_total[] = $rec ;
-                        }
+                                    ||  $source_id_flight == $airline_config_list[$flight_type][$airline_iata]['sourceReplaceId']))
+                            {
+                                $array_public_flights[] = $rec;
+                                $array_total[] = $rec ;
+                            }
 //                        }
 //                        elseif($statusConfigAirline=='private'){
 //
 //                            $array_private_flights[] = $rec;
 //                            $array_total[] = $rec;
 //                        }
+                    }
 
 
                 }
 
 
-            }
+                }
 
-
+            
             /*if(!empty($array_public_flights) && !empty($array_private_flights)){
               if(!empty($typeRoutForeign) && $typeRoutForeign=='new')
                {
@@ -643,8 +616,8 @@ class resultLocal extends apiLocal
                     $arrReturn[] = $final_flight[0] ;
                 }
 //                $arrReturn = $array_same_flights ;
-            }
-            else{/*if (empty($array_private_flights) && !empty($array_public_flights))*/
+            }else{/*if (empty($array_private_flights) && !empty($array_public_flights))*/
+
                 $arrReturn = $array_total ;
 
             }
@@ -1954,12 +1927,12 @@ class resultLocal extends apiLocal
     private function airPortForSourceSeven()
     {
         return array(
-                'IKA','MHD','KIH','AWZ','IFN','SYZ','BND','TBZ','GSM','ABD','AZD','SDG','KSH',
-                'SRY','IIL','OMH','ZAH','PGU','RAS','IST','NJF','DXB','BGW','MCT','TBS','SHJ',
-                'ESB','EVN','AYT','SAW','MOW','DME','VKO','SVO','BUS','GYD','ALA','KBL','ADB',
-                'DNZ','CAN','ISU','EBL','LHR','BKK','PVG','KZN','DLM','BEY','FRA','DEL','PEK',
-                'MIL','ROM','HKT','DAM','BOM','MZR','CGN','GZP','TAS','HAM','LHE','DYU','KIK',
-                'KWI','DOH','KDH','OHS','KER','LRR',
+            'IKA','MHD','KIH','AWZ','IFN','SYZ','BND','TBZ','GSM','ABD','AZD','SDG','KSH',
+            'SRY','IIL','OMH','ZAH','PGU','RAS','IST','NJF','DXB','BGW','MCT','TBS','SHJ',
+            'ESB','EVN','AYT','SAW','MOW','DME','VKO','SVO','BUS','GYD','ALA','KBL','ADB',
+            'DNZ','CAN','ISU','EBL','LHR','BKK','PVG','KZN','DLM','BEY','FRA','DEL','PEK',
+            'MIL','ROM','HKT','DAM','BOM','MZR','CGN','GZP','TAS','HAM','LHE','DYU','KIK',
+            'KWI','DOH','KDH','OHS','KER','LRR',
         );
 
 
@@ -1968,7 +1941,7 @@ class resultLocal extends apiLocal
     private function airlineNoShow()
     {
         return array(
-                'Varesh'
+            'Varesh'
         );
     }
 
@@ -1981,13 +1954,13 @@ class resultLocal extends apiLocal
     private function checkSourceRoute($typeRoutForeign, $rec, $existSource8Airline) {
         $check_source = (($typeRoutForeign != 'Return' && $rec['SourceId'] =='8') || ($typeRoutForeign == 'Return' && $rec['SourceId'] =='16')) ;
         return
-                $check_source && (
-                (
-                        in_array(strtoupper($rec['DepartureCode']), $this->airPortForSourceSeven())
-                        &&
-                        in_array(strtoupper($rec['ArrivalCode']), $this->airPortForSourceSeven())
-                )
-                );
+            $check_source && (
+            (
+                in_array(strtoupper($rec['DepartureCode']), $this->airPortForSourceSeven())
+                &&
+                in_array(strtoupper($rec['ArrivalCode']), $this->airPortForSourceSeven())
+            )
+            );
     }
 }
 

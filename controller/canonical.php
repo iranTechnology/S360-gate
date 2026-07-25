@@ -19,8 +19,7 @@ class canonical extends clientAuth
                 return $slug_controller->redirectToSlug(false);
             }
             return $slug_controller->redirectToSlug(false, true);
-        }
-        elseif (GDS_SWITCH === 'resultExternalHotel') {
+        } elseif (GDS_SWITCH === 'resultExternalHotel') {
             /** @var hotelSlugController $slug_controller */
             $slug_controller = $this->getController('hotelSlugController');
             $url = $slug_controller->getUrl();
@@ -28,8 +27,7 @@ class canonical extends clientAuth
                 return $url;
             }
             return $this->defaultUrl();
-        }
-        elseif (GDS_SWITCH === 'buses') {
+        }elseif (GDS_SWITCH === 'buses') {
 
             /** @var hotelSlugController $slug_controller */
             $slug_controller = $this->getController('busSlugController');
@@ -40,18 +38,12 @@ class canonical extends clientAuth
             }
 
             return $this->defaultUrl();
-        }
-        elseif (GDS_SWITCH === 'mag') {
+        } elseif (GDS_SWITCH === 'mag') {
             if(!empty($_GET['page'])) {
                 return ROOT_ADDRESS . "/mag" ;
             }
             return $this->defaultUrl();
-        }
-        elseif (GDS_SWITCH === 'search-flight' || GDS_SWITCH === 'international') {
-            $defaultUrl = $this->defaultUrl();
-            return $this->getCanonicalFlightUrl($defaultUrl);
-        }
-        else {
+        } else {
             return $this->defaultUrl();
         }
     }
@@ -66,11 +58,5 @@ class canonical extends clientAuth
     public function defaultUrl() {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-    }
-
-    function getCanonicalFlightUrl($url) {
-        $parts = parse_url($url);
-        $path = preg_replace('#^(/gds/fa/(international|search-flight)/\d+/[A-Z]{3}-[A-Z]{3}).*#', '$1', $parts['path']);
-        return $parts['scheme'] . '://' . $parts['host'] . $path;
     }
 }

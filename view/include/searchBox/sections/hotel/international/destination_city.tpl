@@ -4,7 +4,7 @@
             <div class="s-u-in-out-wrapper raft raft-change change-bor">
                 <input id="autoComplateSearchIN_2" name="autoComplateSearchIN"
                        class="inputSearchForeign w-100 form-control" type="text" value=""
-                       placeholder='##Destination##'
+                       placeholder='##Selectdestination##'
                        autocomplete="off"
                        onkeyup="searchCity('externalHotel')"
                        onclick="openBoxPopular('externalHotel')">

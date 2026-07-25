@@ -56,10 +56,10 @@ $('.tour-owl').owlCarousel({
         0:{
             items:1
         },
-        768:{
+        600:{
             items:2
         },
-        992:{
+        1000:{
             items:3
         }
     }

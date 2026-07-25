@@ -19,6 +19,8 @@
 {/if}
 
 
+
+
 {assign var="isShowReserve" value=$smarty.const.IS_SHOW_RESERVE}
 {assign var="isExternal" value=$smarty.const.IS_EXTERNAL}
 {assign var="currencyCode" value=$smarty.const.CURRENCY_CODEE}
@@ -242,7 +244,7 @@
                             <svg viewBox="0 0 24 24" width="1.5em" fill="currentColor" data-v-2c57d7f8="">
                                 <path d="M20.251 4.5c1.24 0 2.25 1.01 2.25 2.249v10.5c0 .276-.058.536-.149.78l.004.005-.007.006a2.246 2.246 0 0 1-2.098 1.46H3.749A2.253 2.253 0 0 1 1.5 17.25V6.749c0-1.24 1.009-2.25 2.25-2.25h16.5Zm0 1.5H3.749A.75.75 0 0 0 3 6.749v8.096l1.987-3.12c.79-1.24 2.172-1.975 3.706-1.975h.06c1.553.02 2.938.79 3.703 2.06l.828 1.374a4.495 4.495 0 0 1 2.639-.853c1.427 0 2.76.66 3.566 1.766L21 16.172V6.749a.75.75 0 0 0-.749-.75Zm-5.197.75c1.21 0 2.196.985 2.196 2.196v.108a2.198 2.198 0 0 1-2.196 2.196h-.109a2.198 2.198 0 0 1-2.195-2.196v-.108c0-1.211.985-2.196 2.195-2.196h.11Z"></path>
                             </svg>
-                            <span>{$objResult->SearchHotel.HotelPictures|@count - 5}</span>
+                            <span>2</span>
                             تصویر دیگر
                         </div>
                     </div>
@@ -266,8 +268,9 @@
                                     {/foreach}
                                 </div>
                                 <div class="more-image">
-                                    <span>{$objResult->SearchHotel.HotelPictures|@count}</span>
-                                    تصویر
+                                    <span>15</span>
+                                    /
+                                    <span>1</span>
                                 </div>
                             </div>
                         </div>
@@ -481,13 +484,13 @@
 
 
                         <div id="hotelFeaInnerId-reservation" class="hotel-fea">
-{*                            <div class="filtertip-searchbox">*}
-{*                                <div class="box-external-hotel-detail">*}
-{*                                    <div class="rp-hotel-box">*}
-{*                                        <div id="mapDiv" class="gmap3"></div>*}
-{*                                    </div>*}
-{*                                </div>*}
-{*                            </div>*}
+                            <div class="filtertip-searchbox">
+                                <div class="box-external-hotel-detail">
+                                    <div class="rp-hotel-box">
+                                        <div id="mapDiv" class="gmap3"></div>
+                                    </div>
+                                </div>
+                            </div>
                             {if $objResult->SearchHotel.DistanceToImportantPlaces || $objResult->SearchHotel.DistanceToImportantPlaces_en}
                                 <div class="hotel-fea-title">##Nearhotel##</div>
                                 <div class="NearHotel">

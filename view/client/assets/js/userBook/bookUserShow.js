@@ -208,21 +208,6 @@ function bookUserHistoryFilter(target) {
 }
 
 
-
-function modalInfoDetails(currentTarget ,RequestNumber) {
-    $(currentTarget).children('.bouncing-loader').removeClass("bouncing-loader-none")
-    $.post(libraryPath + 'ModalCreator.php', {
-            Controller: 'user',
-            requestNumber: RequestNumber,
-            Method: 'ModalInfoDetails',
-            Param: RequestNumber,
-        },
-        function (data) {
-            $("#ModalResultProfile").html(data);
-            $(currentTarget).children('.bouncing-loader').addClass("bouncing-loader-none")
-        });
-}
-
 function modalPassengerDetails(currentTarget ,RequestNumber) {
   $(currentTarget).children('.bouncing-loader').removeClass("bouncing-loader-none")
   $.post(libraryPath + 'ModalCreator.php', {
@@ -550,28 +535,6 @@ function requestCancelFinalBuy(typeApplication, factorNumber) {
 
 }
 
-// $(document).ready(function(){
-//     const inputDisabledJsItem = $('.input-disabled-js');
-//     let checkBoxBackCredit = $('#backCredit');
-//
-//     // چک کردن وضعیت چک‌باکس
-//     if (checkBoxBackCredit.prop('checked')) {
-//         inputDisabledJsItem.each(function() {
-//             $(this).prop('disabled', true);
-//         });
-//     }
-// });
-// document.addEventListener("DOMContentLoaded", function () {
-//
-//     const fields = document.querySelectorAll(".input-disabled-js");
-//     const backCredit = document.getElementById("backCredit");
-//
-//     // --- بار اول که صفحه لود می‌شود ---
-//     if (backCredit.checked) {
-//         fields.forEach(f => f.disabled = true);
-//     }
-//
-// });
 
 function inputDisabled(event) {
     const fields = document.querySelectorAll(".input-disabled-js");
@@ -582,6 +545,9 @@ function inputDisabled(event) {
         fields.forEach(f => f.disabled = false);
     }
 }
+
+
+
 
 // // زمانی که مدال نمایش داده شد، کد زیر اجرا می‌شود
 // $('.modal_custom').on('shown.bs.modal', function () {

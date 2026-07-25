@@ -1,5 +1,5 @@
 {assign var=dateNow value=dateTimeSetting::jdate("Ymd", "", "", "", "en")}
-{assign var="tour_params_internal" value=['type'=>'','limit'=> '5','dateNow' => $dateNow, 'country' =>'internal','city' => null]}
+{assign var="tour_params_internal" value=['type'=>'special','limit'=> '5','dateNow' => $dateNow, 'country' =>'internal','city' => null]}
 {assign var='tour_internal_special' value=$obj_main_page->getToursReservation($tour_params_internal)}
 {if $tour_internal_special}
     {assign var='check_general' value=true}
@@ -7,7 +7,7 @@
 {assign var="min_internal_internal" value=0}
 {assign var="max_internal_internal" value=4}
 
-{assign var="tour_params_external" value=['type'=>'','limit'=> '5','dateNow' => $dateNow, 'country' =>'external','city' => null]}
+{assign var="tour_params_external" value=['type'=>'special','limit'=> '5','dateNow' => $dateNow, 'country' =>'external','city' => null]}
 {assign var='tour_external_special' value=$obj_main_page->getToursReservation($tour_params_external)}
 {if $tour_external_special}
     {assign var='check_general' value=true}
@@ -42,30 +42,23 @@
                         {foreach $tour_internal_special as $item}
                             {if $min_internal_internal <= $max_internal_internal}
 
-                                <a class="__i_modular_nc_item_class_0 tour-item" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_name_en']}">
+                                <a class="__i_modular_nc_item_class_0 tour-item" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
                                     <div class="project">
                                         <div class="img">
                                             <img alt="{$item['tour_name']}" class="__image_class__ img-fluid" src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                         </div>
                                         <div class="text">
                                             <h3 class="__title_class__">{$item['tour_name']}</h3>
-{*                                            <span class="detail_tour">*}
-{*<span><span class="__night_class__">{$item['night']}</span> شب</span>*}
-{*<span class="__date_class__">{assign var="year" value=substr($item['start_date'], 0, 4)}*}
-{*    {assign var="month" value=substr($item['start_date'], 4, 2)}*}
-{*    {assign var="day" value=substr($item['start_date'], 6)}*}
-{*    {$year}/{$month}/{$day}*}
-{*                                </span>*}
-{*</span>*}
+                                            <span class="detail_tour">
+<span><span class="__night_class__">{$item['night']}</span> شب</span>
+<span class="__date_class__">{assign var="year" value=substr($item['start_date'], 0, 4)}
+    {assign var="month" value=substr($item['start_date'], 4, 2)}
+    {assign var="day" value=substr($item['start_date'], 6)}
+    {$year}/{$month}/{$day}
+                                </span>
+</span>
                                             <div class="star d-flex clearfix more_tour">
-                                                <h4 class="___price_class__ price">
-                                                    {$item['min_price']['discountedMinPriceR']|number_format}
-                                                    {if $item['min_price']['is_toman'] == true}
-                                                        تومان
-                                                    {else}
-                                                        ریال
-                                                    {/if}
-                                                </h4>
+                                                <h4 class="___price_class__ price">{$item['min_price']['discountedMinPriceR']|number_format}</h4>
                                                 <span class="more_tour_btn">مشاهده جزئیات</span>
                                             </div>
                                         </div>
@@ -87,30 +80,23 @@
                         {foreach $tour_external_special as $item}
                             {if $min_external_external <= $max_external_external}
 
-                                <a class="__i_modular_nc_item_class_0 tour-item" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_name_en']}">
+                                <a class="__i_modular_nc_item_class_0 tour-item" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
                                     <div class="project">
                                         <div class="img">
                                             <img alt="{$item['tour_name']}" class="__image_class__ img-fluid" src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                         </div>
                                         <div class="text">
                                             <h3 class="__title_class__">{$item['tour_name']}</h3>
-{*                                            <span class="detail_tour">*}
-{*<span><span class="__night_class__">{$item['night']}</span> شب</span>*}
-{*<span class="__date_class__">{assign var="year" value=substr($item['start_date'], 0, 4)}*}
-{*    {assign var="month" value=substr($item['start_date'], 4, 2)}*}
-{*    {assign var="day" value=substr($item['start_date'], 6)}*}
-{*    {$year}/{$month}/{$day}*}
-{*                                </span>*}
-{*</span>*}
+                                            <span class="detail_tour">
+<span><span class="__night_class__">{$item['night']}</span> شب</span>
+<span class="__date_class__">{assign var="year" value=substr($item['start_date'], 0, 4)}
+    {assign var="month" value=substr($item['start_date'], 4, 2)}
+    {assign var="day" value=substr($item['start_date'], 6)}
+    {$year}/{$month}/{$day}
+                                </span>
+</span>
                                             <div class="star d-flex clearfix more_tour">
-                                                <h4 class="___price_class__ price">
-                                                    {$item['min_price']['discountedMinPriceR']|number_format}
-                                                    {if $item['min_price']['is_toman'] == true}
-                                                        تومان
-                                                    {else}
-                                                        ریال
-                                                    {/if}
-                                                </h4>
+                                                <h4 class="___price_class__ price">{$item['min_price']['discountedMinPriceR']|number_format}</h4>
                                                 <span class="more_tour_btn">مشاهده جزئیات</span>
                                             </div>
                                         </div>

@@ -3,7 +3,6 @@
 
 {$objResult->getReservationHotel($smarty.post.idHotel_reserve)}
 {$objResult->getPassengersDetailHotelForReservation($smarty.post)}	{**گرفتن اطلاعات مربوط به هتل **}
-{assign var="InfoMember" value=$objFunctions->infoMember($objSession->getUserId())}
 
 {load_presentation_object filename="passengersDetailLocal" assign="objDetail"}
 {$objDetail->getCustomers()}   {*گرفتن اطلاعات مربوط به مسافران هر مشتری*}
@@ -819,23 +818,23 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
             <div class="panel-default-change-Buyer">
 
                 <div class="s-u-passenger-items s-u-passenger-item-change">
-                    <input value="{$InfoMember.name} {$InfoMember.family}" id="passenger_leader_room_fullName" type="text" placeholder="##Namefamily##" name="passenger_leader_room_fullName" class="dir-ltr">
+                    <input id="passenger_leader_room_fullName" type="text" placeholder="##Namefamily##" name="passenger_leader_room_fullName" class="dir-ltr">
                 </div>
 
                 <div class="s-u-passenger-items s-u-passenger-item-change">
-                    <input value="{$InfoMember.mobile}" id="passenger_leader_room" type="text" placeholder="##Phonenumber##" name="passenger_leader_room" class="dir-ltr">
+                    <input id="passenger_leader_room" type="text" placeholder="##Phonenumber##" name="passenger_leader_room" class="dir-ltr">
                 </div>
                 {if $objFunctions->checkClientConfigurationAccess("more_information_passenger_hotel")}
                     <input type="hidden" id="require_extra_fields" value="true">
                     <div class="s-u-passenger-items s-u-passenger-item-change">
-                        <input value="{$InfoMember.email}" id="passenger_leader_room_email" type="text" placeholder="##Email##" name="passenger_leader_room_email" class="dir-ltr">
+                        <input id="passenger_leader_room_email" type="text" placeholder="##Email##" name="passenger_leader_room_email" class="dir-ltr">
                     </div>
 
                     <div class="s-u-passenger-items s-u-passenger-item-change">
                         <input id="passenger_leader_room_postalcode" type="text" placeholder="##Postalcode##" name="passenger_leader_room_postalcode" class="dir-ltr">
                     </div>
                     <div class="s-u-passenger-items s-u-passenger-item-change s-u-passenger-item-change full-width">
-                        <input value="{$InfoMember.address}" id="passenger_leader_room_address" type="text" placeholder="##Address##" name="passenger_leader_room_address" class="dir-ltr">
+                        <input id="passenger_leader_room_address" type="text" placeholder="##Address##" name="passenger_leader_room_address" class="dir-ltr">
                     </div>
                 {else}
                     <input type="hidden" id="require_extra_fields" value="false">

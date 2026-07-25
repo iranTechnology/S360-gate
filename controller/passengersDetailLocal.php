@@ -250,7 +250,6 @@ class passengersDetailLocal extends apiLocal
 
                     } else {
                         $this->dateForeignJalaliDeparture[$direction] = dateTimeSetting::jdate("dF", functions::FormatDateJalali(str_replace('/', '-', $this->RoutesTicket[$direction][0]['Date'])));
-
                         $this->dateForeignMiladiDeparture[$direction] = date_format(date_create(functions::ConvertToMiladi(str_replace('/', '-', $this->RoutesTicket[$direction][0]['Date']))), "jM");
                         $this->dateForeignJalaliArrival[$direction] = dateTimeSetting::jdate("dF", functions::FormatDateJalali($this->RoutesTicket[$direction][($this->countRoute[$direction]) - 1]['ArrivalDate']));
                         $this->dateForeignMiladiArrival[$direction] = date_format(date_create($this->RoutesTicket[$direction][($this->countRoute[$direction]) - 1]['ArrivalDate']), "jM");

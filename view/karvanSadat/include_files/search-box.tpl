@@ -35,7 +35,6 @@
 
 
     </div>
-
     <div class="title-banner title-banner-res">
         <h1>کاروان سادات</h1>
         <p class="__title_class__">مجری کاروان‌های عتبات و تورهای زیارتی</p>
