@@ -12,13 +12,10 @@ if (!Session::IsLogin() && isset($_COOKIE['Login']) && $_COOKIE['Login'] == 'suc
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="/gds/dist/css/pwaApp.css">
+    <link rel="stylesheet" href="/gds/view/client/assets/all-css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/gds/library/StyleSheet.php" media="screen"/>
-
-
-
-
 
     <meta name="theme-color" content="<?php echo COLOR_MAIN_BG;?>">
     <link rel="apple-touch-icon" href="./view/<?php echo FRONT_TEMPLATE_NAME;?>/project_files/icons/icon-512x512.png" type="image/jpg">
@@ -46,10 +43,7 @@ if (!Session::IsLogin() && isset($_COOKIE['Login']) && $_COOKIE['Login'] == 'suc
   }
 </style>
 <body dir='<?php if(SOFTWARE_LANG == 'fa') echo 'rtl'; else  echo 'ltr' ;?>'>
-<script
-        src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
-        crossorigin="anonymous"></script>
+<script src="view/client/assets/all-js/jquery-3.4.1.min.js"></script>
 <script src="<?php echo SERVER_HTTP . CLIENT_DOMAIN?>/gds/pwa/bootstrap.bundle.js"></script>
 
 <script src="<?php echo SERVER_HTTP.CLIENT_DOMAIN?>/gds/pwa/javascript.js"></script>
@@ -116,7 +110,7 @@ if(preg_match("/iPhone|iPad|iPod/", $_SERVER['HTTP_USER_AGENT'])){
             <i class="far fa-suitcase-rolling"></i>
             <span class="nav-text"><?php echo $search_service->translate('Buyarchive') ?></span>
         </a>
-          <a href="/gds/<?php echo SOFTWARE_LANG ?>/app?to=user-profile" class="nav-link <?php if($_GET['to'] == 'user-profile'){echo 'active'; }?> text-dark font-weight-bold" data-index="2">
+          <a href="/gds/<?php echo SOFTWARE_LANG ?><?=  Session::IsLogin() ? '/profile' : '/app?to=user-profile' ?>" class="nav-link <?php if($_GET['to'] == 'user-profile'){echo 'active'; }?> text-dark font-weight-bold" data-index="2">
             <i class="far fa-user"></i>
             <span class="nav-text"><?php echo $search_service->translate('userAccount') ?></span>
         </a>

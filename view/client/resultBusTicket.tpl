@@ -21,6 +21,9 @@
 {load_presentation_object filename="currencyEquivalent" assign="objCurrency"}
 <!-- FILTERS -->
 <div class="row row-width" id="bus_result">
+    <div class="requestNumber">
+
+    </div>
     <div class="col-lg-3 col-md-12 col-sm-12 col-12 col-padding-5 ">
         <div class="parent_sidebar">
             <!-- Change Currency Box -->
@@ -465,3 +468,13 @@
     </script>
 {/literal}
 
+
+<style>
+    .requestNumber {
+        position: absolute;
+        z-index: 1000;
+        color: transparent;
+        top: 90px;
+        left: 0;
+    }
+</style>

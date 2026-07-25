@@ -3,7 +3,7 @@ a:hover{
 }
 
 .btn-Reservation-bed{
-    background: #f1a131 !important;
+    background: var(--secondColor) !important;
 }
 
 .star-hotel-tour {
@@ -20,11 +20,13 @@ a:hover{
     font-weight: bold !important;
 }
 /*------- BANNER -------*/
-.banner{
+.banner-demo{
     width: 100%;
     height: 60vh;
     position: relative;
     min-height: 450px;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .more_banner{
     background: var(--secondColor);
@@ -37,7 +39,7 @@ a:hover{
     border-radius: 40px;
     transition: all .3s;
 }
-.banner picture img{
+.banner-demo picture img{
     height: 100%;
 }
 .titel-banner{
@@ -227,7 +229,7 @@ a:hover{
 }
 
 .card_price{
-    background: var(--secondColor);
+    background: var(--mainColor);
     border-radius: 40px;
     font-size: 14px;
     display: flex;
@@ -253,7 +255,7 @@ a:hover{
 }
 .card_price p{
     margin-bottom: 0;
-    color: #5c5c5c;
+    color: #fff;
     font-weight: bold;
 }
 .text_card{
@@ -268,6 +270,13 @@ a:hover{
     justify-content: space-between;
     flex-wrap: wrap;
     padding: 10px 3px;
+}
+.text_card2 .airline{
+    display: flex;
+    align-items: center;
+}
+.text_card2 .airline img {
+    width: 30px !important;
 }
 .titel-head-card{
     font-size: 14px;
@@ -289,9 +298,9 @@ a:hover{
     font-size: 18px;
 }
 
-.detail{
+.parent_special_tours .detail{
     font-size: 13px;
-    color: #0c85c7 !important;
+    color: var(--mainColor) !important;
     font-weight: bold;
 }
 .airline-name {
@@ -301,16 +310,19 @@ a:hover{
     border-top: 1px solid #dedcdc;
     margin-top: auto;
 }
-.text_card div span,.title{
+.text_card div span{
     font-size: 13px;
+    color: #fff;
+}
+.parent_special_tours .title ,
+.parent_special_tours .airline-name ,
+.parent_special_tours .detail
+{
     color: #929292;
 }
 .text_card div span i{
     margin: 0 3px;
     font-size: 16px;
-}
-.airline span:first-child {
-    margin-left: 12px;
 }
 .owl_special_tours .owl-item{
     display: flex;
@@ -399,6 +411,10 @@ a:hover{
     min-width:  105px;
 }
 
+.data_travel .titel_site .nav-item .nav-link{
+    border: 1px solid var(--mainColor);
+}
+
 .Terms_Conditions .nav-item .nav-link {
     /*background: var(--mainColor);*/
     border: 1px solid #b71c1c;
@@ -413,17 +429,17 @@ a:hover{
 }
 
 .data_travel .nav-item .nav-link {
+    background: #fff;
+    color: var(--mainColor);
+}
+
+.new_tours .nav-item .nav-link.active {
     background: var(--mainColor);
     color: #fff;
 }
 
-.new_tours .nav-item .nav-link.active {
-    background: #b71c1c;
-    color: #fff;
-}
-
 .data_travel .nav-item .nav-link.active {
-    background: #f1a131;
+    background: var(--mainColor);
     color: #fff;
 }
 
@@ -672,9 +688,9 @@ a:hover{
     border-radius: 8px;
 }
 .more_accordion{
-    background: var(--secondColor);
+    background: var(--mainColor);
     box-shadow: 0 2px 6px rgba(0,0,0,.3);
-    color: #4b5259;
+    color: #fff;
      position: absolute;
     bottom: 1rem;
     right: -4rem;
@@ -683,7 +699,7 @@ a:hover{
     transition: all .3s
 }
 .more_accordion:hover{
-    color: #4b5259;
+    color: #fff;
 }
 .text_accordion{
     display: flex;
@@ -707,7 +723,7 @@ a:hover{
     justify-content: space-between;
 }
 .btn_questions.collapsed {
-    background: #f1a131;
+    background: var(--secondColor);
 }
 .btn_questions:hover {
     background: var(--mainColor) !important;
@@ -885,7 +901,7 @@ main{
     margin-left: 5px;
 }
 .info i{
-    color: #0c85c7;
+    color: var(--mainColor);
     margin-left: 5px;
 }
 
@@ -932,7 +948,7 @@ background: var(--mainColor);
     left: 6px;
 }
 .btn-more--new{
-    background: #004f93;
+    background: var(--mainColor);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1027,6 +1043,12 @@ background: var(--mainColor);
     align-items: center;
     font-weight: 600;
 }
+
+.titr_Terms_Conditions ul {
+    justify-content: end;
+    row-gap: 10px;
+}
+
 .my_accordion .card-header{
     background: #fff;
 
@@ -1448,15 +1470,11 @@ background: var(--mainColor);
     .newsletters form a{
         margin-top: 20px;
     }
-    .banner{
-        min-height: unset;
-        height: unset;
-    }
     .img-banner{
         height: 400px;
         order: 2;
     }
-    .banner{
+    .banner-demo{
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1681,7 +1699,7 @@ background: var(--mainColor);
         grid-template-columns: repeat(1, 1fr);
     }
 
-    .banner {
+    .banner-demo {
         display: none;
     }
 
@@ -1906,4 +1924,69 @@ background: var(--mainColor);
     }
 
 }
+.height-line-brack{
+    height: 64vh !important;
+}
+.banner-demo{
+    height: 40vh !important;
+}
+.banner-demo::after{
+    height: 100% !important;
+}
 
+body .camera_wrap,
+body .camerarelative,
+body .camera_target,
+body .camera_target_content,
+body .camera_fakehover,
+body .cameraCont,
+body .cameraContents{
+    min-height: 65vh !important;
+    max-height: 65vh !important;
+}
+
+.special_tours{
+    margin-top: 95px;
+}
+.banner-demo-1{
+    height: 65vh !important;
+}
+@media (max-width: 767px) {
+    body .height-line-brack,
+    html body .height-line-brack {
+        height: 55vh !important;
+        min-height: 55vh !important;
+        max-height: 55vh !important;
+    }
+}
+
+/* برای سایز کوچک (اولویت بالا) */
+@media (max-width: 578px) {
+    body .height-line-brack,
+    html body .height-line-brack {
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+    }
+    .special_tours{margin-top: 177px !important;}
+    .banner-demo-1::after{
+        display:none;
+    }
+   body #camera_wrap_1{
+        display:none !important;
+    }
+}
+
+/* برای تبلت (اولویت بالا) */
+@media (min-width: 578px) and (max-width: 991px) {
+    body .height-line-brack,
+    html body .height-line-brack {
+        height: 52vh !important;
+        min-height: 52vh !important;
+        max-height: 52vh !important;
+    }
+
+    .special_tours{
+        margin-top: 177px !important;
+    }
+}

@@ -25,6 +25,8 @@ class selectColor
         $Color = $ModelBase->load($SqlColor);
 
         $this->Info = $Color;
+
+        return $Color;
     }
 
     public function SaveChangeColor($param)

@@ -648,6 +648,7 @@ class articles extends positions
                 'language' => $params['language'],
                 'title' => $params['title'],
                 'heading' => $params['heading'],
+                'section' => $params['section'],
                 'slug' => $slug,
                 'content' => $params['content'],
                 'categories' => json_encode($params['selected_category'], 256),
@@ -751,7 +752,6 @@ class articles extends positions
                 return functions::JsonSuccess($dataUpdate, 'اطلاعات با موفقیت ویرایش گردید');
 
 
-            return self::returnJson(false, 'خطا در ثبت اطلاعات در سیستم.', null, 500);
         }else {
             return functions::withError('',200,'آدرس صفحه تکراری می باشد!');
         }
@@ -1926,7 +1926,7 @@ class articles extends positions
     public function getByPosition($data_search) {
 
         $ids=$this->getItemsByPosition('article',$data_search);
-      
+
         $article_model = $this->getModel('articleModel');
         $article_table = $article_model->getTable();
         if (!isset($data_search['limit']) || empty($data_search['limit'])) {

@@ -119,21 +119,30 @@
     {if $smarty.const.GDS_SWITCH eq 'mainPage'}
         <script type="application/ld+json">
             {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "{$smarty.const.CLIENT_NAME}",
-    "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}",
-    "logo": "project_files/images/logo.png"
-    }
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "@id": "https://karevansadat.com/#organization",
+              "name": "{$smarty.const.CLIENT_NAME}",
+              "url": "https://karevansadat.com/",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "project_files/images/logo.png"
+              }
+            }
         </script>
 
         <script type="application/ld+json">
             {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "name": "{$smarty.const.CLIENT_NAME}",
-            "url": "https://{$smarty.const.CLIENT_MAIN_DOMAIN}"
-        }
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "@id": "https://karevansadat.com/#website",
+              "url": "https://karevansadat.com/",
+              "name": "{$smarty.const.CLIENT_NAME}",
+              "publisher": {
+                "@id": "https://karevansadat.com/#organization"
+              }
+            }
         </script>
+
     {/if}
 </head>

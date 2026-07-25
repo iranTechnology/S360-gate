@@ -63,7 +63,8 @@
 <link href="assets/css/jquery-confirm.min.css" rel="stylesheet">
 <link href="assets/datepicker/jquery-ui.min.css" rel="stylesheet" type="text/css">
 <link href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen" rel="stylesheet" type="text/css"/>
-<script type="text/javascript">
+        <link type="text/css" rel="stylesheet" href="assets/datepicker-new/price_calender.css"/>
+        <script type="text/javascript">
           var rootMainPath = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}';
           var clientMainDomain = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_MAIN_DOMAIN}';
           var libraryPath = '{$smarty.const.ROOT_LIBRARY}/';

@@ -2,6 +2,76 @@
  * Custom functions added By Qorbani
  */
 
+
+function getRulesHTML(rules, checkin, checkout) {
+    // مقادیر پیش‌فرض
+    const checkinTime = checkin || "14:00";
+    const checkoutTime = checkout || "12:00";
+
+    // تبدیل ساعت 24 ساعته به نمایش فارسی
+    function formatTimePersian(time) {
+        if (!time) return "-";
+
+        let hour = parseInt(time.split(':')[0]);
+        let minute = time.split(':')[1] || "00";
+
+        // تنظیم صفر برای ساعت‌های یک رقمی
+        let hourDisplay = hour.toString().padStart(2, '0');
+
+        if (hour === 0) {
+            return `00:${minute} نیمه شب`;
+        } else if (hour > 0 && hour < 12) {
+            return `${hourDisplay}:${minute} صبح`;
+        } else if (hour === 12) {
+            return `12:${minute} ظهر`;
+        } else if (hour > 12 && hour < 18) {
+            let hour12 = hour - 12;
+            let hour12Display = hour12.toString().padStart(2, '0');
+            return `${hourDisplay}:${minute}  بعد از ظهر `;
+        } else if (hour >= 18 && hour < 21) {
+            let hour12 = hour - 12;
+            let hour12Display = hour12.toString().padStart(2, '0');
+            return `${hourDisplay}:${minute} (${hour12Display}:${minute} عصر)`;
+        } else if (hour >= 21 && hour < 24) {
+            let hour12 = hour - 12;
+            let hour12Display = hour12.toString().padStart(2, '0');
+            return `${hourDisplay}:${minute} (${hour12Display}:${minute} شب)`;
+        } else if (hour === 24 || hour === 0) {
+            return `00:${minute} نیمه شب`;
+        } else {
+            return `${hourDisplay}:${minute}`;
+        }
+    }
+
+    const checkinFormatted = formatTimePersian(checkinTime);
+    const checkoutFormatted = formatTimePersian(checkoutTime);
+
+    if (rules && Array.isArray(rules) && rules.length > 0) {
+        let rulesList = '';
+        rules.forEach((rule, index) => {
+            rulesList += `<li key="${index}">${rule}</li>`;
+        });
+        return `
+            <ul class="hotel-rules-list">
+                <li><span>ساعت ورود:</span> ${checkinFormatted}</li>
+                <li><span>ساعت خروج:</span> ${checkoutFormatted}</li>
+                ${rulesList}
+            </ul>
+        `;
+    } else {
+        return `
+            <ul class="hotel-rules-list">
+                <li><span>ساعت ورود:</span> ${checkinFormatted}</li>
+                <li><span>ساعت خروج:</span> ${checkoutFormatted}</li>
+                <li><span>کودکان:</span> کودکان زیر دو سال میتوانند در صورت عدم استفاده از سرویس خواب اضافه به صورت رایگان به همراه والدین در هتل اقامت داشته باشند.</li>
+                <li><span>حیوانات خانگی:</span> ورود حیوانات خانگی در هتل ممنوع است.</li>
+                <li><strong>قوانین کنسلی:</strong> </li>
+                <li>قوانین کنسلی ممکن است بر اساس نوع اتاق متفاوت باشد. این قوانین در زمان کنسلی و از طرف هتل مشخص میشود.</li>
+            </ul>
+        `;
+    }
+}
+
 function internalHotelSearchDetails() {
    $.ajax({
       type: 'post',
@@ -12,6 +82,7 @@ function internalHotelSearchDetails() {
          city_id: document.getElementById("cityId").value,
       }),
       success: function(response){
+
 
          if(lang === "fa"){
             $("#autoComplateSearchIN").val(response.name);
@@ -700,20 +771,21 @@ function internalHotelSearchDetails() {
             },
          })
       }
-      let generateMap = function(latitude, longitude, mapDiv = 'mapDiv') {
-         if (typeof L === 'undefined') {
-            console.error('Leaflet library (L) is not loaded.');
-            return;
-         }
-         map = L.map(mapDiv).setView([latitude, longitude], 16)
-         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: 'Map data &copy; <a href="https://www.iran-tech.com/">Iran Technology</a> contributors',
-            // maxZoom: 18,
-            // minZoom: 11,
-         }).addTo(map)
-         marker = L.marker([latitude, longitude]).addTo(map)
 
-      }
+          let generateMap = function(latitude, longitude, mapDiv = 'mapDiv') {
+              if (typeof L === 'undefined') {
+                  console.error('Leaflet library (L) is not loaded.');
+                  return;
+              }
+              map = L.map(mapDiv).setView([latitude, longitude], 16)
+              L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: 'Map data &copy; <a href="https://www.iran-tech.com/">Iran Technology</a> contributors',
+                  // maxZoom: 18,
+                  // minZoom: 11,
+              }).addTo(map)
+              marker = L.marker([latitude, longitude]).addTo(map)
+
+          }
       let generateHtmlForSearchHotel = function(data, parseJson) {
 
 
@@ -727,7 +799,6 @@ function internalHotelSearchDetails() {
          let Longitude = value.ContactInformation.Location.longitude
          let stars = value.Stars
          let description = value.ExtraData ? value.ExtraData.Description : ''
-
 
          if (parseJson.lang != 'fa') {
             hotelName = value.Name
@@ -791,8 +862,8 @@ function internalHotelSearchDetails() {
                 </svg> `;
                if (window.innerWidth < 576) {
                   galleryHtml += `
-                       <span></span>
-        ${useXmltag('NasimBeheshtGallery')}
+                       <span>${value.Pictures.length}</span>
+        ${useXmltag('moreImage')}
                `;
                } else {
                   galleryHtml += `
@@ -933,7 +1004,7 @@ function internalHotelSearchDetails() {
                       
                       <div id="tabHotel__box2" class="tabHotel__box" style="display:none">
                         <div class="rulesHotel">
-                          ${rules}
+                          ${getRulesHTML(rules ,value.CheckTimes.In,value.CheckTimes.Out )}
                         </div>  
                       </div>
                     </div>
@@ -1165,6 +1236,7 @@ function internalHotelSearchDetails() {
             },
             success: function(data) {
 
+
                let value = data.Hotels
                let request_number = data.requestNumber
                let advertises = data.Advertises
@@ -1172,6 +1244,8 @@ function internalHotelSearchDetails() {
                $('#webServiceType').val(data.WebServiceType)
                $('.silence_span').html(`<b id='countHotelHtml'>${data.Count}</b> ${useXmltag('silenceSpanHotel')}`)
                $('#hotelResultItem').remove()
+                $('#requestNumber').text(request_number);
+
                if (data.Count > 0) {
                   $.each(value, function(index, item) {
                      if(!hotelType.includes(item.type_code)) {
@@ -1433,7 +1507,6 @@ function internalHotelSearchDetails() {
                 <div class='fullCapacity_div'>
                     <img src='${full_capacity_image}' alt='fullCapacity'>
                     <h2>${useXmltag('Nohotel')}</h2>
-                    <kbd class="kbd_style">${request_number}</kbd>
                 </div>
             </div>`
                   $('#hotelResult').html(htmlError)
@@ -1493,7 +1566,6 @@ function internalHotelSearchDetails() {
             },
             success: function(response) {
                let data = response;
-
                if (data.Success && data.StatusCode == 200) {
                   let WebServiceType = data.WebServiceType
                   let RequestNumber = data.RequestNumber

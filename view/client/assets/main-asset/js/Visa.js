@@ -255,11 +255,17 @@ function searchVisa() {
    let url = `${amadeusPathByLang}resultVisa/${country_visa}/${visa_type}`
    openLink(url, is_new_tab)
 }
-function searchActiveVisa(is_new_tab = false) {
+function searchActiveVisa(is_new_tab = false , altDomain = null) {
    let form = $("#gdsVisa");
-   var href = amadeusPathByLang + "passengersDetailVisa";
 
-   form.attr("action", href);
+   let url;
+   if (altDomain != null) {
+      url = altDomain + "/gds/fa/passengersDetailVisa";
+   } else {
+      url = amadeusPathByLang + "passengersDetailVisa";
+   }
+
+   form.attr("action", url);
    form.submit();
 }
 

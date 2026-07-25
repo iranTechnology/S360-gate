@@ -267,24 +267,7 @@ class ModalCreator extends clientAuth {
                 }
                 ?>
                 <div class="row">
-                    <div class="col-md-12 modal-text-center modal-h mb-3">
-                        <label for="ReasonUser"><?php echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?></label>
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-sm-12  nopad ">
-                        <select class="form-control mart5" name="ReasonUser"
-                                id="ReasonUser">
-                            <option value=""> <?php echo functions::Xmlinformation("Choosereasonfortheconsole") ?></option>
-                            <option value="PersonalReason"><?php echo functions::Xmlinformation("Canselforpersonalreasons") ?></option>
-                            <?php if (isset($param2) && $param2 == 'flight') { ?>
-                                <option value="DelayTwoHours"><?php echo functions::Xmlinformation("Delaymorethantwohours") ?></option>
-                                <option value="CancelByAirline"><?php echo functions::Xmlinformation("AbandonedbyAirline") ?></option>
-                            <?php } elseif($param2 == 'train') { ?>
-                                <option value="DelayTwoHours"><?php echo functions::Xmlinformation("delayTrain") ?></option>
-                            <?php }else{
-                                //else
-                            } ?>
-                        </select>
-                    </div>
+
 
                     <?php
                     if (isset($param2) && $param2 == 'flight') {
@@ -1719,139 +1702,6 @@ public function ModalShowBook($Param, $type) {
         }
 
 
-        public function ModalAddNote($RequestNumber, $ClientID) {
-            $objbook = Load::controller($this->Controller);
-            $noteList = $objbook->getAgencyNote($RequestNumber);
-            ?>
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <!-- سرفصل -->
-                    <div class="modal-header site-bg-main-color">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">یادداشت‌ها – درخواست <?php echo $RequestNumber; ?></h4>
-                    </div>
-
-                    <!-- بدنه -->
-                    <div class="modal-body">
-
-                        <!-- فرم افزودن یادداشت جدید -->
-                        <form id="noteForm">
-                            <input type="hidden" name="request_number" value="<?php echo $RequestNumber; ?>">
-                            <input type="hidden" name="client_id" value="<?php echo $ClientID; ?>">
-                            <input type="hidden" name="flag" value="addAgencyNote">
-
-                            <div class="row margin-both-vertical-15">
-                                <div class="col-md-12">
-                                    <textarea name="new_note" class="form-control" rows="3" placeholder="متن یادداشت جدید را اینجا بنویسید..."></textarea>
-                                </div>
-                            </div>
-
-                            <div class="row margin-both-vertical-10">
-                                <div class="col-md-12 text-right mt-3 mb-3">
-                                    <button type="button" id="saveNote" class="btn btn-success">
-                                        <i class="fa fa-plus"></i> افزودن یادداشت
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <!-- جدول نمایش یادداشت‌ها -->
-                        <div class="row margin-top-20">
-                            <div class="col-md-12">
-                                <table class="table table-striped table-bordered" id="noteTable">
-                                    <thead>
-                                    <tr class="site-bg-main-color" style="color:#fff;">
-                                        <th style="width:20%;">تاریخ / ساعت</th>
-                                        <th>متن یادداشت</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php if (!empty($noteList)): ?>
-                                        <?php foreach ($noteList as $note): ?>
-                                            <tr>
-                                                <td><?php echo $note['created_at']; ?></td>
-                                                <td><?php echo $note['note']?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="2" class="text-center">یادداشتی موجود نیست.</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- زیرنویس -->
-                    <div class="modal-footer site-bg-main-color">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
-                    </div>
-
-                </div>
-            </div>
-            <script>
-                $(document).ready(function () {
-                    $('#saveNote').click(function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: amadeusPath + 'user_ajax.php',
-                            data: $('#noteForm').serialize(),
-                            success: function (response) {
-                                $.toast({
-                                    heading: 'یادداشت اضافه شد',
-                                    position: 'top-right',
-                                    loaderBg: '#fff',
-                                    icon: 'success',
-                                    hideAfter: 3500,
-                                    textAlign: 'right',
-                                    stack: 6
-                                });
-                                setTimeout(function () {
-                                    try {
-                                        // اگر response رشته باشه، parse کن
-                                        var notes = typeof response === 'string' ? JSON.parse(response) : response;
-                                        var rows = '';
-
-                                        if (notes.length > 0) {
-                                            $.each(notes, function (index, note) {
-                                                rows += '<tr>';
-                                                rows += '<td>' + note.created_at + '</td>';
-                                                rows += '<td>' + note.note + '</td>';
-                                                rows += '</tr>';
-                                            });
-                                        } else {
-                                            rows = '<tr><td colspan="2" class="text-center">یادداشتی موجود نیست.</td></tr>';
-                                        }
-
-                                        // ⬅️ آپدیت مستقیم tbody
-                                        $('#noteTable tbody').html(rows);
-
-                                        // پاک کردن تکست‌آریا
-                                        $('#noteForm textarea[name="new_note"]').val('');
-
-                                    } catch (e) {
-                                        console.error('خطا در پردازش داده:', e);
-                                        alert('خطایی در نمایش یادداشت‌ها رخ داد.');
-                                    }
-                                }, 1000);
-                            },
-                            error: function () {
-                                alert('خطا در ارسال یادداشت.');
-                            }
-                        });
-                    });
-                })
-            </script>
-
-
-            <?php
-        }
-
-
 
         public function ModalShowBookForExclusiveTour($Param, $type) {
             $objbook = Load::controller($this->Controller);
@@ -2592,13 +2442,18 @@ public function ModalShowBook($Param, $type) {
     #region ModalTrackingCancelTicketAdmin
 
     public function ModalTrackingCancelTicketAdmin($Param, $id) {
+
+
         $user = Load::controller($this->Controller);
         $transportType=$_POST['transportType'];
+
         $InfoCancelTicket = $user->ShowInfoModalTicketCancel($Param, $id);
 
         if (empty($InfoCancelTicket)) {
             $InfoCancelTicket = array();
         }
+
+        // echo Load::plog($InfoCancelTicket);
 
         foreach ($InfoCancelTicket as $i => $ticket) {
 
@@ -2606,6 +2461,8 @@ public function ModalShowBook($Param, $type) {
         }
         ?>
         <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header site-bg-main-color">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -2617,55 +2474,66 @@ public function ModalShowBook($Param, $type) {
                         ?> به شماره : <span
                                 class="yn font15"><?php echo $Param ?></span></h4>
                 </div>
-
-                <div class="modal-body ">
-
-                    <div class="cancel-box">
-                        <div class="cancel-box__title">لیست مسافران</div>
-                        <div class="passenger-table">
-                            <div class="passenger-table__head">
-                                <span>نام مسافر</span>
-                                <?php   if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {  ?>
-                                <span>کد ملی / پاسپورت</span>
-                                <span>تاریخ تولد</span>
-                                <?php } ?>
-                                <span>نوع</span>
-                                <span>وضعیت</span>
+                <div class="modal-body">
+                    <?php
+                    if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {
+                        ?>
+                        <div class="row">
+                            <div class="col-md-2 pull-left ">
+                                لیست مسافران
+                                <hr>
                             </div>
-                            <?php
-                            foreach ($InfoCancelTicket as $i => $info) {
-                                if($transportType == 'bus'){
-                                    $info['passenger_age']='Adt';
-                                }
-                                $NationalCodeUser = (!empty($info['passenger_national_code']) && $info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'];
-                                if ($i < 1) {
-                                    ?>
-                                    <input type="hidden" value="<?php echo $info['factor_number'] ?>" name="FactorNumber"
-                                           id="FactorNumber"/>
-                                    <input type="hidden" value="<?php echo $info['member_id'] ?>" name="MemberId"
-                                           id="MemberId"/>
-                                    <?php
-                                }
+
+                        </div>
+                    <?php } ?>
+
+                    <?php
+                    foreach ($InfoCancelTicket as $i => $info) {
+
+
+                        if($transportType == 'bus'){
+                            $info['passenger_age']='Adt';
+                        }
+
+                        $NationalCodeUser = (!empty($info['passenger_national_code']) && $info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'];
+                        if ($i < 1) {
                             ?>
-                                <div class="passenger-table__row ">
-                                <span>
-                                        <?php  echo (!empty($info['passenger_name'])) ?  $info['passenger_name'] . ' ' . $info['passenger_family'] : $info['passenger_name_en'] . ' ' . $info['passenger_family_en'] ; ?>
-                                </span>
-                                <?php if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {  ?>
-                                    <span>
-                                        <?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'] ?>
-                                    </span>
-                                    <span>
-                                    <?php if($transportType != 'insurance'){
-                                        echo (!empty($info['passenger_birthday'])) ? $info['passenger_birthday'] : $info['passenger_birthday_en'];
-                                     }
-                                     else{
-                                       echo (!empty($info['passenger_birth_date'])) ? $info['passenger_birth_date'] : $info['passenger_birth_date_en'];
-                                     } ?>
-                                     </span>
+                            <input type="hidden" value="<?php echo $info['factor_number'] ?>" name="FactorNumber"
+                                   id="FactorNumber"/>
+                            <input type="hidden" value="<?php echo $info['member_id'] ?>" name="MemberId"
+                                   id="MemberId"/>
+                            <?php
+                        }
+                        ?>
+                        <div class="row margin-10">
+                            <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12 margin-both-vertical-20">
+								<span><?php
+
+                                    echo (!empty($info['passenger_name'])) ?  $info['passenger_name'] . ' ' . $info['passenger_family'] : $info['passenger_name_en'] . ' ' . $info['passenger_family_en'] ; ?></span>
+                            </div>
+                            <div class="col-md-3  col-lg-3 col-sm-12 col-xs-12 margin-both-vertical-20">
+                                <?php
+                                if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {
+                                    ?>
+                                    <span>شماره ملی/پاسپورت:</span>
                                 <?php } ?>
-                                <span>
-                                    <?php
+                                <span
+                                        class="yn"><?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] : $info['passportNumber'] ?></span>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 margin-both-vertical-20">
+                                <?php
+                                if (!in_array ( $transportType, array ( 'hotel', 'tour') ) ) {
+                                    ?>
+                                    <span class="FloatRight">تاریخ تولد: </span>
+                                <?php } ?>
+                                <?php if($transportType != 'insurance'){ ?>
+                                    <span class="yn"><?php echo (!empty($info['passenger_birthday'])) ? $info['passenger_birthday'] : $info['passenger_birthday_en'] ?></span>
+                                <?php }else{?>
+                                    <span class="yn"><?php echo (!empty($info['passenger_birth_date'])) ? $info['passenger_birth_date'] : $info['passenger_birth_date_en'] ?></span>
+
+                                <?php  } ?>
+                            </div>
+                            <div class="col-md-1 col-lg-1 col-sm-12 col-xs-12 margin-both-vertical-20"> <span><?php
                                     switch ($info['passenger_age']) {
 
                                         case 'Adt':
@@ -2680,236 +2548,172 @@ public function ModalShowBook($Param, $type) {
                                             echo 'نوزاد';
                                             break;
                                     }
-                                    ?>
-                                </span>
-                                <span class="<?php
+                                    ?></span></div>
+                            <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12">
+                                <div class="<?php
+                                switch ($info['Status']) {
+                                    case 'RequestMember' :
+                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-primary' : '';
+                                        break;
+                                    case 'SetCancelClient' :
+                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
+                                        break;
+                                    case 'RequestClient' :
+                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
+                                        break;
+                                    case 'SetIndemnity' :
+                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
+                                        break;
+                                    case 'SetFailedIndemnity' :
+                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
+                                        break;
+                                    case 'ConfirmClient' :
+                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
+                                        break;
+                                    case 'ConfirmCancel' :
+                                        echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-success' : '';
+                                        break;
+                                }
+                                ?>">
+                                    <?php
                                     switch ($info['Status']) {
                                         case 'RequestMember' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-primary' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'درخواست کاربر' : '';
                                             break;
                                         case 'SetCancelClient' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درخواست ' : '';
                                             break;
                                         case 'RequestClient' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'انتظار تعیین درصد' : '';
                                             break;
                                         case 'SetIndemnity' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'تعیین درصد جریمه' : '';
                                             break;
                                         case 'SetFailedIndemnity' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-danger' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درصد توسط آژانس' : '';
                                             break;
                                         case 'ConfirmClient' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-warning' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'در حال رسیدگی و واریز' : '';
                                             break;
                                         case 'ConfirmCancel' :
-                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'btn btn-success' : '';
+                                            echo in_array($NationalCodeUser, $NationalCodes) ? 'واریز شد' : '';
                                             break;
                                     }
-                                    ?>">
-                                        <?php
-                                        switch ($info['Status']) {
-                                            case 'RequestMember' :
-                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'درخواست کاربر' : '';
-                                                break;
-                                            case 'SetCancelClient' :
-                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درخواست ' : '';
-                                                break;
-                                            case 'RequestClient' :
-                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'انتظار تعیین درصد' : '';
-                                                break;
-                                            case 'SetIndemnity' :
-                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'تعیین درصد جریمه' : '';
-                                                break;
-                                            case 'SetFailedIndemnity' :
-                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'رد درصد توسط آژانس' : '';
-                                                break;
-                                            case 'ConfirmClient' :
-                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'در حال رسیدگی و واریز' : '';
-                                                break;
-                                            case 'ConfirmCancel' :
-                                                echo in_array($NationalCodeUser, $NationalCodes) ? 'واریز شد' : '';
-                                                break;
-                                        }
-                                        ?>
-                                </span>
-
-
-                            </>
-                            <?php }//end foreach ?>
+                                    ?>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="cancel-box">
-                        <div class="cancel-box__title">جزئیات استرداد</div>
-                        <div class="cancel-grid">
-                            <div>
-                                <strong>درصد جریمه:</strong>
-                                <?php
-                                if ($InfoCancelTicket[0]['Status'] == 'SetIndemnity' || $InfoCancelTicket[0]['Status'] == 'SetFailedIndemnity' || $InfoCancelTicket[0]['Status'] == 'ConfirmClient' || $InfoCancelTicket[0]['Status'] == 'ConfirmCancel') {
-                                    echo $InfoCancelTicket[0]['PercentIndemnity'] . '%';
-                                } else {
-                                    echo ' -----';
+
+                        <?php
+                    }
+
+                    ?>
+
+
+                    <div class="row margin-10">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10 ">
+                            شماره درخواست خرید: <span
+                                    class="yn"><?php echo $InfoCancelTicket[0]['RequestNumber']; ?></span>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
+                            <span style="float: right">تاریخ درخواست کنسلی :</span> <?php echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $InfoCancelTicket[0]['DateRequestMemberInt']); ?>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
+                            تاریخ تایید /رد درخواست :<?php
+                            if ($InfoCancelTicket[0]['DateSetCancelInt'] != '0' || $InfoCancelTicket[0]['DateConfirmCancelInt'] != '0') {
+                                if ($InfoCancelTicket[0]['Status'] == 'SetCancelClient') {
+                                    echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $InfoCancelTicket[0]['DateSetCancelInt']);
+                                } else if ($InfoCancelTicket[0]['Status'] == 'ConfirmCancel') {
+                                    echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $InfoCancelTicket[0]['DateConfirmCancelInt']);
                                 }
-                                ?>
-                            </div>
-                            <div>
-                                <strong>مبلغ استرداد:</strong>
-                                <?php if($InfoCancelTicket[0]['PriceIndemnity'] !=0) echo number_format($InfoCancelTicket[0]['PriceIndemnity']).' ریال '; else echo '----';?>
-                            </div>
+                            } else {
+                                echo ' -----';
+                            }
+                            ?>
                         </div>
-                    </div>
-                    <div class="cancel-box">
-                        <div class="cancel-box__title"> توضیحات آژانس </div>
-                        <div class="cancel-grid">
-                            <div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
+                            درصد جریمه:<?php
+                            if ($InfoCancelTicket[0]['Status'] == 'SetIndemnity' || $InfoCancelTicket[0]['Status'] == 'SetFailedIndemnity' || $InfoCancelTicket[0]['Status'] == 'ConfirmClient' || $InfoCancelTicket[0]['Status'] == 'ConfirmCancel') {
+                                echo $InfoCancelTicket[0]['PercentIndemnity'] . '%';
+                            } else {
+                                echo ' -----';
+                            }
+                            ?>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 margin-10">
+                            مبلغ استرداد:<?php
+                            echo '----';
+                            ?>
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-10">
+                            توضیحات آژانس:<?php
+                            if (!empty($InfoCancelTicket[0]['DescriptionClient'])) {
+                                ?>
+                                <span><?php echo $InfoCancelTicket[0]['DescriptionClient']; ?></span>
                                 <?php
-                                    if (!empty($InfoCancelTicket[0]['DescriptionClient'])) {
-                                        echo $InfoCancelTicket[0]['DescriptionClient'];
-                                    } else {
-                                       echo '-------';
-                                    }
+                            } else {
                                 ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cancel-box">
-                        <div class="cancel-box__title"> توضیحات کارگزار </div>
-                        <div class="cancel-grid">
-                            <div>
+                                <span>-------</span>
                                 <?php
-                                if (!empty($InfoCancelTicket[0]['DescriptionAdmin'])) {
-                                     echo $InfoCancelTicket[0]['DescriptionAdmin'];
-                                } else {
-                                    echo '-------';
-                                }
+                            }
+                            ?>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-10">
+                            توضیحات کارگزار:<?php
+                            if (!empty($InfoCancelTicket[0]['DescriptionAdmin'])) {
                                 ?>
-                            </div>
+                                <span><?php echo $InfoCancelTicket[0]['DescriptionAdmin']; ?></span>
+                                <?php
+                            } else {
+                                ?>
+                                <span>-------</span>
+                                <?php
+                            }
+                            ?>
                         </div>
-                    </div>
-                    <div class="cancel-box">
-                        <div class="cancel-box__title"> توضیح کاربر برای کنسلی </div>
-                        <div class="cancel-grid">
-                            <div>
-                                <?php  echo $InfoCancelTicket[0]['comment_user'];?>
-                            </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-10">
+                            اهمیت درصد برای کاربر:<?php
+                            if ($InfoCancelTicket[0]['PercentNoMatter'] == 'Yes') {
+                                ?>
+                                <span><?php echo 'اهمیت ندارد' ?></span>
+
+                                <?php
+                            } else {
+                                ?>
+                                <span><?php echo 'با اهمیت است' ?></span>
+
+                                <?php
+                            }
+                            ?>
                         </div>
+                        <div class="row margin-10">
+                            <div class="col-md-3 col-lg-4 col-sm-12 col-xs-12">شماره کارت اعلام
+                                شده:<span><?php echo $InfoCancelTicket[0]['CardNumber'] ?></span></div>
+                            <div class="col-md-3 col-lg-4 col-sm-12 col-xs-12">نام صاحب
+                                حساب:<span><?php echo $InfoCancelTicket[0]['AccountOwner'] ?></span></div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">نام بانک مرتبط با
+                                کارت:<span><?php echo $InfoCancelTicket[0]['NameBank'] ?></span></div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                توضیح کاربر برای کنسلی:
+
+                                <span><?php echo $InfoCancelTicket[0]['comment_user'] ?></span></div>
+                        </div>
+
+
+
                     </div>
 
-                    <?php if($InfoCancelTicket[0]['confirmTransferWallet']!='none'){ ?>
-                    <div class="cancel-box">
-                        <div class="cancel-box__title"> روش واریزی </div>
-                        <div class="cancel-grid">
-                             <div>
-                                <?php
-                                if($InfoCancelTicket[0]['confirmTransferWallet']=='ReturnWallet')  echo 'به کیف پول کاربر برگردانده شد';
-                                else if($InfoCancelTicket[0]['confirmTransferWallet']=='ReturnWalletCounter')  echo 'به اعتبار کانتر برگردانده شد';
-                                else if($InfoCancelTicket[0]['confirmTransferWallet']=='ReturnBankCart')  echo 'به درخواست کاربر به کارت واریز شد';
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <?php }?>
+                    <div class="modal-footer site-bg-main-color">
 
-                    <div class="cancel-box">
-                        <div class="cancel-box__title">اطلاعات بیشتر</div>
-                        <div class="cancel-grid">
-                            <div>
-                                <strong>اهمیت درصد برای کاربر :</strong>
-                                <?php
-                                if ($InfoCancelTicket[0]['PercentNoMatter'] == 'Yes') {
-                                     echo 'اهمیت ندارد';
-                                } else {
-                                    echo 'با اهمیت است';
-                                }
-                                ?>
-                            </div>
-                            <div>
-                                <strong>شماره کارت اعلام شده :</strong>
-                                <?php echo $InfoCancelTicket[0]['CardNumber'];?>
-                            </div>
-                            <div>
-                                <strong>نام صاحب حساب :</strong>
-                                <?php echo $InfoCancelTicket[0]['AccountOwner'];?>
-                            </div>
-                            <div>
-                                <strong>نام بانک مرتبط با کارت :</strong>
-                                <?php echo $InfoCancelTicket[0]['NameBank'];?>
-                            </div>
 
-                        </div>
                     </div>
                 </div>
-                <div class="modal-footer site-bg-main-color"></div>
             </div>
+
         </div>
-        <style>
-            .cancel-modal {
-                font-size: 1.15rem;
-                line-height: 1.7;
-            }
-            .cancel-box{background:#fff;border:1px solid #e6e6e6;border-radius:10px;padding:15px;margin-bottom:15px;font-size: 13px; }
-            .cancel-box__title{font-weight:700;margin-bottom:10px;border-right:4px solid #2a5298;padding-right:8px}
-            .cancel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 
-            .passenger-table__head,.passenger-table__row{
-                display:grid;grid-template-columns:1.2fr 1.2fr 1fr .6fr 1fr;gap:10px;padding:8px 10px;align-items:center
-            }
-            .passenger-table__head{background:#f1f5f9;font-weight:700;border-radius:6px}
-            .passenger-table__row{border-bottom:1px solid #eee}
-            .passenger-table__row--danger{background:#fff5f5}
-
-            .passenger-status{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:700;text-align:center;color:#fff}
-            .passenger-status--ConfirmCancel{background:#198754}
-            .passenger-status--ConfirmClient{background:#0dcaf0;color:#000}
-            .passenger-status--SetIndemnity,
-            .passenger-status--RequestClient{background:#ffc107;color:#000}
-            .passenger-status--SetCancelClient,
-            .passenger-status--SetFailedIndemnity,
-            .passenger-status--close{background:#dc3545}
-            .passenger-status--RequestMember{background:#0d6efd}
-            .passenger-status--danger{background:#dc3545}
-
-            /* ===== Cancel Action Button ===== */
-            .cancel-action { margin-top: 15px; text-align: left; position: relative; z-index: 20; }
-
-            .btn-cancel-action {
-                background: linear-gradient(135deg, #0d6efd, #084298);
-                border: none;
-                color: #fff;
-                padding: 10px 26px;
-                font-size: 14px;
-                font-weight: 700;
-                border-radius: 10px;
-                cursor: pointer;
-                min-width: 160px;
-                transition: all .25s ease;
-                box-shadow: 0 6px 18px rgba(13,110,253,.35);
-            }
-            .btn-cancel-action:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 10px 26px rgba(13,110,253,.45);
-                background: linear-gradient(135deg, #0b5ed7, #06357a);
-            }
-            .btn-cancel-action:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(13,110,253,.35); }
-            .btn-cancel-action:disabled { background: #94a3b8; cursor: not-allowed; box-shadow: none; }
-
-            .btn-submit-action {
-                background: linear-gradient(135deg,#198754,#0f5132);
-                border: none;
-                color: #fff;
-                padding: 10px 30px;
-                font-weight: 800;
-                border-radius: 10px;
-                cursor: pointer;
-                box-shadow: 0 6px 18px rgba(25,135,84,.35);
-            }
-            .btn-submit-action:disabled {
-                background:#94a3b8;
-                cursor:not-allowed;
-                box-shadow:none;
-            }
-        </style>
         <?php
     }
 
@@ -4204,13 +4008,6 @@ public function ModalShowBook($Param, $type) {
         $request_number = $Param['RequestNumber'];
         $pnr = $Param['pnr'];
 
-        //کارمزد هر نفر
-        $listpenalty = Load::controller('penaltyFees');
-        $PenaltyEnd = $listpenalty->getPenaltyEnd();
-
-        // تراکنش مالی این خرید
-        $Transactions = Load::controller('bookshowTest');
-        $TransactionsReport = $Transactions->getTransactionsByDateRange('','',$pnr,'','','');
 
         $listCancel = Load::controller('listCancel');
         $Cancel = $listCancel->InfoCancelTicket($request_number, $id, $ClientId);
@@ -4222,15 +4019,22 @@ public function ModalShowBook($Param, $type) {
                 list($TotalPrice,$fare) = functions::TotalPriceCancelTicketSystem($Cancel);
                 $PricePenalty = functions::CalculatePenaltyPriceCancel($TotalPrice,$fare, $Cancel[0]);
                 $indemnityPrice =round($PricePenalty-(30000 * count($Cancel)));
+
             }elseif($Cancel[0]['flight_type'] == 'charter'){
                 $TotalPrice = functions::TotalPriceNetTicketCharter($Cancel);
+
                 $indemnityPrice = round(functions::CalculatePenaltyPriceCancelCharter($TotalPrice, $Cancel[0]));
+
+
             }
         }elseif($Cancel[0]['TypeCancel'] == 'bus'){
+
             $admin = Load::controller('admin');
             $priceBusSql = "SELECT * FROM book_bus_tb WHERE order_code='{$request_number}'";
             $priceBookBus = $airlineClientCharter = $admin->ConectDbClient($priceBusSql, $ClientId, "Select", "", "", "");
+
             $indemnityPrice = ($priceBookBus['price_api']-($priceBookBus['price_api']*($Cancel[0]['PercentIndemnity']/100))) ;
+
         }elseif($Cancel[0]['TypeCancel'] == 'insurance'){
             $admin = Load::controller('admin');
             $priceInsuranceSql = "SELECT * FROM book_insurance_tb WHERE factor_number='{$request_number}'";
@@ -4242,9 +4046,7 @@ public function ModalShowBook($Param, $type) {
             $priceBookHotel = $airlineClientCharter = $admin->ConectDbClient($priceHotelSql, $ClientId, "Select", "", "", "");
             $indemnityPrice = ($priceBookHotel['total_price']-($priceBookHotel['total_price']*($Cancel[0]['PercentIndemnity']/100))) ;
         }
-        $CostFinalForReturn =0;
-        $AmountExcelCanceling=0;
-        $ReturnProvider=0;
+
         ?>
         <div class="modal-dialog modal-lg">
 
@@ -4258,83 +4060,21 @@ public function ModalShowBook($Param, $type) {
                         <h4 class="modal-title"> (<?php echo $request_number; ?>) </h4>
 
                         <h4 class="modal-title">(<?php echo $pnr; ?>)</h4>
-                        <?php  if($Cancel[0]['IdExcelCanceling']>0) {?>
-                            <h4 class="modal-title">(اکسل  <?php echo $Cancel[0]['TypeExcelCanceling'];?>)</h4>
-                        <?php } ?>
                     </div>
                 </div>
-
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                            <h5>
-                                مبلغ اولیه فروش به آژانس :
-                                <?php $BuyFromIt=$TransactionsReport[$Cancel[0]['factor_number']];
-                                echo number_format($BuyFromIt); //خرید از سفر30
-                                ?>      ریال
-                            </h5>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                            <h5>
-                                <?php
-                                if($Cancel[0]['IdExcelCanceling']>0) {
-                                    echo 'مبلغ استرداد اکسل : '.number_format($Cancel[0]['AmountExcelCanceling']).' ریال ';
-                                    $AmountExcelCanceling=$Cancel[0]['AmountExcelCanceling'];
-                                }
-                                else  echo 'مبلغ استرداد اکسل در سیستم ثبت نشده است';
-                                ?>
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <?php if($Cancel[0]['TypeExcelCanceling']=='provider43') {
-                            $ReturnProvider=$BuyFromIt-$AmountExcelCanceling;
-                            ?>
-                            <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                                <h5>
-                                    برگشتی به مسافر قبل کارمزد :     <?php echo number_format($ReturnProvider);?>
-                                </h5>
-                            </div>
-                        <?php } ?>
-                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                            <h5>
-                                کارمزد جریمه به ازای هر نفر :   <?php echo number_format($PenaltyEnd);?> ریال
-                            </h5>
-                        </div>
-                    </div>
-                    <?php if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {?>
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                                <h5>
-                                    افراد این خرید &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    ADl= <?php echo $Cancel[0]['adt_qty'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    CHD= <?php echo $Cancel[0]['chd_qty'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    INF= <?php echo $Cancel[0]['inf_qty'];?>
-                                </h5>
-                            </div>
-                        </div>
-                    <?php } ?>
-                    <?php
-                    if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {
-                        if($AmountExcelCanceling<=0) $PenaltyEnd=0; // agar jarime nashode ma karmoz nadarim
 
-                        if ($Cancel[0]['TypeExcelCanceling'] == 'provider21') {
-                            $CostFinalForReturn = $AmountExcelCanceling - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
-                        } else if ($Cancel[0]['TypeExcelCanceling'] == 'provider43') {
-                            $CostFinalForReturn = $ReturnProvider - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
-                        }
-                    }
-                    ?>
                     <div class="row">
+
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="form-group">
-                                <label for="DescriptionClient" class="PercentLabel">مبلغ استرداد
+                                <label for="DescriptionClient" class="PercentLabel">تعیین مبلغ
                                     <small>(شما میتوانید مبلغ استرداد مربوط را در اینجا وارد نمائید)</small>
                                 </label>
                                 <input class="form-control" id="PriceIndemnity"
                                        placeholder="مبلغ مورد نظر را به ریال  وارد نمائید"
                                        onkeyup="javascript:separator(this);"
-                                       value="<?php echo number_format($CostFinalForReturn);?>">
+                                       value="">
                             </div>
                         </div>
 
@@ -6495,7 +6235,6 @@ public function ModalShowBook($Param, $type) {
         $objbook = Load::controller($this->Controller);
         $objDiscountCode = Load::controller('discountCodes');
         $books = $objbook->bookRecords($Param);
-        functions::insertLog('$books: ' . json_encode($Param) , '000shojaee');
 
         ?>
 
@@ -6746,14 +6485,12 @@ public function ModalShowBook($Param, $type) {
 
                         <div class="col-md-12 p-0 mt-5">
                             <?php
-
-
                             $custom_file_fields=json_decode($view['custom_file_fields'],true);
                             if (!empty($custom_file_fields)){
                                 foreach ($custom_file_fields as $item){
 
                                     ?>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <?php if(!empty(array_values($item)[0])) {
 
                                             ?>
@@ -6762,7 +6499,7 @@ public function ModalShowBook($Param, $type) {
                                                href="<?php echo ROOT_ADDRESS_WITHOUT_LANG .'/pic/visaPassengersFiles/' . array_values($item)[0]; ?>"
                                                type="application/octet-stream" style="border-radius:5px"  download="<?php echo basename(array_values($item)[0]); ?>">
                                                 <!--                                                <img src="--><?php //echo ROOT_ADDRESS_WITHOUT_LANG .'/pic/visaPassengersFiles/' . array_values($item)[0]; ?><!--"-->
-                                                <!--                                                     class="w-50 p-1 mb-3 border rounded"-->
+                                                <!--                                                     class="w-100 p-1 mb-3 border rounded"-->
                                                 <!--                                                     alt="--><?php //echo key($item);?><!--">-->
                                                 <?php echo key($item);?><i class="fa mr-2 fa-download"></i>
                                             </a>
@@ -6785,6 +6522,7 @@ public function ModalShowBook($Param, $type) {
                             ?>
 
                         </div>
+
                         <div class="col-md-12 p-0 mt-5 d-flex flex-wrap justify-content-center">
 
                             <?php if(!empty($view['visa_files'])) {
@@ -9471,7 +9209,7 @@ public function ModalCancelAdmin($Param, $param2) {
                         } ?>
 
                         <div class="col-md-12 modal-text-center modal-h ">
-                            <label for="ReasonUser"><?php echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?></label>
+                            <!--							<label for="ReasonUser">--><?php //echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?><!--</label>-->
                         </div>
                         <div class="col-md-3 col-lg-3 col-sm-12  nopad ">
                             <select class="form-control mart5" name="ReasonUser"

@@ -4,7 +4,6 @@
 {include file="include_files/header.tpl" }
 
 <main>
-    {include file="include_files/banner.tpl" }
     {include file="include_files/search-box.tpl"}
     {include file="include_files/tours-special.tpl" }
     {include file="include_files/tours-recent.tpl" }

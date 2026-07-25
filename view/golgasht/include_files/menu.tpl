@@ -5,11 +5,11 @@
             <nav class="navigation d-flex align-items-center">
                 <div class="nav-header">
                     <a class="d-flex align-items-center" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                        <img alt="{$obj->Title_head()}" class="__logo_class__" src="project_files/images/logo.jpg"/>
-                        <div class="text-nav-brand">
-                            <p>گـلگـشـت</p>
-                            <span>سامانه رزرواسـیون</span>
-                        </div>
+                        <img alt="{$obj->Title_head()}" class="__logo_class__" src="project_files/images/logo.png"/>
+{*                        <div class="text-nav-brand">*}
+{*                            <p>گـلگـشـت</p>*}
+{*                            <span>سامانه رزرواسـیون</span>*}
+{*                        </div>*}
                     </a>
                 </div>
                 <div class="nav-menus-wrapper">
@@ -40,35 +40,30 @@
 {*                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/Sharjah-Hotel">شارجه</a></li>*}
 {*                                    </ul>*}
 {*                                </li>*}
-                                <li>
-                                    <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">عراق</a>
-                                    <ul class="nav-dropdown">
-                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-karbala">کربلا</a></li>
-                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-najaf">نجف</a></li>
-                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-baghdad">بغداد</a></li>
-                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-erbil">اربیل</a></li>
-                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-sulaymaniyah">سلیمانیه</a></li>
-                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/Kadhimiya-hotel">کاظمین</a></li>
-                                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/Basra-hotel">بصره</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-karbala">هتل کربلا</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-najaf">هتل نجف</a> </li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-baghdad">هتل بغداد</a> </li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-erbil">هتل اربیل</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel-sulaymaniyah">هتل سلیمانیه</a> </li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/Kadhimiya-hotel">هتل کاظمین</a> </li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/Basra-hotel">هتل بصره</a> </li>
 
                                     </ul>
                                 </li>
-                            </ul>
-                        </li>
-                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور ها</a>
-                            <ul class="nav-dropdown">
-                                <li>
-                                    <a href="https://golgashthotel.ir/gds/fa/page/iraq-tours">تور عراق</a>
-                                    <ul class="nav-dropdown">
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/karbala-tours">تور کربلا</a></li>
-                                        <li><a href=" https://golgashthotel.ir/gds/fa/page/combined-tour-of-erbil">تور اربیل</a></li>
-                                        <li><a href=" https://golgashthotel.ir/gds/fa/page/baghdad-tours">تور بغداد</a></li>
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/basra-tours">تور بصره</a></li>
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/sulaymaniyah-tour">تور سلیمانیه</a></li>
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/najaf-tours">تور نجف</a></li>
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/Kadhimiya-tour">تور کاظمین</a></li>
-                                    </ul>
-                                </li>
+{*                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور ها</a>*}
+{*                            <ul class="nav-dropdown">*}
+{*                                <li>*}
+{*                                    <a href="https://golgashthotel.ir/gds/fa/page/iraq-tours">تور عراق</a>*}
+{*                                    <ul class="nav-dropdown">*}
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/karbala-tours">تور کربلا</a></li>*}
+{*                                        <li><a href=" https://golgashthotel.ir/gds/fa/page/combined-tour-of-erbil">تور اربیل</a></li>*}
+{*                                        <li><a href=" https://golgashthotel.ir/gds/fa/page/baghdad-tours">تور بغداد</a></li>*}
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/basra-tours">تور بصره</a></li>*}
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/sulaymaniyah-tour">تور سلیمانیه</a></li>*}
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/najaf-tours">تور نجف</a></li>*}
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/Kadhimiya-tour">تور کاظمین</a></li>*}
+{*                            </ul>*}
+{*                        </li>*}
 {*                                <li>*}
 {*                                    <a href="https://golgashthotel.ir/gds/fa/page/turkey-tour">تور ترکیه</a>*}
 {*                                    <ul class="nav-dropdown">*}
@@ -79,18 +74,18 @@
 
 {*                                    </ul>*}
 {*                                </li>*}
-                                <li>
-                                    <a href=" https://golgashthotel.ir/gds/fa/page/expo-tour">تورهای نمایشگاهی</a>
-                                    <ul class="nav-dropdown">
+{*                                <li>*}
+{*                                    <a href=" https://golgashthotel.ir/gds/fa/page/expo-tour">تورهای نمایشگاهی</a>*}
+{*                                    <ul class="nav-dropdown">*}
 {*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/dubai-expo">تور نمایشگاهی دبی</a></li>*}
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/baghdad-expo">تور نمایشگاهی بغداد</a></li>
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/erbil-expo">تور نمایشگاهی اربیل</a></li>
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/baghdad-expo">تور نمایشگاهی بغداد</a></li>*}
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/erbil-expo">تور نمایشگاهی اربیل</a></li>*}
 {*                                        <li><a href=" https://golgashthotel.ir/gds/fa/page/istanbul-expo">تور نمایشگاهی استانبول</a></li>*}
-                                        <li><a href="https://golgashthotel.ir/gds/fa/page/basra-expo"> تور نمایشگاهی بصره </a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
+{*                                        <li><a href="https://golgashthotel.ir/gds/fa/page/basra-expo"> تور نمایشگاهی بصره </a></li>*}
+{*                                    </ul>*}
+{*                                </li>*}
+{*                            </ul>*}
+{*                        </li>*}
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/mag">وبلاگ</a></li>
 {*                        <li><a href="{$smarty.const.ROOT_ADDRESS}/convertDate">تبدیل تاریخ</a></li>*}
                         <li class="d-block-c d-sm-none-c"><a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">پیگیری خرید</a></li>

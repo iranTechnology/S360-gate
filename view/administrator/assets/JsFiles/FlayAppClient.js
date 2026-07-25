@@ -31,6 +31,7 @@ $(document).ready(function () {
             default_lang_admin: "required",
             default_language: "required",
             isIframe: "required",
+            usedDemo: "required",
             UsernameSms: {
                 required: {
                     depends: function (element) {

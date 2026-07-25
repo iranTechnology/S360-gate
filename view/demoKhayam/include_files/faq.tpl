@@ -1,61 +1,130 @@
 {load_presentation_object filename="faqs" assign="faqs"}
 {assign var="getServices" value=$faqs->getServices(True)}
-{assign var="data_search_public" value=['service'=>$getServices]}
-{assign var='faqs' value=$obj_main_page->faqsPositionMain($data_search_public)}
 
-{if count($getServices) > 0}
-<section class="Terms_Conditions">
-    <div class="container">
-        <div class="titr_Terms_Conditions">
-            <h4>پرسش و پاسخ</h4>
-            <ul class="nav nav-pills" id="Domestic_flight_navs" role="tablist">
-                {foreach $getServices as  $key => $position}
-                {if $position.countFaq>0}
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link {if $key=='internalFlight'} active {/if}" id="Domestic_{$position.MainService}" data-toggle="pill" data-target="#Domestic_{$position.MainService}_body" type="button" role="tab" aria-controls="Domestic_{$position.MainService}_body" aria-selected="false" autocomplete="off">
-                        {if $position.MainService == 'Bus' || $position.MainService == 'Train' }
-                            بلیط
-                        {/if}
-                        {$position.Title}
-                    </button>
-                </li>
-                {/if}
-                {/foreach}
-            </ul>
-        </div>
-        <div class="tab_Terms_Conditions">
-            <div class="tab-content" id="Terms_Conditions">
-                {foreach $faqs as  $key=>$position}
-                {if count($position) > 0}
-                <div class="tab-pane fade {if $key=='internalFlight'} active show {/if}" id="Domestic_{$key}_body" role="tabpanel" aria-labelledby="Domestic_{$key}">
-                    <div class="accordion my_accordion" id="Domestic_{$key}_accordion">
-                        {foreach $position as $key2=>$item}
-                        <div class="card">
-                            <div class="card-header" id="Domestic_{$item.service}_accordion_header_{$item.id}">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link btn-block text-right btn_accordion btn_questions collapsed" type="button" data-toggle="collapse" data-target="#collapse_Domestic_{$item.service}_{$item.id}" aria-expanded="true" aria-controls="collapse_Domestic_{$item.service}_{$item.id}" autocomplete="off">
-                                        {$item.title}
-                                        <i class="far fa-angle-down rot_revers"></i>
+{assign var="selectedServices" value=[]}
+{foreach $getServices as $key => $item}
+    {if $key == 'Public' || $key == 'Flight' || $key == 'Hotel' || $key == 'Tour' || $key == 'Bus' || $key == 'Train'}
+        {append var="selectedServices" value=$item index=$key}
+    {/if}
+{/foreach}
+
+{assign var="data_search" value=['service'=>$selectedServices]}
+{assign var='faqsList' value=$obj_main_page->faqsPositionMain($data_search)}
+
+
+{if count($selectedServices) > 0}
+    <section class="Terms_Conditions">
+        <div class="container">
+
+            <div class="titr_Terms_Conditions">
+                        <h4>سوالات متداول</h4>
+
+                    <ul class="nav nav-pills" role="tablist">
+
+                        {assign var="tabCount" value=0}
+
+                        {foreach $selectedServices as $key => $service}
+
+                            {if isset($faqsList[$key]) && count($faqsList[$key]) > 0 && $tabCount < 4}
+
+                                <li class="nav-item">
+
+                                    <button class="nav-link {if $tabCount == 0}active{/if}"
+                                            id="tab-{$key}"
+                                            data-toggle="pill"
+                                            data-target="#pane-{$key}"
+                                            type="button"
+                                            role="tab">
+
+                                        {$service.Title}
+
                                     </button>
-                                </h2>
-                            </div>
-                            <div id="collapse_Domestic_{$item.service}_{$item.id}" class="collapse {if $item.service=='public'}  show {/if}" aria-labelledby="Domestic_{$item.service}_accordion_header_{$item.id}" data-parent="#Terms_Conditions" style="">
-                                <div class="card-body">
-                                    <p class="txt_color_accordion">
-                                    </p><p style="text-align: right;"><span style="font-size: 12pt;">
-                                                {$item.content}
-                                            </span></p>
-                                    <p></p>
+
+                                </li>
+
+                                {assign var="tabCount" value=$tabCount+1}
+
+                            {/if}
+
+                        {/foreach}
+
+                    </ul>
+            </div>
+
+            <div class="tab_Terms_Conditions">
+                <div class="tab-content">
+
+                    {assign var="paneCount" value=0}
+
+                    {foreach $selectedServices as $key => $service}
+
+                        {if isset($faqsList[$key]) && count($faqsList[$key]) > 0 && $paneCount < 4}
+
+                            <div class="tab-pane fade {if $paneCount == 0}show active{/if}"
+                                 id="pane-{$key}"
+                                 role="tabpanel">
+
+                                <div class="accordion my_accordion" id="accordion-{$key}">
+
+                                    {foreach $faqsList[$key] as $index => $item}
+
+                                        {if $index < 6}
+
+                                            <div class="card">
+
+                                                <div class="card-header" id="heading-{$key}-{$index}">
+
+                                                    <h2 class="mb-0">
+
+                                                        <button class="btn btn-link btn-block text-right btn_accordion btn_questions collapsed"
+                                                                type="button"
+                                                                data-toggle="collapse"
+                                                                data-target="#collapse-{$key}-{$index}">
+
+                                                            {$item.title}
+
+                                                            <i class="far fa-angle-down rot_revers"></i>
+
+                                                        </button>
+
+                                                    </h2>
+
+                                                </div>
+
+                                                <div id="collapse-{$key}-{$index}"
+                                                     class="collapse"
+                                                     data-parent="#accordion-{$key}">
+
+                                                    <div class="card-body">
+
+                                                        <div style="text-align:right;">
+<span style="font-size:12pt;">
+{$item.content}
+</span>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        {/if}
+
+                                    {/foreach}
+
                                 </div>
                             </div>
-                        </div>
-                        {/foreach}
-                    </div>
+
+                            {assign var="paneCount" value=$paneCount+1}
+
+                        {/if}
+
+                    {/foreach}
+
                 </div>
-                    {/if}
-                {/foreach}
             </div>
+
         </div>
-    </div>
-</section>
+    </section>
 {/if}

@@ -14,7 +14,8 @@ class logErrorFlights extends clientAuth{
     }
 
     public function getErrorMessage($request_number,$client_id) {
-        $result_error =  $this->getModel('logErrorFlightsModel')->get()->where('request_number',$request_number)->where('client_id',$client_id)->find();
+        $result_error =  $this->getModel('logErrorFlightsModel')->get()->where('request_number',$request_number)->where('client_id',$client_id)->orderBy()->all();
+        $result_error = $result_error[0];
 //        $result_error['text_message'] = (TYPE_ADMIN=='1') ? functions::persianMessageFlightError($result_error['messageCode']).'---'.$result_error['message'] : $result_error['message_fa'];
         if (TYPE_ADMIN == '1') {
             $result_error['text_message'] = (!empty($result_error['message_admin']))

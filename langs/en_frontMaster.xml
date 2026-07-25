@@ -1067,7 +1067,7 @@
   <Possiblepurchasebabychildticketwithanadultticket>It is possible to purchase an infant or child ticket only with an adult ticket.</Possiblepurchasebabychildticketwithanadultticket>
   <Typeaircraftannouncedairlinechartererandanychangesareresponsibilityairline>The type of aircraft is as announced by the airline or charterer and any changes are the responsibility of the airline.</Typeaircraftannouncedairlinechartererandanychangesareresponsibilityairline>
   <Unavailable>Inactive</Unavailable>
-  <Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>The airline is responsible for flight cancellation, delay or acceleration.</Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>
+<Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>The airline is responsible for flight cancellation, delay or acceleration.</Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>
   <Havingvalididentificationdocumentboardingaircraft>Carrying a valid ID is mandatory to board the plane.</Havingvalididentificationdocumentboardingaircraft>
   <Delayhurryflightnotificationmadeviamobilenumber>Notification of flight delays, accelerations, or cancellations is made via call or text message to the passenger's mobile number.</Delayhurryflightnotificationmadeviamobilenumber>
   <Theticketsissuedpassengersnon-transferablenon-non-renewablenames> </Theticketsissuedpassengersnon-transferablenon-non-renewablenames>
@@ -2487,7 +2487,7 @@
 
 
 
-  <!--Employment-->
+<!--Employment-->
   <PleaseEnterNameLastName>Enter your first and last name</PleaseEnterNameLastName>
   <LongNameLastNameError>Your name is long</LongNameLastNameError>
   <PleaseEnterMarried>Specify marital status</PleaseEnterMarried>
@@ -3247,7 +3247,7 @@
   <PA_CO_LIST>Contact List</PA_CO_LIST>
   <PA_CO_LISTTITLE>In the list below, you can view all your contacts.</PA_CO_LISTTITLE>
   <PA_CO_RESULTTABLE>Show _MENU_ entries</PA_CO_RESULTTABLE>
-  <PA_CO_RESULTTABLE2>Show</PA_CO_RESULTTABLE2>
+<PA_CO_RESULTTABLE2>Show</PA_CO_RESULTTABLE2>
   <PA_CO_REQUESTDETAIL>Request Details</PA_CO_REQUESTDETAIL>
   <PA_CO_STATUSNOTSEEN> Not Reviewed</PA_CO_STATUSNOTSEEN>
   <PA_CO_STATUSSEEN>Viewed</PA_CO_STATUSSEEN>
@@ -3286,7 +3286,6 @@
   <PA_BUYFrom>Purchase from</PA_BUYFrom>
   <PA_BUY_MarkCOUNTER>Counter markup</PA_BUY_MarkCOUNTER>
   <PA_BUY_MarkAgency>Agency markup</PA_BUY_MarkAgency>
-  <EnterInvoiceNumber>Please enter the invoice number</EnterInvoiceNumber>
   <Exclusive>Exclusive</Exclusive>
   <Shared>Shared</Shared>
   <PrivatePad>Private Pad</PrivatePad>
@@ -3330,7 +3329,5 @@
   <PassengerSale>Sale to Passenger</PassengerSale>
   <PassengerOnline>Passenger Online</PassengerOnline>
   <SeatCount>Number of Seats</SeatCount>
-  <ReceiveInfoError>Error receiving information</ReceiveInfoError>
-  <ReservedRooms>Reserved Rooms</ReservedRooms>
-  <HotelBooking>Show Hotel Booking</HotelBooking>
+<ReceiveInfoError>Error receiving information</ReceiveInfoError>
 </Main>

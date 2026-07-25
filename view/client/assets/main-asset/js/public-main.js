@@ -885,3 +885,956 @@ function convertMiladiToJalali() {
       });
   }
 }
+
+
+if (window.innerWidth <= 576) {
+  const openSheetButton = document.querySelectorAll('.sheet-js');
+  const closeSheetButton = document.getElementById('closeSheet');
+  const bottomSheet = document.getElementById('bottomSheet');
+  const overlay = document.getElementById('overlay');
+  const handle = document.querySelector('.handle');
+
+// Open bottom sheet
+  openSheetButton.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Reset transform before adding open class
+      bottomSheet.style.transform = 'translateX(100%)';
+      // Use setTimeout to ensure the initial transform is applied before transition
+      setTimeout(() => {
+        bottomSheet.style.transform = 'translateX(0)';
+        bottomSheet.classList.add('open');
+        overlay.classList.add('active');
+        document.body.classList.add('no-scroll');
+      }, 10);
+    });
+  });
+
+// Close bottom sheet with X button
+  closeSheetButton.addEventListener('click', closeBottomSheet);
+
+// Close bottom sheet with overlay
+  overlay.addEventListener('click', closeBottomSheet);
+
+  function closeBottomSheet() {
+    bottomSheet.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.classList.remove('no-scroll');
+    bottomSheet.style.transform = 'translateX(100%)';
+    currentTranslateY = 0; // Reset the translation tracking
+  }
+
+// Drag functionality
+  let isDragging = false;
+  let startY, startTranslateY;
+  let currentTranslateY = 0;
+
+  handle.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startY = e.clientY;
+    startTranslateY = getTranslateY(bottomSheet);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
+  handle.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startY = e.touches[0].clientY;
+    startTranslateY = getTranslateY(bottomSheet);
+    document.addEventListener('touchmove', onTouchMove);
+    document.addEventListener('touchend', onTouchEnd);
+  });
+
+  function onMouseMove(e) {
+    if (!isDragging) return;
+    const deltaY = e.clientY - startY;
+    const newTranslateY = startTranslateY + deltaY;
+    if (newTranslateY >= 0) {
+      currentTranslateY = newTranslateY;
+      bottomSheet.style.transform = `translateY(${newTranslateY}px)`;
+    }
+  }
+
+  function onMouseUp() {
+    if (!isDragging) return;
+    isDragging = false;
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    snapBottomSheet();
+  }
+
+  function onTouchMove(e) {
+    if (!isDragging) return;
+    const deltaY = e.touches[0].clientY - startY;
+    const newTranslateY = startTranslateY + deltaY;
+    if (newTranslateY >= 0) {
+      currentTranslateY = newTranslateY;
+      bottomSheet.style.transform = `translateY(${newTranslateY}px)`;
+    }
+  }
+
+  function onTouchEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    document.removeEventListener('touchmove', onTouchMove);
+    document.removeEventListener('touchend', onTouchEnd);
+    snapBottomSheet();
+  }
+
+// Modified snap function to only allow fully open or closed states
+  function snapBottomSheet() {
+    const sheetHeight = bottomSheet.offsetHeight;
+    const dragThreshold = sheetHeight * 0.3; // 30% of sheet height as threshold
+
+    if (currentTranslateY > dragThreshold) {
+      // If dragged more than threshold, close the sheet
+      closeBottomSheet();
+    } else {
+      // If dragged less than threshold, snap back to fully open
+      bottomSheet.style.transform = 'translateY(0)';
+      currentTranslateY = 0; // Reset the translation tracking
+    }
+  }
+
+  function getTranslateY(element) {
+    const style = window.getComputedStyle(element);
+    const transform = style.transform;
+    if (transform === 'none') return 0;
+    const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+    return parseFloat(matrix[5] || matrix[13]);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('صفحه بارگذاری شد');
+  loadSavedTheme();
+  setupColorSync();
+  setupLogoUpload();
+  setupAutoApply();
+  checkOverlay();
+});
+
+// اعمال خودکار رنگ هنگام تغییر
+function setupAutoApply() {
+  var mainPicker = document.getElementById('mainColorPicker');
+  var secondPicker = document.getElementById('secondColorPicker');
+  var mainText = document.getElementById('mainColorText');
+  var secondText = document.getElementById('secondColorText');
+
+  // اعمال خودکار برای color picker ها
+  if(mainPicker) {
+    mainPicker.addEventListener('input', function() {
+      var mainColor = this.value;
+      var secondColor = secondPicker.value;
+      applyColors(mainColor, secondColor);
+      if(mainText) mainText.value = mainColor;
+      console.log('رنگ اصلی تغییر کرد:', mainColor);
+    });
+  }
+
+  if(secondPicker) {
+    secondPicker.addEventListener('input', function() {
+      var secondColor = this.value;
+      var mainColor = mainPicker.value;
+      applyColors(mainColor, secondColor);
+      if(secondText) secondText.value = secondColor;
+      console.log('رنگ ثانویه تغییر کرد:', secondColor);
+    });
+  }
+
+  // اعمال خودکار برای فیلدهای متنی
+  if(mainText) {
+    mainText.addEventListener('input', function() {
+      if(/^#[0-9A-F]{6}$/i.test(this.value)) {
+        var mainColor = this.value;
+        var secondColor = secondPicker.value;
+        if(mainPicker) mainPicker.value = mainColor;
+        applyColors(mainColor, secondColor);
+      }
+    });
+  }
+
+  if(secondText) {
+    secondText.addEventListener('input', function() {
+      if(/^#[0-9A-F]{6}$/i.test(this.value)) {
+        var secondColor = this.value;
+        var mainColor = mainPicker.value;
+        if(secondPicker) secondPicker.value = secondColor;
+        applyColors(mainColor, secondColor);
+      }
+    });
+  }
+}
+
+// همگام‌سازی بین color picker و text field
+function setupColorSync() {
+  var mainPicker = document.getElementById('mainColorPicker');
+  var mainText = document.getElementById('mainColorText');
+  var secondPicker = document.getElementById('secondColorPicker');
+  var secondText = document.getElementById('secondColorText');
+
+  if(mainPicker && mainText) {
+    mainPicker.addEventListener('input', function() {
+      mainText.value = this.value;
+    });
+  }
+
+  if(mainText && mainPicker) {
+    mainText.addEventListener('input', function() {
+      if(/^#[0-9A-F]{6}$/i.test(this.value)) {
+        mainPicker.value = this.value;
+      }
+    });
+  }
+
+  if(secondPicker && secondText) {
+    secondPicker.addEventListener('input', function() {
+      secondText.value = this.value;
+    });
+  }
+
+  if(secondText && secondPicker) {
+    secondText.addEventListener('input', function() {
+      if(/^#[0-9A-F]{6}$/i.test(this.value)) {
+        secondPicker.value = this.value;
+      }
+    });
+  }
+}
+
+// آپلود لوگو
+function setupLogoUpload() {
+  var logoUpload = document.getElementById('logoUpload');
+  if(logoUpload) {
+    logoUpload.addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if(file) {
+        console.log('فایل انتخاب شد:', file.name);
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          var imageUrl = event.target.result;
+          console.log('لوگو آپلود شد:', imageUrl.substring(0, 50));
+
+          var logoPreview = document.getElementById('logoPreview');
+          if(logoPreview) {
+            logoPreview.src = imageUrl;
+            logoPreview.style.display = 'block';
+          }
+
+          applyLogo(imageUrl);
+          showToast('لوگو با موفقیت آپلود شد');
+        };
+        reader.onerror = function() {
+          console.error('خطا در آپلود فایل');
+          showToast('خطا در آپلود لوگو');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
+
+// اعمال رنگ‌ها (بدون نیاز به دکمه جداگانه)
+function applyColors(mainColor, secondColor) {
+  console.log('اعمال رنگ:', mainColor, secondColor);
+
+  // تغییر متغیرهای CSS
+  document.documentElement.style.setProperty('--mainColor', mainColor);
+  document.documentElement.style.setProperty('--secondColor', secondColor);
+
+  // تغییر مستقیم استایل المنت‌ها
+  var headers = document.querySelectorAll('.header');
+  for(var i = 0; i < headers.length; i++) {
+    headers[i].style.backgroundColor = mainColor;
+  }
+
+  var boxes = document.querySelectorAll('.box');
+  for(var i = 0; i < boxes.length; i++) {
+    boxes[i].style.backgroundColor = mainColor;
+  }
+
+  var btns = document.querySelectorAll('.btn');
+  for(var i = 0; i < btns.length; i++) {
+    btns[i].style.backgroundColor = secondColor;
+  }
+
+  var toggleBtn = document.querySelector('.settings-toggle');
+  if(toggleBtn) {
+    toggleBtn.style.backgroundColor = mainColor;
+  }
+
+  var applyBtn = document.querySelector('.apply-btn');
+  if(applyBtn) applyBtn.style.backgroundColor = mainColor;
+
+  var saveBtn = document.querySelector('.save-btn');
+  if(saveBtn) saveBtn.style.backgroundColor = secondColor;
+}
+
+// اعمال لوگو
+function applyLogo(logoUrl) {
+  console.log('applyLogo فراخوانی شد:', logoUrl ? 'دارد' : 'ندارد');
+
+  var logoImg = document.getElementById('siteLogo');
+  var footerLogo = document.getElementById('footerLogo');
+  var logoPlaceholder = document.getElementById('logoPlaceholder');
+
+  if(!logoImg) {
+    console.error('المنت‌های لوگو پیدا نشدند');
+    return;
+  }
+
+  if(logoUrl && logoUrl !== '' && logoUrl !== 'undefined') {
+    logoImg.src = logoUrl;
+    logoImg.style.display = 'block';
+    if(footerLogo) {
+      footerLogo.src = logoUrl;
+      footerLogo.style.display = 'block';
+    }
+    if(logoPlaceholder) logoPlaceholder.style.display = 'none';
+    console.log('لوگو اعمال شد:', logoUrl.substring(0, 50));
+  } else {
+    if(logoPlaceholder) logoPlaceholder.style.display = 'flex';
+    console.log('لوگو حذف شد، placeholder نمایش داده می‌شود');
+  }
+}
+
+// ذخیره تنظیمات
+function getSiteKey() {
+  // استفاده از مسیر فعلی یا نام دامنه + پوشه
+  var path = window.location.pathname.split('/')[1] || 'root';
+  return 'siteTheme_' + path;
+}
+
+// ذخیره تنظیمات با کلید منحصر به فرد
+function saveTheme() {
+  var mainColor = document.getElementById('mainColorPicker').value;
+  var secondColor = document.getElementById('secondColorPicker').value;
+  var logoImg = document.getElementById('siteLogo');
+  var logoPreview = document.getElementById('logoPreview');
+  var finalLogo = '';
+
+  if(logoImg && logoImg.style.display === 'block' && logoImg.src && logoImg.src !== '') {
+    finalLogo = logoImg.src;
+  } else if(logoPreview && logoPreview.style.display === 'block' && logoPreview.src && logoPreview.src !== '') {
+    finalLogo = logoPreview.src;
+  }
+
+  var theme = {
+    mainColor: mainColor,
+    secondColor: secondColor,
+    logo: finalLogo,
+    savedTime: Date.now() // ذخیره زمان فعلی (میلی‌ثانیه)
+  };
+
+  var siteKey = getSiteKey();
+  localStorage.setItem(siteKey, JSON.stringify(theme));
+  localStorage.setItem('currentSite', siteKey); // ذخیره سایت فعلی
+
+  closeOverlay();
+  toggleSidebar();
+  console.log('تنظیمات ذخیره شد برای:', siteKey, theme);
+  showToast('تنظیمات ذخیره شد!');
+}
+function loadSavedTheme() {
+  var siteKey = getSiteKey();
+  var saved = localStorage.getItem(siteKey);
+  console.log('بارگذاری تنظیمات برای:', siteKey, saved);
+
+  if(saved) {
+    try {
+      var theme = JSON.parse(saved);
+
+      // بررسی زمان ذخیره‌سازی (15 دقیقه = 15 * 60 * 1000 میلی‌ثانیه)
+      var now = Date.now();
+      var fifteenMinutes = 15 * 60 * 1000; // 900000 میلی‌ثانیه
+
+      if(theme.savedTime && (now - theme.savedTime) > fifteenMinutes) {
+        // اگر بیشتر از 15 دقیقه گذشته بود، تنظیمات را پاک کن
+        console.log('تنظیمات منقضی شده است (بیشتر از 15 دقیقه)');
+        localStorage.removeItem(siteKey);
+        setDefaultColors();
+        showToast('تنظیمات منقضی شد! دوباره تنظیمات را ذخیره کنید.');
+        return;
+      }
+
+      console.log('تنظیمات معتبر است، زمان باقی مانده:', Math.floor((fifteenMinutes - (now - theme.savedTime)) / 1000), 'ثانیه');
+
+      if(theme.mainColor) {
+        var mainPicker = document.getElementById('mainColorPicker');
+        var mainText = document.getElementById('mainColorText');
+        if(mainPicker) mainPicker.value = theme.mainColor;
+        if(mainText) mainText.value = theme.mainColor;
+      }
+
+      if(theme.secondColor) {
+        var secondPicker = document.getElementById('secondColorPicker');
+        var secondText = document.getElementById('secondColorText');
+        if(secondPicker) secondPicker.value = theme.secondColor;
+        if(secondText) secondText.value = theme.secondColor;
+      }
+
+      if(theme.mainColor && theme.secondColor) {
+        applyColors(theme.mainColor, theme.secondColor);
+      }
+
+      if(theme.logo && theme.logo !== '' && theme.logo !== 'undefined') {
+        console.log('بارگذاری لوگو:', theme.logo.substring(0, 50));
+        applyLogo(theme.logo);
+
+        var logoPreview = document.getElementById('logoPreview');
+        if(logoPreview) {
+          logoPreview.src = theme.logo;
+          logoPreview.style.display = 'block';
+        }
+      }
+    } catch(e) {
+      console.error('خطا در بارگذاری:', e);
+    }
+  } else {
+    console.log('تنظیمات ذخیره شده‌ای یافت نشد');
+    setDefaultColors();
+  }
+}
+
+// تنظیم رنگ‌های پیشفرض
+// تنظیم رنگ‌های پیشفرض (بدون ذخیره در localStorage)
+function setDefaultColors() {
+  console.log('تنظیم رنگ‌های پیشفرض');
+
+  var mainPicker = document.getElementById('mainColorPicker');
+  var mainText = document.getElementById('mainColorText');
+  var secondPicker = document.getElementById('secondColorPicker');
+  var secondText = document.getElementById('secondColorText');
+
+  // تنظیم مقادیر پیشفرض در input ها
+  if(mainPicker) mainPicker.value = '#b71c1c';
+  if(mainText) mainText.value = '#b71c1c';
+  if(secondPicker) secondPicker.value = '#ee384e';
+  if(secondText) secondText.value = '#ee384e';
+
+  // تنظیم لوگوی پیشفرض
+  var siteLogo = document.getElementById('siteLogo');
+  var footerLogo = document.getElementById('footerLogo');
+  var logoPlaceholder = document.getElementById('logoPlaceholder');
+
+  if(siteLogo) {
+    siteLogo.src = 'https://safar360.com/gds/view/demo360/project_files/images/logo.png';
+    siteLogo.style.display = 'block';
+  }
+  if(footerLogo) {
+    footerLogo.src = 'https://safar360.com/gds/view/demo360/project_files/images/logo.png';
+    footerLogo.style.display = 'block';
+  }
+  if(logoPlaceholder) {
+    logoPlaceholder.style.display = 'none';
+  }
+
+  // اعمال رنگ‌های پیشفرض
+  // applyColors('#b71c1c', '#ee384e');
+}
+
+// بازنشانی به حالت اولیه
+function resetTheme() {
+  console.log('بازنشانی به حالت اولیه - پاک کردن تمام تغییرات');
+
+  // 1. تنظیم رنگ‌ها به پیش‌فرض
+  setDefaultColors();
+
+  // 2. پاک کردن لوگوی آپلود شده
+  applyLogo('');
+
+  // 3. پاک کردن فایل آپلود و پیش‌نمایش
+  var logoUpload = document.getElementById('logoUpload');
+  var logoPreview = document.getElementById('logoPreview');
+
+  if(logoUpload) logoUpload.value = '';
+  if(logoPreview) {
+    logoPreview.style.display = 'none';
+    logoPreview.src = '';
+  }
+
+  // 4. حذف تنظیمات از localStorage (مهم)
+  var siteKey = getSiteKey(); // اگر از کلید اختصاصی استفاده می‌کنید
+  localStorage.removeItem(siteKey);
+  // یا اگر از کلید ساده استفاده می‌کنید:
+  // localStorage.removeItem('siteTheme');
+
+  // 5. حذف از کوکی (اگر از کوکی استفاده می‌کنید)
+  document.cookie = "mainColor=; path=/; max-age=0";
+  document.cookie = "secondColor=; path=/; max-age=0";
+  document.cookie = "siteTheme=; path=/; max-age=0";
+
+  // 6. حذف متغیرهای CSS اعمال شده (اجباری به پیش‌فرض)
+  document.documentElement.style.setProperty('--mainColor', '#b71c1c');
+  document.documentElement.style.setProperty('--secondColor', '#ee384e');
+
+  // 7. حذف استایل‌های مستقیم از المنت‌ها
+  var headers = document.querySelectorAll('.header');
+  for(var i = 0; i < headers.length; i++) {
+    headers[i].style.backgroundColor = '';
+    headers[i].style.background = '';
+  }
+
+  var boxes = document.querySelectorAll('.box');
+  for(var i = 0; i < boxes.length; i++) {
+    boxes[i].style.backgroundColor = '';
+  }
+
+  var btns = document.querySelectorAll('.btn');
+  for(var i = 0; i < btns.length; i++) {
+    btns[i].style.backgroundColor = '';
+  }
+
+  var toggleBtn = document.querySelector('.settings-toggle');
+  if(toggleBtn) {
+    toggleBtn.style.backgroundColor = '';
+  }
+
+  // 8. نمایش پیام تایید
+  showToast('✅ تمام تغییرات پاک شد و سایت به حالت اولیه بازگشت!');
+
+  // 9. (اختیاری) رفرش صفحه برای اعمال کامل تغییرات
+  // setTimeout(function() {
+  //   location.reload();
+  // }, 1000);
+}
+
+// توابع سایدبار
+function toggleSidebar() {
+  var sidebar = document.getElementById('settingsSidebar');
+  if(sidebar) sidebar.classList.toggle('open');
+  closeOverlay();
+}
+
+function closeSidebar() {
+  var sidebar = document.getElementById('settingsSidebar');
+  if(sidebar) sidebar.classList.remove('open');
+}
+
+// نمایش پیام
+function showToast(message) {
+  var toast = document.createElement('div');
+  toast.textContent = message;
+  toast.style.cssText = `
+        position: fixed;
+        bottom: 100px;
+        left: 20px;
+        background-color: #333;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        z-index: 1002;
+        font-size: 14px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    `;
+  document.body.appendChild(toast);
+
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s';
+    setTimeout(function() {
+      if(toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }, 2000);
+}
+
+// کلیک خارج از سایدبار برای بستن
+document.addEventListener('click', function(event) {
+  var sidebar = document.getElementById('settingsSidebar');
+  var toggleBtn = document.querySelector('.settings-toggle');
+
+  if(sidebar && sidebar.classList.contains('open')) {
+    if(!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
+      closeSidebar();
+    }
+  }
+});
+
+function checkOverlay() {
+  // بررسی اینکه کاربر قبلاً اوریلی را بسته باشد یا نه
+  var dontShowAgain = localStorage.getItem('dontShowOverlay');
+
+  // اگر کاربر قبلاً "دیگر نشان نده" را زده بود، اوریلی نمایش داده نشود
+  if(dontShowAgain !== 'true') {
+    // بعد از 500 میلی‌ثانیه اوریلی را نشان بده
+    setTimeout(function() {
+      var overlay = document.getElementById('overlayBlack');
+      if(overlay) {
+        overlay.style.display = 'flex';
+        overlay.classList.add('show');
+        // غیرفعال کردن اسکرول صفحه
+        document.body.style.overflow = 'hidden';
+      }
+    }, 500);
+  }
+}
+
+// بستن اوریلی
+function closeOverlay() {
+  var overlay = document.getElementById('overlayBlack');
+  var dontShowCheckbox = document.getElementById('dontShowAgain');
+  var restThemeBtn = document.getElementById('rest-theme-btn')
+  if(overlay) {
+    overlay.style.display = 'none';
+    overlay.classList.remove('show');
+    // فعال کردن مجدد اسکرول
+    document.body.style.overflow = 'auto';
+    restThemeBtn.style.display = 'flex'
+    // اگر چک‌باکس تیک خورده بود، دیگر نشان نده
+    if(dontShowCheckbox && dontShowCheckbox.checked) {
+      localStorage.setItem('dontShowOverlay', 'true');
+    }
+  }
+}
+
+// همچنین دکمه بستن در اوریلی
+document.addEventListener('DOMContentLoaded', function() {
+  // پیدا کردن دکمه بستن در اوریلی
+  var closeBtn = document.querySelector('#overlayBlack .close-overlay');
+  if(!closeBtn) {
+    // اگر دکمه وجود ندارد، یک دکمه اضافه کن
+    var overlayContent = document.querySelector('#overlayBlack .overlay-content');
+  }
+});
+function applyThemeToAllPages() {
+    var saved = localStorage.getItem('siteTheme');
+    if(saved) {
+        var theme = JSON.parse(saved);
+
+        // اعمال رنگ‌ها
+        document.documentElement.style.setProperty('--mainColor', theme.mainColor);
+        document.documentElement.style.setProperty('--secondColor', theme.secondColor);
+
+        // اعمال لوگو اگر وجود داشته باشد
+        if(theme.logo && document.getElementById('siteLogo')) {
+            document.getElementById('siteLogo').src = theme.logo;
+            document.getElementById('siteLogo').style.display = 'block';
+            if(document.getElementById('logoPlaceholder')) {
+                document.getElementById('logoPlaceholder').style.display = 'none';
+            }
+        }
+        if(document.getElementById('footerLogo')) {
+            document.getElementById('footerLogo').src = theme.logo;
+            document.getElementById('footerLogo').style.display = 'block';
+            if(document.getElementById('logoPlaceholder')) {
+                document.getElementById('logoPlaceholder').style.display = 'none';
+            }
+        }
+    }
+}
+
+// اجرا در تمام صفحات
+document.addEventListener('DOMContentLoaded', applyThemeToAllPages);
+
+// متغیرهای ویرایشگر اینستاگرامی
+let instagramImageData = null;
+let instagramScale = 1;
+let instagramTranslateX = 0;
+let instagramTranslateY = 0;
+let instagramIsDragging = false;
+let instagramStartX = 0;
+let instagramStartY = 0;
+let instagramImageWidth = 0;
+let instagramImageHeight = 0;
+let instagramRotation = 0;
+
+// آپلود لوگو
+function triggerInstagramUpload() {
+  document.getElementById('instagramLogoInput').click();
+}
+
+document.getElementById('instagramLogoInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      instagramImageData = event.target.result;
+      showInstagramEditor(instagramImageData);
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// نمایش ویرایشگر اینستاگرامی
+function showInstagramEditor(imageSrc) {
+  const editor = document.getElementById('instagramEditor');
+  const draggableImage = document.getElementById('instagramDraggableImage');
+  const slider = document.getElementById('instagramZoomSlider');
+
+  draggableImage.src = imageSrc;
+  editor.style.display = 'flex';
+  document.body.classList.add('instagram-editor-open');
+
+  draggableImage.onload = function() {
+    instagramImageWidth = draggableImage.naturalWidth;
+    instagramImageHeight = draggableImage.naturalHeight;
+    resetInstagramImage();
+    enableInstagramDragging();
+  };
+
+  slider.oninput = function(e) {
+    instagramScale = parseFloat(e.target.value);
+    applyInstagramTransform();
+  };
+
+  document.getElementById('instagramLogoInput').value = '';
+}
+
+// فعال کردن جابجایی
+function enableInstagramDragging() {
+  const cropCircle = document.getElementById('instagramCropCircle');
+
+  cropCircle.removeEventListener('mousedown', startInstagramDrag);
+  window.removeEventListener('mousemove', onInstagramDrag);
+  window.removeEventListener('mouseup', stopInstagramDrag);
+
+  cropCircle.addEventListener('mousedown', startInstagramDrag);
+  window.addEventListener('mousemove', onInstagramDrag);
+  window.addEventListener('mouseup', stopInstagramDrag);
+}
+
+function startInstagramDrag(e) {
+  instagramIsDragging = true;
+  instagramStartX = e.clientX - instagramTranslateX;
+  instagramStartY = e.clientY - instagramTranslateY;
+  e.preventDefault();
+}
+
+function onInstagramDrag(e) {
+  if (!instagramIsDragging) return;
+
+  instagramTranslateX = e.clientX - instagramStartX;
+  instagramTranslateY = e.clientY - instagramStartY;
+
+  applyInstagramTransform();
+}
+
+function stopInstagramDrag() {
+  instagramIsDragging = false;
+}
+
+// اعمال تبدیلات
+function applyInstagramTransform() {
+  const image = document.getElementById('instagramDraggableImage');
+  const cropCircle = document.getElementById('instagramCropCircle');
+
+  const circleRect = cropCircle.getBoundingClientRect();
+  const imageDisplayWidth = instagramImageWidth * instagramScale;
+  const imageDisplayHeight = instagramImageHeight * instagramScale;
+
+  // محدود کردن جابجایی
+  const maxX = Math.max(0, (imageDisplayWidth - circleRect.width) / 2);
+  const maxY = Math.max(0, (imageDisplayHeight - circleRect.height) / 2);
+
+  instagramTranslateX = Math.min(maxX, Math.max(-maxX, instagramTranslateX));
+  instagramTranslateY = Math.min(maxY, Math.max(-maxY, instagramTranslateY));
+
+  image.style.width = imageDisplayWidth + 'px';
+  image.style.height = imageDisplayHeight + 'px';
+  image.style.transform = `translate(${instagramTranslateX}px, ${instagramTranslateY}px) rotate(${instagramRotation}deg)`;
+}
+
+// بزرگنمایی
+function zoomInstagramImage(delta) {
+  const slider = document.getElementById('instagramZoomSlider');
+  let newValue = instagramScale + delta;
+  newValue = Math.min(3, Math.max(0.5, newValue));
+  slider.value = newValue;
+  instagramScale = newValue;
+  applyInstagramTransform();
+}
+
+// چرخش تصویر
+function rotateImageLeft() {
+  instagramRotation = (instagramRotation - 90) % 360;
+  applyInstagramTransform();
+}
+
+// بازنشانی - تصویر وسط قرار می‌گیرد
+function resetInstagramImage() {
+  const cropCircle = document.getElementById('instagramCropCircle');
+  const circleRect = cropCircle.getBoundingClientRect();
+
+  // محاسبه اسکیل مناسب برای پوشش کامل دایره
+  const scaleX = circleRect.width / instagramImageWidth;
+  const scaleY = circleRect.height / instagramImageHeight;
+  instagramScale = Math.max(scaleX, scaleY);
+
+  const slider = document.getElementById('instagramZoomSlider');
+  slider.value = instagramScale;
+
+  const imageDisplayWidth = instagramImageWidth * instagramScale;
+  const imageDisplayHeight = instagramImageHeight * instagramScale;
+
+  // وسط قرار دادن تصویر
+  instagramTranslateX = (circleRect.width - imageDisplayWidth) / 2;
+  instagramTranslateY = (circleRect.height - imageDisplayHeight) / 2;
+  instagramRotation = 0;
+
+  applyInstagramTransform();
+}
+
+// ذخیره تصویر
+function saveInstagramImage() {
+  const cropCircle = document.getElementById('instagramCropCircle');
+  const image = document.getElementById('instagramDraggableImage');
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const size = 200;
+  canvas.width = size;
+  canvas.height = size;
+
+  const circleRect = cropCircle.getBoundingClientRect();
+  const imageRect = image.getBoundingClientRect();
+
+  // محاسبه منطقه قابل مشاهده
+  const visibleX = Math.max(0, (imageRect.left - circleRect.left));
+  const visibleY = Math.max(0, (imageRect.top - circleRect.top));
+  const visibleWidth = Math.min(circleRect.width, imageRect.right - circleRect.left);
+  const visibleHeight = Math.min(circleRect.height, imageRect.bottom - circleRect.top);
+
+  const cropX = (visibleX / instagramScale);
+  const cropY = (visibleY / instagramScale);
+  const cropWidth = (visibleWidth / instagramScale);
+  const cropHeight = (visibleHeight / instagramScale);
+
+  const tempImage = new Image();
+  tempImage.src = instagramImageData;
+
+  tempImage.onload = function() {
+    ctx.save();
+
+    // برش دایره‌ای
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+
+    // وسط قرار دادن تصویر برش خورده
+    ctx.translate(size / 2, size / 2);
+    ctx.rotate(instagramRotation * Math.PI / 180);
+    ctx.drawImage(tempImage,
+        cropX, cropY, cropWidth, cropHeight,
+        -size / 2, -size / 2, size, size
+    );
+
+    ctx.restore();
+
+    const croppedImage = canvas.toDataURL('image/png');
+
+    // ذخیره و اعمال
+    const logoDisplay = document.getElementById('instagramLogoDisplay');
+    logoDisplay.src = croppedImage;
+    logoDisplay.style.objectFit = 'cover';
+
+    localStorage.setItem('customLogo', croppedImage);
+    applyInstagramLogoToSite(croppedImage);
+    closeInstagramEditor();
+
+    // نمایش پیام موفقیت
+    showInstagramToast('لوگو با موفقیت ذخیره شد!');
+
+    // نمایش دکمه حذف
+    document.querySelector('.instagram-remove-logo').style.display = 'flex';
+  };
+}
+
+// بستن ویرایشگر
+function closeInstagramEditor() {
+  document.getElementById('instagramEditor').style.display = 'none';
+  document.getElementById('instagramDraggableImage').src = '';
+  document.body.classList.remove('instagram-editor-open');
+  instagramImageData = null;
+  instagramScale = 1;
+  instagramTranslateX = 0;
+  instagramTranslateY = 0;
+  instagramRotation = 0;
+}
+
+// حذف لوگو
+function removeInstagramLogo() {
+  if (confirm('آیا از حذف لوگو اطمینان دارید؟')) {
+    localStorage.removeItem('customLogo');
+    const defaultLogo = 'path/to/default-logo.png';
+    const logoDisplay = document.getElementById('instagramLogoDisplay');
+    logoDisplay.src = defaultLogo;
+    logoDisplay.style.objectFit = 'cover';
+    applyInstagramLogoToSite(defaultLogo);
+    document.querySelector('.instagram-remove-logo').style.display = 'none';
+    showInstagramToast('لوگو حذف شد!');
+  }
+}
+
+// اعمال لوگو در سایت
+function applyInstagramLogoToSite(logoUrl) {
+  const logos = document.querySelectorAll('.site-logo, .navbar-brand img, #siteLogo, #footerLogo');
+  logos.forEach(el => {
+    if (el.tagName === 'IMG') {
+      el.src = logoUrl;
+      el.style.objectFit = 'cover';
+    }
+  });
+}
+
+// بارگذاری لوگوی ذخیره شده
+function loadInstagramSavedLogo() {
+  const saved = localStorage.getItem('customLogo');
+  if (saved && saved !== '') {
+    const logoDisplay = document.getElementById('instagramLogoDisplay');
+    logoDisplay.src = saved;
+    logoDisplay.style.objectFit = 'cover';
+    applyInstagramLogoToSite(saved);
+    document.querySelector('.instagram-remove-logo').style.display = 'flex';
+  }
+}
+
+// نمایش پیام
+function showInstagramToast(message) {
+  const toast = document.createElement('div');
+  toast.innerHTML = message;
+  toast.style.cssText = `
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 25px;
+        z-index: 10001;
+        font-size: 14px;
+        backdrop-filter: blur(10px);
+    `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
+
+// بارگذاری هنگام شروع
+document.addEventListener('DOMContentLoaded', function() {
+  loadInstagramSavedLogo();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+

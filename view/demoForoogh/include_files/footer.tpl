@@ -6,8 +6,8 @@
 <footer class="position-relative i_modular_footer">
  <div class="div-footer-parent">
   <div class="container">
-   <div class="d-flex flex-wrap margin-top-footer">
-    <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-0">
+   <div class="margin-top-footer">
+    <div>
      <div class="parent-item-footer parent-item-footer-responsive">
       <div class="img-box-footer">
        <img alt="footer-logo" class="__logo_class__" src="project_files/images/logo.png"/>
@@ -56,7 +56,7 @@
       </div>
      </div>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-6 col-6 p-0">
+    <div>
      <div class="box-item-footer text-right">
       <h3>
        خدمات
@@ -135,7 +135,7 @@
       </ul>
      </div>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-6 col-6 p-0">
+    <div>
      <div class="box-item-footer text-right">
       <h3>
        دسترسی آسان
@@ -214,7 +214,7 @@
       </ul>
      </div>
     </div>
-    <div class="col-lg-2 col-md-6 col-sm-12 col-12 p-0">
+    <div>
      <div class="parent-namad">
       <h3>
        مجوزها

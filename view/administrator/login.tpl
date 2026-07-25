@@ -79,16 +79,16 @@
                     </div>
                 </div>
 
-                {*      <div class="form-group">
-                          <div class="col-md-12">
-                              <div class="checkbox checkbox-primary pull-left p-t-0">
-                                  <input id="member" type="checkbox" name="member" {if isset($smarty.cookies.Member)}
-                                         checked="checked" {/if} >
-                                  <label for="member"> مرا به خاطر بسپار </label>
-                              </div>
-                              <!--<a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> رمز عبور را فراموش کرده ام</a>-->
-                          </div>
-                      </div>*}
+{*                      <div class="form-group">*}
+{*                          <div class="col-md-12">*}
+{*                              <div class="checkbox checkbox-primary pull-left p-t-0">*}
+{*                                  <input id="member" type="checkbox" name="member" {if isset($smarty.cookies.Member)}*}
+{*                                         checked="checked" {/if} >*}
+{*                                  <label for="member"> مرا به خاطر بسپار </label>*}
+{*                              </div>*}
+{*                              <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> رمز عبور را فراموش کرده ام</a>*}
+{*                          </div>*}
+{*                      </div>*}
 
                 <div class="form-group text-center">
                     <div class="col-xs-12">
@@ -96,7 +96,14 @@
                                 type="button" onclick="LoginAdmin(); return false;">ورود
                         </button>
                     </div>
+                    <div class="parent-forget-sms col-xs-12 mt-4 text-center">
+{*                                            <a href="javascript:" onclick='authenticateInitDigitCode()' class="login-sms-disposable">##SendOTPCode## </a>*}
+                        <a href="javascript:"  onclick='authenticateInitDigitCode()' class="login-sms-disposable" style="font-size:13px !important;">##ForgetPassword## </a>
+                    </div>
                 </div>
+{*                <div class="form3 form-item" data-name='login-by-code'>*}
+{*                    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/authenticate/loginByCode.tpl"}*}
+{*                </div>*}
                 <!--<div class="row">-->
                 <!--<div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">-->
                 <!--<div class="social"><a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip"  title="Login with Facebook"> <i aria-hidden="true" class="fa fa-facebook"></i> </a> <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip"  title="Login with Google"> <i aria-hidden="true" class="fa fa-google-plus"></i> </a> </div>-->
@@ -105,36 +112,80 @@
                 <div class="form-group m-b-0">
                     <div class="col-sm-12 text-center">
                         <p class='made-itadmin-login-register'>طراحی سایت های گردشگری توسط <a href="http://www.iran-tech.com/" target="_blank"
-                                                      class="text-primary m-l-5"><b>ایران تکنولوژی</b></a></p>
+                          class="text-primary m-l-5"><b>ایران تکنولوژی</b></a></p>
                     </div>
                 </div>
             </form>
-            {*    <div class="row">
-                    <div class="col-sm-6">
-                        <a href="http://bit.ly/2P69TNe" target="_blank">
-                        <img src="assets/plugins/images/agency.gif" alt="آژانس" style="margin: 0px 26px;"/>
+
+            <form class="form-horizontal form-material" style="display:none" id="sendotp" action="" method="post">
+                <a href="javascript:void(0)" class="text-center db">
+                    <img src="assets/plugins/images/logo-itadmin-login.png" alt="Home"/>
+                </a>
+
+                <div class="form-group m-t-30">
+                    <div class="col-xs-12 text-center">
+                        <h5 class="text-info">##ForgetPassword##</h5>
+                        <p class="text-muted small">کد تایید به شماره موبایل شما ارسال شد</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input class="form-control text-center" type="text" required=""
+                               placeholder="_ _ _ _" name="code" id="code" maxlength="4"
+                               style="font-size: 24px; letter-spacing: 10px; text-align: center;">
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="col-xs-12 mt-4">
+                        <button class="btn btn-lg btn-block LoginAuto" type="button" onclick="loginWithOtp(); return false;">
+                            تایید و ورود
+                        </button>
+                    </div>
+                    <div class="col-xs-12 mt-4 text-center">
+                        <a href="javascript:" onclick="backToLogin()" class="text-muted">
+                            <i class="fa fa-arrow-right"></i> بازگشت به ورود با رمز عبور
                         </a>
                     </div>
-                </div>*}
-            <!--<form class="form-horizontal" id="recoverform" action="#" method="post">-->
-            <!--<div class="form-group ">-->
-            <!--<div class="col-xs-12">-->
-            <!--<h3>بازیابی رمز عبور</h3>-->
-            <!--<p class="text-muted">برای دریافت رمز عبور جدید پست الکترونیکی خود را وارد نمائید</p>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group ">-->
-            <!--<div class="col-xs-12">-->
-            <!--<input class="form-control" type="text" required="" placeholder="پست الکترونیک خود را وارد نمائید" data-error="Bruh, that email address is invalid" id="inputEmail4">-->
-            <!--<div class="help-block with-errors"></div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group text-center m-t-20">-->
-            <!--<div class="col-xs-12">-->
-            <!--<button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">بازیابی رمز عبور</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</form>-->
+                    <div class="col-xs-12 mt-3 text-center">
+                        <a href="javascript:" onclick="authenticateInitDigitCode()" class="text-primary">
+                            ارسال مجدد کد
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+
+
+
+
+{*                <div class="row">*}
+{*                    <div class="col-sm-6">*}
+{*                        <a href="http://bit.ly/2P69TNe" target="_blank">*}
+{*                        <img src="assets/plugins/images/agency.gif" alt="آژانس" style="margin: 0px 26px;"/>*}
+{*                        </a>*}
+{*                    </div>*}
+{*                </div>*}
+{*            <form class="form-horizontal" id="recoverform" action="#" method="post">*}
+{*            <div class="form-group ">*}
+{*            <div class="col-xs-12">*}
+{*            <h3>بازیابی رمز عبور</h3>*}
+{*            <p class="text-muted">برای دریافت رمز عبور جدید پست الکترونیکی خود را وارد نمائید</p>*}
+{*            </div>*}
+{*            </div>*}
+{*            <div class="form-group ">*}
+{*            <div class="col-xs-12">*}
+{*            <input class="form-control" type="text" required="" placeholder="پست الکترونیک خود را وارد نمائید" data-error="Bruh, that email address is invalid" id="inputEmail4">*}
+{*            <div class="help-block with-errors"></div>*}
+{*            </div>*}
+{*            </div>*}
+{*            <div class="form-group text-center m-t-20">*}
+{*            <div class="col-xs-12">*}
+{*            <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">بازیابی رمز عبور</button>*}
+{*            </div>*}
+{*            </div>*}
+{*            </form>*}
         </div>
 
     </div>

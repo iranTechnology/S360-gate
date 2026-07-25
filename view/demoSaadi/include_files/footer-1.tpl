@@ -13,7 +13,7 @@
       <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-3">
        <div class="parent-item-footer parent-item-footer-responsive">
         <div class="img-box-footer">
-         <img alt="footer-logo" src="project_files/images/logo.png"/>
+         <img alt="footer-logo" id="footerLogo" src="project_files/images/logo.png"/>
 {*         <div class="text-logo-footer">*}
 {*        <span>*}
 {*         شرکت مسافرتی*}

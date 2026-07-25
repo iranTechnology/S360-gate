@@ -33,6 +33,7 @@
             <input type="hidden" name="className" value="articles">
             <input type="hidden" name="method" value="UpdateArticle">
             <input type="hidden" name="article_id" value="{$article.id}">
+            <input type="hidden" name="section" value="{$section}">
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                 <div class="d-flex flex-wrap gap-10">
 
@@ -179,9 +180,7 @@
 
 
                     {if $article['section'] eq 'mag'}
-
-                        {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/position/edit.tpl"
-                        item=$article object=$articles}
+                        {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/position/edit.tpl" item=$article object=$articles}
 
 
                     {/if}

@@ -83,6 +83,7 @@ class factorLocal extends apiLocal
        $FlightBooked = $BookShowController->infoBookByFactorNumber($factorNumber);
 
 
+
        foreach ($FlightBooked as $key=>$Flight){
            if($Flight['direction']=='dept'){
                $FlightBook['dept'][] = $Flight;

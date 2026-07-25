@@ -13,7 +13,49 @@
 /*    font-feature-settings: "ss02";*/
 
 /*}*/
+.vue-slider-dot {
+    /* موقعیت دهی: اگر بخواهید کاملا وسط باشند، ممکن است نیاز به تنظیم دقیق تر یا استفاده از flexbox در parent داشته باشید */
+    /* shadow برای دستگیره */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* مثال سایه */
+    /* اندازه و رنگ دلخواه */
+    /* width: 20px; */
+    /* height: 20px; */
+    /* background-color: #4CAF50; */ /* رنگ دلخواه */
+    /* border-radius: 50%; */ /* برای گرد کردن دستگیره */
+}
+.vue-slider-dot-tooltip{
+    display:none;
+}
 
+/* بازه انتخاب شده (Process) */
+.vue-slider-process {
+    /* shadow برای بازه */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* مثال سایه */
+    /* رنگ دلخواه برای بازه */
+    /* background-color: #4CAF50; */ /* رنگ دلخواه */
+}
+
+/* اگر بخواهید خود اسلایدر (track) هم سایه داشته باشد */
+.vue-slider-rail {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* برای اطمینان از اینکه دستگیره ها کاملا وسط هستند، شاید نیاز به تنظیمات بیشتری روی parent ها باشد */
+/* .slider_range_parent .vue-slider { */
+/* display: flex; */
+/* align-items: center; */
+/* } */
+.dir-ltr{
+    direction:ltr !important;
+}
+#dept_date_local , #dept_date_local_return ,#dept_date_foreign0 , #dept_date_foreign_return{
+    border:0 !important;
+}
+.date-picker-internal-flight , .date-picker-international-flight , .date-picker-foreign-flight{
+    border:1px solid #ccc;
+    border-radius:3px
+}
 input{
     font-feature-settings: "ss02" !important;
 
@@ -288,6 +330,9 @@ input{
 }
 
 @media (max-width: 567px ) {
+    .detail-flight-internal span{
+        font-size:12px !important;
+    }
     .owl_blog .owl-dots .owl-dot span {
         width: 10px;
         height: 10px;
@@ -510,7 +555,7 @@ input{
 .tip-content p {
     font-family: inherit;
     font-size: 13px;
-    line-height: 35px;
+    /*line-height: 35px;*/
     margin-bottom: 0;
 }
 
@@ -1682,8 +1727,8 @@ input{
 
 
 .international-available-panel-min {
-    height: 0;
-    overflow: hidden;
+    /*height: 0;*/
+    /*overflow: hidden;*/
     padding: 0;
     transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
 }
@@ -1719,6 +1764,7 @@ input{
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+
 }
 
 .international-available-info {
@@ -1750,6 +1796,7 @@ input{
 .international-available-info .international-available-item-left-Cell {
     padding:0 10px;
     position: relative;
+
 }
 
 .international-available-item-left-Cell {
@@ -2204,7 +2251,7 @@ div.R0 .logo-airline-ico {
 }
 
 h5.raft-ticket, h5.bargasht-ticket {
-    font-size: 20px;
+    font-size: 16px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -2348,6 +2395,19 @@ h5.raft-ticket::before, h5.bargasht-ticket::before {
     align-items: center;
     justify-content: center;
 }
+.international-available-detail-btn-new, .btn-available-d-n {
+    display: block;
+    height: 30px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    /*background: #fff;*/
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
 
 .text_div_morei {
     position: absolute;
@@ -2478,7 +2538,6 @@ ul.tabs.tabs-1 li.tab-link.current {
 .international-available-airlines-logo-detail {
     width: 60px;
     height: 60px;
-    margin: 0 auto;
     background-color: #fff;
     display: inline-block;
     font-size: 5px;
@@ -2516,13 +2575,13 @@ ul.tabs.tabs-1 li.tab-link.current {
 }
 .airlines-stops-time-svg{
     width: 15px;
-    fill: #666666;
+    fill: var(--mainColor);
 }
 .international-available-airlines-detail-tittle span i{
     margin-left:5px
 }
 .international-available-airlines-info-detail.side-logo-detail > span{
-    padding:5px 8px;
+    padding:5px 2px;
 
 }
 .international-available-airlines-info-detail.my-info-detail > span{
@@ -2535,7 +2594,7 @@ ul.tabs.tabs-1 li.tab-link.current {
 }
 .international-available-airlines-detail .airlines-detail-box {
     display: inline-block;
-    width: 32%;
+    width: 100%;
     box-sizing: border-box;
     padding: 0 10px;
 }
@@ -2570,7 +2629,7 @@ ul.tabs.tabs-1 li.tab-link.current {
     cursor:pointer;
     border-radius: 3px;
     border: 0 none;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .inner-avlbl-itm div.SelectTicket{
@@ -4564,7 +4623,8 @@ polyline {
     min-height:30px;
 }
 .foreign .international-available-airlines-info{
-    padding:10px 0
+    padding:10px 0;
+    /*margin-bottom:20px;*/
 }
 
 .foreign .flight-type, .foreign .sit-class {
@@ -5258,15 +5318,15 @@ div.foreign._008 .logo-airline-ico-foreign {
 .foreign .international-available-airlines-detail.airlines-stops-time {
     border: none !important;
     border-radius: 7px !important;
-    background: #e1e1e1 !important;
+    background: #f1f1f1 !important;
     width: auto;
-    margin: 10px !important;
+    margin-bottom: 12px !important;
     display: flex !important;
-    padding: 2px 20px !important;
     text-align: center;
     align-items: center;
     justify-content: center;
     gap: 5px;
+    padding:10px !important;
 }
 
 .airlines-stops-time > span:nth-child(1), .airlines-stops-time > span:nth-child(2) {
@@ -7797,6 +7857,7 @@ process Flight cdd
         width:100%;
         padding: 0 10px;
         border-top: 1px dashed #ccc;
+
     }
     .inner-avlbl-itm > div{
         display:flex;
@@ -7900,6 +7961,9 @@ process Flight cdd
 
 }
 @media (max-width: 576px) {
+    .s-u-last-p-bozorgsal-change{
+        font-size:12px !important;
+    }
     .FilterHoteltype[type="checkbox"]:not(:checked) + label::after, .FilterHoteltype[type="checkbox"]:checked + label::after {
         top: 0px;
         right: 1px;
@@ -7918,8 +7982,10 @@ process Flight cdd
     .inner-avlbl-itm .sandali-span2{
         /*text-align: right;*/
         font-size: 12px;
-        margin-top: 0;
         width: 100%;
+        text-align: left;
+        margin-left: 55px !important;
+        margin-top: 7px !important;
     }
     .international-available-airlines-log-info{
         padding-top: 0 !important;
@@ -7999,7 +8065,7 @@ process Flight cdd
         display:none;
     }
     .international-available-airlines-info-detail.side-logo-detail > span{
-        padding:5px 3px
+        padding:5px 2px
     }
     .international-available-airlines-info span{
         font-size:12px
@@ -8056,7 +8122,7 @@ process Flight cdd
     }
     .my-info-detail span i,
     .side-logo-detail span i{
-        display:none
+        /*display:none*/
     }
     .capacity_s em{
         display:none
@@ -8075,10 +8141,7 @@ process Flight cdd
     .airlines-detail-box-2 span{
         width: 100%;
     }
-    .international-available-airlines-detail-tittle span.airline_s,
-    .international-available-airlines-detail-tittle span.flighttime_s{
-        display:none
-    }
+
     .inner-avlbl-itm div > a.international-available-btn{
         padding: 5px 20px ;
         font-size:13px
@@ -8132,6 +8195,7 @@ process Flight cdd
     /*}*/
     .international-available-info .international-available-item-left-Cell{
         border-top: none;
+        margin-top:30px;
     }
     .priceSortAdt i{
         font-size: 20px;
@@ -8161,11 +8225,9 @@ process Flight cdd
         flex-wrap:wrap;
     }
     .international-available-airlines-detail .airlines-detail-box{
-        width:100%
+        width:100% !important;
     }
-    .international-available-airlines-logo-detail{
-        margin-right:0
-    }
+
     .international-available-airlines-detail-tittle > span{
         font-size:16px;
         color:#000
@@ -8195,6 +8257,7 @@ process Flight cdd
     .s-u-result-item-change{
         flex-wrap:wrap;
         padding: 8px;
+        padding-bottom: 30px;
     }
     .s-u-result-item-div-change,
     .s-u-result-item-wrapper-change{
@@ -8536,7 +8599,7 @@ process Flight cdd
     transition: all ease .3s;
 }
 .price-btn--new svg{
-    width: 16px;
+    width: 14px;
     transition: all ease .3s;
     fill: #fff;
 }
@@ -8635,9 +8698,9 @@ process Flight cdd
         grid-template-columns: repeat(2, 1fr);
     }
 
-        .sorting2 > div {
-            width: 20% !important;
-        }
+    .sorting2 > div {
+        width: 20% !important;
+    }
     .sorting2 .dateprice, .sorting2 .filter_search_mobile_res{
         width:100% !important;
     }
@@ -9066,4 +9129,720 @@ process Flight cdd
     border-color: #ccc;
 }
 
+.flight-date-mildai{
+    font-size: 15px;
+    color: #333 !important;
+    font-family: inherit;
+    font-weight: 400;
+}
+/*@media (min-width: 768px) {*/
+/*.flight-detail-style{*/
+/*    position: fixed;*/
+/*    left:-25%;*/
+/*    top: 0;*/
+/*    z-index: 99999;*/
+/*    height: 100vh;*/
+/*    width: 25%;*/
+/*    background: white;*/
+/*    padding-top: 20px;*/
+/*    !*display:none;*!*/
+/*    transition:all 0.3s ;*/
+/*}*/
+/*    .left-0{*/
+/*        left:0%;*/
+/*    }*/
+/*.btn-tab-flight{*/
+/*    border:1px solid #ccc;*/
+/*    border-radius:10px*/
+
+/*}*/
+/*.tabs-detail-flight{*/
+/*    border:none !important;*/
+/*    gap:10px;*/
+/*}*/
+
+/*    ul.tabs li.current{*/
+/*        border:1px solid #ccc;*/
+/*        border-radius:10px*/
+/*    }*/
+
+/*    .position-fixed-flight{*/
+/*        position:fixed;*/
+/*    }*/
+/*    .my-more-info-btn-sidebar{*/
+/*        display: inline-flex;*/
+/*        align-items: center;*/
+/*        z-index: 1;*/
+/*        margin: 0 auto 0 45px;*/
+/*        padding: 5px 8px 5px 7px;*/
+/*        border-radius: 5px;*/
+/*        position: relative;*/
+/*        font-size: 12px;*/
+/*        font-family: inherit;*/
+/*        color: #777777;*/
+/*        transition: all ease 0.3s;*/
+/*        cursor: pointer;*/
+/*    }*/
+/*}*/
+
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    /* برای جلوگیری از اسکرول محتوا پشت سایدبار (اختیاری) */
+    overflow: hidden;
+}
+
+/* پنل سایدبار */
+.sidebar-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 560px;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    transition: transform 0.4s ease; /* انیمیشن روان */
+    overflow-y: auto;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%); /* مخفی در چپ */
+}
+
+/* حالت باز */
+.sidebar-panel.open {
+    left: 0;
+    transform: translateX(0) !important;
+}
+.sidebar-slide-enter-active,
+.sidebar-slide-leave-active {
+    transition: transform 0.3s ease;
+}
+.sidebar-slide-enter-from,
+.sidebar-slide-leave-to {
+    transform: translateX(0) !important;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+
+}
+
+.sidebar-header-title{
+    font-family:inherit;
+    font-size:19px
+}
+
+.sidebar-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color:#000;
+}
+.sidebar-close-btn-times{
+    color:var(--mainColor) !important
+}
+
+.sidebar-content {
+    padding: 15px;
+}
+
+
+/*  detail return flight and detail dept flight    */
+
+
+.international-available-airlines-detail-tittle {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.2s ease;
+}
+
+/* Header "رفت پرواز" */
+.international-available-airlines-detail-tittle > span:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--mainColor);
+    border-right: 3px solid var(--mainColor);
+    padding-right: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.international-available-airlines-detail-tittle i.fa-circle {
+    font-size: 0.6rem;
+    color: var(--mainColor);
+}
+
+/* هر بخش پرواز (کارت) */
+.international-available-airlines-details{
+    background: #fefefe;
+    border-radius: 1rem;
+    border: 1px solid #eef2f6;
+}
+
+.international-available-airlines-detail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    border-right:0 !important;
+    margin-right:0 !important;
+    border-top:1px solid #eef2f6;
+}
+
+
+/*
+
+
+/* اطلاعات خط هوایی (شرکت، شماره پرواز، کلاس) */
+.international-available-airlines-info-detail {
+    /*flex: 2;*/
+    display: flex;
+    /*flex-wrap: wrap;*/
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+}
+
+.international-available-airlines-info-detail span {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    font-size: 12px;
+    /*color: #334155;*/
+}
+
+.international-available-airlines-info-detail i {
+    font-style: normal;
+    /*color: #64748b;*/
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.international-available-airlines-info-detail em {
+    color: #cbd5e1;
+    margin: 0 0.25rem;
+}
+
+.flightnumber_s, .seatClass_s {
+    font-weight: 500;
+}
+
+.seatClass_s {
+    background: #fff;
+    /*padding: 0.2rem 0.6rem;*/
+    /*border-radius: 1rem;*/
+    font-size: 0.75rem;
+
+}
+
+/* جعبه‌های مبدا، مقصد و جزئیات بار/کلاس */
+.airlines-detail-box-foreign {
+    flex: 1;
+    min-width: 140px;
+    margin: 0.5rem 0;
+    padding: 0 0.75rem;
+}
+
+.airlines-detail-box-foreign:first-child {
+    border-right: none;
+}
+
+.airlines-detail-box-foreign span {
+    display: block;
+    line-height: 1.4;
+    margin: 0.25rem 0;
+}
+
+.airlines-detail-box-foreign .open {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.airlines-detail-box-foreign .openB {
+    font-weight: 700;
+    color: var(--mainColor);
+    direction: ltr;
+    display: inline-block;
+}
+
+/* جزییات (بار مجاز، کلاس نرخی) */
+.details-detail-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    border-right: 1px dashed #e2e8f0;
+}
+
+.details-detail-box span {
+    display: flex;
+    align-items: baseline;
+
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+}
+
+.capacity_s {
+    font-weight: 600;
+    color: #2d6a4f;
+    background: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.btn-baggage-search {
+    background: none;
+    border: none;
+    color: #2563eb;
+    cursor: pointer;
+    font-size: 0.75rem;
+    text-decoration: underline;
+    padding: 0;
+    margin-right: 0.25rem;
+}
+
+.btn-baggage-search:hover {
+    color: #1e40af;
+}
+
+/* بخش توقف (ترانزیت) */
+.airlines-stops-time {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: #fffbeb;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    margin-top: 0.75rem;
+    width: 100%;
+    font-size: 0.85rem;
+    border-right: 2px solid #f59e0b;
+}
+
+.airlines-stops-time-svg {
+    color: var(--mainColor);
+    width: 18px;
+    height: 18px;
+}
+
+.airlines-stops-time span {
+    line-height: 1.3;
+}
+
+.airlines-stops-time .open {
+    font-weight: 600;
+    /*color: #b45309;*/
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    /*.international-available-airlines-detail {*/
+    /*    flex-direction: column;*/
+    /*}*/
+
+    .international-available-airlines-logo-detail {
+
+        justify-content: flex-start;
+        margin-bottom: 0.75rem;
+    }
+
+    .airlines-detail-box-foreign {
+        padding: 0.5rem 0;
+        margin: 0;
+    }
+
+    .airlines-detail-box-foreign:last-child {
+        border-bottom: none;
+    }
+
+    .details-detail-box {
+        border-right: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+}
+
+
+.price-btn-new-sidebar{
+    height:70px;
+    border-radius:10px
+}
+
+@media (max-width: 640px) {
+
+    .international-available-airlines-detail-tittle {
+        padding: 0.75rem;
+    }
+
+    .international-available-airlines-info-detail {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        gap: 0.3rem;
+    }
+
+    .airlines-detail-box-foreign .openB {
+        font-size: 0.9rem;
+        text-align: center;
+        margin-top: 14px !important;
+    }
+
+    .airlines-stops-time {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        font-size: 0.75rem;
+    }
+    .price-btn-new-sidebar{
+        height:50px !important;
+    }
+}
+
+/* بهبود نمایش زمان و تاریخ */
+.origin-detail-box .open , .destination-detail-box .open{
+    text-align:center;
+}
+.origin-detail-box .openB,
+.destination-detail-box .openB {
+    letter-spacing: 0.5px;
+}
+
+/* Accessible focus */
+.btn-baggage-search:focus-visible,
+.international-available-airlines-detail:focus-within {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+    border-radius: 1rem;
+}
+
+/* آیکون‌های تقویم/ساعت (در صورت نیاز) */
+.airlines-detail-box-foreign .openB::before {
+    content: "🕘 ";
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-left: 0.2rem;
+}
+
+
+.sidebar-footer{
+    position: fixed;
+    bottom:0;
+    width:100%;
+}
+.SelectTicketDetail{
+    padding: 10px;
+    width: 94%;
+    margin: 0 auto;
+}
+
+
+
+/* اسکرول شخصی‌سازی شده برای مرورگرهای مدرن */
+.overflow-custom-scroll {
+    height: 700px !important;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mainColor) #e0e0e0;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.overflow-custom-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.overflow-custom-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.overflow-custom-scroll::-webkit-scrollbar-thumb {
+    background: var(--mainColor);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.overflow-custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+    cursor: pointer;
+}
+
+/* Firefox */
+.overflow-custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--mainColor) #f1f1f1;
+}
+
+
+
+
+
+.site-main-button-color-hover:hover{
+    cursor:pointer;
+}
+
+
+
+
+
+/* detail flight */
+
+.international-available-item-left-Cell-detail-flight{
+    width: 15% !important;
+}
+
+.international-available-item-right-Cell-detail-flight{
+    width: calc(100% - 15%) !important;
+}
+.flight-type-detail{
+    color:#888 !important;
+    font-size:12px !important;
+    font-weight: normal !important;
+}
+.wayticket_passengers-type-class{
+    position: absolute;
+    top: -20px;
+    left: calc(50% - 50px);
+    background: #ccc;
+    background-color: rgb(204, 204, 204);
+    padding: 1px 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    width: 100px;
+    cursor: context-menu;
+}
+
+.international-available-airlines-info-one{
+    /*border: 1px solid #eee;*/
+    width: fit-content;
+    margin:15px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    width:100%;
+}
+.flight-type-went-and-return{
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    border-radius: 10px 10px 0 0 !important;
+}
+.div-wrapper-flight{
+    border: 1px solid var(--mainColor);
+    border-radius: 10px;
+    width: 85%;
+    margin: 0 auto !important;
+}
+.hidden-flight-detail {
+    display: none;
+}
+.hidden-transit {
+    display: none !important;
+}
+.btn-show-details-dept,
+.btn-show-details-return{
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -39px;
+    left: 0;
+    transform: translateX(-50%);
+    color: var(--mainColor) !important;
+    width: calc(100% - 44%) !important;
+    background: transparent;
+    text-align: center;
+    right: 0;
+    cursor: pointer;
+}
+.btn-show-details-return-close{position: absolute;
+    left: 0;
+    right: 0;
+    top: 13%;
+    color: var(--mainColor) !important;
+    background: transparent;
+    text-align: center;
+    right: 0;
+    cursor: pointer;
+}
+.btn-show-details {
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -13px;
+    left: 0;
+    color: var(--mainColor) !important;
+    width: 100%;
+    background: transparent;
+    text-align: center;
+    right: 0;
+    cursor: pointer;
+}
+.btn-show-details-return-factor{
+    width:100% !important;transform:unset !important
+}
+.btn-show-details-return-close-oneway{
+  top:24%;
+    width: 100%;
+
+}
+.btn-show-details:hover,.btn-show-details-dept:hover,
+.btn-show-details-return:hover {
+    opacity: 0.8;
+    /*transform: scale(1.02);*/
+}
+.line-flight-brack{
+    border-top: 1px dashed #eee;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 175px;
+    width: 100%;
+}
+.line-flight-brack-one{
+    border-top: 1px dashed #eee;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+    width: 100%;
+}
+#moreDeptItems,#moreReturnItems{
+    border: 1px solid var(--mainColor);
+    border-radius: 10px;
+    width: 85%;
+    margin: 0 auto;
+}
+.btn-show-details-factor{
+    bottom:-21px 
+}
+@media (max-width: 786px) {
+
+    .international-available-item-left-Cell-detail-flight{
+        width: 100% !important;
+        padding-top:10px !important;
+        border-top: 1px dashed #ccc  !important;
+    }
+
+    .international-available-item-right-Cell-detail-flight{
+        width:100% !important;
+        margin-top: 50px;
+
+    }
+
+    .international-available-airlines-info-detail{
+        width:100% !important;
+
+    }
+    .international-available-airlines-detail-new{
+        width:100% !important;
+        /*border-top: 1px dashed #ccc  !important;*/
+        /*padding-top: 16px !important;*/
+        margin-top: 45px;
+    }
+
+    .international-available-airlines-info-detail-new{
+        width:100% !important;
+
+    }
+    .wayticket_passengers-type-class{
+        z-index:999;
+        top: 28px !important;
+        left: 2.7% !important;
+        width: 120px !important;
+    }
+    .airline-line::before {
+        display:none !important;
+    }
+    .plane-icon{
+        width:100%;
+        right:unset !important;
+        text-align:center;
+        margin-bottom: 10px;
+    }
+    .loc-icon , .loc-icon-destination{
+        display:none !important;
+    }
+    .airlines-info-inner span:first-child{
+        color:#888 !important;
+    }
+    .foreign .date-time > .date-flight{
+        display:flex !important;
+        font-size: 10px;
+    }
+    .international-available-airlines-info-one{
+        display:unset;
+    }
+    .foreign .international-available-airlines-info .airlines-info:nth-child(3){
+        width: 35% !important;
+    }
+    .foreign .international-available-airlines-info .airlines-info:nth-child(2){
+        width: 30% !important;
+    }
+    .foreign .international-available-airlines-info .airlines-info:nth-child(1){
+        width: 35% !important;
+    }
+    .foreign-date{
+        font-size:unset !important;
+    }
+    /*.foreign .international-available-airlines-detail.airlines-stops-time{*/
+    /*    border-radius:0 !important;*/
+    /*}*/
+    .line-flight-brack{
+    top: 312px;
+}
+  .btn-show-details-dept,
+    .btn-show-details-return{
+        width:100% !important;
+        transform: unset !important;
+        bottom: -39px;
+    }
+    .btn-show-details{
+        bottom:-32px
+    }
+    .btn-show-details-return-close{
+        top:27%;
+        width:100% !important;
+        transform: unset !important;
+    }
+    #moreDeptItems,#moreReturnItems{
+
+        width: 100%;
+
+    }
+    .btn-show-details-factor{
+        bottom:-32px !important
+    }
+    .btn-show-details-return-close-factor{
+        top: 24% !important;
+    }
+    .btn-show-details-return-factor{
+        width:100% !important;transform:unset !important
+    }
+    .div-wrapper-flight{
+        width: 100%;
+    }
+    .btn-show-details-return-close-oneway{
+        top:40%;
+    }
+
+}
 

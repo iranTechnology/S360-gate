@@ -158,7 +158,7 @@ class bookTourShow extends clientAuth
 
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
-        /*if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){1405/2/30 غیرفعال شذ
+       /* if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){1405/2/30 غیرفعال شذ
 
             $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
        

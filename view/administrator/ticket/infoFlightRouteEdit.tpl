@@ -47,7 +47,16 @@
                                placeholder="کد یاتای ایرلاین را وارد نمائید" value="{$objAirline->list['abbreviation']}">
                     </div>
 
-
+                    <div class="form-group col-sm-6">
+                        <label for="abbreviation" class="control-label">ایرلاین داخلی است ؟</label>
+                        <select
+                                class="form-control"
+                                name="foreignAirline">
+                                <option value="" {if $objAirline->list['foreignAirline'] == null || $objAirline->list['foreignAirline'] == ''}selected{/if}>انتخاب کنید</option>
+                                <option value="inactive" {if $objAirline->list['foreignAirline'] == 'inactive'}selected{/if}>بله</option>
+                                <option value="active" {if $objAirline->list['foreignAirline'] == 'active'}selected{/if}>خیر</option>
+                        </select>
+                    </div>
 
                     <div class="form-group col-sm-6">
                         <label for="photo" class="control-label">لوگو</label>

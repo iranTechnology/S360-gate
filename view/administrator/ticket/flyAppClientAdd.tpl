@@ -263,6 +263,32 @@
                         </select>
                     </div>
                     <div class="form-group col-sm-6">
+                        <label for="mainColor" class="control-label">رنگ اولیه</label>
+                        <input type="text" class="form-control" id="mainColor" name="mainColor"
+                               placeholder="رنگ اولیه را وارد نمائید">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="secondColor" class="control-label">رنگ ثانویه</label>
+                        <input type="text" class="form-control" id="secondColor" name="secondColor"
+                               placeholder="رنگ ثانویه را وارد نمائید">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="usedDemo" class="control-label">از چه دمویی استفاده میکنید؟  (الزامی جهت ساخت بنر خدمات سرچ باکس)</label>
+                        <select name="usedDemo" id="usedDemo" class="form-control">
+                            <option value="">انتخاب کنید</option>
+                            <option value="none"> از دمویی استفاده نمیکنم</option>
+                            <option value="ferdosi">دموی فردوسی</option>
+                            <option value="shahriar">دموی شهریار</option>
+                            <option value="saadi">دموی سعدی</option>
+                            <option value="foroogh">دموی فروغ</option>
+                            <option value="sepehri">دموی سپهری</option>
+                            <option value="attar">دموی عطار</option>
+                            <option value="khayam">دموی خیام</option>
+                            <option value="mowlavi">دموی مولوی</option>
+                            <option value="hafez">دموی حافظ</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
                         <label for="PasswordSms" class="control-label">لینک قوانین </label>
                         <input type="text" class="form-control" id="UrlRuls" name="UrlRuls"
                                placeholder="لینک قوانین  را وارد نمائید">

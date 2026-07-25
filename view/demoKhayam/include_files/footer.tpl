@@ -4,7 +4,7 @@
 {if $smarty.session.layout neq 'pwa'}
     {if $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotel && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintTicket && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservation && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservationAhuan}
         <footer>
-            <div class="container-fluid">
+            <div class="container">
                 <div class="parent-footer-pabpa">
                     <div class="item1-footer-pabpa">
                         <div class="data_phone">
@@ -32,18 +32,9 @@
 {*                            </p>*}
                             <p class="email_site">
                                 <i class="far fa-envelope"></i>
-                                {foreach key=key item=item from=$AdditionalData}
-
                                         <a href="mailto:{$smarty.const.CLIENT_EMAIL}">
-                                            {if $item.title eq 'ایمیل:'}
-                                                {$item.body}
-                                            {/if}
-
-                                            {if $item.title eq 'شماره واتس‌آپ و تلگرام:'}
-                                                    {$item.title} {$item.body}
-                                            {/if}
+                                            {$smarty.const.CLIENT_EMAIL}
                                         </a>
-                                {/foreach}
                             </p>
                         </div>
                     </div>
@@ -53,7 +44,7 @@
                                 تورهای سفر 360
                             </h4>
                             <ul class="">
-                                {assign var="internal_tour_params" value=['type'=>'','limit'=> '10','dateNow' => $dateNow,'category' => '4']}
+                                {assign var="internal_tour_params" value=['limit'=> '5','dateNow' => $dateNow , 'category' => '18']}
                                 {assign var='internalTours' value=$obj_main_page->getToursReservation($internal_tour_params)}
                                 {foreach key=key_tour item=item_tour from=$internalTours}
                                     <li>

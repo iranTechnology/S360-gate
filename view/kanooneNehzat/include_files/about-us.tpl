@@ -9,7 +9,7 @@
 <h5 class="titr-top">آژانس مسافرتی کانون نهضت تبلیغ</h5>
 <div>
 <h2>چرا کانون نهضت تبلیغ ؟</h2>
-<h3>مجری کاروان های گروهی و سفرهای انفرادی عتبات</h3>
+{*<h3>مجری کاروان های گروهی و سفرهای انفرادی عتبات</h3>*}
 </div>
 <p class="__aboutUs_class__">{$htmlContent = $about['body']|strip_tags}{$htmlContent|truncate:300}</p>
 <ul class="ul-about">
@@ -37,7 +37,7 @@
 <div class="col-lg-7 col-md-6 col-sm-12 col-12 parent-karevan-about-img">
 <div class="about-img position-relative">
 <div class="parent-img">
-<img alt="about" src="project_files/images/5497750661271-6.jpg"/>
+<img alt="about" src="project_files/images/abour_us_sec.jpg"/>
 </div>
 </div>
 </div>

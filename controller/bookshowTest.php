@@ -4774,7 +4774,7 @@ class bookshowTest extends clientAuth {
         }
 
         $FooterData0 = '<th colspan="2"></th>';
-        $FooterData0 .= '<th colspan="2">  
+        $FooterData0 .= '<th colspan="2"> 
                               <span class=" fa fa-user" style="margin-left: 5px;">' . $adt_qty . '</span>
                               <span class=" fa fa-child" style="margin-left: 5px;">' . $chd_qty . '</span>
                               <span class=" fa fa-child">' . $inf_qty . '</span> =>
@@ -4786,7 +4786,7 @@ class bookshowTest extends clientAuth {
         }
         $FooterData0 .= '<th>' . number_format($pricetotal) . '</th>';
         $FooterData0 .= '<th>' . number_format($priceAgency) . '</th>';
-        $FooterData0 .= '<th ></th>';
+        $FooterData0 .= '<th colspan="2"></th>';
         $FlightData['footer'][0] = $FooterData0;
 
         $FooterData1 = '<th colspan="4"></th>';
@@ -4796,7 +4796,7 @@ class bookshowTest extends clientAuth {
         }
         $FooterData1 .= '<th>'.$TitlePayment.'</th>';
         $FooterData1 .= '<th>'.$TitleAgencyShare.'</th>';
-        $FooterData1 .= '<th></th>';
+        $FooterData1 .= '<th colspan="2"></th>';
         $FlightData['footer'][1] = $FooterData1;
 
 
@@ -6130,10 +6130,10 @@ class bookshowTest extends clientAuth {
                 $TitleNameAgency='نام آژانس';
             }
             else {
-                $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit").' ';
-                $TitleBuyFromIt='<span> '.functions::Xmlinformation("PA_BUYFrom").' <br>  '.functions::Xmlinformation("Safar360").' </span> ';
-                $TitlePayment=functions::Xmlinformation("Discount").'<br/><del>'.functions::Xmlinformation("PassengerSale").'</del> ';
-                $TitleNameAgency=functions::Xmlinformation("Action").' ';
+                $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit");
+                $TitleBuyFromIt='<span> '.functions::Xmlinformation("PA_BUYFrom").' <br>  '.functions::Xmlinformation("Safar360").' </span>';
+                $TitlePayment=functions::Xmlinformation("Discount").'<br/><del>'.functions::Xmlinformation("PassengerSale").'</del>';
+                $TitleNameAgency=functions::Xmlinformation("Action");
             }
             $ColorTr='';
             if($hotel['status'] == 'BookedSuccessfully' && $hotel['service_type']=='اشتراکی'){//رزرو قطعی از مدل اشتراکی باشد
@@ -9621,10 +9621,10 @@ class bookshowTest extends clientAuth {
                 $TitleNameAgency='نام آژانس';
             }
             else {
-                $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit").' ';
-                $TitleBuyFromIt='<span>'.functions::Xmlinformation("PA_BUYFrom").' <br> '. functions::Xmlinformation("Safar360") .'</span> ';
-                $TitlePayment=functions::Xmlinformation("PassengerSale").' ';
-                $TitleNameAgency=functions::Xmlinformation("Action").' ';
+                $TitleAgencyShare=functions::Xmlinformation("PA_BUY_Yourprofit");
+                $TitleBuyFromIt='<span>'.functions::Xmlinformation("PA_BUYFrom").' <br> '. functions::Xmlinformation("Safar360") .'</span>';
+                $TitlePayment=functions::Xmlinformation("PassengerSale");
+                $TitleNameAgency=functions::Xmlinformation("Action");
             }
 
             $ColorTr='';
@@ -10256,10 +10256,6 @@ class bookshowTest extends clientAuth {
                     // تبدیل به شمسی
                     $_POST['to_date'] =$param['to_date'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['to_date']), '', '', 'en');
                 }
-                if (isset($param['DateFlight'])) {
-                    // تبدیل به شمسی
-                    $_POST['DateFlight'] =$param['DateFlight'] = dateTimeSetting::jdate("Y-m-d", strtotime($param['DateFlight']), '', '', 'en');
-                }
             }
 
             $DataTable = $this->MainFlightTicketHistory( $param );
@@ -10377,26 +10373,7 @@ class bookshowTest extends clientAuth {
             }
 
             $agencyName = $flightBook['NameAgency'] ?? $flightBook['agency_name'] ?? functions::Xmlinformation("Unknow");
-            $error = null;
-            if($flightBook['successfull'] === 'error'){
-                $request_number = $flightBook['request_number'];
-                $errorData = $this->getModel('logErrorFlightsModel')->get()
-                    ->where('request_number', $request_number)
-                    ->where('client_id', $flightBook['client_id'])
-                    ->find();
-
-                $message_admin = $errorData['message_admin'] ? $errorData['message_admin'] :  '';
-
-                if (empty($message_admin) || trim($message_admin) === '؟') {
-                    $err = functions::Xmlinformation("Errorunknown");
-                } else {
-                    $err = functions::Xmlinformation("Errorknown");
-                }
-
-//                functions::insertLog(json_encode($errorData), '00000000000000000000000000000000shojaee');
-                $error = $err;
-            }
-            $statusText = $this->getFlightStatusText($flightBook , $error);
+            $statusText = $this->getFlightStatusText($flightBook);
 
             $AllBookings[] = [
                 "id" => $CountRow++,
@@ -10406,7 +10383,6 @@ class bookshowTest extends clientAuth {
                 "passenger_name" => $passengerName,
                 "agency_name" => $agencyName,
                 "status" => $statusText,
-                "errorData" => $errorData,
                 "request_time" => dateTimeSetting::jdate('H:i:s', $flightBook['creation_date_int']),
             ];
         }
@@ -10554,7 +10530,7 @@ class bookshowTest extends clientAuth {
     /**
      * دریافت متن وضعیت پرواز (تمام حالت‌ها)
      */
-    private function getFlightStatusText($flightBook,$error) {
+    private function getFlightStatusText($flightBook) {
         $status = $flightBook['successfull'] ?? functions::Xmlinformation("Unknown");
 
         if ($flightBook['request_cancel'] == 'confirm') {
@@ -10562,8 +10538,10 @@ class bookshowTest extends clientAuth {
         }
 
 
-        if ($status === 'error' && $error !== null) {
-            return $error;
+        if($flightBook['successfull'] === 'error'){
+            $errorsController = Load::controller('errors');
+            $errors = $errorsController->showAllErrors('flight');
+            functions::insertLog(json_encode($errors),'00000000000000000shojaee');
         }
 
         $statusMap = [
@@ -10574,7 +10552,7 @@ class bookshowTest extends clientAuth {
             'credit' => functions::Xmlinformation("CreditSelection"),
             'processing' => functions::Xmlinformation("processingPrintFlight"),
             'pending' => functions::Xmlinformation("pendingPrintFlight"),
-            'error' => $error ,
+            'error' => functions::Xmlinformation("reserveError"),
             'nothing' => functions::Xmlinformation("NoStatus"),
             '' => functions::Xmlinformation("Unknown")
         ];

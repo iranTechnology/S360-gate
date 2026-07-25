@@ -344,10 +344,10 @@
 {*                                {/if}*}
 {*                            </li>*}
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/105/all">
-                                    تورهای پاییز و زمستان
+                                <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/108/all">
+                                    تورهای بهار و تابستان
                                 </a>
-                                {assign var="type" value="105"}
+                                {assign var="type" value="108"}
                                 {assign var='autumnTours' value=$objResult->ReservationTourCountries(false, false  ,  $type)}
                                 {assign var="min_autumn_tour" value=0}
                                 {assign var="max_autumn_tour" value=5}
@@ -373,8 +373,8 @@
                                         {/foreach}
                                         {if $autumnTours|count>5}
                                             <li>
-                                                <a class='all-tour-menu' href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/105/all">
-                                                    همه تورهای پاییزی
+                                                <a class='all-tour-menu' href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/108/all">
+                                                    همه تورهای بهاری و تابستانی
                                                     <i class="fa-solid fa-arrow-left"></i>
                                                 </a>
                                             </li>
@@ -383,12 +383,12 @@
                                 {/if}
                             </li>
 
-                            <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/14/all">
-                                    <img class='img-noruz' src="project_files/images/sabze.png" alt="img">
-                                    تورهای نوروز 1405
-                                </a>
-                            </li>
+{*                            <li>*}
+{*                                <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/14/all">*}
+{*                                    <img class='img-noruz' src="project_files/images/sabze.png" alt="img">*}
+{*                                    تورهای نوروز 1405*}
+{*                                </a>*}
+{*                            </li>*}
 
 {*                            <li>*}
 {*                                <a href="javascript:">تورهای پاییز</a>*}

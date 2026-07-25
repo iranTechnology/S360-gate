@@ -9,7 +9,7 @@
 
 <div class="col-lg-4 col-md-6 col-sm-6 col-12 col_search">
     <div class="form-group">
-        <select data-placeholder="##Origincity##"
+        <select data-placeholder="##Origin##"
                 onchange="getArrivalCitiesTour('internal',this)"
                 name="internal_origin_tour" id="internal_origin_tour"
                 class="select2_in select2-hidden-accessible internal-origin-tour-js"

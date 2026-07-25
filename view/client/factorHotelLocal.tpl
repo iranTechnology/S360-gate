@@ -399,34 +399,88 @@
                             {*                            <label class="FilterHoteltypeName site-main-text-color-a" for="discount_code">##Ihavediscountcodewantuse##</label>*}
 
                             <div class="col-sm-12  parent-discount  ">
-                                <div class="row separate-part-discount align-items-center">
-                                    <div class="col-sm-6 col-xs-12">
-                                        <label for="discount-code">##Codediscount## :</label>
-                                        <input type="text" id="discount-code" class="form-control">
+                                <div class="discount-code-new">
+                                    <div class="title-discount-code">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M200.3 81.5C210.9 61.5 231.9 48 256 48s45.1 13.5 55.7 33.5C317.1 91.7 329 96.6 340 93.2c21.6-6.6 46.1-1.4 63.1 15.7s22.3 41.5 15.7 63.1c-3.4 11 1.5 22.9 11.7 28.2c20 10.6 33.5 31.6 33.5 55.7s-13.5 45.1-33.5 55.7c-10.2 5.4-15.1 17.2-11.7 28.2c6.6 21.6 1.4 46.1-15.7 63.1s-41.5 22.3-63.1 15.7c-11-3.4-22.9 1.5-28.2 11.7c-10.6 20-31.6 33.5-55.7 33.5s-45.1-13.5-55.7-33.5c-5.4-10.2-17.2-15.1-28.2-11.7c-21.6 6.6-46.1 1.4-63.1-15.7S86.6 361.6 93.2 340c3.4-11-1.5-22.9-11.7-28.2C61.5 301.1 48 280.1 48 256s13.5-45.1 33.5-55.7C91.7 194.9 96.6 183 93.2 172c-6.6-21.6-1.4-46.1 15.7-63.1S150.4 86.6 172 93.2c11 3.4 22.9-1.5 28.2-11.7zM256 0c-35.9 0-67.8 17-88.1 43.4c-33-4.3-67.6 6.2-93 31.6s-35.9 60-31.6 93C17 188.2 0 220.1 0 256s17 67.8 43.4 88.1c-4.3 33 6.2 67.6 31.6 93s60 35.9 93 31.6C188.2 495 220.1 512 256 512s67.8-17 88.1-43.4c33 4.3 67.6-6.2 93-31.6s35.9-60 31.6-93C495 323.8 512 291.9 512 256s-17-67.8-43.4-88.1c4.3-33-6.2-67.6-31.6-93s-60-35.9-93-31.6C323.8 17 291.9 0 256 0zM192 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm160 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM337 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L175 303c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L337 209z"></path></svg>
+                                        <h2>##RegisterDiscountCode##</h2>
                                     </div>
-                                    <div class="col-sm-2 col-xs-12 align-self-end">
-                                    <span class="input-group-btn">
-                                        <input type="hidden" name="priceWithoutDiscountCode"
-                                               id="priceWithoutDiscountCode"
-                                               value="{$paymentPriceCurrency.AmountCurrency}"/>
-                                        <button type="button"
-                                                onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}')"
-                                                class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">##Reviewapplycode##  </button>
-                                    </span>
-                                    </div>
-                                    <div class="col-sm-4 col-xs-12">
+                                    <div class="discount-code-data">
+                                        <h3>##IfYouHaveAdiscountCode##</h3>
+                                        <div class="form-discount-code">
+                                            <input type="text" placeholder="##Codediscount## ..." id="discount-code">
+                                            <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
+                                                   value="{$paymentPriceCurrency.AmountCurrency}"/>
+                                            <button type="button" onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}')" class="site-bg-main-color">
+                                                ##Apply##
+                                            </button>
+                                        </div>
                                         <span class="discount-code-error"></span>
                                     </div>
                                 </div>
-                                <div class="row separate-part-discount">
-                                    <div class="info-box__price info-box__item pull-left">
-                                        <div class="item-discount">
-                                            <span class="item-discount__label">##Amountpayable## :</span>
-                                            <span class="price__amount-price price-after-discount-code">{$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}</span>
-                                            <span class="price__unit-price">{$paymentPriceCurrency.TypeCurrency}</span>
+                                <div class="row">
+                                    {*                            <div class="info-box__price info-box__item pull-left">
+                                                                    <div class="item-discount">
+                                                                        <span class="item-discount__label">##Amountpayable## :</span>
+                                                                        <span class="price__amount-price price-after-discount-code">{$objFunctions->numberFormat($objDetail->Amount)}</span>
+                                                                        <span class="price__unit-price">{$objDetail->AdtPriceType[$direction]}</span>
+                                                                    </div>
+                                                                </div>*}
+                                    <div class="a-takhfif-box">
+                                        <div class="a-takhfif-box-inner">
+                                            <div class="a-takhfif-before">
+                                                <span>##PreviousPrice##</span>
+                                                <span>
+                                                    {$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}
+                                                <i>{$paymentPriceCurrency.TypeCurrency}</i>
+                                                </span>
+                                            </div>
+                                            <div class="a-takhfif-offer">
+                                                <span>##DiscountAmount##</span>
+                                                <span><span class="discountAmount">0</span>
+                                                <i>{$paymentPriceCurrency.TypeCurrency}</i></span>
+                                            </div>
+                                            <div class="a-takhfif-after">
+                                                <span>##FinalAmount##</span>
+                                                <span class="price-after-discount-code">
+                                                    {$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}
+                                                <i>{$paymentPriceCurrency.TypeCurrency}</i>
+                                                </span>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+
+{*                                <div class="row separate-part-discount align-items-center">*}
+{*                                    <div class="col-sm-6 col-xs-12">*}
+{*                                        <label for="discount-code">##Codediscount## :</label>*}
+{*                                        <input type="text" id="discount-code" class="form-control" name="discount-code">*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-2 col-xs-12 align-self-end">*}
+{*                                    <span class="input-group-btn">*}
+{*                                        <input type="hidden" name="priceWithoutDiscountCode"*}
+{*                                               id="priceWithoutDiscountCode"*}
+{*                                               value="{$paymentPriceCurrency.AmountCurrency}"/>*}
+{*                                        <button type="button"*}
+{*                                                onclick="setDiscountCode('{$serviceType}', '{$smarty.post.CurrencyCode}')"*}
+{*                                                class="site-secondary-text-color site-main-button-flat-color iranR discount-code-btn">##Reviewapplycode##  </button>*}
+{*                                    </span>*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-4 col-xs-12">*}
+{*                                        <span class="discount-code-error"></span>*}
+{*                                    </div>*}
+{*                                </div>*}
+{*                                <div class="row separate-part-discount">*}
+{*                                    <div class="info-box__price info-box__item pull-left">*}
+{*                                        <div class="item-discount">*}
+{*                                            <span class="item-discount__label">##Amountpayable## :</span>*}
+{*                                            <span class="price__amount-price price-after-discount-code">{$objFunctions->numberFormat($paymentPriceCurrency.AmountCurrency)}</span>*}
+{*                                            <span class="price__unit-price">{$paymentPriceCurrency.TypeCurrency}</span>*}
+{*                                        </div>*}
+{*                                    </div>*}
+{*                                </div>*}
                             </div>
                         </div>
                     {/if}
@@ -567,7 +621,7 @@
         {/if}
         {assign var="bankAction" value="`$smarty.const.ROOT_ADDRESS`/goBankHotelLocal"}
 
-        {assign var="creditInputs" value=['flag' => 'buyByCreditHotelLocal', 'factorNumber' => $objFactor->temproryHotel['factor_number'], 'paymentStatus' => $paymentStatusValue, 'typeApplication' => $smarty.post.typeApplication]}
+        {assign var="creditInputs" value=['flag' => 'buyByCreditHotelLocal', 'factorNumber' => $objFactor->temproryHotel['factor_number'], 'paymentStatus' => $paymentStatusValue, 'typeApplication' => $smarty.post.typeApplication , 'serviceType' => $serviceType]}
         {assign var="creditAction" value="`$smarty.const.ROOT_ADDRESS`/returnBankHotelLocal"}
 
         {assign var="currencyPermition" value="0"}

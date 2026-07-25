@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * Class listCancelUser
  * @property listCancelUser $listCancelUser
@@ -34,11 +36,11 @@ class listCancelUser extends clientAuth
 
 
         $sql = "
-                SELECT 
-                    cancel.*, 
-                    book.pnr, 
-                    book.eticket_number, 
-                    book.pid_private,
+SELECT 
+    cancel.*, 
+    book.pnr, 
+    book.eticket_number, 
+    book.pid_private,
                     book.origin_city,
                     book.desti_city,
                     book.airline_name,
@@ -46,15 +48,16 @@ class listCancelUser extends clientAuth
                     hotel.type_application,
                     hotel.city_name,
                     hotel.hotel_name        
-                FROM cancel_ticket_details_tb AS cancel
-                LEFT JOIN book_local_tb AS book 
-                    ON book.request_number = cancel.RequestNumber
-                LEFT JOIN book_hotel_local_tb AS hotel
-                    ON hotel.factor_number = cancel.FactorNumber
-                WHERE 1=1
-                ";
+FROM cancel_ticket_details_tb AS cancel
+LEFT JOIN book_local_tb AS book 
+    ON book.request_number = cancel.RequestNumber
+LEFT JOIN book_hotel_local_tb AS hotel
+    ON hotel.factor_number = cancel.FactorNumber
+WHERE 1=1
+";
 
         if (!empty($_POST['RequestNumber']) && !empty($_POST['pnr']) && !empty($_POST['Status'])) {
+
             if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
                 $date_of = explode('-', $_POST['date_of']);
                 $date_to = explode('-', $_POST['to_date']);
@@ -62,7 +65,7 @@ class listCancelUser extends clientAuth
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
                 $sql .= " AND DateRequestMemberInt >= '{$date_of_int}' AND DateRequestMemberInt  <= '{$date_to_int}'";
             }
-          }
+        }
 
         $requestNumber = trim($_POST['RequestNumber']);
         if (!empty($_POST['RequestNumber'])) {
@@ -82,6 +85,8 @@ class listCancelUser extends clientAuth
         }
         $sql .="GROUP BY cancel.DateRequestMemberInt DESC";
         $res = $Model->select($sql);
+
+
         return $res;
     }
 
@@ -132,6 +137,21 @@ class listCancelUser extends clientAuth
             $result = $this->admin->ConectDbClient('', $Param['ClientId'], "Update", $data, "cancel_ticket_details_tb", $Condition);
 
             if ($result) {
+                if ($InfoCancel['TypeCancel'] == 'hotel') {
+                    $bookHotelData = $this->getModel('bookHotelLocalModel')
+                        ->get(['type_application'])->where('factor_number' , $InfoCancel['FactorNumber'])->find();
+                    if ($bookHotelData['type_application'] == 'reservation') {
+                        $data = ['status' => 'Cancelled'];
+                        $where = ['factor_number' => $InfoCancel['FactorNumber']];
+                        $UpdateBookHotelData = $this->getModel('bookHotelLocalModel')
+                            ->updateWithBind($data, $where);
+                        if ($UpdateBookHotelData) {
+                            $UpdateReportHotelData = $this->getModel('reportHotelModel')
+                                ->updateWithBind($data, $where);
+                        }
+                    }
+                }
+
 
                 $smsController = Load::controller('smsServices');
                 $objSms = $smsController->initService('1');
@@ -198,7 +218,8 @@ class listCancelUser extends clientAuth
                             );
                             $smsController->sendSMS($smsArray);
                         }
-                    } if($InfoCancel['TypeCancel']=='hotel'){
+                    }
+                    if($InfoCancel['TypeCancel']=='hotel'){
                         $sql = "
                         SELECT member_mobile , factor_number , hotel_name
                         FROM book_hotel_local_tb
@@ -227,18 +248,19 @@ class listCancelUser extends clientAuth
                                 'cellNumber' => $cellNumber
                             );
                             $smsController->sendSMS($smsArray);
+                        }
+
                     }
 
+                    return 'success : درصد تعیین شده با موفقیت ثبت شد';
                 }
-
-                return 'success : درصد تعیین شده با موفقیت ثبت شد';
+                else {
+                    return 'error : خطا در ثبت درصد ،لطفا مجددا تلاش نمائید';
+                }
             } else {
-                return 'error : خطا در ثبت درصد ،لطفا مجددا تلاش نمائید';
+                return 'error : در خواست  نا معتبر است';
             }
-        } else {
-            return 'error : در خواست  نا معتبر است';
-        }
-    }}
+        }}
     public function format_hour($num)
     {
 
@@ -279,7 +301,7 @@ class listCancelUser extends clientAuth
 
         $id = $Param['id'];
         $RequestNumber = $Param['RequestNumber'];
-      
+
         $sql = "SELECT  * FROM  cancel_ticket_details_tb  WHERE  id={$id} AND RequestNumber='{$RequestNumber}' ";
         $result = $Model->load($sql);
 
@@ -601,7 +623,7 @@ class listCancelUser extends clientAuth
     public function getReportCancelAgency($agencyId)
     {
         /** @var cancelTicketModel $cancelTicketModel */
-	    $cancelTicketModel = Load::getmodel('cancelTicketModel');
+        $cancelTicketModel = Load::getmodel('cancelTicketModel');
         $infoMembersAgency =  $cancelTicketModel->getReportCancelAgency($agencyId);
 
         $dataMemberAgency = array();

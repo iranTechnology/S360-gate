@@ -46,7 +46,18 @@
                             <hr class='m-0 mb-4 w-100'>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="language" class="control-label" id="PA_Ab_LANG">زبان</label>
+                                    <label for="enamad_code" class="control-label">کد نماد اعتماد</label>
+                                    <input type='text' class='form-control' id='enamad_code' name='enamad_code'
+                                           value="{$aboutUsData['enamad_code']}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="enamad_code" class="control-label">آیدی نماد اعتماد</label>
+                                    <input type='text' class='form-control' id='enamad_code' name='enamad_id'
+                                           value="{$aboutUsData['enamad_id']}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="language" class="control-label">زبان</label>
                                     <select onchange='aboutUsLanguage(this.value);' name='lang' class="form-control" id="language">
                                         {foreach $languages as $value=>$title}
                                              <option {if $value eq $smarty.get.lang}selected{/if} value="{$value}">{$title}</option>

@@ -83,7 +83,6 @@
 </div>
 
 
-
 <div class="parent-hotel-details--new w-100">
 
 </div>

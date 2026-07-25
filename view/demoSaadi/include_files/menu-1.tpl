@@ -1,11 +1,11 @@
 {load_presentation_object filename="reservationBasicInformation" assign="objResult"}
-<header class="i_modular_menu header_area {if $smarty.const.GDS_SWITCH neq 'mainPage' && $smarty.const.GDS_SWITCH neq 'page'} header-page {/if}">
+<header class="i_modular_menu header_area {if $smarty.const.GDS_SWITCH neq 'mainPage'} header-page {/if}">
     <div class="main_header_area animated" id="navbar">
         <div class="container">
             <nav class="navigation d-flex align-items-center">
                 <div class="nav-header">
                     <a class="d-flex align-items-center" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                        <img alt="{$obj->Title_head()}" src="project_files/images/logo.png"/>
+                        <img id="siteLogo" alt="{$obj->Title_head()}" src="project_files/images/logo.png"/>
                     </a>
                 </div>
                 <div class="nav-menus-wrapper">

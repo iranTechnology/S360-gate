@@ -1,260 +1,167 @@
-$('.owl-ads1').owlCarousel({
+$('.owl-tour-ghods').owlCarousel({
     rtl:true,
-    loop:false,
-    margin:20,
+    loop:true,
+    margin:30,
     nav:false,
     navText: ["<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M505 273c9.4-9.4 9.4-24.6 0-33.9L369 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l95 95L24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l406.1 0-95 95c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L505 273z\"/></svg>","<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M7 239c-9.4 9.4-9.4 24.6 0 33.9L143 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-95-95L488 280c13.3 0 24-10.7 24-24s-10.7-24-24-24L81.9 232l95-95c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L7 239z\"/></svg>"],
     autoplay: true,
-    autoplayTimeout: 5000,
-    autoplaySpeed:1000,
+    autoplayTimeout: 15000,
+    autoplaySpeed:5000,
     dots:true,
     responsive:{
         0:{
             items:1,
         },
         600:{
-            items:1,
+            items:2,
         },
         1000:{
-            items:1
+            items:3
         }
     }
 });
-$('.owl-ads2').owlCarousel({
+$('.owl-hotel-ghods').owlCarousel({
     rtl:true,
-    loop:false,
-    margin:20,
+    loop:true,
+    margin:30,
     nav:false,
     navText: ["<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M505 273c9.4-9.4 9.4-24.6 0-33.9L369 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l95 95L24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l406.1 0-95 95c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L505 273z\"/></svg>","<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M7 239c-9.4 9.4-9.4 24.6 0 33.9L143 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-95-95L488 280c13.3 0 24-10.7 24-24s-10.7-24-24-24L81.9 232l95-95c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L7 239z\"/></svg>"],
     autoplay: true,
-    autoplayTimeout: 8000,
-    autoplaySpeed:1000,
+    autoplayTimeout: 15000,
+    autoplaySpeed:5000,
     dots:true,
     responsive:{
         0:{
             items:1,
         },
         600:{
-            items:1,
+            items:2,
         },
         1000:{
-            items:1
+            items:3
         }
     }
 });
-
-$('.owl-work-team-migration').owlCarousel({
+$('.tour-owl').owlCarousel({
     rtl:true,
     loop:true,
     margin:10,
     nav:false,
-    dots: false,
+    navText: ["<span class='fas fa-chevron-right'></span>","<span class='fas fa-chevron-left'></span>"],
     autoplay: true,
-    autoplayTimeout: 8000,
+    autoplayTimeout: 15000,
     autoplaySpeed:5000,
+    dots:true,
     responsive:{
         0:{
+            items:1
+        },
+        768:{
             items:2
         },
-        600:{
+        992:{
             items:3
+        }
+    }
+});
+
+var owl_4 = $('.owl_4');
+owl_4.owlCarousel({
+    rtl: true,
+    dots:false,
+    loop: false,
+    margin: 10,
+    navText: ["<span class='fas fa-chevron-right'></span>","<span class='fas fa-chevron-left'></span>"],
+    nav:true,
+    autoplaySpeed:1000,
+    autoplay: true,
+    autoplayTimeout: 4500,
+    autoplayHoverPause: true,
+    responsiveClass: true,
+    responsive: {
+        0: {
+            items: 1,
         },
-        1000:{
-            items:7
+        600: {
+            items: 2,
+        },
+        1000: {
+            items: 4,
         }
     }
 });
 
-
-function clickScroll(e){
-    $("html").animate({
-        scrollTop: $(`#${e}`).offset().top - 30
-    }, 1000);
-}
-
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
-
-$(".select2").select2();
-
-
-// hide #back-top first
-$("#scroll-top").addClass('d-none');
-// fade in #back-top
-$(function () {
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('#scroll-top').addClass('d-flex');
-            $('#scroll-top').removeClass('d-none');
-        } else {
-            $('#scroll-top').removeClass('d-flex');
-            $('#scroll-top').addClass('d-none');
-        }
-    });
-    // scroll body to 0px on click
-    $('#scroll-top').click(function () {
-        $('body,html').animate({
-            scrollTop: 0
-        }, 800);
-    });
-});
-
-
-$(document).ready(function() {
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 200) {
-            $('.header_area').addClass('scrolled');
-        } else {
-            $('.header_area').removeClass('scrolled');
-        }
-    });
-});
-
-$(document).ready(function() {
-
-
-    $('.cbox-package-count-passenger-js').click((e) => {
-        e.stopPropagation()
-    })
-    $('body').click(() => {
-        $('.cbox-package-count-passenger-js').hide();
-    })
-
-
-    // if($(window).width() > 576){
-    //     $('#Flight-internal-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/u1.jpg")');
-    //     });
-    //     $('#Flight-international-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/356198391214474779airline.jpg")');
-    //     });
-    //     $('#Hotel-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/hotel-bg-js.jpg")');
-    //     });
-    //     $('#Bus-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/bus4.jpg")');
-    //     });
-    //     $('#Train-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/train6.jpg")');
-    //     });
-    //     $('#Insurance-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/bimeh-bg-js.jpg")');
-    //     });
-    //     $('#Tour-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/364496210tour.jpg")');
-    //     });
-    //     $('#Package-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/bg-hotelParvaz.jpg")');
-    //     });
-    //     $('#Entertainment-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/tafrihat-bg-js.jpg")');
-    //     });
-    //     $('#Europcar-tab').click(function (){
-    //         $('.banner-safiran').css('background-image', 'url("images/bg-car.jpg")');
-    //     });
-    // }
-});
-
-
+// کد برای انتخاب نفر در بیمه
+//----------------------start passenger Count js-----------------------------//
 document.addEventListener('DOMContentLoaded', function() {
-    const flightTab = document.getElementById('Flight_internal');
-    const buttons = flightTab.querySelectorAll('.btn-switch-searchBox');
-    const inputOneWay = document.getElementById('arrival_date_internal');
-    const inputReturn = document.getElementById('departure_date_internal');
+    const dropdownToggleBime = document.querySelector('.dropdown-toggle-insurance');
+    const dropdownMenu = document.querySelector('.dropdown-menu-insurance');
+    const increaseButtons = document.querySelectorAll('.increase');
+    const decreaseButtons = document.querySelectorAll('.decrease');
 
-    buttons.forEach(button => {
+    function updateTotalPassengers() {
+        const counts = document.querySelectorAll('.counter-insurance span');
+        let total = 0;
+        counts.forEach((count ,index) => {
+            const countValue = parseInt(count.textContent);
+            total += countValue;
+        });
+        if(dropdownToggleBime != null) {
+            if (total > 0 ) {
+                dropdownToggleBime.textContent = total + ' مسافر';
+            } else {
+                dropdownToggleBime.textContent = 'تعداد مسافر';
+            }
+        }
+        $('#passengers-count-js').val(total);
+    }
+
+    if (dropdownToggleBime != null) {
+        // باز و بسته کردن منو با کلیک روی دکمه
+        dropdownToggleBime.addEventListener('click', function(event) {
+            event.stopPropagation(); // جلوگیری از انتشار رویداد به body
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // بستن منو با کلیک خارج از آن
+        document.addEventListener('click', function(event) {
+            if (!dropdownMenu.contains(event.target) && !dropdownToggleBime.contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+    }
+
+
+    increaseButtons.forEach((button, index) => {
         button.addEventListener('click', function() {
-            // حذف کلاس active از همه دکمه‌ها
-            buttons.forEach(btn => btn.classList.remove('active'));
+            const countSpan = this.parentElement.querySelector('span');
+            let group = this.getAttribute('data-age')
+            let count = parseInt(countSpan.textContent);
+            countSpan.textContent = count + 1;
+            updateTotalPassengers();
+            const newInput = createAgeInput(index + '-' + count , group);
+            this.parentElement.parentElement.appendChild(newInput);
+        });
+    });
 
-            // اضافه کردن کلاس active به دکمه کلیک‌شده
-            this.classList.add('active');
-
-            // تغییر وضعیت disabled بر اساس دکمه کلیک‌شده
-            if (this.getAttribute('data-text') === 'یک طرفه') {
-                inputOneWay.disabled = true;
-                inputReturn.disabled = false;
-                inputOneWay.parentElement.style.setProperty('opacity', '0.3', 'important');
-                inputReturn.parentElement.style.opacity = '1';
-            } else if (this.getAttribute('data-text') === 'دو طرفه') {
-                inputOneWay.disabled = false;
-                inputReturn.disabled = false;
-                inputOneWay.parentElement.style.opacity = '1';
-                inputReturn.parentElement.style.opacity = '1';
+    decreaseButtons.forEach((button, index) => {
+        button.addEventListener('click', function() {
+            const countSpan = this.parentElement.querySelector('span');
+            let count = parseInt(countSpan.textContent);
+            if (count > 0) {
+                countSpan.textContent = count - 1;
+                updateTotalPassengers();
+                const inputId = 'txt_birth_insurance' + index + '-' + (count - 1);
+                const inputToRemove = document.getElementById(inputId);
+                if (inputToRemove) {
+                    inputToRemove.remove();
+                }
             }
         });
     });
 
-    // تنظیم اولیه بر اساس دکمه active
-    const activeButton = flightTab.querySelector('.btn-switch-searchBox.active');
-    if (activeButton.textContent === 'یک طرفه') {
-        inputOneWay.disabled = true;
-        inputOneWay.parentElement.style.opacity = '0.3';
-    }
+    updateTotalPassengers();
 });
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const flightTab2 = document.getElementById('Flight_external');
-    const buttons = flightTab2.querySelectorAll('.btn-switch-searchBox');
-    const inputOneWay = document.getElementById('arrival_date_international');
-    const inputReturn = document.getElementById('departure_date_international');
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            // حذف کلاس active از همه دکمه‌ها
-            buttons.forEach(btn => btn.classList.remove('active'));
-
-            // اضافه کردن کلاس active به دکمه کلیک‌شده
-            this.classList.add('active');
-
-            // تغییر وضعیت disabled بر اساس دکمه کلیک‌شده
-            if (this.getAttribute('data-text') === 'یک طرفه') {
-                inputOneWay.disabled = true;
-                inputReturn.disabled = false;
-                inputOneWay.parentElement.style.setProperty('opacity', '0.3', 'important');
-                inputReturn.parentElement.style.setProperty('opacity', '1', 'important');
-            } else if (this.getAttribute('data-text') === 'رفت و برگشت') {
-                inputOneWay.disabled = false;
-                inputReturn.disabled = false;
-                inputOneWay.parentElement.style.setProperty('opacity', '1', 'important');
-                inputReturn.parentElement.style.setProperty('opacity', '1', 'important');
-
-            }
-        });
-    });
-
-    // تنظیم اولیه بر اساس دکمه active
-    const activeButton = flightTab2.querySelector('.btn-switch-searchBox.active');
-    if (activeButton.textContent === 'یک طرفه') {
-        inputOneWay.disabled = true;
-        inputOneWay.parentElement.style.opacity = '0.3';
-    }
-});
-
-const tourPlusHotelRadio = document.getElementById('rdo-50');
-const internalTourRadio = document.getElementById('rdo-40');
-
-const tourPlusHotelInfo = document.getElementById('Package');
-const internalTourInfo = document.getElementById('internalTourInfo');
-
-function updateDisplay() {
-    if (tourPlusHotelRadio.checked) {
-        tourPlusHotelInfo.classList.add('flex');
-        internalTourInfo.classList.remove('flex');
-    } else if (internalTourRadio.checked) {
-        internalTourInfo.classList.add('flex');
-        tourPlusHotelInfo.classList.remove('flex');
-    }
-}
-
-tourPlusHotelRadio.addEventListener('change', updateDisplay);
-internalTourRadio.addEventListener('change', updateDisplay);
-
-
-updateDisplay();
-
-
 
 function createAgeInput(index , ageGroup) {
     console.log('ageGroup' ,  ageGroup)
@@ -305,3 +212,102 @@ function generateBirthDate(ageGroup){
     return `${year}-${month}-${day}`; // Format: YYYY-MM-DD
 }
 
+//----------------------end passenger Count js-----------------------------//
+
+function clickScroll(e){
+    $("html").animate({
+        scrollTop: $(`#${e}`).offset().top - 30
+    }, 1000);
+}
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
+$(".select2").select2();
+
+$(".dropdown_custom > div").hide()
+$(".dropdown_custom > button").click((e) => {
+    $(".dropdown_custom > div").toggle()
+    e.stopPropagation()
+})
+$(".dropdown_custom > button").click((e) => {
+    // console.log($(".dropdown_custom > button > span"))
+    $(".dropdown_custom > button > span").text(e.target.innerText);
+    // console.log(e.target.innerText)
+})
+$("html,body").click(() => {
+    $(".dropdown_custom > div").hide()
+})
+function textInput(e) {
+    $(".dropdown_custom > button > span").text(e);
+
+}
+
+// hide #back-top first
+$("#scroll-top").addClass('d-none');
+// fade in #back-top
+$(function () {
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('#scroll-top').addClass('d-flex');
+            $('#scroll-top').removeClass('d-none');
+        } else {
+            $('#scroll-top').removeClass('d-flex');
+            $('#scroll-top').addClass('d-none');
+        }
+    });
+    // scroll body to 0px on click
+    $('#scroll-top').click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 800);
+    });
+});
+
+
+$(document).ready(function() {
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 200) {
+            $('.header_area').addClass('scrolled');
+        } else {
+            $('.header_area').removeClass('scrolled');
+        }
+    });
+    // if($(window).width() > 576){
+    //     $('#Flight-tab').click(function (){
+    //         $('.banner-demo').css('background-image', 'url("images/flight-bg-js.jpg")');
+    //     });
+    //     $('#Hotel-tab').click(function (){
+    //         $('.banner-demo').css('background-image', 'url("images/hotel-bg-js.jpg")');
+    //     });
+    //     $('#Bus-tab').click(function (){
+    //         $('.banner-demo').css('background-image', 'url("images/bus-bg-js.jpg")');
+    //     });
+    //     $('#Insurance-tab').click(function (){
+    //         $('.banner-demo').css('background-image', 'url("images/bimeh-bg-js.jpg")');
+    //     });
+    //     $('#Tour-tab').click(function (){
+    //         $('.banner-demo').css('background-image', 'url("images/tour-bg-js.jpg")');
+    //     });
+    //     $('#Entertainment-tab').click(function (){
+    //         $('.banner-demo').css('background-image', 'url("images/tafrihat-bg-js.jpg")');
+    //     });
+    //     $('#Visa-tab').click(function (){
+    //         $('.banner-demo').css('background-image', 'url("images/visa-bg-js.jpg")');
+    //     });
+    // }
+
+
+
+    $('.lang').click(function (e) {
+        e.stopPropagation();
+        $('.lang_ul').toggleClass('active_lang');
+    });
+    $('body').click(function () {
+        $('.lang_ul').removeClass('active_lang');
+    });
+
+
+
+});

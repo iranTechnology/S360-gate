@@ -390,16 +390,16 @@ class Admin extends baseController
     public function LinkAdminMenu()
     {
        $title='title';
-       if (LANG_PANEL_ADMIN=='en') {
+       if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']=='en') {
            $title='titleEn';
        }
-       else if (LANG_PANEL_ADMIN=='ar') {
+       else if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']=='ar') {
            $title='titleAr';
        }
 
         $result=$this->getModel('menuAdminModel')
             ->get(['id','url','accessCustomer',$title.' as title','parentId','classIcon']);
-        if (LANG_PANEL_ADMIN!='fa') {
+        if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']!='fa') {
             $result->where('other_lang','Yes');
         }
         return $result->all();

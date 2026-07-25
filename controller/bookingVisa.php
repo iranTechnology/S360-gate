@@ -378,7 +378,7 @@ class bookingVisa extends clientAuth {
                 $conditions .= " AND payment_type = '{$_POST['payment_type']}'";
             }
         }
-        /* 1405_2_30 غیرفعال شد
+        /*1405_2_30 غیرفعال شد
         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
@@ -878,7 +878,6 @@ class bookingVisa extends clientAuth {
 
         return 'خطا: رزرو با شماره فاکتور مذکور قطعی نشده است';
     }
-
 
     #endregion
 

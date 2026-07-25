@@ -275,7 +275,7 @@
   <Ticket>تذكرة</Ticket>
   <NewPriceForTicket>إذا كنت ترغب في إرسال حجز فندق إلى شخص آخر ، فأدخل عنوان البريد الإلكتروني للشخص الذي تبحث عنه وانقر على زر إرسال</NewPriceForTicket>
   <InfoNewPriceForTicket>نذكرك أن هذه الزيادة في محاسبة النظام ليس لها أي تأثير وتجعلك أكثر راحة
-    لعمل تذكرة جديدة في Photoshop أو برنامج آخر</InfoNewPriceForTicket>
+		لعمل تذكرة جديدة في Photoshop أو برنامج آخر</InfoNewPriceForTicket>
   <EmailOfAnotherWhoSentHimTicket>إذا كنت ترغب في إرسال التذكرة عبر البريد الالكتروني او برامج اخرى  لشخص آخر ، اانقر فوق الزر "إرسال" </EmailOfAnotherWhoSentHimTicket>
   <Buyticketsfrom>شراء التذاكر من</Buyticketsfrom>
   <Purchasingfollowingticket>أنت تشتري التذكرة أدناه</Purchasingfollowingticket>
@@ -1378,7 +1378,7 @@
   <PriceRial>سعر الريال</PriceRial>
   <Riali>ريال عملة نقدية</Riali>
   <Withoutregister>"عزيزي المسافر ، يمكنك استخدام خدماتنا دون تسجيل الدخول ،
-    لكن ضع في اعتبارك أنه إذا قمت بالشراء بدون تسجيل الدخول فلن تستفيد من المميزات المقدمة في النظام ".</Withoutregister>
+		لكن ضع في اعتبارك أنه إذا قمت بالشراء بدون تسجيل الدخول فلن تستفيد من المميزات المقدمة في النظام ".</Withoutregister>
   <Withoutdiscount>الشراء بدون خصم</Withoutdiscount>
   <Withoutpoint>عدم الحصول على نقاط مفي عمليات الشراء</Withoutpoint>
   <Dontinclub>ألا يكون عضوًا في نادي المسافرين</Dontinclub>
@@ -2510,7 +2510,7 @@
   <EnterRequiredInformationRequest> يرجى إدخال شفرة التتبع الخاصة بك </EnterRequiredInformationRequest>
   <NoInformationRequestFound> للأسف ، لم يتم العثور على أي معلومات مع شفرة التتبع التي تم إدخالها </NoInformationRequestFound>
 
-  <!--  weather-->
+<!--  weather-->
   <FewClouds> بعض السحب </FewClouds>
   <ClearSky> مسح السماء </ClearSky>
   <ScatteredClouds> غيوم متفرقة </ScatteredClouds>
@@ -3266,7 +3266,7 @@
   <PA_CO_LIST>قائمة جهات الاتصال</PA_CO_LIST>
   <PA_CO_LISTTITLE>في القائمة أدناه، يمكنك عرض جميع جهات الاتصال الخاصة بك.</PA_CO_LISTTITLE>
   <PA_CO_RESULTTABLE>عرض _MENU_ نتيجة</PA_CO_RESULTTABLE>
-  <PA_CO_RESULTTABLE2>عرض</PA_CO_RESULTTABLE2>
+<PA_CO_RESULTTABLE2>عرض</PA_CO_RESULTTABLE2>
   <PA_CO_REQUESTDETAIL>تفاصيل الطلب</PA_CO_REQUESTDETAIL>
   <PA_CO_STATUSNOTSEEN>غير مفحوص</PA_CO_STATUSNOTSEEN>
   <PA_CO_STATUSSEEN>تمت المشاهدة</PA_CO_STATUSSEEN>
@@ -3305,7 +3305,6 @@
   <PA_BUYFrom>شراء من</PA_BUYFrom>
   <PA_BUY_MarkCOUNTER>هامش الكاونتر</PA_BUY_MarkCOUNTER>
   <PA_BUY_MarkAgency>هامش الوكالة</PA_BUY_MarkAgency>
-  <EnterInvoiceNumber>يرجى إدخال رقم الفاتورة</EnterInvoiceNumber>
   <Exclusive>حصري</Exclusive>
   <Shared>مشترك</Shared>
   <PrivatePad>منصة خاصة</PrivatePad>
@@ -3349,8 +3348,5 @@
   <PassengerSale>البيع للمسافر</PassengerSale>
   <PassengerOnline>مسافر أونلاين</PassengerOnline>
   <SeatCount>عدد المقاعد</SeatCount>
-  <ReceiveInfoError>خطأ في استلام المعلومات</ReceiveInfoError>
-  <ReservedRooms>الغرف المحجوزة</ReservedRooms>
-  <HotelBooking>حجز فندق في إنجلترا</HotelBooking>
-
+<ReceiveInfoError>خطأ في استلام المعلومات</ReceiveInfoError>
 </Main>

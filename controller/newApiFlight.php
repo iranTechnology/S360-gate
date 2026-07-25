@@ -1,5 +1,6 @@
 <?php
 
+
 class newApiFlight extends clientAuth
 {
 
@@ -1674,6 +1675,7 @@ class newApiFlight extends clientAuth
             // بهینه سازی: گرفتن controller ها یک بار قبل از حلقه
             $commissionController = $this->getController('commissionSources');
             $priceChangesController = $this->getController('priceChanges');
+            $airlineController = $this->getController('airline');
 
             // بهینه سازی: Cache برای توابع تکراری
             $airportFieldNames = array(
@@ -1709,10 +1711,12 @@ class newApiFlight extends clientAuth
 
             // OPTIMIZATION: Database Query Cache - کاهش 4000 کوئری به ~150 کوئری (96% کاهش!)
             // جمع‌آوری تمام airline codes یونیک از flights
+
             $allAirlineCodes = [];
             foreach ($flights as $tempFlight) {
-                if (isset($tempFlight['OutputRoutes'][0]['Airline']['Code'])) {
-                    $allAirlineCodes[$tempFlight['OutputRoutes'][0]['Airline']['Code']] = true;
+                $airlineStandardIata = $airlineController->iataStandardization($tempFlight['OutputRoutes'][0]['Airline']['Code']);
+                if (isset($airlineStandardIata)) {
+                    $allAirlineCodes[$airlineStandardIata] = true;
                 }
             }
             $allAirlineCodes = array_keys($allAirlineCodes);
@@ -1789,8 +1793,10 @@ class newApiFlight extends clientAuth
                     $passengerChild = ($hasChild && $hasCapacity) ? $passengerDatas[1] : ['TotalPrice'=>0, 'BasePrice'=>0, 'TaxPrice'=>0 , 'CommisionPrice' => 0];
                     $passengerInfant = ($hasInfant && $hasCapacity) ? $passengerDatas[2] : ['TotalPrice'=>0, 'BasePrice'=>0, 'TaxPrice'=>0 , 'CommisionPrice' => 0];
 
+                    $airline_iata = $airlineController->iataStandardization($outputRoute0['Airline']['Code']);
+
                     $data_change_price = array(
-                        'airlineIata' => $outputRoute0['Airline']['Code'],
+                        'airlineIata' => $airline_iata,
                         'FlightType' => $flight_type_lower,
                         'typeZone' => $type_zone,
                         'typeFlight' => $type_flight,
@@ -1829,7 +1835,7 @@ class newApiFlight extends clientAuth
                     $this->prices[$direction][] = $priceAdult['TotalPrice'];
 
                     // OPTIMIZATION: استفاده از cache به جای checkConfigPid (کاهش 2 کوئری در هر iteration)
-                    $airline_iata = $outputRoute0['Airline']['Code'];
+
                     $configData = $this->configFlightCache[$airline_iata]['external'][$flight_type_lower];
                     $sourceId = $flight['SourceId'];
                     if (($configData['isPublic'] == '0' && $configData['sourceId'] == $sourceId)
@@ -1984,7 +1990,7 @@ class newApiFlight extends clientAuth
                         'airport_arrival_name' => $this->InfoSearch['airport_arrival'],
                         'time_flight_name' => functions::classTimeLOCAL(functions::format_hour($outputRoute0['DepartureTime']), false),
                         'flight_number' => $outputRoute0['FlightNo'],
-                        'airline' => $outputRoute0['Airline']['Code'],
+                        'airline' => $airline_iata,
                         'airline_name' => $airlines_name[$airline_iata][$languageNameField],
                         'airline_name_en' => $airlines_name[$airline_iata][$langFieldIndexEn],
 
@@ -2018,6 +2024,7 @@ class newApiFlight extends clientAuth
                         'count_transit_title' => functions::countInterruptTitle(($count_dept_route - 1), $translateVariable),
                         'point_club' => (($point_club > 0) ? $point_club : 0),
                         'flight_id' => $flightID,
+                        'cancel_rules' => isset($flight['CancelRules']) ? $flight['CancelRules'] : '',
                         'total_output_flight_duration' => functions::duration_time_source($source_id, $flight['TotalOutputFlightDuration'], $translateVariable),
                         'total_output_stop_duration' => functions::duration_time_source($source_id, $flight['TotalOutputStopDuration'], $translateVariable),
                         'is_foreign_airline' => $isForeignAirline
@@ -2033,9 +2040,11 @@ class newApiFlight extends clientAuth
                         $isBusinessDept = isset($businessCabinTypes[$cabinType_dept]);
                         $baggage0 = $details_dept['Baggage'][0];
 
+
+
                         // OPTIMIZATION: Cache airline and airport codes (used 5+ times each)
                         $airlineDept = $details_dept['Airline'];
-                        $airlineCode_dept = $airlineDept['Code'];
+                        $airlineCode_dept = $airlineController->iataStandardization($airlineDept['Code']);
                         $airlineOperatorDept = isset($airlineDept['operator']) ? $airlineDept['operator'] : null;
                         $hasOperatorDept = ($airlineOperatorDept && $airlineCode_dept !== $airlineOperatorDept);
                         $deptCode = $details_dept['Departure']['Code'];
@@ -2129,7 +2138,7 @@ class newApiFlight extends clientAuth
                         $returnRouteLast = $returnRoutes[$Key_route_return];
 
                         // OPTIMIZATION: Cache airline code and repeated values
-                        $returnAirlineCode = $returnRoute0['Airline']['Code'];
+                        $returnAirlineCode = $airlineController->iataStandardization($returnRoute0['Airline']['Code']);
                         $date_persian_return = $returnRoute0['DepartureDate'];
                         $hasArrivalDateLast = !empty($returnRouteLast['ArrivalDate']);
 
@@ -2177,7 +2186,7 @@ class newApiFlight extends clientAuth
 
                             // OPTIMIZATION: Cache airline and airport codes (used 5+ times each)
                             $airlineReturn = $details_return['Airline'];
-                            $airlineCode_return = $airlineReturn['Code'];
+                            $airlineCode_return = $airlineController->iataStandardization($airlineReturn['Code']);
                             $airlineOperator = isset($airlineReturn['operator']) ? $airlineReturn['operator'] : null;
                             $hasOperator = ($airlineOperator && $airlineCode_return !== $airlineOperator);
                             $deptCode_return = $details_return['Departure']['Code'];
@@ -2335,7 +2344,7 @@ class newApiFlight extends clientAuth
             if($result){
                 return  functions::withSuccess($result,200,'successfully catch flight');
             }else{
-                return functions::withSuccess($request_numbers, 200, 'successfully catch flight');
+                return functions::withError($request_numbers, 404, 'flight does not exist for this search');
             }
 
         }
@@ -3566,7 +3575,6 @@ class newApiFlight extends clientAuth
 
         $flights = json_decode($this->findTicketInSearch(), true);
 
-
         $request_numbers = [];
         foreach ($flights as $direction => $arrayFlight) {
             $request_numbers[$direction] = $arrayFlight['Code'] ;
@@ -3631,6 +3639,7 @@ class newApiFlight extends clientAuth
             // OPTIMIZATION: Cache controller instances outside loop
             $commissionController = $this->getController('commissionSources');
             $priceChangesController = $this->getController('priceChanges');
+            $airlineController = $this->getController('airline');
 
             // OPTIMIZATION: Pre-compute commonly used values
             $langFieldIndex = functions::ChangeIndexNameByLanguage(SOFTWARE_LANG, 'name', '_fa');
@@ -3647,16 +3656,24 @@ class newApiFlight extends clientAuth
 
             // OPTIMIZATION: Cache airline info برای هر دو direction (رفت و برگشت)
             // جمع‌آوری تمام airline codes یونیک
+
             $allAirlineCodes = [];
             foreach ($flights as $tempDirection => $tempArrayFlight) {
+
+                $airline_iata_check = '';
+
                 if (isset($tempArrayFlight['Flights'])) {
                     foreach ($tempArrayFlight['Flights'] as $tempFlight) {
-                        if (isset($tempFlight['OutputRoutes'][0]['Airline']['Code'])) {
-                            $allAirlineCodes[strtoupper($tempFlight['OutputRoutes'][0]['Airline']['Code'])] = true;
+
+                        $airline_iata_check = $airlineController->iataStandardization($tempFlight['OutputRoutes'][0]['Airline']['Code']);
+
+                        if (isset($airline_iata_check)) {
+                            $allAirlineCodes[$airline_iata_check] = true;
                         }
                     }
                 }
             }
+
             $allAirlineCodes = array_keys($allAirlineCodes);
 
             // Cache کردن InfoAirline فقط (برای استفاده در pointClub)
@@ -3664,6 +3681,7 @@ class newApiFlight extends clientAuth
             foreach ($allAirlineCodes as $iataCode) {
                 $this->airlineInfoCache[$iataCode] = functions::InfoAirline($iataCode);
             }
+
 
             foreach ($flights as $direction => $arrayFlight) {
 
@@ -3689,9 +3707,13 @@ class newApiFlight extends clientAuth
 
                 foreach ($flights_direction as $key => $flight) {
 
+                    $airline_iata = '';
+
                     // OPTIMIZATION: Cache OutputRoutes[0] (accessed 10+ times)
                     $outputRoute0 = $flight['OutputRoutes'][0];
-                    $airline_iata = strtoupper($outputRoute0['Airline']['Code']);
+
+                    $airline_iata = $airlineController->iataStandardization($outputRoute0['Airline']['Code']);
+
                     $this->tickets['time'][$key] = [
                         'iata'=>$airline_iata,
                         'time' => (((microtime(true)-$start)*1000)/1000)
@@ -3744,7 +3766,7 @@ class newApiFlight extends clientAuth
                     $flightTypeLowerCase = strtolower($flight['FlightType']);
 
                     $data_change_price = array(
-                        'airlineIata' => $outputRoute0['Airline']['Code'],
+                        'airlineIata' => $airline_iata,
                         'FlightType' => $flightTypeLowerCase,
                         'typeZone' => $type_zone,
                         'typeFlight' => $type_flight,
@@ -3926,11 +3948,19 @@ class newApiFlight extends clientAuth
                         'description' => $flight['Description'],
                         'seat_class' => (
                         ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'C4' || $flight['OutputRoutes'][0]['CabinType'] == 'C5' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? $seatClassBusinessText :
-                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R' || $flight['OutputRoutes'][0]['CabinType'] == 'CH' || $flight['OutputRoutes'][0]['CabinType'] == 'EP' || $flight['OutputRoutes'][0]['CabinType'] == 'PE') ? 'پریمیوم' : $seatClassEconomyText)
+                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'CH' || $flight['OutputRoutes'][0]['CabinType'] == 'EP' || $flight['OutputRoutes'][0]['CabinType'] == 'PE') ? 'پریمیوم' : $seatClassEconomyText)
                         ),
+//                        'seat_class' => (
+//                        ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'C4' || $flight['OutputRoutes'][0]['CabinType'] == 'C5' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? $seatClassBusinessText :
+//                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R' || $flight['OutputRoutes'][0]['CabinType'] == 'CH' || $flight['OutputRoutes'][0]['CabinType'] == 'EP' || $flight['OutputRoutes'][0]['CabinType'] == 'PE') ? 'پریمیوم' : $seatClassEconomyText)
+//                        ),
+//                        'seat_class_en' => (
+//                        ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? 'business' :
+//                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R') ? 'premium_economy' : 'economy')
+//                        ),
                         'seat_class_en' => (
                         ($flight['OutputRoutes'][0]['CabinType'] == 'C' || $flight['OutputRoutes'][0]['CabinType'] == 'C1' || $flight['OutputRoutes'][0]['CabinType'] == 'C2' || $flight['OutputRoutes'][0]['CabinType'] == 'C3' || $flight['OutputRoutes'][0]['CabinType'] == 'J'  || $flight['OutputRoutes'][0]['CabinType'] == 'I' || $flight['OutputRoutes'][0]['CabinType'] == 'Z') ? 'business' :
-                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P' || $flight['OutputRoutes'][0]['CabinType'] == 'R') ? 'premium_economy' : 'economy')
+                            (($flight['OutputRoutes'][0]['CabinType'] == 'PY' || $flight['OutputRoutes'][0]['CabinType'] == 'P') ? 'premium_economy' : 'economy')
                         ),
                         'cabin_type' => $flight['OutputRoutes'][0]['CabinType'],
                         'capacity' => ($flight['Capacity'] > 10) ? 9 : $flight['Capacity'],
@@ -3939,6 +3969,7 @@ class newApiFlight extends clientAuth
                         'unique_code' => $flight['Code'],
                         'point_club' => (($point_club > 0) ? $point_club : 0),
                         'flight_id' => $flight['FlightID'],
+                        'cancel_rules' => isset($flight['CancelRules']) ? $flight['CancelRules'] : '',
 //                        'baggage' => ($flight['OutputRoutes'][0]['Baggage']['Code'] > 0) ? $this->baggageTitle($flight['SourceId'],$flight['OutputRoutes'][0],$translateVariable):'20',
                         'baggage' => (
                             isset($flight['OutputRoutes'][0]['CabinType']) &&
@@ -3960,6 +3991,9 @@ class newApiFlight extends clientAuth
 
 
                         foreach ($flight['OutputRoutes'] as $key_detail => $details_dept) {
+
+                            $airline_iata_twoWay = $airlineController->iataStandardization($details_dept['Airline']['Code']);
+
                             $details_dept['type_route'] = 'dept' ;
                             $this->tickets['flights'][$direction][$key]['output_routes_detail'][$key_detail] = array(
                                 'is_transit' => ($key_detail > 0) ? true : false,
@@ -3991,8 +4025,8 @@ class newApiFlight extends clientAuth
                                     ? '25 کیلوگرم'
                                     : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
                                 'airline' => array(
-                                    'airline_name' => $airlines_name[$details_dept['Airline']['Code']][$langFieldIndex],
-                                    'airline_code' => $details_dept['Airline']['Code'],
+                                    'airline_name' => $airlines_name[$airline_iata_twoWay][$langFieldIndex],
+                                    'airline_code' => $airline_iata_twoWay,
                                     'airline_code_operator' => (isset($details_dept['Airline']['operator']) && $details_dept['Airline']['Code']  !== $details_dept['Airline']['operator']) ? $airlines_name[$details_dept['Airline']['operator']][$langFieldIndex]."({$details_dept['Airline']['operator']})" : NULL,
                                 ),
                                 'aircraft' => array(
@@ -4023,13 +4057,14 @@ class newApiFlight extends clientAuth
                             $date_persian_return = $flight['ReturnRoutes'][0]['DepartureDate'];
                             $count_detail_return_rout = count($flight['ReturnRoutes']);
                             $Key_route_return = ($count_detail_return_rout - 1);
+                            $airline_iata_ReturnRoutes = $airlineController->iataStandardization($flight['ReturnRoutes'][0]['Airline']['Code']);
 
                             $this->tickets['flights'][$direction][$key]['return_routes'] = array(
-                                'airline' => $flight['ReturnRoutes'][0]['Airline']['Code'],
+                                'airline' => $airline_iata_ReturnRoutes,
                                 'capacity' => ($flight['Capacity'] > 10) ? '+10' : $flight['Capacity'],
                                 'is_private'=> $checkPrivate ,
-                                'airline_name' => $airlines_name[$flight['ReturnRoutes'][0]['Airline']['Code']][$langFieldIndex],
-                                'airline_name_en' => $airlines_name[$flight['ReturnRoutes'][0]['Airline']['Code']][$langFieldIndexEn],
+                                'airline_name' => $airlines_name[$airline_iata_ReturnRoutes][$langFieldIndex],
+                                'airline_name_en' => $airlines_name[$airline_iata_ReturnRoutes][$langFieldIndexEn],
                                 'departure_name' => $this->destinationName,
                                 'arrival_name' => $this->originName,
                                 'return_flight_id' => $flight['ReturnFlightID'],
@@ -4058,6 +4093,9 @@ class newApiFlight extends clientAuth
 
                             foreach ($flight['ReturnRoutes'] as $key_detail_return => $details_return) {
                                 $details_return['type_route'] = 'return' ;
+
+                                $airline_iata_details_return = $airlineController->iataStandardization($details_return['Airline']['Code']);
+
                                 $this->tickets['flights'][$direction][$key]['return_routes']['return_route_detail'][$key_detail_return] = array(
                                     'is_transit' => $key_detail_return > 0,
                                     'source_id' => $source_id,
@@ -4088,9 +4126,9 @@ class newApiFlight extends clientAuth
                                         ? '25 کیلوگرم'
                                         : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
                                     'airline' => array(
-                                        'airline_name' => $airlines_name[$details_return['Airline']['Code']][$langFieldIndex],
-                                        'airline_code' => $details_return['Airline']['Code'],
-                                        'airline_code_operator' => (($details_return['Airline']['Code']  !== $details_return['Airline']['operator']) && isset($details_return['Airline']['operator'])) ? $airlines_name[$details_return['Airline']['operator']][$langFieldIndex]."({$details_return['Airline']['operator']})" : NULL,
+                                        'airline_name' => $airlines_name[$airline_iata_details_return][$langFieldIndex],
+                                        'airline_code' => $airline_iata_details_return,
+                                        'airline_code_operator' => (($airline_iata_details_return  !== $details_return['Airline']['operator']) && isset($details_return['Airline']['operator'])) ? $airlines_name[$details_return['Airline']['operator']][$langFieldIndex]."({$details_return['Airline']['operator']})" : NULL,
                                     ),
                                     'aircraft' => array(
                                         'aircraft_code' => $details_return['Aircraft']['Code'],
@@ -4973,6 +5011,17 @@ class newApiFlight extends clientAuth
         return functions::withError($data_lowest, 400, 'data not found');
     }
 
+    public function getProfile( $param ) {
+//        if ( $this->auth == 'True' ) {
+        $url =   "https://safar360.com/Core/V-1/Flight/getCredit/" . $param ;
+        $JsonArray = array();
+            $resultCredit = functions::curlExecution( $url, $JsonArray ,  array(
+                'Content-Type: application/json',
+            ) );
+            return $resultCredit;
+//        }
+//        return $this->showError( 'شما دسترسی لازم به این صفحه را ندارید', 403 );
+    }
 }
 
 

@@ -18,17 +18,17 @@
 </style>
 <div class="container-fluid">
     <div class="row bg-title">
-        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
 
-            <ol class="breadcrumb FloatRight">
-                <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/admin" id="Home">خانه</a></li>
-                <li id="PA_BUY_LIST">گزارش خرید</li>
-                <li class="active PA_BUY_HISTORY">سوابق خرید</li>
-            </ol>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <!--<h4 class="page-title FloatLeft">Dashboard 3</h4>-->
-        </div>
+        <ol class="breadcrumb FloatRight">
+            <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/admin" id="Home">خانه</a></li>
+            <li id="PA_BUY_LIST">گزارش خرید</li>
+            <li class="active PA_BUY_HISTORY">سوابق خرید</li>
+        </ol>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <!--<h4 class="page-title FloatLeft">Dashboard 3</h4>-->
+    </div>
     </div>
 
 
@@ -91,7 +91,7 @@
                     <div class="form-group col-sm-6">
                         <label for="to_date" class="control-label" id="PA_BUY_DATEE">تاریخ پایان (خرید)</label>
                         <input type="text"
-                               class="form-control {if $smarty.const.LANG_PANEL_ADMIN == 'en' || $smarty.const.LANG_PANEL_ADMIN == 'ar'}datepickerReturn{else}datepicker{/if}"
+                               class="form-control datepicker"
                                name="to_date"
                                value="{$objFunctions->timeNow()}"
                                id="to_date"
@@ -101,7 +101,7 @@
                         <div class="form-group col-sm-6">
                             <label for="date_of" class="control-label" id="PA_BUY_DATERS">تاریخ شروع (رزور)</label>
                             <input type="text"
-                                   class="form-control {if $smarty.const.LANG_PANEL_ADMIN == 'en' || $smarty.const.LANG_PANEL_ADMIN == 'ar'}datepickerReturn{else}datepicker{/if}"
+                                   class="form-control datepicker"
                                    name="reserve_date_of"
                                    value=""
                                    autocomplete="off"
@@ -111,7 +111,7 @@
                         <div class="form-group col-sm-6">
                             <label for="to_date" class="control-label" id="PA_BUY_DATERE">تاریخ پایان (رزور)</label>
                             <input type="text"
-                                   class="form-control {if $smarty.const.LANG_PANEL_ADMIN == 'en' || $smarty.const.LANG_PANEL_ADMIN == 'ar'}datepickerReturn{else}datepicker{/if}"
+                                   class="form-control datepicker"
                                    name="reserve_to_date"
                                    value=""
                                    autocomplete="off"
@@ -121,12 +121,12 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="flight">
                         <div class="form-group col-sm-6">
-                            {*<label for="successfull" class="control-label">وضعیت رزرو</label>*}
+                            {*                            <label for="successfull" class="control-label">وضعیت رزرو</label>*}
                             <select name="successfull" id="successfull" class="form-control">
-                                <option value="" class="Statusreservation_OP">وضعیت رزرو</option>
+                                <option value="" id="Statusreservation_OP">وضعیت رزرو</option>
                                 <option value="all" class="OptionAll" {if $smarty.post.successfull eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.successfull eq  'book' }selected{/if}>موفق</option>
-                                <option value="nothing" class="StatusFail" {if $smarty.post.successfull eq 'nothing' }selected{/if}>ناموفق</option>
+                                <option value="book" id="StatusSuccess" {if $smarty.post.successfull eq  'book' }selected{/if}>موفق</option>
+                                <option value="nothing" id="StatusFail" {if $smarty.post.successfull eq 'nothing' }selected{/if}>ناموفق</option>
                             </select>
                         </div>
                         <div class="form-group col-sm-6">
@@ -181,13 +181,10 @@
 
                             </div>
                             <div class="form-group col-sm-6">
-                                {* <label for="DateFlight" class="control-label">تاریخ پرواز</label>*}
-                                <input type="text"
-                                       class="form-control {if $smarty.const.LANG_PANEL_ADMIN == 'en' || $smarty.const.LANG_PANEL_ADMIN == 'ar'}datepickerReturn{else}datepicker{/if}"
-                                       name="DateFlight"
+                                {*                                <label for="DateFlight" class="control-label">تاریخ پرواز</label>*}
+                                <input type="text" class="form-control datepicker" name="DateFlight"
                                        value="{$smarty.post.DateFlight}"
-                                       id="DateFlight"
-                                       placeholder="تاریخ پرواز جستجو را وارد نمائید">
+                                       id="DateFlight" placeholder="تاریخ پرواز جستجو را وارد نمائید">
                             </div>
 
 
@@ -393,7 +390,7 @@
                             {/if}-->
 
                             {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                                <div class="row">
+                               <div class="row" id="DivBoxSearch" >
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="checkbox checkbox-success col-sm-6 ">
 
@@ -422,19 +419,19 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="hotel">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nothing" class="StatusFail" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق </option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nothing" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق
+                                </option>
                             </select>
-
                         </div>
 
                         <div class="form-group col-sm-6">
-                            <label for="factor_number" class="control-label Invoicenumber">شماره فاکتور</label>
-                            <input type="text" class="form-control factor_number" name="factor_number"
+                            <label for="factor_number" class="control-label">شماره فاکتور</label>
+                            <input type="text" class="form-control " name="factor_number"
                                    value="{$smarty.post.factor_number}" id="factor_number"
                                    placeholder="شماره فاکتور را وارد نمائید">
                         </div>
@@ -451,7 +448,6 @@
                                     </select>
                                 </div>
                             {/if}
-                            {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
                             <div class="form-group col-sm-6">
                                 <label for="client_id" class="control-label">نرم افزار</label>
                                 <select name="type_app" id="type_app" class="form-control">
@@ -468,7 +464,6 @@
                                     </option>
                                 </select>
                             </div>
-                            {/if}
                             <div class="form-group col-sm-6 showAdvanceSearch" style="display: none;">
                                 <label for="passenger_name" class="control-label">نام یا نام خانوادگی مسافر</label>
                                 <input type="text" class="form-control " name="passenger_name"
@@ -543,12 +538,13 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="insurance">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nobook" class="StatusFail" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nobook" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
@@ -627,17 +623,17 @@
                             </div>
                         </div>
                         {/if}
-
                         <div class="clearfix"></div>
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="visa">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nobook" class="StatusFail" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nobook" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
@@ -720,12 +716,13 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="gasht">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nobook" class="StatusFail" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nobook" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
@@ -807,12 +804,13 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="tour">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nothing" class="StatusFail" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nothing" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
@@ -872,16 +870,16 @@
                                 </div>
                             {/if}
                             {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="checkbox checkbox-success col-sm-6 ">
-                                            <input id="checkBoxAdvanceSearch" type="checkbox" name="checkBoxAdvanceSearch"
-                                                   onclick="displayAdvanceSearch(this)" class="tour-admin-check-box-search">
-                                            <label for="checkBoxAdvanceSearch" class="font-30"> جستجوی پیشرفته </label>
-                                        </div>
-
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="checkbox checkbox-success col-sm-6 ">
+                                        <input id="checkBoxAdvanceSearch" type="checkbox" name="checkBoxAdvanceSearch"
+                                               onclick="displayAdvanceSearch(this)" class="tour-admin-check-box-search">
+                                        <label for="checkBoxAdvanceSearch" class="font-30"> جستجوی پیشرفته </label>
                                     </div>
+
                                 </div>
+                            </div>
                             {/if}
                         {elseif $objsession->CheckAgencyPartnerLoginToAdmin()}
                             {assign var="agencyId" value=$objsession->getAgencyId() }
@@ -899,12 +897,13 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="exclusive_tour">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nothing" class="StatusFail" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nothing" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
@@ -933,12 +932,13 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="cip">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nothing" class="StatusFail" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nothing" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
@@ -948,13 +948,13 @@
                                    value="{$smarty.post.factor_number}" id="factor_number"
                                    placeholder="شماره فاکتور را وارد نمائید">
                         </div>
-                        {*                        <div class="form-group col-sm-6">*}
-                        {*                            <label for="pnr" class="control-label">pnr</label>*}
-                        {*                            <input type="text" class="form-control " name="pnr"*}
-                        {*                                   value="{$smarty.post.pnr}" id="pnr"*}
-                        {*                                   placeholder="pnr را وارد نمائید">*}
+{*                        <div class="form-group col-sm-6">*}
+{*                            <label for="pnr" class="control-label">pnr</label>*}
+{*                            <input type="text" class="form-control " name="pnr"*}
+{*                                   value="{$smarty.post.pnr}" id="pnr"*}
+{*                                   placeholder="pnr را وارد نمائید">*}
 
-                        {*                        </div>*}
+{*                        </div>*}
 
                         <div class="form-group col-sm-12" >
                             <label for="passenger_name" class="control-label">نام یا نام خانوادگی مسافر</label>
@@ -965,20 +965,23 @@
 
 
                     </div>
+
                     <div class="d-none" data-info="filter-div" data-target="bus">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nobook" class="StatusFail" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                {*<option value="temporaryReservation" {if $smarty.post.status eq  'temporaryReservation' }selected{/if}>رزرو موقت</option>*}
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nobook" {if $smarty.post.status eq 'nobook' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
                         <div class="form-group col-sm-6">
-                            <label for="factor_number" class="control-label Invoicenumber">شماره فاکتور</label>
-                            <input type="text" class="form-control factor_number" name="factor_number"
+                            <label for="factor_number" class="control-label">شماره فاکتور</label>
+                            <input type="text" class="form-control " name="factor_number"
                                    value="{$smarty.post.factor_number}" id="factor_number"
                                    placeholder="شماره فاکتور را وارد نمائید">
 
@@ -1045,12 +1048,13 @@
                     </div>
                     <div class="d-none" data-info="filter-div" data-target="train">
                         <div class="form-group col-sm-6">
-                            <label for="status" class="control-label Statusreservation_OP2">وضعیت رزرو</label>
+                            <label for="status" class="control-label">وضعیت رزرو</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="" class="ChoseOption">انتخاب کنید....</option>
-                                <option value="all" class="OptionAll" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
-                                <option value="book" class="StatusSuccess" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
-                                <option value="nothing" class="StatusFail" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق</option>
+                                <option value="">انتخاب کنید....</option>
+                                <option value="all" {if $smarty.post.status eq 'all' }selected{/if}>همه</option>
+                                <option value="book" {if $smarty.post.status eq  'book' }selected{/if}>موفق</option>
+                                <option value="nothing" {if $smarty.post.status eq 'nothing' }selected{/if}>ناموفق
+                                </option>
                             </select>
                         </div>
 
@@ -1117,17 +1121,17 @@
                                 </div>
                             {/if}
                             {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="checkbox checkbox-success col-sm-6 ">
-                                            <input id="checkBoxAdvanceSearch" type="checkbox" name="checkBoxAdvanceSearch"
-                                                   onclick="displayAdvanceSearch(this)">
-                                            <label for="checkBoxAdvanceSearch" class="font-30"> جستجوی پیشرفته </label>
-                                        </div>
-
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="checkbox checkbox-success col-sm-6 ">
+                                        <input id="checkBoxAdvanceSearch" type="checkbox" name="checkBoxAdvanceSearch"
+                                               onclick="displayAdvanceSearch(this)">
+                                        <label for="checkBoxAdvanceSearch" class="font-30"> جستجوی پیشرفته </label>
                                     </div>
+
                                 </div>
-                             {/if}
+                            </div>
+                            {/if}
                         {/if}
 
                         <div class="clearfix"></div>
@@ -1144,98 +1148,97 @@
 
 
                 <div class="box-btn-excel w-100">
-                    {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                        <a data-info="filter-div" data-target="flight" data-target-file="user_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="hotel" data-target-file="hotel_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="insurance" data-target-file="user_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="visa" data-target-file="visa_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="gasht" data-target-file="gasht_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="tour" data-target-file="tour_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="bus" data-target-file="bus_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="train" data-target-file="train_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
-                        <a data-info="filter-div" data-target="entertainment" data-target-file="entertainment_ajax.php"
-                           class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
-                           onclick="ExecuteExcelFilter($(this))" type="button">
-                            <span class="btn-label"><i class="fa fa-download"></i></span>
-                            <span class="DownloadExcelFile">دریافت فایل اکسل</span>
-                            <div class="ld ld-ring ld-spin"></div>
-                        </a>
+                    <a data-info="filter-div" data-target="flight" data-target-file="user_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    <a data-info="filter-div" data-target="hotel" data-target-file="hotel_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    <a data-info="filter-div" data-target="insurance" data-target-file="user_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    <a data-info="filter-div" data-target="visa" data-target-file="visa_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    <a data-info="filter-div" data-target="gasht" data-target-file="gasht_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    <a data-info="filter-div" data-target="tour" data-target-file="tour_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    <a data-info="filter-div" data-target="bus" data-target-file="bus_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    <a data-info="filter-div" data-target="train" data-target-file="train_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
 
-                        {if $smarty.const.TYPE_ADMIN neq '1'}
-                            <div class="box-btn-excel" style="margin-right: 10px;">
-                                <a onclick="FuncreateExcelForRavisHotel()" class="btn btn-info waves-effect waves-light "
-                                   type="button" id="btn-excel">
-                                    <span class="btn-label"><i class="fa fa-download"></i></span>دریافت فایل اکسل راویس هتل</a>
-                                <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/load.gif" alt="please wait ..."
-                                     id="loader-excel" class="displayN">
-                            </div>
+                    <a data-info="filter-div" data-target="entertainment" data-target-file="entertainment_ajax.php"
+                       class="btn btn-primary waves-effect waves-light ld-ext-left d-none"
+                       onclick="ExecuteExcelFilter($(this))" type="button">
+                        <span class="btn-label"><i class="fa fa-download"></i></span>
+                        <span class="DownloadExcelFile">دریافت فایل اکسل</span>
+                        <div class="ld ld-ring ld-spin"></div>
+                    </a>
+                    {if $smarty.const.TYPE_ADMIN neq '1' && $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
+                    <div class="box-btn-excel" style="margin-right: 10px;">
+                        <a onclick="FuncreateExcelForRavisHotel()" class="btn btn-info waves-effect waves-light "
+                           type="button" id="btn-excel">
+                            <span class="btn-label"><i class="fa fa-download"></i></span>دریافت فایل اکسل راویس هتل</a>
+                        <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/load.gif" alt="please wait ..."
+                             id="loader-excel" class="displayN">
+                    </div>
 
-                            <div class="box-btn-excel" style="margin-right: 10px;">
-                                <a onclick="FuncreateExcelForRavisFlight()" class="btn btn-success waves-effect waves-light "
-                                   type="button" id="btn-excel">
-                                    <span class="btn-label"><i class="fa fa-download"></i></span>دریافت فایل اکسل راویس پرواز</a>
-                                <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/load.gif" alt="please wait ..."
-                                     id="loader-excel" class="displayN">
-                            </div>
-                        {/if}
+                    <div class="box-btn-excel" style="margin-right: 10px;">
+                        <a onclick="FuncreateExcelForRavisFlight()" class="btn btn-success waves-effect waves-light "
+                           type="button" id="btn-excel">
+                            <span class="btn-label"><i class="fa fa-download"></i></span>دریافت فایل اکسل راویس پرواز</a>
+                        <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/load.gif" alt="please wait ..."
+                             id="loader-excel" class="displayN">
+                    </div>
                     {/if}
+
                 </div>
                 {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                    <div class="mt-3 p-0 col-sm-1 float-left text-center">
-                        <div class="form-group">
-                            <label for="AutoRefreshInput">نرخ تازه سازی (ثانیه)</label>
-                            <input type="number" min="5" class="form-control" value="0" id="AutoRefreshInput"
-                                   placeholder="~ 20">
-                        </div>
+                <div class="mt-3 p-0 col-sm-1 float-left text-center">
+                    <div class="form-group">
+                        <label for="AutoRefreshInput">نرخ تازه سازی (ثانیه)</label>
+                        <input type="number" min="5" class="form-control" value="0" id="AutoRefreshInput"
+                               placeholder="~ 20">
                     </div>
+                </div>
                 {/if}
                 {if $smarty.const.TYPE_ADMIN eq '1'}
                     <div>
@@ -1248,109 +1251,109 @@
                 {/if}
                 <div class="table_history_admin">
 
-                    <div class="w-100 table-responsive tabs_ticket-history">
-                        <div class="w-100">
-                            <a data-target="flight"
+                <div class="w-100 table-responsive tabs_ticket-history">
+                    <div class="w-100">
+                        <a data-target="flight"
+                           data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                           class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                            <span class="btn-label"><i class="fa fa-history"></i></span>
+                            <span id="spanFlight">پرواز</span>
+                            <div class="ld ld-ring ld-spin"></div>
+                        </a>
+                        {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
+                        <a data-target="train"
+                           data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                           class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                            <span class="btn-label"><i class="mdi mdi-bus"></i></span>قطار
+                            <div class="ld ld-ring ld-spin"></div>
+                        </a>
+                        {/if}
+                        <a  data-target="hotel"
+                           data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                           class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                            <span class="btn-label"><i class="mdi mdi-hospital-building"></i></span>
+                            <span id="silenceSpanHotel">هتل</span>
+                            <div class="ld ld-ring ld-spin"></div>
+
+                        </a>
+                        {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
+                        <a data-target="insurance"
+                           data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                           class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                            <span class="btn-label"><i class="mdi mdi-umbrella"></i></span>بیمه
+                            <div class="ld ld-ring ld-spin"></div>
+                        </a>
+                        {/if}
+                        <a data-target="bus"
+                           data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                           class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                            <span class="btn-label"><i class="mdi mdi-bus"></i></span>
+                            <span id="Bus">اتوبوس</span>
+                            <div class="ld ld-ring ld-spin"></div>
+                        </a>
+
+                        {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
+                            <a data-target="tour"
                                data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
                                class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                <span class="btn-label"><i class="fa fa-history"></i></span>
-                                <span id="spanFlight">پرواز</span>
+                                <span class="btn-label"><i class="fa fa-suitcase"></i></span>تور
                                 <div class="ld ld-ring ld-spin"></div>
                             </a>
-                            {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                                <a data-target="train"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="mdi mdi-bus"></i></span>قطار
-                                    <div class="ld ld-ring ld-spin"></div>
-                                </a>
-                            {/if}
-                            <a  data-target="hotel"
-                                data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                <span class="btn-label"><i class="mdi mdi-hospital-building"></i></span>
-                                <span id="silenceSpanHotel">هتل</span>
-                                <div class="ld ld-ring ld-spin"></div>
-
-                            </a>
-                            {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                                <a data-target="insurance"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="mdi mdi-umbrella"></i></span>بیمه
-                                    <div class="ld ld-ring ld-spin"></div>
-                                </a>
-                            {/if}
-                            <a data-target="bus"
+                            <a data-target="exclusive_tour"
                                data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
                                class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                <span class="btn-label"><i class="mdi mdi-bus"></i></span>
-                                <span id="Bus">اتوبوس</span>
+                                <span class="btn-label"><i class="fa fa-suitcase"></i></span>تور اختصاصی
                                 <div class="ld ld-ring ld-spin"></div>
                             </a>
 
-                            {if $smarty.const.LANG_PANEL_ADMIN eq 'fa'}
-                                <a data-target="tour"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="fa fa-suitcase"></i></span>تور
-                                    <div class="ld ld-ring ld-spin"></div>
-                                </a>
-                                <a data-target="exclusive_tour"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="fa fa-suitcase"></i></span>تور اختصاصی
-                                    <div class="ld ld-ring ld-spin"></div>
-                                </a>
+                            <a data-target="visa"
+                               data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                               class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                                <span class="btn-label"><i class="mdi mdi-book-open"></i></span>ویزا
+                                <div class="ld ld-ring ld-spin"></div>
+                            </a>
 
-                                <a data-target="visa"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="mdi mdi-book-open"></i></span>ویزا
-                                    <div class="ld ld-ring ld-spin"></div>
-                                </a>
+                            <a data-target="entertainment"
+                               data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                               class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                                <span class="btn-label"><i class="fa fa-suitcase"></i></span>تفریحات
+                                <div class="ld ld-ring ld-spin"></div>
+                            </a>
 
-                                <a data-target="entertainment"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="fa fa-suitcase"></i></span>تفریحات
+                            <a data-target="gasht"
+                               data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                               class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                                <span class="btn-label"><i class="mdi mdi-bus"></i></span>گشت
+                                <div class="ld ld-ring ld-spin"></div>
+                            </a>
+                            <a data-target="cip"
+                               data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
+                               class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                                <span class="btn-label"><i class="fa fa-crown"></i></span>تشریفات فرودگاه
+                                <div class="ld ld-ring ld-spin"></div>
+                            </a>
+                            {if $smarty.const.TYPE_ADMIN eq '1'}
+                                <a  data-target="hotel-list2"
+                                    data-info="pendingBtn" href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/reservation/hotelWishList"
+                                    class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
+                                    <span class="btn-label"><i class="mdi mdi-book-multiple"></i></span>درخواست هتل
                                     <div class="ld ld-ring ld-spin"></div>
-                                </a>
 
-                                <a data-target="gasht"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="mdi mdi-bus"></i></span>گشت
-                                    <div class="ld ld-ring ld-spin"></div>
                                 </a>
-                                <a data-target="cip"
-                                   data-info="pendingBtn" onclick="ExecuteHistoryFilter($(this).attr('data-target'))"
-                                   class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                    <span class="btn-label"><i class="fa fa-crown"></i></span>تشریفات فرودگاه
-                                    <div class="ld ld-ring ld-spin"></div>
-                                </a>
-                                {if $smarty.const.TYPE_ADMIN eq '1'}
-                                    <a  data-target="hotel-list2"
-                                        data-info="pendingBtn" href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/reservation/hotelWishList"
-                                        class="btn btn-default waves-effect waves-light ld-ext-left" type="button">
-                                        <span class="btn-label"><i class="mdi mdi-book-multiple"></i></span>درخواست هتل
-                                        <div class="ld ld-ring ld-spin"></div>
-
-                                    </a>
-                                {/if}
                             {/if}
-                        </div>
+                        {/if}
                     </div>
+                </div>
 
 
-                    <div class="myTable01 table-responsive ld-over p-4 border w-100">
-                        <div class="ld ld-ring ld-spin"></div>
-                        {*                    <table id="mainTicketHistory" class="flyTableBody01 media02 w-100 table table-striped text-center">*}
-                        {*                        این قسمت برای ثابت بودن هدر جداول بود*}
-                        {*                    </table>*}
-                        <table id="mainTicketHistory" class="flyTableBody w-100 table table-striped text-center">
-                        </table>
-                    </div>
+                <div class="myTable01 table-responsive ld-over p-4 border w-100">
+                    <div class="ld ld-ring ld-spin"></div>
+{*                    <table id="mainTicketHistory" class="flyTableBody01 media02 w-100 table table-striped text-center">*}
+{*                        این قسمت برای ثابت بودن هدر جداول بود*}
+{*                    </table>*}
+                    <table id="mainTicketHistory" class="flyTableBody w-100 table table-striped text-center">
+                    </table>
+                </div>
 
                 </div>
             </div>
@@ -1447,10 +1450,12 @@
         });
 
         {if $smarty.const.TYPE_ADMIN eq '1'}
-        setInterval(function () {
-            CheckReserveHotelTab();
-        }, 30000);
+            setInterval(function () {
+                CheckReserveHotelTab();
+            }, 30000);
         {/if}
+
+
     });
 </script>
 

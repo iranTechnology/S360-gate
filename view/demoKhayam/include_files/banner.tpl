@@ -1,18 +1,104 @@
-{assign var="type_data" value=['is_active'=>1 , 'limit' =>1]}
-{assign var='banners' value=$obj_main_page->galleryBannerMain($type_data)}
-{assign var="banner" value=$banners[0]}
-<section class="banner">
-    <picture>
-        <source media="(min-width:1200px)" srcset="{$banner['pic']}">
-        <source media="(min-width:760px)" srcset="{$banner['pic_medium']}">
-        <img src="{$banner['pic_thumb']}" alt="{$banner['title']}" style="width:100%;">
-    </picture>
-{*    <div class="titel-banner">*}
-{*        <h3>آژانس هواپیمایی سفر360 </h3>*}
-{*        <span> تور خارجی و داخلی + رزرو بلیط و هتل </span>*}
-{*        <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/all-all/all/15" class="more_banner">*}
-{*            ناکجا*}
-{*        </a>*}
-    </div>
+{load_presentation_object filename="specialPages" assign="objSpecialPages"}
 
-</section>
+{assign var="searchServices" value=[
+'flight-khayam'=>'specialFlightPic',
+'hotel-khayam'=> 'specialHotelPic',
+'train-khayam' => 'specialTrainPic',
+'bus-khayam' =>'specialBusPic',
+'tour-khayam' =>'specialTourPic',
+'insurance-khayam' =>'specialInsurancePic',
+'visa-khayam' =>'specialVisaPic',
+'gasht-khayam' =>'specialGashtPic',
+'package-khayam' =>'specialPackagePic',
+'rentCar-khayam' =>'specialCarPic',
+'entertainment-khayam' =>'specialEntertainmentPic',
+'cip-khayam' =>'specialCipPic',
+'mainPage' =>'MainPagePic']}
+{foreach $searchServices as $key => $val}
+    {assign var="homePage" value=$objSpecialPages->unSlugPage($key)}
+    {if $homePage}
+        {assign var=$val value=$homePage.files.main_file.src}
+    {/if}
+    {assign var="homePage" value=""}
+{/foreach}
+
+<style>
+    .banner-demo {
+    {if $page.files.main_file.src && $smarty.const.GDS_SWITCH eq 'page'}
+        background-image: url("{$page.files.main_file.src}");
+    {else}
+        background-image: url("{$specialFlightPic}");
+    {/if}
+    }
+</style>
+
+<script>
+    {literal}
+    if($(window).width() > 576){
+        {/literal}
+        {if $specialFlightPic}
+        {literal}
+        $('.Flight-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialFlightPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialHotelPic}
+        {literal}
+        $('.Hotel-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialHotelPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialTrainPic}
+        {literal}
+        $('.Train-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialTrainPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialBusPic}
+        {literal}
+        $('.Bus-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialBusPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialTourPic}
+        {literal}
+        $('.Tour-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialTourPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialInsurancePic}
+        {literal}
+        $('.Insurance-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialInsurancePic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialVisaPic}
+        {literal}
+        $('.Visa-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialVisaPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialGashtPic}
+        {literal}
+        $('.GashtTransfer-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialGashtPic}{literal}")')});
+        {/literal}
+        {/if}
+
+        {if $specialCarPic}
+        {literal}
+        $('.Europcar-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialCarPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialPackagePic}
+        {literal}
+        $('.Package-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialPackagePic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialEntertainmentPic}
+        {literal}
+        $('.Entertainment-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialEntertainmentPic}{literal}")')});
+        {/literal}
+        {/if}
+        {if $specialCipPic}
+        {literal}
+        $('.Cip-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialCipPic}{literal}")')});
+        {/literal}
+        {/if}
+        {literal}
+
+    }
+</script>
+{/literal}

@@ -418,23 +418,7 @@
                                                         </li>
                                                     {/if}
 
-                                                    {*{if $item.Status eq 'ConfirmClient' ||  !empty($item.IdPFE)}*}
-                                                    <li>
-                                                        <div class="pull-left">
-                                                            <div class="pull-left margin-10">
-                                                                <span data-toggle="popover" title="واریز وجه"
-                                                                      data-content=" درصد اعلامی از سوی شما ،با موافقت آژانس همراه بوده است ،لطفا برای واریز وجه دکمه زیر را فشار دهید "
-                                                                      class="popoverBox  popover-info " data-placement="top">
-                                                                    <a class="fcbtn btn btn-outline btn-info btn-1c  mdi mdi-bookmark-check cursor-default"
-                                                                       id="ConfirmClient-{$item.id}"
-                                                                       data-toggle="modal" data-target="#ModalPublic"
-                                                                       onclick="FinalConfirm('{$item.RequestNumber}','{$item.IdDetail}','{$item.ClientId}','{$item.pnr}')">
-                                                                    </a>
-                                                                    </span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                   {* {/if}*}
+
 
                                                     {if $item.Status eq 'RequestClient'}
 <!--                                                        <li>
@@ -461,6 +445,22 @@
                                                                        data-content=" در انتظار پاسخ آژانس بابت درصد اعلامی از سوی کارگزار"
                                                                        id="SetIndemnity-{$item.id}"></a>
 
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {elseif $item.Status eq 'ConfirmClient' }
+                                                        <li>
+                                                            <div class="pull-left">
+                                                                <div class="pull-left margin-10">
+                                                                <span data-toggle="popover" title="واریز وجه"
+                                                                      data-content=" درصد اعلامی از سوی شما ،با موافقت آژانس همراه بوده است ،لطفا برای واریز وجه دکمه زیر را فشار دهید "
+                                                                      class="popoverBox  popover-info " data-placement="top">
+                                                                    <a class="fcbtn btn btn-outline btn-info btn-1c  mdi mdi-bookmark-check cursor-default"
+                                                                       id="ConfirmClient-{$item.id}"
+                                                                       data-toggle="modal" data-target="#ModalPublic"
+                                                                       onclick="FinalConfirm('{$item.RequestNumber}','{$item.IdDetail}','{$item.ClientId}','{$item.pnr}')">
+                                                                    </a>
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </li>
@@ -537,14 +537,7 @@
 
                                         </td>
                                         <td class="align-middle">
-                                            {if !empty($item.IdPFE)}
-                                            <div id="ConfirmClientStatus-{$item.id}"
-                                                 class="btn btn-success-excel cursor-default"
-                                                 disabled="disabled">
-                                                تایید از طریق اکسل /  واریز کنید<br/>
-                                                وضعیت را تعیین کنید
-                                            </div>
-                                            {elseif $item.Status eq 'RequestMember'}
+                                            {if $item.Status eq 'RequestMember'}
                                                 <div class="btn btn-primary cursor-default" disabled="disabled"
                                                      id="RequestMember">درخواست
                                                     کاربر
@@ -567,6 +560,12 @@
                                                 >
                                                     جریمه مشخص شد / منتظر تایید آژانس
 
+                                                </div>
+                                            {elseif  !empty($item.IdPFE)}
+                                                <div id="ConfirmClientStatus-{$item.id}"
+                                                     class="btn btn-success-excel cursor-default"
+                                                     disabled="disabled">
+                                                    تایید از طریق اکسل / واریز کنید
                                                 </div>
                                             {elseif $item.Status eq 'ConfirmClient' }
                                                 <div id="ConfirmClientStatus-{$item.id}" class="btn btn-info cursor-default"

@@ -330,6 +330,20 @@ class apiLocal extends clientAuth
     //endregion
 
 
+
+    protected function LongTimeCalc($deptTime , $arrivalTime , $deptDate , $arrivalDate){
+
+        $dep = new DateTime($deptDate . ' ' . $deptTime );
+        $arr = new DateTime($arrivalDate . ' ' . $arrivalTime);
+
+        $diff = $dep->diff($arr);
+
+        $days = $diff->days;
+        $hours = $diff->h;
+        $minutes = $diff->i;
+
+        return sprintf('%d:%02d:%02d', $days, $hours, $minutes);
+    }
     #region Revalidate
 
     public function Revalidate($Param = array()){
@@ -389,11 +403,13 @@ class apiLocal extends clientAuth
                     $UserInfo = $this->getController('members')->findUser($UserId);
 //                }
 
+                $airlineController = $this->getController('airline');
+
                 if (!empty($Revalidate['Result']['SessionID']) && $Revalidate['Result']['Flight']['Reservable'] == "true") {
 
                     $data['FlightType'] = strtolower($Revalidate['Result']['Flight']['FlightType']) == "system" ? "system" : "charter";
                     $DepartureDate = functions::DateJalali($Revalidate['Result']['Flight']['OutputRoutes'][0]['DepartureDate']);
-                    $data['Airline_IATA'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['Airline']['Code'];
+                    $data['Airline_IATA'] = $airlineController->iataStandardization($Revalidate['Result']['Flight']['OutputRoutes'][0]['Airline']['Code']);
                     $data['AirlineName'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['Airline']['Name'];
                     $data['CurrencyCode'] = Session::getCurrency();
                     $data['IsInternalFlight'] = ($Revalidate['Result']['IsInternal'] == true) ? '1' : '0';
@@ -528,6 +544,7 @@ class apiLocal extends clientAuth
                     $data = $this->getController('commissionSources')->sourceCommissionCalculation($data , 'revalidate');
                     $data = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($data , 'revalidate');
 
+                    functions::insertLog('$res ->>>>> ' . json_encode($data) , '000shojaee');
 
 
                     $Model->setTable('temporary_local_tb');
@@ -554,14 +571,16 @@ class apiLocal extends clientAuth
                                 }else{
                                     $ArrivalCity = functions::NameCityForeign($Route['Arrival']['Code']);
                                 }
-
+                                functions::insertLog('route ->>>>> ' . json_encode($Route) , '000shojaee');
                                 $dataTemporary['DestiCity'] = $ArrivalCity['DepartureCityFa'];
-                                $dataTemporary['Airline_IATA'] = $Route['Airline']['Code'];
-                                $dataTemporary['AirlineName'] = functions::AirlineName($Route['Airline']['Code']);
+                                $dataTemporary['Airline_IATA'] = $airlineController->iataStandardization($Route['Airline']['Code']);
+                                $dataTemporary['AirlineName'] = functions::AirlineName($dataTemporary['Airline_IATA']);
                                 $dataTemporary['AircraftName'] = !empty($Route['Aircraft']['Manufacturer']) ? $Route['Aircraft']['Manufacturer'] : 'نامشخص';
                                 $dataTemporary['FlightNumber'] = $Route['FlightNo'];
-                                $dataTemporary['Transit'] = substr($Route['Transit'], 0, 7);
-                                $dataTemporary['LongTime'] = substr($Route['FlightTime'], 0, 7);
+                                $dataTemporary['Transit'] = substr($Route['transit'], 0, 7);
+
+                                $dataTemporary['LongTime'] = $Route['FlightTime'] ? substr($Route['FlightTime'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
+
                                 $dataTemporary['ArrivalDate'] = $Route['ArrivalDate'];
                                 $dataTemporary['ArrivalTime'] = $Route['ArrivalTime'];
                                 $dataTemporary['Baggage'] = !empty($Route['Baggage']) ? $Route['Baggage'][0]['Charge'] : '0';
@@ -569,7 +588,7 @@ class apiLocal extends clientAuth
                                 $dataTemporary['AllowanceAmount'] = !empty($Route['Baggage']) ? $Route['Baggage'][0]['allowanceAmount'] : '0';
                                 $dataTemporary['TemporaryId'] = $temporaryId;
                                 $dataTemporary['TypeRoute'] = 'Dept';
-                                $dataTemporary['TotalLongTime'] = substr($Revalidate['Result']['Flight']['TotalOutputFlightDuration'], 0, 7);
+                                $dataTemporary['TotalLongTime'] = $Revalidate['Result']['Flight']['TotalOutputFlightDuration'] ?  substr($Revalidate['Result']['Flight']['TotalOutputFlightDuration'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
                                 $dataTemporary['TotalTransitTime'] = substr($Revalidate['Result']['Flight']['TotalOutputStopDuration'], 0, 7);
 
 
@@ -580,6 +599,7 @@ class apiLocal extends clientAuth
 
                             if (!empty($Revalidate['Result']['Flight']['ReturnRoutes'])) {
                                 foreach ($Revalidate['Result']['Flight']['ReturnRoutes'] as $Route) {
+                                    functions::insertLog('return ->>> '.json_encode($Route) , '000shojaee');
                                     $dataTemporaryReturn['Date'] = str_replace('-', '/', functions::DateJalali($Route['DepartureDate']));
                                     $dataTemporaryReturn['Time'] = $Route['DepartureTime'];
                                     $dataTemporaryReturn['OriginAirportIata'] = $Route['Departure']['Code'];
@@ -588,12 +608,12 @@ class apiLocal extends clientAuth
                                     $dataTemporaryReturn['DestiAirportIata'] = $Route['Arrival']['Code'];
                                     $ArrivalCityReturn = functions::NameCityForeign($Route['Arrival']['Code']);
                                     $dataTemporaryReturn['DestiCity'] = $ArrivalCityReturn['DepartureCityFa'];
-                                    $dataTemporaryReturn['Airline_IATA'] = $Route['Airline']['Code'];
-                                    $dataTemporaryReturn['AirlineName'] = functions::AirlineName($Route['Airline']['Code']);
+                                    $dataTemporaryReturn['Airline_IATA'] = $airlineController->iataStandardization($Route['Airline']['Code']);
+                                    $dataTemporaryReturn['AirlineName'] = functions::AirlineName($dataTemporaryReturn['Airline_IATA']);
                                     $dataTemporaryReturn['AircraftName'] = !empty($Route['Aircraft']['Manufacturer']) ? $Route['Aircraft']['Manufacturer'] : 'نامشخص';
                                     $dataTemporaryReturn['FlightNumber'] = $Route['FlightNo'];
-                                    $dataTemporaryReturn['Transit'] = substr($Route['Transit'], 0, 7);
-                                    $dataTemporaryReturn['LongTime'] = substr($Route['FlightTime'], 0, 7);
+                                    $dataTemporaryReturn['Transit'] = substr($Route['transit'], 0, 7);
+                                    $dataTemporaryReturn['LongTime'] = $Route['FlightTime'] ? substr($Route['FlightTime'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
                                     $dataTemporaryReturn['ArrivalDate'] = $Route['ArrivalDate'];
                                     $dataTemporaryReturn['ArrivalTime'] = $Route['ArrivalTime'];
                                     $dataTemporaryReturn['Baggage'] = $Route['Baggage'][0]['Charge'];
@@ -601,7 +621,7 @@ class apiLocal extends clientAuth
                                     $dataTemporaryReturn['AllowanceAmount'] = !empty($Route['Baggage']) ? $Route['Baggage'][0]['allowanceAmount'] : '0';
                                     $dataTemporaryReturn['TemporaryId'] = $temporaryId;
                                     $dataTemporaryReturn['TypeRoute'] = 'Return';
-                                    $dataTemporaryReturn['TotalLongTime'] = substr($Revalidate['Result']['Flight']['TotalReturnFlightDuration'], 0, 7);
+                                    $dataTemporaryReturn['TotalLongTime'] = $Revalidate['Result']['Flight']['TotalReturnFlightDuration'] ? substr($Revalidate['Result']['Flight']['TotalReturnFlightDuration'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
                                     $dataTemporaryReturn['TotalTransitTime'] = substr($Revalidate['Result']['Flight']['TotalReturnStopDuration'], 0, 7);
 
                                     $Model->setTable('temporary_routes_tb');
@@ -888,12 +908,15 @@ class apiLocal extends clientAuth
             error_log('try show result method PreReserve in : ' . date('Y/m/d H:i:s') . ' SessionId=>' . $s_id . ' AND array equal in => : ' . json_encode($PreReserve, true) . " \n", 3, LOGS_DIR . 'log_method_PreReserve.txt');
 
             if (!empty($PreReserve['Result']['Request'])) {
+
+                $airlineController = $this->getController('airline');
+                
                 $Count = count($PreReserve['Result']['Request']['OutputRoutes']);
                 $index_arrival_city = ($direction=='muti_destination') ? 0 : ($Count-1);
 //                $CountReturn = count($PreReserve['Result']['Request']['ReturnRoutes']);
                 $isInternal = ($PreReserve['Result']['Request']['IsInternal'] == true) ? '1' : '0';
                 $FlightType = ((strtolower($PreReserve['Result']['Request']['OutputRoutes'][$Count - 1]['FlightType']) == 'system') ? 'system' : 'charter');
-                $AirlineIata = $PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Code'];
+                $AirlineIata = $airlineController->iataStandardization($PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Code']);
                 $isInternalFlight = ($isInternal == '1') ? 'internal' : 'external';
                 $check_private = functions::checkConfigPid($AirlineIata, $isInternalFlight, $FlightType,$PreReserve['Result']['SourceId']);
                 $TypeZone = ($isInternal == '1') ? 'Local' : 'Portal';
@@ -907,7 +930,7 @@ class apiLocal extends clientAuth
                     }
                 }
 
-                $service_title = functions::TypeService($FlightType, $TypeZone, $TypeTicket, $check_private, $PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Code']);
+                $service_title = functions::TypeService($FlightType, $TypeZone, $TypeTicket, $check_private, $AirlineIata);
                 $d['serviceTitle'] = $service_title ;
                 $d['IsInternal'] = $isInternal ;
                 // get data special discount
@@ -996,7 +1019,7 @@ class apiLocal extends clientAuth
                         $d['time_flight_arrival'] = $TimeFlightArrival;
                         $d['flight_type'] = $FlightType;
                         $d['flight_number'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['FlightNo'];
-                        $d['airline_iata'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Code'];
+                        $d['airline_iata'] = $AirlineIata;
                         $d['airline_name'] = (!empty($PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Name'])) ? $PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Name'] : '';
                         $d['seat_class'] = !empty($PreReserve['Result']['Request']['OutputRoutes'][0]['SeatClass']) ? $PreReserve['Result']['Request']['OutputRoutes'][0]['SeatClass'] : "";
                         $d['cabin_type'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['CabinType'];
@@ -1121,7 +1144,7 @@ class apiLocal extends clientAuth
                         $d['time_flight_arrival'] = $TimeFlightArrival;
                         $d['flight_type'] = $FlightType;
                         $d['flight_number'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['FlightNo'];
-                        $d['airline_iata'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Code'];
+                        $d['airline_iata'] = $AirlineIata;
                         $d['airline_name'] = (!empty($PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Name'])) ? $PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Name'] : '';
                         $d['seat_class'] = !empty($PreReserve['Result']['Request']['OutputRoutes'][0]['SeatClass']) ? $PreReserve['Result']['Request']['OutputRoutes'][0]['SeatClass'] : "";
                         $d['cabin_type'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['CabinType'];
@@ -1246,7 +1269,7 @@ class apiLocal extends clientAuth
                         $d['time_flight_arrival'] = $TimeFlightArrival;
                         $d['flight_type'] = $FlightType;
                         $d['flight_number'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['FlightNo'];
-                        $d['airline_iata'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Code'];
+                        $d['airline_iata'] = $AirlineIata;
                         $d['airline_name'] = (!empty($PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Name'])) ? $PreReserve['Result']['Request']['OutputRoutes'][$Count - 1]['Airline']['Name'] : '';
                         $d['seat_class'] = !empty($PreReserve['Result']['Request']['OutputRoutes'][0]['SeatClass']) ? $PreReserve['Result']['Request']['OutputRoutes'][0]['SeatClass'] : "";
                         $d['cabin_type'] = $PreReserve['Result']['Request']['OutputRoutes'][0]['CabinType'];
@@ -1379,7 +1402,7 @@ class apiLocal extends clientAuth
                         $BookRoutes['TotalTransitTime'] = $PreReserve['Result']['Request']['TotalOutputStopDuration'];
                         $BookRoutes['CabinType'] = $Routes['CabinType'];
                         $BookRoutes['AirlineName'] = $Routes['Airline']['AirlineName'];
-                        $BookRoutes['Airline_IATA'] = $Routes['Airline']['Code'];
+                        $BookRoutes['Airline_IATA'] = $airlineController->iataStandardization($Routes['Airline']['Code']);
                         $BookRoutes['AircraftName'] = $Routes['Aircraft']['Manufacturer'];
                         $BookRoutes['FlightNumber'] = $Routes['FlightNo'];
                         $BookRoutes['Baggage'] = !empty($Routes['Baggage']) ? $Routes['Baggage'][0]['Charge'] : '0';
@@ -1417,7 +1440,7 @@ class apiLocal extends clientAuth
                             $BookRoutesReturn['TotalTransitTime'] = $PreReserve['Result']['Request']['TotalReturnStopDuration'];
                             $BookRoutesReturn['CabinType'] = $RoutesReturn['CabinType'];
                             $BookRoutesReturn['AirlineName'] = $RoutesReturn['Airline']['AirlineName'];
-                            $BookRoutesReturn['Airline_IATA'] = $RoutesReturn['Airline']['Code'];
+                            $BookRoutesReturn['Airline_IATA'] = $airlineController->iataStandardization($RoutesReturn['Airline']['Code']);
                             $BookRoutesReturn['AircraftName'] = $RoutesReturn['Aircraft']['Manufacturer'];
                             $BookRoutesReturn['FlightNumber'] = $RoutesReturn['FlightNo'];
                             $BookRoutesReturn['Baggage'] = !empty($RoutesReturn['Baggage']) ? $RoutesReturn['Baggage'][0]['Charge'] : '0';
@@ -1494,11 +1517,12 @@ class apiLocal extends clientAuth
     public function bookFlightPassenger($RequestNumber, $IdMember, $sourceId = null, $securityCode = null)
     {
 
+
+
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
         $irantechCommission = Load::controller('irantechCommission');
 
-        $IdMember = $_POST['IdMember'];
         $sql = "SELECT * FROM book_local_tb WHERE member_id='{$IdMember}' AND request_number='{$RequestNumber}'";
         $passengers = $Model->select($sql);
 
@@ -1596,6 +1620,7 @@ class apiLocal extends clientAuth
             $data['subAgencyId'] = $agencyInfo['id'];
         }
 
+
         $url = $this->apiAddress . "Flight/Book/{$RequestNumber}";
         $info_json_passengers = json_encode($data);
 
@@ -1671,20 +1696,20 @@ class apiLocal extends clientAuth
                 foreach ($book['Result']['Request']['RequestFares'] as $RequestFares) {
                     if ( (in_array($sourceId,$source_rial))) {
                         if (strtolower($RequestFares['PassengerType']) == "adt") {
-                            $Price['Adt']     =   $RequestFares['TotalFare'] ;
+                            $Price['Adt']     =   $RequestFares['TotalFare'];
                             $PriceFare['Adt'] =   $RequestFares['BaseFare'] ;
                             $PriceTax['Adt']  =   $RequestFares['Tax'];
                             $PriceCom['Adt']  =   $RequestFares['Commision'];
                         }
                         if (strtolower($RequestFares['PassengerType']) == "chd") {
-                            $Price['Chd']     =   $RequestFares['TotalFare'] ;
+                            $Price['Chd']     =   $RequestFares['TotalFare'];
                             $PriceFare['Chd'] =   $RequestFares['BaseFare'] ;
                             $PriceTax['Chd']  =   $RequestFares['Tax'];
                             $PriceCom['Chd']  =   $RequestFares['Commision'];
 
                         }
                         if (strtolower($RequestFares['PassengerType']) == "inf") {
-                            $Price['Inf']     =  $RequestFares['TotalFare'] ;
+                            $Price['Inf']     =  $RequestFares['TotalFare'];
                             $PriceFare['Inf'] =  $RequestFares['BaseFare'] ;
                             $PriceTax['Inf']  =  $RequestFares['Tax'];
                             $PriceCom['Inf']  =  $RequestFares['Commision'];
@@ -1861,7 +1886,7 @@ class apiLocal extends clientAuth
                     }
 
                     $d = $this->getController('commissionSources')->sourceCommissionCalculation($d , 'book');
-                    $d = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($d , 'book');
+                    $d = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($d , 'book' , $IdMember);
                     $condition = " member_id = '{$IdMember}' AND request_number='{$RequestNumber}' AND passenger_age='{$ReqPassenger['PassengerType'] }'";
                     $Model->setTable("book_local_tb");
                     $res = $Model->update($d, $condition);
@@ -1882,6 +1907,7 @@ class apiLocal extends clientAuth
 
             }
             else {
+
                 $BookFlight['successfull'] = 'error';
                 $condition = "request_number='{$RequestNumber}' ";
                 $Model->setTable("book_local_tb");
@@ -1950,6 +1976,8 @@ class apiLocal extends clientAuth
     }
 
 #endregion
+
+
 #region type_title
 
     public function type_title($title, $type)

@@ -932,6 +932,7 @@
   <SecuritycodeDept>Код безопасности рейса утерян</SecuritycodeDept>
   <SecuritycodeReturn>Код безопасности рейса возвращен</SecuritycodeReturn>
   <Visa>Visa</Visa>
+  <Cip>Cip</Cip>
   <Bugpasswordrecoveryprocess>Ошибка в процессе восстановления пароля</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>Чтобы восстановить пароль, повторите запрос</Requestnewpasswordpassword>
   <expireddeadlinerequest>Извините, срок подачи вашего запроса истек</expireddeadlinerequest>
@@ -1492,6 +1493,7 @@
   <CompletePayment>Для завершения процесса нажмите кнопку «Оплата».</CompletePayment>
   <MessagePaymentByCreditUser>Сумма платежа после зачисления рассчитывается @@@creditPayment@@ Rials, пожалуйста, выберите банковский счет для оплаты остатка на вашем счете</MessagePaymentByCreditUser>
   <ZeroCredit>К сожалению, ваш кредит составляет 0 риалов.</ZeroCredit>
+  <notEnoughCredit>Недостаток кредитной истории для погашения займа.</notEnoughCredit>
   <AccessDenied>У вас нет доступа к этому разделу</AccessDenied>
   <AwardDiscountCode>Поздравляем! Вы получили наш код скидки @@CodeDiscount@@ от @@title@@</AwardDiscountCode>
   <SendEmailForOther>Если вы хотите отправить бронирование кому-то другому, введите адрес электронной почты этого человека в поле ниже и нажмите кнопку «Отправить».</SendEmailForOther>
@@ -3112,5 +3114,7 @@
   <errorPaymentFlightMessage>Возникла проблема при оплате. Если сумма не списывается с вашего кредита или счёта, повторите попытку</errorPaymentFlightMessage>
   <pendingFlight>Ожидает выдачи</pendingFlight>
   <upperThanTwoHundredAndFifty>Увеличение кредита не может превышать 2 500 000 000 риалов</upperThanTwoHundredAndFifty>
+  <moreImage>еще изображения</moreImage>
+
 </Main>
 

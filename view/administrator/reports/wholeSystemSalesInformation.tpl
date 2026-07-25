@@ -3,7 +3,7 @@
 {if $salesInformation.total_sales_ticket > 0}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-ticket text-info me-2 FontSize26 align-middle"></i> بلیط هواپیما
                 </h3>
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش بلیط هواپیما
                 </h3>
@@ -41,7 +41,7 @@
 {if $salesInformation.total_sales_hotel > 0}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-bed text-success me-2 FontSize26 align-middle"></i> هتل
                 </h3>
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش هتل
                 </h3>
@@ -82,7 +82,7 @@
 {if $salesInformation.total_sales_train > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-train text-primary me-2 FontSize26 align-middle"></i> قطار
                 </h3>
@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش قطار
                 </h3>
@@ -120,7 +120,7 @@
 {if $salesInformation.total_sales_bus > 0 }
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-bus text-warning me-2 FontSize26 align-middle"></i> اتوبوس
                 </h3>
@@ -137,7 +137,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش اتوبوس
                 </h3>
@@ -158,7 +158,7 @@
 {if $salesInformation.total_sales_insurance > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-heartbeat text-danger me-2 FontSize26 align-middle"></i>  بیمه
                 </h3>
@@ -175,7 +175,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش بیمه
                 </h3>
@@ -196,7 +196,7 @@
 {if $salesInformation.total_sales_tour > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-globe text-purple me-2 FontSize26 align-middle"></i>  تور
                 </h3>
@@ -213,7 +213,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش تور
                 </h3>
@@ -234,7 +234,7 @@
 {if $salesInformation.total_sales_visa > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-suitcase text-secondary me-2 FontSize26 align-middle" style="color: #6c757d;"></i> ویزا
                 </h3>
@@ -251,7 +251,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش ویزا
                 </h3>
@@ -272,7 +272,7 @@
 {if $salesInformation.total_sales_entertainment > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="fa fa-star text-pink me-2" style="color: #ff69b4;"></i> تفریحات
                 </h3>
@@ -289,7 +289,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش تفریحات
                 </h3>
@@ -310,7 +310,7 @@
 {if $salesInformation.total_sales_gasht > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
     <div class="col-lg-6  col-md-6 col-sm-6 col-xs-12">
-        <div class="white-box border">
+        <div class="white-box border border-ccc">
             <h3 class="box-title"> تعداد فروش/مسافر در گشت </h3>
             <ul class="list-inline two-part">
                 <li class="hidden-xs hidden-sm"><i class="fa fa-map-signs text-info"></i></li>
@@ -323,7 +323,7 @@
         </div>
     </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box border">
+            <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش گشت
                 </h3>
@@ -343,7 +343,7 @@
 {/if}
 <div class="row mx-1">
     <div class="col-12">
-        <div class="white-box p-4 bg-white border rounded">
+        <div class="white-box p-4 bg-white border border-ccc">
             <h3 class="box-title mb-4">جمع نهایی</h3>
             <div class="row text-center">
                 <div class="col-6 col-md-3 mb-3">

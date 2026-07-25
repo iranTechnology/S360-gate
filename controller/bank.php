@@ -17,7 +17,9 @@ class bank {
 	public $detect_service_payment;
 	private $bankParam1 = '', $bankParam2 = '', $bankParam3 = '', $bankParam4 = '', $bankParam5 = '', $bankServiceType = ''; //this one should not be array
 	public $return_immediately=false;
+
 	public $additionalData;
+
 	#region construct
 	public function __construct() {
 

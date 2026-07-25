@@ -1069,7 +1069,7 @@
   <SecuritycodeDept>کد امنیتی پرواز رفت</SecuritycodeDept>
   <SecuritycodeReturn>کد امنیتی پرواز برگشت</SecuritycodeReturn>
   <Visa>ویزا</Visa>
-  <Cip>تشریفات فرودگاه</Cip>
+    <Cip>تشریفات فرودگاه</Cip>
   <Bugpasswordrecoveryprocess>اشکال در فرآیند بازیابی کلمه عبور</Bugpasswordrecoveryprocess>
   <Requestnewpasswordpassword>برای بازیابی رمز عبور، مجددا درخواست نمایید</Requestnewpasswordpassword>
   <expireddeadlinerequest>متاسفانه مهلت اعتبار درخواست شما به پایان رسیده است</expireddeadlinerequest>
@@ -3142,7 +3142,7 @@
   <BetweenTwoAndTwelve>(بین 2 الی 12 سال)</BetweenTwoAndTwelve>
   <YoungerThanTwo>(کوچکتر از 2 سال)</YoungerThanTwo>
   <Busy> پرتردد</Busy>
-  <Passenger> مسافر </Passenger>
+  <Passenger> مسافر</Passenger>
   <InviteFreinds>دعوت از دوستان</InviteFreinds>
   <DestinationInfo>اطلاعات مقصد</DestinationInfo>
 
@@ -3762,7 +3762,7 @@
   <PA_CO_LIST>لیست تماس ها</PA_CO_LIST>
   <PA_CO_LISTTITLE>در لیست زیر شما میتوانید لیست همه تماس های خود را مشاهده نمائید</PA_CO_LISTTITLE>
   <PA_CO_RESULTTABLE>نمایش _MENU_ نتیجه</PA_CO_RESULTTABLE>
-  <PA_CO_RESULTTABLE2>نمایش</PA_CO_RESULTTABLE2>
+<PA_CO_RESULTTABLE2>نمایش</PA_CO_RESULTTABLE2>
   <PA_CO_REQUESTDETAIL>جزییات درخواست</PA_CO_REQUESTDETAIL>
   <PA_CO_STATUSNOTSEEN>بررسی نشده</PA_CO_STATUSNOTSEEN>
   <PA_CO_STATUSSEEN>مشاهده شده</PA_CO_STATUSSEEN>
@@ -3798,10 +3798,10 @@
   <PA_BUY_Commission>کمیسیون</PA_BUY_Commission>
   <PA_BUY_CommissionProvider>کمیسیون پرووایدر</PA_BUY_CommissionProvider>
   <PA_BUY_Yourprofit>سود شما</PA_BUY_Yourprofit>
-  <PA_BUYFrom>خرید از</PA_BUYFrom>
+  <PA_BUYFrom>خرید از سفر360</PA_BUYFrom>
+  <PA_BUY_Safar360>خرید از سفر360</PA_BUY_Safar360>
   <PA_BUY_MarkCOUNTER>مارک کانتر</PA_BUY_MarkCOUNTER>
   <PA_BUY_MarkAgency>مارک آژانس</PA_BUY_MarkAgency>
-  <EnterInvoiceNumber>شماره فاکتور را وارد نمائید</EnterInvoiceNumber>
   <Exclusive>اختصاصی</Exclusive>
   <Shared>اشتراکی</Shared>
   <PrivatePad>پد اختصاصی</PrivatePad>
@@ -3841,12 +3841,9 @@
   <NoStatus>بدون وضعیت</NoStatus>
   <NoRecordsFound>هیچ رکوردی یافت نشد</NoRecordsFound>
   <TotalRecords>جمع کل رکوردها</TotalRecords>
-  <UploadInvoice>آپلود فاکتور</UploadInvoice>
+<UploadInvoice>آپلود فاکتور</UploadInvoice>
   <PassengerSale>فروش به مسافر</PassengerSale>
   <PassengerOnline>مسافرآنلاین</PassengerOnline>
   <SeatCount>تعداد صندلی</SeatCount>
-  <ReceiveInfoError>خطا در دریافت اطلاعات</ReceiveInfoError>
-  <ReservedRooms>اتاق های رزرو شده</ReservedRooms>
-  <HotelBooking>رزرو هتل انگلیسی</HotelBooking>
-
+<ReceiveInfoError>خطا در دریافت اطلاعات</ReceiveInfoError>
 </Main>

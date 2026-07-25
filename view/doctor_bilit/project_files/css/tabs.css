@@ -75,6 +75,269 @@
     display: contents
 }
 
+/* start passenger Count insurance */
+.parent-input-search-box {
+    position: relative
+}
+
+.dropdown-item-insurance span {
+    font-size: 14px
+}
+
+.parent-svg-input-search-box svg {
+    width: 16px;
+    height: 16px;
+    fill: #9792a1
+}
+
+.caption-input-search-box {
+    font-size: 10px;
+    color: #9792a1;
+    position: absolute;
+    bottom: 0;
+    right: 24px;
+    user-select: none;
+    margin-bottom: 0;
+    cursor: pointer;
+    display:none;
+}
+
+.parent-input-search-box {
+    height: 51px;
+    align-items: center !important;
+    display: flex;
+    width: 100%
+}
+
+.parent-svg-input-search-box {
+    padding-top: 3px;
+    display:none;
+}
+
+.gap-search-box {
+    gap: 18px
+}
+
+.parent-empty-search-box {
+    width: 100%;
+    height: 30px
+}
+
+.hotel_passenger_picker, .package_passenger_picker, .hotel_local_passenger_picker {
+    width: 100%;
+    height: 51px;
+    display: flex;
+    padding: 0 !important;
+    border: none !important
+}
+
+.package_passenger_picker {
+    padding-left: 0
+}
+
+.hotel_local_passenger_picker {
+    padding-left: 0
+}
+
+.dropdown-insurance {
+    position: relative;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height:50px
+}
+
+.dropdown-toggle-insurance {
+    width: 100%;
+    padding-right: 8px;
+    cursor: pointer;
+    text-align: right;
+    font-size: 14px;
+    color: #737373;
+    margin-top:13px
+}
+
+.dropdown-menu-insurance {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    text-align: right;
+    z-index: 10;
+    top:49px
+}
+
+.dropdown-menu-insurance:last-child {
+    text-align: center
+}
+
+.title-dropdown-item-insurance {
+    padding: 10px 10px 0;
+    display: grid;
+    grid-template-columns:repeat(2, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    font-size: 11px
+}
+
+.dropdown-item-insurance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee
+}
+
+.dropdown-item-insurance:last-child {
+    border-bottom: none
+}
+
+.counter-insurance {
+    display: flex;
+    align-items: center
+}
+
+.counter-insurance button {
+    width: 25px;
+    height: 25px;
+    border: none;
+    background-color: var(--mainColor);
+    cursor: pointer;
+    border-radius: 7px;
+    transition: all ease .5s;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.counter-insurance button:hover {
+    background: #190606
+}
+
+.counter-insurance button svg {
+    fill: #fff;
+    width: 14px;
+    height: 14px
+}
+
+.counter-insurance span {
+    margin: 0 10px;
+    min-width: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #333
+}
+
+#external-content {
+    display: none
+}
+
+.hotel_passenger_picker > span, .hotel_local_passenger_picker > span, .package_passenger_picker > span {
+    font-size: 12px;
+    color: #8e8e8e;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 100%
+}
+
+.hotel_passenger_picker ul, .hotel_local_passenger_picker ul, .package_passenger_picker ul {
+    padding: 0;
+    display: flex;
+    line-height: 30px;
+    margin: 0;
+    width: 100%;
+    list-style: none;
+    cursor: pointer
+}
+
+.ul-inputSearch-externalHotel {
+    margin: 0
+}
+
+.hotel_passenger_picker ul li, .hotel_local_passenger_picker ul li, .package_passenger_picker ul li {
+    font-size: 14px;
+    color: #000;
+    text-align: revert
+}
+
+.hotel_passenger_picker ul em, .hotel_local_passenger_picker ul em, .package_passenger_picker ul em {
+    font-style: normal;
+    padding: 0 3px
+}
+/* end passenger Count insurance */
+
+#searchBoxContent {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    min-height: 107px
+}
+
+#searchBoxContent > div {
+    width: 100%
+}
+
+.parent-text-train-link {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px
+}
+
+.parent-text-train-link h4 {
+    font-size: 18px;
+    margin-bottom: 0;
+    text-align: center
+}
+
+.parent-text-train-link .parent-link-train {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center
+}
+
+.parent-text-train-link .parent-link-train a {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    transition: all ease .5s
+}
+
+.parent-text-train-link .parent-link-train a span {
+    font-size: 18px;
+    color: #b71c1c;
+    transition: all ease .5s
+}
+
+.parent-text-train-link .parent-link-train a svg {
+    width: 12px;
+    fill: #b71c1c;
+    transition: all ease .5s
+}
+
+.parent-text-train-link .parent-link-train a:hover {
+    text-decoration: none
+}
+
+.parent-text-train-link .parent-link-train a:hover span {
+    color: #190606
+}
+
+.parent-text-train-link .parent-link-train a:hover svg {
+    fill: #190606
+}
+
 #titr_searchBox {
     text-align: right;
     color: #fff;

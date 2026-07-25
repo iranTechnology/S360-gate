@@ -1,4 +1,6 @@
 {load_presentation_object filename="partner" assign="objPartner"}
+{load_presentation_object filename='selectColor' assign='objColor'}
+{assign var='colorInfo' value=$objColor->InfoColor($smarty.get.id)}
 
 {if $smarty.get.id !=""}
     <style>
@@ -228,7 +230,16 @@
                             <option value="0" {if {$objPartner->list['IsCurrency']} eq '0'}selected="selected"{/if}>ندارد</option>
                         </select>
                     </div>
-
+                    <div class="form-group col-sm-6">
+                        <label for="mainColor" class="control-label">رنگ اولیه</label>
+                        <input type="text" class="form-control" id="mainColor" name="mainColor"
+                               placeholder="رنگ اولیه را وارد نمائید" value="{$colorInfo['ColorMainBg']}">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="secondColor" class="control-label">رنگ ثانویه</label>
+                        <input type="text" class="form-control" id="secondColor" name="secondColor"
+                               placeholder="رنگ ثانویه را وارد نمائید" value="{$colorInfo['ColorMainBgHover']}">
+                    </div>
 {* 
                     <div class="form-group col-sm-6">
                         <label for="AllowSendSms" class="control-label"> اجازه ارسال پیامک </label>

@@ -258,7 +258,7 @@ body > .select2-container {
 
 .details_box .details_box_header {
     display: grid;
-    grid-template-columns:repeat(5, 1fr);
+    grid-template-columns:repeat(6, 1fr);
     grid-template-rows:1fr;
     grid-column-gap: 5px;
     grid-row-gap: 5px;
@@ -271,7 +271,7 @@ body > .select2-container {
 
 .details_box .details_box_main {
     display: grid;
-    grid-template-columns:repeat(5, 1fr);
+    grid-template-columns:repeat(6, 1fr);
     grid-template-rows:1fr;
     grid-column-gap: 5px;
     grid-row-gap: 5px;
@@ -2627,6 +2627,17 @@ body .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
     border-top: 5px solid #5d5d5d;
     border-radius: 100%;
     animation: loader 1s infinite linear
+}
+.profile-search-div{
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--mainColor);
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: 5px;
+}
+.profile-search-div a{
+    color:#fff !important;
 }
 
 @keyframes loader {

@@ -74,10 +74,12 @@ class errors extends clientAuth
 
     function processError($err , $type , $method , $sourceCode) {
 
+        if (is_array($err)) {
         unset($err['curl_error']);
         unset($err['info']);
         unset($err['errno']);
         unset($err['error']);
+        }
 
         $displayErr = $this->extractDisplayError($err , $type , $method , $sourceCode);
         if (!$displayErr) {

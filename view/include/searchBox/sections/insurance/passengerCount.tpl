@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-6 col-sm-6 col-12 col_search p-1">
+<div class="col-lg-4 col-md-6 col-sm-6 col-12 col_search">
     <input type='hidden' name="passengers-count-js" class='passengers-count-js' id="passengers-count-js">
     <div class="parent-input-search-box">
 {*        <i class="parent-svg-input-search-box">*}

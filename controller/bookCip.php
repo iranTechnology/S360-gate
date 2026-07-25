@@ -96,38 +96,38 @@ class bookCip extends cip
         functions::insertLog('$info: ' . json_encode($info) , '000shojaee');
         $resultBook = false;
 
-        functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookCip');
-        if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
-            functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
-            $this->updateStatusProcessing($info['factor_number']);
+            functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookCip');
+            if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
+                functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
+                $this->updateStatusProcessing($info['factor_number']);
 
-            try {
-                $startTime = time();
-                $maxTime = 70;
-                set_time_limit($maxTime + 5);
+                    try {
+                        $startTime = time();
+                        $maxTime = 70;
+                        set_time_limit($maxTime + 5);
 
-                $resultBook = $this->reserveTicket($payType, $info);
+                        $resultBook = $this->reserveTicket($payType, $info);
 
 
-                $elapsed = time() - $startTime;
-                if ($elapsed > $maxTime) {
-                    return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
-                }
+                        $elapsed = time() - $startTime;
+                        if ($elapsed > $maxTime) {
+                            return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
+                        }
+
+                    }
+                    catch (Exception $e) {
+                        return functions::withError('', 500, 'Error when booking a flight');
+                    }
+
+
+                    functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
+
+                functions::insertLog('**************************************', 'newBookCip');
 
             }
-            catch (Exception $e) {
-                return functions::withError('', 500, 'Error when booking a flight');
+            else {
+                return functions::withError('', 403, 'تشریفات فرودگاه قبلا به نتیجه رسیده است');
             }
-
-
-            functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookCip');
-
-            functions::insertLog('**************************************', 'newBookCip');
-
-        }
-        else {
-            return functions::withError('', 403, 'تشریفات فرودگاه قبلا به نتیجه رسیده است');
-        }
 
         if ($resultBook) {
             return functions::withSuccess($resultBook, 200, 'تشریفات فرودگاه با موفقیت صادر شد');
@@ -181,7 +181,7 @@ class bookCip extends cip
 
         return $airlineController->checkSourceAirline($dataCheckConfigAirline);
     }
-
+    
     private function updateInfo($payType, $eachDirection, $ReserveTicket = array()) {
 
 
@@ -191,10 +191,10 @@ class bookCip extends cip
             $this->transaction->setCreditToSuccess($eachDirection['factor_number'], $eachDirection['tracking_code_bank']);
         }
 
-        $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
+                $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
 
-        //email to buyer
-        $this->sendSmsToClient($eachDirection);
+                //email to buyer
+                $this->sendSmsToClient($eachDirection);
 
 
         return true;
@@ -323,15 +323,15 @@ class bookCip extends cip
         functions::insertLog('after reserve ticket==>' . json_encode([$eachDirection['factor_number']], 256), 'newBookCip');
 
         if (!empty($ReserveTicket) && $ReserveTicket['curl_error'] == false && !empty($ReserveTicket['Pnr'])) {
-            functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookCip');
-            $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
+                functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookCip');
+                $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
 
-            functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookCip');
+                functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookCip');
         }
         else {
             if ($payType == 'credit') {
                 if ($eachDirection['successfull'] != 'book') {
-                    $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
+                        $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
                     $this->transaction->deleteCreditAgencyCurrent($eachDirection['request_number']);
                 }
             }
@@ -341,6 +341,119 @@ class bookCip extends cip
 
     public function getItem($reqNum) {
         return $this->bookModel->getOneByReq($reqNum);
+    }
+
+
+        public function TrackingInfo($param)
+    {
+        $_POST = $param;
+        $Model = Load::library('Model');
+        $ModelBase = Load::library('ModelBase');
+
+        $sql = "select *  from book_cip_tb where request_number = '{$param}' OR factor_number = '{$param}' OR provider_ref='{$param}'";
+        $res = $Model->load($sql);
+
+
+        if ($res['successfull'] == 'book') {
+            $status = functions::Xmlinformation("Definitivereservation");
+        } else if ($res['successfull'] == 'prereserve') {
+            $status = functions::Xmlinformation("Prereservation");
+        } else if ($res['successfull'] == 'bank') {
+            $status = functions::Xmlinformation("NavigateToPort");
+        } else if ($res['successfull'] == 'nothing') {
+            $status = functions::Xmlinformation("Unknow");
+        }elseif ($res['successfull'] == 'processing') {
+            $status = functions::Xmlinformation('processingPrintFlight');
+        }elseif ($res['successfull'] == 'pending') {
+            $status = functions::Xmlinformation('pendingPrintFlight');
+        }
+
+        if ($res['request_cancel'] == 'none') {
+            $class = ' btn btn-warning fa fa-times';
+        } else if ($res['request_cancel'] == 'request_user' || $res['request_cancel'] == 'request_admin') {
+            $class = ' btn btn-warning fa fa-refresh';
+        } else if ($res['request_cancel'] == 'confirm') {
+            $class = 'btn btn-success fa fa-check';
+        }
+
+        if ($res['request_cancel'] == 'request_user' || $res['request_cancel'] == 'request_admin') {
+            $title = functions::Xmlinformation("RequestBeingReviewed");
+        } else if ($res['request_cancel'] == 'confirm') {
+            $title = functions::Xmlinformation("CancellationRequestAccepted");
+        }
+
+        // $href = ROOT_ADDRESS . "/eticketLocal&num={$res['request_number']}";
+
+        //            $href2 = ROOT_ADDRESS_WITHOUT_LANG . "/pdf&target=ticketForeign&id={$res['request_number']}";
+        $href = '/';
+        if ($res['successfull'] == 'book') {
+
+            $op = "  <a href='{$href}' class='btn btn-info fa fa-file-pdf-o margin-10'  target='_blank' title='" . functions::Xmlinformation("ViewPDFTickets") . "'></a>";
+            $op .= '<a title="' . functions::Xmlinformation("ViewDetails") . '" onclick="ModalUserList(' . "'cip'" . ',' . "'" . $res['request_number'] . "'" . '); return false;"  class="btn btn-primary fa fa-eye"></a>';
+        }
+
+        if ($res['type_app'] != 'reservation' && $res['successfull'] == 'book' && Session::IsLogin()){
+
+            $op .= '<a id="cancelbyuser"  title="' . functions::Xmlinformation("CancelFlight") . '" onclick="ModalCancelUser(' . "'flight'" . ',' . "'" . $res['request_number'] . "'" . '); return false;"  class="btn btn-danger fa fa-times"></a>';
+        }
+        if($res['successfull'] != 'book'){
+            $op .='-';
+        }
+
+        $result = "" ;
+        if (!empty($res)) {
+              
+            $CancellationFeeSettingController = Load::controller('cancellationFeeSetting');
+            $CalculateIndemnity = $CancellationFeeSettingController->CalculateIndemnity($res['request_number']);
+
+            $resBooks = $Model->select($sql);
+            list($totalPrice, $fare) = functions::TotalPriceCancelTicketSystem($resBooks);
+            if (is_numeric($CalculateIndemnity)) {
+                $dataResultBook['PercentIndemnity'] = $CalculateIndemnity ;
+
+                $PricePenalty = functions::CalculatePenaltyPriceCancel($totalPrice, $fare, $dataResultBook);
+                $CalculateIndemnityFinal = $CalculateIndemnity . ' ' . functions::Xmlinformation("Percentagepenalty");
+            } else {
+                $CalculateIndemnityFinal = '--';
+                $PricePenalty = '--';
+            }
+
+
+
+            $request_number = $res['request_number'];
+  
+            $result = '
+                  <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title">
+                        <i class="icon-table"></i><h3>' . functions::Xmlinformation("Yourpurchase") . ' ' . functions::Xmlinformation("On") . ' ' . functions::Xmlinformation("Numberreservation") . '' . $res['request_number'] . ' <br/> ' . functions::Xmlinformation("Indate") . ' ' . dateTimeSetting::jdate('Y-m-d H:i:s', $res['creation_date_int']) . '</h3>
+                    </div>
+                    
+            <table class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>' . functions::Xmlinformation("NameCip") . '<br/>' . '</th>
+                        <th>' . functions::Xmlinformation("PnrCode") . '</th>
+                        <th>' . functions::Xmlinformation("Namepassenger") . '</th>
+                        <th>' . functions::Xmlinformation("Airport") . '<br/>' . functions::Xmlinformation("Typeflight") . '</th>
+                        <th>' . functions::Xmlinformation("Amount") . '<br/>' . functions::Xmlinformation("RefundAmount") . '</th>
+                        <th>' . functions::Xmlinformation("Status") . '</th>
+                        <th>' . functions::Xmlinformation("Action") . '</th>
+                    </tr>
+                </thead>
+                <tbody>
+            ';
+            //   echo $result;
+            $name  = $res['passenger_name'] ? $res['passenger_name'] : $res['passenger_name_en'];
+            $family  = $res['passenger_family'] ? $res['passenger_family'] : $res['passenger_family_en'];
+            $flightType = $res['flight_type'] === 'inbound' ? 'پرواز ورودی به فرودگاه' : ' پرواز خروجی از فرودگاه';
+            $tripType = $res['trip_type'] === 'international' ? 'پرواز بین المللی' : 'پرواز داخلی';
+            $pnr = $res['provider_ref'] ? $res['provider_ref'] : '-' ;
+            $result .= '<td>' . $res['cip_name'] . '</td><td>' . $pnr . '</td><td>' . $name . ' ' . $family . '</td><td>' . $res['airport_code_cip'] . '<br/>' . $flightType . ' (' . $tripType .')' .'</td><td>' . number_format($res['total_price']) . ' ' . functions::Xmlinformation("Rial") . '</td><td>' . $status . '</td><td>' . $op . '</td>';
+            $result .= '</table>';
+
+        }
+
+        return $result;
+
     }
 
 }

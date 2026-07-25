@@ -4,6 +4,7 @@
 {assign var='special_tours' value=$obj_main_page->getToursReservation($special_tour_params)}
 
 
+
 {assign var="langVar" value=""}
 {assign var="priceVar" value="_r"}
 {if $smarty.const.SOFTWARE_LANG neq 'fa'}
@@ -31,7 +32,12 @@
                                                     <p>##Startprice##</p>
                                                     <p class="packg__prize">
 
-                                                            {$tour["min_price$priceVar"]|number_format}   ##Rial##
+                                                            {$tour["min_price$priceVar"]|number_format}
+                                                        {if $tour['min_price']['is_toman'] == true}
+                                                        تومان
+                                                        {else}
+                                                        ریال
+                                                        {/if}
 
                                                         <span>
 
@@ -48,15 +54,16 @@
                                             </a>
 
                                             <div class="rating_days flex-wrap d-flex justify-content-between">
-                                            <span class="w-100"><i class="fa fa-clock"></i> ##Tourduration## : <em>{$tour['night']} ##Timenight## </em>
+                                            <span class="w-100"><i class="fa fa-clock"></i> ##Tourduration## : <em>{$tour['day']} ##Day## </em>
                                             </span>
                                                 <span class="w-100">
                                                 <i class="far fa-calendar-alt"></i> ##dateMove## :
-                                                    {assign var="year" value=substr($tour['start_date'], 0, 4)}
-                                                    {assign var="month" value=substr($tour['start_date'], 4, 2)}
-                                                    {assign var="day" value=substr($tour['start_date'], 6)}
+{*                                                    {assign var="year" value=substr($tour['start_date'], 0, 4)}*}
+{*                                                    {assign var="month" value=substr($tour['start_date'], 4, 2)}*}
+{*                                                    {assign var="day" value=substr($tour['start_date'], 6)}*}
 
-                                                <span>{$year}/{$month}/{$day}</span>
+{*                                                <span>{$year}/{$month}/{$day}</span>*}
+                                                    همه روزه
                                             </span>
 
                                             </div>

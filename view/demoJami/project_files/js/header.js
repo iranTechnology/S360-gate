@@ -2,7 +2,7 @@
     (n.navigation = function(t, s) {
         var o = {
                 responsive: !0,
-                mobileBreakpoint: 991,
+                mobileBreakpoint: 1200,
                 showDuration: 200,
                 hideDuration: 200,
                 showDelayDuration: 0,

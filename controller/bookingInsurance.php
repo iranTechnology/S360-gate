@@ -681,7 +681,7 @@ class bookingInsurance extends insurance
                 " FROM book_insurance_tb " .
                 " WHERE 1 = 1 {$conditions} ";
 
-                       /* 1405_2_30 غیرفعال شد
+                        /*1405_2_30 غیرفعال شد
                         $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
                         if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){

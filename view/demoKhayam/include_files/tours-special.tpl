@@ -2,7 +2,7 @@
 {assign var="foregin_tour_params" value=['limit'=> '20','dateNow' => $dateNow , 'category' => '18']}
 {assign var='foregin_tours' value=$obj_main_page->getToursReservation($foregin_tour_params)}
 
-{*{if $foregin_tours}*}
+{if $foregin_tours}
 <section class="special_tours">
     <div class="container">
         <div class="box_special_tours">
@@ -16,7 +16,7 @@
             <div class="owl-carousel owl-theme owl_special_tours">
                 {foreach $foregin_tours as $item}
                     {assign var="tour_type_id" value=$item['tour_type_id']}
-                    {assign var="isInstallment" value=strpos($tour_type_id, '"17"')}
+{*                    {assign var="isInstallment" value=strpos($tour_type_id, '"17"')}*}
                     <div class="item">
                         <a href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}" class="parent_special_tours">
                             <div class="img_card position-relative">
@@ -26,15 +26,15 @@
                                 </div>
                                 <div class="d-flex align-items-center night">
                                   <span class='d-flex'>
-                                      <i class="fa-light fa-moon ml-1 d-flex align-items-center"></i>
+{*                                      <i class="fa-light fa-moon ml-1 d-flex align-items-center"></i>*}
                                    <span class="detail">{$item['night']} شب </span>
                                   </span>
                                 </div>
-                                {if $isInstallment !== false}
-                                    <span class="installment-label">
-                                                    اقساطی
-                                                </span>
-                                {/if}
+{*                                {if $isInstallment !== false}*}
+{*                                    <span class="installment-label">*}
+{*                                                    اقساطی*}
+{*                                                </span>*}
+{*                                {/if}*}
                             </div>
                             <div class="text_card">
                                 <h3 class="titel-head-card">
@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="airline">
                                         <span>
-                                            <img src="{$item['logo_transport']}" alt="{$item['airline_name']}" style='width : 35px'>
+                                            <img src="{$item['logo_transport']}" alt="{$item['airline_name']}">
                                         </span>
                                         <span class='airline-name'>{$item['airline_name']}</span>
                                     </div>
@@ -89,4 +89,4 @@
         </div>
     </div>
 </section>
-{*{/if}*}
+{/if}

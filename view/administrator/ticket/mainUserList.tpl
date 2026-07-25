@@ -1,4 +1,14 @@
-﻿{load_presentation_object filename="members" assign="objCounter"}
+{load_presentation_object filename="members" assign="objCounter"}
+<style>
+    .loginMember{
+        margin-right: 10px;
+    }
+    .loginMember i {
+        padding: 11px;
+        width: 58px;
+        font-size: 15px;
+    }
+</style>
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
@@ -80,11 +90,42 @@
         </div>
     </div>
 </div>
+<script>
+    var clientMainDomain = '{$smarty.const.CLIENT_MAIN_DOMAIN}';
+</script>
 {literal}
     <script>
         $(document).ready(function () {
             membersDatatable($('#membersAgency'));
+            $('[data-toggle="tooltip"]').tooltip();
         });
+
+        function loginMember(userName, password) {
+            const ajaxData = {
+                className: "members",
+                entry: userName,
+                password: password,
+                method: "AdmincallMemberLogin"
+            }
+            $.ajax({
+                url: amadeusPath + "ajax",
+                type: "POST",
+                data: JSON.stringify(ajaxData),
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp) {
+                        var targetUrl = clientMainDomain;
+                        var newWin = window.open('https://' + clientMainDomain, '_blank');
+                    } else {
+                        alert(resp.message || 'خطا در ورود');
+                    }
+                },
+                error: function (xhr) {
+                    console.error('AJAX error:', xhr);
+                    alert('خطای ارتباط با سرور');
+                }
+            });
+        }
 
         const membersDatatable = function (targetTable){
             targetTable.dataTable({

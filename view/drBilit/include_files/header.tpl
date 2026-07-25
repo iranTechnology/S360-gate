@@ -82,6 +82,7 @@
         <link rel="stylesheet" href="project_files/css/owl.carousel.min.css">
         <link rel="stylesheet" href="assets/css/jquery-confirm.min.css"/>
         <link type="text/css" rel="stylesheet" href="assets/datepicker/jquery-ui.min.css"/>
+        <link type="text/css" rel="stylesheet" href="assets/datepicker-new/price_calender.css"/>
         <link rel="stylesheet" type="text/css" href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen"/>
         <link rel="stylesheet" href="project_files/css/select2.css">
 

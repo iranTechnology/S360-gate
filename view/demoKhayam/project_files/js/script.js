@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const toggleBtnIcon = parent.querySelector(".showMoreRecentTour i");
         let expanded = false;
 
-        if (items.length <= limit) {
+        if (items.length <= limit && toggleBtnWrapper) {
             toggleBtnWrapper.classList.add("d-none");
             return;
         }
@@ -258,23 +258,26 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        toggleBtn.addEventListener("click", function () {
-            expanded = !expanded;
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", function () {
+                expanded = !expanded;
 
-            if (expanded) {
-                items.forEach(item => item.classList.remove("d-none"));
-                toggleBtn.textContent = "نمایش کمتر";
-                toggleBtnIcon.classList.replace("fa-arrow-down", "fa-arrow-up");
-            } else {
-                items.forEach((item, index) => {
-                    if (index >= limit) {
-                        item.classList.add("d-none");
-                    }
-                });
-                toggleBtn.textContent = "نمایش بیشتر";
-                toggleBtnIcon.classList.replace("fa-arrow-up", "fa-arrow-down");
-            }
-        });
+                if (expanded) {
+                    items.forEach(item => item.classList.remove("d-none"));
+                    toggleBtn.textContent = "نمایش کمتر";
+                    toggleBtnIcon.classList.replace("fa-arrow-down", "fa-arrow-up");
+                } else {
+                    items.forEach((item, index) => {
+                        if (index >= limit) {
+                            item.classList.add("d-none");
+                        }
+                    });
+                    toggleBtn.textContent = "نمایش بیشتر";
+                    toggleBtnIcon.classList.replace("fa-arrow-up", "fa-arrow-down");
+                }
+            });
+        }
+
     });
 });
 

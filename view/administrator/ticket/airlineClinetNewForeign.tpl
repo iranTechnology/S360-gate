@@ -37,8 +37,8 @@
                             <th>نام فارسی</th>
                             <th>نام انگلیسی</th>
                             <th>مخفف</th>
-                            <th>چارتری</th>
-                            <th>سیستمی</th>
+{*                            <th>چارتری</th>*}
+{*                            <th>سیستمی</th>*}
                             <th>عملیات</th>
                         </tr>
                         </thead>
@@ -51,30 +51,30 @@
                             <td class="align-middle">{$item.name_fa}</td>
                             <td class="align-middle">{$item.name_en}</td>
                             <td class="align-middle">{$item.abbreviation}</td>
-                            <td class="align-middle">
-                                <a href="#"
-                                   onclick="StatusAirline('{$smarty.get.id}', '{$item.abbreviation}', 'charter'); return false">
-                                    {if $objAirline->GetAirlineInfo($item.abbreviation,'charter') eq 'ok'}
-                                    <input type="checkbox" class="js-switch" data-color="#99d683"
-                                           data-secondary-color="#f96262" data-size="small" checked/>
-                                    {else}
-                                    <input type="checkbox" class="js-switch" data-color="#99d683"
-                                           data-secondary-color="#f96262" data-size="small"/>
-                                    {/if}
-                                </a>
-                            </td>
-                            <td class="align-middle">
-                                <a href="#"
-                                   onclick="StatusAirline('{$smarty.get.id}', '{$item.abbreviation}', 'system'); return false">
-                                    {if $objAirline->GetAirlineInfo($item.abbreviation,'system') eq 'ok'}
-                                    <input type="checkbox" class="js-switch" data-color="#99d683"
-                                           data-secondary-color="#f96262" data-size="small" checked/>
-                                    {else}
-                                    <input type="checkbox" class="js-switch" data-color="#99d683"
-                                           data-secondary-color="#f96262" data-size="small"/>
-                                    {/if}
-                                </a>
-                            </td>
+{*                            <td class="align-middle">*}
+{*                                <a href="#"*}
+{*                                   onclick="StatusAirline('{$smarty.get.id}', '{$item.abbreviation}', 'charter'); return false">*}
+{*                                    {if $objAirline->GetAirlineInfo($item.abbreviation,'charter') eq 'ok'}*}
+{*                                    <input type="checkbox" class="js-switch" data-color="#99d683"*}
+{*                                           data-secondary-color="#f96262" data-size="small" checked/>*}
+{*                                    {else}*}
+{*                                    <input type="checkbox" class="js-switch" data-color="#99d683"*}
+{*                                           data-secondary-color="#f96262" data-size="small"/>*}
+{*                                    {/if}*}
+{*                                </a>*}
+{*                            </td>*}
+{*                            <td class="align-middle">*}
+{*                                <a href="#"*}
+{*                                   onclick="StatusAirline('{$smarty.get.id}', '{$item.abbreviation}', 'system'); return false">*}
+{*                                    {if $objAirline->GetAirlineInfo($item.abbreviation,'system') eq 'ok'}*}
+{*                                    <input type="checkbox" class="js-switch" data-color="#99d683"*}
+{*                                           data-secondary-color="#f96262" data-size="small" checked/>*}
+{*                                    {else}*}
+{*                                    <input type="checkbox" class="js-switch" data-color="#99d683"*}
+{*                                           data-secondary-color="#f96262" data-size="small"/>*}
+{*                                    {/if}*}
+{*                                </a>*}
+{*                            </td>*}
                             <td>
 
                                     <a href="#" onclick="showConfigAirline('{$smarty.get.id}','{$item.abbreviation}')" class="" data-toggle="modal" data-target="#ModalPublic"><i

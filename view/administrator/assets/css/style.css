@@ -1705,6 +1705,7 @@ table.dataTable thead .sorting:after {
     background: #fff;
     padding: 25px;
     margin-bottom: 30px;
+    border-radius: 14px;
 }
 
 .login-box .white-box {
@@ -1733,7 +1734,8 @@ table.dataTable thead .sorting:after {
     border-radius: 0;
     font-weight: 500;
     font-size: 16px;
-    padding: 20px 25px
+    padding: 20px 25px;
+
 }
 
 .panel .panel-heading .panel-title {
@@ -1771,12 +1773,14 @@ table.dataTable thead .sorting:after {
     height: auto;
     background: #fafbfc;
     border-radius: 0 0 12px 12px;
+    border-radius: 14px;
 }
 
  .modern-notice {
      padding: 20px;
      background: #fafbfc;
-     border-radius: 0 0 12px 12px;
+     border-radius: 14px;
+     margin-top:5px;
  }
 
 .modern-notice ul {
@@ -6802,7 +6806,7 @@ ul.wallet-list li a:hover {
 }
 
 .sidebar:hover .sidebar-head {
-    width: 240px
+    width: 293px
 }
 
 .sidebar .label {
@@ -6853,7 +6857,7 @@ ul.wallet-list li a:hover {
 
 #side-menu li a {
     color: #97999f;
-    width: 250px
+    width: 293px
 }
 
 #side-menu li a:focus {
@@ -19080,7 +19084,7 @@ ul.pro-amenities li span i {
     }
 
     .sidebar:hover {
-        width: 240px
+        width: 293px
     }
 
     .navbar-static-top {
@@ -20157,16 +20161,16 @@ div.dataTables_filter, div.dataTables_paginate {
 }
 
 .BoxResultCurlAsli {
-    flex: 0 1 400px;
+    /*flex: 0 1 400px;*/
     min-height: 40px;
     margin: 1px;
-    padding: 5px;
+    padding: 10px;
     text-align: center;
-    border-radius: 5px;
     font: normal 12px/24px Yekan, Tahoma, Geneva, sans-serif;
     direction: rtl !important;
     background-color: #fff;
     box-sizing: border-box;
+    border-radius: 14px;
 }
 
 /* نمایش ندادن divهای خالی */
@@ -20187,7 +20191,7 @@ div.dataTables_filter, div.dataTables_paginate {
 }
 
 #ErrorCurllIrantech {
-    margin: 100px auto;
+    margin: 0 auto;
     width: 50%;
     text-align: center !important;
     border: 2px solid #f00 !important;

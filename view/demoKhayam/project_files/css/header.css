@@ -35,7 +35,9 @@
 
 :root{
     --mainColor:#b71c1c;
-    --secondColor:#190606;
+    --secondColor:#e11924;
+    --rounded: 10px;
+    --transition: all ease .3s;
 }
 body{
     font-family: 'IRANSansDNFaNum', sans-serif !important;
@@ -620,18 +622,18 @@ footer h6{
 }
 
 .nav-menu > li > a {
-    padding: 0 16px;
+    border-radius: var(--rounded);
+    transition: var(--transition);
+    padding: 7px 16px;
     text-decoration: none;
     font-size: 13px;
     color: #191919 !important;
     -webkit-transition: all ease .3s;
-    transition: all ease .3s;
     font-weight: 500;
     position: relative;
     /*border-right: 1px solid #0057a3;*/
     /*border-left: 1px solid #0057a3;*/
     font-family: 'IRANSansFaNum-Bold' , sans-serif;
-    height: 58px;
     display: flex;
     align-items: center;
 }
@@ -667,12 +669,12 @@ footer h6{
 
 .nav-menu > li:hover > a, .nav-menu > li.active > a, .nav-menu > li.focus > a {
     color: #fff !important;
-    background: var(--secondColor);
+    background: var(--mainColor);
 }
 
 .nav-menu > li > .nav-dropdown li:hover > a {
     color: #333;
-    background: rgb(206 237 253);
+    background: #b71c1c54;
     border-radius: .25rem;
 }
 .nav-menu > li > .nav-dropdown li:hover .submenu-indicator-chevron{
@@ -1029,12 +1031,12 @@ footer h6{
 
 .phone-number-parent{
     border: 1px solid transparent;
-    border-radius: 10px;
-    color: #004f93;
+    border-radius: var(--rounded);
+    transition: var(--transition);
+    color: var(--mainColor);
     text-decoration: none;
     font-size: 14px;
     padding: 7px 9px;
-    transition: all ease .3s;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -1042,7 +1044,48 @@ footer h6{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'shabnam' !important;
+    font-family: 'IRANSansFaNum-Bold' , sans-serif;
+
+}
+
+.btn-user {
+    color: var(--mainColor);
+    border-radius: var(--rounded);
+    transition: var(--transition);
+    font-size: 14px;
+    margin-right: auto;
+    padding: 7px 9px;
+    display: flex;
+    align-items: center;
+    font-family: 'IRANSansFaNum-Bold' , sans-serif;
+}
+
+#header .sup-menu-flex{
+    width: 100%;
+}
+
+#header .main-navigation__sub-menu2 {
+    left: 0;
+    right: unset;
+}
+
+.btn-user:hover {
+    color: #fff;
+    background-color: var(--mainColor);
+}
+
+.phone-number-parent:hover {
+    color: #fff;
+    background-color: var(--mainColor);
+}
+
+.phone-number-parent:hover i {
+    color: #fff;
+}
+
+.btn-user i {
+    margin-right: 7px;
+    font-size: 18px;
 }
 
 /*.phone-number-parent:hover{*/
@@ -1055,10 +1098,11 @@ footer h6{
 /*}*/
 .phone-number-parent i{
     font-size: 14px;
-    color:#004f93;
+    color:var(--mainColor);
     z-index: 1;
     transition: all ease .3s;
     margin-right: 7px;
+    font-size: 18px;
 }
 .sub-all-phone{
     width: 240px;
@@ -1622,6 +1666,10 @@ footer h6{
     color: #444 !important;
 }
 
+.navigation-portrait .nav-menu > li.focus > a {
+    color: #fff !important;
+}
+
 @media only screen and (min-width: 320px) and (max-width: 767px) {
     .nav-dropdown > li > a, .megamenu-list > li > a {
         width: 65%
@@ -1833,7 +1881,7 @@ footer h6{
 .login-parent{
     border: 1px solid transparent;
     border-radius: 10px;
-    color: #004f93;
+    color: var(--mainColor);
     text-decoration: none;
     font-size: 14px;
     padding: 7px 9px;
@@ -1859,29 +1907,10 @@ footer h6{
 /*}*/
 .login-parent i {
     font-size: 14px;
-    color: #004f93;
+    color: var(--mainColor);
     z-index: 1;
     transition: all ease .3s;
     cursor: pointer;
-}
-.main-navigation__button2::after {
-    content: "";
-    opacity: 0;
-    position: absolute;
-    inset: 0;
-    cursor: pointer;
-}
-.main-navigation__sub-menu2 {
-    display: none;
-    box-shadow: 0 8px 20px 0 rgba(185, 187, 199, .4);
-    border-top: 1px solid #ccc;
-    left: 0;
-    width: 450px;
-    background-color: #fff;
-    top: 100%;
-    height: 245px;
-    position: absolute;
-    border-radius: 5px;
 }
 .parent-namad h4{
     text-align: center;
@@ -1894,7 +1923,7 @@ footer h6{
 .nav-dropdown-full {
     min-width: unset !important;
     width: 100% !important;
-    height: 80vh !important;
+    /*height: 80vh !important;*/
     right: 0 !important;
     padding: 15px 0;
     box-shadow: none;
@@ -1919,7 +1948,7 @@ footer h6{
 }
 
 .parent-li-tour-menu li:hover {
-    background: #bccee08f;
+    background: #b71c1c54;
 }
 
 .parent-li-tour-menu li:hover a {
@@ -1947,7 +1976,7 @@ footer h6{
 
 .parent-li-tour-menu li a:hover {
     text-decoration: none;
-    background: #bccee0 !important;
+    background: #b71c1c54 !important;
 }
 
 .parent-li-tour-menu li .all-tour-menu {
@@ -1989,7 +2018,7 @@ footer h6{
 
 .parent-li-tour-menu li .country-name {
     gap: 5px;
-    background: #f1f2f6;
+    background: #b71c1c3d;
     padding: 5px 10px;
     transition: all ease .3s;
     display: flex;
@@ -2004,7 +2033,7 @@ footer h6{
     font-size: 14px;
 }
 .parent-li-tour-menu li .country-name span {
-    background: #bccee0;
+    background: #b71c1c54;
     padding: 5px;
     border-radius: 6px;
     width: 24px;
@@ -2014,7 +2043,7 @@ footer h6{
     justify-content: center;
 }
 .parent-li-tour-menu li .country-name span i {
-    color: #004f93;
+    color: var(--mainColor);
 }
 
 .li-tour-menu , .tour-menu {
@@ -2052,7 +2081,7 @@ footer h6{
 }
 @media (min-width: 992px) and (max-width: 1350px){
     .nav-menu > li > a {
-        padding: 0 2px !important;
+        padding: 7px 10px !important;
         font-size: 13px !important;
     }
     .nav-brand {
@@ -2119,12 +2148,20 @@ footer h6{
         'item5Footer item5Footer item5Footer item5Footer';
         grid-template-columns: repeat(4, 1fr);
     }
-}
-@media (max-width: 1100px){
     .phone-number{
         display: none;
     }
     .phone-number-parent i{
+        margin-right: 0;
+        font-size: 20px;
+    }
+    .login-parent i {
+        font-size: 19px;
+    }
+    .btn-user span {
+        display: none;
+    }
+    .btn-user i {
         margin-right: 0;
         font-size: 20px;
     }
@@ -2176,7 +2213,7 @@ footer h6{
         padding-top: 1px!important;
     }
     .login-parent i{
-        font-size: 20px;
+        font-size: 19px;
     }
     .namads > a{
         width: 50px;
@@ -2536,7 +2573,7 @@ footer h6{
     font-size: 14px;
 }
 .item_footer ul li a:hover{
-    color: #b71c1c;
+    color: #fff;
 }
 .item_footer{
     margin-top: 15px;
@@ -2564,13 +2601,13 @@ footer h6{
     padding: 0 !important;
 }
 .li-tour-internal-menu .parent-li-tour-menu2 li:hover {
-    background: #f1f2f6;
+    background: #b71c1c3d;
 }
 .li-tour-internal-menu .parent-li-tour-menu2 li a:hover {
-    background: #bccee0 !important;
+    background: #b71c1c54 !important;
 }
 .li-tour-internal-menu .parent-li-tour-menu2 li a span{
-    background: #bccee0;
+    background: #b71c1c54;
     padding: 5px;
     border-radius: 6px;
     width: 24px;
@@ -2580,14 +2617,14 @@ footer h6{
     justify-content: center;
 }
 .li-tour-internal-menu .parent-li-tour-menu2 li a span i{
-    color: #004f93;
+    color: var(--mainColor);
 }
 
 .li-tour-internal-menu .parent-li-tour-menu2 .title-cat {
     font-family: 'IRANSansFaNum-Bold' , sans-serif;
     color: #333;
     gap: 8px;
-    background: #f1f2f6;
+    background: #b71c1c3d;
     padding: 5px 10px;
     transition: all ease .3s;
     display: flex;
@@ -2596,7 +2633,7 @@ footer h6{
 }
 
 .li-tour-internal-menu .parent-li-tour-menu2 .title-cat span {
-    background: #bccee0;
+    background: #b71c1c54;
     padding: 5px;
     border-radius: 6px;
     width: 24px;
@@ -2607,7 +2644,7 @@ footer h6{
 }
 
 .li-tour-internal-menu .parent-li-tour-menu2 .title-cat span i {
-    color: #004f93;
+    color: var(--mainColor);
 }
 
 .li-tour-internal-menu .parent-li-tour-menu2 > div:first-child {
