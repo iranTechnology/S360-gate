@@ -105,19 +105,28 @@ class Admin extends baseController
     {
 
 
-        $old_pass = functions::encryptPassword($info['old_pass']);
+//        $old_pass = functions::encryptPassword($info['old_pass']);
         Load::autoload('ModelBase');
         $ModelBase = new ModelBase();
+        $customer_model = $this->getModel('userPassCustomersModel');
 
         $sql = "SELECT * FROM login_tb WHERE client_id='{$info['client_id']}'";
+        $sql_client_tb =  "SELECT * FROM clients_tb WHERE id='{$info['client_id']}'";
+        $client_tb = $ModelBase->load($sql_client_tb);
         $client = $ModelBase->load($sql);
         if (!empty($client)) {
-            $sqlCheckPass = "SELECT * FROM login_tb WHERE password='{$old_pass}'";
-            $clientCheckPass = $ModelBase->load($sqlCheckPass);
+//            $sqlCheckPass = "SELECT * FROM login_tb WHERE password='{$old_pass}'";
+//            $clientCheckPass = $ModelBase->load($sqlCheckPass);
 //            if (!empty($clientCheckPass)) {
+
                 $data['password'] = functions::encryptPassword($info['new_pass']);
                 $ModelBase->setTable('login_tb');
                 $res = $ModelBase->update($data, "client_id='{$info['client_id']}'");
+
+            $data1['password'] = $info['new_pass'];
+            $update = $customer_model->updateWithBind($data1, ['user_name' => $client_tb['Email']]);
+
+
                 if ($res) {
                     return 'success : رمز عبور شما با موفقیت تغییر یافت';
                 } else {
@@ -759,7 +768,11 @@ class Admin extends baseController
                 'cellNumber' => $mobile
             ];
 
-             $res= $smsController->sendSMS($smsArray);
+//             $res= $smsController->sendSMS($smsArray);
+            $smsMessage= ['verification_code_forgot_admin'=>$code];
+            $verification_code_pattern  =   $smsController->getPattern('verification_code');
+            $res= $smsController->smsByPattern('bcotpctu7g73qby', array($mobile), $smsMessage);
+
         }
 
         return functions::withSuccess([

@@ -211,6 +211,7 @@ class ApiHotelCore extends clientAuth {
 
         $dataSearch['CalendarType']       = strtolower( $calendarType );
         $dataSearch['City']       = strtolower( $param['city'] );
+        $dataSearch['CityCode']   = strtolower( $param['city'] );//Ardalani177
         $dataSearch['Country']    = strtolower( $param['Country'] );
         $dataSearch['StartDate']  = $param['startDate'];
         $dataSearch['EndDate']    = $param['endDate'];

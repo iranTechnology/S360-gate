@@ -53,7 +53,7 @@
     'hotelName'=>null,
     'source'=>'',
     'type_residence'=>$smarty.get.type_residence,
-'lang'=>$smarty.const.SOFTWARE_LANG]}
+    'lang'=>$smarty.const.SOFTWARE_LANG]}
 {else}
     {assign var="search_end_date" value=$objsearch->computingEndDate($smarty.const.SEARCH_START_DATE, $smarty.const.SEARCH_NIGHT)}
     {assign var="paramSearch" value=[
@@ -69,7 +69,7 @@
     'hotelName'=>$smarty.const.SEARCH_HOTEL_NAME,
     'rooms'=>$smarty.get.rooms,
     'type_residence'=>$smarty.get.type_residence,
-'lang'=>$smarty.const.SOFTWARE_LANG]}
+    'lang'=>$smarty.const.SOFTWARE_LANG]}
 {/if}
 {assign var="City" value=$objsearch->getCity($paramSearch.city_id)}
 {$objsearch->validateSearch($paramSearch)}
@@ -83,6 +83,10 @@
 <input type='hidden' name='sort_hotel_type' id='sort_hotel_type' value='{$which_sort[0]['title_en']}'>
 {include file="`$smarty.const.FRONT_CURRENT_CLIENT`hotelTimeoutModal.tpl"}
 <div id="appHotel" class="row minW-100">
+
+    <div id="requestNumber">
+    </div>
+
     <div class="col-lg-3 col-md-12  col-12 col-padding-5 ">
         <div class="parent_sidebar">
             <!-- Change Currency Box -->
@@ -331,7 +335,7 @@
             </div>
         </div>
 
-<!--        <div class="loader-for-local-hotel-end">
+        <!--        <div class="loader-for-local-hotel-end">
 
             <div class='container'>
                 <div class="loader">
@@ -470,4 +474,14 @@
 
     </script>
 {/literal}
+
+<style>
+    #requestNumber {
+        position: absolute;
+        z-index: 1000;
+        color: transparent;
+        top: 90px;
+        left: 0;
+    }
+</style>
 

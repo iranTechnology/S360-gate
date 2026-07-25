@@ -51,9 +51,6 @@
             <div id="DivDore3" class="BoxResultCurlAsli">
 
             </div>
-            <div id="ErrorCurllIrantech">
-
-            </div>
         </div>
     {/if}
 
@@ -771,6 +768,7 @@
                 type: "GET",
                 dataType: "json",
                 success: function(response) {
+                    console.log("AJAX Response:", response);
                     if (isFilled(response.error)) {
                         $("#DivResultCurll").css('display', 'block');
                         $("#ErrorCurllIrantech").html(response.error).show();

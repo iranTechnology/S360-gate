@@ -699,6 +699,8 @@
           {include file=$obj->page}
     </div>
     <!-- /#page-wrapper -->
+
+    <div id="ErrorCurllIrantech"></div>
   <footer class="footer text-center"> 2017 &copy; iran-tech.com All Rights Reserved</footer>
 </div>
 
