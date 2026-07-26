@@ -2559,10 +2559,6 @@ class bank {
 
 			$postSave = $_POST;
 
-			functions::insertLog('$_POST: ' . json_encode($_POST) , '0abbasi');
-			functions::insertLog('$postSave: ' . json_encode($postSave) , '0abbasi');
-			functions::insertLog('factorNumber: ' . json_encode($this->factorNumber) , '0abbasi');
-
 			$verifyPaymentParams = [];
 
 			$verifyPaymentParams['ref_num'] = isset($postSave['ref_num']) ? $postSave['ref_num'] : '';
@@ -2570,8 +2566,6 @@ class bank {
 			$verifyPaymentParams['tracking_code'] = isset($postSave['tracking_code']) ? $postSave['tracking_code'] : '';
 			//$params['amount'] = $this->amountToPay; مقدارش صفر بود تو تابع veryfy پرش می کنیم
 			$verifyPaymentParams['gateway_id'] = $this->bankParam1;
-
-            functions::insertLog('verifyPayment$params: ' . json_encode($verifyPaymentParams) , '0abbasi');
 
 			$verify_payment = $client->verifyPayment($verifyPaymentParams);
 
