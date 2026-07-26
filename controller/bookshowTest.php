@@ -5892,7 +5892,6 @@ class bookshowTest extends clientAuth {
             else{
                 $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_code_amount'] );
             }
-
             if (!empty($hotel['discount_code_amount']) && $hotel['discount_code_amount'] != 0) {
                 $DataAllPrice .=  '<br><del>' . number_format( $hotel['total_price'] ) . '</del>';
             }

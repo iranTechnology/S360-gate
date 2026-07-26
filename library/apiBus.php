@@ -120,7 +120,6 @@ class apiBus extends clientAuth
     public function busDetail($jsonData)
     {
 
-
         try{
 
             $url=$this->requestUrl."BusDetail";

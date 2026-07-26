@@ -250,6 +250,7 @@ class ApiHotelCore extends clientAuth {
         functions::insertLog('HotelList after Curl '.microtime(true),'times');
 
         $hotels = $resultHotel['Result'];
+
         if ( isset( $resultHotel['StatusCode'] ) ) {
             $this->cityId    = $param['city'];
             $this->startDate = $param['startDate'];

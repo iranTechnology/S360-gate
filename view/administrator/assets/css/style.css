@@ -19190,7 +19190,7 @@ ul.pro-amenities li span i {
     }
 
     .show-sidebar .sidebar {
-        width: 240px;
+        width: 301px;
         top: 0
     }
 
@@ -19217,7 +19217,7 @@ ul.pro-amenities li span i {
 
     .sidebar-head {
         width: 0;
-        display: none
+        /*display: none*/
     }
 
     #page-wrapper {
@@ -20191,7 +20191,7 @@ div.dataTables_filter, div.dataTables_paginate {
 }
 
 #ErrorCurllIrantech {
-    margin: 0 auto;
+    margin: 100px auto;
     width: 50%;
     text-align: center !important;
     border: 2px solid #f00 !important;

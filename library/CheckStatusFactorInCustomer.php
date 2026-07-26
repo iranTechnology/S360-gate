@@ -1,4 +1,9 @@
 <?php
+error_reporting(1);
+error_reporting(E_ALL);
+@ini_set('display_errors', 1);
+@ini_set('display_errors', 'on');
+
 // از سمت سایت iran-tech.com وصل میشیم و فاکتورهایی که پرداخت نشده را close می کنیم
 //iran-tech.com/factors/CurlFromOtherSyatems/CheckFactorForSafar360.php
 
@@ -20,7 +25,6 @@ try {
 
 // دریافت JSON ارسال شده از سمت مشتری
 $input = json_decode(file_get_contents('php://input'), true);
-
 $success = [];
 $fail = [];
 
@@ -28,8 +32,11 @@ if (is_array($input) && !empty($input)) {
 
     $stmt = $pdo->prepare(
         "UPDATE clients_tb 
-         SET status_factor_user = 'Close' 
-         WHERE hash_id_whmcs = :hash_id_whmcs"
+         SET 
+             status_factor_user = 'Close',
+             status_factor_admin = 'Close'
+         WHERE 
+         	  hash_id_whmcs = :hash_id_whmcs"
     );
 
     foreach ($input as $hash_id_whmcs) {
@@ -59,4 +66,5 @@ if (is_array($input) && !empty($input)) {
         'fail' => $fail
     ], JSON_UNESCAPED_UNICODE);
 }
+
 ?>

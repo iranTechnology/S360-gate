@@ -3,7 +3,6 @@
  * Class clientAuth
  * @property clientAuth $clientAuth
  */
-
 class clientAuth extends baseController {
 
     public $sourceId;
@@ -70,7 +69,7 @@ class clientAuth extends baseController {
         return $result;
     }
     #endregion
-
+    
     #region insurancePortalAuth
     public function insurancePortalAuth($insurance = null) {
 
@@ -305,12 +304,11 @@ class clientAuth extends baseController {
     public function TrainAuth()
     {
         $ModelBase = Load::library('ModelBase');
-        $query = "SELECT AUTH.id, AUTH.Username
+         $query = "SELECT AUTH.id, AUTH.Username
                   FROM client_auth_tb AS AUTH 
                   INNER JOIN client_source_tb AS SOURCE ON AUTH.SourceId = SOURCE.id
                   INNER JOIN client_services_tb AS SERVICE ON SOURCE.ServiceId = SERVICE.id
                   WHERE AUTH.ClientId = '".CLIENT_ID."' AND SERVICE.Service = 'TicketTrain' AND AUTH.IsActive='Active' ";
-
         return  $ModelBase->load($query);
 
     }
@@ -320,7 +318,7 @@ class clientAuth extends baseController {
     public function getAccessServiceClient() {
 
 
-        /** @var clientAuthModel $client_model */
+                /** @var clientAuthModel $client_model */
 //        $client_model=$this->getModel('clientAuthModel');
 //        $services=$client_model->getAccessServiceClient();
 //        return $client_model->addPackageToServices($services);

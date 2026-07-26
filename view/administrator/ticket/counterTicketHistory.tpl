@@ -1101,8 +1101,27 @@
 
     </div>
 </div>
+{if $smarty.const.LANG_PANEL_ADMIN ne 'fa'}
+    <style>
+        /* برای اینکه اعداد داخل تقویم انگلیسی باشند */
+        body,table,tr,th,td,.ui-state-default, .ui-widget-content .ui-state-default,.ui-widget select{
+            font-family: Arial, sans-serif !important;
+        }
+    </style>
+{/if}
+<script>
+    var LANG_XML_URL = "{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/langs/{$smarty.const.LANG_PANEL_ADMIN}_frontMaster.xml";
+    // ۱. تعریف متغیر زبان
+    var LANG_PANEL_ADMIN = "{$smarty.const.LANG_PANEL_ADMIN}";
 
-
+    // ۲. تنظیم کوکی بر اساس زبان قبل از اجرای توابع
+    if (LANG_PANEL_ADMIN === 'en' || LANG_PANEL_ADMIN === 'ar') {
+        $.cookie("datepickerRegional", "en", { path: "/", expires: 365 });
+    } else {
+        $.cookie("datepickerRegional", "fa", { path: "/", expires: 365 });
+    }
+</script>
+<script type="text/javascript" src="assets/JsFiles/mainTicketHistory.js"></script>
 <script type="text/javascript" src="assets/JsFiles/bookshow.js"></script>
 <script type="text/javascript" src="assets/JsFiles/bookhotelshow.js"></script>
 <script type="text/javascript" src="assets/JsFiles/reservationHotel.js"></script>

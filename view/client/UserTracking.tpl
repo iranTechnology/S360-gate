@@ -67,10 +67,14 @@
                                     <input class="full-width has-padding has-border" id="request_number" type="text"
                                            placeholder="##Tracknumber##" value="{$smarty.get.id}">
                                 </p>
+
                                 <p class="fieldset parent-fieldset-input-tracking mt-2">
+                                    {if $objSession->IsLogin() eq false}
                                     <input class="full-width has-padding has-border " id="phone_number" type="text"
                                            placeholder="##PhoneNumberBuyer##" value="">
+                                    {/if}
                                 </p>
+
                                 <div class="message-login txtCenter txtRed"></div>
                                 <img src="assets/images/load21.gif" style="display:none" class="loader-tracking" id="loaderTracking">
                                 <p class="fieldset parent-fieldset-btn-tracking">
@@ -133,6 +137,10 @@
                                             <label class='label-tracking' for="radio-appointment">
                                                 <input type="radio" name="typeSearchRequest" value="appointment"  id="radio-appointment" >
                                                 <span> ##requestAppointment##</span>
+                                            </label>
+                                            <label class='label-tracking' for="radio-organization">
+                                                <input type="radio" name="typeSearchRequest" value="organization"  id="radio-organization" >
+                                                <span> ##Organization##</span>
                                             </label>
                                         </fieldset>
                                     </div>
@@ -373,7 +381,7 @@
             if($type=='train'){
                     $('#request_number').attr('placeholder',useXmltag('Numberreservation') +' '+  useXmltag('Or')+' ' + useXmltag('Ticketnumber'))
                 }else{
-                    $('#request_number').attr('placeholder',useXmltag('Numberreservation') +' ('+  useXmltag('Voucher') + ')' + useXmltag('Or')+' ' + useXmltag('Ticketnumber') + ' ' + useXmltag('Or')+' ' + 'pnr')
+                    $('#request_number').attr('placeholder',useXmltag('Tracknumber'))
                 }
         }
     </script>

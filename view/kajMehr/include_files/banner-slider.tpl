@@ -77,29 +77,3 @@
         $('.GashtTransfer-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialGashtPic}{literal}")')});
         {/literal}
         {/if}
-
-        {if $specialCarPic}
-        {literal}
-        $('.Europcar-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialCarPic}{literal}")')});
-        {/literal}
-        {/if}
-        {if $specialPackagePic}
-        {literal}
-        $('.Package-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialPackagePic}{literal}")')});
-        {/literal}
-        {/if}
-        {if $specialEntertainmentPic}
-        {literal}
-        $('.Entertainment-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialEntertainmentPic}{literal}")')});
-        {/literal}
-        {/if}
-        {if $specialCipPic}
-        {literal}
-        $('.Cip-tab-pic').click(function () {$('.banner-demo').css('background-image' , 'url("{/literal}{$specialCipPic}{literal}")')});
-        {/literal}
-        {/if}
-        {literal}
-
-    }
-</script>
-{/literal}

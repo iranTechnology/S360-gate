@@ -168,6 +168,7 @@ class partner_tb extends ModelBase
                     'creationDateInt' => time(),
                 ];
                 $jsonData = json_encode($dataToInsert);
+
                 functions::curlExecution($url, $jsonData, 'yes');
 
 

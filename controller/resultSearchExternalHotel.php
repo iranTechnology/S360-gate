@@ -60,6 +60,7 @@ class resultSearchExternalHotel extends clientAuth
 
         $t2 = microtime(true);
 //        functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => after getHotelsFromDb', 'times', 'yes');
+
         if (!empty($resultHotelDB)) {
             $cityNameFa = $resultHotelDB[0]['city_persian_name'];
             $countryNameFa = $resultHotelDB[0]['country_persian_name'];
@@ -219,6 +220,7 @@ class resultSearchExternalHotel extends clientAuth
 //            functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => before searchHotel', 'times', 'yes');
             functions::insertLog(CLIENT_NAME. '  searchParams = '.json_encode($searchParams), 'times', 'yes');
             $resultApi = $objApiExternalHotel->searchHotel($searchParams);
+            functions::insertLog('$resultApi: ' . json_encode($resultApi) , '000shojaee');
             functions::insertLog(CLIENT_NAME. '  searchParams = '.json_encode($resultApi), 'times', 'yes');
 //            functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => after searchHotel', 'times', 'yes');
             $t5 = microtime(true);
@@ -240,6 +242,7 @@ class resultSearchExternalHotel extends clientAuth
              
                 functions::insertLog('getHotels before foreach result ' . microtime(true), 'times');
                 foreach ($ApiResult['Result'] as $apiKey => $apiHotel) {
+
                     if($apiHotel['SourceId'] == '18') {
                         $final_price = $this->getController('currencyEquivalent')->calculateEquivalent($apiHotel['Currency']  ,$apiHotel['MinPrice']) ;
                         $hotelItem[$apiKey]['MinimumRoomPrice'] = $final_price;
@@ -272,9 +275,10 @@ class resultSearchExternalHotel extends clientAuth
               
                 functions::insertLog('getHotels after foreach ' . microtime(true), 'times');
                 $t7 = microtime(true);
+
+
 //				functions::insertLog( 'Action Find Result After Foreach', '00001-checkExternalHotel' );
                 $arrayHotelsByType['externalApi'] = $hotelItem;
-
 //                $arrayFacilities = ['MINIBAR', 'TV', 'WI-FI', 'ROOM SERVICE'];
             }
         }
@@ -311,11 +315,14 @@ class resultSearchExternalHotel extends clientAuth
             $arrayHotel = [];
             $countHotels = 0;
             $t8 = microtime(true);
+            $Model = Load::library('Model');
+
             foreach ($arrayHotelsByType as $typeApp => $hotels) {
                 if (!empty($hotels)) {
                     $t9 = microtime(true);
                     foreach ($hotels as $k => $hotel) {
-
+                        $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code=" . $hotel['HotelIndex'];
+                        $res = $Model->select($query);
                         $star = $hotel['HotelStars'] > 0 ? $hotel['HotelStars'] : 0;
                         $nameEnUrl = $objExternalHotel->convertStringForUrl($hotel['HotelName']);
 
@@ -329,10 +336,11 @@ class resultSearchExternalHotel extends clientAuth
 
                             $urlPicInSize300 = isset($hotel['ImageURLInSize300']) ? $hotel['ImageURLInSize300'] : $hotel['ImageURL'];
 
+
                         } elseif ($typeApp == 'reservation') {
                             $urlPicInSize300 = $hotel['ImageURL'];
                         } else {
-                            $urlPicInSize300 = ROOT_ADDRESS_WITHOUT_LANG . '/pic/hotel-nophoto.jpg';
+                            $urlPicInSize300 = $res[0]['logo'] ?  '/gds/pic/' . $res[0]['logo'] : ROOT_ADDRESS_WITHOUT_LANG . '/pic/hotel-nophoto.jpg';
                         }
 
                         $MinimumRoomPriceEachNight = 0;

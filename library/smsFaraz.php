@@ -19,7 +19,6 @@ class smsFaraz extends smsServicesAbstract {
 	
 	}
 	
-	#region init: initialize sms information
 	public function init( $input ) {
 		$this->smsUserName = $input['smsUsername'];
 		$this->smsPassword = $input['smsPassword'];
@@ -31,10 +30,7 @@ class smsFaraz extends smsServicesAbstract {
 		//        $this->soapClient = 'http://rest.ippanel.com/v1/messages';
 		
 	}
-	#endregion
 	
-	
-	#region initIrantechParam: initialize irantech sms information
 	public function initIrantechParam() {
 		
 		$this->smsUserName = 'irantech888';
@@ -45,9 +41,7 @@ class smsFaraz extends smsServicesAbstract {
 		$this->soapClient = 'http://ippanel.com/services.jspd';
 		
 	}
-	#endregion
-	
-	#region sendSmsWithApi
+
 	/*    public function smsSend($data)
 		{
 			$dataToSend = array(
@@ -62,15 +56,7 @@ class smsFaraz extends smsServicesAbstract {
 			$output = $this->curlExecutionPost($this->soapClient, $dataToSend,$header);
 			functions::insertLog('send output: ' . json_encode($output), 'log_smsService');
 		}*/
-	#endregion
-	
-	
-	#region smsSend
-	/**
-	 * @param $input
-	 *
-	 * @return mixed
-	 */
+
 	public function smsSend( $input ) {
 		
 		functions::insertLog( 'send input: ' . json_encode( $input ), 'log_smsService' );
@@ -102,9 +88,7 @@ class smsFaraz extends smsServicesAbstract {
 		return $return;
 		
 	}
-	#endregion
-	
-	#region smsErrorMessage
+
 	public function smsErrorMessage( $errorCode ) {
 		$messages = array(
 			'0'    => 'عملیات با موفقیت انجام شده است',
@@ -168,15 +152,7 @@ class smsFaraz extends smsServicesAbstract {
 		
 		return ( isset( $messages[ $errorCode ] ) ) ? $messages[ $errorCode ] : 'خطا در ارسال با کد ' . $errorCode;
 	}
-	#endregion
-	
-	#region smsDeliveryCheck
-	
-	/**
-	 * @param $successCode
-	 *
-	 * @return mixed|string
-	 */
+
 	public function smsDeliveryCheck( $successCode ) {
 		$data   = array(
 			'op'     => 'delivery',
@@ -208,15 +184,7 @@ class smsFaraz extends smsServicesAbstract {
 		
 		return $this->smsDeliveryMessage( null );
 	}
-	#endregion
-	
-	#region smsDeliveryMessage
-	/**
-	 * @param $deliveryCode
-	 *
-	 * @return mixed|string
-	 */
-	public function smsDeliveryMessage( $deliveryCode ) {
+    public function smsDeliveryMessage( $deliveryCode ) {
 		
 		if ( null == $deliveryCode ) {
 			return 'خطای تعریف نشده با کد NULL';
@@ -231,9 +199,7 @@ class smsFaraz extends smsServicesAbstract {
 		
 		return isset( $messages[ $deliveryCode ] ) ? $messages[ $deliveryCode ] : "خطای تعریف نشده با کد {$deliveryCode}";
 	}
-	#endregion
-	
-	#region smsGetCredit
+
 	public function smsGetCredit() {
 		
 		/*$output = $this->curlExecutionPost(
@@ -251,10 +217,7 @@ class smsFaraz extends smsServicesAbstract {
 			return 0;
 		}*/
 	}
-	#endregion
-	
-	#origin pattern
-	public function smsSendPattern( $input ) {
+    public function smsSendPattern( $input ) {
 		if ( isset( $input['credit'] ) ) {
 			$inputData[] = array( "credit" => $input['credit'] );
 		} else {
@@ -289,9 +252,6 @@ class smsFaraz extends smsServicesAbstract {
 		}
 		
 	}
-	
-	#endorigin
-	
 	public function smsByPattern( $patternCode, $mobiles = [], $patternVariables = [] ) {
 
 		$url = "https://ippanel.com/api/select";
@@ -312,8 +272,6 @@ class smsFaraz extends smsServicesAbstract {
 		}
 		
 	}
-	
-	#region curlExecutionPost
 	public function curlExecutionPost( $url, $data, $header = null ) {
 		functions::insertLog( 'send header===> ' . json_encode( $header ), 'log_smsService' );
 		$handle = curl_init( $url );
@@ -333,6 +291,4 @@ class smsFaraz extends smsServicesAbstract {
 		return json_decode( $result, true );
 		
 	}
-	#endregion
-	
 }

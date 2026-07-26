@@ -16,10 +16,11 @@ fetch(LANG_XML_URL)
             $("#PA_BUY_DATEE").html(xmlDoc.getElementsByTagName("PA_BUY_DATEE")[0].textContent);
             $("#PA_BUY_DATERS").html(xmlDoc.getElementsByTagName("PA_BUY_DATERS")[0].textContent);
             $("#PA_BUY_DATERE").html(xmlDoc.getElementsByTagName("PA_BUY_DATERE")[0].textContent);
-            $("#Statusreservation_OP").text(xmlDoc.getElementsByTagName("Statusreservation")[0].textContent);
+            $(".Statusreservation_OP").text(xmlDoc.getElementsByTagName("Statusreservation")[0].textContent);
+            $(".Statusreservation_OP2").text(xmlDoc.getElementsByTagName("Statusreservation")[0].textContent);
             $(".OptionAll").text(xmlDoc.getElementsByTagName("All")[0].textContent);
-            $("#StatusSuccess").text(xmlDoc.getElementsByTagName("Successpayment")[0].textContent);
-            $("#StatusFail").text(xmlDoc.getElementsByTagName("ErrorPayment")[0].textContent);
+            $(".StatusSuccess").text(xmlDoc.getElementsByTagName("Successpayment")[0].textContent);
+            $(".StatusFail").text(xmlDoc.getElementsByTagName("ErrorPayment")[0].textContent);
             $("#pnr").attr(
                 "placeholder",
                 xmlDoc.getElementsByTagName("PA_BUY_PNR")[0].textContent
@@ -44,7 +45,7 @@ fetch(LANG_XML_URL)
             );
             $("#OptionTypeflight").text(xmlDoc.getElementsByTagName("Typeflight")[0].textContent);
             $("#Typeflight").html(xmlDoc.getElementsByTagName("Typeflight")[0].textContent);
-            $("#ChoseOption").text(xmlDoc.getElementsByTagName("ChoseOption")[0].textContent);
+            $(".ChoseOption").text(xmlDoc.getElementsByTagName("ChoseOption")[0].textContent+'....');
             $(".OptionAll").text(xmlDoc.getElementsByTagName("All")[0].textContent);
             $(".FlightCharter").text(xmlDoc.getElementsByTagName("CharterType")[0].textContent);
             $(".FlightSystem").text(xmlDoc.getElementsByTagName("SystemType")[0].textContent);
@@ -55,15 +56,18 @@ fetch(LANG_XML_URL)
             $("#Bus").html(xmlDoc.getElementsByTagName("Bus")[0].textContent);
             $("#PA_BUY_BUTFILTER").text(xmlDoc.getElementsByTagName("PA_BUY_BUTFILTER")[0].textContent);
             $(".DownloadExcelFile").html(xmlDoc.getElementsByTagName("PA_BUY_DownloadExcelFile")[0].textContent);
-
-
+            $(".factor_number").attr(
+                "placeholder",
+                xmlDoc.getElementsByTagName("EnterInvoiceNumber")[0].textContent
+            );
+            $(".Invoicenumber").html(xmlDoc.getElementsByTagName("Invoicenumber")[0].textContent);
 
 
         }
     })
     .catch(error => {
         console.error("❌ خطا در دریافت فایل XML:", error);
-});
+    });
 
 
 

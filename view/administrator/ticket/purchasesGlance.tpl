@@ -1,6 +1,8 @@
 {load_presentation_object filename="bookshowTest" assign="objbook"}
 {load_presentation_object filename="bookhotelshow" assign="objRsult"}
 {load_presentation_object filename="reportAgenciesSearch" assign="objSearch"}
+{load_presentation_object filename="listCancel" assign="listCancel"}
+{assign var=listCancelAdmin value=$listCancel->ListCancelAdmin()}
 <style>
     .select2-container {
         width: 100% !important;
@@ -144,7 +146,11 @@
         color: #4a0a10;
         font-weight: bold;
     }
-
+    .status-purple {
+        background: #c4b5fd;
+        color: #2e1065;
+        font-weight: bold;
+    }
     .card-loading {
         text-align: center;
         padding: 50px;
@@ -224,7 +230,23 @@
         background-color: #15b704 !important;
         transform: translateY(0);
     }
-
+.section-info-etabar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background: #5E5E5E;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+.info-etabar{
+    border-left:1px solid #ccc;
+    padding:10px;
+}
+.alertBlink:hover{
+    background: none !important;
+    color: #cb0f0f !important;
+    }
     /* برای نمایش بهتر دکمه‌ها در موبایل */
     @media (max-width: 768px) {
         .tabs_ticket-history .w-100 {
@@ -236,6 +258,13 @@
         .tabs_ticket-history .btn {
             font-size: 12px;
             padding: 6px 12px;
+        }
+        .info-etabar{
+            border-left:none;
+            padding:10px;
+        }
+        .section-info-etabar{
+            justify-content:center
         }
     }
 </style>
@@ -265,7 +294,44 @@
 
 
                 <div class="table_history_admin">
+                    <div class="w-100 tabs_ticket-history mb-2">
+                        <div class="w-100 section-info-etabar">
+                            <div>
+                                {if $smarty.const.TYPE_ADMIN eq '1'}
 
+                                    <div class="d-flex align-items-center info-etabar"  data-target="OnlineCityNetPrice" style="font-size:15px">
+                                        <span>   اعتبار 43 :
+                                    </span>
+                                        <span id="CityNetCredit2" class="ActiveBadge"> ... </span>
+                                    </div>
+                                {/if}
+                            </div>
+                            <div>
+                                {if $smarty.const.TYPE_ADMIN eq '1'}
+                                    <div class="d-flex align-items-center info-etabar" data-target="OnlineEghamatPrice" style="font-size:15px">
+                                        <span>                                        اعتبار اقامت :
+                                    </span>
+                                        <span id="GRSCredit2" class="ActiveBadge"> ... </span>
+                                    </div>
+
+                                {/if}
+
+                            </div>
+                            <div>
+                                {if $smarty.const.TYPE_ADMIN eq '1'}
+                                    <ul class="nav navbar-top-links navbar-right pull-right"
+                                        >
+                                                <li class="dropdown" style="display:none;" id="showAlertCancellations">
+                                                    <a href="http://admin.chartertech.ir/gds/itadmin/ticket/ticketCancellationHistory" target="_blank" class="alertBlink p-0 profile-pic">
+                                                        <i class="fa fa-exclamation-triangle"></i>
+                                                        کنسلی جدید دارید
+                                                    </a>
+                                                </li>
+                                    </ul>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
                     <div class="w-100 tabs_ticket-history">
                         <div class="w-100">
                             <a data-target="allTicket"
@@ -332,8 +398,36 @@
 <script type="text/javascript" src="assets/JsFiles/bookCipShow.js"></script>
 
 <script>
-    RenderBookingsAsCards('allTicket');
+
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'user_ajax.php',
+            data:
+                {
+                    flag: 'checkGRSCredit',
+                },
+            success: function (data) {
+                console.log('data' , data)
+                $('#GRSCredit2').html(data)
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'user_ajax.php',
+            data:
+                {
+                    flag: 'checkCityNetCredit',
+                },
+            success: function (data) {
+                $('#CityNetCredit2').html(data)
+            }
+        });
+
+
+       RenderBookingsAsCards('allTicket');
     $(document).ready(function () {
+
         var interval = null;
         $('#AutoRefreshInput').change(function () {
             clearInterval(interval);

@@ -212,7 +212,7 @@ class userBuy extends clientAuth
                                             if ($typeMember == 'Counter') {
                                                 ?>
                                                 <a href="<?php echo ROOT_ADDRESS_WITHOUT_LANG; ?>/pdf&target=<?php echo (SOFTWARE_LANG != 'fa' ? 'bookshow' : 'parvazBookingLocal'); ?>&id=<?php echo $item['request_number']; ?>&cash=no"
-                                                   title="<?php echo functions::Xmlinformation('Freeticket'); ?>"
+                                                   title="<?php echo functions::Xmlinformation('PassengerTicket'); ?>"
                                                    class="btn btn-primary  fa fa-file-pdf-o" target="_blank"></a>
                                                 <?php
                                             }

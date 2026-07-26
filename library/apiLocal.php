@@ -399,8 +399,8 @@ class apiLocal extends clientAuth
                 $is_counter_login = ($is_login && $is_counter == 'counter') ? true: false;
                 $UserInfo = array();
 //                if($is_counter_login){
-                $UserId = Session::getUserId();
-                $UserInfo = $this->getController('members')->findUser($UserId);
+                    $UserId = Session::getUserId();
+                    $UserInfo = $this->getController('members')->findUser($UserId);
 //                }
 
                 $airlineController = $this->getController('airline');
@@ -437,7 +437,7 @@ class apiLocal extends clientAuth
                     $data_info_discount_user['service_title']= functions::TypeService($data['FlightType'],$type_zone,$check_status_pid,$check_status_pid, $data['Airline_IATA']);
 
 //                    if($is_counter_login){
-                    $discount_this_user = $this->getController('servicesDiscount')->getSpecificDiscountUser($data_info_discount_user);
+                        $discount_this_user = $this->getController('servicesDiscount')->getSpecificDiscountUser($data_info_discount_user);
 //                    }
 
                     $data['discount_amount'] = !empty($discount_this_user) ? $discount_this_user['off_percent'] : '';
@@ -1581,12 +1581,12 @@ class apiLocal extends clientAuth
                         $data['Books'][$key]['Email'] = $rec['member_email'];
                     } else {
                         $data['Books'][$key]['Email'] = 'info@iran-tech.com';
-                }
+                    }
                 }
                 else{
-                    //shomare telephone and email modir
-                    $data['Books'][$key]['PhoneNumber'] = CLIENT_MOBILE ;
-                    $data['Books'][$key]['Email'] = CLIENT_EMAIL;
+                //shomare telephone and email modir
+                $data['Books'][$key]['PhoneNumber'] = CLIENT_MOBILE ;
+                $data['Books'][$key]['Email'] = CLIENT_EMAIL;
                 }
             }elseif ($rec['pid_private'] =='0' && $sourceId=='14') {
                 //pid_private =0 yani parvaz eshteraki hast
@@ -1751,7 +1751,7 @@ class apiLocal extends clientAuth
 
                 $TypeService = $passengers[0]['serviceTitle'];
 //                if ($user['is_member'] == '1') {
-                $Discount = functions::ServiceDiscount($user['fk_counter_type_id'], $TypeService);
+                    $Discount = functions::ServiceDiscount($user['fk_counter_type_id'], $TypeService);
 //                } else {
 //                    $Discount = '0';
 //                }
@@ -2032,7 +2032,7 @@ class apiLocal extends clientAuth
                 $supplier_commission = $api_price - $agency_commission;
             } else if ($flight_type == "system" && $private == "private") {
 //                $api_commission = "5000";
-                $api_commission = "0";
+                                $api_commission = "0";
                 $agency_commission = round($priceFare * (5 / 100));
                 $supplier_commission = $api_price - $agency_commission;
             }
@@ -2140,7 +2140,6 @@ class apiLocal extends clientAuth
 //
 //                }
 //            }
-
 
 
 

@@ -19,6 +19,8 @@
 {/if}
 
 
+
+
 {assign var="isShowReserve" value=$smarty.const.IS_SHOW_RESERVE}
 {assign var="isExternal" value=$smarty.const.IS_EXTERNAL}
 {assign var="currencyCode" value=$smarty.const.CURRENCY_CODEE}

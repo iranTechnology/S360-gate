@@ -411,10 +411,10 @@
                     {foreach $listCancelAdmin as $item}
                         {if $item.note_admin|trim == ""}
                             <li class="dropdown">
-                                <div class="alertBlink profile-pic">
+                                <a href="http://admin.chartertech.ir/gds/itadmin/ticket/ticketCancellationHistory" target="_blank" class="alertBlink profile-pic">
                                     <i class="fa fa-exclamation-triangle"></i>
-                                    یادداشت بگذارید
-                                </div>
+                                    کنسلی جدید دارید
+                                </a>
                             </li>
                             {break}
                         {/if}
@@ -530,8 +530,8 @@
             <div class="sidebar-head sidebar-head_2">
                 <h4 class="h4_bar_icon d-flex" style='color:#fff'>
                     <span class="fa-fw open-close">
-                        <i class="ti-menu hidden-xs"></i>
-                        <i class="ti-close visible-xs"></i>
+                        <i class="ti-menu"></i>
+                        <i class="ti-close d-none"></i>
                     </span>
                     <span class="title-agency-panel-admin" >
                         {if $smarty.const.TYPE_ADMIN eq '1'}
@@ -714,6 +714,7 @@
           {include file=$obj->page}
     </div>
     <!-- /#page-wrapper -->
+    <div id="ErrorCurllIrantech"></div>
   <footer class="footer text-center"> 2017 &copy; iran-tech.com All Rights Reserved</footer>
 </div>
 

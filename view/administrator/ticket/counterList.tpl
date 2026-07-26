@@ -144,6 +144,7 @@
                                                        data-toggle="tooltip" data-placement="top"
                                                        data-original-title="لیست مسافران"></i>
                                                 </a>
+                                                {$check_access}
                                             </li>
 
                                             <li class="li-list-operator">

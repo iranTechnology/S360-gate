@@ -220,6 +220,8 @@ class samanInsurance extends insuranceAbstract {
                 }
             } else{
                 $return['status'] = false;
+                $return['errorCode'] = $result['registerInsuranceResult']['errorCode'];
+                $return['errorText'] = $result['registerInsuranceResult']['errorText'];
             }
             functions::insertLog('registerInsurance Response => '.json_encode($result['registerInsuranceResult']['errorText'],256|64),'insurance/registerInsurance_log');
         }
@@ -237,6 +239,9 @@ class samanInsurance extends insuranceAbstract {
 
             } else{
                 $return['status'] = false;
+                $return['errorCode'] = $result['registerInsuranceResult']['errorCode'];
+                $return['errorText'] = $result['registerInsuranceResult']['errorText'];
+
             }
             functions::insertLog('registerInsurance Response => '.json_encode($result['registerInsuranceIOResult']['errorText'],256|64),'insurance/registerInsurance_log');
 

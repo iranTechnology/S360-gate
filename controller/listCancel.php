@@ -76,16 +76,17 @@ class listCancel extends clientAuth {
 
 
                 if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
-
                     $date_of = explode('-', $_POST['date_of']);
                     $date_to = explode('-', $_POST['to_date']);
                     $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                     $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
                     $sql .= " AND TCancel.DateRequestCancelClientInt >= '{$date_of_int}' AND TCancel.DateRequestCancelClientInt  <= '{$date_to_int}'";
                 }
+                if (!empty($_POST['date_of_excel'])){//baraye File Excel ke upload mishe babate Cancel ha
+                    $sql .= " AND Ticket.date_flight < '{$_POST['date_of_excel']}' ";
+                }
 
-                if (!empty($_POST['Status']) && 1==2) {
-
+                if (!empty($_POST['Status'])) {
                     $sql .= " AND Cancel.Status ='{$_POST['Status']}'  ";
                 }
 
@@ -543,7 +544,8 @@ class listCancel extends clientAuth {
                 $reserveInfo= functions::GetInfoBus( $InfoCancel['FactorNumber'] );
 
                 // we only able to refund Altraboo reserves
-                if($reserveInfo['SourceCode'] != 'reservation_bus' && $reserveInfo['SourceCode'] != '10'){
+                /* برگشت پول به مسافر به مشکل می خورد آقای اشفار فرمودند این بخش را غیر فعال کنم  1405_03_27_َardalani
+                 if($reserveInfo['SourceCode'] != 'reservation_bus' && $reserveInfo['SourceCode'] != '10'){
 
                     $busRefundCheck=$apiBus->busRefundCheck($InfoCancel['FactorNumber'],$Param['ClientId']);
 
@@ -552,7 +554,7 @@ class listCancel extends clientAuth {
                     if(!$busRefund['response']['SuccessfulStatus']['client'] || !$busRefund['response']['SuccessfulStatus']['provider']){
                         return 'error : خطا در کنسل کردن از سمت پروایدر';
                     }
-                }
+                }*/
 
 
 
@@ -1511,7 +1513,7 @@ class listCancel extends clientAuth {
     public function InsertCancelingFromExcel()
     {
         // 1. گرفتن لیست کنسلی‌ها با فیلتر Status = ConfirmClient
-        $_POST['Status'] = 'ConfirmClient'; // برای فیلتر داخلی تابع
+        $_POST['date_of_excel'] = date('Y-m-d'); // برای فیلتر داخلی تابع
         $ListCancelClient = $this->ListCancelAdmin();
 
         if (empty($ListCancelClient)) {
