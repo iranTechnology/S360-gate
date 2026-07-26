@@ -1,9 +1,0 @@
-User-agent: *
-Disallow: /client/
-Disallow: /langs/
-
-Allow: /pic/
-Allow: /international/
-Allow: /detailHotel/
-
-Sitemap: https://alamosafer.ir/gds/view/alaParvaz/project_files/sitemap.xml

@@ -1,6 +1,0 @@
-<div class="col-lg-4 col-md-6 col-sm-6 col-12  d-sm-block d-none btn_s col_search">
-    <button type="button" onclick="newAdditionalExternal($(this))"
-            class="seub-btn btn_multiTrack b-0"><span
-                class="d-flex align-items-center justify-content-center"><i
-                    class="fa fa-plus ml-2"></i> افزودن پرواز</span></button>
-</div>
