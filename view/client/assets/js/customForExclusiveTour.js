@@ -183,10 +183,11 @@ function dataSeparator(data) {
 function createContainers() {
    const html = `
         <div id="flights-wrapper" class="flights-wrapper row">
+        <div class="w-100 chose-room-box position-relative">
             <div class="arrow-text">
                 <span>انتخاب اتاق</span>
             </div>
-            <div style="position: relative; width: 100%;">
+            <div style="position: relative; width: 100%;margin-top: 17px;">
                      <button class="rooms-arrow right-arrow" onclick="scrollRooms('right')">
                          <i class="fas fa-chevron-right"></i>
                      </button>
@@ -195,7 +196,7 @@ function createContainers() {
                          <i class="fas fa-chevron-left"></i>
                      </button>
             </div>
-
+</div>
             <div id="outbound-flights-container" class="flights-container"></div>
             <div id="return-flights-container" class="flights-container"></div>
             
@@ -374,13 +375,6 @@ function displayMatchingRecord(record) {
    const sidebarHTML = `
       <aside class="passengerDetailReservationTour_aside">
 
-         <h2 class="passengerDetailReservationTour_aside_title_main">
-            پکیج انتخابی شما
-         </h2>
-
-         <p class="aside-description">
-            با کلیک بر روی اتاق‌ها و پروازهای دیگر انتخاب خود را تغییر دهید
-         </p>
 <div class="aside-column">
          <div class="passengerDetailReservationTour_aside_box">
 
@@ -391,14 +385,14 @@ function displayMatchingRecord(record) {
                 </p>
                 <div class="hotel-dates-summary">
                    <div class="date-row">
-                       <span class="date-label">تاریخ رفت :</span>
+                       <span class="date-label">تاریخ ورود :</span>
                        <span class="date-value" dir="ltr">
                            ${record.OutputRoutes.PersianDepartureDate}
                        </span>
                    </div>
                
                    <div class="date-row">
-                       <span class="date-label">تاریخ برگشت :</span>
+                       <span class="date-label">تاریخ خروج :</span>
                        <span class="date-value" dir="ltr">
                            ${record.ReturnRoutes.PersianDepartureDate}
                        </span>
@@ -424,10 +418,9 @@ function displayMatchingRecord(record) {
 
             <!-- پرواز رفت -->
                <div>
-               <h4 class="flight-title">پرواز رفت</h4>
-
                 <div class="flight-info-row flight-single-line">
                     <div class="flight-info-item flight-main">
+                    <span class="flight-title">پرواز رفت</span>
                         <span class="airline-name">
                             ${record.OutputRoutes.Airline.Name}
                         </span>
@@ -443,15 +436,17 @@ function displayMatchingRecord(record) {
                         </span>
                     </div>
                 </div>
+                
             </div>
 
 
             <!-- پرواز برگشت -->
             <div>
-             <h4 class="flight-title">پرواز برگشت</h4>
+           
          
              <div class="flight-info-row flight-single-line">
                  <div class="flight-info-item flight-main">
+                   <span class="flight-title">پرواز برگشت</span>
                      <span class="airline-name">
                          ${record.ReturnRoutes.Airline.Name}
                      </span>
@@ -467,11 +462,12 @@ function displayMatchingRecord(record) {
                  </div>
              </div>
             </div>
-
+    <div class="services-exclusive-tour">
               <h4 class="flight-title">خدمات اضافه</h4>
             
               <div class="flight-info-row">
                 <div class="flight-info-item" id="entertainment-summary-items">خدماتی انتخاب نشده است</div>
+              </div>
               </div>
             </div>
             <!-- 🔥 بخش قیمت‌ها -->
@@ -1854,7 +1850,7 @@ function findMatchingRecord() {
 
 .rooms-arrow {
     position: absolute;
-    top: 38%;
+    top: 48%;
     transform: translateY(-50%);
     z-index: 100;
     background: rgba(70, 80, 100, 0.2); /* کمی شفاف */

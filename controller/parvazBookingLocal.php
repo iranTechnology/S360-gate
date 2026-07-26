@@ -1507,7 +1507,7 @@ class parvazBookingLocal extends apiLocal
                       $DataFlightTotal = '0';
                       $DataFlightFare = '0';
                   }
-
+                  if(empty($_GET['isPassenger'])){
                   if ($type_member == 'Counter') { ?>
 
 
@@ -1567,6 +1567,44 @@ class parvazBookingLocal extends apiLocal
 
                 <?php
                 }
+                  }
+                  if($_GET['isPassenger'] === '1') { ?>
+
+
+                      <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
+                          <?php if($_GET['lang'] == 'fa'){ ?>
+
+                              <tr class="cancellationPolicy-tableHead">
+                                  <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
+                              </tr>
+
+
+                              <tr>
+                                  <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                      <?= $DataFlightTotal ?> ریال
+                                  </td>
+                              </tr>
+                          <?php } else{ ?>
+                              <tr class="cancellationPolicy-tableHead">
+                                  <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
+
+                              </tr>
+
+
+                              <tr>
+                                  <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                      <?= $DataFlightTotal ?> Rial
+                                  </td>
+
+                              </tr>
+
+                          <?php } ?>
+
+                      </table>
+
+
+                      <?php
+                  }
                 if ($info['request_cancel'] != 'confirm' && ($info['successfull'] == 'book' || $info['successfull'] == 'private_reserve')){
                     ?>
                     <div class="" style="margin: 10px 100px ;border:1px solid #ccc">

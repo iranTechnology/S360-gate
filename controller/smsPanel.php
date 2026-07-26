@@ -174,7 +174,10 @@ class smsPanel extends Model
             'bookedSuccessfullyGasht' => 'پس از رزرو قطعی گشت',
             'bookedSuccessfullyBus' => 'پس از رزرو قطعی اتوبوس',
             'custom' => 'متفرقه',
-            'memberLogin' => 'ورود کاربر به پنل',
+            'organizationCategoryAfterRegisterUser' => 'دسته بندی سازمانی بعد از ثبت نام کاربر',
+            'organizationCategoryAfterAcceptUser' => 'دسته بندی سازمانی بعد از تایید کاربر',
+            'organizationCategoryAfterRejectUser' => 'دسته بندی سازمانی بعد از رد کاربر',
+
         );
 
         return $usages;

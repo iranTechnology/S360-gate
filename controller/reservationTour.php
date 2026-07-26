@@ -2350,7 +2350,7 @@ class reservationTour extends clientAuth
 //            $startDate = $objController->dateNextFewDays($startDate, ' + 1');
 //
 //        }//end while startDate<=endDate
-
+                
 
 
 

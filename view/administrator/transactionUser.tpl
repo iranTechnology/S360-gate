@@ -3,6 +3,17 @@
     {$objFunctions->redirectToNewTransactions()}
 {*    {include file="`$smarty.const.FRONT_CURRENT_ADMIN`new-transaction-user.tpl"}*}
 {else}
+    {load_presentation_object filename="functions" assign="objFunctions"}
+
+    {math equation="x - y" x=$smarty.now y=604800 assign="timestamp"}
+    {assign var="startDateGregorian" value=$timestamp|date_format:"%Y-%m-%d"}
+    {assign var="endDateGregorian" value=$smarty.now|date_format:"%Y-%m-%d"}
+
+    {* تبدیل به شمسی با فرض وجود تابع *}
+    {assign var="startDateJalali" value=$objFunctions->ConvertToJalali($startDateGregorian, '-')}
+        {assign var="endDateJalali" value=$objFunctions->ConvertToJalali($endDateGregorian, '-')}
+
+
     {load_presentation_object filename="accountcharge" assign="objAccount"}
     {load_presentation_object filename="bookshow" assign="objbook"}
     {load_presentation_object filename="transaction" assign="objTransaction"}
@@ -184,14 +195,14 @@
 
                         <div class="form-group col-sm-6 ">
                             <label for="date_of" class="control-label">تاریخ شروع</label>
-                            <input type="text" class="form-control datepicker" name="date_of" value="{$smarty.post.date_of}"
+                            <input type="text" class="form-control datepicker" name="date_of" value="{$smarty.post.date_of|default:$startDateJalali}"
                                    id="date_of" placeholder="تاریخ شروع جستجو را وارد نمائید">
                         </div>
 
                         <div class="form-group col-sm-6">
                             <label for="to_date" class="control-label">تاریخ پایان</label>
                             <input type="text" class="form-control datepickerReturn" name="to_date"
-                                   value="{$smarty.post.to_date}" id="to_date"
+                                   value="{$smarty.post.to_date|default:$endDateJalali}" id="to_date"
                                    placeholder="تاریخ پایان جستجو را وارد نمائید">
 
                         </div>

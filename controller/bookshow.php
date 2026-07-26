@@ -24,6 +24,7 @@ class bookshow extends clientAuth
     protected $dbCustomer ;
     protected $dbBase ;
     public $transactions;
+    protected $factorNumber;
 
     public function __construct()
     {
@@ -1346,11 +1347,27 @@ class bookshow extends clientAuth
         $_POST = $param;
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
-        $sql = " SELECT * FROM book_local_tb WHERE  
-            (request_number = '{$_POST['request_number']}' OR pnr = '{$_POST['request_number']}' OR factor_number = '{$_POST['request_number']}') 
-            AND (request_number > 0 OR request_number<>'')";
+//        $sql = " SELECT * FROM book_local_tb WHERE
+//            (request_number = '{$_POST['request_number']}' OR pnr = '{$_POST['request_number']}' OR factor_number = '{$_POST['request_number']}')
+//            AND (request_number > 0 OR request_number<>'')";
 
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
+
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_local_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'
+        AND request_number > 0";
+        }
+        else{
+            $sql = "SELECT * FROM book_local_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND request_number > 0";
+        }
+        
         $res = $Model->load($sql);
+        $this->factorNumber = $res['factor_number'];
 
         if ($res['successfull'] == 'book') {
             $status = functions::Xmlinformation("Definitivereservation");
@@ -1415,9 +1432,15 @@ class bookshow extends clientAuth
                 $PricePenalty = '--';
             }
 
+
             $typeFlight = (strtolower($res['flight_type']) == 'system') ? 'سیستمی' : 'چارتری';
 
-
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $this->factorNumber)->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $totalPrice -= $discountCodeAmount;
+            }
             $this->request_number = $res['request_number'];
 
             $result = '

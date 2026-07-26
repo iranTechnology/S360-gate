@@ -51,9 +51,6 @@
             <div id="DivDore3" class="BoxResultCurlAsli">
 
             </div>
-            <div id="ErrorCurllIrantech">
-
-            </div>
         </div>
     {/if}
 
@@ -63,10 +60,11 @@
     {if $smarty.const.TYPE_ADMIN != '1'}
         {include file="view/administrator/reports/alert_agency_exeed_limit_report.tpl"}
     {/if}
-    {include file="view/administrator/reports/user_module_reports.tpl"}
-    {include file="view/administrator/reports/user_bookMarks_link.tpl"}
-
-    {if $smarty.const.TYPE_ADMIN eq '1'}
+    {if $smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en'}
+        {include file="view/administrator/reports/user_module_reports.tpl"}
+        {include file="view/administrator/reports/user_bookMarks_link.tpl"}
+    {/if}
+    {if $smarty.const.TYPE_ADMIN eq '1' && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
         {include file="view/administrator/reports/agency_exceed_limit_report.tpl"}
         {include file="view/administrator/reports/WithoutHashIdWhmcs.tpl"}<!-- 1404/11/19 -->
         {include file="view/administrator/reports/closedCustomersForFactor.tpl"}<!-- 1404/10/17 -->
@@ -75,7 +73,7 @@
     {else}
         {include file="view/administrator/reports/wholeSystemSalesInformation.tpl"}<!-- 1404/04/16 -->
     {/if}
-    
+    {if $smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en'}
     <div class="row white-box mx-1 border border-ccc" style="padding-top: 30px;">
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div class="panel panel-danger">
@@ -417,7 +415,7 @@
         </div>
 
     </div>
-
+    {/if}
     <!-- .row -->
 
     <!-- ============================================================== -->
@@ -770,6 +768,7 @@
              type: "GET",
              dataType: "json",
              success: function(response) {
+                 console.log("AJAX Response:", response);
                 if (isFilled(response.error)) {
                    $("#DivResultCurll").css('display', 'block');
                    $("#ErrorCurllIrantech").html(response.error).show();

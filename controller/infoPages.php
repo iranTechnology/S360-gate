@@ -29,6 +29,7 @@ class infoPages extends positions
 
         if ((isset($service_indexes['origin']['index']) || isset($service_indexes['destination']['index'])) && ($service_indexes['origin']['index'] || $service_indexes['destination']['index'])) {
             $find_service_route = $this->getInfoPagePositionByRoute($service_indexes);
+
             $page_info = $this->getInfoPageById($find_service_route['page_id']);
 
             if (!$page_info) {

@@ -902,7 +902,7 @@ class bookExclusiveTour extends exclusiveTour
                                             <td style="border: none;"></td>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: yekanbakh;">' . (!empty($firstInfo) ? '1' : '0')  . ' اتاق </td>  
                                         </tr> <tr>
-                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: yekanbakh;">شماره بلیط: </td>
+                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: yekanbakh;">کد بلیط هواپیما: </td>
                                            <td style="border: none;"></td>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: yekanbakh;">' . $voucherNumber  . '</td>
                                         </tr>

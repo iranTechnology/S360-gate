@@ -62,9 +62,9 @@
                                 </td>
                                 <td class="align-middle">
                                     {if $item.typeDiscount eq 'cash'}
-                                    {$item.amount|number_format}
+                                        {$item.amount|number_format}
                                     {else}
-                                        {$item.amount}%
+                                        %{$item.amount}
                                     {/if}
                                 </td>
                                 <td class="align-middle">

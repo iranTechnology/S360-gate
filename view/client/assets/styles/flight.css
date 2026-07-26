@@ -32,7 +32,7 @@
     /* shadow برای بازه */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* مثال سایه */
     /* رنگ دلخواه برای بازه */
-    /* background-color: #4CAF50; */ /* رنگ دلخواه */
+     background-color:var(--mainColor) !important;
 }
 
 /* اگر بخواهید خود اسلایدر (track) هم سایه داشته باشد */
@@ -2070,7 +2070,7 @@ div.R0 .logo-airline-ico {
     background-position: -416px -122px;
 }
 div.L4 .logo-airline-ico {
-    background-position: -480px 0px;
+    background-position: -484px 0px;
 }
 div.SHR .logo-airline-ico {
     background-position: -482px -60px;
@@ -9140,6 +9140,8 @@ process Flight cdd
     color: #333 !important;
     font-family: inherit;
     font-weight: 400;
+    width:100%;
+    text-align:end
 }
 /*@media (min-width: 768px) {*/
 /*.flight-detail-style{*/

@@ -105,7 +105,6 @@ class reservationBus extends clientAuth
         foreach ($base_company_bus->get(['id', 'name_fa', 'name_en', 'logo'])->all() as $company) {
             $companies[] = $company;
         }
-
         $conditions = [
             [
                 'index' => 'cityOrigin',
@@ -145,7 +144,6 @@ class reservationBus extends clientAuth
         }
         $buses_data = $buses_data->all();
         $buses_result = [];
-
         foreach ($buses_data as $key => $bus_data) {
             $buses_result[$key] = $bus_data;
             foreach ($companies as $company) {
@@ -181,6 +179,7 @@ class reservationBus extends clientAuth
                 $buses_result[$key]['used_chairs'][$chair['passenger_chairs']]= $chair;
             }
         }
+
 
         return $buses_result;
     }

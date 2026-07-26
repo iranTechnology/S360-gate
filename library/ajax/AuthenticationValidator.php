@@ -61,14 +61,15 @@ class AuthenticationValidator {
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
-            
+            functions::insertLog(json_encode($captcha_code) , '000shojaee');
             // Include Securimage class
             require_once dirname(__FILE__) . '/../../captcha/securimage.php';
             $securimage = new Securimage();
             
             // Check the captcha code
             $result = $securimage->check($captcha_code);
-            
+            functions::insertLog(json_encode($result) , '000shojaee');
+
             // Create new code for next verification
             if ($result) {
                 $securimage->createCode();

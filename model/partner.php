@@ -162,11 +162,13 @@ class partner_tb extends ModelBase
                     'isActiveInternal' => $sourceItem['isActiveInternal'],
                     'isActiveExternal' => $sourceItem['isActiveExternal'],
                     'webServiceType' => 'public',
+                    'apiLinkRequest' => $sourceItem['apiLinkRequest'],
                     'creationDate' => date('Y-m-d'),
                     'creationTime' => date('H:i:s'),
                     'creationDateInt' => time(),
                 ];
                 $jsonData = json_encode($dataToInsert);
+
                 functions::curlExecution($url, $jsonData, 'yes');
 
 

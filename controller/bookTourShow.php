@@ -320,9 +320,20 @@ class bookTourShow extends clientAuth
 
 
         }
-          $sql = " SELECT * FROM book_tour_local_tb WHERE factor_number='{$factor_number}' ";
-        $book = $Model->load($sql);
+//          $sql = " SELECT * FROM book_tour_local_tb WHERE factor_number='{$factor_number}' ";
+        $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
+        $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
 
+        if(!Session::IsLogin()){
+            $sql = "SELECT * FROM book_tour_local_tb 
+        WHERE factor_number = '$requestNumber' 
+        AND member_mobile = '$phoneNumber'";
+        }
+        else {
+            $sql = "SELECT * FROM book_tour_local_tb 
+        WHERE factor_number = '$requestNumber'";
+        }
+        $book = $Model->load($sql);
         $resultTourLocalController->getInfoTourByIdTour($book['tour_id']);
         $tourDetail=$resultTourLocalController->arrayTour['infoTour'];
      
@@ -585,6 +596,15 @@ class bookTourShow extends clientAuth
 
             }
 
+            $totalPrice = intval($book['tour_total_price']);
+            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $this->FactorNumber)->find();
+            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
+            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
+                $discountCodeAmount = $getDiscountCodeAmount['amount'];
+                $totalPrice -= $discountCodeAmount;
+            }
+            functions::insertLog(json_encode($getDiscountCode),'000shojaee');
+            functions::insertLog(json_encode($getDiscountCodeAmount),'000shojaee');
 
             $result .= join(', ',$cities) . '</td>';
             $result .= '<td>' . $book['tour_start_date'] . '<hr style="color: #f8f8f8;">';
@@ -597,7 +617,7 @@ class bookTourShow extends clientAuth
             $result .= '</td>';
             $result .= '<td>' . $book['factor_number'] . '<hr style="color: #f8f8f8;">';
             $result .= $book['payment_date'] . '</td>';
-            $result .= '<td>' . number_format($book['tour_total_price']) . '<hr style="color: #f8f8f8;">';
+            $result .= '<td>' . number_format($totalPrice) . '<hr style="color: #f8f8f8;">';
 
             if($priceChanged > 0){
                 $result .= 'افزایش قیمت ' . number_format($priceChanged).'<hr style="color: #f8f8f8;">' ;

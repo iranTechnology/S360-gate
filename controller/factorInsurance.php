@@ -34,7 +34,7 @@ class factorInsurance extends insurance {
             } elseif($_POST["passenger_age" . $i] == 'Inf'){
                 $this->Inf_qty++;
             }
-
+  
             $this->data['info'][$i]['factor_number']                 =      $this->factor_number;
             $this->data['info'][$i]['passengerNationality']          =      $_POST["passengerNationality". $i];
             $this->data['info'][$i]['passenger_gender']              =      $_POST["gender". $i];

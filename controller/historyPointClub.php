@@ -8,7 +8,6 @@ class historyPointClub extends clientAuth
 
 
     public function setPointMemberIntoTable($params) {
-var_dump($params['price']);
         $check_set_point = $this->getModel('historyPointClubModel')->get()->where('factor_number',$params['factor_number'])->find();
         if(empty($check_set_point)){
             functions::insertLog(json_encode($params,256),'check_point_Buy');

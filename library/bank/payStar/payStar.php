@@ -41,7 +41,9 @@ class paystar {
 
     public function verifyPayment( $params ) {
         $logFile = 'logs/logBankPaystar_request.txt';
+        functions::insertLog('$params: ' . json_encode($params) , '0abbasi');
         $logData = $this->findTokenFromLog($logFile, $params['gateway_id'], $params['order_id']);
+        functions::insertLog('$logData: ' . json_encode($logData) , '0abbasi');
         if (!$logData || !$logData['token'] || !$logData['amount']) {
             return [
                 'success' => false,

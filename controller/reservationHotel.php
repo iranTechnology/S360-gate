@@ -701,7 +701,7 @@ class reservationHotel extends clientAuth
 
         }
 
-
+        
         if (in_array('0', $resInsert)) {
             return 'error';
         } else {

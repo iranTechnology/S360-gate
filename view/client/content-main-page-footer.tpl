@@ -16,10 +16,10 @@
             }
         });
 
-        // جایگزین کد جاوااسکریپت فعلی
-        jQuery(function(){
+        if ($('#camera_wrap_1').length) {
+            jQuery(function(){
             jQuery('#camera_wrap_1').camera({
-                thumbnails: false,  // غیرفعال کنید تا تداخل نداشته باشد
+                thumbnails: false,
                 barPosition: 'top',
                 hover: true,
                 loader: "bar",
@@ -32,9 +32,9 @@
                 pagination: true,
                 autoAdvance: true,
                 mobileAutoAdvance: true,
-
             });
-        });
+            });
+        }
     });
 
 </script>

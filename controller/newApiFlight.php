@@ -3575,8 +3575,6 @@ class newApiFlight extends clientAuth
 
         $flights = json_decode($this->findTicketInSearch(), true);
 
-
-
         $request_numbers = [];
         foreach ($flights as $direction => $arrayFlight) {
             $request_numbers[$direction] = $arrayFlight['Code'] ;
@@ -3684,7 +3682,7 @@ class newApiFlight extends clientAuth
                 $this->airlineInfoCache[$iataCode] = functions::InfoAirline($iataCode);
             }
 
-
+//            functions::insertLog(json_encode($flights),'000shojaee');
             foreach ($flights as $direction => $arrayFlight) {
 
                 $start = microtime(true);

@@ -33,7 +33,7 @@
 {if $smarty.post.flag eq 'credit'}        {*پرداخت از طریق اعتبار*}
 
     {$paymentType = 'credit'}
-
+    
     {if $smarty.post.factorNumber neq ''}
         {$successPayment = 'true'}
         {$objBookingLocal->HotelBookCredit($smarty.post.factorNumber)}{*در جدول book مشخص میکند که پرداخت از اعتبار صورت گرفته*}

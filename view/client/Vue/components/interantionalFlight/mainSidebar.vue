@@ -280,23 +280,23 @@ export default {
         _this.count_search_part =  _this.data_search_side.length;
         _this.has_return =  (_this.dataSearch.dataSearch.MultiWay == 'TwoWay') ? true : false;
 
-            if(_this.dataSearch.dataSearch.MultiWay == 'TwoWay'){
-              this.$store.commit('setSearchType','Twoway')
-            }else if(_this.dataSearch.dataSearch.MultiWay =='multi_destination'){
-              this.$store.commit('setSearchType','multiSearch')
-            }else{
-              this.$store.commit('setSearchType','Oneway')
-            }
-
-
+        if(_this.dataSearch.dataSearch.MultiWay == 'TwoWay'){
+          this.$store.commit('setSearchType','Twoway')
+        }else if(_this.dataSearch.dataSearch.MultiWay =='multi_destination'){
+          this.$store.commit('setSearchType','multiSearch')
+        }else{
+          this.$store.commit('setSearchType','Oneway')
         }
+
+
       }
-    },
-    mounted(){
-      this.boxWays = document.querySelector(".box_ways");
-      this.boxWaysHeight = document.querySelector(".box_ways").offsetHeight;
-      this.boxWays.style.height = "0";
-      this.boxWays.style.opacity = "0";
-    },
-  }
+    }
+  },
+  mounted(){
+    this.boxWays = document.querySelector(".box_ways");
+    this.boxWaysHeight = document.querySelector(".box_ways").offsetHeight;
+    this.boxWays.style.height = "0";
+    this.boxWays.style.opacity = "0";
+  },
+}
 </script>

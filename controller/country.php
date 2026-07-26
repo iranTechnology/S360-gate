@@ -156,6 +156,7 @@ class country extends clientAuth {
                 ->where( 'abbreviation', '', '!=' )
                 ->where( 'is_del', 'no' )
                 ->all();
+            
 			$abb = array();
 			foreach ( $countries as $item ) {
 				$abb[] = $item['abbreviation'];
