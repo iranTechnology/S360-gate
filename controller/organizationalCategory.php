@@ -10,11 +10,13 @@
 class organizationalCategory
 {
     private $smsServices;
+    private $smsPanel;
 
     #region cunstruct
     public function __construct()
     {
         $this->smsServices = Load::controller('smsServices');
+        $this->smsPanel = new smsPanel();
 
     }
     #endregion
@@ -136,12 +138,17 @@ class organizationalCategory
 
         $Model->setTable('organization_users_tb');
         $resultInsert = $Model->insertLocal($data);
+        $messageVariables = array(
+            'sms_tracking_code' => $data['tracking_code']
+        );
+        $message = $this->smsServices->getUsableMessage('organizationCategoryAfterRegisterUser' , $messageVariables);
+        $smsBody = $message ? $message :" درخواست ثبت نام شما با کد پیگیری {$data['tracking_code']} ثبت شد از همین طریق ادامه روند اطلاع رسانی خواهد شد ";
         if ($resultInsert) {
 
             $objSms = $this->smsServices->initService('0', CLIENT_ID);
             if($objSms) {
                 $smsArray = array(
-                    'smsMessage' => " درخواست ثبت نام شما با کد پیگیری {$data['tracking_code']} ثبت شد از همین طریق ادامه روند اطلاع رسانی خواهد شد " ,
+                    'smsMessage' =>$smsBody,
                     'cellNumber' => $data['mobile'],
                     'receiverName' => $data['first_name'] . ' ' . $data['last_name'],
                 );
@@ -243,16 +250,20 @@ class organizationalCategory
         $Condition = "id='{$param['id']}'";
         $Model->setTable('organization_users_tb');
         $resultUpdate = $Model->update($data, $Condition);
-
+        $messageVariables = array(
+            'sms_tracking_code' => $trakingCode
+        );
+        $message = $this->smsServices->getUsableMessage('organizationCategoryAfterAcceptUser' , $messageVariables);
+        $smsBody = $message ? $message :'درخواست شما با کدپیگری ' . $trakingCode . ' مورد تایید قرار گرفت لطفا وارد سایت شده و از بخش کد رهگیری فایل معرفی خود را دریافت کنید';
         if ($resultUpdate) {
             $objSms = $this->smsServices->initService('0', CLIENT_ID);
             if($objSms){
                 $smsArray = array(
-                    'smsMessage' => 'درخواست شما با کدپیگری ' . $trakingCode . ' مورد تایید قرار گرفت لطفا وارد سایت شده و از بخش کد رهگیری فایل معرفی خود را دریافت کنید',
+                    'smsMessage' => $smsBody,
                     'cellNumber' => $resultSelect['mobile'],
                     'receiverName' => $resultSelect['first_name'] . ' ' . $resultSelect['last_name'],
                 );
-               $this->smsServices->sendSMS($smsArray);
+                $this->smsServices->sendSMS($smsArray);
             }
 
 
@@ -269,7 +280,6 @@ class organizationalCategory
         return $output;
     }
 
-
     public function rejectOrganizationalUser($param) {
         $Model = Load::library('Model');
         $param['id'] = filter_var($param['id'], FILTER_VALIDATE_INT);
@@ -284,17 +294,22 @@ class organizationalCategory
         }
 
         $data['is_accept'] = 2;
-
         $Condition = "id='{$param['id']}'";
         $Model->setTable('organization_users_tb');
         $resultUpdate = $Model->update($data, $Condition);
+        $trakingCode = $resultSelect['tracking_code'];
+        $messageVariables = array(
+            'sms_tracking_code' => $trakingCode
+        );
+        $message = $this->smsServices->getUsableMessage('organizationCategoryAfterRejectUser' , $messageVariables);
+        $smsBody = $message ? $message :'درخواست شما مورد تایید قرار نگرفت';
 
         if ($resultUpdate) {
             $objSms = $this->smsServices->initService('0', CLIENT_ID);
 
             if($objSms){
                 $smsArray = array(
-                    'smsMessage' => 'درخواست شما مورد تایید قرار نگرفت',
+                    'smsMessage' => $smsBody,
                     'cellNumber' => $resultSelect['mobile'],
                     'receiverName' => $resultSelect['first_name'] . ' ' . $resultSelect['last_name'],
                 );
@@ -340,7 +355,7 @@ class organizationalCategory
         $Model = Load::library('Model');
         $trackingCode = filter_input(INPUT_POST, 'request_service_number', FILTER_SANITIZE_STRING);
 
-            $sql = "SELECT 
+        $sql = "SELECT 
     ou.*, 
     oc.id as category_id,
     oc.title as category_title, 
