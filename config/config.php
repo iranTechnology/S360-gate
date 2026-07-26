@@ -33,18 +33,18 @@ else {
     }
 }
 
+if($client['DefaultDb'] == '1')
+{
+    define('DB_DATABASE', 'safar360_iran_tech');
+    define('DB_USERNAME','safar360');
+    define('DB_PASSWORD', 'GW@!pvGOZ$h9Mk[JdoU');
+}
+else {
     define('DB_DATABASE', $client['DbName']);
     define('DB_USERNAME', $client['DbUser']);
     define('DB_PASSWORD', $client['DbPass']);
 
-define('PDO_DSN', 'mysql:host=' . DB_SERVER . ';dbname=' . DB_DATABASE);
-
-// PERFORMANCE: Maximum two-way flight combinations to process
-// Higher value = more options but slower response time
-// Lower value = faster response but fewer options
-// Recommended: 300-800 depending on server performance
-// Default: 500
-if (!defined('MAX_TWOWAY_COMBINATIONS')) {
-    define('MAX_TWOWAY_COMBINATIONS', 500);
 }
+
+define('PDO_DSN', 'mysql:host=' . DB_SERVER . ';dbname=' . DB_DATABASE);
 

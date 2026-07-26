@@ -338,6 +338,7 @@
   <Onewayticket>بلیط رفت</Onewayticket>
   <Returnticket>بلیط برگشت</Returnticket>
   <Freeticket>بلیط بدون قیمت</Freeticket>
+  <PassengerTicket>بلیط مسافر</PassengerTicket>
   <Ticket>بلیط</Ticket>
   <TelescopeMarket>تلسکوپ مارکت</TelescopeMarket>
 
@@ -581,7 +582,7 @@
   <Uploadfilepackage>آپلود عکس شاخص و فایل پکیج</Uploadfilepackage>
   <Route>مسیر</Route>
   <Regulation>مقررات</Regulation>
-  <TermsandConditions>قوانین و استرداد</TermsandConditions>
+  <TermsandConditions>قوانین و مقررات</TermsandConditions>
   <Description>توضیحات</Description>
   <Package>پکیج</Package>
   <Showpackagefile>مشاهده فایل پکیج</Showpackagefile>
@@ -930,7 +931,7 @@
   <Timeevening>عصر</Timeevening>
   <Priceday>قیمت روزانه</Priceday>
   <Customername>نام خریدار</Customername>
-  <Viewbill>مشاهده قبض صندوق</Viewbill>
+  <Viewbill> قبض صندوق</Viewbill>
   <Cancelflight>کنسل کردن پرواز</Cancelflight>
   <CancelFlightUser>کنسل کردن</CancelFlightUser>
   <Type>نوع</Type>
@@ -1516,6 +1517,7 @@
   <BusTicketSpecificationsFrom>مشخصات بلیط اتوبوس از</BusTicketSpecificationsFrom>
   <SeatNumber>شماره صندلی</SeatNumber>
   <GetTicket>دریافت بلیط</GetTicket>
+  <GetTicketCounter>بلیط کانتر</GetTicketCounter>
   <CarReservationFeatures>مشخصات رزرو خودرو</CarReservationFeatures>
   <ClockBack>ساعت بازگشت</ClockBack>
   <Mobile>موبایل</Mobile>
