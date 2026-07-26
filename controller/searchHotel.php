@@ -321,7 +321,6 @@ class searchHotel extends ApiHotelCore {
 //                        $Hotel['']
 
 
-//                            functions::insertLog(json_encode($Hotel) , '000shojaee');
 
                             $priceWithoutDiscount = $priceFieldWithoutDiscount = isset($Hotel['DailyMinPrice']) ? $Hotel['DailyMinPrice'] : $Hotel['MinPrice'];
                             $hotel_price = $price = $Hotel['MinPrice'] = isset($Hotel['MinPrice']) ? $Hotel['MinPrice'] : $Hotel['DailyMinPrice'];

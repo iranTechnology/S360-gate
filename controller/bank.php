@@ -2528,7 +2528,6 @@ class bank {
 			$params['order_id'] = $this->factorNumber;
 			$params['callback'] = $this->callBackURL;
 
-			functions::insertLog('requestPayment$params: ' . json_encode($params) , '0abbasi');
 
 
 			$request_payment = $client->requestPayment($params);

@@ -859,6 +859,20 @@ class Model {
     }
 
     /**
+     * @param string $rawSql
+     * @return $this
+     */
+    public function orderByRaw($rawSql)
+    {
+        if (strpos($this->query, 'ORDER BY') !== false) {
+            $this->query .= ", {$rawSql}";
+        } else {
+            $this->query .= " ORDER BY {$rawSql}";
+        }
+        return $this;
+    }
+
+    /**
      * @param string $fields
      * @return $this
      * @throws Exception

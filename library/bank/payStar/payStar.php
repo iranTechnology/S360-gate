@@ -59,11 +59,9 @@ class paystar {
         ];
 
         $this->gatewayId = $params['gateway_id'];
-        functions::insertLog('callAPI$data: ' . json_encode($data) , '0abbasi');
 
         $response = $this->callAPI('verify', $data);
 
-        functions::insertLog('callAPI$response: ' . json_encode($response) , '0abbasi');
 
 
         if ( isset($response['status']) && $response['status'] == 1 ) {

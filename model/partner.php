@@ -162,6 +162,7 @@ class partner_tb extends ModelBase
                     'isActiveInternal' => $sourceItem['isActiveInternal'],
                     'isActiveExternal' => $sourceItem['isActiveExternal'],
                     'webServiceType' => 'public',
+                    'apiLinkRequest' => $sourceItem['apiLinkRequest'],
                     'creationDate' => date('Y-m-d'),
                     'creationTime' => date('H:i:s'),
                     'creationDateInt' => time(),
@@ -892,6 +893,8 @@ class partner_tb extends ModelBase
 
             }
 
+
+
             if (empty($_FILES['Favicon'])) {
 
                 $success = "done:" . $result['Favicon'];
@@ -902,7 +905,6 @@ class partner_tb extends ModelBase
                 $explod_name_pic_favicon = explode(':', $success);
 
             }
-
 
             if(!empty($_FILES['Stamp'])){
                 $config = Load::Config('application');

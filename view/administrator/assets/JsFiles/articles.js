@@ -1963,3 +1963,4 @@ function change_order_article(){
 $(".select2").select2({
   minimumResultsForSearch: 0
 });
+

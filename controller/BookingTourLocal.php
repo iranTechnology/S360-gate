@@ -931,7 +931,7 @@ class BookingTourLocal extends clientAuth
                     <div class="clear-both"></div>
                     <hr/>
             
-                    <div style="width:100%; text-align : center ; ">
+                    <div style="width:100%; text-align : center ; margin-top:auto">
                         <div style="width: 45%; float:right ;margin: 0px 30px;text-align:right">
                             '.functions::Xmlinformation('Website').' : <div style="direction: ltr; display: inline-block;text-align:right">';
             $printBoxCheck .= CLIENT_MAIN_DOMAIN;

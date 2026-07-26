@@ -1124,7 +1124,6 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'searchCityHotelForInternalAndExt
         $response = $externalArray;
     }
 
-//    functions::insertLog(json_encode($response), '000shojaee');
     echo json_encode($response);
 }
 

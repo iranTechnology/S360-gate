@@ -93,7 +93,6 @@ class bookCip extends cip
             ->limit(0, 1)
             ->find();
 
-        functions::insertLog('$info: ' . json_encode($info) , '000shojaee');
         $resultBook = false;
 
             functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookCip');
@@ -310,7 +309,6 @@ class bookCip extends cip
      */
     private function reserveTicket($payType, $eachDirection) {
 
-        functions::insertLog('$eachDirection: ' . json_encode($eachDirection) , '000shojaee');
         $resultBookedFlight = false;
         functions::insertLog('first reserve ticket==>' . json_encode([$eachDirection['factor_number']], 256), 'newBookCip');
 

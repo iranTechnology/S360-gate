@@ -544,7 +544,6 @@ class apiLocal extends clientAuth
                     $data = $this->getController('commissionSources')->sourceCommissionCalculation($data , 'revalidate');
                     $data = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($data , 'revalidate');
 
-                    functions::insertLog('$res ->>>>> ' . json_encode($data) , '000shojaee');
 
 
                     $Model->setTable('temporary_local_tb');
@@ -571,7 +570,6 @@ class apiLocal extends clientAuth
                                 }else{
                                     $ArrivalCity = functions::NameCityForeign($Route['Arrival']['Code']);
                                 }
-                                functions::insertLog('route ->>>>> ' . json_encode($Route) , '000shojaee');
                                 $dataTemporary['DestiCity'] = $ArrivalCity['DepartureCityFa'];
                                 $dataTemporary['Airline_IATA'] = $airlineController->iataStandardization($Route['Airline']['Code']);
                                 $dataTemporary['AirlineName'] = functions::AirlineName($dataTemporary['Airline_IATA']);
@@ -599,7 +597,6 @@ class apiLocal extends clientAuth
 
                             if (!empty($Revalidate['Result']['Flight']['ReturnRoutes'])) {
                                 foreach ($Revalidate['Result']['Flight']['ReturnRoutes'] as $Route) {
-                                    functions::insertLog('return ->>> '.json_encode($Route) , '000shojaee');
                                     $dataTemporaryReturn['Date'] = str_replace('-', '/', functions::DateJalali($Route['DepartureDate']));
                                     $dataTemporaryReturn['Time'] = $Route['DepartureTime'];
                                     $dataTemporaryReturn['OriginAirportIata'] = $Route['Departure']['Code'];
@@ -1578,8 +1575,14 @@ class apiLocal extends clientAuth
 
                 if($sourceId == '22'){
                     $data['Books'][$key]['PhoneNumber'] = !empty($rec['mobile_buyer']) ? $rec['mobile_buyer'] : $rec['member_mobile'];
+                    if (!empty($rec['email_buyer'])) {
+                        $data['Books'][$key]['Email'] = $rec['email_buyer'];
+                    } elseif (!empty($rec['member_email'])) {
+                        $data['Books'][$key]['Email'] = $rec['member_email'];
+                    } else {
+                        $data['Books'][$key]['Email'] = 'info@iran-tech.com';
                 }
-
+                }
                 else{
                     //shomare telephone and email modir
                     $data['Books'][$key]['PhoneNumber'] = CLIENT_MOBILE ;

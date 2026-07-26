@@ -123,7 +123,6 @@
                                         role="tab"
                                         type="button">{$cities['main']['DepartureCityFa']}</button>
                             </li>
-                            {functions::insertLog(json_encode({$cities['main']['DepartureCityEn']}) , '000shojaee')}
 
                         {/if}
                         {$g =  $g + 1}
@@ -137,7 +136,6 @@
                         {assign var="params" value=['use_customer_db'=>true,'origin_city'=>$city_code,'destination_city'=>$foreign_cities]}
                         {assign var="cities" value=$obj_main_page->dataFastSearchInternationalFlight($params)}
                         {if $g < $__local_max_var__  and $cities['main']['DepartureCityFa']}
-                            {functions::insertLog(json_encode({$cities['main']['DepartureCityEn']}) , '000shojaee')}
 
                             {* 🔒 SAME UNIQUE ID FOR EXTERNAL PANES *}
                             {assign var="extId" value="ext_`$cities['main']['DepartureCityEn']`"}

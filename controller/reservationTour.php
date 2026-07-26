@@ -5238,7 +5238,6 @@ class reservationTour extends clientAuth
 
         foreach ($reservationTourList as $key => $item) {
             if ($item['type_vehicle_name'] == 'هواپیما') {
-                functions::insertLog(json_encode($item['airline_name']),'00000arash00000');
 
                 $airline_name = $airlineModel
                     ->get([
@@ -5249,7 +5248,6 @@ class reservationTour extends clientAuth
                     ])
                     ->where('id', $item['airline_id'])
                     ->find();
-                functions::insertLog(json_encode($airline_name['airline_name']),'00000arash00001');
                 $item['icon_transport'] = 'custom-plane-bg-svg';
                 $item['logo_transport'] = ROOT_ADDRESS_WITHOUT_LANG . "/pic/airline/" . $airline_name['logo'];
             }else{

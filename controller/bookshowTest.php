@@ -5886,8 +5886,7 @@ class bookshowTest extends clientAuth {
                 $price_with_change = $this->getController('BookingHotelNew')->getPriceWithChange($hotel['factor_number']);
                 $DataAllPrice = '<span style="text-decoration: line-through;">'.  number_format($price_with_change) .'</span><br/>';
             }
-
-            if($hotel['total_price'] === 'percent'){
+            if($hotel['type_discount'] === 'percent'){
                 $DataAllPrice .=  number_format( $hotel['total_price'] - ($hotel['total_price'] * $hotel['discount_code_amount'] / 100 ) );
             }
             else{
@@ -10443,7 +10442,6 @@ class bookshowTest extends clientAuth {
                     $err = functions::Xmlinformation("Errorknown");
                 }
 
-//                functions::insertLog(json_encode($errorData), '00000000000000000000000000000000shojaee');
                 $error = $err;
             }
             $statusText = $this->getFlightStatusText($flightBook , $error);
@@ -10483,8 +10481,6 @@ class bookshowTest extends clientAuth {
                 $passengerName = $hotel['passenger_name'];
             }
 
-//            functions::insertLog(josn_encode($hotel) , '000shojaee');
-//            functions::insertLog(  json_encode( $hotel ), '000shojaee' );
 
             $agencyName = $hotel['agency_name'] ?? functions::ClientName($hotel['client_id']) ?? 'نامشخص';
             $statusText = $this->getHotelStatusText($hotel);

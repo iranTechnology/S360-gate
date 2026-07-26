@@ -30,7 +30,6 @@ class ticketForeign extends apiLocal
         }
         $sqlAirline = "SELECT * FROM airline_tb WHERE abbreviation = '".$info_ticket[0]['airline_iata']."'";
         $infoAirline =  $airline_model->select($sqlAirline);
-functions::insertLog(json_encode($infoAirline) , '000shojaee');
         $DetailsTicket = functions::infoDetailsForeign($param);
         $ClientId = (!empty($info_ticket[0]['client_id']) && ($info_ticket[0]['client_id'] == '79')) ? $info_ticket[0]['client_id'] : CLIENT_ID;
         if($ClientId=='79')

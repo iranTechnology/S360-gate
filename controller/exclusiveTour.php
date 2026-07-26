@@ -551,16 +551,12 @@ class exclusiveTour extends clientAuth {
                 'passportNumber' => $p['PassportNumber'],
                 'passenger_age' => $p['PassengerType']
             );
-//            functions::insertLog(json_encode(array_merge($tourData, $passengerData)),'0000000arash');
             $insert_book = $book_exclusive_tour_tb->insertWithBind(array_merge($tourData, $passengerData));
-//            functions::insertLog($insert_book,'0000000arash');
-//            functions::insertLog('$insert_book','0000000arash');
             if ($insert_book) {
                 $tourData['client_id'] = CLIENT_ID;
                 $insert_report = $report_exclusive_tour_tb->insertWithBind(array_merge($tourData, $passengerData));
                 unset($tourData['client_id']);
             }
-            functions::insertLog('arash111','0000000arash');
         }
 
 

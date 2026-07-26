@@ -400,16 +400,10 @@ class reservationBasicInformation extends clientAuth {
 
             $Model->setTable('reservation_country_tb');
 
-            functions::insertLog('$sql$country: ' . json_encode($sql) , '0abbasi');
-            functions::insertLog('$country: ' . json_encode($country) , '0abbasi');
-            functions::insertLog('code: ' . json_encode($countryBase['code']) , '0abbasi');
-
         if ($country == false) {
-            functions::insertLog('insertLocal$country', '0abbasi');
             $res = $Model->insertLocal($data);
         }
         else {
-            functions::insertLog('update$country', '0abbasi');
             $condition = " abbreviation = '{$countryBase['code']}'";
             $res = $Model->update($data, $condition);
         }
@@ -419,12 +413,8 @@ class reservationBasicInformation extends clientAuth {
             ->where('abbreviation' , $countryBase['code'])
             ->find();
 
-        functions::insertLog('$result: ' . json_encode($result) , '0abbasi');
-        functions::insertLog('$countryBase: ' . json_encode($countryBase) , '0abbasi');
-
         $slugTourModel = $this->getController('tourSlugController');
             $check_slug = $this->getModel('slugModel')->get()->where('slug_en', '%' . $countryBase['titleEn'] . '%', 'LIKE')->find();
-        functions::insertLog('$check_slug: ' . json_encode($check_slug) , '0abbasi');
 
             if ($check_slug == false) {
                 $slugTourModel->store(['en' =>  $countryBase['titleEn'].'-', 'ar' => $countryBase['titleEn'].'-', 'fa' =>  $countryBase['titleFa'].'-'], ['city_id' => 'all', 'country_id' => $result['id']]);
@@ -1058,10 +1048,8 @@ class reservationBasicInformation extends clientAuth {
     public function updateCountry($info) {
 
         $Model = Load::library('Model');
-        functions::insertLog('data: ' . json_encode($info) , '000shojaee');
         if (isset($_FILES['pic']['name'])) {
             $check_exist = $this->getModel('reservationCountryModel')->get()->where('id', $info['type_id'])->find();
-            functions::insertLog('$check_exist: ' . json_encode($check_exist) , '000shojaee');
 
             if ($check_exist) {
                 functions::DeleteImages('country/'.CLIENT_ID.'/' ,$check_exist['pic']);

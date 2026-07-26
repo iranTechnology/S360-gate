@@ -113,7 +113,18 @@
                                 <td>{$rowNum}</td>
                                 <td>{$article.title}</td>
                                 <td>{$languages[$article.language]}</td>
-                                <td class="align-middle"  ><input type="number"  size="10" name="order[{$article.id}]" id="order" value="{$article['orders']}" class="list-order"></td>
+                                {assign var="sortKey" value=$article['orders']}
+
+                                {if $sortKey === null || $sortKey === '' || $sortKey === false}
+                                    {assign var="sortKey" value=1000000}   {* null ها *}
+                                {elseif $sortKey == 0}
+                                    {assign var="sortKey" value=1000001}   {* صفرها *}
+                                {/if}
+
+                                <td class="align-middle" data-order="{$sortKey}">
+                                    <input type="number" size="10" name="order[{$article.id}]"
+                                           value="{$article['orders']}" class="list-order">
+                                </td>
 
                                 {*<td>{$objFunctions->ConvertToJalaliOfDateGregorian($article.updated_at)}</td>*}
                                 {if $section eq 'mag'}

@@ -55,13 +55,6 @@
                                 <li>
                                     <a href="javascript:">
 
-                                        اقامت
-
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:">
-
                                         توریستی
 
                                     </a>
@@ -77,6 +70,13 @@
                                             <a href="javascript:">
 
                                                 اروپا
+
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:">
+
+                                                آمریکا
 
                                             </a>
                                         </li>

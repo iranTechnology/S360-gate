@@ -43,10 +43,8 @@ class cip extends clientAuth
 
         $url = $this->apiAddress . "Cip/GetCode/" . $userName;
         $JsonArray = array();
-        functions::insertLog('$url: ' . json_encode($url) , '000shojaee');
 
         $tickets = functions::curlExecution($url, $JsonArray, 'yes');
-        functions::insertLog('$tickets: ' . json_encode($tickets) , '000shojaee');
         return $tickets['Result']['Value'];
 
     }
@@ -148,7 +146,6 @@ class cip extends clientAuth
     public function PreReserve($data)
     {
 
-        functions::insertLog('data: ' . json_encode($data) , 'shojaee');
         $url = $this->apiAddress . "Cip/PreReserve/" . $data['RequestNumber'];
 
         // اطلاعات آژانس

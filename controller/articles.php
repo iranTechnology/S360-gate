@@ -1057,7 +1057,16 @@ class articles extends positions
         $articles = $articles->where('language' , SOFTWARE_LANG);
         $articles = $articles->groupBy($article_table . '.id');
         if ($order) {
-            $articles = $articles->orderBy($article_table . '.orders' ,$order)->orderBy($article_table . '.id' ,'DESC');
+            $articles = $articles
+                ->orderByRaw("
+        CASE
+            WHEN {$article_table}.orders > 0 THEN 0
+            WHEN {$article_table}.orders IS NULL THEN 1
+            ELSE 2
+        END
+    ")
+                ->orderBy("{$article_table}.orders", "ASC")
+                ->orderBy("{$article_table}.created_at", "DESC");
         }else {
             $articles = $articles->orderBy($article_table . '.id' , 'DESC');
 

@@ -757,7 +757,6 @@ WHERE V.id = '{$id}'
     #region visaEdit: edit a visa
     public function visaEdit( $param ) {
 
-    functions::insertLog('data: ' . json_encode($param) , '000shojaee');
         $param['id'] = filter_var( $param['id'], FILTER_VALIDATE_INT );
 
         $Model = Load::library( 'Model' );
