@@ -2,6 +2,32 @@
  * Custom functions added By Qorbani
  */
 
+let hotelSearchMeta = {
+    startDateJs: '',
+    endDateJs: '',
+    nightsJs: ''
+};
+
+function setGlobalHotelDates(searched_details = {}, value = {}) {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let urlStartDate = urlParams.get('startDate');
+    let urlEndDate = urlParams.get('endDate');
+    let urlNights = urlParams.get('nights');
+
+    let apiStartDate = searched_details?.StartDate;
+    let apiEndDate = searched_details?.EndDate;
+    let apiNights = value?.NightsCount;
+
+    hotelSearchMeta.startDateJs =
+        (apiStartDate && apiStartDate !== 'undefined') ? apiStartDate : urlStartDate;
+
+    hotelSearchMeta.endDateJs =
+        (apiEndDate && apiEndDate !== 'undefined') ? apiEndDate : urlEndDate;
+
+    hotelSearchMeta.nightsJs =
+        (apiNights && apiNights !== '0' && apiNights !== 0) ? apiNights : urlNights;
+}
 
 function getRulesHTML(rules, checkin, checkout) {
     // مقادیر پیش‌فرض
@@ -257,7 +283,7 @@ function internalHotelSearchDetails() {
                                              ${number_format(Rate.Prices[0].currency)}
                                          </span>
                                         <div class='divided-list-item text-center'>
-                                            <span class='title_price'>
+                                            <span class='title_price'> 
                                                 ${useXmltag('Priceforanynight')} 
                                             </span>
                                     </div>
@@ -390,6 +416,8 @@ function internalHotelSearchDetails() {
          })
          return roomHtml
       }
+
+
       let eachRoomHtmlExternal = function(Room, value, IsInternal) {
          let roomHtml = `<div class='hotel-detail-room-list hotel-detail-room-list--new'>
                         <div class='hotel-rooms-name-container'>
@@ -434,7 +462,7 @@ function internalHotelSearchDetails() {
                                         <div class="divided-list">
                                         <div class="divided-list-item text-center">
                                             <span class="title_price">
-                                                 ${translateXmlByParams('PriceTotalHotel', {'TotalNights': value.Result.NightsCount})}
+                                                 ${translateXmlByParams('PriceTotalHotel', {'TotalNights': hotelSearchMeta.nightsJs})}
                                             </span> `
             if(Rate.CalculatedDiscount.off_percent > 0 ){
                roomHtml += ` <span class='currency priceOff'>  <i class="price_number"> ${number_format(Rate.TotalPrices.afterChange)}</i>${useXmltag('Rial')} </span>`
@@ -578,7 +606,7 @@ function internalHotelSearchDetails() {
          roomHtml +=`<div class='divided-list divided-list-reserve border-0'>
                                         <input type='hidden' value='' id='FinalRoomCount${total_room_info.RoomToken}'>
                                         <input type='hidden' value='' id='FinalPriceRoom${total_room_info.RoomToken}'>
-                                        <input type='hidden' value='' id='tempInput${total_room_info.RoomToken}'>
+                                        <inbbbbput type='hidden' value='' id='tempInput${total_room_info.RoomToken}'>
                                         <input type='hidden' value='1' name='RoomCount-${total_room_info.RoomToken}' id='RoomCount${total_room_info.RoomToken}'>
                                         <span class='label_reserve_input site-bg-main-color' id='reserve_input${total_room_info.RoomToken}' onClick="ReserveExternalApiHotel('${total_room_info.RoomToken}')">
                                             <span>${useXmltag('Reserve')}</span>
@@ -626,6 +654,17 @@ function internalHotelSearchDetails() {
 
       }
       let generateRoomSelectForm = function(result, hotelValue, RequestNumber) {
+
+          console.log('=== generateRoomSelectForm  177===');
+          console.log('hotelValue:', hotelValue);
+          console.log('hotelValue.History:', hotelValue?.History);
+          console.log('StartDate:', hotelValue?.History?.StartDate);
+          console.log('EndDate:', hotelValue?.History?.EndDate);
+          console.log('CheckIn:', hotelValue?.History?.CheckIn);
+          console.log('CheckOut:', hotelValue?.History?.CheckOut);
+          console.log('Rooms:', hotelValue?.History?.Rooms);
+          console.log('PaxRooms:', hotelValue?.History?.PaxRooms);
+
          let modal = ''
          let eachRoom = ''
          let RoomIds = []
@@ -898,15 +937,25 @@ function internalHotelSearchDetails() {
             $('#autoComplateSearchIN').val(searched_details.Country + ' - ' + searched_details.City)
          }
 
-
+        /*
          $('#idCity').val(value.CityId)
          $('#nights').val(value.NightsCount)
          $('#startDate,#startDateForeign').val(searched_details.StartDate)
          $('#endDate,#endDateForeign').val(searched_details.EndDate)
          $('#stayingTime').val(value.NightsCount)
          // $('#countRoom').attr('data-rooms',JSON.stringify(searched_details.Rooms)).val(searched_details.Rooms.length).select2().trigger('change');
+          $('span.stayingTime').text(`${value.NightsCount} ${useXmltag('Night')}`)
+         */
+          setGlobalHotelDates(searched_details, value);
 
-         $('span.stayingTime').text(`${value.NightsCount} ${useXmltag('Night')}`)
+          $('#idCity').val(value.CityId);
+          $('#nights').val(hotelSearchMeta.nightsJs);
+          $('#startDate,#startDateForeign').val(hotelSearchMeta.startDateJs);
+          $('#endDate,#endDateForeign').val(hotelSearchMeta.endDateJs);
+          $('#stayingTime').val(hotelSearchMeta.nightsJs);
+          $('span.stayingTime').text(`${hotelSearchMeta.nightsJs} ${useXmltag('Night')}`);
+
+
          let class_hotel_name = (IsInternal == '1')?'internal-hotel-name': 'external-hotel-name';
          let class_detail_hotel = (IsInternal == '1') ? 'internal-hotel-detail' : 'external-hotel-detail';
          let hotel_transfer = ''
@@ -1859,79 +1908,235 @@ function CalculateNewRoomPrice(idRoom, isInternal = true, addChild = false) {
 // };
 
 function BuyHotelWithoutInputsApiNew(RoomId) {
-   let webServiceType = $('#webServiceType').val()
-   webServiceType = 'public'
-   let requestNumber = $('#requestNumber').val()
-   let thisPricesResult = $('#ThisPricesResult').val()
-   let pricesDetail = JSON.parse(thisPricesResult)
-   let hotelDetail = $('#ThisHotelResult').val()
-   let hotelParse = JSON.parse(hotelDetail)
-   let IdCity = hotelParse.Result.CityId
-   let IdHotel = $('#idHotel_reserve').val()
-   let SDate = $('#startDate_reserve').val()
-   let EDate = $('#endDate_reserve').val()
-   let Nights = $('#nights_reserve').val()
+    const resetReserveButton = function() {
+        let reserveBtn = document.getElementById('reserve_input' + RoomId)
+        if (reserveBtn) {
+            reserveBtn.style.opacity = '1'
+            reserveBtn.style.cursor = 'pointer'
+            reserveBtn.style.pointerEvents = 'auto'
+            reserveBtn.innerHTML = 'رزرو'
+        }
+    }
 
-   let TotalNumberRoom_Reserve = RoomId + '-1'
+    const getUrlParams = function() {
+        try {
+            return new URLSearchParams(window.location.search)
+        } catch (e) {
+            return null
+        }
+    }
 
-   $('#TotalNumberRoom_Reserve').val(TotalNumberRoom_Reserve)
+    const normalizeValue = function(val) {
+        if (
+            val === undefined ||
+            val === null ||
+            val === '' ||
+            val === 'undefined' ||
+            val === 'null'
+        ) {
+            return ''
+        }
+        return val
+    }
 
-   let TotalNumberExtraBed_Reserve = 0
-   let IsInternal = $('#IsInternal').val()
-   let typeApplication = 'externalApi'
-   let searchRooms = $('#searchRooms').val()
-   let factorNumber = $('#factorNumber').val()
-   // let requestNumber = $('input[name="requestNumber"]').val();
-   let ajaxData = {
-      searchRooms: searchRooms,
-      IsInternal: IsInternal,
-      IdCity: IdCity,
-      IdHotel: IdHotel,
-      SDate: SDate,
-      EDate: EDate,
-      Nights: Nights,
-      Prices: JSON.stringify(pricesDetail.Result),
-      PriceSessionId : pricesDetail.PriceSessionId,
-      HotelDetail: hotelDetail,
-      TotalNumberRoom_Reserve: TotalNumberRoom_Reserve,
-      TotalNumberExtraBed_Reserve: TotalNumberExtraBed_Reserve,
-      TypeApplication: typeApplication,
-      factorNumber: factorNumber,
-      requestNumber: requestNumber,
-      webServiceType: webServiceType,
-      flag: 'nextStepReserveApiHotelNew'
-   }
-   // return false;
-   $.ajax({
-      url: amadeusPath + 'hotel_ajax.php',
-      data: ajaxData,
-      // dataType: 'JSON',
-      type: 'POST',
-      success: function(data) {
+    try {
+        let webServiceType = $('#webServiceType').val()
+        webServiceType = 'public'
 
-         if (data.indexOf('success_NextStepReserveHotel') > -1) {
-            let result = data.split(':')
-            $('#factorNumber').val(result[1])
+        let requestNumber = $('#requestNumber').val()
+        let thisPricesResult = $('#ThisPricesResult').val()
+        let pricesDetail = JSON.parse(thisPricesResult)
 
-            $('#IsInternal').val(IsInternal)
-            $('#searchRooms').val(searchRooms)
-            let href = $('#href').val()
-            // return false;
-            $('#formHotelReserve').attr('action', amadeusPathByLang + href).submit()
+        let hotelDetail = $('#ThisHotelResult').val()
+        let hotelParse = JSON.parse(hotelDetail)
 
-         } else if (data.indexOf('error_NextStepReserveHotel') > -1) {
+        let urlParams = getUrlParams()
+
+        let IdCity = hotelParse.Result.CityId
+        let IdHotel = $('#idHotel_reserve').val()
+
+        // اولویت: input hidden -> hotelSearchMeta -> History -> URL
+        let SDate = normalizeValue($('#startDate_reserve').val())
+        let EDate = normalizeValue($('#endDate_reserve').val())
+        let Nights = normalizeValue($('#nights_reserve').val())
+        let searchRooms = normalizeValue($('#searchRooms').val())
+
+        if (!SDate && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.startDate) {
+            SDate = hotelSearchMeta.startDate
+        }
+        if (!EDate && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.endDate) {
+            EDate = hotelSearchMeta.endDate
+        }
+        if (!Nights && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.nights) {
+            Nights = hotelSearchMeta.nights
+        }
+        if (!searchRooms && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.searchRooms) {
+            searchRooms = hotelSearchMeta.searchRooms
+        }
+
+        if (!SDate && hotelParse?.History?.CheckIn) {
+            SDate = hotelParse.History.CheckIn
+        }
+        if (!EDate && hotelParse?.History?.CheckOut) {
+            EDate = hotelParse.History.CheckOut
+        }
+
+        if (!searchRooms && hotelParse?.History?.PaxRooms?.length) {
+            let room = hotelParse.History.PaxRooms[0]
+            let adults = room.Adults || 1
+            let children = room.Children || 0
+            searchRooms = 'R:' + adults + '-' + children + '-0'
+        }
+
+        if (urlParams) {
+            if (!SDate) {
+                SDate = normalizeValue(urlParams.get('startDate'))
+            }
+            if (!EDate) {
+                EDate = normalizeValue(urlParams.get('endDate'))
+            }
+            if (!Nights) {
+                Nights = normalizeValue(urlParams.get('nights'))
+            }
+            if (!searchRooms) {
+                searchRooms = normalizeValue(urlParams.get('searchRooms'))
+            }
+        }
+
+        // اگر لازم بود hidden inputها هم sync شوند
+        $('#startDate_reserve').val(SDate)
+        $('#endDate_reserve').val(EDate)
+        $('#nights_reserve').val(Nights)
+        $('#searchRooms').val(searchRooms)
+
+        let TotalNumberRoom_Reserve = RoomId + '-1'
+        $('#TotalNumberRoom_Reserve').val(TotalNumberRoom_Reserve)
+
+        let TotalNumberExtraBed_Reserve = 0
+        let IsInternal = $('#IsInternal').val()
+        let typeApplication = 'externalApi'
+        let factorNumber = $('#factorNumber').val()
+
+        // جلوگیری از ارسال داده خراب
+        if (!SDate || !EDate || !searchRooms) {
+            resetReserveButton()
             $.alert({
-               title: useXmltag('Reservationhotel'),
-               icon: 'fa fa-trash',
-               content: useXmltag('PleaseAgainBookingHotel'),
-               rtl: true,
-               type: 'red',
+                title: useXmltag('Reservationhotel'),
+                icon: 'fa fa-trash',
+                content: 'اطلاعات تاریخ یا تعداد مسافر کامل نیست. صفحه را یک بار رفرش و دوباره تلاش کنید.',
+                rtl: true,
+                type: 'red',
             })
-         }
-      },
-   })
-}
+            return
+        }
 
+        let ajaxData = {
+            searchRooms: searchRooms,
+            IsInternal: IsInternal,
+            IdCity: IdCity,
+            IdHotel: IdHotel,
+            SDate: SDate,
+            EDate: EDate,
+            Nights: Nights,
+            Prices: JSON.stringify(pricesDetail.Result),
+            PriceSessionId: pricesDetail.PriceSessionId,
+            HotelDetail: hotelDetail,
+            TotalNumberRoom_Reserve: TotalNumberRoom_Reserve,
+            TotalNumberExtraBed_Reserve: TotalNumberExtraBed_Reserve,
+            TypeApplication: typeApplication,
+            factorNumber: factorNumber,
+            requestNumber: requestNumber,
+            webServiceType: webServiceType,
+            flag: 'nextStepReserveApiHotelNew'
+        }
+
+
+        console.log({
+            RoomId: RoomId,
+            SDate: SDate,
+            EDate: EDate,
+            Nights: Nights,
+            searchRooms: searchRooms,
+            IdCity: IdCity,
+            IdHotel: IdHotel,
+            IsInternal: IsInternal,
+            PriceSessionId: pricesDetail.PriceSessionId,
+            PricesLength: pricesDetail?.Result?.length,
+            HotelDetail: hotelDetail
+        });
+        $.ajax({
+            url: amadeusPath + 'hotel_ajax.php',
+            data: ajaxData,
+            type: 'POST',
+            dataType: 'text',
+            success: function(data) {
+                console.log('BuyHotelWithoutInputsApiNew => response:', data)
+
+                if (typeof data === 'string' && data.indexOf('success_NextStepReserveHotel') > -1) {
+                    let result = data.split(':')
+                    $('#factorNumber').val(result[1])
+
+                    $('#IsInternal').val(IsInternal)
+                    $('#searchRooms').val(searchRooms)
+
+                    let href = $('#href').val()
+                    $('#formHotelReserve').attr('action', amadeusPathByLang + href).submit()
+                } else if (typeof data === 'string' && data.indexOf('error_NextStepReserveHotel') > -1) {
+                    resetReserveButton()
+
+                    $.alert({
+                        title: useXmltag('Reservationhotel'),
+                        icon: 'fa fa-trash',
+                        content: useXmltag('PleaseAgainBookingHotel'),
+                        rtl: true,
+                        type: 'red',
+                    })
+                } else {
+                    resetReserveButton()
+
+                    console.warn('BuyHotelWithoutInputsApiNew => unexpected response:', data)
+
+                    $.alert({
+                        title: useXmltag('Reservationhotel'),
+                        icon: 'fa fa-trash',
+                        content: useXmltag('PleaseAgainBookingHotel'),
+                        rtl: true,
+                        type: 'red',
+                    })
+                }
+            },
+            error: function(xhr, status, error) {
+                resetReserveButton()
+
+                console.error('BuyHotelWithoutInputsApiNew => ajax error:', {
+                    status: status,
+                    error: error,
+                    responseText: xhr && xhr.responseText ? xhr.responseText : null
+                })
+
+                $.alert({
+                    title: useXmltag('Reservationhotel'),
+                    icon: 'fa fa-trash',
+                    content: useXmltag('PleaseAgainBookingHotel'),
+                    rtl: true,
+                    type: 'red',
+                })
+            }
+        })
+    } catch (e) {
+        resetReserveButton()
+
+        console.error('BuyHotelWithoutInputsApiNew => exception:', e)
+
+        $.alert({
+            title: useXmltag('Reservationhotel'),
+            icon: 'fa fa-trash',
+            content: useXmltag('PleaseAgainBookingHotel'),
+            rtl: true,
+            type: 'red',
+        })
+    }
+}
 function childAgeItem(RoomToken, count, MinAge, MaxAge) {
 
    // count = $('#RoomCount'+RoomToken).val();
@@ -2661,41 +2866,49 @@ function hotelDetail(typeApplication, hotelId, hotelName, RequestNumber, sourceI
 
 
 function ReserveExternalApiHotel(RoomToken) {
-   let TotalNumberRoom_Reserve = RoomToken + '-1'
-   $('#TotalNumberRoom_Reserve').val(TotalNumberRoom_Reserve)
-   $.ajax({
-      // dataType : 'HTML',
-      type: 'POST',
-      data: {
-         flag: 'CheckedLogin',
-      },
-      url: amadeusPath + 'hotel_ajax.php',
-      success: function(response) {
-         if (response.indexOf('successLoginHotel') > -1) {
-            $('#img').show()
-            $('#reserve_input' + RoomToken).attr('disabled', 'disabled').css('opacity', '0.5').css('cursor', 'progress').html(useXmltag('Pending'))
+    let TotalNumberRoom_Reserve = RoomToken + '-1'
+    $('#TotalNumberRoom_Reserve').val(TotalNumberRoom_Reserve)
 
-            BuyHotelWithoutInputsApiNew(RoomToken)
-         } else if (response.indexOf('errorLoginHotel') > -1) {
-            $('#noLoginBuy').val(useXmltag('Bookingwithoutregistration')).attr('onClick', `popupBuyNoLogin('newApiHotelExternal','${RoomToken}')`)
+    $.ajax({
+        type: 'POST',
+        data: {
+            flag: 'CheckedLogin',
+        },
+        url: amadeusPath + 'hotel_ajax.php',
+        success: function(response) {
+            if (response.indexOf('successLoginHotel') > -1) {
+                $('#img').show()
 
-            let isShowLoginPopup = $('#isShowLoginPopup').val()
-            let useTypeLoginPopup = $('#useTypeLoginPopup').val()
-            if (isShowLoginPopup == '' || isShowLoginPopup == '1') {
-               $('#login-popup').trigger('click')
-            } else {
-               popupBuyNoLogin('newApiHotelExternal', `'${RoomToken}'`)
+                let reserveBtn = document.getElementById('reserve_input' + RoomToken)
+                if (reserveBtn) {
+                    reserveBtn.style.opacity = '0.5'
+                    reserveBtn.style.cursor = 'progress'
+                    reserveBtn.style.pointerEvents = 'none'
+                    reserveBtn.innerHTML = useXmltag('Pending')
+                }
+
+                BuyHotelWithoutInputsApiNew(RoomToken)
+
+            } else if (response.indexOf('errorLoginHotel') > -1) {
+                $('#noLoginBuy')
+                    .val(useXmltag('Bookingwithoutregistration'))
+                    .attr('onClick', `popupBuyNoLogin('newApiHotelExternal','${RoomToken}')`)
+
+                let isShowLoginPopup = $('#isShowLoginPopup').val()
+                let useTypeLoginPopup = $('#useTypeLoginPopup').val()
+
+                if (isShowLoginPopup == '' || isShowLoginPopup == '1') {
+                    $('#login-popup').trigger('click')
+                } else {
+                    popupBuyNoLogin('newApiHotelExternal', RoomToken)
+                }
             }
-         }
-      },
-      error: function(error) {
-         return false
-      },
-   })
-
+        },
+        error: function(error) {
+            return false
+        },
+    })
 }
-
-
 
 function BuyHotelWithoutRegister() {
    let IdCity = $('#IdCity_Reserve').val()
@@ -7090,6 +7303,7 @@ function updateRemainingCapacity(roomId) {
    // نمایش تعداد تخت اضافه مجاز باقیمانده
    $('#capacity_display_' + roomId).text(remainingExtraBeds > 0 ? remainingExtraBeds : 0);
 }
+
 //////////////////////////////////////////////End Reservation///////////////////////////////////////////////
 
 

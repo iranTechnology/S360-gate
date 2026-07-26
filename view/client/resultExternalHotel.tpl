@@ -40,20 +40,20 @@
     /* *** List of hotels for preview alaki *** */
     // getResultExternalHotelPreview('{$countryNameEn}', '{$cityNameEn}', '{$startDate}', '{$nights}');
     let search_ajax_details = {
-      'className' : 'resultSearchExternalHotel',
-      'method' : 'searchDetails',
-      'country': '{$countryNameEn}',
-      'city' : '{$cityNameEn}',
-      'start_date': '{$startDate}',
-      'nights':'{$nights}',
-      'nationality' : '{$nationality}',
-      'rooms': JSON.parse(JSON.stringify({$rooms})),
+        'className' : 'resultSearchExternalHotel',
+        'method' : 'searchDetails',
+        'country': '{$countryNameEn}',
+        'city' : '{$cityNameEn}',
+        'start_date': '{$startDate}',
+        'nights':'{$nights}',
+        'nationality' : '{$nationality}',
+        'rooms': JSON.parse(JSON.stringify({$rooms})),
     };
 
     externalHotelSearchDetails(search_ajax_details);
 
     /* *** List of hotels *** */
-    getResultExternalHotelSearch('{$countryNameEn}', '{$cityNameEn}', '{$startDate}', '{$nights}', '{$rooms}','{$nationality}');
+    getResultExternalHotelSearch('{$countryNameEn}', '{$cityNameEn}', '{$startDate}', '{$endDate}', '{$nights}', '{$rooms}','{$nationality}');
 </script>
 
 
@@ -79,7 +79,7 @@
                                  alt="" id="IconDefaultCurrency">
                             {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                 <span class="TitleDefaultCurrency">{$CurrencyInfo['CurrencyTitleFa']}</span>
-                                {else}
+                            {else}
                                 <span class="TitleDefaultCurrency">{$CurrencyInfo['CurrencyTitleEn']}</span>
                             {/if}
 
@@ -226,7 +226,7 @@
                         {if $smarty.get.type eq 'new'}
                             <input type="hidden" id="type" name="type" value="new">
                             {load_presentation_object filename="country" assign="countryController"}
-                            
+
                             <div class="form-hotel-item">
                                 <div class="select">
                                     <select name="nationality" id="nationality" class="select2">
@@ -588,40 +588,40 @@
                 </div>
             </div>
         </div>
-{*        <div class="loader-for-external-hotel-end">*}
+        {*        <div class="loader-for-external-hotel-end">*}
 
-{*            <div class='container'>*}
-{*                <div class="loader">*}
-{*                    *}{* <div class="duo duo1">*}
-{*                         <div class="dot dot-a"></div>*}
-{*                         <div class="dot dot-b"></div>*}
-{*                     </div>*}
-{*                     <div class="duo duo2">*}
-{*                         <div class="dot dot-a"></div>*}
-{*                         <div class="dot dot-b"></div>*}
-{*                     </div>*}
-{*                </div>*}
+        {*            <div class='container'>*}
+        {*                <div class="loader">*}
+        {*                    *}{* <div class="duo duo1">*}
+        {*                         <div class="dot dot-a"></div>*}
+        {*                         <div class="dot dot-b"></div>*}
+        {*                     </div>*}
+        {*                     <div class="duo duo2">*}
+        {*                         <div class="dot dot-a"></div>*}
+        {*                         <div class="dot dot-b"></div>*}
+        {*                     </div>*}
+        {*                </div>*}
 
-{*                <div class="text_loading">*}
-{*                    <h4>*}
-{*                        {$objFunctions->StrReplaceInXml(['@@cityName@@'=>$cityNameEn],'HotelSearchForCity')}*}
-{*                    </h4>*}
-{*                    <div class="result_loading">*}
-{*                        <span class="nights_text">{$objFunctions->StrReplaceInXml(['@@nightsCount@@'=>$nights],'ForHowMenyNights')}</span>*}
-{*                        {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || $startDate|substr:0:4 gt 2000}*}
-{*                            <span class="start_date_text"> {date('j F',strtotime($startDate))}</span>*}
-{*                            ##To##*}
-{*                            <span class="end_date_text">{date('j F',strtotime($endDate))}</span>*}
-{*                        {else}*}
-{*                            <span class="start_date_text"> {$objFunctions->dateFormatSpecialJalali($startDate,'j F')}</span>*}
-{*                            ##To##*}
-{*                            <span class="end_date_text">{$objFunctions->dateFormatSpecialJalali($endDate,'j F')}</span>*}
-{*                        {/if}*}
+        {*                <div class="text_loading">*}
+        {*                    <h4>*}
+        {*                        {$objFunctions->StrReplaceInXml(['@@cityName@@'=>$cityNameEn],'HotelSearchForCity')}*}
+        {*                    </h4>*}
+        {*                    <div class="result_loading">*}
+        {*                        <span class="nights_text">{$objFunctions->StrReplaceInXml(['@@nightsCount@@'=>$nights],'ForHowMenyNights')}</span>*}
+        {*                        {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || $startDate|substr:0:4 gt 2000}*}
+        {*                            <span class="start_date_text"> {date('j F',strtotime($startDate))}</span>*}
+        {*                            ##To##*}
+        {*                            <span class="end_date_text">{date('j F',strtotime($endDate))}</span>*}
+        {*                        {else}*}
+        {*                            <span class="start_date_text"> {$objFunctions->dateFormatSpecialJalali($startDate,'j F')}</span>*}
+        {*                            ##To##*}
+        {*                            <span class="end_date_text">{$objFunctions->dateFormatSpecialJalali($endDate,'j F')}</span>*}
+        {*                        {/if}*}
 
-{*                    </div>*}
-{*                </div>*}
-{*            </div>*}
-{*        </div>*}
+        {*                    </div>*}
+        {*                </div>*}
+        {*            </div>*}
+        {*        </div>*}
 
         <div id="loader-page" class="lazy-loader-parent loader-for-external-hotel-end">
             <div class="loader-page container site-bg-main-color">
@@ -1065,7 +1065,7 @@
                     let hotelAddress = $(this).attr("data-hoteladdress").toLowerCase();
                     let searchName = hotelName.indexOf(inputSearchHotel);
                     let searchAddress = hotelAddress.indexOf(inputSearchHotel);
-                  // console.log(inputSearchHotel +'==>' + hotelAddress +'==>'+ searchAddress +'==>' +  typeof (searchAddress));
+                    // console.log(inputSearchHotel +'==>' + hotelAddress +'==>'+ searchAddress +'==>' +  typeof (searchAddress));
                     if (searchAddress !== -1) {
                         countHotels++;
                         return true;

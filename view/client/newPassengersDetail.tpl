@@ -374,12 +374,12 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
 {/if}
 
 <div class="clear"></div>
-
-{if $smarty.post.source_id neq '29'}
-
+{if $smarty.post.source_id eq '29'}
+    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`passengerHotel/flightio.tpl"}
+{elseif $smarty.post.source_id eq '46'}
+    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`passengerHotel/TravzillaPro.tpl"}
+{else}
     <form method="post" id="formPassengerDetailHotelLocal" action="{$smarty.const.ROOT_ADDRESS}/factorHotelNew">
-
-
         <input type="hidden" name="StatusRefresh" id="StatusRefresh" value="NoRefresh">
         <input type="hidden" id="numberRow" value="0">
         <input type="hidden" value="{$requestNumber}" name="requestNumber">
@@ -962,15 +962,10 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
         </div>
 
     </form>
-
-{else}
-    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`passengerHotel/flightio.tpl"}
 {/if}
-
 
 {include file="`$smarty.const.FRONT_CURRENT_CLIENT`hotelTimeoutModal.tpl"}
 {literal}
-
     <script src="assets/js/script.js"></script>
     <script src="assets/js/jdate.min.js" type="text/javascript"></script>
     <script src="assets/js/jdate.js" type="text/javascript"></script>

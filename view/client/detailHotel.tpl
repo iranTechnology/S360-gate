@@ -9,6 +9,7 @@
 {assign var="requestNumber" value=$smarty.const.REQUEST_NUMBER}
 {assign var="searchRooms" value=$smarty.request.searchRooms}
 
+
 {if $searchRooms eq null AND $smarty.request.countRoom gt 0}
     {$searchRooms = ''}
     {for $i = 1; $i <= $smarty.request.countRoom;$i++}
@@ -245,7 +246,9 @@
                                             <div class="form-hotel-item form-hotel-item-searchBox-date mt-0">
                                                 <div class=" parent-box-input parent-box-input--h">
                                                     <i class="fa fa-moon"></i>
-                                                    <span class="lh33 stayingTime">{$nights} ##Night## </span>
+                                                    <span class="lh33 stayingTime">
+                                                        {$nights} ##Night##
+                                                    </span>
                                                     <input type="hidden" id="stayingTime" name="stayingTime" value="{$nights}"/>
                                                 </div>
                                             </div>

@@ -576,14 +576,14 @@ class detailHotel extends ApiHotelCore
     }
 
     public function getPrices($param){
-      
+
         $checkBool = filter_var($param['check_type_for_price_changes'], FILTER_VALIDATE_BOOLEAN) ;
 
         $type_application_for_change_price = ($checkBool) ? 'api' : 'externalApi';
 
         if ($param['typeApplication'] == 'externalApi'  && $param['check_type_for_price_changes']) {
 
-             $sqlCity = "SELECT * FROM `external_hotel_city_tb` WHERE country_name_en='{$param['countryName']}' AND (city_name_fa='{$param['cityName']}' OR city_name_en = '{$param['cityName']}')";
+            $sqlCity = "SELECT * FROM `external_hotel_city_tb` WHERE country_name_en='{$param['countryName']}' AND (city_name_fa='{$param['cityName']}' OR city_name_en = '{$param['cityName']}')";
         }else{
             $sqlCity = "SELECT * FROM `hotel_cities_tb` WHERE city_name='{$param['cityName']}' OR city_name_en = '{$param['cityName']}'";
         }
@@ -759,22 +759,12 @@ class detailHotel extends ApiHotelCore
 
     public function insertTemporaryHotel($param)
     {
-
-//      echo json_encode($param,256|64);die();
         $allPrices =json_decode($param['Prices'],true);
-
-//        echo json_encode($allPrices);die();
-//        if(  $_SERVER['REMOTE_ADDR']=='5.201.144.255'  ) {
-//
-//                        echo json_encode($param,256|64);
-//            die;
-//        }
         $hotelDetail = json_decode($param['HotelDetail'], true);
 
         $param['Prices'] = $allPrices;
         $param['HotelDetail'] = $hotelDetail;
         functions::insertLog('params for temporary hotel ' . json_encode($param, 256 | 64), 'hotelTemp');
-
         functions::insertLog(json_encode($allPrices, 256 | 64), 'hotelTemp');
         functions::insertLog(json_encode($hotelDetail, 256 | 64), 'hotelTemp');
 
@@ -782,7 +772,14 @@ class detailHotel extends ApiHotelCore
         $source_id = $hotelDetail['Result']['SourceId'];
 
 
-        $allRooms = $hotelDetail['History']['Rooms'] ? $hotelDetail['History']['Rooms']:  '';
+        //177Ardalani $allRooms = $hotelDetail['History']['Rooms'] ? $hotelDetail['History']['Rooms']:  '';
+        $allRooms = [];
+        if (isset($hotelDetail['Result']['Rooms']) && is_array($hotelDetail['Result']['Rooms'])) {
+            $allRooms = $hotelDetail['Result']['Rooms'];
+        } elseif (isset($hotelDetail['History']['Rooms']) && is_array($hotelDetail['History']['Rooms'])) {
+            $allRooms = $hotelDetail['History']['Rooms'];
+        }
+
         $search_rooms = json_encode($allRooms);
 
 //        $sqlCity      = "SELECT * FROM `hotel_cities_tb` WHERE city_name='{$ResultCityId}' OR city_name_en = '{$ResultCityId}';";
@@ -956,85 +953,154 @@ class detailHotel extends ApiHotelCore
             }
 
         }
-        else {
 
+        else{
+            if ($source_id == '46') {
 
-            $explode = explode('-', $param['TotalNumberRoom_Reserve']);
+                $reserveValue = str_replace("'", "", trim($param['TotalNumberRoom_Reserve']));
+                $selectedRoomToken = $reserveValue;
+                $selectedRoomCount = 1;
 
-//            			echo Load::plog($allRooms);exit();
+                // فقط suffix انتهایی مثل -1 یا -2 یا -10 را جدا کن
+                if (preg_match('/^(.*)-(\d+)$/', $reserveValue, $matches)) {
+                    $selectedRoomToken = $matches[1];
+                    $selectedRoomCount = (int)$matches[2];
+                }
 
-            //			$requestedRooms = functions::numberOfRoomsExternalHotelRequested( $selectedRooms['rooms'] );
-            //			$roomCount = $selectedRooms['adultCount'] + $selectedRooms['childrenCount'];
-            //			return json_encode($requestedRooms);
-            //			foreach ( $selectedRooms as $roomKey => $room ) {
+                $roomIndex = 0;
+                $final_each_room = array();
 
-            $roomIndex = 0;
-            $final_each_room = array();
-            foreach ($allRooms as $roomKey => $roomItem) {
+                $paxRooms = array();
+                if (isset($hotelDetail['History']['PaxRooms']) && is_array($hotelDetail['History']['PaxRooms'])) {
+                    $paxRooms = $hotelDetail['History']['PaxRooms'];
+                }
 
-                for ($AdultCount = 0; $AdultCount < $roomItem['Adults']; $AdultCount++) {
+                if (empty($paxRooms)) {
+                    $paxRooms[] = array(
+                        'Adults' => $selectedRoomCount,
+                        'Children' => 0
+                    );
+                }
 
-                    foreach ($prices as $k => $priceItem) {
+                foreach ($paxRooms as $roomKey => $paxRoom) {
+                    $adultCount = isset($paxRoom['Adults']) ? (int)$paxRoom['Adults'] : 0;
+                    $childCount = isset($paxRoom['Children']) ? (int)$paxRoom['Children'] : 0;
 
-                        if($source_id == '29') {
-                            $flightio_room_index = explode('_', $priceItem['RoomIndex']);
-                            $final_room_index = $flightio_room_index[0].'_'.$flightio_room_index[1];
-                        }else{
-                            $final_room_index = $priceItem['RoomIndex'];
+                    $repeatCount = max(1, $adultCount);
+
+                    for ($i = 0; $i < $repeatCount; $i++) {
+                        foreach ($prices as $k => $priceItem) {
+
+                            if ($source_id == '29') {
+                                $flightio_room_index = explode('_', $priceItem['RoomIndex']);
+                                $final_room_index = $flightio_room_index[0] . '_' . $flightio_room_index[1];
+                            } else {
+                                $final_room_index = $priceItem['RoomIndex'];
+                            }
+
+                            if ($final_room_index == $selectedRoomToken) {
+                                $roomIndex++;
+
+                                $prices[$k]['Index'] = $roomKey;
+                                $prices[$k]['Count'] = $selectedRoomCount;
+                                $prices[$k]['ExCount'] = 0;
+                                $prices[$k]['ChildCount'] = $childCount;
+                                $prices[$k]['ChildArr'] = array();
+                                $roomSelected[] = $prices[$k];
+                            }
                         }
+                    }
+                }
+
+                if ($hotelDetail['Result']['SourceId'] == '29') {
+                    foreach ($eachRoomPrices as $roomKey => $roomItem) {
+
+                        $flightio_room_index = explode('_', $roomItem['RoomIndex']);
+                        $final_room_index = $flightio_room_index[0] . '_' . $flightio_room_index[1];
+
+                        if ($final_room_index == $selectedRoomToken) {
+                            $final_each_room = $roomItem;
+                        }
+                    }
+                }
+
+                $count_room_external = count($paxRooms);
+                functions::insertLog('this only external and parto internal 0000==>' . $count_room_external, 'Hotels/valiagepeydakonam');
+            }
+            else {
+                $explode = explode('-', $param['TotalNumberRoom_Reserve']);
+                $roomIndex = 0;
+                $final_each_room = array();
+                foreach ($allRooms as $roomKey => $roomItem) {
+
+                    for ($AdultCount = 0; $AdultCount < $roomItem['Adults']; $AdultCount++) {
+
+                        foreach ($prices as $k => $priceItem) {
+
+                            if($source_id == '29') {
+                                $flightio_room_index = explode('_', $priceItem['RoomIndex']);
+                                $final_room_index = $flightio_room_index[0].'_'.$flightio_room_index[1];
+                            }else{
+                                $final_room_index = $priceItem['RoomIndex'];
+                            }
+                            $room_reserve_select   = str_replace("'" , "" , $explode[0] );
+
+                            if ($final_room_index == $room_reserve_select) {
+
+                                $roomIndex++;
+
+                                $prices[$k]['Index'] = $roomKey;
+                                $prices[$k]['Count'] = $explode[1];
+                                $prices[$k]['ExCount'] = 0;
+                                $prices[$k]['ChildCount'] = 0;
+                                $prices[$k]['ChildArr'] = [];
+                                $roomSelected[] = $prices[$k];
+
+                            }
+                        }
+                    }
+
+                    for ($ChildCount = 0; $ChildCount < $roomItem['Children']; $ChildCount++) {
+                        foreach ($prices as $k => $priceItem) {
+
+
+                            if ($priceItem['RoomIndex'] == $explode[0]) {
+                                $roomIndex++;
+
+                                $prices[$k]['Index'] = $roomKey;
+                                $prices[$k]['Count'] = $explode[1];
+                                $prices[$k]['ExCount'] = 0;
+                                $prices[$k]['ChildCount'] = 0;
+                                $prices[$k]['ChildArr'] = [];
+                                $roomSelected[] = $prices[$k];
+                            }
+                        }
+                    }
+                }
+
+
+                if($hotelDetail['Result']['SourceId'] == '29') {
+                    foreach ($eachRoomPrices as $roomKey => $roomItem){
+
                         $room_reserve_select   = str_replace("'" , "" , $explode[0] );
+                        $flightio_room_index = explode('_', $roomItem['RoomIndex']);
+                        $final_room_index = $flightio_room_index[0].'_'.$flightio_room_index[1];
 
                         if ($final_room_index == $room_reserve_select) {
-
-                            $roomIndex++;
-
-                            $prices[$k]['Index'] = $roomKey;
-                            $prices[$k]['Count'] = $explode[1];
-                            $prices[$k]['ExCount'] = 0;
-                            $prices[$k]['ChildCount'] = 0;
-                            $prices[$k]['ChildArr'] = [];
-                            $roomSelected[] = $prices[$k];
-
+                            $final_each_room = $roomItem;
                         }
                     }
+
                 }
-
-                for ($ChildCount = 0; $ChildCount < $roomItem['Children']; $ChildCount++) {
-                    foreach ($prices as $k => $priceItem) {
-
-
-                        if ($priceItem['RoomIndex'] == $explode[0]) {
-                            $roomIndex++;
-
-                            $prices[$k]['Index'] = $roomKey;
-                            $prices[$k]['Count'] = $explode[1];
-                            $prices[$k]['ExCount'] = 0;
-                            $prices[$k]['ChildCount'] = 0;
-                            $prices[$k]['ChildArr'] = [];
-                            $roomSelected[] = $prices[$k];
-                        }
-                    }
-                }
-            }
-
-
-            if($hotelDetail['Result']['SourceId'] == '29') {
-                foreach ($eachRoomPrices as $roomKey => $roomItem){
-
-                    $room_reserve_select   = str_replace("'" , "" , $explode[0] );
-                    $flightio_room_index = explode('_', $roomItem['RoomIndex']);
-                    $final_room_index = $flightio_room_index[0].'_'.$flightio_room_index[1];
-
-                    if ($final_room_index == $room_reserve_select) {
-                        $final_each_room = $roomItem;
-                    }
-                }
+                //177Ardalani $count_room_external = count($param['HotelDetail']['History']['Rooms']);
+                $count_room_external = isset($param['HotelDetail']['Result']['Rooms']) && is_array($param['HotelDetail']['Result']['Rooms'])
+                    ? count($param['HotelDetail']['Result']['Rooms'])
+                    : 0;
+                functions::insertLog('this only external and parto internal 0000==>'. $count_room_external,'Hotels/valiagepeydakonam');
 
             }
-            $count_room_external = count($param['HotelDetail']['History']['Rooms']);
-            functions::insertLog('this only external and parto internal 0000==>'. $count_room_external,'Hotels/valiagepeydakonam');
+        }//end else asli
 
-        }
 
         functions::insertLog('$roomSelected'.json_encode($roomSelected,256),'HOTELLOG');
         $factorNumber = (isset($param['factorNumber']) && !empty($param['factorNumber'])) ? $param['factorNumber'] : self::generateFactorNumber();
@@ -1136,16 +1202,10 @@ class detailHotel extends ApiHotelCore
                 $d['type_of_price_change'] = $res_agency_commission['change_type'];
             }
 
-//			$res[] = $d;
-            //			echo json_encode($d);exit();
-//			$this->model->setTable( 'temprory_hotel_local_tb' );
             $temp = $this->getModel('temporaryHotelLocalModel');
-//            functions::insertLog('temp_insert '.json_encode($d,256),'HOTELLOG');
 
-            $res[] = $temp->insertWithBind($d);
-
-            //			$res[] = $d;
-
+            $insertResult = $temp->insertWithBind($d);
+            $res[] = $insertResult;
         }
 
         if($hotelDetail['Result']['SourceId'] == '29') {
@@ -1166,6 +1226,11 @@ class detailHotel extends ApiHotelCore
                 $message['message'] = $factorNumber;
             }
 
+
+            if (empty($roomSelected)) {
+                return 'error_NextStepReserveHotel : roomSelected empty ### prices=' . json_encode($prices, 256|64) . ' ### allRooms=' . json_encode($allRooms, 256|64);
+            }
+
             return json_encode($message);
         }
         else {
@@ -1176,9 +1241,6 @@ class detailHotel extends ApiHotelCore
             }
         }
     }
-
-
-
 
     private function sanitizeUnicode($data) {
         // اگر ورودی رشته نباشد، تبدیل به رشته خالی
@@ -1795,7 +1857,7 @@ class detailHotel extends ApiHotelCore
                                         $new_price = $HotelReserveRoom['Result']['change_price_detail']['NewHoteRoomInfo'];
 
                                         if($old_price[0]['TotalFare'] != $new_price[0]['TotalFare']) {
-                                            $total_new_price = 0 ; 
+                                            $total_new_price = 0 ;
                                             $total_old_price = 0 ;
                                             foreach ($old_price as $price) {
                                                 $total_old_price += $price['TotalFare'];
@@ -1859,7 +1921,7 @@ class detailHotel extends ApiHotelCore
 
                     }
                     else {
-                      
+
                         $statusRequestWebService['book'] = "NoReserve";
                         $statusRequestWebService['factor_number'] = $factor_number;
                     }
@@ -2436,7 +2498,7 @@ class detailHotel extends ApiHotelCore
             $res2 = $bookHotelLocalModel->updateWithBind($data, $Condition);
             $res1 = $reportHotelModel->updateWithBind($data, $Condition);
 
-            if ($res1 && $res2) { 
+            if ($res1 && $res2) {
                 $smsController = Load::controller('smsServices');
                 $objSms = $smsController->initService('0');
                 if ($objSms) {
@@ -2453,20 +2515,20 @@ class detailHotel extends ApiHotelCore
                     }else {
                         $messageVariables = array(
                             'sms_name' => $name,
-                        'sms_service' => 'Ù‡ØªÙ„',
-                        'sms_factor_number' => $book['factor_number'],
-                        'sms_cost' => $book['total_price'],
-                        'sms_destination' => $book['city_name'],
-                        'sms_hotel_name' => $book['hotel_name'],
-                        'sms_hotel_in' => $book['start_date'],
-                        'sms_hotel_out' => $book['end_date'],
-                        'sms_hotel_night' => $book['number_night'],
-                        'sms_agency' => CLIENT_NAME,
-                        'sms_agency_mobile' => CLIENT_MOBILE,
-                        'sms_agency_phone' => CLIENT_PHONE,
-                        'sms_agency_email' => CLIENT_EMAIL,
-                        'sms_agency_address' => CLIENT_ADDRESS,
-                    );
+                            'sms_service' => 'Ù‡ØªÙ„',
+                            'sms_factor_number' => $book['factor_number'],
+                            'sms_cost' => $book['total_price'],
+                            'sms_destination' => $book['city_name'],
+                            'sms_hotel_name' => $book['hotel_name'],
+                            'sms_hotel_in' => $book['start_date'],
+                            'sms_hotel_out' => $book['end_date'],
+                            'sms_hotel_night' => $book['number_night'],
+                            'sms_agency' => CLIENT_NAME,
+                            'sms_agency_mobile' => CLIENT_MOBILE,
+                            'sms_agency_phone' => CLIENT_PHONE,
+                            'sms_agency_email' => CLIENT_EMAIL,
+                            'sms_agency_address' => CLIENT_ADDRESS,
+                        );
 
                         $smsArray = array(
                             'smsMessage' => $smsController->getUsableMessage('onRequestConfirm', $messageVariables),
@@ -2478,8 +2540,8 @@ class detailHotel extends ApiHotelCore
                         $smsController->sendSMS($smsArray);
                     }
                 }
-                
-		return 'success |  تغییرات با موفقیت انجام شد';
+
+                return 'success |  تغییرات با موفقیت انجام شد';
             } else {
                 return 'error | خطا در  تغییرات';
             }
@@ -2538,7 +2600,7 @@ class detailHotel extends ApiHotelCore
 
     public function generateResearchAddress()
     {
-        
+
         $factor_number = $_POST['factorNumber'] ? $_POST['factorNumber'] : null;
         if(GDS_SWITCH == 'searchHotel' || GDS_SWITCH == 'resultExternalHotel'){
             $base_url = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'];
@@ -2724,7 +2786,7 @@ class detailHotel extends ApiHotelCore
 
     public function getProfile($param) {
         $result = parent::getProfile($param);
-      
+
         $result = json_decode($result , true);
 
         return $result; // TODO: Change the autogenerated stub
@@ -2873,7 +2935,7 @@ class detailHotel extends ApiHotelCore
     private function storeFlightioRoomPrices($factor_number , $priceDetail){
         $result = [] ;
         if(count($priceDetail) > 0  &&  $factor_number) {
-           unset($priceDetail['RoomIndex']);
+            unset($priceDetail['RoomIndex']);
             foreach ($priceDetail as $key => $price) {
                 $data_insert['factor_number'] =  $factor_number ;
                 $data_insert['room_id'] =  $price['RoomIndex'] ;
