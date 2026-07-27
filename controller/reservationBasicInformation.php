@@ -11,7 +11,8 @@
 //    @ini_set('display_errors', 'on');
 //}
 
-class reservationBasicInformation extends clientAuth {
+class reservationBasicInformation extends clientAuth
+{
 
     public $id = '';
     public $list = '';
@@ -30,15 +31,18 @@ class reservationBasicInformation extends clientAuth {
     public $listRoomFacilities;
     public $listHotelFacilities;
     public $listBroker;
-    private  $filtersListFly;
-    public function __construct() {
+    private $filtersListFly;
+
+    public function __construct()
+    {
 
 
     }
 
 
     /////////////////بررسی برای امکان حذف در دیتابیس/////////////////
-    public function permissionToDelete($nameTable, $nameField, $valueField) {
+    public function permissionToDelete($nameTable, $nameField, $valueField)
+    {
 
         $Model = Load::library('Model');
 
@@ -55,7 +59,8 @@ class reservationBasicInformation extends clientAuth {
 
 
     /////////////////حذف منطقی/////////////////
-    public function logicalDeletion($info) {
+    public function logicalDeletion($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -91,13 +96,14 @@ class reservationBasicInformation extends clientAuth {
 
 
     //////دریافت اطلاعات کامل از یک جدول/////
-    public function SelectAll($nameTable, $fieldCondition = NUll , $valueCondition = '' , $operator = '=') {
+    public function SelectAll($nameTable, $fieldCondition = NUll, $valueCondition = '', $operator = '=')
+    {
 
         $Model = Load::library('Model');
-        if($operator != '=') {
+        if ($operator != '=') {
             $sql = " SELECT * FROM {$nameTable} WHERE {$fieldCondition} {$operator} AND is_del='no' ORDER BY id ASC";
 
-        }else if ($fieldCondition != '' && $valueCondition != '') {
+        } else if ($fieldCondition != '' && $valueCondition != '') {
             $sql = " SELECT * FROM {$nameTable} WHERE {$fieldCondition}='{$valueCondition}' AND is_del='no' ORDER BY id ASC";
         } else {
             $sql = "SELECT * FROM {$nameTable} WHERE is_del='no' ";
@@ -110,7 +116,8 @@ class reservationBasicInformation extends clientAuth {
     }
 
     //////دریافت اطلاعات کامل از یک جدول بدون تکرار/////
-    public function SelectAllDistinct($nameTable, $fieldCondition = '', $valueCondition = '') {
+    public function SelectAllDistinct($nameTable, $fieldCondition = '', $valueCondition = '')
+    {
 
         $Model = Load::library('Model');
 
@@ -127,7 +134,8 @@ class reservationBasicInformation extends clientAuth {
     }
 
     //////دریافت اطلاعات کامل از یک جدول براساس شرط/////
-    public function SelectAllWithCondition($nameTable, $fieldCondition, $valueCondition) {
+    public function SelectAllWithCondition($nameTable, $fieldCondition, $valueCondition)
+    {
 
         $Model = Load::library('Model');
         if (isset($nameTable) && !empty($nameTable)) {
@@ -144,7 +152,8 @@ class reservationBasicInformation extends clientAuth {
 
 
     /////////////////بررسی برای امکان حذف اتاق در دیتابیس/////////////////
-    public function permissionToDelete_room($id_hotel, $id_room) {
+    public function permissionToDelete_room($id_hotel, $id_room)
+    {
 
         $Model = Load::library('Model');
         $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
@@ -166,7 +175,8 @@ class reservationBasicInformation extends clientAuth {
 
     /////////////////نوع وسیله نقلیه/////////////////
     ////////////////////////////////////////////////
-    public function InsertTypeOfVehicle($info) {
+    public function InsertTypeOfVehicle($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -196,7 +206,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function updateTypeOfVehicle($val) {
+    public function updateTypeOfVehicle($val)
+    {
 
         $Model = Load::library('Model');
 
@@ -219,7 +230,8 @@ class reservationBasicInformation extends clientAuth {
 
     /////////////////مدل وسیله نقلیه/////////////////
     ////////////////////////////////////////////////
-    public function InsertVehicleModel($info) {
+    public function InsertVehicleModel($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -249,7 +261,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function updateVehicleModel($val) {
+    public function updateVehicleModel($val)
+    {
 
         $Model = Load::library('Model');
 
@@ -272,7 +285,8 @@ class reservationBasicInformation extends clientAuth {
 
     /////////////////درجه وسیله نقلیه/////////////////
     ////////////////////////////////////////////////
-    public function InsertVehicleGrade($info) {
+    public function InsertVehicleGrade($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -301,7 +315,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function updateVehicleGrade($val) {
+    public function updateVehicleGrade($val)
+    {
 
         $Model = Load::library('Model');
 
@@ -321,7 +336,8 @@ class reservationBasicInformation extends clientAuth {
     }
 
 
-    public function getVehicleGrades() {
+    public function getVehicleGrades()
+    {
         try {
             $vehicleGradeTable = $this->getModel('reservationVehicleGradeModel')->getTable();
 
@@ -349,7 +365,8 @@ class reservationBasicInformation extends clientAuth {
 
     /////////////////تعریف کشور / شهر/////////////////
     ////////////////////////////////////////////////
-    public function InsertCountry($info) {
+    public function InsertCountry($info)
+    {
 
         $ModelBase = Load::library('ModelBase');
 
@@ -360,82 +377,94 @@ class reservationBasicInformation extends clientAuth {
 
         $sql = " SELECT * FROM  reservation_country_tb WHERE abbreviation='{$info['country_code']}'";
         $country = $Model->load($sql);
-            if(!empty($_FILES['pic'])) {
-                $config = Load::Config('application');
-                $path = "country/" . CLIENT_ID . "/";
-                $config->pathFile($path);
-                $ext = explode(".", $_FILES['pic']['name']);
-                $_FILES['pic']['name'] = date("sB") . "-" . rand(10, 10000);
-                $ext = strtolower($ext[count($ext) - 1]);
-                $_FILES['pic']['name'] = $_FILES['pic']['name'] . "." . $ext;
-                if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'png', 'gif'))) {
-                    $type = 'pic';
-                } else {
-                    $type = 'file';
-                }
-                $result_upload = $config->UploadFile($type, "pic", "");
-                $explode_name_pic = explode(':', $result_upload);
-                if ($explode_name_pic[0] == 'done') {
-                    $result_upload = $explode_name_pic[1];
-                } else {
-                    return functions::withError('', 200, $explode_name_pic[0]);
-                }
-                if ($type = 'pic') {
-                    functions::SaveImages('pic/country/' . CLIENT_ID, '', $result_upload);
-                }
+        if (!empty($_FILES['pic'])) {
+            $config = Load::Config('application');
+            $path = "country/" . CLIENT_ID . "/";
+            $config->pathFile($path);
+            $ext = explode(".", $_FILES['pic']['name']);
+            $_FILES['pic']['name'] = date("sB") . "-" . rand(10, 10000);
+            $ext = strtolower($ext[count($ext) - 1]);
+            $_FILES['pic']['name'] = $_FILES['pic']['name'] . "." . $ext;
+            if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'png', 'gif'))) {
+                $type = 'pic';
+            } else {
+                $type = 'file';
+            }
+            $result_upload = $config->UploadFile($type, "pic", "");
+            $explode_name_pic = explode(':', $result_upload);
+            if ($explode_name_pic[0] == 'done') {
+                $result_upload = $explode_name_pic[1];
+            } else {
+                return functions::withError('', 200, $explode_name_pic[0]);
+            }
+            if ($type = 'pic') {
+                functions::SaveImages('pic/country/' . CLIENT_ID, '', $result_upload);
+            }
 //            if (empty($result_upload)) {
 //                return functions::withError('', 200, 'ورود فیلد فایل اجباری می باشد');
 //            }
-            }
+        }
 
-            $data['name'] = $countryBase['titleFa'];
-            $data['name_en'] = $countryBase['titleEn'];
-            $data['abbreviation'] = $countryBase['code'];
-            $data['id_continent'] = $countryBase['continent_code'];
-            $data['cost_arz'] = $info['cost_arz'];
-            $data['type_arz'] = $info['type_arz'];
-            $data['comments_visa'] = $info['comments_visa'];
-            $data['is_del'] = 'no';
-            $data['pic'] = $result_upload ?? '';
+        $data['name'] = $countryBase['titleFa'];
+        $data['name_en'] = $countryBase['titleEn'];
+        $data['abbreviation'] = $countryBase['code'];
+        $data['id_continent'] = $countryBase['continent_code'];
+        $data['cost_arz'] = $info['cost_arz'];
+        $data['type_arz'] = $info['type_arz'];
+        $data['comments_visa'] = $info['comments_visa'];
+        $data['is_del'] = 'no';
+        $data['pic'] = $result_upload ?? '';
 
-            $Model->setTable('reservation_country_tb');
+        $Model->setTable('reservation_country_tb');
 
         if ($country == false) {
             $res = $Model->insertLocal($data);
-        }
-        else {
+        } else {
             $condition = " abbreviation = '{$countryBase['code']}'";
             $res = $Model->update($data, $condition);
         }
 
-        $result  = $this->getModel('reservationCountryModel')
+        $result = $this->getModel('reservationCountryModel')
             ->get(['id'])
-            ->where('abbreviation' , $countryBase['code'])
+            ->where('abbreviation', $countryBase['code'])
             ->find();
 
-        $slugTourModel = $this->getController('tourSlugController');
-            $check_slug = $this->getModel('slugModel')->get()->where('slug_en', '%' . $countryBase['titleEn'] . '%', 'LIKE')->find();
+        $slugTourController = $this->getController('tourSlugController');
+        $slugTourModel = $this->getModel('slugModel');
 
-            if ($check_slug == false) {
-                $slugTourModel->store(['en' =>  $countryBase['titleEn'].'-', 'ar' => $countryBase['titleEn'].'-', 'fa' =>  $countryBase['titleFa'].'-'], ['city_id' => 'all', 'country_id' => $result['id']]);
-            }
+        $check_slug = $this->getModel('slugModel')->get()->where('slug_fa', '%' . $countryBase['titleFa'] . '%', 'LIKE')->find();
 
-            if ($res) {
-                return 'success :  تغییرات با موفقیت انجام شد' . ':' . $info['id_continent'];
-            } else {
-                return 'error : خطا در  تغییرات' . ':' . $info['id_continent'];
-            }
+        if ($check_slug == false) {
+            $slugTourController->store(['en' => $countryBase['titleEn'] . '-', 'ar' => $countryBase['titleEn'] . '-', 'fa' => $countryBase['titleFa'] . '-'], ['city_id' => 'all', 'country_id' => $result['id']]);
+        } else {
+            $checkSlugData = json_decode($check_slug['data']);
+            $checkSlugData->country_id = $result['id'];
 
+            $slugTourModel->update(
+                [
+                    'data' => json_encode($checkSlugData),
+                ],
+                "id = '{$check_slug['id']}'"
+            );
+        }
+
+        if ($res) {
+            return 'success :  تغییرات با موفقیت انجام شد' . ':' . $info['id_continent'];
+        } else {
+            return 'error : خطا در  تغییرات' . ':' . $info['id_continent'];
+        }
 
 
     }
 
-    public function GetGdsContinents() {
+    public function GetGdsContinents()
+    {
 
         return $this->getController('continentCodes')->getListContinents();
     }
 
-    public function GetGdsCountriesByContinent($continentID) {
+    public function GetGdsCountriesByContinent($continentID)
+    {
 
 
         $Model = Load::library('Model');
@@ -469,7 +498,8 @@ class reservationBasicInformation extends clientAuth {
         return $requestedCountries;
     }
 
-    function ReservationHotelCountry($type = null, $country = null) {
+    function ReservationHotelCountry($type = null, $country = null)
+    {
         $Model = Load::library('Model');
         if ($country != null) {
             $countryCondition = 'AND RC.id ' . $country;
@@ -493,7 +523,8 @@ class reservationBasicInformation extends clientAuth {
     }
 
 
-    public function ReservationHotelCities($countryId = null, $Limit = '') {
+    public function ReservationHotelCities($countryId = null, $Limit = '')
+    {
 
         $Model = Load::library('Model');
         $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
@@ -552,7 +583,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function ReservationTourContinents($is_external = false, $isSpecial = false) {
+    public function ReservationTourContinents($is_external = false, $isSpecial = false)
+    {
 
         $continents = $this->getModel('continentCodesModel')->get(['titleFa', 'titleEn', 'id']);
         $continents = $continents->all();
@@ -598,7 +630,8 @@ class reservationBasicInformation extends clientAuth {
         return $continents_array;
     }
 
-    public function ReservationTourCountriesForAll($is_external = false, $isSpecial = false , $type_id = null , $type_kind = 'like') {
+    public function ReservationTourCountriesForAll($is_external = false, $isSpecial = false, $type_id = null, $type_kind = 'like')
+    {
         $Model = Load::library('Model');
 
 
@@ -615,14 +648,14 @@ class reservationBasicInformation extends clientAuth {
             if ($isSpecial) {
                 $sql .= "AND T.is_special = 'yes' ";
             }
-        }else{
-            $sql.="AND TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
+        } else {
+            $sql .= "AND TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
         }
-        if( isset($type_id) && !empty($type_id)) {
-            if(isset($type_kind) && !empty($type_kind) && $type_kind== 'notLike') {
-                $type_kind = 'like' ;
+        if (isset($type_id) && !empty($type_id)) {
+            if (isset($type_kind) && !empty($type_kind) && $type_kind == 'notLike') {
+                $type_kind = 'like';
             }
-            $sql .=   "   AND T.tour_type_id {$type_kind} '%" . '"' . $type_id . '"' . "%' ";
+            $sql .= "   AND T.tour_type_id {$type_kind} '%" . '"' . $type_id . '"' . "%' ";
         }
         $sql .= "
          AND (TR.is_route_fake = '1' OR TR.is_route_fake IS NULL)
@@ -641,16 +674,17 @@ class reservationBasicInformation extends clientAuth {
         foreach ($result as $key => $country) {
 
             $result[$key]['country_id'] = $country['id'];
-            $result[$key]['city_list'] = $this->getCitiesOfCountryForAll($country['id'] , $isSpecial , $type_id , $type_kind);
+            $result[$key]['city_list'] = $this->getCitiesOfCountryForAll($country['id'], $isSpecial, $type_id, $type_kind);
         }
 
         return $result;
     }
 
-    public function getCitiesOfCountryForAll($country_id , $isSpecial = false,  $type_id = null , $type_kind = 'like') {
+    public function getCitiesOfCountryForAll($country_id, $isSpecial = false, $type_id = null, $type_kind = 'like')
+    {
         $Model = Load::library('Model');
         $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
-        $spacial = '' ;
+        $spacial = '';
         if ($isSpecial) {
             $spacial = "AND T.is_special = 'yes' ";
         }
@@ -677,7 +711,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function ReservationTourCountries($is_external = false, $isSpecial = false , $type_id = null , $type_kind = 'like' , $is_internal = false) {
+    public function ReservationTourCountries($is_external = false, $isSpecial = false, $type_id = null, $type_kind = 'like', $is_internal = false)
+    {
 
         $Model = Load::library('Model');
 
@@ -699,21 +734,19 @@ class reservationBasicInformation extends clientAuth {
             if ($isSpecial) {
                 $sql .= "AND T.is_special = 'yes' ";
             }
-        }
-        elseif ($is_internal == true) {
+        } elseif ($is_internal == true) {
             $sql .= " WHERE C.id = '1' AND TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
             if ($isSpecial) {
                 $sql .= "AND T.is_special = 'yes' ";
             }
+        } else {
+            $sql .= " WHERE TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
         }
-        else{
-            $sql.=" WHERE TR.is_del = 'no' AND T.start_date > '{$dateNow}' AND T.is_show = 'yes' AND TR.tour_title = 'dept'";
-        }
-        if( isset($type_id) && !empty($type_id)) {
-            if(isset($type_kind) && !empty($type_kind) && $type_kind== 'notLike') {
-                $type_kind = 'not like' ;
+        if (isset($type_id) && !empty($type_id)) {
+            if (isset($type_kind) && !empty($type_kind) && $type_kind == 'notLike') {
+                $type_kind = 'not like';
             }
-            $sql .=   "   AND T.tour_type_id {$type_kind} '%" . '"' . $type_id . '"' . "%' ";
+            $sql .= "   AND T.tour_type_id {$type_kind} '%" . '"' . $type_id . '"' . "%' ";
         }
         $sql .= "
          AND T.language = '{$software_lang}'
@@ -733,7 +766,7 @@ class reservationBasicInformation extends clientAuth {
         $result = $Model->select($sql);
 
 
-        usort($result, function($a, $b) {
+        usort($result, function ($a, $b) {
             // اگر a اولویت نداشت ولی b داشت، b باید جلوتر باشه
             if ($a['sort_order'] == 0 && $b['sort_order'] > 0) {
                 return 1;
@@ -753,20 +786,20 @@ class reservationBasicInformation extends clientAuth {
         });
 
 
-
         foreach ($result as $key => $country) {
             $result[$key]['country_id'] = $country['id'];
-            $result[$key]['city_list'] = $this->getCitiesOfCountry($country['id'] , $isSpecial , $type_id , $type_kind);
+            $result[$key]['city_list'] = $this->getCitiesOfCountry($country['id'], $isSpecial, $type_id, $type_kind);
         }
 //echo json_encode($result);
 //        die;
         return $result;
     }
 
-    public function getCitiesOfCountry($country_id , $isSpecial = false,  $type_id = null , $type_kind = 'like') {
+    public function getCitiesOfCountry($country_id, $isSpecial = false, $type_id = null, $type_kind = 'like')
+    {
         $Model = Load::library('Model');
         $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
-        $spacial = '' ;
+        $spacial = '';
         if ($isSpecial) {
             $spacial = "AND T.is_special = 'yes' ";
         }
@@ -789,16 +822,16 @@ class reservationBasicInformation extends clientAuth {
 //        die;
 //}
 
-        if( isset($type_id) && !empty($type_id)) {
-            if(isset($type_kind) && !empty($type_kind) && $type_kind== 'notLike') {
-                $type_kind = 'not like' ;
+        if (isset($type_id) && !empty($type_id)) {
+            if (isset($type_kind) && !empty($type_kind) && $type_kind == 'notLike') {
+                $type_kind = 'not like';
             }
-            $sqlCity .=   "
+            $sqlCity .= "
                       AND T.tour_type_id {$type_kind} '%" . '"' . $type_id . '"' . "%'
                ";
         }
 
-        $sqlCity .=   "
+        $sqlCity .= "
                   {$spacial}
                   GROUP BY CT.id
                   ORDER BY T.id DESC
@@ -808,7 +841,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function ReservationTourCities($idCountry, $route, $isSpecial = false, $type_id = null , $kind_type_id = 'like') {
+    public function ReservationTourCities($idCountry, $route, $isSpecial = false, $type_id = null, $kind_type_id = 'like')
+    {
 
         $Model = Load::library('Model');
 
@@ -819,23 +853,22 @@ class reservationBasicInformation extends clientAuth {
             $special = '';
         }
         $software_lang = SOFTWARE_LANG;
-        $type = '' ;
-        if( isset($type_id) && !empty($type_id)) {
-            if(isset($kind_type_id) && !empty($kind_type_id) && $kind_type_id == 'notLike') {
+        $type = '';
+        if (isset($type_id) && !empty($type_id)) {
+            if (isset($kind_type_id) && !empty($kind_type_id) && $kind_type_id == 'notLike') {
                 $kind_type_id = 'not like';
             }
-            if(is_array($type_id)) {
+            if (is_array($type_id)) {
                 foreach ($type_id as $typeId) {
 
-                    $type .=   "   AND T.tour_type_id {$kind_type_id}  '%" . '"' . $typeId . '"' . "%' ";
+                    $type .= "   AND T.tour_type_id {$kind_type_id}  '%" . '"' . $typeId . '"' . "%' ";
 
                 }
-            }else{
-                $type .=   "   AND T.tour_type_id {$kind_type_id}  '%" . '"' . $type_id . '"' . "%' ";
+            } else {
+                $type .= "   AND T.tour_type_id {$kind_type_id}  '%" . '"' . $type_id . '"' . "%' ";
             }
 
         }
-
 
 
         if ($route == 'dept') {
@@ -883,7 +916,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function GetGdsCityForTour($idCountry, $route, $isSpecial = false, $isOneDay = false) {
+    public function GetGdsCityForTour($idCountry, $route, $isSpecial = false, $isOneDay = false)
+    {
         $Model = Load::library('Model');
         $data_total = array();
         $dateNow = date("Ymd");
@@ -953,7 +987,8 @@ class reservationBasicInformation extends clientAuth {
         return $data_total;
     }
 
-    public function GetToursReservationByType($type = null, $limit = null, $country = '') {
+    public function GetToursReservationByType($type = null, $limit = null, $country = '')
+    {
         $Model = Load::library('Model');
 
         $conditionType = "";
@@ -1027,7 +1062,8 @@ class reservationBasicInformation extends clientAuth {
         return $tour;
     }
 
-    public function getTourType($info) {
+    public function getTourType($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -1045,28 +1081,29 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function updateCountry($info) {
+    public function updateCountry($info)
+    {
 
         $Model = Load::library('Model');
         if (isset($_FILES['pic']['name'])) {
             $check_exist = $this->getModel('reservationCountryModel')->get()->where('id', $info['type_id'])->find();
 
             if ($check_exist) {
-                functions::DeleteImages('country/'.CLIENT_ID.'/' ,$check_exist['pic']);
+                functions::DeleteImages('country/' . CLIENT_ID . '/', $check_exist['pic']);
             }
 
 
             /** @var application $config */
             $config = Load::Config('application');
-            $path = "country/".CLIENT_ID."/";
+            $path = "country/" . CLIENT_ID . "/";
             $config->pathFile($path);
             $ext = explode(".", $_FILES['pic']['name']);
-            $_FILES['pic']['name'] = date("sB")."-" . rand(10, 10000);
-            $ext = strtolower($ext[count($ext)-1]);
-            $_FILES['pic']['name'] = $_FILES['pic']['name'].".".$ext;
-            if (in_array ( $ext, array ( 'jpg', 'jpe', 'jpeg', 'png', 'gif' ) ) ) {
+            $_FILES['pic']['name'] = date("sB") . "-" . rand(10, 10000);
+            $ext = strtolower($ext[count($ext) - 1]);
+            $_FILES['pic']['name'] = $_FILES['pic']['name'] . "." . $ext;
+            if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'png', 'gif'))) {
                 $type = 'pic';
-            } else{
+            } else {
                 $type = 'file';
             }
             $result_upload = $config->UploadFile($type, "pic", "");
@@ -1074,14 +1111,14 @@ class reservationBasicInformation extends clientAuth {
 
             if ($explode_name_pic[0] == 'done') {
                 $result_upload = $explode_name_pic[1];
-            }else{
+            } else {
                 return functions::withError('', 200, $explode_name_pic[0]);
             }
             $dataUpdate = [
                 'pic' => $result_upload,
             ];
-            if ($type = 'pic'){
-                functions::SaveImages('pic/country/'.CLIENT_ID ,'', $result_upload);
+            if ($type = 'pic') {
+                functions::SaveImages('pic/country/' . CLIENT_ID, '', $result_upload);
             }
             if (empty($dataUpdate)) {
                 return functions::withError('', 200, 'ورود فیلد تصویر اجباری می باشد');
@@ -1104,6 +1141,40 @@ class reservationBasicInformation extends clientAuth {
         $Model->setTable("reservation_country_tb");
         $res = $Model->update($data, $Condition);
 
+        $result = $this->getModel('reservationCountryModel')
+            ->get(['id'])
+            ->where('name', $data['name'])
+            ->find();
+
+        $slugTourController = $this->getController('tourSlugController');
+        $slugTourModel = $this->getModel('slugModel');
+
+        $Model = Load::library('Model');
+
+        $sqlSlugTour = "
+        SELECT *
+FROM slugs_tb
+WHERE JSON_UNQUOTE(JSON_EXTRACT(data, '$.country_id')) = '{$info['type_id']}'
+        ";
+        $check_slug = $Model->load($sqlSlugTour);
+
+        if ($check_slug == false) {
+            $slugTourController->store(['en' => $data['name_en'] . '-', 'ar' => $data['name_ar'] . '-', 'fa' => $data['name'] . '-'], ['city_id' => 'all', 'country_id' => $result['id']]);
+        } else {
+            $checkSlugData = json_decode($check_slug['data']);
+            $checkSlugData->country_id = $result['id'];
+
+            $slugTourModel->update(
+                [
+                    'data' => json_encode($checkSlugData),
+                    'slug_fa' => preg_replace('/\s+/u', '-', trim($data['name'])) . '-',
+                    'slug_en' => preg_replace('/\s+/u', '-', trim($data['name_en'])) . '-',
+                    'slug_ar' => preg_replace('/\s+/u', '-', trim($data['name_ar'])) . '-',
+                ],
+                "id = '{$check_slug['id']}'"
+            );
+        }
+
         if ($res) {
             return 'success :  تغییرات با موفقیت انجام شد' . ':' . $info['type_id'];
         } else {
@@ -1112,14 +1183,20 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function InsertCity($info) {
+    public function InsertCity($info)
+    {
 
         $Model = Load::library('Model');
 
-        $sql = " SELECT * FROM  reservation_city_tb WHERE name='{$info['city_name']}' AND id_country='{$info['id_country']}' AND is_del='no'";
-        $city = $Model->load($sql);
 
-        if (empty($city)) {
+        $sql_is_del = " SELECT * FROM  reservation_city_tb WHERE name='{$info['city_name']}' AND id_country='{$info['id_country']}' AND is_del='no'";
+        $city_is_del = $Model->load($sql_is_del);
+
+        if (empty($city_is_del)) {
+
+
+            $sql = " SELECT * FROM  reservation_city_tb WHERE name='{$info['city_name']}' AND id_country='{$info['id_country']}'";
+            $city = $Model->load($sql);
 
             #region [آپلود فایل هتل]
             if (isset($_FILES['pic']) && $_FILES['pic'] != "") {
@@ -1143,7 +1220,6 @@ class reservationBasicInformation extends clientAuth {
             #endregion
 
 
-
             $data['name'] = $info['city_name'];
             $data['name_en'] = $info['city_name_en'];
             $data['name_ar'] = $info['city_name_ar'];
@@ -1152,20 +1228,46 @@ class reservationBasicInformation extends clientAuth {
             $data['is_del'] = 'no';
 
             $Model->setTable('reservation_city_tb');
-            $res = $Model->insertLocal($data);
 
-            $result  = $this->getModel('reservationCityModel')->get(['id'])->orderBy('id' , 'DESC')->limit('0', '1')->find();
+            // -----------------------------
+            if ($city == false) {
+                $res = $Model->insertLocal($data);
+            } else {
+                $condition = " name = '{$data['name']}'";
+                $res = $Model->update($data, $condition);
+            }
 
+            $result = $this->getModel('reservationCityModel')
+                ->get(['id'])
+                ->where('name', $data['name'])
+                ->find();
 
-            $slugTourModel = $this->getController('tourSlugController');
-            $slugTourModel->store(['en' =>  $info['city_name_en'].'-', 'ar' => $info['city_name_ar'].'-', 'fa' => $info['city_name'].'-'], ['city_id' => $result['id'], 'country_id' => $info['id_country']]);
+            $slugTourController = $this->getController('tourSlugController');
+            $slugTourModel = $this->getModel('slugModel');
+
+            $check_slug = $this->getModel('slugModel')->get()->where('slug_fa', '%' . $data['name'] . '%', 'LIKE')->find();
+
+            if ($check_slug == false) {
+                $slugTourController->store(['en' => $data['name_en'] . '-', 'ar' => $data['name_ar'] . '-', 'fa' => $data['name'] . '-'], ['city_id' => $result['id'], 'country_id' => $data['id_country']]);
+            } else {
+                $checkSlugData = json_decode($check_slug['data']);
+                $checkSlugData->city_id = $result['id'];
+
+                $slugTourModel->update(
+                    [
+                        'data' => json_encode($checkSlugData),
+                    ],
+                    "id = '{$check_slug['id']}'"
+                );
+            }
+            // -----------------------------
+
 
             if ($res) {
                 return 'success :  تغییرات با موفقیت انجام شد' . ':' . $info['id_country'];
             } else {
                 return 'error : خطا در  تغییرات' . ':' . $info['id_country'];
             }
-
 
         } else {
             return 'error : شهر تکراری میباشد.' . ':' . $info['id_country'];
@@ -1174,45 +1276,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function updateCity_old($info) {
-
-        $Model = Load::library('Model');
-
-        #region [آپلود فایل هتل]
-        if (isset($_FILES['pic']) && $_FILES['pic'] != "") {
-
-            $config = Load::Config('application');
-            $success = $config->UploadFile("pic", "pic", "");
-            $explod_name_pic = explode(':', $success);
-
-            if ($explod_name_pic[0] == "done") {
-                $data['pic'] = $explod_name_pic[1];
-            }
-
-        }
-        #endregion
-
-        $data['name'] = $info['city_name'];
-        $data['name_en'] = $info['city_name_en'];
-        $data['name_ar'] = $info['city_name_ar'];
-        $data['abbreviation'] = $info['city_abbreviation'];
-        $data['id_country'] = $info['id_country'];
-
-        $Condition = "id='{$info['type_id']}' ";
-        $Model->setTable("reservation_city_tb");
-        $res = $Model->update($data, $Condition);
-
-        if ($res) {
-            return 'success :  تغییرات با موفقیت انجام شد' . ':' . $info['type_id'];
-        } else {
-            return 'error : خطا در  تغییرات' . ':' . $info['type_id'];
-        }
-
-
-    }
-
-
-    public function updateCity($info) {
+    public function updateCity($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -1229,7 +1294,6 @@ class reservationBasicInformation extends clientAuth {
         }
         #endregion
 
-        // اگر id کمتر از 300 باشد فقط تصویر قابل تغییر است
         if ($info['type_id'] < 300) {
 
             // اگر هیچ تصویر جدیدی آپلود نشده باشد
@@ -1249,8 +1313,6 @@ class reservationBasicInformation extends clientAuth {
             }
         }
 
-        // برای idهای 300 و بالاتر، همه فیلدها قابل تغییر هستند
-        //به دلیل اینکه در هتل ها به مشکل نخوریم این مورد را انجام دادیم
         $data['name'] = $info['city_name'];
         $data['name_en'] = $info['city_name_en'];
         $data['name_ar'] = $info['city_name_ar'];
@@ -1261,6 +1323,35 @@ class reservationBasicInformation extends clientAuth {
         $Model->setTable("reservation_city_tb");
         $res = $Model->update($data, $Condition);
 
+        $slugTourController = $this->getController('tourSlugController');
+        $slugTourModel = $this->getModel('slugModel');
+
+        $Model = Load::library('Model');
+
+        $sqlSlugTour = "
+        SELECT *
+FROM slugs_tb
+WHERE JSON_UNQUOTE(JSON_EXTRACT(data, '$.city_id')) = '{$info['type_id']}'
+        ";
+        $check_slug = $Model->load($sqlSlugTour);
+
+        if ($check_slug == false) {
+            $slugTourController->store(['en' => $data['name_en'] . '-', 'ar' => $data['name_ar'] . '-', 'fa' => $data['name'] . '-'], ['city_id' => $info['type_id'], 'country_id' => $data['id_country']]);
+        } else {
+            $checkSlugData = json_decode($check_slug['data']);
+            $checkSlugData->city_id = $info['type_id'];
+
+            $slugTourModel->update(
+                [
+                    'data' => json_encode($checkSlugData),
+                    'slug_fa' => preg_replace('/\s+/u', '-', trim($data['name'])) . '-',
+                    'slug_en' => preg_replace('/\s+/u', '-', trim($data['name_en'])) . '-',
+                    'slug_ar' => preg_replace('/\s+/u', '-', trim($data['name_ar'])) . '-',
+                ],
+                "id = '{$check_slug['id']}'"
+            );
+        }
+
         if ($res) {
             return 'success : تغییرات با موفقیت انجام شد' . ':' . $info['type_id'];
         } else {
@@ -1269,7 +1360,8 @@ class reservationBasicInformation extends clientAuth {
     }
 
 
-    public function InsertRegion($info) {
+    public function InsertRegion($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -1303,7 +1395,8 @@ class reservationBasicInformation extends clientAuth {
     ///////////////////عنوان و کیفیت و منظره اتاق/////////////////////
     /////////////////////////////////////////////////////////////////
 
-    public function updateRegion($info) {
+    public function updateRegion($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -1323,7 +1416,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function InsertRoomType($info) {
+    public function InsertRoomType($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -1371,7 +1465,8 @@ class reservationBasicInformation extends clientAuth {
     ///////////////////////اضافه کردن هتل////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    public function updateRoomType($val) {
+    public function updateRoomType($val)
+    {
 
         $Model = Load::library('Model');
 
@@ -1402,7 +1497,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function InsertHotel($info) {
+    public function InsertHotel($info)
+    {
 
 
         $Model = Load::library('Model');
@@ -1435,7 +1531,7 @@ class reservationBasicInformation extends clientAuth {
 
             $data['name'] = $info['name'];
 
-            if(isset($info['user_id'])) {
+            if (isset($info['user_id'])) {
                 $data['is_show'] = 'no';
                 $data['is_accept'] = 'no';
                 $data['user_id'] = $info['user_id'];
@@ -1495,7 +1591,7 @@ class reservationBasicInformation extends clientAuth {
                 $data['flag_special'] = 'no';
             }
 
-            if(isset($info['user_id'])) {
+            if (isset($info['user_id'])) {
                 $data['flag_special'] = 'yes';
             }
 
@@ -1557,7 +1653,7 @@ class reservationBasicInformation extends clientAuth {
                     }
 
                 } else {
-                    if(isset($info['user_id'])){
+                    if (isset($info['user_id'])) {
                         return 'success :  .تغییرات با موفقیت انجام شد. منتظر تاییدیه مدیریت باشید ';
                     }
                     return 'success :  تغییرات با موفقیت انجام شد';
@@ -1580,7 +1676,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function insertFirstHotelRoom($idHotel) {
+    public function insertFirstHotelRoom($idHotel)
+    {
 
         $infoRoom1['room_title'] = 'اتاق یک نفره';
         $infoRoom1['room_quality'] = '';
@@ -1628,10 +1725,10 @@ class reservationBasicInformation extends clientAuth {
     ///////////////////////////گالری هتل/////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    public function InsertHotelRoom($info) {
+    public function InsertHotelRoom($info)
+    {
 
         $Model = Load::library('Model');
-
 
 
         $roomType = $info['room_title'] . '-' . $info['room_quality'] . '-' . $info['room_view'];
@@ -1684,7 +1781,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function EditHotel($info) {
+    public function EditHotel($info)
+    {
 //var_dump('bbbbb');
 //die;
 
@@ -1713,7 +1811,7 @@ class reservationBasicInformation extends clientAuth {
         $comment_en = str_replace("'", " ", $comment_en);
         $comment_en = str_replace("from", "`from`", $comment_en);
 
-        if(isset($info['user_id'])) {
+        if (isset($info['user_id'])) {
             $data['is_show'] = 'no';
         }
         $description = [
@@ -1765,14 +1863,12 @@ class reservationBasicInformation extends clientAuth {
         $data['updated_at'] = date('Y-m-d H:i:s', time());
 
 
-
-
         if (isset($info['chk_flag_special']) && $info['chk_flag_special'] = 1) {
             $data['flag_special'] = 'yes';
         } else {
             $data['flag_special'] = 'no';
         }
-        if(isset($info['user_id'])) {
+        if (isset($info['user_id'])) {
             $data['flag_special'] = 'yes';
         }
 
@@ -1861,7 +1957,8 @@ class reservationBasicInformation extends clientAuth {
     ///////////////////////////اتاق هتل/////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    public function InsertGallery($info) {
+    public function InsertGallery($info)
+    {
         switch ($info['table_name']) {
             case 'reservation_hotel_gallery_tb':
                 $link = 'addHotelGallery&id=' . $info['id_hotel'];
@@ -1910,7 +2007,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function updateGallery($val) {
+    public function updateGallery($val)
+    {
 
 
         $Model = Load::library('Model');
@@ -1948,7 +2046,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function ListHotelRoom($id_hotel) {
+    public function ListHotelRoom($id_hotel)
+    {
 
         $Model = Load::library('Model');
 
@@ -1962,7 +2061,8 @@ class reservationBasicInformation extends clientAuth {
         return $room;
     }
 
-    public function showListHotelRoom($id) {
+    public function showListHotelRoom($id)
+    {
 
         $Model = Load::library('Model');
         if (isset($id) && !empty($id)) {
@@ -1991,7 +2091,8 @@ class reservationBasicInformation extends clientAuth {
     ///////////////////////////امکانات هتل/////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    public function updateHotelRoom($info) {
+    public function updateHotelRoom($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -2053,7 +2154,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function InsertFacilities($info) {
+    public function InsertFacilities($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -2080,7 +2182,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function EditFacilities($val) {
+    public function EditFacilities($val)
+    {
 
         $Model = Load::library('Model');
 
@@ -2101,7 +2204,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function showFacilities() {
+    public function showFacilities()
+    {
 
         $Model = Load::library('Model');
 
@@ -2111,7 +2215,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function InsertRoomFacilities($info) {
+    public function InsertRoomFacilities($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -2158,7 +2263,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function showRoomFacilities($idHotel, $idRoom) {
+    public function showRoomFacilities($idHotel, $idRoom)
+    {
 
         $Model = Load::library('Model');
 
@@ -2172,7 +2278,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function showHotelFacilities($id) {
+    public function showHotelFacilities($id)
+    {
 
         $Model = Load::library('Model');
         if (isset($id) && !empty($id)) {
@@ -2187,7 +2294,8 @@ class reservationBasicInformation extends clientAuth {
         }
     }
 
-    public function InsertHotelFacilities($info) {
+    public function InsertHotelFacilities($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -2236,7 +2344,8 @@ class reservationBasicInformation extends clientAuth {
 
     //// اضافه کردن شرکت حمل و نقل
 
-    public function getHotelBroker($idHotel) {
+    public function getHotelBroker($idHotel)
+    {
 
         $Model = Load::library('Model');
         $sql = " SELECT * FROM reservation_hotel_broker_tb WHERE id_hotel='{$idHotel}' AND is_del='no' ORDER BY id ASC ";
@@ -2247,7 +2356,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function insertTransportCompanies($param) {
+    public function insertTransportCompanies($param)
+    {
         $Model = Load::library('Model');
 
         $data['fk_id_type_of_vehicle'] = $param['id_type_of_vehicle'];
@@ -2290,7 +2400,8 @@ class reservationBasicInformation extends clientAuth {
 
     /////////////////نوع تور/////////////////
 
-    public function updateTransportCompanies($param) {
+    public function updateTransportCompanies($param)
+    {
 
         $Model = Load::library('Model');
 
@@ -2322,7 +2433,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function insertTourType($info) {
+    public function insertTourType($info)
+    {
 
         $Model = Load::library('Model');
 
@@ -2351,7 +2463,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function editTourType($val) {
+    public function editTourType($val)
+    {
 
         $Model = Load::library('Model');
 
@@ -2369,7 +2482,8 @@ class reservationBasicInformation extends clientAuth {
 
     }
 
-    public function GetTourCityOnlineSearch() {
+    public function GetTourCityOnlineSearch()
+    {
 
         $Code = filter_var($_POST['Code'], FILTER_SANITIZE_STRING);
         $Type = filter_var($_POST['Type'], FILTER_SANITIZE_STRING);
@@ -2403,7 +2517,8 @@ class reservationBasicInformation extends clientAuth {
         return $result;
     }
 
-    public function isShowHotel($params) {
+    public function isShowHotel($params)
+    {
         $Model = Load::library('Model');
 
         if ($params['isShow'] == 'yes') {
@@ -2425,7 +2540,8 @@ class reservationBasicInformation extends clientAuth {
         return "success: " . functions::Xmlinformation('ChangesSuccessfullyCompleted');
     }
 
-    public function getHotel($idHotel) {
+    public function getHotel($idHotel)
+    {
 
         $Model = Load::library('Model');
         $sql = " SELECT * FROM reservation_hotel_tb WHERE id='{$idHotel}' AND is_del='no'";
@@ -2435,20 +2551,21 @@ class reservationBasicInformation extends clientAuth {
     }
 
 
-    public function getInfoHotelData($nameTable, $fieldCondition, $valueCondition) {
+    public function getInfoHotelData($nameTable, $fieldCondition, $valueCondition)
+    {
         $Model = Load::library('Model');
         if (isset($nameTable) && !empty($nameTable)) {
             $sql = " SELECT * FROM {$nameTable} WHERE {$fieldCondition}='{$valueCondition}' AND is_del='no' ";
             $res = $Model->load($sql);
             if (!empty($res)) {
-                $res['city'] =  $res['city'];
+                $res['city'] = $res['city'];
                 $main_city_controller = Load::controller('mainCity');
-                $res['city_title']  = $main_city_controller->fetchCityRecord($res['city'])[0]['name'];
-                $res['city_title_en']  = $main_city_controller->fetchCityRecord($res['city'])[0]['name_en'];
+                $res['city_title'] = $main_city_controller->fetchCityRecord($res['city'])[0]['name'];
+                $res['city_title_en'] = $main_city_controller->fetchCityRecord($res['city'])[0]['name_en'];
 
                 $country_controller = Load::controller('mainCountry');
-                $res['country_title']  = $country_controller->getCountryRecords($res['country'])[0]['name'];
-                $res['country_title_en']  = $country_controller->getCountryRecords($res['country'])[0]['name_en'];
+                $res['country_title'] = $country_controller->getCountryRecords($res['country'])[0]['name'];
+                $res['country_title_en'] = $country_controller->getCountryRecords($res['country'])[0]['name_en'];
 
                 return $res;
             }
@@ -2480,98 +2597,101 @@ class reservationBasicInformation extends clientAuth {
             ->find();
 
         if (!empty($infoFly['data'])) {
-            $fly['departure_hours']='';
+            $fly['departure_hours'] = '';
             $extraData = json_decode($infoFly['data'], true);
             if (is_array($extraData)) {
-                $fly['departure_time'] = $extraData['departure_hours'].':'.$extraData['departure_minutes'] ;
+                $fly['departure_time'] = $extraData['departure_hours'] . ':' . $extraData['departure_minutes'];
             }
         }
 
         return $fly;
     }
+
     //create function for get reservation_fly_tb records and use model and orm to get records
-    public function getReservationFlyRecords() {
+    public function getReservationFlyRecords()
+    {
         $flyTable = $this->getModel('reservationFlyModel')->getTable();
         $ticketTable = $this->getModel('reservationTicketModel')->getTable();
-        $vehicleTable = $this->getModel('reservationVehicleModel')->getTable() ;
-        $temporaryTable = $this->getModel('temporaryDataModel')->getTable() ;
+        $vehicleTable = $this->getModel('reservationVehicleModel')->getTable();
+        $temporaryTable = $this->getModel('temporaryDataModel')->getTable();
 
-        $records=$this->getModel('reservationFlyModel')
+        $records = $this->getModel('reservationFlyModel')
             ->get([
                 $flyTable . '.*',
                 $ticketTable . '.exit_hour',
                 $vehicleTable . '.name as vehicle_model',
-                $temporaryTable.'.data as DataTmp'
-            ],true)
+                $temporaryTable . '.data as DataTmp'
+            ], true)
             ->joinSimple(
                 [$ticketTable, $ticketTable],
                 $flyTable . '.id',
-                $ticketTable.'.fly_code',
+                $ticketTable . '.fly_code',
                 'LEFT'
             )
             ->joinSimple(
                 [$vehicleTable, $vehicleTable],
                 $ticketTable . '.type_of_vehicle',
-                $vehicleTable.'.id',
+                $vehicleTable . '.id',
                 'LEFT'
             )
             ->joinSimple(
                 [$temporaryTable, $temporaryTable],
-                $temporaryTable.".reference_id",
+                $temporaryTable . ".reference_id",
                 "{$flyTable}.id AND {$temporaryTable}.reference_type = 'fly_number'",
                 'LEFT'
             );
 
-           // Date from filter - from ticket table
-            if (!empty($this->filtersListFly['date_from'])) {
-                $dateFrom = str_replace(['-','/'], '', $this->filtersListFly['date_from']);
-                $records->where($ticketTable . '.date', $dateFrom, '>=');
-            }
+        // Date from filter - from ticket table
+        if (!empty($this->filtersListFly['date_from'])) {
+            $dateFrom = str_replace(['-', '/'], '', $this->filtersListFly['date_from']);
+            $records->where($ticketTable . '.date', $dateFrom, '>=');
+        }
 
-            // Date to filter - from ticket table
-            if (!empty($this->filtersListFly['date_to'])) {
-                $dateTo = str_replace(['-','/'], '', $this->filtersListFly['date_to']);
-                $records->where($ticketTable . '.date', $dateTo, '<=');
-            }
+        // Date to filter - from ticket table
+        if (!empty($this->filtersListFly['date_to'])) {
+            $dateTo = str_replace(['-', '/'], '', $this->filtersListFly['date_to']);
+            $records->where($ticketTable . '.date', $dateTo, '<=');
+        }
 
-            // Origin filter - expect city ID
-            if (!empty($this->filtersListFly['origin'])) {
-                $records->where($flyTable . '.origin_city', $this->filtersListFly['origin']);
-            }
+        // Origin filter - expect city ID
+        if (!empty($this->filtersListFly['origin'])) {
+            $records->where($flyTable . '.origin_city', $this->filtersListFly['origin']);
+        }
 
-            // Destination filter - expect city ID
-            if (!empty($this->filtersListFly['destination'])) {
-                $records->where($flyTable . '.destination_city', $this->filtersListFly['destination']);
-            }
+        // Destination filter - expect city ID
+        if (!empty($this->filtersListFly['destination'])) {
+            $records->where($flyTable . '.destination_city', $this->filtersListFly['destination']);
+        }
 
-            // Fly code filter
-            if (!empty($this->filtersListFly['fly_code'])) {
-                $records->where($flyTable . '.fly_code', '%' . $this->filtersListFly['fly_code'] . '%', 'LIKE');
-            }
+        // Fly code filter
+        if (!empty($this->filtersListFly['fly_code'])) {
+            $records->where($flyTable . '.fly_code', '%' . $this->filtersListFly['fly_code'] . '%', 'LIKE');
+        }
 
-            // Airline filter - expect airline ID
-            if (!empty($this->filtersListFly['airline'])) {
-                $records->where($flyTable . '.airline', $this->filtersListFly['airline']);
-            }
+        // Airline filter - expect airline ID
+        if (!empty($this->filtersListFly['airline'])) {
+            $records->where($flyTable . '.airline', $this->filtersListFly['airline']);
+        }
 
-            // Vehicle type filter - expect vehicle type ID
-            if (!empty($this->filtersListFly['vehicle_type'])) {
-                $records->where($flyTable . '.type_of_vehicle_id', $this->filtersListFly['vehicle_type']);
-            }
+        // Vehicle type filter - expect vehicle type ID
+        if (!empty($this->filtersListFly['vehicle_type'])) {
+            $records->where($flyTable . '.type_of_vehicle_id', $this->filtersListFly['vehicle_type']);
+        }
 
-            // Exit hour filter
-            if (!empty($this->filtersListFly['exit_hour'])) {
-                $records->where($ticketTable . '.exit_hour', $this->filtersListFly['exit_hour']);
-            }
+        // Exit hour filter
+        if (!empty($this->filtersListFly['exit_hour'])) {
+            $records->where($ticketTable . '.exit_hour', $this->filtersListFly['exit_hour']);
+        }
 
-            $result = $records
-                ->groupBy($flyTable . '.id')
-                ->orderBy($flyTable.'.id','desc')
-                ->all();
+        $result = $records
+            ->groupBy($flyTable . '.id')
+            ->orderBy($flyTable . '.id', 'desc')
+            ->all();
         return $result;
     }
 
-    public function getFilteredListFly($params) {
+    public function getFilteredListFly($params)
+    {
         // Extract filters from params
         $this->filtersListFly = isset($params['filters']) ? $params['filters'] : $params;
         $records = $this->getReservationFlyRecords();
@@ -2587,25 +2707,25 @@ class reservationBasicInformation extends clientAuth {
         $counter = 0;
         foreach ($records as $item) {
             $counter++;
-            $origin = $this->getController('reservationPublicFunctions')->ShowName('reservation_country_tb',$item['origin_country']).' - '.$this->getController('reservationPublicFunctions')->ShowName('reservation_city_tb',$item['origin_city']);
-            $destination = $this->getController('reservationPublicFunctions')->ShowName('reservation_country_tb',$item['destination_country']).' - '.$this->getController('reservationPublicFunctions')->ShowName('reservation_city_tb',$item['destination_city']);
-            $origin_region = $this->getController('reservationPublicFunctions')->ShowName('reservation_region_tb',$item['origin_region']);
-            $destination_region = $this->getController('reservationPublicFunctions')->ShowName('reservation_region_tb',$item['destination_region']);
-            $vehicle_type = $this->getController('reservationPublicFunctions')->ShowName('reservation_type_of_vehicle_tb',$item['type_of_vehicle_id']);
+            $origin = $this->getController('reservationPublicFunctions')->ShowName('reservation_country_tb', $item['origin_country']) . ' - ' . $this->getController('reservationPublicFunctions')->ShowName('reservation_city_tb', $item['origin_city']);
+            $destination = $this->getController('reservationPublicFunctions')->ShowName('reservation_country_tb', $item['destination_country']) . ' - ' . $this->getController('reservationPublicFunctions')->ShowName('reservation_city_tb', $item['destination_city']);
+            $origin_region = $this->getController('reservationPublicFunctions')->ShowName('reservation_region_tb', $item['origin_region']);
+            $destination_region = $this->getController('reservationPublicFunctions')->ShowName('reservation_region_tb', $item['destination_region']);
+            $vehicle_type = $this->getController('reservationPublicFunctions')->ShowName('reservation_type_of_vehicle_tb', $item['type_of_vehicle_id']);
 
             // مدل وسیله نقلیه
             $vehicle_model = '';
             if (!empty($item['vehicle_model'])) {
                 $vehicle_model = $item['vehicle_model'];
             } elseif (!empty($item['type_of_plane'])) {
-                $vehicle_model = $this->getController('reservationPublicFunctions')->ShowName('reservation_vehicle_model_tb',$item['type_of_plane']);
+                $vehicle_model = $this->getController('reservationPublicFunctions')->ShowName('reservation_vehicle_model_tb', $item['type_of_plane']);
             }
 
             // ساعت حرکت
             $exit_hour = '-';
             if (!empty($item['DataTmp'])) {
                 $tmp = json_decode($item['DataTmp'], true);
-                $exit_hour = $tmp['departure_hours'].':'.$tmp['departure_minutes'];
+                $exit_hour = $tmp['departure_hours'] . ':' . $tmp['departure_minutes'];
             } elseif (!empty($item['exit_hour'])) {
                 $exit_hour = $item['exit_hour'];
             }
@@ -2645,14 +2765,16 @@ class reservationBasicInformation extends clientAuth {
         return functions::JsonSuccess(['html' => $html]);
     }
 
-    private function getAirlineName($item) {
-        $type = $this->getController('reservationPublicFunctions')->ShowName('reservation_type_of_vehicle_tb',$item['type_of_vehicle_id']);
+    private function getAirlineName($item)
+    {
+        $type = $this->getController('reservationPublicFunctions')->ShowName('reservation_type_of_vehicle_tb', $item['type_of_vehicle_id']);
         if ($type == 'هواپیما') {
-            return $this->getController('reservationPublicFunctions')->ShowNameBase('airline_tb','name_fa',$item['airline']);
+            return $this->getController('reservationPublicFunctions')->ShowNameBase('airline_tb', 'name_fa', $item['airline']);
         } else {
-            return $this->getController('reservationPublicFunctions')->ShowName('reservation_transport_companies_tb',$item['airline']);
+            return $this->getController('reservationPublicFunctions')->ShowName('reservation_transport_companies_tb', $item['airline']);
         }
     }
 
 }
+
 ?>

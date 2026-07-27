@@ -1,4 +1,3 @@
-
 {load_presentation_object filename="reservationBasicInformation" assign="objResult"}
 {load_presentation_object filename="country" assign="objCountry"}
 {assign var="Contries" value=$objCountry->countriesByContinentID($smarty.get.id,true)}
