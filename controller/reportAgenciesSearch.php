@@ -59,6 +59,8 @@ class reportAgenciesSearch extends clientAuth
             $this->international_search_limit = $resultArray['international_search_limit'];
         }
 
+        return $resultArray;
+
     }
 
     public function getAllAgenciesSearch(){
