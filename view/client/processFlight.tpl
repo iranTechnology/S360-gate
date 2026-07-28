@@ -110,7 +110,7 @@
         document.onmousedown="if (event.button==2) return false";
         document.oncontextmenu=new Function("return false");
         document.onkeydown = showDown();
-    }
+    // }
 
     function showDown(evt) {
         evt = (evt) ? evt : ((event) ? event : null);
