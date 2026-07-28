@@ -1631,14 +1631,14 @@ class apiLocal extends clientAuth
         $info_json_passengers = json_encode($data);
 
         $book = $this->curlExecution($url, $info_json_passengers, 'yes');
-
+        functions::insertLog('data: ' . json_encode($book) , '000shojaee');
         error_log('try show result Request Client In Book in : ' . date('Y/m/d H:i:s') . '   Request equal in With SourceId=>' . $sourceId . 'AND  RequestNumber : => ' . $RequestNumber . ': ' . $info_json_passengers . " \n" . "Response equal in With RequestNumber=>" . $RequestNumber . ":" . " " . json_encode($book, true) . " \n", 3, LOGS_DIR . 'log_Request_Response_Book.txt');
 
         $IsInternal = $passengers[0]['IsInternal'];
         $FlagUpdate = false;
         if (!empty($book)) {
             if (isset($book['Result']['ProviderStatus']) && $book['Result']['ProviderStatus'] != "errorProvider") {
-
+                functions::insertLog('data: ' . json_encode('hi') , '000shojaee');
                 $UserInfo = functions::infoMember($IdMember);
 
                 $AirlineIata = $passengers[0]['airline_iata'];
@@ -2086,7 +2086,7 @@ class apiLocal extends clientAuth
 
             $Reserve = $this->curlExecution($url, json_encode($dataReserve), 'yes');
 
-
+            functions::insertLog('$Reserve: ' . json_encode($Reserve) , '000shojaee');
             error_log('try show result method of url' . $url . ' And ticketed in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $RequestNumber . ' AND array Equal  =>' . json_encode($Reserve, true) . " \n", 3, LOGS_DIR . 'log_method_reserve.txt');
             if ($book['api_id'] == '10') {
                 $cellArray = array(

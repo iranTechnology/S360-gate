@@ -1,13 +1,16 @@
 <?php
 
 date_default_timezone_set('Asia/Tehran');
-
+//error_reporting(1);
+//error_reporting(E_ALL | E_STRICT);
+//@ini_set('display_errors', 1);
+//@ini_set('display_errors', 'on');
 class resultSearchExternalHotel extends clientAuth
 {
-  public $IsLogin ;
-  public $counterId ;
+    public $IsLogin ;
+    public $counterId ;
     public function __construct(){
-      parent::__construct();
+        parent::__construct();
 //      if(CLIENT_ID == '251'){
 //          error_reporting( 1 );
 //          error_reporting( E_ALL | E_STRICT );
@@ -136,23 +139,23 @@ class resultSearchExternalHotel extends clientAuth
                         }
 
 
-                    $arrayHotelsByType['reservation'][$key]['FreeBreakfast'] = $val['free_breakfast'];
-                    $arrayHotelsByType['reservation'][$key]['Facilities'] = $val['facilities'];
-                    if(isset($val['flag_special']) && !empty($val['flag_special'])) {
-                        $arrayHotelsByType['reservation'][$key]['isSpecial'] = $val['flag_special'];
-                    }else {
-                        $arrayHotelsByType['reservation'][$key]['isSpecial'] = 'no';
+                        $arrayHotelsByType['reservation'][$key]['FreeBreakfast'] = $val['free_breakfast'];
+                        $arrayHotelsByType['reservation'][$key]['Facilities'] = $val['facilities'];
+                        if(isset($val['flag_special']) && !empty($val['flag_special'])) {
+                            $arrayHotelsByType['reservation'][$key]['isSpecial'] = $val['flag_special'];
+                        }else {
+                            $arrayHotelsByType['reservation'][$key]['isSpecial'] = 'no';
+                        }
+
+
                     }
 
+                    elseif ($val['type_app'] == 'externalApi' && $cityId == '') {
+                        $cityId = $val['city_id'];
+                    }
 
-                }
-
-                elseif ($val['type_app'] == 'externalApi' && $cityId == '') {
-                    $cityId = $val['city_id'];
-                }
-
-                $hotelsRoomFreeBreakfast[$val['type_app']][$val['hotel_index']] = $val['free_breakfast'];
-                $hotelsFacilities[$val['type_app']][$val['hotel_index']] = $val['facilities'];
+                    $hotelsRoomFreeBreakfast[$val['type_app']][$val['hotel_index']] = $val['free_breakfast'];
+                    $hotelsFacilities[$val['type_app']][$val['hotel_index']] = $val['facilities'];
                 }
             }
 
@@ -172,7 +175,7 @@ class resultSearchExternalHotel extends clientAuth
         /** @var apiExternalHotel $objApiExternalHotel */
 //        functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => before apiExternalLibrary', 'times', 'yes');
         $objApiExternalHotel = Load::library('apiExternalHotel');
-     
+
         $searchParams = [];
         $requestNumber = '';
 
@@ -220,7 +223,6 @@ class resultSearchExternalHotel extends clientAuth
 //            functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => before searchHotel', 'times', 'yes');
             functions::insertLog(CLIENT_NAME. '  searchParams = '.json_encode($searchParams), 'times', 'yes');
             $resultApi = $objApiExternalHotel->searchHotel($searchParams);
-            functions::insertLog('$resultApi: ' . json_encode($resultApi) , '000shojaee');
             functions::insertLog(CLIENT_NAME. '  searchParams = '.json_encode($resultApi), 'times', 'yes');
 //            functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => after searchHotel', 'times', 'yes');
             $t5 = microtime(true);
@@ -239,10 +241,12 @@ class resultSearchExternalHotel extends clientAuth
 //				functions::insertLog( 'Action Find Result before Foreach', '00001-checkExternalHotel' );
                 $searchIdApi = $ApiResult['RequestNumber'];
                 $hotelItem = [];
-             
+                $Model = Load::library('Model');
                 functions::insertLog('getHotels before foreach result ' . microtime(true), 'times');
                 foreach ($ApiResult['Result'] as $apiKey => $apiHotel) {
+                    $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code=" . $apiHotel['HotelIndex'];
 
+                    $res = $Model->select($query);
                     if($apiHotel['SourceId'] == '18') {
                         $final_price = $this->getController('currencyEquivalent')->calculateEquivalent($apiHotel['Currency']  ,$apiHotel['MinPrice']) ;
                         $hotelItem[$apiKey]['MinimumRoomPrice'] = $final_price;
@@ -250,8 +254,6 @@ class resultSearchExternalHotel extends clientAuth
 
                         $hotelItem[$apiKey]['MinimumRoomPrice'] = $apiHotel['MinPrice'];
                     }
-
-
 
                     $hotelItem[$apiKey]['HotelName'] = $apiHotel['HotelName'];
                     $hotelItem[$apiKey]['CountryName'] = $apiHotel['CountryName'];
@@ -263,16 +265,15 @@ class resultSearchExternalHotel extends clientAuth
                     $hotelItem[$apiKey]['HotelStars'] = $apiHotel['HotelStars'];
                     $hotelItem[$apiKey]['ImageURL'] = $apiHotel['FeaturedPicture'];
                     $hotelItem[$apiKey]['facilities'] = array_map(function($facility){
-                      return $facility['name_en'];
+                        return $facility['name_en'];
                     },$apiHotel['Facilities']);
-
                     $hotelItem[$apiKey]['MapLang'] = $apiHotel['ContactInformation']['Location']['latitude'];
                     $hotelItem[$apiKey]['MapLat'] = $apiHotel['ContactInformation']['Location']['longitude'];
-                    $hotelItem[$apiKey]['HotelAddress'] = isset($apiHotel['ContactInformation']['Address']) ? $apiHotel['ContactInformation']['Address'] : '---';
+                    $hotelItem[$apiKey]['HotelAddress'] = $apiHotel['ContactInformation']['Address'] ?? $res[0]['address'] ?? '---';
                     $hotelItem[$apiKey]['city_id'] = $city['id'];
                     $hotelItem[$apiKey]['isSpecial'] ='no';
                 }
-              
+
                 functions::insertLog('getHotels after foreach ' . microtime(true), 'times');
                 $t7 = microtime(true);
 
@@ -315,14 +316,16 @@ class resultSearchExternalHotel extends clientAuth
             $arrayHotel = [];
             $countHotels = 0;
             $t8 = microtime(true);
-            $Model = Load::library('Model');
 
+            $ModelReservtion = Load::library('Model');
             foreach ($arrayHotelsByType as $typeApp => $hotels) {
                 if (!empty($hotels)) {
                     $t9 = microtime(true);
                     foreach ($hotels as $k => $hotel) {
                         $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code=" . $hotel['HotelIndex'];
-                        $res = $Model->select($query);
+
+                        $res = $ModelReservtion->select($query);
+
                         $star = $hotel['HotelStars'] > 0 ? $hotel['HotelStars'] : 0;
                         $nameEnUrl = $objExternalHotel->convertStringForUrl($hotel['HotelName']);
 
@@ -365,6 +368,7 @@ class resultSearchExternalHotel extends clientAuth
                             $hotelFacilities = $hotel['Facilities'];
                         } else {
 //                            $hotelFacilities = "MINIBAR|TV|WI-FI|ROOM SERVICE|SATELLITE TV";
+                            $hotelFacilities = $res[0]['facilities'];
                         }
 
                         if ($typeApp == 'externalApi' && isset($hotelsRoomFreeBreakfast[$typeApp][$hotel['HotelIndex']]) && $hotelsRoomFreeBreakfast[$typeApp][$hotel['HotelIndex']] != '') {
@@ -411,7 +415,7 @@ class resultSearchExternalHotel extends clientAuth
                                 }
 //                                if ($countCh + strlen($facilities) <= 50) {
 //                                    $countCh = $countCh + strlen($facilities);
-                                    $facilities_list[] = $facilities;
+                                $facilities_list[] = $facilities;
 //                                }
 
                             }
@@ -436,7 +440,7 @@ class resultSearchExternalHotel extends clientAuth
 
                         $arrayHotel[$countHotels]['minimumRoomPrice'] =  round($minimumRoomPrice);
                         $arrayHotel[$countHotels]['minimumRoomPriceEachNight'] =  round($minimumRoomPriceEachNight);
-		        $arrayHotel[$countHotels]['amountCurrency'] =  round($arrayHotel[$countHotels]['mainCurrency']['AmountCurrency']);
+                        $arrayHotel[$countHotels]['amountCurrency'] =  round($arrayHotel[$countHotels]['mainCurrency']['AmountCurrency']);
 
 
 
@@ -469,62 +473,62 @@ class resultSearchExternalHotel extends clientAuth
             ob_start();
             ?>
             <div class="filtertip-searchbox filtertip-searchbox filtertip-searchbox-external-hotel">
-            <span class="filter-title"><?php echo functions::Xmlinformation('PossibilitiesHotel'); ?></span>
-            <div class="filter-content padb10 padt10">
-<!--              <p class="raste-item all_hotels__externall">-->
-<!--                <input type="checkbox" class="FilterHoteltype ShowAllFacilities"-->
-<!--                       id="check_list_all" name="check_list_all" value="all" checked>-->
-<!--                <label class="FilterHoteltypeName site-main-text-color-a"-->
-<!--                       for="check_list_all">--><?php //echo functions::Xmlinformation('All'); ?><!--</label>-->
-<!--              </p>-->
-                <?php
-                foreach ($arrayFacilities as $val) {
-                    ?>
-                  <p class="raste-item">
-                    <input type="checkbox" class="FilterHoteltype ShowByFiltersFacilities"
-                           id="check_list<?php echo $val; ?>" name="heck_list<?php echo $val; ?>"
-                           value="<?php echo $val; ?>">
-                    <label class="FilterHoteltypeName site-main-text-color-a"
-                           for="check_list<?php echo $val; ?>"><?php echo $val; ?></label>
-                  </p>
+                <span class="filter-title"><?php echo functions::Xmlinformation('PossibilitiesHotel'); ?></span>
+                <div class="filter-content padb10 padt10">
+                    <!--              <p class="raste-item all_hotels__externall">-->
+                    <!--                <input type="checkbox" class="FilterHoteltype ShowAllFacilities"-->
+                    <!--                       id="check_list_all" name="check_list_all" value="all" checked>-->
+                    <!--                <label class="FilterHoteltypeName site-main-text-color-a"-->
+                    <!--                       for="check_list_all">--><?php //echo functions::Xmlinformation('All'); ?><!--</label>-->
+                    <!--              </p>-->
                     <?php
-                }
-                ?>
-            </div>
-              <script>
-                $(document).ready(function () {
-                  $(".ShowByFiltersFacilities").click(() => {
-                    var hotelList = $('.hotel-result-item')
-                    var isCheck = 0
-                    let countHotels = 0
-                    hotelList.hide()
-                    $('input:checkbox.ShowByFiltersFacilities').each(function() {
-                      var check = $(this).prop('checked')
-                      var val = $(this).val()
-                      if (check == true) {
-                        isCheck++
-                        var Check = $(this).val()
-                        hotelList.filter(function() {
-                          var hotelType = $(this).data('facilities')
-                          if (hotelType.indexOf(Check) !== -1) {
-                            countHotels++
-                            return true
-                          }
-                          return hotelType == Check
-                        }).show()
-                      }
-                      $('#countHotelHtml').html(countHotels)
-                    })
-                    if (isCheck == 0) {
-                      hotelList.show()
+                    foreach ($arrayFacilities as $val) {
+                        ?>
+                        <p class="raste-item">
+                            <input type="checkbox" class="FilterHoteltype ShowByFiltersFacilities"
+                                   id="check_list<?php echo $val; ?>" name="heck_list<?php echo $val; ?>"
+                                   value="<?php echo $val; ?>">
+                            <label class="FilterHoteltypeName site-main-text-color-a"
+                                   for="check_list<?php echo $val; ?>"><?php echo $val; ?></label>
+                        </p>
+                        <?php
                     }
-                    $('html, body').animate({
-                      scrollTop: $('.sort-by-section').offset().top,
-                    }, 'slow')
-                  })
-                })
-              </script>
-          </div>
+                    ?>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $(".ShowByFiltersFacilities").click(() => {
+                            var hotelList = $('.hotel-result-item')
+                            var isCheck = 0
+                            let countHotels = 0
+                            hotelList.hide()
+                            $('input:checkbox.ShowByFiltersFacilities').each(function() {
+                                var check = $(this).prop('checked')
+                                var val = $(this).val()
+                                if (check == true) {
+                                    isCheck++
+                                    var Check = $(this).val()
+                                    hotelList.filter(function() {
+                                        var hotelType = $(this).data('facilities')
+                                        if (hotelType.indexOf(Check) !== -1) {
+                                            countHotels++
+                                            return true
+                                        }
+                                        return hotelType == Check
+                                    }).show()
+                                }
+                                $('#countHotelHtml').html(countHotels)
+                            })
+                            if (isCheck == 0) {
+                                hotelList.show()
+                            }
+                            $('html, body').animate({
+                                scrollTop: $('.sort-by-section').offset().top,
+                            }, 'slow')
+                        })
+                    })
+                </script>
+            </div>
             <?php
 
 
@@ -584,9 +588,9 @@ class resultSearchExternalHotel extends clientAuth
 
 
         if ( substr( $params['start_date'], "0", "4" ) > 2000 ) {
-          $params['calendarType'] = 'gregorian';
+            $params['calendarType'] = 'gregorian';
         }else{
-          $params['calendarType'] = 'jalali';
+            $params['calendarType'] = 'jalali';
         }
 
         $response['id'] = $result['id'];

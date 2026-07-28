@@ -413,19 +413,32 @@ body > .select2-container {
     vertical-align: middle
 }
 
-.reserves_card .reserves_header > span.is-warning, .reserves_card .reserves_header > span.null, .reserves_card .reserves_header > span.cancel, .reserves_card .reserves_header > span.Cancellation, .reserves_card .reserves_header > span.NoReserve, .reserves_card .reserves_header > span.nothing, .reserves_card .reserves_header > span.error, .reserves_card .reserves_header > span.TemporaryPreReserve {
-    background-color: #fff5e5;
-    color: #a85d00
+.reserves_card .reserves_header > span.is-warning, .reserves_card .reserves_header > span.null, .reserves_card .reserves_header > span.cancel, .reserves_card .reserves_header > span.Cancellation, .reserves_card .reserves_header > span.NoReserve, .reserves_card .reserves_header > span.error, .reserves_card .reserves_header > span.TemporaryPreReserve {
+    background-color: #ffe5e5;
+    color: #dd3e3e;
 }
 
-.reserves_card .reserves_header > span.is-success, .reserves_card .reserves_header > span.book, .reserves_card .reserves_header > span.BookedSuccessfully, .reserves_card .reserves_header > span.credit {
+.reserves_card .reserves_header > span.is-success, .reserves_card .reserves_header > span.book, .reserves_card .reserves_header > span.BookedSuccessfully {
     background-color: #eafaee;
     color: #1e7b33
 }
+.reserves_card .reserves_header > span.credit{
+    background-color: #c0c0c0;
+    color: #696767;
+}
+.reserves_card .reserves_header > span.is-info, .reserves_card .reserves_header > span.prereserve, .reserves_card .reserves_header > span.PreReserve,.reserves_card .reserves_header > span.lock, .reserves_card .reserves_header > span.TemporaryReservation, .reserves_card .reserves_header > span.temporaryReservation, .reserves_card .reserves_header > span.OnRequest {
+    background-color: #fff5e5;
+    color: #a85d00;
+}
 
-.reserves_card .reserves_header > span.is-info, .reserves_card .reserves_header > span.prereserve, .reserves_card .reserves_header > span.PreReserve, .reserves_card .reserves_header > span.TemporaryReservation, .reserves_card .reserves_header > span.temporaryReservation, .reserves_card .reserves_header > span.OnRequest, .reserves_card .reserves_header > span.bank {
-    background-color: #e8f9fc;
-    color: #0f697a
+.reserves_card .reserves_header > span.nothing{
+    background-color: #c0c0c0;
+    color: #696767;
+}
+
+.reserves_card .reserves_header > span.bank{
+    background-color: #1bb5d27a;
+    color: #036d86;
 }
 
 .reserves_card .reserves_footer {

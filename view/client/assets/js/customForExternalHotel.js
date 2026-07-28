@@ -227,7 +227,7 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
             let facilities_list = '<ul class="hotelpreferences facilities facilities-21"><div class="external-hotel-facilities">';
             for (let f = 0; f < facLen; f++) {
                 if (facList[f]) {
-                    facilities_list += `<span>${facList[f]}</span>`;
+                    facilities_list += `<span style="direction: ltr;">${facList[f]}</span>`;
                     if (f < facLen - 1) facilities_list += '<span>|</span>';
                 }
             }
