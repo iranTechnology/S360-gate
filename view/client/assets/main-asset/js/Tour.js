@@ -207,7 +207,7 @@ function searchInternationalTour(altDomain = null) {
    } else {
       url = `${amadeusPathByLang}resultTourLocal/1-${international_tour}/${international_destination_tour}-${international_destination_city_tour}/${internal_date_travel_tour}/all`
    }
-
+   
    // let url = `${amadeusPathByLang}tours/تور-های-${international_tour.replace(' ','')}?origin=${international_destination_tour}-${international_destination_city_tour}&date=${internal_date_travel_tour}&type=all`
 
    if(target === '_blank'){

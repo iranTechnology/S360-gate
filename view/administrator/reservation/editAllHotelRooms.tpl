@@ -32,9 +32,13 @@
                     <div class="col-md-4">
                         <b>هتل: </b>{$objPublic->ShowName(reservation_hotel_tb,$objResult->infoRoomPrice['id_hotel'])}
                     </div>
-                    <div class="col-md-4"><b>از
-                            تاریخ: </b>{$objPublic->format_Date($objResult->infoRoomPrice['minDate'])}
-                        <b>تا </b>{$objPublic->format_Date($objResult->infoRoomPrice['maxDate'])} </div>
+                    <div class="col-md-4 d-flex justify-content-between">
+                         از
+                            تاریخ:  {$objPublic->format_Date($objResult->infoRoomPrice['minDate'])}
+                         تا  {$objPublic->format_Date($objResult->infoRoomPrice['maxDate'])}
+                        <a href="addRoomPricesByIdSame&idHotel={$smarty.get.idHotel}&idSame={$smarty.get.idSame}"
+                           class="btn btn-primary" style="font-size: 10px">ویرایش تاریخ</a>
+                    </div>
                 </div>
 
                 <p class="text-muted m-b-10 textTicketAttention">توجه : کاربر گرامی قیمت برای مسافر آنلاین به این صورت

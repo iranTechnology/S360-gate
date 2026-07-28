@@ -984,12 +984,12 @@ class reservationHotel extends clientAuth
     public function reportHotel()
     {
 
-        $mod = '';
-        $format = 'Y' . $mod . 'm' . $mod . 'd';
-        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
+//        $mod = '';
+//        $format = 'Y' . $mod . 'm' . $mod . 'd';
+//        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
 
 
-        $nextMonthDate = dateTimeSetting::jdate($format, strtotime('+1 week'), '', '', 'en');
+//        $nextMonthDate = dateTimeSetting::jdate($format, strtotime('+1 week'), '', '', 'en');
 
         $Model = Load::library('Model');
 
@@ -1001,12 +1001,9 @@ class reservationHotel extends clientAuth
                      MAX(HRP.date) AS max_date
                  FROM reservation_hotel_room_prices_tb HRP
                  RIGHT JOIN  reservation_hotel_room_tb HR ON HR.id_room = HRP.id_room
-                 WHERE HRP.flat_type='DBL' AND HRP.is_del='no' AND HRP.date >= '{$dateToday}'
-                 AND HRP.date <= '{$nextMonthDate}'
+                 WHERE HRP.flat_type='DBL' AND HRP.is_del='no'
                  GROUP BY HRP.id_hotel
                  ORDER BY HRP.id_country, HRP.id_city ASC";
-
-
 
         $hotel = $Model->select($sql);
 
@@ -1869,16 +1866,16 @@ class reservationHotel extends clientAuth
     public function reportAllHotelRooms($city, $hotel)
     {
 
-        $mod = '';
-        $format = 'Y' . $mod . 'm' . $mod . 'd';
-        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
+//        $mod = '';
+//        $format = 'Y' . $mod . 'm' . $mod . 'd';
+//        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
 
         $Model = Load::library('Model');
         $sql = "SELECT HRP.id_hotel, MIN( HRP.date ) AS minDate, MAX( HRP.date ) AS maxDate, HRP.id_same, HR.room_name, H.name as hotel_name
 FROM reservation_hotel_room_prices_tb HRP
 LEFT JOIN reservation_hotel_room_tb HR ON HR.id_room = HRP.id_room 
 LEFT JOIN reservation_hotel_tb H ON H.id = HRP.id_hotel
-WHERE HRP.id_city = '$city' AND HRP.id_hotel = '$hotel' AND HRP.date >= '$dateToday' AND HRP.flat_type = 'DBL' AND HRP.is_del = 'no' 
+WHERE HRP.id_city = '$city' AND HRP.id_hotel = '$hotel' AND HRP.flat_type = 'DBL' AND HRP.is_del = 'no' 
 GROUP BY HRP.id_same 
 ORDER BY HRP.id_same;
 ";
@@ -1893,15 +1890,15 @@ ORDER BY HRP.id_same;
     public function infoAllHotelRooms($idHotel, $idSame)
     {
 
-        $mod = '';
-        $format = 'Y' . $mod . 'm' . $mod . 'd';
-        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
+//        $mod = '';
+//        $format = 'Y' . $mod . 'm' . $mod . 'd';
+//        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
 
         $Model = Load::library('Model');
         $sqlRoom
             = " SELECT *, MIN(date) as minDate, MAX(date) as maxDate
                  FROM reservation_hotel_room_prices_tb 
-                 WHERE id_hotel='{$idHotel}' AND id_same='{$idSame}' AND date>='{$dateToday}' AND is_del='no'
+                 WHERE id_hotel='{$idHotel}' AND id_same='{$idSame}' AND is_del='no'
                  GROUP BY id_room, flat_type
                  ORDER BY id";
         $rooms = $Model->select($sqlRoom);
@@ -1938,7 +1935,7 @@ ORDER BY HRP.id_same;
         $sqlUser
             = " SELECT discount, maximum_capacity, user_type
                  FROM reservation_hotel_room_prices_tb 
-                 WHERE id_same='{$idSame}' AND date>='{$dateToday}' AND is_del='no'
+                 WHERE id_same='{$idSame}' AND is_del='no'
                  GROUP BY user_type
                  ORDER BY id";
         $users = $Model->select($sqlUser);

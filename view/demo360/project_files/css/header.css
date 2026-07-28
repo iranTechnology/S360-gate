@@ -70,7 +70,7 @@
     border: 1px solid #cacaca;
     display: block;
     font-size: 12px;
-    background-color: #b71c1c;
+    background-color: var(--mainColor);
     letter-spacing: 0;
     color: #fff;
     padding: 5px 15px;
@@ -84,7 +84,7 @@
     border: 1px solid #cacaca;
     display: block;
     font-size: 12px;
-    background-color: #b71c1c;
+    background-color: var(--mainColor);
     letter-spacing: 0;
     color: #fff;
     padding: 5px 15px;
@@ -102,7 +102,7 @@
     z-index: 5;
     color: #fff;
     text-align: center;
-    background-color: #b71c1c;
+    background-color: var(--mainColor);
     padding: 13px;
     transform: rotate(-90deg);
     border-radius: 0 0 15px 15px;
@@ -118,7 +118,7 @@
     z-index: 5;
     color: #fff;
     text-align: center;
-    background-color: #b71c1c;
+    background-color: var(--mainColor);
     padding: 13px;
     transform: rotate(-90deg);
     border-radius: 0 0 15px 15px;
@@ -453,7 +453,7 @@ footer h6 {
 }
 
 .last_text a:hover {
-    color: #b71c1c;
+    color: var(--mainColor);
     text-decoration: none
 }
 
@@ -785,11 +785,11 @@ footer h6 {
 }
 
 .nav-menu > li:hover > a, .nav-menu > li.active > a, .nav-menu > li.focus > a {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .nav-menu > li > .nav-dropdown li:hover > a {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .nav-menu > li > .nav-dropdown li:hover .submenu-indicator-chevron {
@@ -870,7 +870,7 @@ footer h6 {
     position: absolute;
     bottom: -11px;
     font-size: 10px;
-    color: #b71c1c;
+    color: var(--mainColor);
     font-weight: 600;
     z-index: 2
 }
@@ -896,7 +896,7 @@ footer h6 {
 }
 
 .nav-menu > li:hover > a .submenu-indicator-chevron, .nav-menu > .active > a .submenu-indicator-chevron, .nav-menu > .focus > a .submenu-indicator-chevron {
-    border-color: rgba(0, 0, 0, 0) #b71c1c #b71c1c rgba(0, 0, 0, 0)
+    border-color: rgba(0, 0, 0, 0) var(--mainColor) var(--mainColor) rgba(0, 0, 0, 0)
 }
 
 .navigation-portrait .submenu-indicator.submenu-indicator-up {
@@ -1414,7 +1414,7 @@ footer h6 {
 }
 
 .all-tour-menu {
-    color: #b71c1c !important;
+    color: var(--mainColor) !important;
     transition: all ease .5s !important
 }
 
@@ -1801,7 +1801,7 @@ footer h6 {
 }
 
 .nav-dropdown > li > a:hover, .nav-dropdown > li > a:focus {
-    color: #b71c1c !important
+    color: var(--mainColor) !important
 }
 
 .main_header_area.sticky {
@@ -2785,7 +2785,7 @@ footer h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #b71c1c;
+    background: var(--mainColor);
     color: #fff;
     transition: all ease .3s;
     bottom: 40px;
@@ -2816,9 +2816,9 @@ footer h6 {
 }
 
 .btn-user {
-    background: #b71c1c;
+    background: var(--mainColor);
     padding: 7px 10px;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     border-radius: 12px;
     color: #fff;
     transition: all ease .5s;
@@ -2885,7 +2885,7 @@ footer h6 {
 }
 
 .child-item-footer:hover a {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .child-item-footer span {
@@ -2903,7 +2903,7 @@ footer h6 {
 }
 
 .child-item-footer a:hover {
-    color: #b71c1c;
+    color: var(--mainColor);
     text-decoration: none
 }
 
@@ -2911,7 +2911,7 @@ footer h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #b71c1c;
+    color: var(--mainColor);
     transition: all ease .4s;
     font-size: 20px
 }
@@ -2920,7 +2920,7 @@ footer h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #b71c1c;
+    color: var(--mainColor);
     transition: all ease .4s;
     font-size: 20px
 }
@@ -2969,7 +2969,7 @@ footer h6 {
     align-items: center;
     justify-content: start;
     gap: 7px;
-    color: #b71c1c;
+    color: var(--mainColor);
     transition: all ease .5s;
     font-size: 13px;
     margin-top: 10px
@@ -2996,11 +2996,11 @@ footer h6 {
 }
 
 .knowledge-sub-menu a:hover .parent-sub-menu-title h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .knowledge-sub-menu a:hover .parent-icon-sub-menu svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .knowledge-sub-menu a .parent-icon-sub-menu {
@@ -3091,11 +3091,11 @@ footer h6 {
 }
 
 .passengers-sub-menu a:hover .parent-sub-menu-title h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .passengers-sub-menu a:hover .parent-icon-sub-menu svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .passengers-sub-menu a .parent-icon-sub-menu {
@@ -3173,11 +3173,11 @@ footer h6 {
 }
 
 .ticket-sub-menu a:hover .parent-sub-menu-title h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .ticket-sub-menu a:hover .parent-icon-sub-menu svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .ticket-sub-menu a .parent-icon-sub-menu {
@@ -3255,11 +3255,11 @@ footer h6 {
 }
 
 .stay-sub-menu a:hover .parent-sub-menu-title h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .stay-sub-menu a:hover .parent-icon-sub-menu svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .stay-sub-menu a .parent-icon-sub-menu {
@@ -3337,11 +3337,11 @@ footer h6 {
 }
 
 .more-sub-menu a:hover .parent-sub-menu-title h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .more-sub-menu a:hover .parent-icon-sub-menu svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .more-sub-menu a .parent-icon-sub-menu {
@@ -3419,11 +3419,11 @@ footer h6 {
 }
 
 .our-agency-sub-menu a:hover .parent-icon-sub-menu svg {
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .our-agency-sub-menu a:hover .parent-sub-menu-title h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .our-agency-sub-menu a .parent-icon-sub-menu {
@@ -3501,18 +3501,18 @@ footer h6 {
 
 .footer-more-link svg {
     width: 13px;
-    fill: #b71c1c;
+    fill: var(--mainColor);
     transition: all ease .4s
 }
 
 .footer-more-link:hover {
     text-decoration: none;
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .footer-more-link:hover svg {
     text-decoration: none;
-    fill: #b71c1c
+    fill: var(--mainColor)
 }
 
 .box-item-footer ul {
@@ -3550,7 +3550,7 @@ footer h6 {
 }
 
 .box-item-footer ul li a:hover {
-    color: #b71c1c;
+    color: var(--mainColor);
     text-decoration: none
 }
 
@@ -3569,7 +3569,7 @@ footer h6 {
 .box-item-footer ul li a i {
     margin-left: 7px;
     transition: all ease .5s;
-    color: #b71c1c;
+    color: var(--mainColor);
     font-size: 10px
 }
 
@@ -3618,7 +3618,7 @@ footer h6 {
 }
 
 .parent-tour-footer a:hover h4 {
-    color: #b71c1c
+    color: var(--mainColor)
 }
 
 .code {
@@ -3792,9 +3792,9 @@ footer h6 {
 }
 
 .btn-phone {
-    background: #b71c1c;
+    background: var(--mainColor);
     padding: 7px 10px;
-    border: 1px solid #b71c1c;
+    border: 1px solid var(--mainColor);
     border-radius: 12px;
     color: #fff;
     transition: all ease .5s;
@@ -3858,7 +3858,7 @@ footer h6 {
 }
 
 .main-navigation__sub-menu2 .sup-menu-flex > a:hover {
-    background: #b71c1c !important;
+    background: var(--mainColor) !important;
     color: #fff !important
 }
 
@@ -3906,7 +3906,7 @@ footer h6 {
     border-radius: 10px;
     padding-right: 20px;
     line-height: 50px;
-    background: #b71c1c;
+    background: var(--mainColor);
     color: #fff;
     font-weight: 500;
     font-size: 16px;
@@ -3933,7 +3933,7 @@ footer h6 {
     .link-footer a:hover {
         border-radius: 10px;
         line-height: 45px;
-        background: #b71c1c;
+        background: var(--mainColor);
         color: #fff;
         font-weight: 300;
         font-size: 14px;
@@ -3944,3 +3944,5 @@ footer h6 {
         padding-right: 30px
     }
 }
+
+/*# sourceMappingURL=header.css.map */

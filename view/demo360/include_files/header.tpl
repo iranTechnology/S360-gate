@@ -4,11 +4,13 @@
 {load_presentation_object filename="functions" assign="objFunctions"}
 {load_presentation_object filename="frontMaster" assign="obj"}
 {load_presentation_object filename="dateTimeSetting" assign="objDate"}
+{load_presentation_object filename="partner" assign="objPartner"}
 {assign var="objFunctions" value=$objFunctions scope=parent}
 {assign var="obj" value=$obj scope=parent}
 {assign var="objDate" value=$objDate scope=parent}
 {assign var="obj_main_page" value=$obj_main_page scope=parent}
 {assign var="info_access_client_to_service" value=$obj_main_page->getInfoAuthClient() scope=parent}
+{assign var="favicon" value=$objPartner->getFavicon() scope=parent}
 
 {assign var='StyleSheetMain' value="StyleSheet" }
 
@@ -26,6 +28,9 @@
 <meta test="i_modular_modulation"/>
 <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" name="viewport"/>
 <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta name="google-site-verification" content="ZC0jeu2DYq_q_p1RvUYvaj1o_raEim6jcAgyf-Xzwe8" />
+
+
 
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/rich/pageInfo/main.tpl" obj_main_page=$obj_main_page}
 
@@ -39,8 +44,9 @@
     {/if}
 
     <base href="{$smarty.const.CLIENT_DOMAIN}"/>
-<link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
 
+    <link href="{$favicon}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="assets/plugins/camera/camera.css" rel="stylesheet"/>
 
     {* todo: this use in all page and all of them are necessary*}
 
@@ -61,12 +67,12 @@
 <link rel="stylesheet" href="project_files/css/owl.carousel.min.css">
 <link href="assets/css/jquery-confirm.min.css" rel="stylesheet">
 <link href="assets/datepicker/jquery-ui.min.css" rel="stylesheet" type="text/css">
-{if $smarty.const.GDS_SWITCH eq 'mainPage'}
+{*{if $smarty.const.GDS_SWITCH eq 'mainPage'}*}
     <link type="text/css" rel="stylesheet" href="assets/datepicker-new/jquery-ui.min.css"/>
     <link type="text/css" rel="stylesheet" href="assets/datepicker-new/price_calender.css"/>
-    {else}
-    <link type="text/css" rel="stylesheet" href="assets/datepicker/jquery-ui.min.css"/>
-    {/if}
+{*    {else}*}
+{*    <link type="text/css" rel="stylesheet" href="assets/datepicker/jquery-ui.min.css"/>*}
+{*    {/if}*}
 <link href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
           var rootMainPath = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}';
@@ -81,7 +87,23 @@
           var refer_url = '{if isset($smarty.session.refer_url)} {$smarty.session.refer_url} {else} "" {/if}';
           var query_param_get = JSON.parse('{$smarty.get|json_encode}');
         </script>
-<script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
+
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3ZZNM1DL2"></script>
+{literal}
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-M3ZZNM1DL2');
+    </script>
+{/literal}
+
+
+
+    <script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
 
         <!-- datepicker calendar -->
 

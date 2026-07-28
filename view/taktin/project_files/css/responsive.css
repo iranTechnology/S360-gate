@@ -1,0 +1,414 @@
+/*------------------------------------------------------max-width -1200------------------------------*/
+@media screen and (max-width: 1200px)
+{
+
+.resultUlInputSearch{
+	width: 60.9%;
+	right: 26.5%;
+}
+
+	
+ul.mainMenu > li.menu-sep {
+    width: 15%;
+}
+
+ul.mainMenu > li > a{
+    font-size: 14px;
+}
+.h-item > a{
+    height: 300px;
+}
+    header .mainnav > ul > li{padding: 10px 9px 10px 0px !important;}
+    .logo-title{ width: 12%;}
+}
+
+
+
+
+
+
+
+/*------------------------------------------------------max-width -991------------------------------*/
+@media screen and (max-width: 991px)
+{
+	
+.resultUlInputSearch {
+    width: 54.9%;
+    right: 31.5%;
+}
+
+.mainMenuContainer {
+direction: rtl;
+float: right;
+position: fixed;
+top: 0;
+right: -350px;
+z-index: 9999;
+width: 300px;
+height: 100%;
+background: #3C2E47;
+box-shadow: -2px 0px 6px #333;
+}
+
+.top-menu {
+    width: 50%;
+}
+header{
+    padding: 0;
+    z-index: 9999;
+}
+
+.top-wrapper{
+    height: 550px;
+}
+
+.tour-item-wrapper{
+    width: 40%;
+    margin:20px 5%;
+}
+.sp-comment{
+    display: none;
+}
+.sp-a {
+    width: calc( 50% - 10px );
+}
+.sp .tour-det{
+    width: 50%;
+}
+ul.mainMenu > li > a {
+    color: #fff !important;
+    border-bottom:1px solid #3C2E47;
+}
+ul.mainMenu > li ul.subMenu li a {
+background: #FCC425;
+color: #000;
+border-bottom: 1px solid #FCC425;
+}
+.sp-box{
+    display: none;
+}
+
+.logo-title {
+    left: 0px;
+    top: 5px;
+    padding: 8px 5px 5px 5px;
+    width: 150px;
+    height: 60px;
+    transform: translateX(0);
+}
+
+.logo-title .logo {
+    width: 100%;
+    height: 100%;
+}
+.logo-title .title{
+    text-indent: -9999px;
+}
+.menu-fix {
+    position: fixed;
+    right: auto;
+    width: 100%;
+    box-shadow: 1px 1px 2px #666;
+    left: 0;
+    height: 74px;
+}
+.menu-fix a.mobMenu{ top: 5px !important;}
+.h-item{
+    width: 50%;
+}
+ul.mainMenu > li {
+    width: 100%;
+}
+.grid figure{
+    width: 48%;
+}
+.newsletter-box span {
+    margin: 20px 0;
+    clear: both;
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.tab-cars{ overflow: hidden;}
+
+/*-------------------------------------------------------max-width-767---------------------------------*/
+@media screen and (max-width:767px) {
+    .tarikh2ta{ width: 100% !important;}
+    .a-code{ width: 100% !important;}
+    .TrcBox{ float: none;}
+    .video{ top: 35%; height: 100%}
+
+    .form-item-50{ width: 100% !important;}
+
+
+.resultUlInputSearch {
+    width: 57.9%;
+    right: 28.5%;
+}
+
+    .c-tabs-nav__link{ padding: 10px !important;}
+    .c-tabs-nav__link span{ font-size: 11px;}
+
+
+
+.copyright .company p, .copyright .irantech p {
+    text-align: center;
+}
+.copyright .irantech p {
+    text-align: center;
+}
+
+.tour-item-wrapper{
+width: 70%;
+margin: 20px auto;
+float: none;
+}
+.tour-item-a {
+    height: 280px;
+}
+.s-item h3{
+    font-size: 18px;
+}
+
+.s-item{
+    padding-top: 0;
+}
+
+.form-item{
+    width: 50%;
+}
+.c-tab__content,.c-tab{
+    height: auto;
+    min-height: 340px;
+}
+#ajSliderBullets {
+    width: 100% !important;
+    left: 0px !important;
+}
+.form-wrapper{
+    margin-top: 0;
+}
+.form-wrapper > .container{
+    padding: 0;
+
+}
+.inner-tour {
+    margin-top: 0;
+}
+#ajSlider{
+    height: 500px;
+}
+.top-wrapper{
+    height: 350px;
+}
+.form-wrapper{
+    position: static;
+}
+.c-tabs-nav__link{
+    width: 33.33%;
+}
+
+.h-item > a,.grid figure {
+    height: 250px;
+}
+.h-overlay{
+    padding-top: 40px;
+}
+.newsletter-box {
+    padding: 10px;
+}
+.icon-items > .container > div{
+    margin-bottom:20px;
+}
+footer {
+    padding-top: 350px;
+}
+
+.top-footer .container .f-c-item{
+    min-height: 140px;
+}
+
+.before-footer{
+    display: none;
+}
+.copyright {
+    background: #2b7785;
+}
+
+}
+
+
+
+
+/*------------------------------------------max-width-544------------------------------*/
+@media screen and (max-width: 544px)
+{
+	
+.resultUlInputSearch {
+    width: 53.9%;
+    right: 32.5%;
+}
+
+
+.social,.top-menu{
+    width: 100%;
+    text-align: center;
+}
+.social a{
+    float: none;
+    display: inline-block;
+}
+
+.s-item{
+    margin-bottom: 20px;
+    width: 100%;
+}
+.tour-item-wrapper{
+    width: 100%;
+}
+.sp-a ,.sp .tour-det ,.sp-comment{
+    width: 100%;
+    display: block;
+}
+
+.mainMenuContainer{
+    width: 100%;
+    right: -550px;
+}
+#ajSlider {
+    height: 300px;
+}
+.main-title::before{
+    background-size: cover;
+}
+.h-item {
+    width: 100%;
+}
+.h-item > a, .grid figure {
+    height: 300px;
+}
+.h-overlay {
+    padding-top: 100px;
+}
+.grid figure {
+    width: 98%;
+}
+.grid figure h3{
+    display: block;
+}
+.newsletter-box > .container {
+    background-position:center top;
+    padding: 170px 0 20px;
+    text-align: center;
+}
+.newsletter-box h5 {
+    font: 20px/36px yekan;
+    float: none;
+}
+
+.newsletter-box span {
+    margin: 20px auto;
+    float: none;
+    display: inline-block;
+}
+.pop-up{
+    width: 90%;
+}
+.date-change{
+    width: 80%;
+}
+ul.mainMenu{
+    overflow-y: auto;
+}
+footer ,.top-footer .container{
+    padding: 0;
+}
+.top-footer .container .f-c-item {
+    min-height:180px;
+    padding: 0 5px;
+}
+.top-footer .container .f-c-item:nth-child(3),
+.top-footer .container .f-c-item:nth-child(4){
+    min-height: auto;
+}
+.top-footer {
+    padding-top: 400px;
+}
+#g-map{
+    height: 230px;
+}
+.top-wrapper{
+    height: 300px;
+}
+
+}
+
+
+
+
+
+
+
+
+
+/*------------------------------------------------col-ss -max-width-350----------------------------------------*/
+@media screen and (max-width: 350px) { 
+	
+.resultUlInputSearch{
+	width: 50.5%;
+	right: 35.5%;
+}
+
+.col-ss-1, .col-ss-2,
+.col-ss-3, .col-ss-4,
+.col-ss-5, .col-ss-6,
+.col-ss-7, .col-ss-8,
+.col-ss-9, .col-ss-10,
+.col-ss-11, .col-ss-12 {
+    float: right;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.col-ss-6 {
+    width: 50%;
+}
+.col-ss-12
+{
+    width: 100%;
+
+}
+.col-xs-12,.tour-item-wrapper{
+	padding: 0;
+
+}
+
+.logo-title {
+    width: 90%;
+    padding-right: 20px;
+}
+
+
+
+
+
+}
+
+
+
+ 

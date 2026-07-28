@@ -1177,6 +1177,14 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'tourRegistration') {
 
     echo $result;
 
+}elseif (isset($_POST['flag']) && $_POST['flag'] == 'duplicateTour') {
+    unset($_POST['flag']);
+
+    $objController = Load::controller('reservationTour');
+    $result = $objController->duplicateTour($_POST['idSame']);
+
+    echo $result;
+
 } elseif (isset($_POST['flag']) && $_POST['flag'] == 'logicalDeletionGalleryTour') {
     unset($_POST['flag']);
 

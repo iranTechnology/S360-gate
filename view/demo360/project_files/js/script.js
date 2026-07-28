@@ -23,122 +23,122 @@ $(document).ready(function() {
 
 
 
-if (window.innerWidth <= 576) {
-    const openSheetButton = document.querySelectorAll('.sheet-js');
-    const closeSheetButton = document.getElementById('closeSheet');
-    const bottomSheet = document.getElementById('bottomSheet');
-    const overlay = document.getElementById('overlay');
-    const handle = document.querySelector('.handle');
-
-// Open bottom sheet
-    openSheetButton.forEach(tab => {
-        tab.addEventListener('click', () => {
-            // Reset transform before adding open class
-            bottomSheet.style.transform = 'translateY(100%)';
-            // Use setTimeout to ensure the initial transform is applied before transition
-            setTimeout(() => {
-                bottomSheet.style.transform = 'translateY(0)';
-                bottomSheet.classList.add('open');
-                overlay.classList.add('active');
-                document.body.classList.add('no-scroll');
-            }, 10);
-        });
-    });
-
-// Close bottom sheet with X button
-    closeSheetButton.addEventListener('click', closeBottomSheet);
-
-// Close bottom sheet with overlay
-    overlay.addEventListener('click', closeBottomSheet);
-
-    function closeBottomSheet() {
-        bottomSheet.classList.remove('open');
-        overlay.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-        bottomSheet.style.transform = 'translateY(100%)';
-        currentTranslateY = 0; // Reset the translation tracking
-    }
-
-// Drag functionality
-    let isDragging = false;
-    let startY, startTranslateY;
-    let currentTranslateY = 0;
-
-    handle.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startY = e.clientY;
-        startTranslateY = getTranslateY(bottomSheet);
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    });
-
-    handle.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        startY = e.touches[0].clientY;
-        startTranslateY = getTranslateY(bottomSheet);
-        document.addEventListener('touchmove', onTouchMove);
-        document.addEventListener('touchend', onTouchEnd);
-    });
-
-    function onMouseMove(e) {
-        if (!isDragging) return;
-        const deltaY = e.clientY - startY;
-        const newTranslateY = startTranslateY + deltaY;
-        if (newTranslateY >= 0) {
-            currentTranslateY = newTranslateY;
-            bottomSheet.style.transform = `translateY(${newTranslateY}px)`;
-        }
-    }
-
-    function onMouseUp() {
-        if (!isDragging) return;
-        isDragging = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-        snapBottomSheet();
-    }
-
-    function onTouchMove(e) {
-        if (!isDragging) return;
-        const deltaY = e.touches[0].clientY - startY;
-        const newTranslateY = startTranslateY + deltaY;
-        if (newTranslateY >= 0) {
-            currentTranslateY = newTranslateY;
-            bottomSheet.style.transform = `translateY(${newTranslateY}px)`;
-        }
-    }
-
-    function onTouchEnd() {
-        if (!isDragging) return;
-        isDragging = false;
-        document.removeEventListener('touchmove', onTouchMove);
-        document.removeEventListener('touchend', onTouchEnd);
-        snapBottomSheet();
-    }
-
-// Modified snap function to only allow fully open or closed states
-    function snapBottomSheet() {
-        const sheetHeight = bottomSheet.offsetHeight;
-        const dragThreshold = sheetHeight * 0.3; // 30% of sheet height as threshold
-
-        if (currentTranslateY > dragThreshold) {
-            // If dragged more than threshold, close the sheet
-            closeBottomSheet();
-        } else {
-            // If dragged less than threshold, snap back to fully open
-            bottomSheet.style.transform = 'translateY(0)';
-            currentTranslateY = 0; // Reset the translation tracking
-        }
-    }
-
-    function getTranslateY(element) {
-        const style = window.getComputedStyle(element);
-        const transform = style.transform;
-        if (transform === 'none') return 0;
-        const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
-        return parseFloat(matrix[5] || matrix[13]);
-    }
-}
+// if (window.innerWidth <= 576) {
+//     const openSheetButton = document.querySelectorAll('.sheet-js');
+//     const closeSheetButton = document.getElementById('closeSheet');
+//     const bottomSheet = document.getElementById('bottomSheet');
+//     const overlay = document.getElementById('overlay');
+//     const handle = document.querySelector('.handle');
+//
+// // Open bottom sheet
+//     openSheetButton.forEach(tab => {
+//         tab.addEventListener('click', () => {
+//             // Reset transform before adding open class
+//             bottomSheet.style.transform = 'translateX(100%)';
+//             // Use setTimeout to ensure the initial transform is applied before transition
+//             setTimeout(() => {
+//                 bottomSheet.style.transform = 'translateX(0)';
+//                 bottomSheet.classList.add('open');
+//                 overlay.classList.add('active');
+//                 document.body.classList.add('no-scroll');
+//             }, 10);
+//         });
+//     });
+//
+// // Close bottom sheet with X button
+//     closeSheetButton.addEventListener('click', closeBottomSheet);
+//
+// // Close bottom sheet with overlay
+//     overlay.addEventListener('click', closeBottomSheet);
+//
+//     function closeBottomSheet() {
+//         bottomSheet.classList.remove('open');
+//         overlay.classList.remove('active');
+//         document.body.classList.remove('no-scroll');
+//         bottomSheet.style.transform = 'translateX(100%)';
+//         currentTranslateY = 0; // Reset the translation tracking
+//     }
+//
+// // Drag functionality
+//     let isDragging = false;
+//     let startY, startTranslateY;
+//     let currentTranslateY = 0;
+//
+//     handle.addEventListener('mousedown', (e) => {
+//         isDragging = true;
+//         startY = e.clientY;
+//         startTranslateY = getTranslateY(bottomSheet);
+//         document.addEventListener('mousemove', onMouseMove);
+//         document.addEventListener('mouseup', onMouseUp);
+//     });
+//
+//     handle.addEventListener('touchstart', (e) => {
+//         isDragging = true;
+//         startY = e.touches[0].clientY;
+//         startTranslateY = getTranslateY(bottomSheet);
+//         document.addEventListener('touchmove', onTouchMove);
+//         document.addEventListener('touchend', onTouchEnd);
+//     });
+//
+//     function onMouseMove(e) {
+//         if (!isDragging) return;
+//         const deltaY = e.clientY - startY;
+//         const newTranslateY = startTranslateY + deltaY;
+//         if (newTranslateY >= 0) {
+//             currentTranslateY = newTranslateY;
+//             bottomSheet.style.transform = `translateY(${newTranslateY}px)`;
+//         }
+//     }
+//
+//     function onMouseUp() {
+//         if (!isDragging) return;
+//         isDragging = false;
+//         document.removeEventListener('mousemove', onMouseMove);
+//         document.removeEventListener('mouseup', onMouseUp);
+//         snapBottomSheet();
+//     }
+//
+//     function onTouchMove(e) {
+//         if (!isDragging) return;
+//         const deltaY = e.touches[0].clientY - startY;
+//         const newTranslateY = startTranslateY + deltaY;
+//         if (newTranslateY >= 0) {
+//             currentTranslateY = newTranslateY;
+//             bottomSheet.style.transform = `translateY(${newTranslateY}px)`;
+//         }
+//     }
+//
+//     function onTouchEnd() {
+//         if (!isDragging) return;
+//         isDragging = false;
+//         document.removeEventListener('touchmove', onTouchMove);
+//         document.removeEventListener('touchend', onTouchEnd);
+//         snapBottomSheet();
+//     }
+//
+// // Modified snap function to only allow fully open or closed states
+//     function snapBottomSheet() {
+//         const sheetHeight = bottomSheet.offsetHeight;
+//         const dragThreshold = sheetHeight * 0.3; // 30% of sheet height as threshold
+//
+//         if (currentTranslateY > dragThreshold) {
+//             // If dragged more than threshold, close the sheet
+//             closeBottomSheet();
+//         } else {
+//             // If dragged less than threshold, snap back to fully open
+//             bottomSheet.style.transform = 'translateY(0)';
+//             currentTranslateY = 0; // Reset the translation tracking
+//         }
+//     }
+//
+//     function getTranslateY(element) {
+//         const style = window.getComputedStyle(element);
+//         const transform = style.transform;
+//         if (transform === 'none') return 0;
+//         const matrix = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+//         return parseFloat(matrix[5] || matrix[13]);
+//     }
+// }
 
 
 
@@ -1958,7 +1958,9 @@ $(document).ready(function () {
         fillClass:'rangeslider__fill',
         handleClass:'rangeslider__handle',
         onSlide:function(position, value) {
-            $(".div-rangeslider3 > h6").text(value)
+            $(".div-rangeslider3 > h6").text(value);
+            $('#initial_payment').val(value);
+            getInfoCalculator();
         }
     })
     setTimeout(function () {
@@ -2191,7 +2193,7 @@ $(document).ready(function () {
 
 
     // $(".select2 , .select-route-bus-js , .default-select2 , .gasht-type-js , .select2_in").select2();
-
+    
 
 
     $('.switch-input-js').on('change', function() {
@@ -2256,8 +2258,22 @@ $(document).ready(function () {
 
 
 
+var overlay = document.getElementById('overlayBlack');
+var dontShowCheckbox = document.getElementById('dontShowAgain');
+if (overlay) {
 
-
+    overlay.addEventListener('click' , () => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('show');
+        if (dontShowCheckbox && dontShowCheckbox.checked) {
+            const data = {
+                dontShow: true,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('dontShowOverlayData', JSON.stringify(data));
+        }
+    })
+    }
 
 
 

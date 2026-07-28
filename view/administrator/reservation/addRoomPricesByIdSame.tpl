@@ -1,6 +1,7 @@
 {load_presentation_object filename="reservationPublicFunctions" assign="objPublic"}
 {load_presentation_object filename="reservationHotel" assign="objResult"}
 
+
 {$objPublic->getAllCounter('all')} {*گرفتن لیست انواع کانتر*}
 {$objResult->infoAllHotelRooms($smarty.get.idHotel, $smarty.get.idSame)}
 

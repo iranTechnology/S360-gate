@@ -9,8 +9,9 @@
         <input type="hidden" class="internal-infant-js" name="count_infant_internal" id="count_infant_internal" value="0">
         <div class="box-of-count-passenger-boxes box-of-count-passenger-boxes-js">
             <span class="text-count-passenger text-count-passenger-js">1 ##Adult## ,0 ##Child## ,0 ##Infant##</span>
-            <span class="fas fa-caret-down down-count-passenger"></span>
+
         </div>
+           <div class="caption-input-search-box">تعداد مسافر</div>
         <div class="cbox-count-passenger cbox-count-passenger-js">
             <div class="col-xs-12 cbox-count-passenger-ch adult-number-js">
                 <div class="row">
