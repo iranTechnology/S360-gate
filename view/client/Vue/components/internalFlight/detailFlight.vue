@@ -918,7 +918,8 @@ export default {
             finalDisplay = (!Number.isNaN(wd) && !Number.isNaN(mk)) ? ( (wd - mk).toLocaleString() ) : '-';
           }
 
-        } else {
+        }
+        else {
           if (f.with_discount == 0) {
             finalDisplay = f.price ? this._fmtNumber(f.price) : '-';
           } else {

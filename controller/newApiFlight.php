@@ -35,7 +35,7 @@ class newApiFlight extends clientAuth
     private $getCounterTypeId;
     private $username;
     private $apiAddress;
-
+    private $reportAgenciesSearch;
 
     //endregion
 
@@ -49,6 +49,8 @@ class newApiFlight extends clientAuth
 
         parent::__construct();
         $this->init($url);
+        $this->reportAgenciesSearch = new reportAgenciesSearch();
+
     }
     //endregion
 
@@ -2344,10 +2346,16 @@ class newApiFlight extends clientAuth
             if($result){
                 return  functions::withSuccess($result,200,'successfully catch flight');
             }else{
-                return functions::withError($request_numbers, 404, 'flight does not exist for this search');
+                $resReport = $this->reportAgenciesSearch->fillExistLimitations(CLIENT_ID);
+                $isSearchLimit = false;
+                if($resReport['international_search_limit'] == $resReport['online_international_search_count']){
+                    $isSearchLimit = true;
+                }
+                return functions::withError([$request_numbers , 'isSearchLimit' => $isSearchLimit], 404, 'flight does not exist for this search');
             }
 
         }
+
         return functions::withError($this->tickets, 404, " flight does not exist for this search");
 
     }
@@ -4271,8 +4279,12 @@ class newApiFlight extends clientAuth
             return functions::withError($request_numbers, 404, "there aren't flight for this search ss");
 
         }
-
-        return functions::withError($request_numbers, 404, "there aren't flight for this search");
+        $resReport = $this->reportAgenciesSearch->fillExistLimitations(CLIENT_ID);
+        $isSearchLimit = false;
+        if($resReport['internal_search_limit'] == $resReport['online_internal_search_count']){
+            $isSearchLimit = true;
+        }
+        return functions::withError([$request_numbers,'isSearchLimit' => $isSearchLimit], 404, "there aren't flight for this search");
 
     }
     #endregion
@@ -5015,10 +5027,10 @@ class newApiFlight extends clientAuth
 //        if ( $this->auth == 'True' ) {
         $url =   "https://safar360.com/Core/V-1/Flight/getCredit/" . $param ;
         $JsonArray = array();
-            $resultCredit = functions::curlExecution( $url, $JsonArray ,  array(
-                'Content-Type: application/json',
-            ) );
-            return $resultCredit;
+        $resultCredit = functions::curlExecution( $url, $JsonArray ,  array(
+            'Content-Type: application/json',
+        ) );
+        return $resultCredit;
 //        }
 //        return $this->showError( 'شما دسترسی لازم به این صفحه را ندارید', 403 );
     }

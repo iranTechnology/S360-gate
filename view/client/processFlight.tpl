@@ -38,192 +38,195 @@
 
 {if $successPayment eq true}
 
-<div class="row bank_box_row mx-auto">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 d-flex justify-content-center" >
-        <div class="successful-flight-payment-box">
-            <!-- Success Icon -->
-            <div class="problem-icon">
-                <div class="icon-circle">
-                    <span class="loader"></span>
+    <div class="row bank_box_row mx-auto">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 d-flex justify-content-center" >
+            <div class="successful-flight-payment-box">
+                <!-- Success Icon -->
+                <div class="problem-icon">
+                    <div class="icon-circle">
+                        <span class="loader"></span>
+                    </div>
                 </div>
-            </div>
-            <h2 class="problem-title">##messagePrepairFlight_success##</h2>
+                <h2 class="problem-title">##messagePrepairFlight_success##</h2>
 
-            <div class="transaction-details-problem">
-                <div class="detail-row">
-                    <span class="detail-label">##messagePrepairFlight_button##</span>
-                    <span class="detail-value">{$infoReserve.factorNumber}</span>
+                <div class="transaction-details-problem">
+                    <div class="detail-row">
+                        <span class="detail-label">##messagePrepairFlight_button##</span>
+                        <span class="detail-value">{$infoReserve.factorNumber}</span>
+                    </div>
+                    <p>##messagePrepairFlight_load##</p>
                 </div>
-                <p>##messagePrepairFlight_load##</p>
             </div>
         </div>
+
     </div>
-</div>
+
     <form id="SendDataToBookedTicket"></form>
 
 
 
 
 {literal}
-<script type="text/javascript">
-    window.onload =
-       function () {
+    <script type="text/javascript">
+        // window.onload =
+        //    function () {
 
-      let  successPayment = '{/literal}{$successPayment}{literal}'
-      let  count_direction_book_flight = '{/literal}{$count_direction_book_flight}{literal}'
-      let  factorNumber = '{/literal}{$factorNumber}{literal}';
-      let time_delay = count_direction_book_flight > 1 ? 120000 : 70000 ;
-      // let time_delay = 1000 ;
-      showDown(event);
+        let  successPayment = '{/literal}{$successPayment}{literal}'
+        let  count_direction_book_flight = '{/literal}{$count_direction_book_flight}{literal}'
+        let  factorNumber = '{/literal}{$factorNumber}{literal}';
+        let time_delay = count_direction_book_flight > 1 ? 120000 : 70000 ;
+        // let time_delay = 1000 ;
+        showDown(event);
         let request =
-          $.ajax({
-            url: amadeusPath + 'ajax',
-            type: 'POST',
-            dataType: 'JSON',
-            data: JSON.stringify({
-              method: 'bookFlight',
-              className: 'bookTicketFlight',
-              factorNumber:factorNumber,
-              paymentType:'{/literal}{$infoReserve.paymentType}{literal}',
-              trackingCode:'{/literal}{$infoReserve.trackingCode}{literal}',
-              successPayment:'{/literal}{$infoReserve.successPayment}{literal}',
-              paymentBank:'{/literal}{$infoReserve.paymentBank}{literal}',
-            }),
-            success: function (response) {
-              formCreate(successPayment,'success')
-               // createPendingSection(factorNumber);
-            },
-            error: function (error) {
-               if (typeof error.responseJSON.code === 'undefined' || typeof error.responseJSON.code === null) {
-                  createErrorSection(500);
-               } else {
-                  createErrorSection(error.responseJSON.code);
-               }
-            }
-          });
+            $.ajax({
+                url: amadeusPath + 'ajax',
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify({
+                    method: 'bookFlight',
+                    className: 'bookTicketFlight',
+                    factorNumber:factorNumber,
+                    paymentType:'{/literal}{$infoReserve.paymentType}{literal}',
+                    trackingCode:'{/literal}{$infoReserve.trackingCode}{literal}',
+                    successPayment:'{/literal}{$infoReserve.successPayment}{literal}',
+                    paymentBank:'{/literal}{$infoReserve.paymentBank}{literal}',
+                }),
+                success: function (response) {
+                    console.log(response)
+                    formCreate(successPayment,'success')
+                    // createPendingSection(factorNumber);
+                },
+                error: function (error) {
+                    if (typeof error.responseJSON.code === 'undefined' || typeof error.responseJSON.code === null) {
+                        createErrorSection(500);
+                    } else {
+                        createErrorSection(error.responseJSON.code);
+                    }
+                }
+            });
 
-      setTimeout(function() {
-        request.abort(); // If you want to abort the xhr which are still executing after 2 minutes
+        setTimeout(function() {
+            request.abort(); // If you want to abort the xhr which are still executing after 2 minutes
 
-      }, time_delay );
+        }, time_delay );
         // Disable right mouse click Script
         document.onmousedown="if (event.button==2) return false";
         document.oncontextmenu=new Function("return false");
         document.onkeydown = showDown();
-    // }
+        // }
 
-    function showDown(evt) {
-        evt = (evt) ? evt : ((event) ? event : null);
-        if (evt) {
-            if (event.keyCode === 8) {
+        function showDown(evt) {
+            evt = (evt) ? evt : ((event) ? event : null);
+            if (evt) {
+                if (event.keyCode === 8) {
 // When backspace is pressed but not in form element
-                cancelKey(evt);
-            } else if (event.keyCode === 116) {
+                    cancelKey(evt);
+                } else if (event.keyCode === 116) {
 // When F5 is pressed
-                cancelKey(evt);
-            } else if (event.keyCode === 122) {
+                    cancelKey(evt);
+                } else if (event.keyCode === 122) {
 // When F11 is pressed
-                cancelKey(evt);
-            } else if (event.ctrlKey && (event.keyCode === 78 || event.keyCode === 82)) {
+                    cancelKey(evt);
+                } else if (event.ctrlKey && (event.keyCode === 78 || event.keyCode === 82)) {
 // When ctrl is pressed with R or N
-                cancelKey(evt);
-            } else if (event.altKey && event.keyCode === 37) {
+                    cancelKey(evt);
+                } else if (event.altKey && event.keyCode === 37) {
 // stop Alt left cursor
-                return false;
+                    return false;
+                }
             }
         }
-    }
 
-    function cancelKey(evt) {
-        if (evt.preventDefault) {
-            evt.preventDefault();
-            return false;
-        } else {
-            evt.keyCode = 0;
-            evt.returnValue = false;
+        function cancelKey(evt) {
+            if (evt.preventDefault) {
+                evt.preventDefault();
+                return false;
+            } else {
+                evt.keyCode = 0;
+                evt.returnValue = false;
+            }
         }
-    }
 
-    function homePage() {
-       window.location.href = window.location.origin;
-    }
+        function homePage() {
+            window.location.href = window.location.origin;
+        }
 
-    function formCreate(successPayment,type_ticket) {
-
-
-        var errorPaymentMessage = '{/literal}{$errorPaymentMessage}{literal}' ;
-        var paymentType = '{/literal}{$paymentType}{literal}';
-        var factorNumber = '{/literal}{$factorNumber}{literal}';
-        var trackingCode = '{/literal}{$objBank->trackingCode}{literal}';
-        var paymentBank = '{/literal}{$paymentBank}{literal}';
-        var successPayment = successPayment;
-
-        let form = document.getElementById('SendDataToBookedTicket');
-        form.setAttribute('method', "post");
-        form.setAttribute('action', amadeusPathByLang + 'showBookedTicketFlight');
-
-        //input 1
-        let hiddenField1 = document.createElement("input");
-        hiddenField1.setAttribute("type", "hidden");
-        hiddenField1.setAttribute("name", "paymentType");
-        hiddenField1.setAttribute("value", paymentType);
-        form.appendChild(hiddenField1);
-        //input 2
-        let hiddenField2 = document.createElement("input");
-        hiddenField2.setAttribute("type", "hidden");
-        hiddenField2.setAttribute("name", "factorNumber");
-        hiddenField2.setAttribute("value", factorNumber);
-        form.appendChild(hiddenField2);
-
-        //input 3
-        let hiddenField3 = document.createElement("input");
-        hiddenField3.setAttribute("type", "hidden");
-        hiddenField3.setAttribute("name", "trackingCode");
-        hiddenField3.setAttribute("value", trackingCode);
-        form.appendChild(hiddenField3);
-
-        //input 4
-        let hiddenField4 = document.createElement("input");
-        hiddenField4.setAttribute("type", "hidden");
-        hiddenField4.setAttribute("name", "paymentBank");
-        hiddenField4.setAttribute("value", paymentBank);
-        form.appendChild(hiddenField4);
-        //input 5
-        let hiddenField5 = document.createElement("input");
-        hiddenField5.setAttribute("type", "hidden");
-        hiddenField5.setAttribute("name", "errorPaymentMessage");
-        hiddenField5.setAttribute("value", errorPaymentMessage);
-        form.appendChild(hiddenField5);
-   //input 6
-        let hiddenField6 = document.createElement("input");
-        hiddenField6.setAttribute("type", "hidden");
-        hiddenField6.setAttribute("name", "type_ticket");
-        hiddenField6.setAttribute("value", type_ticket);
-        form.appendChild(hiddenField6);
+        function formCreate(successPayment,type_ticket) {
 
 
-        //input7
-        let hiddenField7 = document.createElement("input");
-        hiddenField7.setAttribute("type", "hidden");
-        hiddenField7.setAttribute("name", "successPayment");
-        hiddenField7.setAttribute("value", successPayment);
-        form.appendChild(hiddenField7);
+            var errorPaymentMessage = '{/literal}{$errorPaymentMessage}{literal}' ;
+            var paymentType = '{/literal}{$paymentType}{literal}';
+            var factorNumber = '{/literal}{$factorNumber}{literal}';
+            var trackingCode = '{/literal}{$objBank->trackingCode}{literal}';
+            var paymentBank = '{/literal}{$paymentBank}{literal}';
+            var successPayment = successPayment;
+
+            let form = document.getElementById('SendDataToBookedTicket');
+            form.setAttribute('method', "post");
+            form.setAttribute('action', amadeusPathByLang + 'showBookedTicketFlight');
+
+            //input 1
+            let hiddenField1 = document.createElement("input");
+            hiddenField1.setAttribute("type", "hidden");
+            hiddenField1.setAttribute("name", "paymentType");
+            hiddenField1.setAttribute("value", paymentType);
+            form.appendChild(hiddenField1);
+            //input 2
+            let hiddenField2 = document.createElement("input");
+            hiddenField2.setAttribute("type", "hidden");
+            hiddenField2.setAttribute("name", "factorNumber");
+            hiddenField2.setAttribute("value", factorNumber);
+            form.appendChild(hiddenField2);
+
+            //input 3
+            let hiddenField3 = document.createElement("input");
+            hiddenField3.setAttribute("type", "hidden");
+            hiddenField3.setAttribute("name", "trackingCode");
+            hiddenField3.setAttribute("value", trackingCode);
+            form.appendChild(hiddenField3);
+
+            //input 4
+            let hiddenField4 = document.createElement("input");
+            hiddenField4.setAttribute("type", "hidden");
+            hiddenField4.setAttribute("name", "paymentBank");
+            hiddenField4.setAttribute("value", paymentBank);
+            form.appendChild(hiddenField4);
+            //input 5
+            let hiddenField5 = document.createElement("input");
+            hiddenField5.setAttribute("type", "hidden");
+            hiddenField5.setAttribute("name", "errorPaymentMessage");
+            hiddenField5.setAttribute("value", errorPaymentMessage);
+            form.appendChild(hiddenField5);
+            //input 6
+            let hiddenField6 = document.createElement("input");
+            hiddenField6.setAttribute("type", "hidden");
+            hiddenField6.setAttribute("name", "type_ticket");
+            hiddenField6.setAttribute("value", type_ticket);
+            form.appendChild(hiddenField6);
 
 
-        form.submit();
+            //input7
+            let hiddenField7 = document.createElement("input");
+            hiddenField7.setAttribute("type", "hidden");
+            hiddenField7.setAttribute("name", "successPayment");
+            hiddenField7.setAttribute("value", successPayment);
+            form.appendChild(hiddenField7);
 
-    }
-    
-    function createPendingSection(factor_number){
+
+            form.submit();
+
+        }
+
+        function createPendingSection(factor_number){
 
 
-      let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
-      let element = $('.bank_box_row');
+            let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
+            let element = $('.bank_box_row');
 
-      let link_profile = `${amadeusPathByLang}userBook`;
-      let link_tracking = `${amadeusPathByLang}UserTracking`;
+            let link_profile = `${amadeusPathByLang}userBook`;
+            let link_tracking = `${amadeusPathByLang}UserTracking`;
 
-      let statement_pending_login = `
+            let statement_pending_login = `
 
 
 <div class="error-flight-payment-box">
@@ -247,7 +250,7 @@
 `;
 
 
-      let statement_pending_no_login = `
+            let statement_pending_no_login = `
 <div class="error-flight-payment-box">
     <div class="problem-icon">
         <div class="icon-circle bg-warning">
@@ -268,8 +271,8 @@
 </div>
 `;
 
-      let final_statement = (is_login) ? statement_pending_login : statement_pending_no_login ;
-      let section_div_pending = `
+            let final_statement = (is_login) ? statement_pending_login : statement_pending_no_login ;
+            let section_div_pending = `
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 " >
                     <div class="main-bank-box">
                         <div class="mbb-preload mbb-preload-time">
@@ -282,48 +285,48 @@
                 </div>
       `;
 
-      element.html(section_div_pending);
+            element.html(section_div_pending);
 
 
-      $.ajax({
-        url: amadeusPath + 'ajax',
-        type: 'POST',
-        dataType: 'JSON',
-        data: JSON.stringify({
-          method: 'changeFlagToPending',
-          className: 'bookshow',
-          factor_number:factor_number,
-        }),
-        success: function (response) {
+            $.ajax({
+                url: amadeusPath + 'ajax',
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify({
+                    method: 'changeFlagToPending',
+                    className: 'bookshow',
+                    factor_number:factor_number,
+                }),
+                success: function (response) {
+
+
+                }
+            });
 
 
         }
-      });
+
+        function createErrorSection(errorCode){
 
 
-    }
+            let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
+            let element = $('.bank_box_row');
 
-  function createErrorSection(errorCode){
+            let link_profile = `${amadeusPathByLang}Profile`;
+            let link_tracking = `${amadeusPathByLang}UserBook`;
 
+            let errorMessage;
+            if (errorCode == 500) {
+                errorMessage = useXmltag('unexpectedErrorFlight');
+            } else if(errorCode == 403) {
+                errorMessage = useXmltag('recurringBooking');
+            } else if (errorCode == 400) {
+                errorMessage = useXmltag('errorFlight');
+            } else {
+                errorMessage = useXmltag('unexpectedErrorFlight');
+            }
 
-     let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
-     let element = $('.bank_box_row');
-
-     let link_profile = `${amadeusPathByLang}Profile`;
-     let link_tracking = `${amadeusPathByLang}UserBook`;
-
-     let errorMessage;
-     if (errorCode == 500) {
-        errorMessage = useXmltag('unexpectedErrorFlight');
-     } else if(errorCode == 403) {
-        errorMessage = useXmltag('recurringBooking');
-     } else if (errorCode == 400) {
-        errorMessage = useXmltag('errorFlight');
-     } else {
-        errorMessage = useXmltag('unexpectedErrorFlight');
-     }
-
-     let statement_error_login = `
+            let statement_error_login = `
 
 
 <div class="error-flight-payment-box">
@@ -351,7 +354,7 @@
 `;
 
 
-     let statement_error_no_login = `
+            let statement_error_no_login = `
 
 <div class="error-flight-payment-box">
     <div class="problem-icon">
@@ -377,22 +380,22 @@
 
 `;
 
-     let final_statement = (is_login) ? statement_error_login : statement_error_no_login ;
-     let section_div_error = `
+            let final_statement = (is_login) ? statement_error_login : statement_error_no_login ;
+            let section_div_error = `
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 d-flex justify-content-center" >
                           ${final_statement}
                 </div>
       `;
 
-     element.html(section_div_error);
+            element.html(section_div_error);
 
-  }
-</script>
+        }
+    </script>
 {/literal}
 
 
 {else}
-<!--
+    <!--
     <div class="return-bank-box">
         <div class="container">
             <div class="row">

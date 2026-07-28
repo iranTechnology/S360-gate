@@ -149,6 +149,7 @@ const store = new Vuex.Store({
     price: [],
     requestNumber: null,
     requestNumberNoData: null,
+    isSearchLimit:false,
     setDataSearch:[],
     mobileHeaderSearchBox: true,
     formDataSearch:[],
@@ -259,9 +260,12 @@ const store = new Vuex.Store({
     requestNumber(state, requestNumber) {
       state.requestNumber = requestNumber;
     },
-     requestNumberNoData(state, requestNumberNoData) {
-        state.requestNumberNoData = requestNumberNoData;
-     },
+    requestNumberNoData(state, requestNumberNoData) {
+      state.requestNumberNoData = requestNumberNoData;
+    },
+    isSearchLimit(state, isSearchLimit) {
+      state.isSearchLimit = isSearchLimit;
+    },
     setCheckComplete(state, isComplete) {
       state.isComplete = isComplete;
     },
@@ -284,13 +288,13 @@ const store = new Vuex.Store({
       if(timeSort ==='desc'){
         if(state.flights !== ""){
           if(state.typeTripFlight == 'dept') {
-              state.flights.dept.sort(function (a, b) {
-                return a.departure_time.localeCompare(b.departure_time);
-              });
-            }else{
-              state.flights.return.sort(function (a, b) {
-                return a.departure_time.localeCompare(b.departure_time);
-              });
+            state.flights.dept.sort(function (a, b) {
+              return a.departure_time.localeCompare(b.departure_time);
+            });
+          }else{
+            state.flights.return.sort(function (a, b) {
+              return a.departure_time.localeCompare(b.departure_time);
+            });
           }
         }
       }else{
@@ -310,15 +314,15 @@ const store = new Vuex.Store({
     timeSortInternationalFlight(state, timeSort){
       if(timeSort ==='desc'){
         if(state.flights !== ""){
-            state.flights.sort(function (a, b) {
-              return a.departure_time.localeCompare(b.departure_time);
-            });
+          state.flights.sort(function (a, b) {
+            return a.departure_time.localeCompare(b.departure_time);
+          });
         }
       }else{
         if(state.flights !=="") {
-            state.flights.sort(function(a, b) {
-              return b.departure_time.localeCompare(a.departure_time);
-            });
+          state.flights.sort(function(a, b) {
+            return b.departure_time.localeCompare(a.departure_time);
+          });
         }
       }
     },
@@ -353,7 +357,7 @@ const store = new Vuex.Store({
       }
     },
     seatClassFilter :(state , seatClassFilter) => {
-        state.seat_class_filter = seatClassFilter
+      state.seat_class_filter = seatClassFilter
     },
     typeFlightFilter :(state , typeFlightFilter) => {
       state.type_flight_filter = typeFlightFilter
@@ -618,15 +622,15 @@ const store = new Vuex.Store({
 
       if(capacitySort ==='desc'){
         if(state.flights !== ""){
-            state.flights.sort(function(a,b) {
-              return a.capacity - b.capacity;
-            })
+          state.flights.sort(function(a,b) {
+            return a.capacity - b.capacity;
+          })
         }
       }else{
         if(state.flights !=="") {
-            state.flights.sort(function(a,b) {
-              return b.capacity - a.capacity;
-            })
+          state.flights.sort(function(a,b) {
+            return b.capacity - a.capacity;
+          })
         }
       }
     },
@@ -762,78 +766,79 @@ const store = new Vuex.Store({
 
 
       await axios
-        .post(
-          amadeusPath + "ajax",
-          {
-            className: "newApiFlight",
-            method: payload.method,
-            param: payload.url,
-          },
-          {
-            "Content-Type": "application/json",
-          }
-        )
-        .then(function (response) {
-          // console.log('store -> > >>>>' , response.data.data.flights)
-          // response.data.data.flights.forEach(f => {
-          //   // f.forEach(c => {
-          //   //   console.log(c)
-          //   // })
-          //   console.log(f)
-          // })
-       
+          .post(
+              amadeusPath + "ajax",
+              {
+                className: "newApiFlight",
+                method: payload.method,
+                param: payload.url,
+              },
+              {
+                "Content-Type": "application/json",
+              }
+          )
+          .then(function (response) {
+            // console.log('store -> > >>>>' , response.data.data.flights)
+            // response.data.data.flights.forEach(f => {
+            //   // f.forEach(c => {
+            //   //   console.log(c)
+            //   // })
+            //   console.log(f)
+            // })
 
 
 
-          commit("setFlights", response.data.data.flights);
-          commit("getCount", response.data.data.count_flights);
-          commit("setTimeFilter", response.data.data.time_filter);
-          commit("setInterrupt", response.data.data.interrupt);
-          commit("setTypeFlightFilter", response.data.data.type_flight_filter);
-          commit("setSeatClassFilter", response.data.data.seat_class_filter);
-          commit("setMinPriceAirline", response.data.data.min_price_airline);
-          commit("setPrice", response.data.data.price);
-          commit("requestNumber", response.data.data.request_number);
+
+            commit("setFlights", response.data.data.flights);
+            commit("getCount", response.data.data.count_flights);
+            commit("setTimeFilter", response.data.data.time_filter);
+            commit("setInterrupt", response.data.data.interrupt);
+            commit("setTypeFlightFilter", response.data.data.type_flight_filter);
+            commit("setSeatClassFilter", response.data.data.seat_class_filter);
+            commit("setMinPriceAirline", response.data.data.min_price_airline);
+            commit("setPrice", response.data.data.price);
+            commit("requestNumber", response.data.data.request_number);
 
 
-          if(payload.method == 'flightInternal') {
-            commit("setCheckComplete", response.data.data.dept.is_complete);
-          }else{
-            if(response.data.data == false){
-              commit("setCheckComplete", true);
-            }else {
-              commit("setCheckComplete", response.data.data.is_complete);
+            if(payload.method == 'flightInternal') {
+              commit("setCheckComplete", response.data.data.dept.is_complete);
+            }else{
+              if(response.data.data == false){
+                commit("setCheckComplete", true);
+              }else {
+                commit("setCheckComplete", response.data.data.is_complete);
+              }
             }
-          }
 
-          // IMPORTANT: Turn off loader after successful response
-          commit("setDefaultLoader", false);
+            // IMPORTANT: Turn off loader after successful response
+            commit("setDefaultLoader", false);
 
-        })
-        .catch(function (error) {
-          commit("requestNumberNoData", error.response.data.data.dept);
+          })
+          .catch(function (error) {
+            commit("requestNumberNoData", error.response.data.data.dept);
+            commit("isSearchLimit", error.response.data.data.isSearchLimit);
 
 
-          commit("setDefaultLoader", false);
-          commit("setFlights", []);
-        });
+            commit("setDefaultLoader", false);
+            commit("setFlights", []);
+          });
     },
     //endregion
 
     //region [popularFlight]
     async getPopularInternalFlight({ commit }, payload) {
       axios.post(
-        amadeusPath + 'ajax', {
-          className: 'newApiFlight',
-          method: payload.method,
-          limit : 5
-        },
-        {
-          'Content-Type': 'application/json',
-        })
-        .then(function(response) {
-          commit("setPopularInternalFlights", response.data.data);
-        }).catch(function(error) {
+          amadeusPath + 'ajax', {
+            className: 'newApiFlight',
+            method: payload.method,
+            limit : 5
+          },
+          {
+            'Content-Type': 'application/json',
+          })
+          .then(function(response) {
+            commit("setPopularInternalFlights", response.data.data);
+          }).catch(function(error) {
         console.log(error);
       });
 
@@ -843,17 +848,17 @@ const store = new Vuex.Store({
     //region internationalPopularFlight]
     async getPopularInternationalFlight({ commit }, payload) {
       axios.post(
-        amadeusPath + 'ajax', {
-          className: 'newApiFlight',
-          method: payload.method,
-          limit : 5
-        },
-        {
-          'Content-Type': 'application/json',
-        })
-        .then(function(response) {
-          commit("setPopularInternationalFlights", response.data.data);
-        }).catch(function(error) {
+          amadeusPath + 'ajax', {
+            className: 'newApiFlight',
+            method: payload.method,
+            limit : 5
+          },
+          {
+            'Content-Type': 'application/json',
+          })
+          .then(function(response) {
+            commit("setPopularInternationalFlights", response.data.data);
+          }).catch(function(error) {
         console.log(error);
       });
 
@@ -863,134 +868,99 @@ const store = new Vuex.Store({
     //region [getDataSearch]
     async getDataSearch({ commit }, payload) {
       await axios
-        .post(
-          amadeusPath + "ajax",
-          {
-            className: "newApiFlight",
-            method: "dateRout",
-            param: payload.url,
-          },
-          {
-            "Content-Type": "application/json",
-          }
-        )
-        .then(function (response) {
+          .post(
+              amadeusPath + "ajax",
+              {
+                className: "newApiFlight",
+                method: "dateRout",
+                param: payload.url,
+              },
+              {
+                "Content-Type": "application/json",
+              }
+          )
+          .then(function (response) {
 
-          commit("setDataSearch", response.data);
-          commit("formDataSearch", response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+            commit("setDataSearch", response.data);
+            commit("formDataSearch", response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     },
     //endregion
 
     //region [getLowestPrice]
     async getLowestPrice({ commit }, payload) {
       await axios
-        .post(
-          amadeusPath + "ajax",
-          {
-            className: "newApiFlight",
-            method: payload.method ? payload.method : "getLowestPriceFlight",
-            origin: payload.origin,
-            destination: payload.destination,
-            passengers: payload.passengers,
-          },
-          {
-            "Content-Type": "application/json",
-          }
-        )
-        .then(function (response) {
-          commit("setLowestFlightPrice", response.data.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+          .post(
+              amadeusPath + "ajax",
+              {
+                className: "newApiFlight",
+                method: payload.method ? payload.method : "getLowestPriceFlight",
+                origin: payload.origin,
+                destination: payload.destination,
+                passengers: payload.passengers,
+              },
+              {
+                "Content-Type": "application/json",
+              }
+          )
+          .then(function (response) {
+            commit("setLowestFlightPrice", response.data.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     },
     //endregion
 
     //region [checkTodayDate]
     async checkTodayDate({ commit }, payload) {
       await axios
-        .post(
-          amadeusPath + "ajax",
-          {
-            className: 'newApiFlight',
-            method: 'checkToDayDate',
-            dateSearch: payload.departureDate,
-          },
-          {
-            "Content-Type": "application/json",
-          }
-        )
-        .then(function (response) {
-          commit("setIsTodayDate", response.data.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+          .post(
+              amadeusPath + "ajax",
+              {
+                className: 'newApiFlight',
+                method: 'checkToDayDate',
+                dateSearch: payload.departureDate,
+              },
+              {
+                "Content-Type": "application/json",
+              }
+          )
+          .then(function (response) {
+            commit("setIsTodayDate", response.data.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     },
     //endregion
 
     //region [pwa]
     async pwaGetDefaultCities({ commit }, payload) {
       await axios
-        .post(
-          amadeusPath + "ajax",
-          {
-            className: "searchService",
-            method: "pwaGetDefaultCities",
-            limit: "9",
-            index_key: payload.index,
-            strategy: payload.strategy,
-            conditions: payload.conditions,
-            to_json: true,
-          },
-          {
-            "Content-Type": "application/json",
-          }
-        )
-        .then(async function (response) {
-          await commit("setPwaData", {
-            index: payload.index,
-            data: {
-              default_cities: response.data.data,
-              strategy: payload.strategy,
-            },
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    async pwaClosePanel({ commit }) {
-      await commit("setPwaDefaultStatus", false);
-    },
-    async pwaGetSearchedCities({ commit }, payload) {
-      if (payload.searchable) {
-        await axios
           .post(
-            amadeusPath + "ajax",
-            {
-              className: "searchService",
-              method: "pwaGetDefaultCities",
-              limit: "9",
-              index_key: payload.index,
-              strategy: payload.strategy,
-              value: payload.searchable,
-              conditions: payload.conditions,
-              to_json: true,
-            },
-            {
-              "Content-Type": "application/json",
-            }
+              amadeusPath + "ajax",
+              {
+                className: "searchService",
+                method: "pwaGetDefaultCities",
+                limit: "9",
+                index_key: payload.index,
+                strategy: payload.strategy,
+                conditions: payload.conditions,
+                to_json: true,
+              },
+              {
+                "Content-Type": "application/json",
+              }
           )
           .then(async function (response) {
             await commit("setPwaData", {
               index: payload.index,
               data: {
-                searched_cities: response.data.data,
+                default_cities: response.data.data,
                 strategy: payload.strategy,
               },
             });
@@ -998,6 +968,41 @@ const store = new Vuex.Store({
           .catch(function (error) {
             console.log(error);
           });
+    },
+    async pwaClosePanel({ commit }) {
+      await commit("setPwaDefaultStatus", false);
+    },
+    async pwaGetSearchedCities({ commit }, payload) {
+      if (payload.searchable) {
+        await axios
+            .post(
+                amadeusPath + "ajax",
+                {
+                  className: "searchService",
+                  method: "pwaGetDefaultCities",
+                  limit: "9",
+                  index_key: payload.index,
+                  strategy: payload.strategy,
+                  value: payload.searchable,
+                  conditions: payload.conditions,
+                  to_json: true,
+                },
+                {
+                  "Content-Type": "application/json",
+                }
+            )
+            .then(async function (response) {
+              await commit("setPwaData", {
+                index: payload.index,
+                data: {
+                  searched_cities: response.data.data,
+                  strategy: payload.strategy,
+                },
+              });
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
       } else {
         await commit("setPwaData", {
           index: payload.index,
@@ -1041,74 +1046,74 @@ const store = new Vuex.Store({
     },
     async pwaGetUserProfile({ commit }, payload) {
       await axios
-        .post(
-          amadeusPath + "ajax",
-          {
-            className: "user",
-            method: "apiGetProfile",
-          },
-          {
-            "Content-Type": "application/json",
-          }
-        )
-        .then(async function (response) {
-          await commit("setPwaData", {
-            panel_index: "user_profile",
-            data: {
-              data: response.data.data,
-            },
-          });
-        })
-        .catch(async function (error) {
-          if (error.response.status === 403) {
-            window.location.href = "/gds/loginUser?referrer=app";
-
+          .post(
+              amadeusPath + "ajax",
+              {
+                className: "user",
+                method: "apiGetProfile",
+              },
+              {
+                "Content-Type": "application/json",
+              }
+          )
+          .then(async function (response) {
             await commit("setPwaData", {
               panel_index: "user_profile",
               data: {
-                index: payload.tab_index,
-                data: false,
+                data: response.data.data,
               },
             });
-          }
-        });
+          })
+          .catch(async function (error) {
+            if (error.response.status === 403) {
+              window.location.href = "/gds/loginUser?referrer=app";
+
+              await commit("setPwaData", {
+                panel_index: "user_profile",
+                data: {
+                  index: payload.tab_index,
+                  data: false,
+                },
+              });
+            }
+          });
     },
     async pwaChangePurchaseTab({ commit }, payload) {
       await axios
-        .post(
-          amadeusPath + "ajax",
-          {
-            className: "userBuy",
-            method: "apiGetData",
-            tab_index: payload.tab_index,
-            form: payload.form,
-          },
-          {
-            "Content-Type": "application/json",
-          }
-        )
-        .then(async function (response) {
-          await commit("setPwaData", {
-            panel_index: "purchase_record",
-            data: {
-              index: payload.tab_index,
-              data: response.data.data,
-            },
-          });
-        })
-        .catch(async function (error) {
-          if (error.response.status === 403) {
-            window.location.href = "/gds/loginUser?referrer=app";
-
+          .post(
+              amadeusPath + "ajax",
+              {
+                className: "userBuy",
+                method: "apiGetData",
+                tab_index: payload.tab_index,
+                form: payload.form,
+              },
+              {
+                "Content-Type": "application/json",
+              }
+          )
+          .then(async function (response) {
             await commit("setPwaData", {
               panel_index: "purchase_record",
               data: {
                 index: payload.tab_index,
-                data: false,
+                data: response.data.data,
               },
             });
-          }
-        });
+          })
+          .catch(async function (error) {
+            if (error.response.status === 403) {
+              window.location.href = "/gds/loginUser?referrer=app";
+
+              await commit("setPwaData", {
+                panel_index: "purchase_record",
+                data: {
+                  index: payload.tab_index,
+                  data: false,
+                },
+              });
+            }
+          });
     },
     async pwaChangePage({ commit }, payload) {
       await commit("setPwaData", {
@@ -1146,13 +1151,13 @@ const store = new Vuex.Store({
     async isCounter({ commit }){
 
       axios.post(amadeusPath + "ajax",
-         {
-           className: "login",
-           method: "isCounter",
-         },
-         {
-           'Content-Type': 'application/json'
-         }).then(function (response) {
+          {
+            className: "login",
+            method: "isCounter",
+          },
+          {
+            'Content-Type': 'application/json'
+          }).then(function (response) {
 
         commit("isCounter", response.data);
       }).catch(function (error) {
@@ -1163,14 +1168,14 @@ const store = new Vuex.Store({
     async isSafar360({ commit }){
 
       axios.post(amadeusPath + "ajax",
-         {
-           className: "clients",
-           method: "isSafar360",         },
-         {
-           'Content-Type': 'application/json'
-         }).then(function (response) {
-           console.log('isSafar360: ')
-           console.log(response.data)
+          {
+            className: "clients",
+            method: "isSafar360",         },
+          {
+            'Content-Type': 'application/json'
+          }).then(function (response) {
+        console.log('isSafar360: ')
+        console.log(response.data)
         commit("isSafar360", response.data);
       }).catch(function (error) {
       });

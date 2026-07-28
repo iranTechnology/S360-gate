@@ -87,12 +87,12 @@
                                                             ##Printticket##
                                                         </a>
                                                     {else}
-                                                        <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=parvazBookingLocal&id={$bookFlight['request_number']}"
+                                                        <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=parvazBookingLocal&id={$bookFlight['request_number']}&lang=fa"
                                                            class="btn-click btn-pdf" target="_blank">
                                                             <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                                             </svg>
-                                                            ##Printticket##
+                                                            ##PersionTicket##
                                                         </a>
                                                     {/if}
                                                 {else}
@@ -104,7 +104,12 @@
                                                         ##PdfFile##
                                                     </a>
                                                 {/if}
-
+                                                {if $bookFlight['IsInternal'] eq '1'}
+                                                    <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=parvazBookingLocal&id={$bookFlight['request_number']}"
+                                                       class="btn-click btn-english" target="_blank">
+                                                        ##EnglishTicket##
+                                                    </a>
+                                                {/if}
                                                 <!-- دکمه چاپ رسید -->
                                                 <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pdf&target=boxCheck&id={$bookFlight['request_number']}"
                                                    class="btn-click btn-receipt" target="_blank">
@@ -128,12 +133,12 @@
                                         {else}
                                             <!-- حالت تک پرواز -->
                                             {if $bookFlight['IsInternal'] eq '1'}
-                                                <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=parvazBookingLocal&id={$bookFlight['request_number']}"
+                                                <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=parvazBookingLocal&id={$bookFlight['request_number']}&lang=fa"
                                                    class="btn-click btn-pdf" target="_blank">
                                                     <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                                     </svg>
-                                                    ##Printticket##
+                                                    ##PersionTicket##
                                                 </a>
                                             {else}
                                                 <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=ticketForeign&id={$bookFlight['request_number']}"
@@ -144,7 +149,12 @@
                                                     ##PdfFile##
                                                 </a>
                                             {/if}
-
+                                            {if $bookFlight['IsInternal'] eq '1'}
+                                                <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=parvazBookingLocal&id={$bookFlight['request_number']}"
+                                                   class="btn-click btn-english" target="_blank">
+                                                    ##EnglishTicket##
+                                                </a>
+                                            {/if}
                                             <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pdf&target=boxCheck&id={$bookFlight['request_number']}"
                                                class="btn-click btn-receipt" target="_blank">
                                                 <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,15 +166,15 @@
                                     {/foreach}
 
                                     <!-- دکمه‌های اضافی که در همه حالات نمایش داده می‌شوند -->
-                                    {foreach $infoBook as $bookFlight}
-                                        {if $bookFlight['IsInternal'] eq '1'}
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=bookshow&id={$bookFlight['request_number']}"
-                                               class="btn-click btn-english" target="_blank">
-                                                ##PrintEnglishticket##
-                                            </a>
-                                        {/if}
-                                        {break}
-                                    {/foreach}
+                                    {*                                    {foreach $infoBook as $bookFlight}*}
+                                    {*                                        {if $bookFlight['IsInternal'] eq '1'}*}
+                                    {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/pdf&target=bookshow&id={$bookFlight['request_number']}"*}
+                                    {*                                               class="btn-click btn-english" target="_blank">*}
+                                    {*                                                ##PrintEnglishticket##*}
+                                    {*                                            </a>*}
+                                    {*                                        {/if}*}
+                                    {*                                        {break}*}
+                                    {*                                    {/foreach}*}
                                 </div>
 
                                 <!-- بخش کد تخفیف -->
@@ -213,9 +223,9 @@
 
         {/if}
     {else}
-       <p class="d-none">
-           {$objbook->changeFlagToPending(['factor_number'=>$infoBook[0]['factor_number']])}
-       </p>
+        <p class="d-none">
+            {$objbook->changeFlagToPending(['factor_number'=>$infoBook[0]['factor_number']])}
+        </p>
         <div class="main-bank-box">
             <div class="mbb-preload mbb-preload-icon-alert">
                 <img src="assets/images/pre-bank-red.png">
