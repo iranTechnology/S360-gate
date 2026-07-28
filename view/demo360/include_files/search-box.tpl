@@ -4,7 +4,7 @@
     {$banners = [0 => ['pic' => $page.files.main_file.src , 'title' => 'page']]}
 {/if}
 
-<section class="i_modular_banner_gallery position-relative">
+<section class="i_modular_banner_gallery position-relative ">
 {*    <div class='container'>*}
 {*        <div class='demo-ticket-old'>*}
 {*            <p>به نسخه قدیمی وب‌سایت ما علاقه دارید؟</p>*}

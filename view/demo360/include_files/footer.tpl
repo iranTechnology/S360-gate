@@ -4,78 +4,78 @@
     {if $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotel && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintTicket && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservation && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservationAhuan}
         <svg id="wave" style="transform:rotate(0deg); transition: 0.3s" viewBox="0 0 1440 100" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(253, 253, 253, 1)" offset="0%"></stop><stop stop-color="rgba(234.926, 234.926, 234.926, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="#1e1e1e" d="M0,10L40,18.3C80,27,160,43,240,50C320,57,400,53,480,46.7C560,40,640,30,720,21.7C800,13,880,7,960,11.7C1040,17,1120,33,1200,48.3C1280,63,1360,77,1440,78.3C1520,80,1600,70,1680,56.7C1760,43,1840,27,1920,21.7C2000,17,2080,23,2160,25C2240,27,2320,23,2400,33.3C2480,43,2560,67,2640,66.7C2720,67,2800,43,2880,33.3C2960,23,3040,27,3120,25C3200,23,3280,17,3360,15C3440,13,3520,17,3600,23.3C3680,30,3760,40,3840,40C3920,40,4000,30,4080,31.7C4160,33,4240,47,4320,51.7C4400,57,4480,53,4560,50C4640,47,4720,43,4800,45C4880,47,4960,53,5040,46.7C5120,40,5200,20,5280,10C5360,0,5440,0,5520,1.7C5600,3,5680,7,5720,8.3L5760,10L5760,100L5720,100C5680,100,5600,100,5520,100C5440,100,5360,100,5280,100C5200,100,5120,100,5040,100C4960,100,4880,100,4800,100C4720,100,4640,100,4560,100C4480,100,4400,100,4320,100C4240,100,4160,100,4080,100C4000,100,3920,100,3840,100C3760,100,3680,100,3600,100C3520,100,3440,100,3360,100C3280,100,3200,100,3120,100C3040,100,2960,100,2880,100C2800,100,2720,100,2640,100C2560,100,2480,100,2400,100C2320,100,2240,100,2160,100C2080,100,2000,100,1920,100C1840,100,1760,100,1680,100C1600,100,1520,100,1440,100C1360,100,1280,100,1200,100C1120,100,1040,100,960,100C880,100,800,100,720,100C640,100,560,100,480,100C400,100,320,100,240,100C160,100,80,100,40,100L0,100Z"></path><defs><linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(253, 253, 253, 1)" offset="0%"></stop><stop stop-color="rgba(253, 253, 253, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 50px); opacity:0.9" fill="#1e1e1e" d="M0,90L40,80C80,70,160,50,240,45C320,40,400,50,480,53.3C560,57,640,53,720,46.7C800,40,880,30,960,21.7C1040,13,1120,7,1200,15C1280,23,1360,47,1440,61.7C1520,77,1600,83,1680,81.7C1760,80,1840,70,1920,58.3C2000,47,2080,33,2160,33.3C2240,33,2320,47,2400,51.7C2480,57,2560,53,2640,45C2720,37,2800,23,2880,16.7C2960,10,3040,10,3120,16.7C3200,23,3280,37,3360,43.3C3440,50,3520,50,3600,46.7C3680,43,3760,37,3840,31.7C3920,27,4000,23,4080,18.3C4160,13,4240,7,4320,16.7C4400,27,4480,53,4560,56.7C4640,60,4720,40,4800,28.3C4880,17,4960,13,5040,15C5120,17,5200,23,5280,28.3C5360,33,5440,37,5520,38.3C5600,40,5680,40,5720,40L5760,40L5760,100L5720,100C5680,100,5600,100,5520,100C5440,100,5360,100,5280,100C5200,100,5120,100,5040,100C4960,100,4880,100,4800,100C4720,100,4640,100,4560,100C4480,100,4400,100,4320,100C4240,100,4160,100,4080,100C4000,100,3920,100,3840,100C3760,100,3680,100,3600,100C3520,100,3440,100,3360,100C3280,100,3200,100,3120,100C3040,100,2960,100,2880,100C2800,100,2720,100,2640,100C2560,100,2480,100,2400,100C2320,100,2240,100,2160,100C2080,100,2000,100,1920,100C1840,100,1760,100,1680,100C1600,100,1520,100,1440,100C1360,100,1280,100,1200,100C1120,100,1040,100,960,100C880,100,800,100,720,100C640,100,560,100,480,100C400,100,320,100,240,100C160,100,80,100,40,100L0,100Z"></path></svg>
         <footer class="i_modular_footer position-relative">
-            
+
             <div class="body-footer">
                 <div class="container">
                     <div class='pre-footer'>
-                         <div class='pre-footer-parent'>
-                                <div class='social-footer'>
-                                    <a class="footer-brand" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                                        <img alt="{$obj->Title_head()}" class="__logo_class__"
-                                             src="project_files/images/logo.png" />
-                                        <span class="respect">بر مدار احترام</span>
-                                    </a>
-                                    {assign var="socialLinks"  value=$about['social_links']|json_decode:true}
-                                    {assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref','aparat' => 'aparatHref','youTube' => 'youtubeHref','facebook' => 'facebookHref','linkedin' => 'linkeDinHref' , 'twitter' => 'twitterHref']}
+                        <div class='pre-footer-parent'>
+                            <div class='social-footer'>
+                                <a class="footer-brand" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
+                                    <img id="footerLogo" alt="{$obj->Title_head()}" class="__logo_class__"
+                                         src="project_files/images/logo.png" />
+                                    <span class="respect">بر مدار احترام</span>
+                                </a>
+                                {assign var="socialLinks"  value=$about['social_links']|json_decode:true}
+                                {assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref','aparat' => 'aparatHref','youTube' => 'youtubeHref','facebook' => 'facebookHref','linkedin' => 'linkeDinHref' , 'twitter' => 'twitterHref']}
 
-                                    {foreach $socialLinks as $key => $val}
-                                        {assign var=$socialLinksArray[$val['social_media']] value=$val['link']}
-                                    {/foreach}
+                                {foreach $socialLinks as $key => $val}
+                                    {assign var=$socialLinksArray[$val['social_media']] value=$val['link']}
+                                {/foreach}
                                 <div class="link-footer">
                                     <a href='project_files/images/Airlines-Commission-img.jpg' target="_blank">کمیسیون ایرلاین ها</a>
                                 </div>
-                                    <div class="__social_class__ footer-icon icon-respancive">
-                                        <a class="__telegram_class__ fab fa-telegram footer_telegram"
-                                           href="{if $telegramHref}{$telegramHref}{/if}" target="_blank">
-                                        </a>
-                                        <a class="__instagram_class__ fab fa-instagram footer_instagram"
-                                           href="{if $instagramHref}{$instagramHref}{/if}" target="_blank">
-                                        </a>
-                                        <a class="__whatsapp_class__ fab fa-whatsapp footer_whatsapp"
-                                           href="{if $whatsappHref}{$whatsappHref}{/if}" target="_blank">
-                                        </a>
-                                        <a class="__linkdin_class__ fa-brands fa-linkedin-in footer_linkedin"
-                                           href="{if $linkeDinHref}{$linkeDinHref}{/if}" target="_blank">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class='contactUs-footer'>
-                                    <div class="child-item-footer2 align-items-start">
-                                        <i class="fa-light fa-location-dot">
-                                        </i>
-                                        <div class="parent-text-address">
-{*                                            آدرس:*}
-                                            <span class="__address_class__ text-right">
-          {$smarty.const.CLIENT_ADDRESS}
-         </span>
-                                        </div>
-                                    </div>
-                                    <div class="child-item-footer">
-                                        <i class="fa-light fa-phone">
-                                        </i>
-{*                                        تلفن:*}
-                                        <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_PHONE}">
-                                            {$smarty.const.CLIENT_PHONE}
-                                        </a>
-                                    </div>
-                                    <div class="child-item-footer">
-                                        <i class="fa-light fa-mobile">
-                                        </i>
-{*                                        موبایل:*}
-                                        <a class="__mobile_class__" href="tel:{$smarty.const.CLIENT_MOBILE}">
-                                            {$smarty.const.CLIENT_MOBILE}
-                                        </a>
-                                    </div>
-                                    <div class="child-item-footer">
-                                        <i class="fa-light fa-envelope">
-                                        </i>
-{*                                        ایمیل:*}
-                                        <a class="__email_class__" href="mailto:{$smarty.const.CLIENT_EMAIL}" style='font-family: "Barlow", sans-serif;'>
-                                            {$smarty.const.CLIENT_EMAIL}
-                                        </a>
-                                    </div>
+                                <div class="__social_class__ footer-icon icon-respancive">
+                                    <a class="__telegram_class__ fab fa-telegram footer_telegram"
+                                       href="{if $telegramHref}{$telegramHref}{/if}" target="_blank">
+                                    </a>
+                                    <a class="__instagram_class__ fab fa-instagram footer_instagram"
+                                       href="{if $instagramHref}{$instagramHref}{/if}" target="_blank">
+                                    </a>
+                                    <a class="__whatsapp_class__ fab fa-whatsapp footer_whatsapp"
+                                       href="{if $whatsappHref}{$whatsappHref}{/if}" target="_blank">
+                                    </a>
+                                    <a class="__linkdin_class__ fa-brands fa-linkedin-in footer_linkedin"
+                                       href="{if $linkeDinHref}{$linkeDinHref}{/if}" target="_blank">
+                                    </a>
                                 </div>
                             </div>
+                            <div class='contactUs-footer'>
+                                <div class="child-item-footer2 align-items-start">
+                                    <i class="fa-light fa-location-dot">
+                                    </i>
+                                    <div class="parent-text-address">
+                                        {*                                            آدرس:*}
+                                        <span class="__address_class__ text-right">
+          {$smarty.const.CLIENT_ADDRESS}
+         </span>
+                                    </div>
+                                </div>
+                                <div class="child-item-footer">
+                                    <i class="fa-light fa-phone">
+                                    </i>
+                                    {*                                        تلفن:*}
+                                    <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_PHONE}">
+                                        {$smarty.const.CLIENT_PHONE}
+                                    </a>
+                                </div>
+                                <div class="child-item-footer">
+                                    <i class="fa-light fa-mobile">
+                                    </i>
+                                    {*                                        موبایل:*}
+                                    <a class="__mobile_class__" href="tel:{$smarty.const.CLIENT_MOBILE}">
+                                        {$smarty.const.CLIENT_MOBILE}
+                                    </a>
+                                </div>
+                                <div class="child-item-footer">
+                                    <i class="fa-light fa-envelope">
+                                    </i>
+                                    {*                                        ایمیل:*}
+                                    <a class="__email_class__" href="mailto:{$smarty.const.CLIENT_EMAIL}" style='font-family: "Barlow", sans-serif;'>
+                                        {$smarty.const.CLIENT_EMAIL}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="parent-footer-iran d-flex flex-wrap w-100">
@@ -106,56 +106,56 @@
                                         دسترسی آسان
                                     </h3>
                                     <ul>
-{*                                        <li>*}
-{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">*}
-{*                                                <i class="fa-sharp fa-solid fa-square">*}
-{*                                                </i>*}
-{*                                                تور داخلی*}
-{*                                            </a>*}
-{*                                        </li>*}
-{*                                        <li>*}
-{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">*}
-{*                                                <i class="fa-sharp fa-solid fa-square">*}
-{*                                                </i>*}
-{*                                                تور خارجی*}
-{*                                            </a>*}
-{*                                        </li>*}
-{*                                        <li>*}
-{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">*}
-{*                                                <i class="fa-sharp fa-solid fa-square">*}
-{*                                                </i>*}
-{*                                                هتل*}
-{*                                            </a>*}
-{*                                        </li>*}
+                                        {*                                        <li>*}
+                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">*}
+                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
+                                        {*                                                </i>*}
+                                        {*                                                تور داخلی*}
+                                        {*                                            </a>*}
+                                        {*                                        </li>*}
+                                        {*                                        <li>*}
+                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">*}
+                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
+                                        {*                                                </i>*}
+                                        {*                                                تور خارجی*}
+                                        {*                                            </a>*}
+                                        {*                                        </li>*}
+                                        {*                                        <li>*}
+                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">*}
+                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
+                                        {*                                                </i>*}
+                                        {*                                                هتل*}
+                                        {*                                            </a>*}
+                                        {*                                        </li>*}
 
-{*                                        <li>*}
-{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">*}
-{*                                                <i class="fa-sharp fa-solid fa-square">*}
-{*                                                </i>*}
-{*                                                اطلاعات ویزا*}
-{*                                            </a>*}
-{*                                        </li>*}
-{*                                        <li>*}
-{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">*}
-{*                                                <i class="fa-sharp fa-solid fa-square">*}
-{*                                                </i>*}
-{*                                                تماس با ما*}
-{*                                            </a>*}
-{*                                        </li>*}
-{*                                        <li>*}
-{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">*}
-{*                                                <i class="fa-sharp fa-solid fa-square">*}
-{*                                                </i>*}
-{*                                                پرواز*}
-{*                                            </a>*}
-{*                                        </li>*}
-{*                                        <li>*}
-{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">*}
-{*                                                <i class="fa-sharp fa-solid fa-square">*}
-{*                                                </i>*}
-{*                                                درباره ما*}
-{*                                            </a>*}
-{*                                        </li>*}
+                                        {*                                        <li>*}
+                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">*}
+                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
+                                        {*                                                </i>*}
+                                        {*                                                اطلاعات ویزا*}
+                                        {*                                            </a>*}
+                                        {*                                        </li>*}
+                                        {*                                        <li>*}
+                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">*}
+                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
+                                        {*                                                </i>*}
+                                        {*                                                تماس با ما*}
+                                        {*                                            </a>*}
+                                        {*                                        </li>*}
+                                        {*                                        <li>*}
+                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">*}
+                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
+                                        {*                                                </i>*}
+                                        {*                                                پرواز*}
+                                        {*                                            </a>*}
+                                        {*                                        </li>*}
+                                        {*                                        <li>*}
+                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">*}
+                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
+                                        {*                                                </i>*}
+                                        {*                                                درباره ما*}
+                                        {*                                            </a>*}
+                                        {*                                        </li>*}
                                         {*                                        <li>*}
                                         {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">*}
                                         {*                                                <i class="fa-sharp fa-solid fa-square">*}
@@ -216,41 +216,41 @@
 
 
                                     </ul>
-{*                                    <div class="parent-tour-footer">*}
-{*                                        <a class="" href="javascript:">*}
-{*                                            <img alt="img-tour" src="project_files/images/tour-france.jpg" />*}
-{*                                            <div class="caption-tour">*}
-{*                                                <h4>*}
-{*                                                    تور فرانسه*}
-{*                                                </h4>*}
-{*                                                <span>*}
-{*           2 بهمن 1403*}
-{*          </span>*}
-{*                                            </div>*}
-{*                                        </a>*}
-{*                                        <a class="" href="javascript:">*}
-{*                                            <img alt="img-tour" src="project_files/images/tour-italya.jpg" />*}
-{*                                            <div class="caption-tour">*}
-{*                                                <h4>*}
-{*                                                    تور ایتالیا*}
-{*                                                </h4>*}
-{*                                                <span>*}
-{*           12 بهمن 1403*}
-{*          </span>*}
-{*                                            </div>*}
-{*                                        </a>*}
-{*                                        <a class="" href="javascript:">*}
-{*                                            <img alt="img-tour" src="project_files/images/tour-sydney.jpg" />*}
-{*                                            <div class="caption-tour">*}
-{*                                                <h4>*}
-{*                                                    تور استرالیا*}
-{*                                                </h4>*}
-{*                                                <span>*}
-{*           18 بهمن 1403*}
-{*          </span>*}
-{*                                            </div>*}
-{*                                        </a>*}
-{*                                    </div>*}
+                                    {*                                    <div class="parent-tour-footer">*}
+                                    {*                                        <a class="" href="javascript:">*}
+                                    {*                                            <img alt="img-tour" src="project_files/images/tour-france.jpg" />*}
+                                    {*                                            <div class="caption-tour">*}
+                                    {*                                                <h4>*}
+                                    {*                                                    تور فرانسه*}
+                                    {*                                                </h4>*}
+                                    {*                                                <span>*}
+                                    {*           2 بهمن 1403*}
+                                    {*          </span>*}
+                                    {*                                            </div>*}
+                                    {*                                        </a>*}
+                                    {*                                        <a class="" href="javascript:">*}
+                                    {*                                            <img alt="img-tour" src="project_files/images/tour-italya.jpg" />*}
+                                    {*                                            <div class="caption-tour">*}
+                                    {*                                                <h4>*}
+                                    {*                                                    تور ایتالیا*}
+                                    {*                                                </h4>*}
+                                    {*                                                <span>*}
+                                    {*           12 بهمن 1403*}
+                                    {*          </span>*}
+                                    {*                                            </div>*}
+                                    {*                                        </a>*}
+                                    {*                                        <a class="" href="javascript:">*}
+                                    {*                                            <img alt="img-tour" src="project_files/images/tour-sydney.jpg" />*}
+                                    {*                                            <div class="caption-tour">*}
+                                    {*                                                <h4>*}
+                                    {*                                                    تور استرالیا*}
+                                    {*                                                </h4>*}
+                                    {*                                                <span>*}
+                                    {*           18 بهمن 1403*}
+                                    {*          </span>*}
+                                    {*                                            </div>*}
+                                    {*                                        </a>*}
+                                    {*                                    </div>*}
                                 </div>
                             </div>
                             <div class="item-footer col-lg-3 col-md-6 col-sm-6 col-12 order-foot4">
@@ -268,9 +268,19 @@
                                         <a href="http://aira.ir/images/final3.pdf">
                                             <img alt="namad-2" src="project_files/images/certificate3.png" />
                                         </a>
-                                        <a href="javascript:">
-                                            <img alt="namad-2" src="project_files/images/enamad.png" />
-                                        </a>
+
+                                        {*                                        <a href="javascript: " referrerpolicy="origin" target="_blank">*}
+                                        {*                                            <img alt="namad-2" src="project_files/images/enamad.png" />*}
+                                        {*                                        </a>*}
+                                        {if !empty($about.enamad_id) && !empty($about.enamad_code)}
+                                            <a referrerpolicy="origin" target="_blank"
+                                               href="https://trustseal.enamad.ir/?id={$about.enamad_id}&Code={$about.enamad_code}">
+                                                <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG|cat:'/pic/enamad.png'}"
+                                                     alt="اینماد"
+                                                     style="cursor:pointer">
+                                            </a>
+                                        {/if}
+
                                         <a href="https://www.iran-tech.com/pic/news/Danesh_Bonyan.jpg">
                                             <img alt="daneshBonyan" src="project_files/images/danesh.jpg" />
                                         </a>

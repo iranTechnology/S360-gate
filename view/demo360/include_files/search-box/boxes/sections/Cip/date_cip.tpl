@@ -5,10 +5,11 @@
         </i>
 
     <div class="form-group form-group-cip">
+        <div class="caption-input-search-box01">تاریخ پرواز رفت را انتخاب کنید</div>
         <input type="text"
                autocomplete="off"
                readonly=""
-               class="init-shamsi-datepicker form-control check-in-date-international-js"
+               class="init-shamsi-datepicker form-control"
                name="dateForCip"
                id="dateForCip"
                placeholder="##Enterdate##"

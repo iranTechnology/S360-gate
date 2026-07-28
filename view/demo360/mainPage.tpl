@@ -3,7 +3,6 @@
 <html dir="rtl" lang="fa">
 {include file="include_files/header.tpl"}
 <body>
-
 {if $smarty.session.layout neq 'pwa' }{include file="include_files/menu.tpl"}{/if}
 <main>
     {include file="include_files/search-box.tpl"}

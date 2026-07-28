@@ -6,7 +6,7 @@
                 <div class="parent-menu-logo">
                     <div class="nav-header">
                         <a class="nav-brand" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                            <img alt="{$obj->Title_head()}" class="__logo_class__ logo-img" src="project_files/images/logo.png"/>
+                            <img id="siteLogo" alt="{$obj->Title_head()}" class="__logo_class__ logo-img" src="project_files/images/logo.png"/>
                             <span class="respect">بر مدار احترام</span>
                             <div class='bg-img-logo'></div>
                         </a>
@@ -458,129 +458,143 @@
                             </li>
                             <li>
                                 <a class="link-header" href="javascript:">آژانس ما</a>
-                                <ul class="nav-dropdown our-agency-sub-menu" style='display: none'>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/mag">
-                                            <i class="parent-icon-sub-menu">
-                                                <svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                                                    <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                                    <path d="M160 224C151.2 224 144 231.2 144 240S151.2 256 160 256c52.94 0 96 43.06 96 96s-43.06 96-96 96s-96-43.06-96-96V112C64 103.2 56.84 96 48 96S32 103.2 32 112V352c0 70.58 57.41 128 128 128s128-57.42 128-128S230.6 224 160 224zM208 32C199.2 32 192 39.16 192 48S199.2 64 208 64C340.3 64 448 171.7 448 304c0 8.844 7.156 16 16 16S480 312.8 480 304C480 154 357.1 32 208 32zM208 128C199.2 128 192 135.2 192 144S199.2 160 208 160C287.4 160 352 224.6 352 304c0 8.844 7.156 16 16 16S384 312.8 384 304C384 206.1 305 128 208 128z"></path>
-                                                </svg>
-                                            </i>
-                                            <div class="parent-sub-menu-title">
-                                                <h4>وبلاگ</h4>
-                                                <p class="sub-menu-caption">
+                                <div class='nav-dropdown  passengers-sub-menu our-agency' style='display: none;left: -327px !important;'>
+                                    <ul class="ul-menu-passengers">
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/mag">
+                                                <i class="parent-icon-sub-menu">
+                                                    <svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                        <path d="M160 224C151.2 224 144 231.2 144 240S151.2 256 160 256c52.94 0 96 43.06 96 96s-43.06 96-96 96s-96-43.06-96-96V112C64 103.2 56.84 96 48 96S32 103.2 32 112V352c0 70.58 57.41 128 128 128s128-57.42 128-128S230.6 224 160 224zM208 32C199.2 32 192 39.16 192 48S199.2 64 208 64C340.3 64 448 171.7 448 304c0 8.844 7.156 16 16 16S480 312.8 480 304C480 154 357.1 32 208 32zM208 128C199.2 128 192 135.2 192 144S199.2 160 208 160C287.4 160 352 224.6 352 304c0 8.844 7.156 16 16 16S384 312.8 384 304C384 206.1 305 128 208 128z"></path>
+                                                    </svg>
+                                                </i>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>وبلاگ</h4>
+                                                    <p class="sub-menu-caption">
 
-                                                    در بخش وبلاگ ما، با جدیدترین اخبار و مطالب جذاب درباره مقاصد
-                                                    گردشگری، نکات سفر، و توصیه‌های ویژه برای تجربه‌ی یک سفر به‌یادماندنی
-                                                    آشنا شوید. از ماجراجویی‌های تازه تا مکان‌های بکر و ناشناخته، همه و
-                                                    همه در اینجا منتظر شما هستند
+                                                        در بخش وبلاگ ما، با جدیدترین اخبار و مطالب جذاب درباره مقاصد
+                                                        گردشگری، نکات سفر، و توصیه‌های ویژه برای تجربه‌ی یک سفر به‌یادماندنی
+                                                        آشنا شوید. از ماجراجویی‌های تازه تا مکان‌های بکر و ناشناخته، همه و
+                                                        همه در اینجا منتظر شما هستند
 
-                                                </p>
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/news">
+                                                <i class="parent-icon-sub-menu">
+                                                    <svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                        <path d="M16 32C7.2 32 0 39.2 0 48s7.2 16 16 16c220.9 0 400 179.1 400 400c0 8.8 7.2 16 16 16s16-7.2 16-16C448 225.4 254.6 32 16 32zm0 144c-8.8 0-16 7.2-16 16s7.2 16 16 16c141.4 0 256 114.6 256 256c0 8.8 7.2 16 16 16s16-7.2 16-16c0-159.1-128.9-288-288-288zM32 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm96 0A64 64 0 1 0 0 416a64 64 0 1 0 128 0z"></path>
+                                                    </svg>
+                                                </i>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>اخبار</h4>
+                                                    <p class="sub-menu-caption">
+
+                                                        در بخش اخبار ما، با آخرین اطلاعات و رویدادهای مهم در صنعت گردشگری
+                                                        آشنا شوید. از تغییرات مقررات سفر تا معرفی جشنواره‌ها و رویدادهای
+                                                        ویژه، همواره در جریان تازه‌ترین اخبار و تحولات گردشگری باشید.
+
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/pay">
+                                                <i class="parent-icon-sub-menu">
+                                                    <svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                        <path d="M128 128V96C128 42.98 170.1 0 224 0C277 0 320 42.98 320 96V128H400C426.5 128 448 149.5 448 176V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V176C0 149.5 21.49 128 48 128H128zM160 128H288V96C288 60.65 259.3 32 224 32C188.7 32 160 60.65 160 96V128zM48 160C39.16 160 32 167.2 32 176V416C32 451.3 60.65 480 96 480H352C387.3 480 416 451.3 416 416V176C416 167.2 408.8 160 400 160H320V240C320 248.8 312.8 256 304 256C295.2 256 288 248.8 288 240V160H160V240C160 248.8 152.8 256 144 256C135.2 256 128 248.8 128 240V160H48z"></path>
+                                                    </svg>
+                                                </i>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>درگاه پرداخت آنلاین</h4>
+                                                    <p class="sub-menu-caption">
+
+                                                        در بخش درگاه پرداخت آنلاین، شما می‌توانید به‌صورت امن و سریع
+                                                        هزینه‌های سفر خود را پرداخت کنید. با استفاده از این سیستم، تجربه‌ای
+                                                        راحت و بی‌دغدغه در رزرو و پرداخت برای خدمات گردشگری خواهید داشت
+
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/rules">
+                                                <i class="parent-icon-sub-menu">
+                                                    <svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                        <path d="M384 64c0 29.8-20.4 54.9-48 62V480H528c8.8 0 16 7.2 16 16s-7.2 16-16 16H320 112c-8.8 0-16-7.2-16-16s7.2-16 16-16H304V126c-27.6-7.1-48-32.2-48-62H112c-8.8 0-16-7.2-16-16s7.2-16 16-16H264.6C275.6 12.9 296.3 0 320 0s44.4 12.9 55.4 32H512c8.8 0 16 7.2 16 16s-7.2 16-16 16H384zm56.7 298.3C457.8 375.1 482.9 384 512 384s54.2-8.9 71.3-21.7C600.4 349.5 608 334.2 608 320H416v-1.6l0 .1V320c0 14.2 7.6 29.5 24.7 42.3zm71.3-215L426.3 288H597.7L512 147.3zM384 320v-1.6c0-14.7 4-29.1 11.7-41.6l92-151.2c5.2-8.5 14.4-13.7 24.3-13.7s19.2 5.2 24.3 13.7l92 151.2c7.6 12.5 11.7 26.9 11.7 41.6V320c0 53-57.3 96-128 96s-128-43-128-96zM32 320c0 14.2 7.6 29.5 24.7 42.3C73.8 375.1 98.9 384 128 384s54.2-8.9 71.3-21.7C216.4 349.5 224 334.2 224 320H32v-1.6l0 .1V320zm10.3-32H213.7L128 147.3 42.3 288zM128 416C57.3 416 0 373 0 320v-1.6c0-14.7 4-29.1 11.7-41.6l92-151.2c5.2-8.5 14.4-13.7 24.3-13.7s19.2 5.2 24.3 13.7l92 151.2c7.6 12.5 11.7 26.9 11.7 41.6V320c0 53-57.3 96-128 96zM320 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"></path>
+                                                    </svg>
+                                                </i>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>قوانین و مقررات</h4>
+                                                    <p class="sub-menu-caption">
+
+                                                        در بخش قوانین و مقررات، با شرایط و ضوابط استفاده از خدمات ما آشنا
+                                                        شوید. مطالعه این بخش به شما کمک می‌کند تا با حقوق و مسئولیت‌های خود
+                                                        به‌طور کامل آگاه شده و از تجربه‌ای مطمئن و رضایت‌بخش بهره‌مند شوید
+
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">
+                                                <i class="parent-icon-sub-menu">
+                                                    <svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                        <path d="M480 288h-128c-8.836 0-16 7.164-16 16S343.2 320 352 320h128c8.836 0 16-7.164 16-16S488.8 288 480 288zM192 256c35.35 0 64-28.65 64-64S227.3 128 192 128S128 156.7 128 192S156.7 256 192 256zM192 160c17.64 0 32 14.36 32 32S209.6 224 192 224S160 209.6 160 192S174.4 160 192 160zM224 288H160c-44.18 0-80 35.82-80 80C80 376.8 87.16 384 96 384s16-7.164 16-16C112 341.5 133.5 320 160 320h64c26.51 0 48 21.49 48 48c0 8.836 7.164 16 16 16s16-7.164 16-16C304 323.8 268.2 288 224 288zM512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM544 416c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V96c0-17.64 14.36-32 32-32h448c17.64 0 32 14.36 32 32V416zM480 224h-128c-8.836 0-16 7.164-16 16S343.2 256 352 256h128c8.836 0 16-7.164 16-16S488.8 224 480 224zM480 160h-128c-8.836 0-16 7.164-16 16S343.2 192 352 192h128c8.836 0 16-7.164 16-16S488.8 160 480 160z"></path>
+                                                    </svg>
+                                                </i>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>درباره ما</h4>
+                                                    <p class="sub-menu-caption">
+
+                                                        در بخش درباره ما، با تاریخچه، اهداف، و تیم حرفه‌ای آژانس گردشگری ما
+                                                        آشنا شوید. ما با افتخار به ارائه بهترین خدمات گردشگری و ایجاد
+                                                        تجربه‌های فراموش‌نشدنی برای مسافران خود متعهد هستیم
+
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">
+                                                <i class="parent-icon-sub-menu">
+                                                    <svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                        <path d="M32 256C32 132.3 132.3 32 256 32s224 100.3 224 224V400.1c0 26.5-21.5 48-48 48l-82.7-.1c-6.6-18.6-24.4-32-45.3-32H240c-26.5 0-48 21.5-48 48s21.5 48 48 48h64c20.9 0 38.7-13.4 45.3-32l82.7 .1c44.2 0 80.1-35.8 80.1-80V256C512 114.6 397.4 0 256 0S0 114.6 0 256v48c0 8.8 7.2 16 16 16s16-7.2 16-16V256zM320 464c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16s7.2-16 16-16h64c8.8 0 16 7.2 16 16M144 224h16V352H144c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zM64 272v32c0 44.2 35.8 80 80 80h16c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32H144c-44.2 0-80 35.8-80 80zm288-48h16c26.5 0 48 21.5 48 48v32c0 26.5-21.5 48-48 48H352V224zm16-32H352c-17.7 0-32 14.3-32 32V352c0 17.7 14.3 32 32 32h16c44.2 0 80-35.8 80-80V272c0-44.2-35.8-80-80-80z"></path>
+                                                    </svg>
+                                                </i>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>تماس با ما</h4>
+                                                    <p class="sub-menu-caption">
+
+                                                        در بخش تماس با ما، می‌توانید با تیم پشتیبانی ما در ارتباط باشید. اگر
+                                                        سوالی دارید یا نیاز به راهنمایی دارید، از طریق اطلاعات تماس ارائه
+                                                        شده با ما در تماس باشید تا به سرعت به شما پاسخ دهیم
+
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class='parent-tracking'>
+                                        <a href='{$smarty.const.ROOT_ADDRESS}/organization' class='w-100 justify-content-between'>
+                                            <div class='parent-data-tracking w-100'>
+                                                <div class="parent-sub-menu-title">
+                                                    <h4>ثبت نام سازمانی</h4>
+                                                    <p class="sub-menu-caption">
+  در بخش ثبت نام سازمانی، می‌توانید با انتخاب هر سازمان ثبت نام کنید         </p>
+                                                </div>
                                             </div>
+                                            <button>مشاهده</button>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/news">
-                                            <i class="parent-icon-sub-menu">
-                                                <svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                                                    <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                                    <path d="M16 32C7.2 32 0 39.2 0 48s7.2 16 16 16c220.9 0 400 179.1 400 400c0 8.8 7.2 16 16 16s16-7.2 16-16C448 225.4 254.6 32 16 32zm0 144c-8.8 0-16 7.2-16 16s7.2 16 16 16c141.4 0 256 114.6 256 256c0 8.8 7.2 16 16 16s16-7.2 16-16c0-159.1-128.9-288-288-288zM32 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm96 0A64 64 0 1 0 0 416a64 64 0 1 0 128 0z"></path>
-                                                </svg>
-                                            </i>
-                                            <div class="parent-sub-menu-title">
-                                                <h4>اخبار</h4>
-                                                <p class="sub-menu-caption">
-
-                                                    در بخش اخبار ما، با آخرین اطلاعات و رویدادهای مهم در صنعت گردشگری
-                                                    آشنا شوید. از تغییرات مقررات سفر تا معرفی جشنواره‌ها و رویدادهای
-                                                    ویژه، همواره در جریان تازه‌ترین اخبار و تحولات گردشگری باشید.
-
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/pay">
-                                            <i class="parent-icon-sub-menu">
-                                                <svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                                                    <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                                    <path d="M128 128V96C128 42.98 170.1 0 224 0C277 0 320 42.98 320 96V128H400C426.5 128 448 149.5 448 176V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V176C0 149.5 21.49 128 48 128H128zM160 128H288V96C288 60.65 259.3 32 224 32C188.7 32 160 60.65 160 96V128zM48 160C39.16 160 32 167.2 32 176V416C32 451.3 60.65 480 96 480H352C387.3 480 416 451.3 416 416V176C416 167.2 408.8 160 400 160H320V240C320 248.8 312.8 256 304 256C295.2 256 288 248.8 288 240V160H160V240C160 248.8 152.8 256 144 256C135.2 256 128 248.8 128 240V160H48z"></path>
-                                                </svg>
-                                            </i>
-                                            <div class="parent-sub-menu-title">
-                                                <h4>درگاه پرداخت آنلاین</h4>
-                                                <p class="sub-menu-caption">
-
-                                                    در بخش درگاه پرداخت آنلاین، شما می‌توانید به‌صورت امن و سریع
-                                                    هزینه‌های سفر خود را پرداخت کنید. با استفاده از این سیستم، تجربه‌ای
-                                                    راحت و بی‌دغدغه در رزرو و پرداخت برای خدمات گردشگری خواهید داشت
-
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/rules">
-                                            <i class="parent-icon-sub-menu">
-                                                <svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
-                                                    <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                                    <path d="M384 64c0 29.8-20.4 54.9-48 62V480H528c8.8 0 16 7.2 16 16s-7.2 16-16 16H320 112c-8.8 0-16-7.2-16-16s7.2-16 16-16H304V126c-27.6-7.1-48-32.2-48-62H112c-8.8 0-16-7.2-16-16s7.2-16 16-16H264.6C275.6 12.9 296.3 0 320 0s44.4 12.9 55.4 32H512c8.8 0 16 7.2 16 16s-7.2 16-16 16H384zm56.7 298.3C457.8 375.1 482.9 384 512 384s54.2-8.9 71.3-21.7C600.4 349.5 608 334.2 608 320H416v-1.6l0 .1V320c0 14.2 7.6 29.5 24.7 42.3zm71.3-215L426.3 288H597.7L512 147.3zM384 320v-1.6c0-14.7 4-29.1 11.7-41.6l92-151.2c5.2-8.5 14.4-13.7 24.3-13.7s19.2 5.2 24.3 13.7l92 151.2c7.6 12.5 11.7 26.9 11.7 41.6V320c0 53-57.3 96-128 96s-128-43-128-96zM32 320c0 14.2 7.6 29.5 24.7 42.3C73.8 375.1 98.9 384 128 384s54.2-8.9 71.3-21.7C216.4 349.5 224 334.2 224 320H32v-1.6l0 .1V320zm10.3-32H213.7L128 147.3 42.3 288zM128 416C57.3 416 0 373 0 320v-1.6c0-14.7 4-29.1 11.7-41.6l92-151.2c5.2-8.5 14.4-13.7 24.3-13.7s19.2 5.2 24.3 13.7l92 151.2c7.6 12.5 11.7 26.9 11.7 41.6V320c0 53-57.3 96-128 96zM320 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"></path>
-                                                </svg>
-                                            </i>
-                                            <div class="parent-sub-menu-title">
-                                                <h4>قوانین و مقررات</h4>
-                                                <p class="sub-menu-caption">
-
-                                                    در بخش قوانین و مقررات، با شرایط و ضوابط استفاده از خدمات ما آشنا
-                                                    شوید. مطالعه این بخش به شما کمک می‌کند تا با حقوق و مسئولیت‌های خود
-                                                    به‌طور کامل آگاه شده و از تجربه‌ای مطمئن و رضایت‌بخش بهره‌مند شوید
-
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">
-                                            <i class="parent-icon-sub-menu">
-                                                <svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
-                                                    <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                                    <path d="M480 288h-128c-8.836 0-16 7.164-16 16S343.2 320 352 320h128c8.836 0 16-7.164 16-16S488.8 288 480 288zM192 256c35.35 0 64-28.65 64-64S227.3 128 192 128S128 156.7 128 192S156.7 256 192 256zM192 160c17.64 0 32 14.36 32 32S209.6 224 192 224S160 209.6 160 192S174.4 160 192 160zM224 288H160c-44.18 0-80 35.82-80 80C80 376.8 87.16 384 96 384s16-7.164 16-16C112 341.5 133.5 320 160 320h64c26.51 0 48 21.49 48 48c0 8.836 7.164 16 16 16s16-7.164 16-16C304 323.8 268.2 288 224 288zM512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM544 416c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V96c0-17.64 14.36-32 32-32h448c17.64 0 32 14.36 32 32V416zM480 224h-128c-8.836 0-16 7.164-16 16S343.2 256 352 256h128c8.836 0 16-7.164 16-16S488.8 224 480 224zM480 160h-128c-8.836 0-16 7.164-16 16S343.2 192 352 192h128c8.836 0 16-7.164 16-16S488.8 160 480 160z"></path>
-                                                </svg>
-                                            </i>
-                                            <div class="parent-sub-menu-title">
-                                                <h4>درباره ما</h4>
-                                                <p class="sub-menu-caption">
-
-                                                    در بخش درباره ما، با تاریخچه، اهداف، و تیم حرفه‌ای آژانس گردشگری ما
-                                                    آشنا شوید. ما با افتخار به ارائه بهترین خدمات گردشگری و ایجاد
-                                                    تجربه‌های فراموش‌نشدنی برای مسافران خود متعهد هستیم
-
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">
-                                            <i class="parent-icon-sub-menu">
-                                                <svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                                                    <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                                    <path d="M32 256C32 132.3 132.3 32 256 32s224 100.3 224 224V400.1c0 26.5-21.5 48-48 48l-82.7-.1c-6.6-18.6-24.4-32-45.3-32H240c-26.5 0-48 21.5-48 48s21.5 48 48 48h64c20.9 0 38.7-13.4 45.3-32l82.7 .1c44.2 0 80.1-35.8 80.1-80V256C512 114.6 397.4 0 256 0S0 114.6 0 256v48c0 8.8 7.2 16 16 16s16-7.2 16-16V256zM320 464c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16s7.2-16 16-16h64c8.8 0 16 7.2 16 16M144 224h16V352H144c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zM64 272v32c0 44.2 35.8 80 80 80h16c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32H144c-44.2 0-80 35.8-80 80zm288-48h16c26.5 0 48 21.5 48 48v32c0 26.5-21.5 48-48 48H352V224zm16-32H352c-17.7 0-32 14.3-32 32V352c0 17.7 14.3 32 32 32h16c44.2 0 80-35.8 80-80V272c0-44.2-35.8-80-80-80z"></path>
-                                                </svg>
-                                            </i>
-                                            <div class="parent-sub-menu-title">
-                                                <h4>تماس با ما</h4>
-                                                <p class="sub-menu-caption">
-
-                                                    در بخش تماس با ما، می‌توانید با تیم پشتیبانی ما در ارتباط باشید. اگر
-                                                    سوالی دارید یا نیاز به راهنمایی دارید، از طریق اطلاعات تماس ارائه
-                                                    شده با ما در تماس باشید تا به سرعت به شما پاسخ دهیم
-
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
