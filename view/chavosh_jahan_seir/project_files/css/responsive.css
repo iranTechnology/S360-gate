@@ -1,0 +1,217 @@
+/*------------------------------------------------------max-width -1200------------------------------*/
+@media screen and (max-width: 1200px)
+{
+
+
+
+}
+
+
+
+
+
+
+
+/*------------------------------------------------------max-width -992------------------------------*/
+@media screen and (max-width: 992px)
+{
+
+#g-map {
+    margin: 20px auto;
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/*-------------------------------------------------------max-width-767---------------------------------*/
+@media screen and (max-width:767px) {
+header{
+    position: relative;
+}
+
+ul.mainMenu > li > a:hover {
+    color: #db0811;
+    color: #fff;
+    cursor: pointer;
+}
+ul.mainMenu > li ul.subMenu li a:hover{
+	cursor: pointer;
+}
+
+a.mobMenu{
+    background-color: #c41e22;
+    line-height: 40px;
+    color: #fff;
+    border-bottom: 1px solid #c41e22;
+}
+
+.mainMenuContainer{
+	top: 0;
+	position: relative;
+}
+
+ul.mainMenu > li{
+	border-bottom:1px solid #e04246;
+}
+ul.mainMenu > li.active{
+	/*background: #ce3f6f;*/
+}
+
+ul.mainMenu > li > ul.subMenu a span {
+    padding-left: 5px;
+    display: inline-block;
+}
+
+ul.mainMenu > li ul.subMenu li a:hover {
+    color: #fff;
+    background: #7a7773;
+}
+ul.mainMenu > li ul.subMenu li ul li a{
+	padding-right: 50px;
+}
+
+ul.mainMenu > li{
+	width: 100%;
+}
+
+.top-logo {
+    float: none;
+    text-align: center;
+    margin: 10px auto;
+}
+.mainMenuContainer {
+    min-width: 100%;
+}
+
+ul.mainMenu > li ul.subMenu li a{
+    background-color: #d83a3e;
+    border-bottom: 1px solid #c41e22;
+    border-right: none;
+}
+
+ul.mainMenu > li ul.subMenu li ul li a{
+    background-color: #aaa;
+}
+.tour-item {
+    margin: 10px auto;
+    width: 70%;
+    float: none;
+}
+.TrcBox{
+    width: 100%;
+}
+.NewsLetterBox input[type="text"],.NewsLetterBox input[type="button"]{
+    height: 40px;
+    line-height: 40px;
+}
+
+
+}
+
+
+
+
+/*------------------------------------------max-width-544------------------------------*/
+@media screen and (max-width: 544px)
+{
+
+.slider-caption {
+        display: none;
+}
+.tour-item{
+    width: 100%;
+}
+
+.contact {
+    width: 100%;
+
+}
+.top-tel {
+    text-align: center;
+    padding: 0;
+}
+.social ul li {
+    float: none;
+    margin: 3px;
+    text-align: center;
+    display: inline-block;
+}
+.top-header {
+    padding: 0;
+    float: none;
+    width: 100%;
+}
+.social-container {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+}
+
+.social {
+    float: none;
+    display: inline-block;
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------------------col-ss -max-width-350----------------------------------------*/
+@media screen and (max-width: 350px) { 
+
+.col-ss-1, .col-ss-2,
+.col-ss-3, .col-ss-4,
+.col-ss-5, .col-ss-6,
+.col-ss-7, .col-ss-8,
+.col-ss-9, .col-ss-10,
+.col-ss-11, .col-ss-12 {
+    float: right;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.col-xs-12{
+    padding:0;
+}
+.col-ss-6 {
+    width: 50%;
+}
+.col-ss-12
+{
+    width: 100%;
+
+}
+.tour-inner > a img{
+    height: 220px;
+}
+.tour .container{
+    padding: 0;
+}
+
+}
+
+
+
+ 

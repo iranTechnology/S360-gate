@@ -1,0 +1,814 @@
+/*BANNER*/
+.banner{
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    position: relative;
+    margin-bottom: 60px;
+}
+.banner video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/*destinations-iran*/
+
+.destinations-iran{
+    padding: 0 0 70px;
+}
+.parent-destinations-iran{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+}
+.item-destinations-iran{
+    background: rgb(255, 255, 255);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.parent-video-destinations-iran{
+    width: 100%;
+    height: 226px;
+}
+.parent-video-destinations-iran iframe{
+    width: 100%;
+    height: 100%;
+}
+.parent-video-destinations-iran img{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+.parent-text-destinations-iran{
+    border-width: 0px 2px 2px;
+    border-style: none solid solid;
+    border-color: currentcolor rgb(2, 88, 59) rgb(2, 88, 59);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all ease .3s;
+    border-radius: 0 0 var(--radius) var(--radius);
+    gap: 10px;
+}
+.parent-text-destinations-iran h3{
+    font-size: 22px;
+    color: #000;
+    font-family: 'Montserrat-bold';
+    margin-bottom: 0;
+}
+.parent-text-destinations-iran p{
+    color: #5e5e5e;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.6;
+    margin-bottom: 0;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    text-align: center;
+    font-family: 'Montserrat-regular';
+}
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.title h2{
+    color: rgb(2, 88, 59);
+    font-size: 26px;
+    font-family: 'Montserrat-bold','SansSerif';
+}
+.parent-text-destinations-iran:hover{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+.parent-btn-more{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+.parent-btn-more .btn-more{
+    height: 56px;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: var(--radius);
+    transition: all ease .3s;
+    background: var(--mainColor);
+    color: #fff;
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.parent-btn-more .btn-more:hover{
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+}
+
+/*tour                                                                                                                                                    لطفاً توجه داشته باشید که این روش ممکن است در مرورگرهای مختلف تفاوت داشته باشد و ممکن است به دلیل به‌روزرسانی‌ها یا تغییرات مرورگرها تغییر کند. برای تست و تأکید بر کارکرد درست، بهتر است استایل‌ها را در مرورگرهای مختلف تست کنید.*/
+
+.tour{
+    padding: 0 0 70px;
+}
+.parent-tour{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+}
+.item-tour{
+    width: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    height: 100%;
+}
+.item-tour video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: all ease .3s;
+}
+.item-tour video:hover{
+    filter: brightness(80%);
+}
+.parent-text-tour{
+    padding: 24px;
+    border-width: 0 2px 2px;
+    border-style: none solid solid;
+    border-color: currentcolor rgb(2, 88, 59) rgb(2, 88, 59);
+    border-radius:0 0 var(--radius) var(--radius);
+    display: flex;
+    flex-direction: column;
+    transition: all ease .3s;
+    height: 422px;
+}
+.parent-text-tour h3{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -moz-box-orient: vertical;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    color: #000;
+    font-family: 'Montserrat-bold';
+    margin-bottom: 15px;
+    line-height: 28px;
+}
+.parent-text-tour p{
+    font-family: 'Montserrat-regular';
+    margin-bottom: 0;
+    -webkit-line-clamp: 6;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    text-align: left;
+    color: #5e5e5e;
+    /*! margin-top: auto; */
+}
+.data-tour{
+    display: flex;
+    flex-direction: column;
+    color: #5e5e5e;
+    font-family: 'Montserrat-regular';
+    padding-top: 24px;
+    margin-top: auto;
+    margin-bottom: 24px;
+    gap: 5px;
+}
+.data-tour strong{
+    color: #000;
+    font-family: 'Montserrat-bold';
+    font-size: 18px;
+}
+.parent-text-tour button{
+    color: var(--mainColor);
+    border: 1px solid var(--mainColor);
+    height: 56px;
+    transition: all ease .3s;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: transparent;
+    margin-top: auto;
+}
+.parent-video-tour{
+    width: 100%;
+    height: 285px;
+}
+.parent-video-tour iframe{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.parent-video-tour img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.parent-text-tour:hover button{
+    background: var(--mainColor);
+    color: #fff;
+}
+
+/*problem*/
+
+.problem{
+    padding: 0 0 70px;
+}
+/*problem-email*/
+
+.problem-email{
+    width: 100%;
+    padding: 16px 32px;
+    background-image: url("../images/a.storyblok.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-bottom: 70px;
+}
+.parent-input-problem{
+    display: flex;
+    flex-wrap: wrap;
+    /*! height: 100%; */
+}
+.parent-problem{
+    background: rgba(255, 255, 255, 0.9);
+    margin: 0 auto;
+    max-width: 870px;
+    border-radius: var(--radius);
+    padding: 16px 32px;
+    /*! height: 370px; */
+}
+.item-btn-click-bottom-tour{
+    font-size: 11px !important;
+}
+.reservation-btn-tour{
+    margin-left: 0 !important;
+    margin-right: 6px !important;
+}
+
+.box-data::after{
+    right: 14px !important;
+    left: unset !important;
+}
+.parent-problem2 h4{
+    text-align: center;
+    padding-bottom: 8px;
+    margin-bottom: 7px;
+    border-bottom: 1px solid rgb(70, 26, 62);
+    color: #333;
+}
+.parent-problem2 p{
+    font-family: 'Montserrat-regular';
+    color: #5e5e5e;
+    text-align: center;
+}
+.parent-problem2{
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius);
+    padding: 16px 32px;
+}
+.form-us-video{
+    width: 100%;
+    height: 400px;
+}
+.form-us-video iframe{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+.parent-form-us{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 40px;
+    grid-row-gap: 30px;
+    align-items: center;
+}
+.input-problem {
+    display: flex;
+    flex-wrap: wrap;
+    /*! height: 100%; */
+}
+.inputs input{
+    height: 50px;
+    padding: 0 16px;
+    color: rgb(0, 0, 0);
+    background: transparent;
+    border: 1px solid #333;
+    box-shadow: none;
+    outline: none;
+    border-radius: var(--radius);
+    width: 100%;
+    font-size: 14px;
+}
+.inputs input:focus{
+    border: 2px solid #000;
+}
+.inputs label{
+    font-family: 'Montserrat-regular';
+    color: #5e5e5e;
+    background: #f6f2eb;
+    font-size: 12px;
+    transform: translate(14px, 15px);
+}
+.inputs{
+    margin-bottom: -15px;
+}
+.inputs textarea{
+    padding: 16px;
+    color: rgb(0, 0, 0);
+    background: transparent;
+    border: 1px solid #333;
+    box-shadow: none;
+    outline: none;
+    border-radius: var(--radius);
+    width: 100%;
+    font-size: 14px;
+}
+.inputs textarea:focus{
+    border: 1px solid #000;
+}
+/*travelogue*/
+.travelogue{
+    padding: 64px 32px;
+    background-image: url("../images/brochures.jpg");
+    background-size: cover;
+    background-position: center bottom;
+    width: 100%;
+}
+.new-container{
+    max-width: 1280px;
+    margin: auto;
+}
+.parent-travelogue{
+    display: grid;
+    grid-template-columns: repeat(2, 4fr) 4fr repeat(2, 4fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+.box-travelogue{
+    background: var(--mainColor);
+    border-radius: var(--radius);
+    filter: drop-shadow(rgba(0, 0, 0, 0.25) 10px 10px 3px);
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+    transition: all ease .3s;
+}
+.parent-img-travelogue{
+    width: 100%;
+    height: 250px;
+}
+.parent-img-travelogue img{
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius);
+}
+.parent-text-travelogue{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 3px;
+    margin-top: 10px;
+}
+.parent-text-travelogue h3{
+    font-family: 'Montserrat-bold';
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 0;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+.parent-text-travelogue p{
+    font-size: 12px;
+    color: #fff;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    margin-bottom: 0;
+    font-family: 'Montserrat-regular';
+}
+.box-travelogue-center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.box-travelogue-center h3{
+    color: var(--mainColor);
+    margin-bottom: 16px;
+}
+.box-travelogue-center p{
+    text-align: center;
+    margin-bottom: 0;
+    font-size: 15px;
+    color: #333;
+}
+.parent-btn-more2{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+.btn-more2{
+    height: 56px;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: var(--radius);
+    transition: all ease .3s;
+    background: #fff;
+    color: var(--mainColor);
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--mainColor);
+}
+.btn-more2:hover{
+    background: var(--mainColor);
+    color: #fff;
+}
+.travelogue{
+    margin-bottom: 70px;
+}
+.hover-travelogue{
+    position: absolute;
+    inset: 0px;
+    background: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    display: flex;
+    -moz-box-align: center;
+    align-items: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    transition: all 0.3s ease-out 0s;
+    transform: translateY(-101%);
+    padding: 16px;
+}
+.btn-read{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mainColor);
+    border-radius: var(--radius);
+    border: 1px solid var(--mainColor);
+    transition: all ease .3s;
+    color: #fff;
+    height: 40px;
+    padding: 16px;
+    min-width: 150px;
+    font-size: 14px;
+}
+.btn-read:hover{
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+    color: #fff;
+}
+.box-travelogue:hover .hover-travelogue{
+    transform: translateY(0px);
+}
+.parent-text-problem{
+    height: 320px !important;
+}
+
+/*comments*/
+
+.comments{
+    padding: 0 0 70px;
+}
+.parent-comments{
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    background: var(--mainColor);
+    border-radius: var(--radius);
+    align-items: flex-start;
+    width: 960px;
+    margin: 0 auto;
+    height: 220px;
+}
+.parent-text-comments{
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    /*! gap: 7px; */
+    height: 100%;
+}
+.parent-text-comments h3{
+    font-size: 30px;
+    color: #fff;
+    margin-bottom: 0;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    font-family: 'Montserrat-bold';
+}
+.parent-text-comments p{
+    margin-bottom: 0;
+    color: #fff;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    font-family: 'Montserrat-regular';
+}
+.parent-img-comments{
+    /*! display: grid; */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0;
+    align-items: center;
+    display: flex;
+    /*! width: 240px; */
+}
+.item-img-comments{
+    width: 247px;
+    height: 204px;
+    border: 8px solid var(--mainColor);
+    overflow: hidden;
+    border-radius: 20px;
+}
+.item-img-comments img{
+    width: 100%;
+    height: 100%;
+    /*! border-radius: 20px; */
+}
+.item-img-comments:not(:last-child) {
+    margin-right: -35px;
+}
+/*form-us*/
+.form-us {
+    width: 100%;
+    padding: 16px 32px;
+    background-image: url("../images/a.storyblok.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-bottom: 0;
+    background-attachment: fixed;
+}
+/*honors*/
+
+.honors{
+    background: #038a5d;
+    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.parent-honors{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+}
+.item-honors{
+    width: 120px;
+    height: 120px;
+}
+.item-honors img{
+    width: 100%;
+    height: 100%;
+}
+.owl-theme .owl-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+.owl-theme .owl-dots .owl-dot span {
+    width: 10px;
+    height: 10px;
+    margin: 5px 7px;
+    background: #D6D6D6;
+    display: block;
+    -webkit-backface-visibility: visible;
+    transition: opacity .2s ease;
+    border-radius: 30px;
+}
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background: var(--mainColor);
+}
+.destinations-iran-owl{
+    display: none !important;
+}
+.tour-owl{
+    display: none !important;
+}
+.problem-owl{
+    display: none !important;
+}
+.honors-owl{
+    display: none !important;
+}
+.item-col-travelogue-text{
+    display: flex;
+}
+
+
+.title-center-travelogue{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--mainColor);
+}
+
+
+@media (max-width: 992px) {
+    .destinations-iran-owl{
+        display: block !important;
+    }
+    .parent-destinations-iran{
+        display: none !important;
+    }
+    .tour-owl{
+        display: block !important;
+    }
+    .parent-tour{
+        display: none !important;
+    }
+    .problem-owl{
+        display: block !important;
+    }
+    .parent-img-travelogue{
+        height: 180px;
+    }
+    .honors-owl{
+        display: block !important;
+    }
+    .parent-honors{
+        display: none !important;
+    }
+    .parent-form-us{
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .form-us-video{
+        margin: 0 auto;
+        max-width: 870px;
+    }
+    .parent-problem2{
+        margin: 0 auto;
+        max-width: 870px;
+    }
+}
+
+@media (max-width: 769px) {
+    .banner{
+        height: 430px;
+        min-height: unset;
+    }
+    .parent-comments{
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        height: unset !important;
+        border-radius: 0 !important;
+    }
+    .parent-text-comments p{
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .parent-travelogue{
+        grid-column-gap: 20px !important;
+        grid-row-gap: 20px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .item-col-travelogue-text{
+        width: 100% !important;
+        order: -1;
+        margin-top: 15px;
+    }
+    .item-col-travelogue{
+        width: 45%;
+    }
+}
+
+@media (max-width: 576px) {
+    .title h2{
+        font-size: 20px;
+    }
+    .form-us-video{
+        height: 200px;
+    }
+    .parent-problem2 {
+        padding: 16px 10px;
+    }
+    .travelogue{
+        padding: 64px 20px;
+    }
+    .honors-owl .item{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .form-us,.problem-email{
+        padding: 16px 20px;
+    }
+    .banner{
+        margin-bottom: 30px;
+    }
+    .parent-text-destinations-iran h3{
+        font-size: 18px;
+    }
+    .parent-text-destinations-iran p{
+        font-size: 16px;
+    }
+    .parent-btn-more .btn-more{
+        height: 40px;
+        min-width: unset;
+        font-size: 14px;
+    }
+    .parent-problem h4{
+        font-size: 16px;
+    }
+    .parent-problem p{
+        font-size: 14px;
+    }
+    .parent-problem{
+        padding: 16px 10px;
+    }
+    .input-problem{
+        padding: 0;
+    }
+    .parent-text-tour p{
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    .item-img-comments{
+        height: 150px;
+    }
+    .box-comments{
+        width: 100%;
+    }
+    .parent-text-comments h3{
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .btn-more2{
+        height: 40px;
+        min-width: unset;
+        font-size: 14px;
+    }
+    .item-col-travelogue{
+        width: 100%;
+    }
+    .btn-more2{
+        height: 40px;
+        min-width: unset;
+        font-size: 14px;
+    }
+    .parent-item-footer{
+        margin-top: 15px;
+    }
+    .banner{
+        height: 400px;
+    }
+}
+.banner-slider-display {
+    display: none !important;
+}
+#ui-datepicker-div {
+    z-index : 10 !important;
+}
+.tour-result-item-left .bookbtn {
+    font-size : 12px !important;
+}
+.first-price span {
+    font-size: 15px !important;
+}
