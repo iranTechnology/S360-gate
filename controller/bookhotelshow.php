@@ -267,6 +267,8 @@ class bookhotelshow extends baseController
                 {$tableName}.hotel_payments_price,
                 {$tableName}.discount_code_amount,
                  {$tableName}.type_discount,
+                 {$tableName}.source_id,
+              
 
             ";
 
@@ -441,7 +443,7 @@ class bookhotelshow extends baseController
         $this->agencyCommissionPercent = 0;
         foreach ($BookShow as $k => $book) {
             $numberColumn = $k + 2;
-
+            $dataRows[$k]['source_id'] = $book['source_id'] ?? null;
             $expPaymentDate = [];
             if (!empty($book['payment_date']) && LANG_PANEL_ADMIN == 'fa') {
                 $paymentDate = functions::set_date_payment($book['payment_date']);
@@ -592,8 +594,8 @@ class bookhotelshow extends baseController
             $dataRows[$k]['manual_book'] = $book['manual_book'];
             $dataRows[$k]['status_fa'] = $status;
 //            if (TYPE_ADMIN != '1') {
-                $dataRows[$k]['discount_code_amount'] = $book['discount_code_amount'];
-                $dataRows[$k]['type_discount'] = $book['type_discount'];
+            $dataRows[$k]['discount_code_amount'] = $book['discount_code_amount'];
+            $dataRows[$k]['type_discount'] = $book['type_discount'];
 //            }
 
 
@@ -2308,7 +2310,7 @@ class bookhotelshow extends baseController
 
 
         if(!Session::IsLogin()){
-        $sql = "SELECT * FROM book_hotel_local_tb 
+            $sql = "SELECT * FROM book_hotel_local_tb 
         WHERE factor_number = '{$_POST['request_number']}' 
         AND member_mobile = '{$_POST['phone_number']}'
         ";
@@ -2702,7 +2704,7 @@ class bookhotelshow extends baseController
             $result .= '<td>' . $bookHotel[0]['request_number'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['passenger_leader_room_fullName'] . '</td>';
             $result .= '<td>' . $bookHotel[0]['payment_date'] . '</td>';
-                $result .= '<td>' . functions::numberFormat($finalPrice) . ' ' . $paymentPrice['TypeCurrency'];
+            $result .= '<td>' . functions::numberFormat($finalPrice) . ' ' . $paymentPrice['TypeCurrency'];
             if ($amountDiscountCode['AmountCurrency'] != 0) {
                 $result .= '<br><del>' . functions::numberFormat($paymentPrice['AmountCurrency']) . '</del>';
             }

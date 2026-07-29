@@ -572,7 +572,8 @@ class newApiFlight extends clientAuth
      */
     public function dataSearch($direction) {
 
-
+        $startTime = microtime(true);
+        $startDateTime = date('Y-m-d H:i:s');
         error_log('first  dataSearch  : ' . date('Y/m/d H:i:s') . " \n", 3, LOGS_DIR . 'log_Request_send_search.txt');
 
 
@@ -633,6 +634,11 @@ class newApiFlight extends clientAuth
 
         $result = functions::curlExecution($url, $JsonArray, 'yes');
 
+        // ========== زمان دریافت پاسخ ==========
+        $endTime = microtime(true);
+        $endDateTime = date('Y-m-d H:i:s');
+        $executionTime = round(($endTime - $startTime) * 1000, 2);
+        // ======================================
 
         error_log('End Search in  : ' . date('Y/m/d H:i:s') . " \n", 3, LOGS_DIR . 'log_Request_send_search.txt');
 
@@ -640,11 +646,31 @@ class newApiFlight extends clientAuth
 
         functions::insertLog('result is =>' . json_encode($result, 256 | 64) . '\n', 'newApiFlight');
         functions::insertLog('*******************************' . '\n', 'newApiFlight');
-
+        $this->logSearchTime($this->UniqueCode, $direction, $d, $startDateTime, $endDateTime, $executionTime, $result);
         return $result;
     }
     #endregion
+    private function logSearchTime($uniqueCode, $direction, $requestData, $startTime, $endTime, $executionTime, $response)
+    {
+        // لاگ JSON - هر فایل با UniqueCode نامگذاری میشه
+        $logFile = LOGS_DIR . 'time/search_' . $uniqueCode . '.json';
+        $dir = dirname($logFile);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
 
+        $logData = [
+            'route ' => 'gds -> core',
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'username' => $requestData['UserName'] ?? 'unknown',
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+        ];
+
+        // ذخیره در فایل JSON مخصوص این UniqueCode
+        file_put_contents($logFile, json_encode($logData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+    }
     //region [checkTypeFlightAirline]
 
     public function UniqueCodeOfSourceFive($userName) {

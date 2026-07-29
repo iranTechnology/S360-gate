@@ -7,9 +7,6 @@
 //        @ini_set('display_errors', 'on');
 
 
-// TEST
-
-
 class organizationalCategory
 {
     private $smsServices;
@@ -126,6 +123,7 @@ class organizationalCategory
         return $output;
     }
     #endregion
+
     public function organizationRegisterUser($param)
     {
         $Model = Load::library('Model');
@@ -141,11 +139,25 @@ class organizationalCategory
 
         $Model->setTable('organization_users_tb');
         $resultInsert = $Model->insertLocal($data);
+        $sql = "SELECT *
+FROM organization_categories_tb c
+LEFT JOIN organization_users_tb u 
+    ON c.id = u.organization_category_id  
+WHERE u.organization_category_id =". $param['organization_id'];
+
+        $resultOrganiztion = $Model->load($sql);
         $messageVariables = array(
             'sms_tracking_code' => $data['tracking_code']
         );
         $message = $this->smsServices->getUsableMessage('organizationCategoryAfterRegisterUser' , $messageVariables);
         $smsBody = $message ? $message :" درخواست ثبت نام شما با کد پیگیری {$data['tracking_code']} ثبت شد از همین طریق ادامه روند اطلاع رسانی خواهد شد ";
+
+        $messageVariablesAdmin = array(
+            'sms_name_category_organiztion' => $resultOrganiztion['title'],
+            'sms_name_user_category_organiztion' => $data['first_name'] . ' ' . $data['last_name'],
+        );
+        $messageAdmin = $this->smsServices->getUsableMessage('organizationCategoryAfterRegisterUserSendSmsForAdmin' , $messageVariablesAdmin);
+        $smsBodyForAdmin = $messageAdmin ? : " کاربر جدیدی در {$resultOrganiztion['title']} ثبت نام کرد.جهت بررسی درخواست به پنل مراجعه بفرمایید. ";
         if ($resultInsert) {
 
             $objSms = $this->smsServices->initService('0', CLIENT_ID);
@@ -157,6 +169,12 @@ class organizationalCategory
                 );
                 $this->smsServices->sendSMS($smsArray);
 
+                $smsArrayForAdmin = array(
+                    'smsMessage' =>$smsBodyForAdmin,
+                    'cellNumber' => CLIENT_MOBILE,
+                    'receiverName' => '',
+                );
+                $this->smsServices->sendSMS($smsArrayForAdmin);
 
             }
             $output['result_status'] = 'success';
@@ -168,7 +186,6 @@ class organizationalCategory
 
         return $output;
     }
-
     public function changeStatusOrganizationalCategory($param) {
         $Model = Load::library('Model');
         $param['id'] = filter_var($param['id'], FILTER_VALIDATE_INT);

@@ -196,6 +196,8 @@ class smsServices extends clientAuth {
             '|sms_entertainment_name|' => isset($variables['sms_entertainment_name']) ? $variables['sms_entertainment_name'] : '',
             '|sms_site_url|' => isset($variables['sms_site_url']) ? $variables['sms_site_url'] : '',
             '|sms_tracking_code|' => isset($variables['sms_tracking_code']) ? $variables['sms_tracking_code'] : '',
+            '|sms_name_category_organiztion|' => isset($variables['sms_name_category_organiztion']) ? $variables['sms_name_category_organiztion'] : '',
+            '|sms_name_user_category_organiztion|' => isset($variables['sms_name_user_category_organiztion']) ? $variables['sms_name_user_category_organiztion'] : '',
         );
 
         //replace variables

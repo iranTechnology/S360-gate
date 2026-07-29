@@ -5785,12 +5785,41 @@ class bookshowTest extends clientAuth {
 
             $DataCityHotel = $hotel['city_name'] . '
                                 <hr style="margin:3px">' . $hotel['hotel_name'].'
-                                <hr style="margin:3px">' . $hotel['service_type'] .  '<div class="button-box mt-1">
-                                    <button type="button" class="ml-2 btn btn-default btn-outline"
-                                            title="" data-toggle="popover"
-                                            data-placement="top" data-content="' . $hotel['room'] . '"
-                                            data-original-title="'.functions::Xmlinformation("ReservedRooms").'">' . $hotel['room_count'] . '</button>'.functions::Xmlinformation("RoomCount").'
-                                </div>';
+                                <hr style="margin:3px">' . $hotel['service_type'] ;
+
+            if ( TYPE_ADMIN == '1' ) {
+                $DataCityHotel .= "<hr style='margin:3px'>".
+                    '<a href="' . $transactionLink . '" data-toggle="tooltip" data-placement="top" data-original-title="آژانس مادر-مشاهده تراکنش ها"  target="_blank">'.functions::ClientName( $hotel['client_id'] ).'</a>';
+                if ( $hotel['agency_name'] != '' ) {
+                    $DataCityHotel .= "<hr style='margin:3px'>
+                                    <span title='آژانس زیر مجموعه' data-toggle='tooltip' class='agency-name'>".$hotel['agency_name'].'</span>';
+                }
+                $DataCityHotel .="<hr style='margin:3px'>";
+                if ( $hotel['source_id'] == '1' ) {
+                    $DataCityHotel .= "هتل خارجی سایروسافت (جونیپر)";
+                } elseif ( $hotel['source_id'] == '11' ) {
+                    $DataCityHotel .= " علائدین";
+                } elseif ( $hotel['source_id'] == '12' ) {
+                    $DataCityHotel .= " آیتورز";
+                }elseif ( $hotel['source_id'] == '13' ) {
+                    $DataCityHotel .= "  اقامت 24";
+                }elseif ( $hotel['source_id'] == '17' ) {
+                    $DataCityHotel .= " پرتو";
+                } elseif ( $hotel['source_id'] == '18' ) {
+                    $DataCityHotel .= " TBO";
+                } elseif ( $hotel['source_id'] == '29' ) {
+                    $DataCityHotel .= " فلایتیو";
+                } elseif ( $hotel['source_id'] == '40' ) {
+                    $DataCityHotel .= "اسنپ تریپ";
+                } elseif ( $hotel['source_id'] == '42' ) {
+                    $DataCityHotel .= " هتل سپهر";
+                }elseif ( $hotel['source_id'] == '46' ) {
+                    $DataCityHotel .= " پریزم- تراوزیلاپرو";
+                }
+            }
+
+
+
             if ( $hotel['payment_date'] != '' ) {
                 $DataEnterInformation = $hotel['payment_date'] . '<hr style="margin:3px">';
             }
@@ -5813,7 +5842,14 @@ class bookshowTest extends clientAuth {
             $DataExitInformation .= $hotel['end_date'];
             $DataExitInformation .= '<hr style="margin:3px">';
             $DataExitInformation .= $hotel['number_night'] . ' '.functions::Xmlinformation("Night");
-
+            $DataExitInformation .='<div class="button-box mt-1">
+                                <hr style="margin:3px">
+                                    <button type="button" class="ml-2 btn btn-default btn-outline"
+                                            title="" data-toggle="popover"
+                                            style="border:0 !important;background:transparent;margin: 0;padding: 0;font-size: 11px;"
+                                            data-placement="top" data-content="' . $hotel['room'] . '"
+                                            data-original-title="'.functions::Xmlinformation("ReservedRooms").'">' . $hotel['room_count'] . '</button>'.functions::Xmlinformation("RoomCount").'
+                                </div>';
             $DataFactorInformation = $hotel['type_application_fa'];
             $DataFactorInformation .= '<hr style="margin:3px">';
             $DataFactorInformation .= '<span class="FontBold">'.$hotel['factor_number'].'</span>';
@@ -5892,6 +5928,7 @@ class bookshowTest extends clientAuth {
             else{
                 $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_code_amount'] );
             }
+
             if (!empty($hotel['discount_code_amount']) && $hotel['discount_code_amount'] != 0) {
                 $DataAllPrice .=  '<br><del>' . number_format( $hotel['total_price'] ) . '</del>';
             }
@@ -6040,15 +6077,7 @@ class bookshowTest extends clientAuth {
             }
             $DataAction .= '</div></div></li></ul></div>';
 
-            if ( TYPE_ADMIN == '1' ) {
-                $DataAction .= "<hr style='margin:3px'>".
-                    '<a href="' . $transactionLink . '" data-toggle="tooltip" data-placement="top" data-original-title="آژانس مادر-مشاهده تراکنش ها"  target="_blank">'.functions::ClientName( $hotel['client_id'] ).'</a>';
-                if ( $hotel['agency_name'] != '' ) {
-                    $DataAction .= "<hr style='margin:3px'>
-                                    <span title='آژانس زیر مجموعه' data-toggle='tooltip' class='agency-name'>".$hotel['agency_name'].'</span>';
-                }
 
-            }
 
             if ($hotel['status']) {
                 $current_client_id =  ($hotel['client_id'] == '' || $hotel['client_id'] == 0) ? CLIENT_ID : $hotel['client_id'];
@@ -6075,7 +6104,7 @@ class bookshowTest extends clientAuth {
                     ';
                 }
                 if(LANG_PANEL_ADMIN=='fa') {
-                    $DataAction .= "<hr style='margin:3px'>";
+
                     $DataAction .= '
                                 <div style="position: relative; display: inline-block;">
                                     <button type="button"
@@ -6253,8 +6282,10 @@ class bookshowTest extends clientAuth {
 
             $DataCityHotel = $hotel['city_name'] . '
                                 <hr style="margin:3px">' . $hotel['hotel_name'] .
-                '<div class="button-box mt-1">
-                                    <button type="button" class="ml-2 btn btn-default btn-outline"
+                ' <hr style="margin:3px"><div class="button-box mt-1">
+                                
+                                    <button type="button" class="ml-2 btn btn-default btn-outline bg-none"
+                                    style="border:0 !important;background:transparent;margin: 0;padding: 0;"
                                             title="" data-toggle="popover"
                                             data-placement="top" data-content="' . $hotel['room'] . '"
                                             data-original-title="'.functions::Xmlinformation("ReservedRooms").'">' . $hotel['room_count'] . '</button>'.functions::Xmlinformation("RoomCount").'
@@ -6303,9 +6334,10 @@ class bookshowTest extends clientAuth {
 
 
             $DataRoomInformation =
-                '<div class="button-box">
+                ' <hr style="margin:3px"> <div class="button-box">
                                     <button type="button" class="btn btn-default btn-outline"
                                             title="" data-toggle="popover"
+                                             style="border:0 !important;background:transparent;margin: 0;padding: 0;"
                                             data-placement="top" data-content="' . $hotel['room'] . '"
                                             data-original-title="اتاق های رزرو شده">' . $hotel['room_count'] . '</button>
                                 </div>';
@@ -9479,8 +9511,24 @@ class bookshowTest extends clientAuth {
                 if(LANG_PANEL_ADMIN=='fa') $DataCounter .='ای';
             }
             $DataDestination        = $bus['OriginName'] . '<hr style="margin:3px">' . $bus['DestinationCity'].'<hr style="margin:3px">'.$bus['PassengerName'] . '<hr style="margin:3px">' . $bus['PassengerMobile'];
+            if ( $bus['payment_type'] == 'cash' ) {
+                $DataCounter .= '<hr style="margin:3px"/>'. functions::Xmlinformation("Cash");
+            } elseif ( $bus['payment_type'] == 'credit' || $bus['payment_type'] == 'member_credit' ) {
+                $DataCounter .= functions::Xmlinformation("Credit");
+            }
+            if ( TYPE_ADMIN == '1' && $bus['payment_type'] == 'cash' ) {
+                $DataCounter .= "<hr style='margin:3px'>
+                                                                " . $bus['numberPortBank'];
+            }
+            $DataCounter .="<hr style='margin:3px'>".$bus['service_type'];
+            if ( TYPE_ADMIN == '1' ) {
+                $DataCounter .= "<hr style='margin:3px'>
+                                                " . $bus['SourceName'];
+                $DataCounter .= '<hr style="margin:3px">
+                                   <a href="' . $transactionLink . '" data-toggle="tooltip" data-placement="top" data-original-title="مشاهده تراکنش ها" target="_blank">' . $bus['AgencyName'] . '</a>';
+            }
             $DataMoveOnTime         = $bus['DateMove'] . '<hr style="margin:3px">' . $bus['TimeMove'];
-            $DataBus                = $bus['BaseCompany'] . '<hr style="margin:3px">' . $bus['CarType'];
+            $DataBus                = $bus['BaseCompany'];
             $DataSeat               = '<span class="FontBold" >'.$bus['FactorNumber'] . '</span><hr style="margin:3px">' . $bus['pnr'] . '<hr style="margin:3px">' . $bus['PassengerChairs']. '<hr style="margin:3px">' .$bus['passenger_number'];
             $DataIrantechCommission = number_format( $bus['IrantechCommission'], '0', '.', ',' ) . '<hr style="margin:3px">' . number_format( $bus['priceForMa'], '0', '.', ',' );
             $DataTotalPrice         = number_format( $bus['totalPrice'], '0', '.', ',' );
@@ -9619,22 +9667,7 @@ class bookshowTest extends clientAuth {
                 $DataAction .= "</li>
                                 </ul>
                                 <hr style='margin:3px'>";
-                if ( $bus['payment_type'] == 'cash' ) {
-                    $DataAction .= functions::Xmlinformation("Cash");
-                } elseif ( $bus['payment_type'] == 'credit' || $bus['payment_type'] == 'member_credit' ) {
-                    $DataAction .= functions::Xmlinformation("Credit");
-                }
-                if ( TYPE_ADMIN == '1' && $bus['payment_type'] == 'cash' ) {
-                    $DataAction .= "<hr style='margin:3px'>
-                                                                " . $bus['numberPortBank'];
-                }
-                $DataAction .="<hr style='margin:3px'>".$bus['service_type'];
-                if ( TYPE_ADMIN == '1' ) {
-                    $DataAction .= "<hr style='margin:3px'>
-                                                " . $bus['SourceName'];
-                    $DataAction .= '<hr style="margin:3px">
-                                   <a href="' . $transactionLink . '" data-toggle="tooltip" data-placement="top" data-original-title="مشاهده تراکنش ها" target="_blank">' . $bus['AgencyName'] . '</a>';
-                }
+
                 $DataAction .= "</div>";
             }
 
@@ -9690,8 +9723,8 @@ class bookshowTest extends clientAuth {
 
             $titleColumn1=functions::Xmlinformation('Row').' ';
             $titleColumn2=functions::Xmlinformation('Typecounter').'<br/>'.functions::Xmlinformation('Customername').'<br/>'.functions::Xmlinformation('DateAndTime').' '.functions::Xmlinformation('Buy').' ';
-            $titleColumn3=functions::Xmlinformation('Origin').'<br/>'.functions::Xmlinformation('Destination').'<br>'.functions::Xmlinformation('Namepassenger').'<br/>'.  functions::Xmlinformation('PhonenumberTraveler').' ';
-            $titleColumn4=functions::Xmlinformation('dateMove').'<br/>'.functions::Xmlinformation('timeMove').' ';
+            $titleColumn3=functions::Xmlinformation('Origin').'<br/>'.functions::Xmlinformation('Destination').'<br>'.functions::Xmlinformation('Namepassenger').'<br/>'.  functions::Xmlinformation('PhonenumberTraveler').'<br/>'.  functions::Xmlinformation('dateMove') . ' ' . functions::Xmlinformation('timeMove').' ';
+//            $titleColumn4=functions::Xmlinformation('dateMove').'<br/>'.functions::Xmlinformation('timeMove').' ';
             $titleColumn5=functions::Xmlinformation('Passengercompany').'<br/>'.functions::Xmlinformation('Bustype').' ';
             $titleColumn6=functions::Xmlinformation('messagePrepairFlight_button').'<br/>'.functions::Xmlinformation('Ticketnumber').'<br>'.functions::Xmlinformation('SeatNumber').'<br/>'.  functions::Xmlinformation('SeatCount').' ';
             $titleColumn7=functions::Xmlinformation('Status').' ';
@@ -9700,8 +9733,8 @@ class bookshowTest extends clientAuth {
             $DataTable['data'][ $key ]["رنگ"]                                             = $ColorTr;
             $DataTable['data'][ $key ][$titleColumn1]                                     = $bus['NumberColumn'];
             $DataTable['data'][ $key ][$titleColumn2]                                     = $DataCounter;
-            $DataTable['data'][ $key ][$titleColumn3]                                     = $DataDestination;
-            $DataTable['data'][ $key ][$titleColumn4]                                     = $DataMoveOnTime;
+            $DataTable['data'][ $key ][$titleColumn3]                                     = $DataDestination . '<hr style="margin:3px"/>' . $DataMoveOnTime;
+//            $DataTable['data'][ $key ][$titleColumn4]                                     = $DataMoveOnTime;
             $DataTable['data'][ $key ][$titleColumn5]                                     = $DataBus;
             $DataTable['data'][ $key ][$titleColumn6]                                     = $DataSeat;
             $DataTable['data'][ $key ][$TitleBuyFromIt]                                   = $DataBuyFromIt;
@@ -9718,7 +9751,7 @@ class bookshowTest extends clientAuth {
         }
         $FooterData0 .= '<th>' . number_format($BookBusController->totalPrice) . '</th>';
         $FooterData0 .= '<th>' . number_format($TotalAgencyShare) . '</th>';
-        $FooterData0 .= '<th colspan="2"></th>';
+//        $FooterData0 .= '<th colspan="2"></th>';
         $DataTable['footer'][0] = $FooterData0;
 
         $FooterData1 = '<th colspan="6"></th>';
