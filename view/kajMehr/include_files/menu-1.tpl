@@ -14,7 +14,7 @@
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل</a></li>
                         <li>
-                            <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور</a>
+                            <a href="{$smarty.const.ROOT_ADDRESS}/tours/تورها">تور</a>
                             {if $objResult->ReservationTourCities('=1', 'return') || $objResult->ReservationTourCountries('yes')}
                                 <ul class="nav-dropdown">
                                     <li>

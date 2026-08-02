@@ -36,7 +36,8 @@ class newApiFlight extends clientAuth
     private $username;
     private $apiAddress;
     private $reportAgenciesSearch;
-
+    private $pageStartTime = null;
+    private $pageStartDateTime = null;
     //endregion
 
     //region [__construct]
@@ -46,7 +47,9 @@ class newApiFlight extends clientAuth
      */
 
     public function __construct($url = null) {
-
+        $this->pageStartTime = microtime(true);
+        $this->pageStartDateTime = DateTime::createFromFormat('U.u', number_format($this->pageStartTime, 6, '.', ''))
+            ->format('Y-m-d H:i:s.v');
         parent::__construct();
         $this->init($url);
         $this->reportAgenciesSearch = new reportAgenciesSearch();
@@ -646,31 +649,9 @@ class newApiFlight extends clientAuth
 
         functions::insertLog('result is =>' . json_encode($result, 256 | 64) . '\n', 'newApiFlight');
         functions::insertLog('*******************************' . '\n', 'newApiFlight');
-        $this->logSearchTime($this->UniqueCode, $direction, $d, $startDateTime, $endDateTime, $executionTime, $result);
         return $result;
     }
     #endregion
-    private function logSearchTime($uniqueCode, $direction, $requestData, $startTime, $endTime, $executionTime, $response)
-    {
-        // لاگ JSON - هر فایل با UniqueCode نامگذاری میشه
-        $logFile = LOGS_DIR . 'time/search_' . $uniqueCode . '.json';
-        $dir = dirname($logFile);
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-
-        $logData = [
-            'route ' => 'gds -> core',
-            'start_time' => $startTime,
-            'end_time' => $endTime,
-            'username' => $requestData['UserName'] ?? 'unknown',
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-        ];
-
-        // ذخیره در فایل JSON مخصوص این UniqueCode
-        file_put_contents($logFile, json_encode($logData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-    }
     //region [checkTypeFlightAirline]
 
     public function UniqueCodeOfSourceFive($userName) {
@@ -1557,7 +1538,10 @@ class newApiFlight extends clientAuth
 
     public function flightInternational() {
 
-
+        $searchStartTime = microtime(true);
+        $methodStartDateTime = DateTime::createFromFormat('U.u', number_format($searchStartTime, 6, '.', ''))
+            ->setTimezone(new DateTimeZone('Asia/Tehran'))
+            ->format('Y-m-d H:i:s.v');
         $start_function = date('H:i:s',time());
         $isCounter = $this->getController('login')->isCounter();
         $isCounter = json_decode($isCounter);
@@ -2360,6 +2344,24 @@ class newApiFlight extends clientAuth
 
             $this->tickets['time']['before_send_vue'] = date('H:i:s',time());
             error_log('END Process Data Search in GDS  ==> ' . date('Y/m/d H:i:s') . " \n", 3, dirname(dirname(dirname(__FILE__))) . '/Core/assets/logFile/flight_international/' . $data_search_flight[$direction]['Flights'][0]['Code'] . '.txt');
+
+            // ========== زمان پایان متد (موفق) ==========
+            $methodEndTime = microtime(true);
+            $methodDuration = round(($methodEndTime - $searchStartTime) * 1000, 2);
+            $methodEndDateTime = DateTime::createFromFormat('U.u', number_format($methodEndTime, 6, '.', ''))
+                ->setTimezone(new DateTimeZone('Asia/Tehran'))
+                ->format('Y-m-d H:i:s.v');
+
+// ========== ذخیره لاگ زمان ==========
+            $this->logFlightInternalTime(
+                $this->UniqueCode ?? 'unknown',
+                $methodStartDateTime,
+                $methodEndDateTime,
+                $methodDuration,
+                'success',
+                'successfully catch flight'
+            );
+// ===================================
             if($this->tickets){
                 return functions::withSuccess($this->tickets, 200, 'successfully catch flight');
             }else{
@@ -3568,7 +3570,26 @@ class newApiFlight extends clientAuth
     #endregion
 
     #region [structureReservationForeign]
+    private function logFlightInternalTime($uniqueCode, $startTime, $endTime, $duration, $status, $message)
+    {
+        $logData = [
+            'route' => 'gds -> core',
+            'unique_code' => $uniqueCode,
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'duration_ms' => $duration,
+            'username' => $this->username ?? 'unknown',
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+        ];
 
+        $logFile = LOGS_DIR . 'time/search_' . $uniqueCode . '.json';
+        $dir = dirname($logFile);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+
+        file_put_contents($logFile, json_encode($logData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
     /**
      * @return bool|mixed|string
      */
@@ -3578,7 +3599,10 @@ class newApiFlight extends clientAuth
          ersale request be api va daryafte natije
          */
 
-
+        $methodStartTime = microtime(true);
+        $methodStartDateTime = DateTime::createFromFormat('U.u', number_format($methodStartTime, 6, '.', ''))
+            ->setTimezone(new DateTimeZone('Asia/Tehran'))
+            ->format('Y-m-d H:i:s.v');
         $start_function = date('H:i:s',time());
         $isCounter = $this->getController('login')->isCounter();
         $isCounter = json_decode($isCounter);
@@ -4295,7 +4319,21 @@ class newApiFlight extends clientAuth
 
             functions::insertLog('***************************************','a_check_flight');
 
+            $methodEndTime = microtime(true);
+            $methodDuration = round(($methodEndTime - $methodStartTime) * 1000, 2);
+            $methodEndDateTime = DateTime::createFromFormat('U.u', number_format($methodEndTime, 6, '.', ''))
+                ->setTimezone(new DateTimeZone('Asia/Tehran'))
+                ->format('Y-m-d H:i:s.v');
 
+            // ========== ذخیره لاگ زمان ==========
+            $this->logFlightInternalTime(
+                $this->UniqueCode ?? 'unknown',
+                $methodStartDateTime,
+                $methodEndDateTime,
+                $methodDuration,
+                'success',
+                'data flight fetch successfully'
+            );
             if (!empty($this->tickets['flights']['dept'])) {
                 return functions::withSuccess($this->tickets, 200, ' data flight fetch  successfully');
             } elseif (empty($flights)) {
@@ -4310,6 +4348,7 @@ class newApiFlight extends clientAuth
         if($resReport['internal_search_limit'] == $resReport['online_internal_search_count']){
             $isSearchLimit = true;
         }
+
         return functions::withError([$request_numbers,'isSearchLimit' => $isSearchLimit], 404, "there aren't flight for this search");
 
     }

@@ -9526,10 +9526,13 @@ class bookshowTest extends clientAuth {
                                                 " . $bus['SourceName'];
                 $DataCounter .= '<hr style="margin:3px">
                                    <a href="' . $transactionLink . '" data-toggle="tooltip" data-placement="top" data-original-title="مشاهده تراکنش ها" target="_blank">' . $bus['AgencyName'] . '</a>';
+                $busOrderCode= $bus['OrderCode'] ;
             }
             $DataMoveOnTime         = $bus['DateMove'] . '<hr style="margin:3px">' . $bus['TimeMove'];
             $DataBus                = $bus['BaseCompany'];
-            $DataSeat               = '<span class="FontBold" >'.$bus['FactorNumber'] . '</span><hr style="margin:3px">' . $bus['pnr'] . '<hr style="margin:3px">' . $bus['PassengerChairs']. '<hr style="margin:3px">' .$bus['passenger_number'];
+
+            $DataSeat               = '<span class="FontBold" >'.$bus['FactorNumber'] . '</span><hr style="margin:3px">'.  $busOrderCode . '<hr style="margin:3px">' . $bus['pnr'] . '<hr style="margin:3px">' . $bus['PassengerChairs']. '<hr style="margin:3px">' .$bus['passenger_number'];
+
             $DataIrantechCommission = number_format( $bus['IrantechCommission'], '0', '.', ',' ) . '<hr style="margin:3px">' . number_format( $bus['priceForMa'], '0', '.', ',' );
             $DataTotalPrice         = number_format( $bus['totalPrice'], '0', '.', ',' );
 
@@ -9963,8 +9966,8 @@ class bookshowTest extends clientAuth {
                 $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">' . $bus['StatusFa'] . '</a>';
 
             } else {
-                $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">' . $bus['StatusFa'] . '</a>';
-
+//                $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">' . $bus['StatusFa'] . '</a>';
+                $DataStatus = $this->btnErrorBus($bus);
             }
             if ( TYPE_ADMIN == '1' && $bus['Status'] == 'temporaryReservation' && $bus['SourceCode'] === '9' ) {
                 $DataStatus .= '<br/>
@@ -10590,8 +10593,8 @@ class bookshowTest extends clientAuth {
             $AllBookings[] = [
                 "id" => $CountRow++,
                 "service_type" => functions::Xmlinformation("Bus"),
-                "request_number" => $bus['FactorNumber'] ?? $bus['factor_number'] ?? '',
-                "factor_number" => $bus['FactorNumber'] ?? $bus['factor_number'] ?? '',
+                "request_number" => $bus['OrderCode'] ?? $bus['OrderCode'] ?? '',
+                "factor_number" => $bus['FactorNumber'] ?? $bus['FactorNumber'] ?? '',
                 "passenger_name" => $passengerName,
                 "agency_name" => $agencyName,
                 "status" => $statusText,
@@ -10767,6 +10770,34 @@ class bookshowTest extends clientAuth {
 
 
         if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_flight['pid_private'] =='0'){
+            $content_btn = functions::Xmlinformation('providerError');
+        }else{
+            $content_btn = $data_error['text_message'];
+        }
+
+
+        return  '<a href="#"  onclick="return false;" class="btn btn-danger '. $classes .' cursor-default popoverBox w-90  popover-danger"
+                                               data-toggle="popover" title="'.$text_btn.'" data-placement="right"
+                                               data-content="'. $content_btn .'">'. $text_btn .'
+                                               <div style="display: none;" class="parent-ld">
+    '.functions::Xmlinformation('pendingPrintFlight').'
+  <div class="ld ld-ring ld-spin"></div>
+    </div>
+                                               </a>';
+
+
+    }
+    private function btnErrorBus($data_bus){
+        $status_admin = (TYPE_ADMIN=='1') ? true : false ;
+        $client_id = ($status_admin) ? $data_bus['client_id'] : CLIENT_ID ;
+        $data_error = $this->getController('logErrorBuses')->getErrorMessage($data_bus['factor_number'],$client_id);
+
+
+        $classes =  in_array($data_error['messageCode'],$this->getCodeSpecialError()) ? 'colorSpecialError' : '';
+        $text_btn = $this->titleBtnError($data_error,$data_bus);
+
+
+        if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_bus['pid_private'] =='0'){
             $content_btn = functions::Xmlinformation('providerError');
         }else{
             $content_btn = $data_error['text_message'];
