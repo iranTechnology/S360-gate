@@ -1,4 +1,3 @@
-
 <link href="assets/css/jquery.counter-analog.css" rel="stylesheet" type="text/css"/>
 {load_presentation_object filename="passengersDetailLocal" assign="objDetail"}
 {load_presentation_object filename="factorLocal" assign="objFactor"}
@@ -76,10 +75,12 @@
             <p class="timeout-modal__flight">
                 به منظور بروزرسانی قیمت ها و پرواز ها، لطفا جستجوی خود را از ابتدا انجام دهید.
             </p>
-            <button onclick="BackToHome('{$objDetail->reSearchAddress}'); return false" type="button" class="loading_on_click btn btn-research site-bg-main-color">
+            <button onclick="BackToHome('{$objDetail->reSearchAddress}'); return false" type="button"
+                    class="loading_on_click btn btn-research site-bg-main-color">
                 ##Repeatsearch##
             </button>
-            <a class="btn btn_back_home site-main-text-color" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}{$mainPage}">##Returntohome##</a>
+            <a class="btn btn_back_home site-main-text-color"
+               href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}{$mainPage}">##Returntohome##</a>
 
         </div>
     </div>
@@ -99,7 +100,7 @@
 
             </div>
             <i class="separator donetoactive"></i>
-            <div class="step active " >
+            <div class="step active ">
              <span class="flat_icon_airplane">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="25" height="25">
     <g id="Contact_form" data-name="Contact form">
@@ -121,10 +122,10 @@
                 <h3>##Approvefinal##</h3>
             </div>
             <i class="separator"></i>
-            <div class="step" >
+            <div class="step">
             <span class="flat_icon_airplane">
-                <svg  enable-background="new 0 0 512 512" height="25" viewBox="0 0 512 512" width="25"
-                      xmlns="http://www.w3.org/2000/svg">
+                <svg enable-background="new 0 0 512 512" height="25" viewBox="0 0 512 512" width="25"
+                     xmlns="http://www.w3.org/2000/svg">
                     <g>
                         <g>
                             <path d="m497 91h-331c-8.28 0-15 6.72-15 15 0 8.27-6.73 15-15 15s-15-6.73-15-15c0-8.28-6.72-15-15-15h-91c-8.28 0-15 6.72-15 15v300c0 8.28 6.72 15 15 15h91c8.28 0 15-6.72 15-15 0-8.27 6.73-15 15-15s15 6.73 15 15c0 8.28 6.72 15 15 15h331c8.28 0 15-6.72 15-15v-300c0-8.28-6.72-15-15-15zm-361 210h-61c-8.28 0-15-6.72-15-15s6.72-15 15-15h61c8.28 0 15 6.72 15 15s-6.72 15-15 15zm60-60h-121c-8.28 0-15-6.72-15-15s6.72-15 15-15h121c8.28 0 15 6.72 15 15s-6.72 15-15 15zm250.61 85.61c-5.825 5.825-15.339 5.882-21.22 0l-64.39-64.4v47.57l25.61 25.61c5.85 5.86 5.85 15.36 0 21.22-5.825 5.825-15.339 5.882-21.22 0l-19.39-19.4-19.39 19.4c-5.86 5.85-15.36 5.85-21.22 0-5.85-5.86-5.85-15.36 0-21.22l25.61-25.61v-47.57l-64.39 64.4c-5.86 5.85-15.36 5.85-21.22 0-5.85-5.86-5.85-15.36 0-21.22l85.61-85.61v-53.78c0-8.28 6.72-15 15-15s15 6.72 15 15v53.78l85.61 85.61c5.85 5.86 5.85 15.36 0 21.22z"/>
@@ -252,21 +253,23 @@
                     {foreach $FlightSelected as $direction=>$item}
                     {assign var="FlightisInternal" value=$item[0]['IsInternal']}
                     <li class="s-u-result-item s-u-result-item-change blit-flight-passenger2 wow fadeInDown mt-0 mt-md-4">
-            <div class="d-flex gap-5 justify-content-center align-items-center wayticket_passengers-type-class bg-white">
-                <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{$objDetail->SeatClass[$direction]}</a>
+                        <div class="d-flex gap-5 justify-content-center align-items-center wayticket_passengers-type-class bg-white">
+                            {*                            <a href="javascript:"*}
+                            {*                               class=" site-bg-main-color border-1 rounded-md py-1 px-2">{$objDetail->SeatClass[$direction]}</a>*}
 
-                <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</a>
+                            {*                            <a href="javascript:"*}
+                            {*                               class=" site-bg-main-color border-1 rounded-md py-1 px-2">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</a>*}
 
-            </div>
+                        </div>
                         <div class="blite-rafto-bargasht-text raft-blit"><span>##Onewayticket##</span></div>
                         {if $smarty.post.ZoneFlight eq 'Local'}
-                        <div class="s-u-result-item-div s-u-result-item-div-change col-xs-3 col-sm-2 s-u-result-item-div-width">
+                        <div class="s-u-result-item-div s-u-result-item-div-change col-xs-3 col-sm-2 s-u-result-item-div-width pb-3">
                             <div class="s-u-result-item-div-logo s-u-result-item-div-logo-change">
                                 <img src="{$objFunctions->getAirlinePhoto($item[0]['airline_iata'])}">
                             </div>
 
-                            <div class="s-u-result-item-div s-u-result-content-item-div-change">
-                                <span>##FlightNumber## : {$item[0]['flight_number']}</span>
+                            <div class="s-u-result-item-div s-u-result-content-item-div-change ">
+                                <span class="d-flex align-items-center justify-content-center gap-2">{$objDetail->AirlineName[$direction]} <span> ({$item[0]['flight_number']})</span></span>
                             </div>
                         </div>
                         <div class="s-u-result-item-wrapper s-u-result-item-wrapper-change col-xs-9 col-sm-10">
@@ -275,8 +278,8 @@
 
                                 <div class="s-u-result-raft first-row-change">
                                     <div class="s-u-result-item-div-p right-Cell-change custom-width-100">
-                                            {assign var="NewFormatDate" value=$objFunctions->NewFormatDate({$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objDetail->Date[$direction])})}
-                                            {assign var="NewFormatDateArrival" value=$objFunctions->NewFormatDate({$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objFunctions->Date_arrival($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction], $objDetail->Time[$direction], $objFunctions->ConvertToMiladi($objDetail->Date[$direction], '/')))})}
+                                        {assign var="NewFormatDate" value=$objFunctions->NewFormatDate({$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objDetail->Date[$direction])})}
+                                        {assign var="NewFormatDateArrival" value=$objFunctions->NewFormatDate({$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objFunctions->Date_arrival($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction], $objDetail->Time[$direction], $objFunctions->ConvertToMiladi($objDetail->Date[$direction], '/')))})}
 
                                         <div class="s-u-result-item-div s-u-result-items-div-change ">
                                             {*                                                <span class="iranB">{$item[0]['desti_airport_iata']}</span>*}
@@ -288,9 +291,9 @@
                                                      {/if}
                                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Departure_City')]}
                                                 </span>
-{*                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">*}
-{*                                                    {$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$item[0]['date_flight'],'/','jalali',true)}</span>*}
-                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$NewFormatDate['day']}
+                                            {*                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">*}
+                                            {*                                                    {$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$item[0]['date_flight'],'/','jalali',true)}</span>*}
+                                            <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$NewFormatDate['day']}
                                                     ,{$NewFormatDate['date_now']}</span>
                                             <span class="s-u-bozorg "> {$objFunctions->format_hour($item[0]['time_flight'])}</span>
                                         </div>
@@ -305,15 +308,16 @@
                                                      {/if}
                                                 {$DestinationCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Departure_City')]}
                                                 </span>
-{*                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">{$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objFunctions->Date_arrival($item[0]['origin_airport_iata'], $item[0]['desti_airport_iata'], $item[0]['time_flight'],$item[0]['date_flight']),'/')}</span>*}
-                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$NewFormatDateArrival['day']}
+                                            {*                                                <span class="s-u-result-item-date-format s-u-result-item-date-format-change font15">{$objFunctions->ConvertDateByLanguage($smarty.const.SOFTWARE_LANG,$objFunctions->Date_arrival($item[0]['origin_airport_iata'], $item[0]['desti_airport_iata'], $item[0]['time_flight'],$item[0]['date_flight']),'/')}</span>*}
+                                            <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$NewFormatDateArrival['day']}
                                                     ,{$NewFormatDateArrival['date_now']}</span>
                                             <span class="s-u-bozorg "> {$objDetail->format_hour_arrival($item[0]['origin_airport_iata'], $item[0]['desti_airport_iata'], $item[0]['time_flight'])}</span>
                                             <!--<span class="s-u-result-item-date-format miladi">{$objDetail->DeptDateJalali[$direction]}</span>-->
                                         </div>
 
-                                        <div class="border-0 s-u-result-item-div s-u-result-items-div-change s-u-result-item-div-last ">
-                                            {if $objDetail->AircraftCode[$direction] neq ''}<span>##Typeairline## : {$objDetail->AircraftCode[$direction]}</span>{/if}
+                                        <div class="border-0 s-u-result-item-div s-u-result-items-div-change s-u-result-item-div-last justify-content-center">
+                                            {if $objDetail->AircraftCode[$direction] neq ''}<span>##Typeairline##
+                                                : {$objDetail->AircraftCode[$direction]}</span>{/if}
                                             <span class="s-u-bozorg s-u-bozorg-change font12">
 {*                                                    <span>  ##Flighttime## :</span>*}
                                                 {*                                                        <i class="font-chanhe">*}
@@ -326,7 +330,7 @@
                                                 {*                                                    </i>*}
                                                      <div class="s-u-bozorg s-u-bozorg-change font12 d-flex align-items-center justify-content-center Flighttime">
 {*                                                        <span>  ##Flighttime## :</span>*}
-                                                        <div class="d-flex">
+                                                        <div class="d-flex flex-column gap-2 align-items-center">
                                                             {assign var="flightHours" value=$objDetail->LongTimeFlightHours($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
                                                             {assign var="flightMinutes" value=$objDetail->LongTimeFlightMinutes($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
 
@@ -334,10 +338,14 @@
                                                                 {if $flightHours > 0}{$flightHours} ##Hour## {/if}
                                                                 {if $flightMinutes > 0}{$flightMinutes} ##Minutes##{/if}
                                                             </i>
+ <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$objDetail->SeatClass[$direction]}</span>
+
+                <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</span>
 
                                                         </div>
                                                     </div>
-                                                    <span class=" flight-class--new" style="display:none !important"> {if $item[0]['flight_type'] eq 'charter'}##CharterType##{else}##SystemType##{/if}</span>
+                                                    <span class=" flight-class--new"
+                                                          style="display:none !important"> {if $item[0]['flight_type'] eq 'charter'}##CharterType##{else}##SystemType##{/if}</span>
                                                 </span>
                                         </div>
 
@@ -381,7 +389,6 @@
                                                 </div>
 
                                             </div>
-
                                             <div class="international-available-airlines-info international-available-airlines-info-detail-new">
                                                 <div class="airlines-info txtLeft origin-city">
 
@@ -407,7 +414,12 @@
                                                             </div>
 
                                                             <div class="plane-icon">
-                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px"
+                                                                     height="20px" fill="currentColor"
+                                                                     data-v-5483aaca="">
+                                                                    <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                          fill-rule="evenodd"></path>
+                                                                </svg>
 
                                                             </div>
 
@@ -535,7 +547,12 @@
                                                             </div>
 
                                                             <div class="plane-icon">
-                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px"
+                                                                     height="20px" fill="currentColor"
+                                                                     data-v-5483aaca="">
+                                                                    <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                          fill-rule="evenodd"></path>
+                                                                </svg>
 
                                                             </div>
 
@@ -643,7 +660,12 @@
                                                             </div>
 
                                                             <div class="plane-icon">
-                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px"
+                                                                     height="20px" fill="currentColor"
+                                                                     data-v-5483aaca="">
+                                                                    <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                          fill-rule="evenodd"></path>
+                                                                </svg>
                                                             </div>
 
                                                             <div class="loc-icon-destination">
@@ -725,7 +747,8 @@
 
 
                                                 <div class="w-100 mt-1">
-                                                    <div class="flight-details-container-dept" id="flightDetailsContainerDept">
+                                                    <div class="flight-details-container-dept"
+                                                         id="flightDetailsContainerDept">
                                                         {assign var="firstDeptItem" value=$detailTicketForeign['dept'][0]}
                                                         <div class="d-flex flex-column flex-md-row mb-2">
                                                             <div class=" international-available-airlines international-available-airlines-detail-new ">
@@ -762,8 +785,9 @@
                                                                         <div class="date-time">
                                <span class="date-flight">
                                                           {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                                                              <p class="farsi-date">{$objFunctions->dateFormatSpecialJalali($firstDeptItem['DepartureDate'],'dF')}</p> <p
-                                                                  class="speratopr-foraign"> / </p>
+                                                              <p class="farsi-date">{$objFunctions->dateFormatSpecialJalali($firstDeptItem['DepartureDate'],'dF')}</p>
+                                                              <p
+                                                                      class="speratopr-foraign"> / </p>
                                                           {/if}
 													 <p
                                                              class="foreign-date">{$objFunctions->dateFormatSpecialMiladi($firstDeptItem['DepartureDate'],'jM')}</p>
@@ -786,10 +810,24 @@
                                                                                     <i class="flat_circle site-bg-main-color"></i>
                                                                                 </div>
                                                                                 <div class="plane-icon">
-                                                                                    <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                    <svg id="Capa_1" viewBox="0 0 24 24"
+                                                                                         width="20px" height="20px"
+                                                                                         fill="currentColor"
+                                                                                         data-v-5483aaca="">
+                                                                                        <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                                              fill-rule="evenodd"></path>
+                                                                                    </svg>
                                                                                 </div>
                                                                                 <div class="loc-icon-destination">
-                                                                                    <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                                    <svg version="1.1"
+                                                                                         class="site-main-text-color"
+                                                                                         id="Layer_1"
+                                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         x="0px" y="0px" width="32px"
+                                                                                         viewBox="0 0 512 512"
+                                                                                         style="enable-background:new 0 0 512 512;"
+                                                                                         xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
@@ -832,7 +870,8 @@
                                                         {*                                                            {/if}*}
 
 
-                                                    </div></div>
+                                                    </div>
+                                                </div>
 
 
                                             </div>
@@ -843,9 +882,9 @@
                                             {*                                                            <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Returnflight##</div>*}
 
 
-
                                             <div class="w-100 mt-1">
-                                                <div class="flight-details-container-return" id="flightDetailsContainerReturn">
+                                                <div class="flight-details-container-return"
+                                                     id="flightDetailsContainerReturn">
 
                                                     {* نمایش آیتم اول برگشت *}
                                                     {assign var="firstReturnItem" value=$detailTicketForeign['return'][0]}
@@ -881,8 +920,9 @@
                                                                     <div class="date-time">
                                 <span class="date-flight">
                                                                            {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                                                                               <p class="farsi-date">{$objFunctions->dateFormatSpecialJalali($detailTicketForeign['return'][(($detailTicketForeign['return']|@count) - 1)]['DepartureDate'],'dF')}</p> <p
-                                                                                   class="speratopr-foraign "> / </p>
+                                                                               <p class="farsi-date">{$objFunctions->dateFormatSpecialJalali($detailTicketForeign['return'][(($detailTicketForeign['return']|@count) - 1)]['DepartureDate'],'dF')}</p>
+                                                                               <p
+                                                                                       class="speratopr-foraign "> / </p>
                                                                            {/if}
                                                                      <p
                                                                              class="foreign-date">( {$objFunctions->dateFormatSpecialMiladi($detailTicketForeign['return'][(($detailTicketForeign['return']|@count) - 1)]['DepartureDate'],'jM')} )</p>
@@ -904,10 +944,24 @@
                                                                                 <i class="flat_circle site-bg-main-color"></i>
                                                                             </div>
                                                                             <div class="plane-icon">
-                                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                <svg id="Capa_1" viewBox="0 0 24 24"
+                                                                                     width="20px" height="20px"
+                                                                                     fill="currentColor"
+                                                                                     data-v-5483aaca="">
+                                                                                    <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                                          fill-rule="evenodd"></path>
+                                                                                </svg>
                                                                             </div>
                                                                             <div class="loc-icon-destination">
-                                                                                <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                                <svg version="1.1"
+                                                                                     class="site-main-text-color"
+                                                                                     id="Layer_1"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                     x="0px" y="0px" width="32px"
+                                                                                     viewBox="0 0 512 512"
+                                                                                     style="enable-background:new 0 0 512 512;"
+                                                                                     xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
@@ -938,7 +992,8 @@
                                                     </div>
 
                                                     <div class="text-center mb-3 mt-3   ">
-                                                        <button type="button" style="display:none;" class="btn-show-details-return-close btn-show-details-return-close-factor text-white border-0 px-4 py-2 rounded"
+                                                        <button type="button" style="display:none;"
+                                                                class="btn-show-details-return-close btn-show-details-return-close-factor text-white border-0 px-4 py-2 rounded"
                                                                 onclick="toggleReturnDetails(this)">
                                                             ##Closing## <i class="fa fa-angle-down"></i>
                                                         </button>
@@ -947,8 +1002,10 @@
                                                 {* دکمه نمایش جزئیات برگشت *}
                                                 {if $detailTicketForeign['return']|@count > 1}
                                                     <div class="text-center mb-3 mt-3">
-                                                        <button type="button" class="btn-show-details-return btn-show-details-return-factor text-white border-0 px-4 py-2 rounded"
-                                                                onclick="toggleReturnDetails(this)" style="bottom: -25px !important;">
+                                                        <button type="button"
+                                                                class="btn-show-details-return btn-show-details-return-factor text-white border-0 px-4 py-2 rounded"
+                                                                onclick="toggleReturnDetails(this)"
+                                                                style="bottom: -25px !important;">
                                                             ##Shownformation## <i class="fa fa-angle-down"></i>
                                                         </button>
                                                     </div>
@@ -956,12 +1013,11 @@
 
 
                                                 <div id="moreDeptItems" style="display: none;">
-                                                    <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Wentflight##</div>
+                                                    <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">
+                                                        ##Wentflight##
+                                                    </div>
                                                     {foreach  $detailTicketForeign['dept'] as $index => $item}
                                                         {if $index >= 0}  {* همه آیتم‌ها از جمله آیتم اول *}
-
-
-
                                                             <div class="flight-item-wrapper-dept-{$index}">
                                                                 <div class="international-available-airlines-info international-available-airlines-info-detail-new">
                                                                     <div class="airlines-info txtLeft origin-city">
@@ -979,8 +1035,9 @@
                                                                         <div class="date-time">
                         	<span class="date-flight">
                                                           {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                                                              <p class="farsi-date">{$objFunctions->dateFormatSpecialJalali($item['DepartureDate'],'dF')}</p> <p
-                                                                  class="speratopr-foraign"> / </p>
+                                                              <p class="farsi-date">{$objFunctions->dateFormatSpecialJalali($item['DepartureDate'],'dF')}</p>
+                                                              <p
+                                                                      class="speratopr-foraign"> / </p>
                                                           {/if}
 													 <p
                                                              class="foreign-date">( {$objFunctions->dateFormatSpecialMiladi($item['DepartureDate'],'jM')} )</p>
@@ -1009,10 +1066,27 @@
                                                                                     <i class="flat_circle site-bg-main-color"></i>
                                                                                 </div>
                                                                                 <div class="plane-icon">
-                                                                                    <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor"><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                    <svg id="Capa_1" viewBox="0 0 24 24"
+                                                                                         width="20px" height="20px"
+                                                                                         fill="currentColor">
+                                                                                        <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                                              fill-rule="evenodd"></path>
+                                                                                    </svg>
                                                                                 </div>
                                                                                 <div class="loc-icon-destination">
-                                                                                    <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512"><g><g><path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/></g></g></svg>
+                                                                                    <svg version="1.1"
+                                                                                         class="site-main-text-color"
+                                                                                         id="Layer_1"
+                                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         x="0px" y="0px" width="32px"
+                                                                                         viewBox="0 0 512 512">
+                                                                                        <g>
+                                                                                            <g>
+                                                                                                <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
+                                                                                            </g>
+                                                                                        </g>
+                                                                                    </svg>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1040,8 +1114,12 @@
                                                                 </div>
                                                                 {* نمایش باکس توقف برای آیتم‌های غیر آخر (برای آیتم اول هم نمایش داده می‌شود) *}
                                                                 {if $index < $detailTicketForeign['dept']|@count - 1}
-                                                                    <div class="international-available-airlines-detail airlines-stops-time" style="width:95%;margin:0 auto !important">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill airlines-stops-time-svg" viewBox="0 0 16 16">
+                                                                    <div class="international-available-airlines-detail airlines-stops-time"
+                                                                         style="width:95%;margin:0 auto !important">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="16" fill="currentColor"
+                                                                             class="bi bi-exclamation-triangle-fill airlines-stops-time-svg"
+                                                                             viewBox="0 0 16 16">
                                                                             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                                                                         </svg>
                                                                         <span class="iranB lh25 displayib txtRight">
@@ -1064,7 +1142,9 @@
                                                     {/foreach}
                                                 </div>
                                                 <div id="moreReturnItems" class="my-2" style="display: none;">
-                                                    <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Returnflight##</div>
+                                                    <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">
+                                                        ##Returnflight##
+                                                    </div>
                                                     {foreach $detailTicketForeign['return'] as $index => $item}
                                                         {if $index >= 0}
                                                             <div class="flight-item-wrapper-return-{$index}">
@@ -1110,10 +1190,24 @@
                                                                                     <i class="flat_circle site-bg-main-color"></i>
                                                                                 </div>
                                                                                 <div class="plane-icon">
-                                                                                    <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                    <svg id="Capa_1" viewBox="0 0 24 24"
+                                                                                         width="20px" height="20px"
+                                                                                         fill="currentColor"
+                                                                                         data-v-5483aaca="">
+                                                                                        <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                                              fill-rule="evenodd"></path>
+                                                                                    </svg>
                                                                                 </div>
                                                                                 <div class="loc-icon-destination">
-                                                                                    <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                                    <svg version="1.1"
+                                                                                         class="site-main-text-color"
+                                                                                         id="Layer_1"
+                                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         x="0px" y="0px" width="32px"
+                                                                                         viewBox="0 0 512 512"
+                                                                                         style="enable-background:new 0 0 512 512;"
+                                                                                         xml:space="preserve">
                                                         <g>
                                                             <g>
                                                                 <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
@@ -1143,8 +1237,12 @@
                                                                 </div>
 
                                                                 {if $index < $detailTicketForeign['return']|@count - 1}
-                                                                    <div class="international-available-airlines-detail airlines-stops-time" style="width:95%;margin:0 auto !important">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill airlines-stops-time-svg" viewBox="0 0 16 16">
+                                                                    <div class="international-available-airlines-detail airlines-stops-time"
+                                                                         style="width:95%;margin:0 auto !important">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="16" fill="currentColor"
+                                                                             class="bi bi-exclamation-triangle-fill airlines-stops-time-svg"
+                                                                             viewBox="0 0 16 16">
                                                                             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                                                                         </svg>
                                                                         <span class="iranB lh25 displayib txtRight">
@@ -1195,7 +1293,7 @@
 													<p class="farsi-date">
                                                           {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                                         {$objFunctions->dateFormatSpecialJalali($detailTicketForeign['oneTrip'][0]['DepartureDate'],'dF')}</p>
-                                                        <p  class="speratopr-foraign "> /</p>
+                                                        <p class="speratopr-foraign "> /</p>
                                                                               {/if}
 
                                                         <p class="foreign-date">{$objFunctions->dateFormatSpecialMiladi($detailTicketForeign['oneTrip'][0]['DepartureDate'],'jM')}</p>
@@ -1213,10 +1311,21 @@
                                                                     <i class="flat_circle site-bg-main-color"></i>
                                                                 </div>
                                                                 <div class="plane-icon">
-                                                                    <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                    <svg id="Capa_1" viewBox="0 0 24 24" width="20px"
+                                                                         height="20px" fill="currentColor"
+                                                                         data-v-5483aaca="">
+                                                                        <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                              fill-rule="evenodd"></path>
+                                                                    </svg>
                                                                 </div>
                                                                 <div class="loc-icon-destination">
-                                                                    <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                    <svg version="1.1" class="site-main-text-color"
+                                                                         id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                         x="0px" y="0px" width="32px"
+                                                                         viewBox="0 0 512 512"
+                                                                         style="enable-background:new 0 0 512 512;"
+                                                                         xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
@@ -1249,7 +1358,7 @@
                                                     </p>
                                                                         {/if}
 
-                                                    <p  class="speratopr-foraign"> / </p>
+                                                    <p class="speratopr-foraign"> / </p>
 												<p class="foreign-date float-right">( {$objFunctions->dateFormatSpecialMiladi($detailTicketForeign['oneTrip'][1]['ArrivalDate'],'jM')} )</p>
 												</span>
                                                             {/if}
@@ -1276,21 +1385,25 @@
                                             </div>
                                             {* دکمه نمایش جزئیات - فقط برای پروازهای چندبخشی نمایش داده شود *}
                                             <div class="text-center mb-3 mt-3   ">
-                                                <button type="button" style="display:none" class="btn-show-details-return-close btn-show-details-return-close-oneway text-white border-0 px-4 py-2 rounded"
+                                                <button type="button" style="display:none"
+                                                        class="btn-show-details-return-close btn-show-details-return-close-oneway text-white border-0 px-4 py-2 rounded"
                                                         onclick="toggleFlightDetails(this)">
                                                     ##Closing## <i class="fa fa-angle-down"></i>
                                                 </button>
                                             </div>
                                             {if $detailTicketForeign['oneTrip']|@count > 1}
                                                 <div class="text-center w-100">
-                                                    <button type="button" class="btn-show-details btn-show-details-factor text-white border-0 px-4 py-2 w-100 rounded"
-                                                            onclick="toggleFlightDetails(this)" >
+                                                    <button type="button"
+                                                            class="btn-show-details btn-show-details-factor text-white border-0 px-4 py-2 w-100 rounded"
+                                                            onclick="toggleFlightDetails(this)">
                                                         ##Shownformation## <i class="fa fa-angle-down"></i>
                                                     </button>
                                                 </div>
                                             {/if}
                                             <div class="div-wrapper-flight m-2 mb-2 mb-md-0" style="display:none">
-                                                <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Wentflight##</div>
+                                                <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">
+                                                    ##Wentflight##
+                                                </div>
                                                 {foreach $detailTicketForeign['oneTrip'] as $index => $item}
                                                     {* wrapper برای هر بخش پرواز *}
                                                     <div class="flight-item-wrapper-{$index} {if $index >= 0}hidden-flight-detail{/if}"
@@ -1317,7 +1430,7 @@
 													<p class="farsi-date">
                                                           {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                                         {$objFunctions->dateFormatSpecialJalali($item['DepartureDate'],'dF')}</p>
-                                                        <p  class="speratopr-foraign "> /</p>
+                                                        <p class="speratopr-foraign "> /</p>
                                                                               {/if}
 
                                                         <p class="foreign-date"> ( {$objFunctions->dateFormatSpecialMiladi($item['DepartureDate'],'jM')} )</p>
@@ -1342,10 +1455,23 @@
                                                                             <i class="flat_circle site-bg-main-color"></i>
                                                                         </div>
                                                                         <div class="plane-icon">
-                                                                            <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                            <svg id="Capa_1" viewBox="0 0 24 24"
+                                                                                 width="20px" height="20px"
+                                                                                 fill="currentColor" data-v-5483aaca="">
+                                                                                <path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z"
+                                                                                      fill-rule="evenodd"></path>
+                                                                            </svg>
                                                                         </div>
                                                                         <div class="loc-icon-destination">
-                                                                            <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                            <svg version="1.1"
+                                                                                 class="site-main-text-color"
+                                                                                 id="Layer_1"
+                                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                                 xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                 x="0px" y="0px" width="32px"
+                                                                                 viewBox="0 0 512 512"
+                                                                                 style="enable-background:new 0 0 512 512;"
+                                                                                 xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
@@ -1381,8 +1507,12 @@
                                                         </div>
 
                                                         {if $index < $detailTicketForeign['oneTrip']|@count - 1}
-                                                            <div class="international-available-airlines-detail airlines-stops-time mx-auto " style="width: 95%;margin:0 auto !important;">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill airlines-stops-time-svg" viewBox="0 0 16 16">
+                                                            <div class="international-available-airlines-detail airlines-stops-time mx-auto "
+                                                                 style="width: 95%;margin:0 auto !important;">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                     height="16" fill="currentColor"
+                                                                     class="bi bi-exclamation-triangle-fill airlines-stops-time-svg"
+                                                                     viewBox="0 0 16 16">
                                                                     <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                                                                 </svg>
                                                                 <span class="iranB lh25 displayib txtRight">
@@ -1446,7 +1576,8 @@
             </p>
         </div>
         <div class="table-responsive">
-            <table style='table-layout: fixed;' id="passengers" class="display table-responsive" cellspacing="0" width="100%">
+            <table style='table-layout: fixed;' id="passengers" class="display table-responsive" cellspacing="0"
+                   width="100%">
 
                 <thead>
                 <tr>
@@ -1516,7 +1647,6 @@
                         </td>
 
                     </tr>
-
                 {/foreach}
                 {assign var="priceTotalCurrencyCalculated" value=$objFunctions->CurrencyCalculate($PriceTotal,$FlightSelected[$objFactor->direction][0]['currency_code'])}
                 {assign var="amount_price_special_discount" value=0}
@@ -1527,13 +1657,15 @@
                     {$amount_price_special_discount = $objFunctions->calculateSpecialDiscount($FlightSelected['dept'][0]['special_discount_type'],$FlightSelected['dept'][0]['special_discount_amount'],$priceWithoutSpecialTotalCurrencyCalculated['AmountCurrency'])}
                     <tr>
 
-                        <td colspan=" {if $smarty.const.SOFTWARE_LANG eq 'fa'}7{else}5{/if}" class="txtLeft TotalPrice_td">##Discount## </td>
+                        <td colspan=" {if $smarty.const.SOFTWARE_LANG eq 'fa'}7{else}5{/if}"
+                            class="txtLeft TotalPrice_td">##Discount##
+                        </td>
                         <td class="TotalPrice_td_2">
-                            <p class="last-price-factor-local">{$amount_price_special_discount|number_format}##Rial##</p>
+                            <p class="last-price-factor-local">{$amount_price_special_discount|number_format}
+                                ##Rial##</p>
                         </td>
 
                     </tr>
-
                 {/if}
                 <tr>
 
@@ -1626,16 +1758,22 @@
                             {*                            </div>*}
                             <div class="discount-code-new">
                                 <div class="title-discount-code">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M200.3 81.5C210.9 61.5 231.9 48 256 48s45.1 13.5 55.7 33.5C317.1 91.7 329 96.6 340 93.2c21.6-6.6 46.1-1.4 63.1 15.7s22.3 41.5 15.7 63.1c-3.4 11 1.5 22.9 11.7 28.2c20 10.6 33.5 31.6 33.5 55.7s-13.5 45.1-33.5 55.7c-10.2 5.4-15.1 17.2-11.7 28.2c6.6 21.6 1.4 46.1-15.7 63.1s-41.5 22.3-63.1 15.7c-11-3.4-22.9 1.5-28.2 11.7c-10.6 20-31.6 33.5-55.7 33.5s-45.1-13.5-55.7-33.5c-5.4-10.2-17.2-15.1-28.2-11.7c-21.6 6.6-46.1 1.4-63.1-15.7S86.6 361.6 93.2 340c3.4-11-1.5-22.9-11.7-28.2C61.5 301.1 48 280.1 48 256s13.5-45.1 33.5-55.7C91.7 194.9 96.6 183 93.2 172c-6.6-21.6-1.4-46.1 15.7-63.1S150.4 86.6 172 93.2c11 3.4 22.9-1.5 28.2-11.7zM256 0c-35.9 0-67.8 17-88.1 43.4c-33-4.3-67.6 6.2-93 31.6s-35.9 60-31.6 93C17 188.2 0 220.1 0 256s17 67.8 43.4 88.1c-4.3 33 6.2 67.6 31.6 93s60 35.9 93 31.6C188.2 495 220.1 512 256 512s67.8-17 88.1-43.4c33 4.3 67.6-6.2 93-31.6s35.9-60 31.6-93C495 323.8 512 291.9 512 256s-17-67.8-43.4-88.1c4.3-33-6.2-67.6-31.6-93s-60-35.9-93-31.6C323.8 17 291.9 0 256 0zM192 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm160 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM337 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L175 303c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L337 209z"></path></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                        <path d="M200.3 81.5C210.9 61.5 231.9 48 256 48s45.1 13.5 55.7 33.5C317.1 91.7 329 96.6 340 93.2c21.6-6.6 46.1-1.4 63.1 15.7s22.3 41.5 15.7 63.1c-3.4 11 1.5 22.9 11.7 28.2c20 10.6 33.5 31.6 33.5 55.7s-13.5 45.1-33.5 55.7c-10.2 5.4-15.1 17.2-11.7 28.2c6.6 21.6 1.4 46.1-15.7 63.1s-41.5 22.3-63.1 15.7c-11-3.4-22.9 1.5-28.2 11.7c-10.6 20-31.6 33.5-55.7 33.5s-45.1-13.5-55.7-33.5c-5.4-10.2-17.2-15.1-28.2-11.7c-21.6 6.6-46.1 1.4-63.1-15.7S86.6 361.6 93.2 340c3.4-11-1.5-22.9-11.7-28.2C61.5 301.1 48 280.1 48 256s13.5-45.1 33.5-55.7C91.7 194.9 96.6 183 93.2 172c-6.6-21.6-1.4-46.1 15.7-63.1S150.4 86.6 172 93.2c11 3.4 22.9-1.5 28.2-11.7zM256 0c-35.9 0-67.8 17-88.1 43.4c-33-4.3-67.6 6.2-93 31.6s-35.9 60-31.6 93C17 188.2 0 220.1 0 256s17 67.8 43.4 88.1c-4.3 33 6.2 67.6 31.6 93s60 35.9 93 31.6C188.2 495 220.1 512 256 512s67.8-17 88.1-43.4c33 4.3 67.6-6.2 93-31.6s35.9-60 31.6-93C495 323.8 512 291.9 512 256s-17-67.8-43.4-88.1c4.3-33-6.2-67.6-31.6-93s-60-35.9-93-31.6C323.8 17 291.9 0 256 0zM192 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm160 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM337 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L175 303c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L337 209z"></path>
+                                    </svg>
                                     <h2>##RegisterDiscountCode##</h2>
                                 </div>
                                 <div class="discount-code-data">
                                     <h3>##IfYouHaveAdiscountCode##</h3>
                                     <div class="form-discount-code">
                                         <input type="text" placeholder="##Codediscount## ..." id="discount-code">
-                                        <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
+                                        <input type="hidden" name="priceWithoutDiscountCode"
+                                               id="priceWithoutDiscountCode"
                                                value="{$PriceTotal}"/>
-                                        <button type="button" onclick='setDiscountCode({$serviceType|json_encode}, {$smarty.post.CurrencyCode} , {$objFactor->factor_number})' class="site-bg-main-color">
+                                        <button type="button"
+                                                onclick='setDiscountCode({$serviceType|json_encode}, {$smarty.post.CurrencyCode} , {$objFactor->factor_number})'
+                                                class="site-bg-main-color">
                                             ##Apply##
                                         </button>
                                     </div>
@@ -1700,8 +1838,6 @@
             </div>
 
 
-
-
         </div>
     </div>
 
@@ -1755,7 +1891,10 @@
        id="ok"
        onclick="pricePay('{$objFactor->factor_number}','flight')">
         ##Approvefinal##
-        <svg class="svg-arrow--btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+        <svg class="svg-arrow--btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path data-v-2824aec9=""
+                  d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path>
+        </svg>
     </a>
 </div>
 </div>
@@ -1864,6 +2003,7 @@
                 }
             }
         }
+
         function toggleFlightDetails(btn) {
             // پیدا کردن کانتینر اصلی
             var container = document.getElementById('flightDetailsContainer');
@@ -1935,16 +2075,16 @@
         }
 
         // اطمینان از وضعیت اولیه در هنگام بارگذاری صفحه
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // مخفی کردن wrapper های اضافی (ایندکس > 0)
             var hiddenWrappers = document.querySelectorAll('.hidden-flight-detail');
-            for(var i = 0; i < hiddenWrappers.length; i++) {
+            for (var i = 0; i < hiddenWrappers.length; i++) {
                 hiddenWrappers[i].style.display = 'none';
             }
 
             // مخفی کردن تمام باکس‌های توقف (از جمله آیتم اول)
             var hiddenTransits = document.querySelectorAll('.hidden-transit');
-            for(var i = 0; i < hiddenTransits.length; i++) {
+            for (var i = 0; i < hiddenTransits.length; i++) {
                 hiddenTransits[i].style.setProperty('display', 'none', 'important');
             }
         });
@@ -1988,7 +2128,6 @@
         });
     </script>
     <script src="assets/js/script.js"></script>
-
     <!-- modal login    -->
     <script type="text/javascript" src="assets/js/modal-login.js"></script>
 {/literal}

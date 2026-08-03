@@ -9688,7 +9688,8 @@ class bookshowTest extends clientAuth {
                 $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">' . $bus['StatusFa'] . '</a>';
 
             } else {
-                $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">' . $bus['StatusFa'] . '</a>';
+//                $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">' . $bus['StatusFa'] . '</a>';
+                $DataStatus = $this->btnErrorBus($bus);
 
             }
             if ( TYPE_ADMIN == '1' && $bus['Status'] == 'temporaryReservation' && $bus['SourceCode'] === '9' ) {
@@ -10787,18 +10788,19 @@ class bookshowTest extends clientAuth {
 
 
     }
+
     private function btnErrorBus($data_bus){
         $status_admin = (TYPE_ADMIN=='1') ? true : false ;
         $client_id = ($status_admin) ? $data_bus['client_id'] : CLIENT_ID ;
-        $data_error = $this->getController('logErrorBuses')->getErrorMessage($data_bus['factor_number'],$client_id);
+        $data_error = $this->getController('logErrorBuses')->getErrorMessage($data_bus['FactorNumber'],$client_id);
 
 
         $classes =  in_array($data_error['messageCode'],$this->getCodeSpecialError()) ? 'colorSpecialError' : '';
-        $text_btn = $this->titleBtnError($data_error,$data_bus);
+        $text_btn = functions::Xmlinformation('reserveError');
 
 
         if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_bus['pid_private'] =='0'){
-            $content_btn = functions::Xmlinformation('providerError');
+            $content_btn = functions::Xmlinformation('reserveError');
         }else{
             $content_btn = $data_error['text_message'];
         }
@@ -10815,7 +10817,6 @@ class bookshowTest extends clientAuth {
 
 
     }
-
     private function titleBtnError($data_error, $data_flight){
         if(in_array($data_error['messageCode'],$this->getCodeSpecialError())){
 

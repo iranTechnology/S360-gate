@@ -2532,7 +2532,35 @@ a:hover {
     box-shadow: none;
     border-color: var(--mainColor) !important;
 }
+/* انیمیشن چشمک زن */
+.blink-button {
+    animation: blink 1.5s ease-in-out infinite;
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
 
+.blink-button:hover {
+    animation: none;
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+}
 @media (max-width: 991px) {
     .parent-newsletter {
         grid-template-columns: repeat(1, 1fr);
