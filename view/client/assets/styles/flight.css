@@ -10292,6 +10292,14 @@ process Flight cdd
 .btn-show-details-factor {
     bottom: -21px
 }
+.pdp .pdp-picker.pdp-right{
+    right: 0 !important;
+}
+.pdp .pdp-picker {
+    width: 206% !important;
+    transform: translateX(-139px) !important;
+}
+
 
 @media (max-width: 786px) {
     .information-saler-info {
@@ -10430,6 +10438,9 @@ process Flight cdd
     .btn-show-details-return-close-oneway {
         top: 40%;
     }
-
+    .pdp .pdp-picker{
+        width: 182% !important;
+        transform: translateX(-15px) !important;
+    }
 }
 
