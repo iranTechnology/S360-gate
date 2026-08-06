@@ -19,7 +19,7 @@
         <div class="container">
             <div class="title-demo">
                 <div class="text-title-demo">
-                    <h2>تورهای سعدی</h2>
+                    <h2>تورهای کاج مهر</h2>
                     <p>
                         سفر به دنیا، تورهای داخلی و خارجی پرطرفدار برای لذت بردن از زیبایی‌های جهان
                     </p>
@@ -32,12 +32,12 @@
             <div class="parent-ul-tour col-lg-12 col-md-12 col-12">
                 <ul class="nav nav-pills d-flex align-items-center justify-content-center" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button aria-controls="tour-dakheli" aria-selected="true" class="nav-link active" data-target="#tour-dakheli" data-toggle="pill" id="tab-tour-dakheli" role="tab" type="button"> داخلی
+                        <button aria-controls="tour-khareji" aria-selected="false" class="nav-link active" data-target="#tour-khareji" data-toggle="pill" id="tab-tour-khareji" role="tab" type="button"> خارجی
 
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button aria-controls="tour-khareji" aria-selected="false" class="nav-link" data-target="#tour-khareji" data-toggle="pill" id="tab-tour-khareji" role="tab" type="button"> خارجی
+                        <button aria-controls="tour-dakheli" aria-selected="true" class="nav-link" data-target="#tour-dakheli" data-toggle="pill" id="tab-tour-dakheli" role="tab" type="button"> داخلی
 
                         </button>
                     </li>
@@ -45,7 +45,7 @@
             </div>
             <div class="parent-tab-tour">
                 <div class="tab-content" id="pills-tabContent">
-                    <div aria-labelledby="tab-tour-dakheli" class="__tour__internal__ tab-pane fade show active" id="tour-dakheli" role="tabpanel">
+                    <div aria-labelledby="tab-tour-dakheli" class="__tour__internal__ tab-pane fade" id="tour-dakheli" role="tabpanel">
                         <div class="tour-owl-parent">
                             <div class="owl-carousel owl-theme tour-owl">
 
@@ -95,7 +95,7 @@
                                                 {else}
                                                     {$type_vehicle_image = 'project_files/images/cric1.png'}
                                                 {/if}
-                                                <img alt="img-tour" class="circle-tour" src="{$type_vehicle_image}"/>
+                                                <img alt="img-tour" class="circle-tour" src="project_files/images/cric1.png"/>
                                             </a>
                                         </div>
 
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <div aria-labelledby="tab-tour-khareji" class="__tour__external__ tab-pane fade" id="tour-khareji" role="tabpanel">
+                    <div aria-labelledby="tab-tour-khareji" class="__tour__external__ tab-pane fade show active" id="tour-khareji" role="tabpanel">
                         <div class="tour-owl-parent">
                             <div class="owl-carousel owl-theme tour-owl">
 
