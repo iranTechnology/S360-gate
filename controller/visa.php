@@ -40,22 +40,29 @@ class visa extends clientAuth {
         return $this->getModel('visaModel')->get()->where('isDell','no')->all();
     }
 
-    public function visaListWithTypeWithCountry() {
+    public function visaListWithTypeWithCountry($continentId = null) {
         $Model = Load::library( 'Model' );
+//
+        $continentCondition = '';
+        if (!empty($continentId)) {
+            $continentCondition = "AND country.id_continent = '" . intval($continentId) . "'";
+        }
 
         $query = "SELECT visa.*,
-                    visaType.title as visaTypeName,
-                    visaType.id as visaTypeID,
-                    country.name as countryName,
-                    country.name_en as countryName_en,
-                    country.id as country_id
-                    FROM visa_tb as visa
-                    LEFT JOIN visa_type_detail_tb as visaTypeDetail ON visa.id = visaTypeDetail.visa_id
-                    LEFT JOIN visa_type_tb as visaType ON visaType.id = visaTypeDetail.visa_type_id
-                    LEFT JOIN reservation_country_tb as country ON visa.countryCode=country.abbreviation
-                    WHERE visa.isDell = 'no' AND visa.validate = 'granted'
-                    group by visa.id
-                    ORDER BY 
+                        visaType.title as visaTypeName,
+                        visaType.id as visaTypeID,
+                        country.name as countryName,
+                        country.name_en as countryName_en,
+                        country.id as country_id
+                FROM visa_tb as visa
+                LEFT JOIN visa_type_detail_tb as visaTypeDetail ON visa.id = visaTypeDetail.visa_id
+                LEFT JOIN visa_type_tb as visaType ON visaType.id = visaTypeDetail.visa_type_id
+                LEFT JOIN reservation_country_tb as country ON visa.countryCode = country.abbreviation
+                WHERE visa.isDell = 'no' 
+                    AND visa.validate = 'granted'
+                    {$continentCondition}
+                GROUP BY visa.id
+                ORDER BY 
                     CASE WHEN visa.priority IS NULL THEN 1 ELSE 0 END,
                     visa.priority ASC,
                     visa.id DESC";
@@ -1429,25 +1436,25 @@ CASE
             }
         }
 //        if ($flag != 1) {
-            if ($data['docs_id']) {
+        if ($data['docs_id']) {
 
             $res  = $this->docs_model->updateWithBind(
                 ['AdditionalData' =>  json_encode($data['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-                'note' => $data['note'],
-            ] , ['id' => $data['docs_id']]);
+                    'note' => $data['note'],
+                ] , ['id' => $data['docs_id']]);
 
-                return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
-            }
-            else {
-                $this->docs_model->insertWithBind(
-            ['AdditionalData' =>  json_encode($data['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-                'note' => $data['note'],
-                'visa_id' => $data['visa_id']
-            ]
-                );
-                return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
+            return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
+        }
+        else {
+            $this->docs_model->insertWithBind(
+                ['AdditionalData' =>  json_encode($data['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                    'note' => $data['note'],
+                    'visa_id' => $data['visa_id']
+                ]
+            );
+            return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
 
-            }
+        }
 //        }
 //        else{
 //            return functions::JsonError('لطفا تمام فیلد ها را وارد نمایید');
@@ -1486,25 +1493,25 @@ CASE
             }
         }
 //        if ($flag != 1) {
-            if ($data['step_id']) {
+        if ($data['step_id']) {
 
-                $this->step_model->updateWithBind(
-                    ['AdditionalData' =>  json_encode($data['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-                        'note' => $data['note'],
-                    ] , ['id' => $data['step_id']]);
+            $this->step_model->updateWithBind(
+                ['AdditionalData' =>  json_encode($data['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                    'note' => $data['note'],
+                ] , ['id' => $data['step_id']]);
 
-                return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
-            }
-            else {
-                $this->step_model->insertWithBind(
-                    ['AdditionalData' =>  json_encode($data['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-                        'note' => $data['note'],
-                        'visa_id' => $data['visa_id']
-                    ]
-                );
-                return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
+            return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
+        }
+        else {
+            $this->step_model->insertWithBind(
+                ['AdditionalData' =>  json_encode($data['AdditionalData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                    'note' => $data['note'],
+                    'visa_id' => $data['visa_id']
+                ]
+            );
+            return functions::JsonSuccess([], 'با موفقیت ویرایش شد');
 
-            }
+        }
 //        }else{
 //            return functions::JsonError('لطفا تمام فیلد ها را وارد نمایید');
 //        }

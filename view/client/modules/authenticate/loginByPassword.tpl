@@ -13,7 +13,7 @@
         </div>
 
         <button onclick='authenticateLoginByPassword($(this))' class="btn-form4" type="button">##loginTo## {$smarty.const.CLIENT_NAME}</button>
-        <div class="parent-forget-sms">
+        <div class="parent-forget-sms justify-content-center">
 {*            <a href="javascript:" onclick='authenticateNavigate(`forget-password`)' class="forget-word-crossing">فراموشی کلمه عبور</a>*}
 
             <a href="javascript:" onclick='authenticateInitDigitCode()' class="login-sms-disposable">##SendOTPCode## </a>

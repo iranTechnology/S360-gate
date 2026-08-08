@@ -177,6 +177,7 @@ class smsPanel extends Model
             'organizationCategoryAfterRegisterUser' => 'دسته بندی سازمانی بعد از ثبت نام کاربر',
             'organizationCategoryAfterAcceptUser' => 'دسته بندی سازمانی بعد از تایید کاربر',
             'organizationCategoryAfterRejectUser' => 'دسته بندی سازمانی بعد از رد کاربر',
+            'organizationCategoryAfterRegisterUserSendSmsForAdmin' => 'ارسال پیامک به ادمین بعد از ثبت نام کاربر در خدمات سازمانی',
 
         );
 

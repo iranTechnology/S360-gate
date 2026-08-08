@@ -96,7 +96,6 @@
 
 {* display with initialized variables *}
 {if $successPayment eq 'true'}
-
     {if ($objBookingLocal->ok_flight['dept'] eq true) || $objBookingLocal->ok_flight['TwoWay'] eq true || $objBookingLocal->ok_flight['multi_destination'] eq true}
         <div class="return-bank-box">
             <div class="container">

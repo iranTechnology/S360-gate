@@ -146,7 +146,7 @@ class apiLocal extends clientAuth
         $d['Adult'] = (is_numeric($adult) && !empty($adult) && $adult > 0) ? $adult : '1';
         $d['Child'] = (is_numeric($child) && !empty($child) && $child > 0) ? $child : '0';
         $d['Infant'] = (is_numeric($infant) && !empty($infant) && $infant > 0) ? $infant : '0';
-        $d['Origin'] =$origin;
+        $d['Origin'] = $origin;
         $d['Destination'] = $destination;
         $d['DepartureDate'] = $date;
         $d['ArrivalDate'] = ($foreign == 'international') ? $returnDate : '';
@@ -190,7 +190,7 @@ class apiLocal extends clientAuth
         if (!empty($tickets)) {
             $tickets = $this->progressTicket($tickets, $foreign, $returnDate);
             if ($foreign == 'international') {
-                return  $this->fileTicketForeign($tickets) ;
+                return $this->fileTicketForeign($tickets);
             } else {
                 return $tickets;
             }
@@ -219,8 +219,8 @@ class apiLocal extends clientAuth
                 $tickets[$key]['AdtPrice'] = $this->ShowPriceTicket($FlightType, $ticket['PassengerDatas'][0]['TotalPrice'], $ticket['SourceId']);
                 $tickets[$key]['ChdPrice'] = $this->ShowPriceTicket($FlightType, $ticket['PassengerDatas'][1]['TotalPrice'], $ticket['SourceId']);
                 $tickets[$key]['InfPrice'] = $this->ShowPriceTicket($FlightType, $ticket['PassengerDatas'][2]['TotalPrice'], $ticket['SourceId']);
-                $tickets[$key]['BasPriceOriginAdt'] =  functions::convert_toman_rial($ticket['PassengerDatas'][0]['BasePrice']);
-                $tickets[$key]['TaxPriceOriginAdt'] =  functions::convert_toman_rial($ticket['PassengerDatas'][0]['TaxPrice']);
+                $tickets[$key]['BasPriceOriginAdt'] = functions::convert_toman_rial($ticket['PassengerDatas'][0]['BasePrice']);
+                $tickets[$key]['TaxPriceOriginAdt'] = functions::convert_toman_rial($ticket['PassengerDatas'][0]['TaxPrice']);
                 $tickets[$key]['CommissionPriceAdt'] = functions::convert_toman_rial($ticket['PassengerDatas'][0]['CommisionPrice']);
                 $tickets[$key]['TotalPriceAdt'] = $ticket['PassengerDatas'][0]['TotalPrice'];
                 $tickets[$key]['TotalSource'] = $ticket['PassengerDatas'][0]['TotalFare'];
@@ -280,7 +280,6 @@ class apiLocal extends clientAuth
     #endregion
 
 
-
     //region fileTicketForeign
 
     private function fileTicketForeign($tickets)
@@ -327,13 +326,14 @@ class apiLocal extends clientAuth
 
         return json_encode($dataInfoPage);
     }
+
     //endregion
 
 
+    protected function LongTimeCalc($deptTime, $arrivalTime, $deptDate, $arrivalDate)
+    {
 
-    protected function LongTimeCalc($deptTime , $arrivalTime , $deptDate , $arrivalDate){
-
-        $dep = new DateTime($deptDate . ' ' . $deptTime );
+        $dep = new DateTime($deptDate . ' ' . $deptTime);
         $arr = new DateTime($arrivalDate . ' ' . $arrivalTime);
 
         $diff = $dep->diff($arr);
@@ -344,9 +344,11 @@ class apiLocal extends clientAuth
 
         return sprintf('%d:%02d:%02d', $days, $hours, $minutes);
     }
+
     #region Revalidate
 
-    public function Revalidate($Param = array()){
+    public function Revalidate($Param = array())
+    {
 
         if (!empty($Param)) {
             $_POST = $Param;
@@ -359,7 +361,7 @@ class apiLocal extends clientAuth
 
 
 //        echo Load::plog($_POST);
-        $d['UserName'] = (isset($_POST['type']) && $_POST['type']=='package') ? $_POST['UserName'] : $username;
+        $d['UserName'] = (isset($_POST['type']) && $_POST['type'] == 'package') ? $_POST['UserName'] : $username;
         $d['FlightID'] = $_POST['Flight'];
         $d['ReturnFlightID'] = !empty($_POST['ReturnFlightID']) ? $_POST['ReturnFlightID'] : '';
         $d['AdultCount'] = (is_numeric($_POST['adt']) && !empty($_POST['adt']) && $_POST['adt'] > 0) ? $_POST['adt'] : '1';
@@ -370,7 +372,7 @@ class apiLocal extends clientAuth
         $data_json = json_encode($d);
         $Revalidate = $this->curlExecution($url, $data_json, 'yes');
 
-        error_log('try show result Request Client AND Response in  method Revalidate in : ' . date('Y/m/d H:i:s') . 'url'. $url .' with request Number=>'.$_POST['UniqueCode'].'  array equal in => : ' . $data_json . " \n" . json_encode($Revalidate, true) . " \n", 3, LOGS_DIR . 'log_Request_Response_Revalidate.txt');
+        error_log('try show result Request Client AND Response in  method Revalidate in : ' . date('Y/m/d H:i:s') . 'url' . $url . ' with request Number=>' . $_POST['UniqueCode'] . '  array equal in => : ' . $data_json . " \n" . json_encode($Revalidate, true) . " \n", 3, LOGS_DIR . 'log_Request_Response_Revalidate.txt');
 
         if (!empty($Revalidate['Result']['Flight']['FlightID']) && $Revalidate['Result']['Flight']['PassengerDatas'][0]['BasePrice'] > 0) {
 
@@ -396,11 +398,11 @@ class apiLocal extends clientAuth
 
                 $is_login = Session::IsLogin();
                 $is_counter = Session::getTypeUser();
-                $is_counter_login = ($is_login && $is_counter == 'counter') ? true: false;
+                $is_counter_login = ($is_login && $is_counter == 'counter') ? true : false;
                 $UserInfo = array();
 //                if($is_counter_login){
-                    $UserId = Session::getUserId();
-                    $UserInfo = $this->getController('members')->findUser($UserId);
+                $UserId = Session::getUserId();
+                $UserInfo = $this->getController('members')->findUser($UserId);
 //                }
 
                 $airlineController = $this->getController('airline');
@@ -414,34 +416,34 @@ class apiLocal extends clientAuth
                     $data['CurrencyCode'] = Session::getCurrency();
                     $data['IsInternalFlight'] = ($Revalidate['Result']['IsInternal'] == true) ? '1' : '0';
                     $data['SourceID'] = $Revalidate['Result']['SourceId'];
-                    $type_zone = functions::getTypeZone($data['IsInternalFlight']) ;
+                    $type_zone = functions::getTypeZone($data['IsInternalFlight']);
 
-                    if($data['SourceID']=='14'){
-                        $search_prices = $this->getModel('searchPricesModel')->get()->where('client_id',CLIENT_ID)->where('request_number',$_POST['UniqueCode'])->find();
-                        if($search_prices){
-                            $client_id = CLIENT_ID ;
+                    if ($data['SourceID'] == '14') {
+                        $search_prices = $this->getModel('searchPricesModel')->get()->where('client_id', CLIENT_ID)->where('request_number', $_POST['UniqueCode'])->find();
+                        if ($search_prices) {
+                            $client_id = CLIENT_ID;
                             $condition_update_search_prices = "client_id='{$client_id}' AND  request_number='{$_POST['UniqueCode']}'";
-                            $data_search_prices_update['flight_id_selected'] =  $_POST['Flight'] ;
-                            $this->getModel('searchPricesModel')->update($data_search_prices_update,$condition_update_search_prices);
+                            $data_search_prices_update['flight_id_selected'] = $_POST['Flight'];
+                            $this->getModel('searchPricesModel')->update($data_search_prices_update, $condition_update_search_prices);
                         }
 
                     }
                     /* This is to get information to check private or public pid */
-                    $data_check_pid['airline_iata'] = $data['Airline_IATA'] ;
-                    $data_check_pid['flight_type']  = $data['FlightType'] ;
-                    $data_check_pid['is_internal']  = $data['IsInternalFlight'];
-                    $data_check_pid['source_id']    = $data['SourceID'];
+                    $data_check_pid['airline_iata'] = $data['Airline_IATA'];
+                    $data_check_pid['flight_type'] = $data['FlightType'];
+                    $data_check_pid['is_internal'] = $data['IsInternalFlight'];
+                    $data_check_pid['source_id'] = $data['SourceID'];
                     $check_status_pid = $this->getController('configFlight')->checkConfigStatusSpecificAirline($data_check_pid);
 
-                    $data_info_discount_user['counter_id']= !empty($UserInfo) ? $UserInfo['fk_counter_type_id']: '5';
-                    $data_info_discount_user['service_title']= functions::TypeService($data['FlightType'],$type_zone,$check_status_pid,$check_status_pid, $data['Airline_IATA']);
+                    $data_info_discount_user['counter_id'] = !empty($UserInfo) ? $UserInfo['fk_counter_type_id'] : '5';
+                    $data_info_discount_user['service_title'] = functions::TypeService($data['FlightType'], $type_zone, $check_status_pid, $check_status_pid, $data['Airline_IATA']);
 
 //                    if($is_counter_login){
-                        $discount_this_user = $this->getController('servicesDiscount')->getSpecificDiscountUser($data_info_discount_user);
+                    $discount_this_user = $this->getController('servicesDiscount')->getSpecificDiscountUser($data_info_discount_user);
 //                    }
 
                     $data['discount_amount'] = !empty($discount_this_user) ? $discount_this_user['off_percent'] : '';
-                    $data['service_title'] =  $data_info_discount_user['service_title'];
+                    $data['service_title'] = $data_info_discount_user['service_title'];
 
                     $arraySourceIncreasePriceFlightSystem = functions::sourceIncreasePriceFlightSystem();
 
@@ -450,12 +452,9 @@ class apiLocal extends clientAuth
                     $data['Inf_qty'] = $d['InfantCount'];
 
 
-
-                    if($_POST['MultiWay']=='multi_destination')
-                    {
+                    if ($_POST['MultiWay'] == 'multi_destination') {
                         $data['Direction'] = 'multi_destination';
-                    }
-                    else {
+                    } else {
                         $isInternalFlight = $data['IsInternalFlight'] == '1';
                         $hasReturnRoutes = !empty($Revalidate['Result']['Flight']['ReturnRoutes']);
                         $isTestServer = functions::isTestServer();
@@ -465,7 +464,7 @@ class apiLocal extends clientAuth
 
                         if (!$isInternalFlight && $hasReturnRoutes && !$isPackageType) {
                             $data['Direction'] = 'TwoWay';
-                        }else if($isPackageType){
+                        } else if ($isPackageType) {
                             $data['Direction'] = 'TwoWay';
                         } elseif ($isInternalFlight && $hasReturnRoutes && $isTestServer) {
                             $data['Direction'] = 'TwoWay';
@@ -477,21 +476,21 @@ class apiLocal extends clientAuth
                     foreach ($Revalidate['Result']['Flight']['PassengerDatas'] as $PassengersPrice) {
                         if ($data['Adt_qty'] > 0 && $PassengersPrice['PassengerType'] == 'ADT') {
                             $data['AdtPrice'] = $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TotalPrice'], $Revalidate['Result']['SourceId']);
-                            $data['AdtFare'] =  $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['BasePrice'], $Revalidate['Result']['SourceId']);
-                            $data['AdtTax'] =   $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TaxPrice'], $Revalidate['Result']['SourceId']);
-                            $data['AdtCom'] =   $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['CommisionPrice'], $Revalidate['Result']['SourceId']);
+                            $data['AdtFare'] = $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['BasePrice'], $Revalidate['Result']['SourceId']);
+                            $data['AdtTax'] = $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TaxPrice'], $Revalidate['Result']['SourceId']);
+                            $data['AdtCom'] = $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['CommisionPrice'], $Revalidate['Result']['SourceId']);
                         }
                         if ($data['Chd_qty'] > 0 && $PassengersPrice['PassengerType'] == 'CHD') {
                             $data['ChdPrice'] = ($PassengersPrice['TotalPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TotalPrice'], $Revalidate['Result']['SourceId']) : 0;
-                            $data['ChdFare'] =  ($PassengersPrice['BasePrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['BasePrice'], $Revalidate['Result']['SourceId']) : 0;
-                            $data['ChdTax'] =   ($PassengersPrice['TaxPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TaxPrice'], $Revalidate['Result']['SourceId']) : 0;
-                            $data['ChdCom'] =   ($PassengersPrice['CommisionPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['CommisionPrice'], $Revalidate['Result']['SourceId']) : 0;
+                            $data['ChdFare'] = ($PassengersPrice['BasePrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['BasePrice'], $Revalidate['Result']['SourceId']) : 0;
+                            $data['ChdTax'] = ($PassengersPrice['TaxPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TaxPrice'], $Revalidate['Result']['SourceId']) : 0;
+                            $data['ChdCom'] = ($PassengersPrice['CommisionPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['CommisionPrice'], $Revalidate['Result']['SourceId']) : 0;
                         }
                         if ($data['Inf_qty'] > 0 && $PassengersPrice['PassengerType'] == 'INF') {
-                            $data['InfPrice'] =  ($PassengersPrice['TotalPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TotalPrice'], $Revalidate['Result']['SourceId']) : 0;
-                            $data['InfFare'] =   ($PassengersPrice['BasePrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['BasePrice'], $Revalidate['Result']['SourceId']) : 0;
-                            $data['InfTax'] =    ($PassengersPrice['TaxPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TaxPrice'], $Revalidate['Result']['SourceId']) : 0;
-                            $data['InfCom'] =    ($PassengersPrice['CommisionPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['CommisionPrice'], $Revalidate['Result']['SourceId']) : 0;
+                            $data['InfPrice'] = ($PassengersPrice['TotalPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TotalPrice'], $Revalidate['Result']['SourceId']) : 0;
+                            $data['InfFare'] = ($PassengersPrice['BasePrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['BasePrice'], $Revalidate['Result']['SourceId']) : 0;
+                            $data['InfTax'] = ($PassengersPrice['TaxPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['TaxPrice'], $Revalidate['Result']['SourceId']) : 0;
+                            $data['InfCom'] = ($PassengersPrice['CommisionPrice'] > 0) ? $this->ShowPriceTicket($data['FlightType'], $PassengersPrice['CommisionPrice'], $Revalidate['Result']['SourceId']) : 0;
                         }
                     }
 
@@ -502,13 +501,13 @@ class apiLocal extends clientAuth
                     $data['SubSystem'] = "";
                     $data['Capacity'] = !empty($Revalidate['Result']['Flight']['Capacity']) ? $Revalidate['Result']['Flight']['Capacity'] : 0;
 
-                    $data['SourceName'] = isset($Revalidate['Result']['SourceName']) ? $Revalidate['Result']['SourceName']: '';
+                    $data['SourceName'] = isset($Revalidate['Result']['SourceName']) ? $Revalidate['Result']['SourceName'] : '';
 
 
-                    $data['LinkCaptcha'] = ($d['SourceId']=='16')? json_encode(['dept'=>urldecode($Revalidate['Result']['ImportantLink']),'return'=>urldecode($Revalidate['Result']['ImportantLinkRetuen'])]) : urldecode($Revalidate['Result']['ImportantLink']);
+                    $data['LinkCaptcha'] = ($d['SourceId'] == '16') ? json_encode(['dept' => urldecode($Revalidate['Result']['ImportantLink']), 'return' => urldecode($Revalidate['Result']['ImportantLinkRetuen'])]) : urldecode($Revalidate['Result']['ImportantLink']);
 
 
-                    if ($_POST['FlightDirection'] == 'dept' || (isset($_POST['type']) && $_POST['type']=='package')) {
+                    if ($_POST['FlightDirection'] == 'dept' || (isset($_POST['type']) && $_POST['type'] == 'package')) {
                         $uniqueID = microtime(TRUE);
                         $data['uniq_id'] = str_replace('.', '', $uniqueID);
                     } else {
@@ -529,11 +528,11 @@ class apiLocal extends clientAuth
                     }
 
 //                      this condition is for charter internal flight and parto internal system flight and all of the kind international flight
-                    if ($data['FlightType'] == 'charter'|| ($data['IsInternalFlight'] == '0' &&  $data['SourceID'] !='8' &&  $data['SourceID'] !='16') || ($data['FlightType'] == 'system' && in_array($Revalidate['Result']['SourceId'],$arraySourceIncreasePriceFlightSystem))) {
-                        $data_info_change_price['counter_id'] = !empty($UserInfo) ? $UserInfo['fk_counter_type_id']: '5';
+                    if ($data['FlightType'] == 'charter' || ($data['IsInternalFlight'] == '0' && $data['SourceID'] != '8' && $data['SourceID'] != '16') || ($data['FlightType'] == 'system' && in_array($Revalidate['Result']['SourceId'], $arraySourceIncreasePriceFlightSystem))) {
+                        $data_info_change_price['counter_id'] = !empty($UserInfo) ? $UserInfo['fk_counter_type_id'] : '5';
                         $data_info_change_price['airline_iata'] = $data['Airline_IATA'];
                         $data_info_change_price['locality'] = ($data['IsInternalFlight'] == '1' ? 'local' : 'international');
-                        $data_info_change_price['flight_type'] = $data['FlightType'] ;
+                        $data_info_change_price['flight_type'] = $data['FlightType'];
 
                         $priceChanges = $this->getController('priceChanges')->getChangePriceByCounterAndAirline($data_info_change_price);
 
@@ -541,33 +540,32 @@ class apiLocal extends clientAuth
                         $data['PriceChangeType'] = $priceChanges['change_type'];
                     }
 
-                    $data = $this->getController('commissionSources')->sourceCommissionCalculation($data , 'revalidate');
-                    $data = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($data , 'revalidate');
-
+                    $data = $this->getController('commissionSources')->sourceCommissionCalculation($data, 'revalidate');
+                    $data = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($data, 'revalidate');
 
 
                     $Model->setTable('temporary_local_tb');
                     $res = $Model->insertLocal($data);
 
                     if ($res) {
-                        if ($data['IsInternalFlight'] == '0' || (isset($_POST['type']) && $_POST['type']=='package') || ($data['IsInternalFlight'] == '1' &&  $data['Direction'] == 'TwoWay' && $isTestServer)) {
+                        if ($data['IsInternalFlight'] == '0' || (isset($_POST['type']) && $_POST['type'] == 'package') || ($data['IsInternalFlight'] == '1' && $data['Direction'] == 'TwoWay' && $isTestServer)) {
                             $temporaryId = $Model->getLastId();
                             foreach ($Revalidate['Result']['Flight']['OutputRoutes'] as $Route) {
                                 $dataTemporary['Date'] = str_replace('-', '/', functions::DateJalali($Route['DepartureDate']));
                                 $dataTemporary['Time'] = $Route['DepartureTime'];
                                 $dataTemporary['OriginAirportIata'] = $Route['Departure']['Code'];
-                                if ($isInternalFlight && $hasReturnRoutes && $isTestServer){
+                                if ($isInternalFlight && $hasReturnRoutes && $isTestServer) {
                                     $DepartureCity = functions::NameCity($Revalidate['Result']['Flight']['OutputRoutes'][0]['Departure']['Code']);
-                                }else{
+                                } else {
                                     $DepartureCity = functions::NameCityForeign($Route['Departure']['Code']);
                                 }
                                 $dataTemporary['OriginCity'] = $DepartureCity['DepartureCityFa'];
                                 $dataTemporary['DestiAirportIata'] = $Route['Arrival']['Code'];
 
 
-                                if ($isInternalFlight && $hasReturnRoutes && $isTestServer){
+                                if ($isInternalFlight && $hasReturnRoutes && $isTestServer) {
                                     $ArrivalCity = functions::NameCity($Revalidate['Result']['Flight']['OutputRoutes'][0]['Departure']['Code']);
-                                }else{
+                                } else {
                                     $ArrivalCity = functions::NameCityForeign($Route['Arrival']['Code']);
                                 }
                                 $dataTemporary['DestiCity'] = $ArrivalCity['DepartureCityFa'];
@@ -577,7 +575,7 @@ class apiLocal extends clientAuth
                                 $dataTemporary['FlightNumber'] = $Route['FlightNo'];
                                 $dataTemporary['Transit'] = substr($Route['transit'], 0, 7);
 
-                                $dataTemporary['LongTime'] = $Route['FlightTime'] ? substr($Route['FlightTime'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
+                                $dataTemporary['LongTime'] = $Route['FlightTime'] ? substr($Route['FlightTime'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'], $Route['ArrivalTime'], $Route['DepartureDate'], $Route['ArrivalDate']);
 
                                 $dataTemporary['ArrivalDate'] = $Route['ArrivalDate'];
                                 $dataTemporary['ArrivalTime'] = $Route['ArrivalTime'];
@@ -586,7 +584,7 @@ class apiLocal extends clientAuth
                                 $dataTemporary['AllowanceAmount'] = !empty($Route['Baggage']) ? $Route['Baggage'][0]['allowanceAmount'] : '0';
                                 $dataTemporary['TemporaryId'] = $temporaryId;
                                 $dataTemporary['TypeRoute'] = 'Dept';
-                                $dataTemporary['TotalLongTime'] = $Revalidate['Result']['Flight']['TotalOutputFlightDuration'] ?  substr($Revalidate['Result']['Flight']['TotalOutputFlightDuration'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
+                                $dataTemporary['TotalLongTime'] = $Revalidate['Result']['Flight']['TotalOutputFlightDuration'] ? substr($Revalidate['Result']['Flight']['TotalOutputFlightDuration'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'], $Route['ArrivalTime'], $Route['DepartureDate'], $Route['ArrivalDate']);
                                 $dataTemporary['TotalTransitTime'] = substr($Revalidate['Result']['Flight']['TotalOutputStopDuration'], 0, 7);
 
 
@@ -610,7 +608,7 @@ class apiLocal extends clientAuth
                                     $dataTemporaryReturn['AircraftName'] = !empty($Route['Aircraft']['Manufacturer']) ? $Route['Aircraft']['Manufacturer'] : 'نامشخص';
                                     $dataTemporaryReturn['FlightNumber'] = $Route['FlightNo'];
                                     $dataTemporaryReturn['Transit'] = substr($Route['transit'], 0, 7);
-                                    $dataTemporaryReturn['LongTime'] = $Route['FlightTime'] ? substr($Route['FlightTime'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
+                                    $dataTemporaryReturn['LongTime'] = $Route['FlightTime'] ? substr($Route['FlightTime'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'], $Route['ArrivalTime'], $Route['DepartureDate'], $Route['ArrivalDate']);
                                     $dataTemporaryReturn['ArrivalDate'] = $Route['ArrivalDate'];
                                     $dataTemporaryReturn['ArrivalTime'] = $Route['ArrivalTime'];
                                     $dataTemporaryReturn['Baggage'] = $Route['Baggage'][0]['Charge'];
@@ -618,7 +616,7 @@ class apiLocal extends clientAuth
                                     $dataTemporaryReturn['AllowanceAmount'] = !empty($Route['Baggage']) ? $Route['Baggage'][0]['allowanceAmount'] : '0';
                                     $dataTemporaryReturn['TemporaryId'] = $temporaryId;
                                     $dataTemporaryReturn['TypeRoute'] = 'Return';
-                                    $dataTemporaryReturn['TotalLongTime'] = $Revalidate['Result']['Flight']['TotalReturnFlightDuration'] ? substr($Revalidate['Result']['Flight']['TotalReturnFlightDuration'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'] , $Route['ArrivalTime'] ,$Route['DepartureDate'] , $Route['ArrivalDate']) ;
+                                    $dataTemporaryReturn['TotalLongTime'] = $Revalidate['Result']['Flight']['TotalReturnFlightDuration'] ? substr($Revalidate['Result']['Flight']['TotalReturnFlightDuration'], 0, 7) : $this->LongTimeCalc($Route['DepartureTime'], $Route['ArrivalTime'], $Route['DepartureDate'], $Route['ArrivalDate']);
                                     $dataTemporaryReturn['TotalTransitTime'] = substr($Revalidate['Result']['Flight']['TotalReturnStopDuration'], 0, 7);
 
                                     $Model->setTable('temporary_routes_tb');
@@ -626,7 +624,6 @@ class apiLocal extends clientAuth
                                 }
                             }
                         }
-
 
 
                         $selectedTicket = '';
@@ -665,8 +662,7 @@ class apiLocal extends clientAuth
                     $return['result_message'] = $error;
                 }
             }
-        }
-        else {
+        } else {
 
             $MessageError = functions::ShowError($Revalidate['Messages']['errorCode']);
 
@@ -867,7 +863,8 @@ class apiLocal extends clientAuth
 
 #region PreReserveFlight
 
-    public function PreReserveFlight($s_id, $direction, $factor_number){
+    public function PreReserveFlight($s_id, $direction, $factor_number)
+    {
 
         $params = array();
 
@@ -879,8 +876,7 @@ class apiLocal extends clientAuth
         }
 
 
-
-        $currency_code = Session::getCurrency() ;
+        $currency_code = Session::getCurrency();
         $model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
         $passengerController = Load::controller('passengers');
@@ -898,7 +894,6 @@ class apiLocal extends clientAuth
             $PreReserve = $this->curlExecution($url, $emptyArray, 'yes');
 
 
-
             $classModel = Load::model('temporary_local');
             $records = $classModel->get($ExplodeSessionID[1]);
 
@@ -909,13 +904,13 @@ class apiLocal extends clientAuth
                 $airlineController = $this->getController('airline');
 
                 $Count = count($PreReserve['Result']['Request']['OutputRoutes']);
-                $index_arrival_city = ($direction=='muti_destination') ? 0 : ($Count-1);
+                $index_arrival_city = ($direction == 'muti_destination') ? 0 : ($Count - 1);
 //                $CountReturn = count($PreReserve['Result']['Request']['ReturnRoutes']);
                 $isInternal = ($PreReserve['Result']['Request']['IsInternal'] == true) ? '1' : '0';
                 $FlightType = ((strtolower($PreReserve['Result']['Request']['OutputRoutes'][$Count - 1]['FlightType']) == 'system') ? 'system' : 'charter');
                 $AirlineIata = $airlineController->iataStandardization($PreReserve['Result']['Request']['OutputRoutes'][0]['Airline']['Code']);
                 $isInternalFlight = ($isInternal == '1') ? 'internal' : 'external';
-                $check_private = functions::checkConfigPid($AirlineIata, $isInternalFlight, $FlightType,$PreReserve['Result']['SourceId']);
+                $check_private = functions::checkConfigPid($AirlineIata, $isInternalFlight, $FlightType, $PreReserve['Result']['SourceId']);
                 $TypeZone = ($isInternal == '1') ? 'Local' : 'Portal';
                 if ($FlightType == 'system') {
                     $TypeTicket = '';
@@ -928,28 +923,28 @@ class apiLocal extends clientAuth
                 }
 
                 $service_title = functions::TypeService($FlightType, $TypeZone, $TypeTicket, $check_private, $AirlineIata);
-                $d['serviceTitle'] = $service_title ;
-                $d['IsInternal'] = $isInternal ;
+                $d['serviceTitle'] = $service_title;
+                $d['IsInternal'] = $isInternal;
                 // get data special discount
                 $data_special_discount['service_title'] = $service_title;
-                $data_special_discount['pre_code'] = isset($params['Mobile_buyer']) ?  substr($params["Mobile_buyer"],0,4) :  substr($params["Mobile"],0,4);
+                $data_special_discount['pre_code'] = isset($params['Mobile_buyer']) ? substr($params["Mobile_buyer"], 0, 4) : substr($params["Mobile"], 0, 4);
                 $data_special_discount['type_get_discount'] = 'phone';
 
                 $special_discount_information = $this->getController('servicesDiscount')->getSpecialDiscount($data_special_discount);
                 if (!empty($special_discount_information)) {
-                    $data_check_usage['info_member_passenger'] = $data_special_discount['pre_code'] ;
+                    $data_check_usage['info_member_passenger'] = $data_special_discount['pre_code'];
                     $check_usage_member = $this->getController('servicesDiscount')->getSpecialDiscountUsed($data_check_usage);
                     if (empty($check_usage_member)) {
                         $d['special_discount_amount'] = !empty($special_discount_information) ? $special_discount_information['amount'] : 0;
                         $d['special_discount_type'] = !empty($special_discount_information) ? $special_discount_information['type_discount'] : null;
 
                         $data_usage_special_discount['info_member_passenger'] = $params["Mobile_buyer"];
-                        $data_usage_special_discount['amount'] = $special_discount_information['amount'] ;
-                        $data_usage_special_discount['type_amount'] =  $special_discount_information['type_discount'];
-                        $data_usage_special_discount['factor_number'] =  $factor_number;
-                        $data_usage_special_discount['type_buy'] =  'flight';
-                        $data_usage_special_discount['status'] =  'pending';
-                        $data_usage_special_discount['creation_date_int'] =  time();
+                        $data_usage_special_discount['amount'] = $special_discount_information['amount'];
+                        $data_usage_special_discount['type_amount'] = $special_discount_information['type_discount'];
+                        $data_usage_special_discount['factor_number'] = $factor_number;
+                        $data_usage_special_discount['type_buy'] = 'flight';
+                        $data_usage_special_discount['status'] = 'pending';
+                        $data_usage_special_discount['creation_date_int'] = time();
 
                         $this->getController('servicesDiscount')->setSpecialDiscountUsed($data_usage_special_discount);
                     }
@@ -970,14 +965,14 @@ class apiLocal extends clientAuth
                     $userId = $params['IdMember'];
                 }
 
-                $user =    $this->getModel('membersModel')->getMemberById($userId);
-                if(empty($user['email'])){
-                    $data_update_user['email'] = $params['Email_buyer'] ;
-                    $this->getModel('membersModel')->updateMember($data_update_user,$user['id']);
+                $user = $this->getModel('membersModel')->getMemberById($userId);
+                if (empty($user['email'])) {
+                    $data_update_user['email'] = $params['Email_buyer'];
+                    $this->getModel('membersModel')->updateMember($data_update_user, $user['id']);
                 }
-                $checkSubAgency =  functions::checkExistSubAgency() ;
+                $checkSubAgency = functions::checkExistSubAgency();
                 if ($user['fk_agency_id'] > 0 || $checkSubAgency) {
-                    $agencyId = ($checkSubAgency) ? SUB_AGENCY_ID : $user['fk_agency_id'] ;
+                    $agencyId = ($checkSubAgency) ? SUB_AGENCY_ID : $user['fk_agency_id'];
                     $sql_agency = " SELECT * FROM agency_tb WHERE id='{$agencyId}'";
                     $agency = $model->load($sql_agency);
                     $d['agency_id'] = $agency['id'];
@@ -997,8 +992,7 @@ class apiLocal extends clientAuth
 
                 $i = 1;
 
-                if(isset($params['genderA' . $i]))
-                {
+                if (isset($params['genderA' . $i])) {
                     while ($params['genderA' . $i]) {
 
                         if (!empty($params['birthdayA' . $i])) {
@@ -1047,41 +1041,39 @@ class apiLocal extends clientAuth
                         $d['passportExpire'] = $params['passportExpireA' . $i];
                         $d['mobile_buyer'] = isset($params["Mobile_buyer"]) ? $params["Mobile_buyer"] : $params["Mobile"];
                         $d['email_buyer'] = isset($params["Email_buyer"]) ? $params["Email_buyer"] : $params["Email"];
-                        if ($params["passengerNationalityA" . $i] == '1' || ($isInternal == '0' && $params["passengerNationalityA" . $i] == '1') || (SOFTWARE_LANG !='fa')) {
+                        if ($params["passengerNationalityA" . $i] == '1' || ($isInternal == '0' && $params["passengerNationalityA" . $i] == '1') || (SOFTWARE_LANG != 'fa')) {
                             $d['passenger_birthday_en'] = $params['birthdayEnA' . $i];
-                        }else{
+                        } else {
                             $d['passenger_birthday_en'] = $date_miladi;
                         }
                         $d['passenger_national_code'] = !empty($params['NationalCodeA' . $i]) ? $params['NationalCodeA' . $i] : '0000000000';
 
-                        if(empty($special_discount_information) && !empty($params['NationalCodeA' . $i])){
+                        if (empty($special_discount_information) && !empty($params['NationalCodeA' . $i])) {
                             $data_special_discount['type_get_discount'] = 'national_code';
-                            $data_special_discount['pre_code'] = substr($params['NationalCodeA' . $i],0,3);
+                            $data_special_discount['pre_code'] = substr($params['NationalCodeA' . $i], 0, 3);
                             $special_discount_information_with_national_code = $this->getController('servicesDiscount')->getSpecialDiscount($data_special_discount);
 
-                            if(!empty($special_discount_information_with_national_code))
-                            {
-                                $data_check_usage['info_member_passenger'] =  $data_special_discount['pre_code'] ;
+                            if (!empty($special_discount_information_with_national_code)) {
+                                $data_check_usage['info_member_passenger'] = $data_special_discount['pre_code'];
                                 $check_usage_member = $this->getController('servicesDiscount')->getSpecialDiscountUsed($data_special_discount);
-                                if(empty($check_usage_member))
-                                {
-                                    $d['special_discount_amount'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['amount']: 0;
+                                if (empty($check_usage_member)) {
+                                    $d['special_discount_amount'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['amount'] : 0;
                                     $d['special_discount_type'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['type_discount'] : null;
 
-                                    $data_usage_special_discount['info_member_passenger'] =$params['NationalCodeA' . $i];
-                                    $data_usage_special_discount['amount'] = $special_discount_information['amount'] ;
-                                    $data_usage_special_discount['type_amount'] =  $special_discount_information['type_discount'];
-                                    $data_usage_special_discount['factor_number'] =  $factor_number;
-                                    $data_usage_special_discount['type_buy'] =  'flight';
-                                    $data_usage_special_discount['status'] =  'pending';
-                                    $data_usage_special_discount['creation_date_int'] =  time();
+                                    $data_usage_special_discount['info_member_passenger'] = $params['NationalCodeA' . $i];
+                                    $data_usage_special_discount['amount'] = $special_discount_information['amount'];
+                                    $data_usage_special_discount['type_amount'] = $special_discount_information['type_discount'];
+                                    $data_usage_special_discount['factor_number'] = $factor_number;
+                                    $data_usage_special_discount['type_buy'] = 'flight';
+                                    $data_usage_special_discount['status'] = 'pending';
+                                    $data_usage_special_discount['creation_date_int'] = time();
 
                                     $this->getController('servicesDiscount')->setSpecialDiscountUsed($data_usage_special_discount);
                                 }
                             }
                         }
 
-                        $d['passenger_age'] = $this->type_passengers($d['passenger_birthday_en'],$d['date_flight']);
+                        $d['passenger_age'] = $this->type_passengers($d['passenger_birthday_en'], $d['date_flight']);
                         $d['type_app'] = (isset($_POST['type']) && $_POST['type'] == 'App') ? "Application" : "Web";
                         $d['currency_code'] = $currency_code;
                         $d['currency_equivalent'] = !empty($InfoCurrency) ? $InfoCurrency['EqAmount'] : 0;
@@ -1110,22 +1102,21 @@ class apiLocal extends clientAuth
                             'passengerPassportExpire' => $params['passportExpireA' . $i],
                             'memberID' => $user['id'],
                             //passengerNationality 1 means foreign & 0 means iranian
-                            'passengerNationality' => (SOFTWARE_LANG !='fa' &&  !isset( $params["passengerNationalityA" . $i])) ? 1 :  $params["passengerNationalityA" . $i]
+                            'passengerNationality' => (SOFTWARE_LANG != 'fa' && !isset($params["passengerNationalityA" . $i])) ? 1 : $params["passengerNationalityA" . $i]
                         );
 
-                        functions::insertLog(json_encode($passengerAddArray,256),'checkPassenger');
+                        functions::insertLog(json_encode($passengerAddArray, 256), 'checkPassenger');
 
                         $resultPassengers = $passengerController->insert($passengerAddArray);
 
-                        Session::setSessionHistoryPassenger('A'.$i , $resultPassengers['lastId']) ;
+                        Session::setSessionHistoryPassenger('A' . $i, $resultPassengers['lastId']);
                         $i++;
                     }
                 }
 
 
                 $i = 1;
-                if(isset($params['genderC' . $i]))
-                {
+                if (isset($params['genderC' . $i])) {
                     while ($params['genderC' . $i]) {
                         if (!empty($params['birthdayC' . $i])) {
                             $explode_br_fa = explode('-', $params['birthdayC' . $i]);
@@ -1174,15 +1165,15 @@ class apiLocal extends clientAuth
                         $d['mobile_buyer'] = $params['Mobile_buyer'];
                         $d['email_buyer'] = $params['Email_buyer'];
 
-                        if ($params["passengerNationalityC" . $i] == '1' || ($isInternal == '0' && $params["passengerNationalityC" . $i] == '1') || (SOFTWARE_LANG !='fa')) {
+                        if ($params["passengerNationalityC" . $i] == '1' || ($isInternal == '0' && $params["passengerNationalityC" . $i] == '1') || (SOFTWARE_LANG != 'fa')) {
                             $d['passenger_birthday_en'] = $params['birthdayEnC' . $i];
-                        }else{
+                        } else {
                             $d['passenger_birthday_en'] = $date_miladi;
                         }
                         $d['passenger_national_code'] = !empty($params['NationalCodeC' . $i]) ? $params['NationalCodeC' . $i] : '0000000000';
 
 
-                        $d['passenger_age'] = $this->type_passengers( $d['passenger_birthday_en'],$d['date_flight']);
+                        $d['passenger_age'] = $this->type_passengers($d['passenger_birthday_en'], $d['date_flight']);
 
 
                         $d['type_app'] = (isset($_POST['type']) && $_POST['type'] == 'App') ? "Application" : "Web";
@@ -1190,27 +1181,25 @@ class apiLocal extends clientAuth
                         $d['currency_equivalent'] = !empty($InfoCurrency) ? $InfoCurrency['EqAmount'] : 0;
                         $d['request_number'] = $PreReserve['Result']['Request']['RequestNumber'];
 
-                        if(empty($special_discount_information) && !empty($params['NationalCodeC' . $i])){
+                        if (empty($special_discount_information) && !empty($params['NationalCodeC' . $i])) {
                             $data_special_discount['type_get_discount'] = 'national_code';
-                            $data_special_discount['pre_code'] = substr($params['NationalCodeC' . $i],0,3);
+                            $data_special_discount['pre_code'] = substr($params['NationalCodeC' . $i], 0, 3);
                             $special_discount_information_with_national_code = $this->getController('servicesDiscount')->getSpecialDiscount($data_special_discount);
 
-                            if(!empty($special_discount_information_with_national_code))
-                            {
-                                $data_check_usage['info_member_passenger'] = $params['NationalCodeC' . $i] ;
+                            if (!empty($special_discount_information_with_national_code)) {
+                                $data_check_usage['info_member_passenger'] = $params['NationalCodeC' . $i];
                                 $check_usage_member = $this->getController('servicesDiscount')->getSpecialDiscountUsed($data_special_discount);
-                                if(empty($check_usage_member))
-                                {
-                                    $d['special_discount_amount'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['amount']: 0;
+                                if (empty($check_usage_member)) {
+                                    $d['special_discount_amount'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['amount'] : 0;
                                     $d['special_discount_type'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['type_discount'] : null;
 
-                                    $data_usage_special_discount['info_member_passenger'] =$params['NationalCodeC' . $i];
-                                    $data_usage_special_discount['amount'] = $special_discount_information['amount'] ;
-                                    $data_usage_special_discount['type_amount'] =  $special_discount_information['type_discount'];
-                                    $data_usage_special_discount['factor_number'] =  $factor_number;
-                                    $data_usage_special_discount['type_buy'] =  'flight';
-                                    $data_usage_special_discount['status'] =  'pending';
-                                    $data_usage_special_discount['creation_date_int'] =  time();
+                                    $data_usage_special_discount['info_member_passenger'] = $params['NationalCodeC' . $i];
+                                    $data_usage_special_discount['amount'] = $special_discount_information['amount'];
+                                    $data_usage_special_discount['type_amount'] = $special_discount_information['type_discount'];
+                                    $data_usage_special_discount['factor_number'] = $factor_number;
+                                    $data_usage_special_discount['type_buy'] = 'flight';
+                                    $data_usage_special_discount['status'] = 'pending';
+                                    $data_usage_special_discount['creation_date_int'] = time();
 
                                     $this->getController('servicesDiscount')->setSpecialDiscountUsed($data_usage_special_discount);
                                 }
@@ -1241,15 +1230,15 @@ class apiLocal extends clientAuth
                             'memberID' => $user['id'],
                             'passengerNationality' => $params["passengerNationalityC" . $i]
                         );
-                        $resultPassengers =$passengerController->insert($passengerAddArray);
-                        Session::setSessionHistoryPassenger('C'.$i , $resultPassengers['lastId']) ;
+                        $resultPassengers = $passengerController->insert($passengerAddArray);
+                        Session::setSessionHistoryPassenger('C' . $i, $resultPassengers['lastId']);
                         $i++;
                     }
                 }
 
 
                 $i = 1;
-                if(isset($params['genderI' . $i])) {
+                if (isset($params['genderI' . $i])) {
                     while ($params['genderI' . $i]) {
 
                         if (!empty($params['birthdayI' . $i])) {
@@ -1299,14 +1288,14 @@ class apiLocal extends clientAuth
                         $d['mobile_buyer'] = $params['Mobile_buyer'];
                         $d['email_buyer'] = $params['Email_buyer'];
 
-                        if ($params["passengerNationalityI" . $i] == '1' || ($isInternal == '0' && $params["passengerNationalityI" . $i] == '1') || (SOFTWARE_LANG !='fa')) {
+                        if ($params["passengerNationalityI" . $i] == '1' || ($isInternal == '0' && $params["passengerNationalityI" . $i] == '1') || (SOFTWARE_LANG != 'fa')) {
                             $d['passenger_birthday_en'] = $params['birthdayEnI' . $i];
-                        }else{
+                        } else {
                             $d['passenger_birthday_en'] = $date_miladi;
                         }
                         $d['passenger_national_code'] = !empty($params['NationalCodeI' . $i]) ? $params['NationalCodeI' . $i] : '0000000000';
 
-                        $d['passenger_age'] = $this->type_passengers( $d['passenger_birthday_en'],$d['date_flight']);
+                        $d['passenger_age'] = $this->type_passengers($d['passenger_birthday_en'], $d['date_flight']);
 
 
                         $d['type_app'] = (isset($_POST['type']) && $_POST['type'] == 'App') ? "Application" : "Web";
@@ -1323,21 +1312,20 @@ class apiLocal extends clientAuth
 
                             if (!empty($special_discount_information_with_national_code)) {
 
-                                $data_check_usage['info_member_passenger'] = $params['NationalCodeC' . $i] ;
+                                $data_check_usage['info_member_passenger'] = $params['NationalCodeC' . $i];
                                 $check_usage_member = $this->getController('servicesDiscount')->getSpecialDiscountUsed($data_special_discount);
 
-                                if(empty($check_usage_member))
-                                {
-                                    $d['special_discount_amount'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['amount']: 0;
+                                if (empty($check_usage_member)) {
+                                    $d['special_discount_amount'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['amount'] : 0;
                                     $d['special_discount_type'] = !empty($special_discount_information_with_national_code) ? $special_discount_information_with_national_code['type_discount'] : null;
 
                                     $data_usage_special_discount['info_member_passenger'] = $params['NationalCodeI' . $i];
-                                    $data_usage_special_discount['amount'] = $special_discount_information['amount'] ;
-                                    $data_usage_special_discount['type_amount'] =  $special_discount_information['type_discount'];
-                                    $data_usage_special_discount['factor_number'] =  $factor_number;
-                                    $data_usage_special_discount['type_buy'] =  'flight';
-                                    $data_usage_special_discount['status'] =  'pending';
-                                    $data_usage_special_discount['creation_date_int'] =  time();
+                                    $data_usage_special_discount['amount'] = $special_discount_information['amount'];
+                                    $data_usage_special_discount['type_amount'] = $special_discount_information['type_discount'];
+                                    $data_usage_special_discount['factor_number'] = $factor_number;
+                                    $data_usage_special_discount['type_buy'] = 'flight';
+                                    $data_usage_special_discount['status'] = 'pending';
+                                    $data_usage_special_discount['creation_date_int'] = time();
 
                                     $this->getController('servicesDiscount')->setSpecialDiscountUsed($data_usage_special_discount);
                                 }
@@ -1367,15 +1355,14 @@ class apiLocal extends clientAuth
                             'memberID' => $user['id'],
                             'passengerNationality' => $params["passengerNationalityI" . $i]
                         );
-                        $resultPassengers =$passengerController->insert($passengerAddArray);
-                        Session::setSessionHistoryPassenger('I'.$i , $resultPassengers['lastId']) ;
+                        $resultPassengers = $passengerController->insert($passengerAddArray);
+                        Session::setSessionHistoryPassenger('I' . $i, $resultPassengers['lastId']);
                         $i++;
                     }
                 }
 
 
-
-                if ($d['IsInternal'] == '0' || (isset($params['typeReserve']) && $params['typeReserve']=='package') || ($d['IsInternal'] == '1' && $d['api_id'] == '14' && $direction=='TwoWay' )) {
+                if ($d['IsInternal'] == '0' || (isset($params['typeReserve']) && $params['typeReserve'] == 'package') || ($d['IsInternal'] == '1' && $d['api_id'] == '14' && $direction == 'TwoWay')) {
                     foreach ($PreReserve['Result']['Request']['OutputRoutes'] as $Routes) {
                         $DepartureDateExplode = explode('T', $Routes['DepartureDate']);
                         $DepartureDate = count($DepartureDateExplode) > 1 ? $DepartureDateExplode[0] : $Routes['DepartureDate'];
@@ -1455,14 +1442,12 @@ class apiLocal extends clientAuth
                 }
 
 
-
                 $result['result_status'] = $PreReserve['Result']['Request']['Status'];
                 $result['result_request_number'] = $PreReserve['Result']['Request']['RequestNumber'];
                 $result['result_factor_number'] = $factor_number;
                 $result['extra_message'] = 'success prereserve';
 
-            }
-            else {
+            } else {
                 $MessageError = functions::ShowError($PreReserve['Messages']['errorCode']);
 
                 $data_error['client_id'] = CLIENT_ID;
@@ -1476,8 +1461,7 @@ class apiLocal extends clientAuth
                 $result['result_request_number'] = $ExplodeSessionID[0];
                 $result['extra_message'] = 'error in prereserve';
             }
-        }
-        else {
+        } else {
             $result['result_status'] = 'PreReserve';
             $result['result_request_number'] = $BookExist['request_number'];
             $result['result_factor_number'] = $BookExist['factor_number'];
@@ -1491,9 +1475,9 @@ class apiLocal extends clientAuth
 #endregion
 #region type_passengers
 
-    public function type_passengers($birthday,$flight_date)
+    public function type_passengers($birthday, $flight_date)
     {
-        $different_date = functions::dateDiff(date("Y-m-d", time()),$flight_date) ;
+        $different_date = functions::dateDiff(date("Y-m-d", time()), $flight_date);
 
         $date_two = date("Y-m-d", strtotime("-2 year +{$different_date} day"));
         $date_twelve = date("Y-m-d", strtotime("-12 year +{$different_date} day"));
@@ -1515,7 +1499,6 @@ class apiLocal extends clientAuth
     {
 
 
-
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
         $irantechCommission = Load::controller('irantechCommission');
@@ -1533,12 +1516,12 @@ class apiLocal extends clientAuth
             $data['Books'][$key]['LastName'] = $rec['passenger_family_en'];
             $data['Books'][$key]['PersianFirstName'] = $rec['passenger_name'];
             $data['Books'][$key]['PersianLastName'] = $rec['passenger_family'];
-            $data['Books'][$key]['PassengerType'] = $this->type_passengers((!empty($rec['passenger_birthday_en']) && $rec['passenger_birthday_en'] != '0000-00-00') ? $rec['passenger_birthday_en'] : $date_miladi,$rec['date_flight']);
+            $data['Books'][$key]['PassengerType'] = $this->type_passengers((!empty($rec['passenger_birthday_en']) && $rec['passenger_birthday_en'] != '0000-00-00') ? $rec['passenger_birthday_en'] : $date_miladi, $rec['date_flight']);
             $data['Books'][$key]['PassengerTitle'] = $this->type_title($rec['passenger_gender'], $data['Books'][$key]['PassengerType']);
             $data['Books'][$key]['DateOfBirth'] = (!empty($rec['passenger_birthday_en']) && $rec['passenger_birthday_en'] != '0000-00-00') ? $rec['passenger_birthday_en'] : $date_miladi;
-            $data['Books'][$key]['NationalCode'] =($rec['passenger_national_code'] == '0000000000') ? '' :  functions::convertNumberOFPersianToLatin($rec['passenger_national_code']);
-            $data['Books'][$key]['PassportNumber'] = ($rec['IsInternal'] == '1' && $rec['passportCountry'] == 'IRN') ? '' :  functions::convertNumberOFPersianToLatin(trim($rec['passportNumber']));
-            $data['Books'][$key]['PassportExpireDate'] = ($rec['IsInternal'] == '1' && $rec['passportCountry'] == 'IRN') ? '' :  functions::convertNumberOFPersianToLatin(trim($rec['passportExpire']));
+            $data['Books'][$key]['NationalCode'] = ($rec['passenger_national_code'] == '0000000000') ? '' : functions::convertNumberOFPersianToLatin($rec['passenger_national_code']);
+            $data['Books'][$key]['PassportNumber'] = ($rec['IsInternal'] == '1' && $rec['passportCountry'] == 'IRN') ? '' : functions::convertNumberOFPersianToLatin(trim($rec['passportNumber']));
+            $data['Books'][$key]['PassportExpireDate'] = ($rec['IsInternal'] == '1' && $rec['passportCountry'] == 'IRN') ? '' : functions::convertNumberOFPersianToLatin(trim($rec['passportExpire']));
 
 
             if (!empty($rec['passportNumber'])) {
@@ -1563,17 +1546,17 @@ class apiLocal extends clientAuth
 
             // be gofteye aghaye afshar dar tarikh 26 bahman 1401 shomare va email be sorate zir ersal mishavad
 
-            if( $sourceId=='8' && $passengers[0]['airline_iata']=='IS'){
+            if ($sourceId == '8' && $passengers[0]['airline_iata'] == 'IS') {
                 //az tarikh 4 bahman1402 mogharar shod baraye airline sepehran va server 7 shomare kharidar ersal shavad
-                $data['Books'][$key]['PhoneNumber'] =  $rec['mobile_buyer'];
-                $data['Books'][$key]['Email'] =  $rec['email_buyer'];
-            }elseif ($rec['pid_private'] =='1' && in_array(CLIENT_ID,$self_phone_customer)) {
+                $data['Books'][$key]['PhoneNumber'] = $rec['mobile_buyer'];
+                $data['Books'][$key]['Email'] = $rec['email_buyer'];
+            } elseif ($rec['pid_private'] == '1' && in_array(CLIENT_ID, $self_phone_customer)) {
                 //dar tarikh 25 esfand tebghe nazar moshtari baraye bazi az moshtariani Ke mikhan shomare karbar va email karbar ersal mishe
                 $data['Books'][$key]['PhoneNumber'] = !empty($rec['mobile_buyer']) ? $rec['mobile_buyer'] : $rec['member_mobile'];
                 $data['Books'][$key]['Email'] = (!empty($rec['email_buyer'])) ? $rec['email_buyer'] : $rec['member_email'];
-            }elseif ($rec['pid_private'] =='1') {
+            } elseif ($rec['pid_private'] == '1') {
 
-                if($sourceId == '22'){
+                if ($sourceId == '22') {
                     $data['Books'][$key]['PhoneNumber'] = !empty($rec['mobile_buyer']) ? $rec['mobile_buyer'] : $rec['member_mobile'];
                     if (!empty($rec['email_buyer'])) {
                         $data['Books'][$key]['Email'] = $rec['email_buyer'];
@@ -1582,16 +1565,15 @@ class apiLocal extends clientAuth
                     } else {
                         $data['Books'][$key]['Email'] = 'info@iran-tech.com';
                     }
+                } else {
+                    //shomare telephone and email modir
+                    $data['Books'][$key]['PhoneNumber'] = CLIENT_MOBILE;
+                    $data['Books'][$key]['Email'] = CLIENT_EMAIL;
                 }
-                else{
-                //shomare telephone and email modir
-                $data['Books'][$key]['PhoneNumber'] = CLIENT_MOBILE ;
-                $data['Books'][$key]['Email'] = CLIENT_EMAIL;
-                }
-            }elseif ($rec['pid_private'] =='0' && $sourceId=='14') {
+            } elseif ($rec['pid_private'] == '0' && $sourceId == '14') {
                 //pid_private =0 yani parvaz eshteraki hast
                 //baraye parto eshteraki
-                $data['Books'][$key]['PhoneNumber'] = '09020661033' ;
+                $data['Books'][$key]['PhoneNumber'] = '09020661033';
                 $data['Books'][$key]['Email'] = 'flymurshid@gmail.com';
 
                 $cellArray = array(
@@ -1603,13 +1585,12 @@ class apiLocal extends clientAuth
                 $smsController = Load::controller('smsServices');
                 $objSms = $smsController->initService('1');
                 if ($objSms) {
-                    $smsController->smsByPattern('ziw50u9vnh50dlf', $cellArray, array('serverId' => $ServerName,'requestNumber'=> $RequestNumber));
+                    $smsController->smsByPattern('ziw50u9vnh50dlf', $cellArray, array('serverId' => $ServerName, 'requestNumber' => $RequestNumber));
 
                 }
 
-            }
-            else{
-                if($sourceId=='17' || $sourceId=='21') {
+            } else {
+                if ($sourceId == '17' || $sourceId == '21') {
                     // dar tarikh 4 azar 1403 bana be darkhast aghaye afshar shomare poshtibani bere be flightio chon baraye moshtari 3 ta sms miraft
                     $data['Books'][$key]['PhoneNumber'] = '09057078341';
                 } else {
@@ -1631,14 +1612,14 @@ class apiLocal extends clientAuth
         $info_json_passengers = json_encode($data);
 
         $book = $this->curlExecution($url, $info_json_passengers, 'yes');
-        functions::insertLog('data: ' . json_encode($book) , '000shojaee');
+
         error_log('try show result Request Client In Book in : ' . date('Y/m/d H:i:s') . '   Request equal in With SourceId=>' . $sourceId . 'AND  RequestNumber : => ' . $RequestNumber . ': ' . $info_json_passengers . " \n" . "Response equal in With RequestNumber=>" . $RequestNumber . ":" . " " . json_encode($book, true) . " \n", 3, LOGS_DIR . 'log_Request_Response_Book.txt');
 
         $IsInternal = $passengers[0]['IsInternal'];
         $FlagUpdate = false;
         if (!empty($book)) {
             if (isset($book['Result']['ProviderStatus']) && $book['Result']['ProviderStatus'] != "errorProvider") {
-                functions::insertLog('data: ' . json_encode('hi') , '000shojaee');
+
                 $UserInfo = functions::infoMember($IdMember);
 
                 $AirlineIata = $passengers[0]['airline_iata'];
@@ -1654,11 +1635,11 @@ class apiLocal extends clientAuth
 
                     //تغییرات قیمت فقط برای چارتری داخلی و یا خارجی(هم سیستمی و هم چارتری)
 
-                    if (((in_array($sourceId,functions::sourceIncreasePriceFlightSystem())) || ($FlightType == 'charter')  || ($FlightType == 'system' && $IsInternal == '0' && $sourceId !='8' && $sourceId !='16')) && $check_private == 'public') {
-                        $data_price_change['counter_id']   =  $UserInfo['fk_counter_type_id'];
+                    if (((in_array($sourceId, functions::sourceIncreasePriceFlightSystem())) || ($FlightType == 'charter') || ($FlightType == 'system' && $IsInternal == '0' && $sourceId != '8' && $sourceId != '16')) && $check_private == 'public') {
+                        $data_price_change['counter_id'] = $UserInfo['fk_counter_type_id'];
                         $data_price_change['airline_iata'] = $AirlineIata;
-                        $data_price_change['locality']     = ($IsInternal == '1' ? 'local' : 'international');
-                        $data_price_change['flight_type']  = $FlightType;
+                        $data_price_change['locality'] = ($IsInternal == '1' ? 'local' : 'international');
+                        $data_price_change['flight_type'] = $FlightType;
                         $priceChanges = $this->getController('priceChanges')->getChangePriceByCounterAndAirline($data_price_change);
                         $d['price_change'] = $priceChanges['price'];
                         $d['price_change_type'] = $priceChanges['change_type'];
@@ -1668,7 +1649,6 @@ class apiLocal extends clientAuth
                         $d['price_change_type'] = 'none';
                     }
                 }
-
 
 
                 $airlineModel = $this->getModel('airlineModel');
@@ -1693,52 +1673,52 @@ class apiLocal extends clientAuth
                 $d['api_id'] = $sourceId;
                 $d['foreign_airline'] = $foreignAirline;
 
-                $PriceFare =array();
+                $PriceFare = array();
                 $PriceTax = array();
                 $PriceCom = array();
                 $source_rial = functions::calculateWithRial();
 
                 /* به دلیل خروجی و هماهنگی تعداد مسافران و تعداد رکوردها مجبور به استفاده از دو حلقه زیر هستیم که در اولی مبلغ هر مسافر متانسب با نوعش به دست می آید و در دومی به تعداد مسافران رکورد میزنیم  */
                 foreach ($book['Result']['Request']['RequestFares'] as $RequestFares) {
-                    if ( (in_array($sourceId,$source_rial))) {
+                    if ((in_array($sourceId, $source_rial))) {
                         if (strtolower($RequestFares['PassengerType']) == "adt") {
-                            $Price['Adt']     =   $RequestFares['TotalFare'];
-                            $PriceFare['Adt'] =   $RequestFares['BaseFare'] ;
-                            $PriceTax['Adt']  =   $RequestFares['Tax'];
-                            $PriceCom['Adt']  =   $RequestFares['Commision'];
+                            $Price['Adt'] = $RequestFares['TotalFare'];
+                            $PriceFare['Adt'] = $RequestFares['BaseFare'];
+                            $PriceTax['Adt'] = $RequestFares['Tax'];
+                            $PriceCom['Adt'] = $RequestFares['Commision'];
                         }
                         if (strtolower($RequestFares['PassengerType']) == "chd") {
-                            $Price['Chd']     =   $RequestFares['TotalFare'];
-                            $PriceFare['Chd'] =   $RequestFares['BaseFare'] ;
-                            $PriceTax['Chd']  =   $RequestFares['Tax'];
-                            $PriceCom['Chd']  =   $RequestFares['Commision'];
+                            $Price['Chd'] = $RequestFares['TotalFare'];
+                            $PriceFare['Chd'] = $RequestFares['BaseFare'];
+                            $PriceTax['Chd'] = $RequestFares['Tax'];
+                            $PriceCom['Chd'] = $RequestFares['Commision'];
 
                         }
                         if (strtolower($RequestFares['PassengerType']) == "inf") {
-                            $Price['Inf']     =  $RequestFares['TotalFare'];
-                            $PriceFare['Inf'] =  $RequestFares['BaseFare'] ;
-                            $PriceTax['Inf']  =  $RequestFares['Tax'];
-                            $PriceCom['Inf']  =  $RequestFares['Commision'];
+                            $Price['Inf'] = $RequestFares['TotalFare'];
+                            $PriceFare['Inf'] = $RequestFares['BaseFare'];
+                            $PriceTax['Inf'] = $RequestFares['Tax'];
+                            $PriceCom['Inf'] = $RequestFares['Commision'];
 
                         }
                     } else {
                         if (strtolower($RequestFares['PassengerType']) == "adt") {
-                            $Price['Adt']     =   functions::convert_toman_rial($RequestFares['TotalFare']);
-                            $PriceFare['Adt'] =   functions::convert_toman_rial($RequestFares['BaseFare']);
-                            $PriceTax['Adt']  =   functions::convert_toman_rial($RequestFares['Tax']);
-                            $PriceCom['Adt']  =   functions::convert_toman_rial($RequestFares['Commision']);
+                            $Price['Adt'] = functions::convert_toman_rial($RequestFares['TotalFare']);
+                            $PriceFare['Adt'] = functions::convert_toman_rial($RequestFares['BaseFare']);
+                            $PriceTax['Adt'] = functions::convert_toman_rial($RequestFares['Tax']);
+                            $PriceCom['Adt'] = functions::convert_toman_rial($RequestFares['Commision']);
                         }
                         if (strtolower($RequestFares['PassengerType']) == "chd") {
-                            $Price['Chd']     =   functions::convert_toman_rial($RequestFares['TotalFare']);
-                            $PriceFare['Chd'] =   functions::convert_toman_rial($RequestFares['BaseFare']);
-                            $PriceTax['Chd']  =   functions::convert_toman_rial($RequestFares['Tax']);
-                            $PriceCom['Chd']  =   functions::convert_toman_rial($RequestFares['Commision']);
+                            $Price['Chd'] = functions::convert_toman_rial($RequestFares['TotalFare']);
+                            $PriceFare['Chd'] = functions::convert_toman_rial($RequestFares['BaseFare']);
+                            $PriceTax['Chd'] = functions::convert_toman_rial($RequestFares['Tax']);
+                            $PriceCom['Chd'] = functions::convert_toman_rial($RequestFares['Commision']);
                         }
                         if (strtolower($RequestFares['PassengerType']) == "inf") {
-                            $Price['Inf']     =   functions::convert_toman_rial($RequestFares['TotalFare']);
-                            $PriceFare['Inf'] =   functions::convert_toman_rial($RequestFares['BaseFare']);
-                            $PriceTax['Inf']  =   functions::convert_toman_rial($RequestFares['Tax']);
-                            $PriceCom['Inf']  =   functions::convert_toman_rial($RequestFares['Commision']);
+                            $Price['Inf'] = functions::convert_toman_rial($RequestFares['TotalFare']);
+                            $PriceFare['Inf'] = functions::convert_toman_rial($RequestFares['BaseFare']);
+                            $PriceTax['Inf'] = functions::convert_toman_rial($RequestFares['Tax']);
+                            $PriceCom['Inf'] = functions::convert_toman_rial($RequestFares['Commision']);
                         }
                     }
 
@@ -1751,7 +1731,7 @@ class apiLocal extends clientAuth
 
                 $TypeService = $passengers[0]['serviceTitle'];
 //                if ($user['is_member'] == '1') {
-                    $Discount = functions::ServiceDiscount($user['fk_counter_type_id'], $TypeService);
+                $Discount = functions::ServiceDiscount($user['fk_counter_type_id'], $TypeService);
 //                } else {
 //                    $Discount = '0';
 //                }
@@ -1762,12 +1742,11 @@ class apiLocal extends clientAuth
                 $it_commission = $irantechCommission->getFlightCommission($TypeService, $sourceId);
 
 
-
                 foreach ($book['Result']['Request']['RequestPassengers'] as $ReqPassenger) {
 
                     if (strtolower($ReqPassenger['PassengerType']) == "adt") {
 
-                        $addon = 0 ;
+                        $addon = 0;
 
                         // این تیکه کد مربوط به سیاست قدیمی قیمت گذاری پرواز ها میباشد ، کامن شد به جاش سیست جدید که به صورت داینامیک هست نوشته شده است
 
@@ -1780,28 +1759,27 @@ class apiLocal extends clientAuth
 //                        }
 
 
-
                         $d['adt_price'] = $Price['Adt'] + $addon;
 
-                        $d['adt_fare']  = $PriceFare['Adt'];
-                        $d['adt_tax']   = $PriceTax['Adt'];
-                        $d['adt_com']   = $PriceCom['Adt'];
+                        $d['adt_fare'] = $PriceFare['Adt'];
+                        $d['adt_tax'] = $PriceTax['Adt'];
+                        $d['adt_com'] = $PriceCom['Adt'];
                         $d['discount_adt_price'] = $Price['discount_adt_price'];
                         $d['adt_qty'] = '1';
                         $d['chd_price'] = '0';
                         $d['chd_fare'] = '0';
-                        $d['chd_tax']  = '0';
-                        $d['chd_com']  = '0';
+                        $d['chd_tax'] = '0';
+                        $d['chd_com'] = '0';
                         $d['discount_chd_price'] = '0';
                         $d['chd_qty'] = '0';
                         $d['inf_price'] = '0';
-                        $d['inf_fare'] ='0';
-                        $d['inf_tax']  = '0';
-                        $d['inf_com']  = '0';
+                        $d['inf_fare'] = '0';
+                        $d['inf_tax'] = '0';
+                        $d['inf_com'] = '0';
                         $d['inf_qty'] = '0';
                         $d['discount_inf_price'] = '0';
                         $d['percent_discount'] = $Price['percent_discount'];
-                        list($api_commission, $agency_commission, $supplier_commission) = $this->commission($FlightType, $d['adt_price'], $check_private, $d['price_change'], $d['price_change_type'], $sourceId,$d['adt_fare'],$IsInternal);
+                        list($api_commission, $agency_commission, $supplier_commission) = $this->commission($FlightType, $d['adt_price'], $check_private, $d['price_change'], $d['price_change_type'], $sourceId, $d['adt_fare'], $IsInternal);
                         $d['api_commission'] = $api_commission;
                         $d['agency_commission'] = $agency_commission;
                         $d['supplier_commission'] = $supplier_commission;
@@ -1809,12 +1787,11 @@ class apiLocal extends clientAuth
                         $d['provider_adt_price'] = $Price['Adt'];
                         $d['provider_chd_price'] = '0';
                         $d['provider_inf_price'] = '0';
-                    }
-                    else if (strtolower($ReqPassenger['PassengerType']) == "chd") {
+                    } else if (strtolower($ReqPassenger['PassengerType']) == "chd") {
 
                         // این تیکه کد مربوط به سیاست قدیمی قیمت گذاری پرواز ها میباشد ، کامن شد به جاش سیست جدید که به صورت داینامیک هست نوشته شده است
 
-                        $addon = 0 ;
+                        $addon = 0;
 //                        if($check_private=='public' && $sourceId =='14' && $IsInternal==0) {
 //                            $addon = $Price['Chd'] * (IT_COMMISSION/100) ;
 //                        }else if($FlightType == 'system' && $sourceId =='17' && $IsInternal == 1) {
@@ -1822,39 +1799,38 @@ class apiLocal extends clientAuth
 //                            $addon = ($PriceFare['Chd'] * 3) / 100 ;
 //                        }
 
-                        $d['chd_price'] = $Price['Chd'] + $addon ;
+                        $d['chd_price'] = $Price['Chd'] + $addon;
                         $d['chd_fare'] = $PriceFare['Chd'];
-                        $d['chd_tax']  = $PriceTax['Chd'];
-                        $d['chd_com']   = $PriceCom['Chd'];
+                        $d['chd_tax'] = $PriceTax['Chd'];
+                        $d['chd_com'] = $PriceCom['Chd'];
                         $d['discount_chd_price'] = $Price['discount_chd_price'];
                         $d['chd_qty'] = '1';
                         $d['adt_price'] = '0';
                         $d['adt_fare'] = '0';
-                        $d['adt_tax']  = '0';
-                        $d['adt_com']  = '0';
+                        $d['adt_tax'] = '0';
+                        $d['adt_com'] = '0';
                         $d['adt_qty'] = '0';
                         $d['discount_adt_price'] = '0';
                         $d['inf_qty'] = '0';
                         $d['inf_price'] = '0';
-                        $d['inf_fare'] ='0';
-                        $d['inf_tax']  = '0';
-                        $d['inf_com']  = '0';
+                        $d['inf_fare'] = '0';
+                        $d['inf_tax'] = '0';
+                        $d['inf_com'] = '0';
                         $d['discount_inf_price'] = '0';
                         $d['percent_discount'] = $Price['percent_discount'];
-                        list($api_commission, $agency_commission, $supplier_commission) = $this->commission($FlightType, $d['chd_price'], $check_private, $d['price_change'], $d['price_change_type'], $sourceId,$d['chd_fare'],$IsInternal);
+                        list($api_commission, $agency_commission, $supplier_commission) = $this->commission($FlightType, $d['chd_price'], $check_private, $d['price_change'], $d['price_change_type'], $sourceId, $d['chd_fare'], $IsInternal);
                         $d['api_commission'] = $api_commission;
                         $d['agency_commission'] = $agency_commission;
                         $d['supplier_commission'] = $supplier_commission;
-                        $d['irantech_commission'] = $it_commission ;
+                        $d['irantech_commission'] = $it_commission;
                         $d['provider_chd_price'] = $Price['Chd'];
                         $d['provider_adt_price'] = '0';
                         $d['provider_inf_price'] = '0';
-                    }
-                    else if (strtolower($ReqPassenger['PassengerType']) == "inf") {
+                    } else if (strtolower($ReqPassenger['PassengerType']) == "inf") {
 
                         // این تیکه کد مربوط به سیاست قدیمی قیمت گذاری پرواز ها میباشد ، کامن شد به جاش سیست جدید که به صورت داینامیک هست نوشته شده است
 
-                        $addon = 0 ;
+                        $addon = 0;
 //                        if($check_private=='public' && $sourceId =='14' && $IsInternal==0) {
 //                            $addon = $Price['Inf'] * (IT_COMMISSION/100) ;
 //                        }
@@ -1863,36 +1839,36 @@ class apiLocal extends clientAuth
 //                            $addon = ($PriceFare['Inf'] * 3) / 100 ;
 //                        }
 
-                        $d['inf_price'] = $Price['Inf'] +  $addon ;
+                        $d['inf_price'] = $Price['Inf'] + $addon;
                         $d['inf_fare'] = $PriceFare['Inf'];
-                        $d['inf_tax']  = $PriceTax['Inf'];
-                        $d['inf_com']  = $PriceCom['Inf'];
+                        $d['inf_tax'] = $PriceTax['Inf'];
+                        $d['inf_com'] = $PriceCom['Inf'];
                         $d['inf_qty'] = '1';
                         $d['adt_qty'] = '0';
                         $d['adt_price'] = '0';
                         $d['adt_fare'] = '0';
-                        $d['adt_tax']  = '0';
-                        $d['adt_com']  = '0';
+                        $d['adt_tax'] = '0';
+                        $d['adt_com'] = '0';
                         $d['discount_adt_price'] = '0';
                         $d['chd_price'] = '0';
                         $d['chd_fare'] = '0';
-                        $d['chd_tax']  = '0';
-                        $d['chd_com']  = '0';
+                        $d['chd_tax'] = '0';
+                        $d['chd_com'] = '0';
                         $d['discount_chd_price'] = '0';
                         $d['chd_qty'] = '0';
                         $d['percent_discount'] = $Price['percent_discount'];
-                        list($api_commission, $agency_commission, $supplier_commission) = $this->commission($FlightType, $d['inf_price'], $check_private, $d['price_change'], $d['price_change_type'], $sourceId,$d['inf_fare'],$IsInternal);
+                        list($api_commission, $agency_commission, $supplier_commission) = $this->commission($FlightType, $d['inf_price'], $check_private, $d['price_change'], $d['price_change_type'], $sourceId, $d['inf_fare'], $IsInternal);
                         $d['api_commission'] = $api_commission;
                         $d['agency_commission'] = $agency_commission;
                         $d['supplier_commission'] = $supplier_commission;
-                        $d['irantech_commission'] =  $it_commission;
+                        $d['irantech_commission'] = $it_commission;
                         $d['provider_inf_price'] = $Price['Inf'];
                         $d['provider_chd_price'] = '0';
                         $d['provider_adt_price'] = '0';
                     }
 
-                    $d = $this->getController('commissionSources')->sourceCommissionCalculation($d , 'book');
-                    $d = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($d , 'book' , $IdMember);
+                    $d = $this->getController('commissionSources')->sourceCommissionCalculation($d, 'book');
+                    $d = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($d, 'book', $IdMember);
                     $condition = " member_id = '{$IdMember}' AND request_number='{$RequestNumber}' AND passenger_age='{$ReqPassenger['PassengerType'] }'";
                     $Model->setTable("book_local_tb");
                     $res = $Model->update($d, $condition);
@@ -1908,11 +1884,10 @@ class apiLocal extends clientAuth
 
                 }
                 if (!empty($sourceId) && ($sourceId == '8')) {
-                    functions::compareCreditInCharter724('irantechTest',$RequestNumber);
+                    functions::compareCreditInCharter724('irantechTest', $RequestNumber);
                 }
 
-            }
-            else {
+            } else {
 
                 $BookFlight['successfull'] = 'error';
                 $condition = "request_number='{$RequestNumber}' ";
@@ -1926,7 +1901,7 @@ class apiLocal extends clientAuth
 
                 $errorsController = $this->getController('errors');
 
-                $errMsg = $errorsController->processError($book['Messages']['errorMessage'] , 'flight' , 'book' , $book['SourceId']);
+                $errMsg = $errorsController->processError($book['Messages']['errorMessage'], 'flight', 'book', $book['SourceId']);
 
                 $MessageError = functions::ShowError($book['Messages']['errorCode']);
                 $data_error['client_id'] = CLIENT_ID;
@@ -1945,8 +1920,7 @@ class apiLocal extends clientAuth
 
 
             }
-        }
-        else {
+        } else {
             $BookFlight['successfull'] = 'error';
             $condition = "request_number='{$RequestNumber}'";
             $Model->setTable("book_local_tb");
@@ -1961,7 +1935,7 @@ class apiLocal extends clientAuth
 
 
             $errorsController = $this->getController('errors');
-            $errMsg = $errorsController->processError('null' , 'flight' , 'book' , $book['SourceId']);
+            $errMsg = $errorsController->processError('null', 'flight', 'book', $book['SourceId']);
 
             $data_error['message_agency'] = $errMsg['displayAgency'];
             $data_error['message_passenger'] = $errMsg['displayPassenger'];
@@ -2007,7 +1981,7 @@ class apiLocal extends clientAuth
 #endregion
 #region commission
 
-    public function commission($flight_type, $api_price, $private = NULL, $price_change = NULL, $price_change_type = NULL, $SourceId,$priceFare,$IsInternal)
+    public function commission($flight_type, $api_price, $private = NULL, $price_change = NULL, $price_change_type = NULL, $SourceId, $priceFare, $IsInternal)
     {
         /*
          * @param $flight_type string , value is charter OR system;
@@ -2019,8 +1993,8 @@ class apiLocal extends clientAuth
 
         $MarkupForSourceId = functions::MarkupForSourceId();
 
-        if (($IsInternal =='1'  && $SourceId !='14') || ($SourceId != '10' && $SourceId !='14' && $SourceId !='15')) {
-            if ($flight_type == "charter" || ($IsInternal =='0' && $flight_type == "system") ) {
+        if (($IsInternal == '1' && $SourceId != '14') || ($SourceId != '10' && $SourceId != '14' && $SourceId != '15')) {
+            if ($flight_type == "charter" || ($IsInternal == '0' && $flight_type == "system")) {
 //                $api_commission = (in_array($SourceId, $MarkupForSourceId)) ? "15000" : '0';
                 $api_commission = '0';
                 $agency_commission = (($price_change_type == 'percent') ? (($api_price + $api_commission) * ($price_change / 100)) : $price_change);
@@ -2032,15 +2006,14 @@ class apiLocal extends clientAuth
                 $supplier_commission = $api_price - $agency_commission;
             } else if ($flight_type == "system" && $private == "private") {
 //                $api_commission = "5000";
-                                $api_commission = "0";
+                $api_commission = "0";
                 $agency_commission = round($priceFare * (5 / 100));
                 $supplier_commission = $api_price - $agency_commission;
             }
 
-        }
-        else {
+        } else {
             $api_commission = "0";
-            $agency_commission = round(($price_change_type == 'percent' ? ($IsInternal =='1' ? $priceFare : $api_price) * ($price_change / 100) : $price_change));
+            $agency_commission = round(($price_change_type == 'percent' ? ($IsInternal == '1' ? $priceFare : $api_price) * ($price_change / 100) : $price_change));
             $supplier_commission = $api_price;
         }
 
@@ -2053,25 +2026,24 @@ class apiLocal extends clientAuth
 
 #region Reserve
 
-    public function Reserve($RequestNumber, $SourceId) {
+    public function Reserve($RequestNumber, $SourceId)
+    {
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
         $sql = "SELECT * FROM book_local_tb WHERE request_number='{$RequestNumber}'";
         $book = $Model->load($sql);
 
-        if($book['direction']== 'return')
-        {
-            $check_dept_reserve = $this->getModel('bookLocalModel')->get()->where('direction','dept')->where('factor_number',$book['factor_number'])->find();
+        if ($book['direction'] == 'return') {
+            $check_dept_reserve = $this->getModel('bookLocalModel')->get()->where('direction', 'dept')->where('factor_number', $book['factor_number'])->find();
             error_log('try show result of dept book' . $book['direction'] . ' And ticketed in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $RequestNumber . ' AND array Equal  =>' . json_encode($check_dept_reserve, true) . " \n", 3, LOGS_DIR . 'log_method_reserve.txt');
 
-            if($check_dept_reserve['successfull'] !='book'){
-                return false ;
+            if ($check_dept_reserve['successfull'] != 'book') {
+                return false;
             }
         }
 
         error_log('try show result method ticketed in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $RequestNumber . 'additional 1' . " \n", 3, LOGS_DIR . 'MethodInputCounter.txt');
         if (!empty($book) && ($book['successfull'] != "book")) {
-
 
 
             $url = $this->apiAddress . "Flight/Reserve/{$RequestNumber}";
@@ -2086,7 +2058,7 @@ class apiLocal extends clientAuth
 
             $Reserve = $this->curlExecution($url, json_encode($dataReserve), 'yes');
 
-            functions::insertLog('$Reserve: ' . json_encode($Reserve) , '000shojaee');
+
             error_log('try show result method of url' . $url . ' And ticketed in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $RequestNumber . ' AND array Equal  =>' . json_encode($Reserve, true) . " \n", 3, LOGS_DIR . 'log_method_reserve.txt');
             if ($book['api_id'] == '10') {
                 $cellArray = array(
@@ -2142,12 +2114,11 @@ class apiLocal extends clientAuth
 //            }
 
 
-
             if (!empty($Reserve) && $Reserve['Result']['ProviderStatus'] == 'Success' && $Reserve['Result']['Request']['Status'] == 'Ticketed') {
                 error_log('success Reserve===>' . date('Y/m/d H:i:s') . '=>' . $RequestNumber, 3, LOGS_DIR . 'log_method_reserve.txt');
 
 
-                $email_buyer      = $book['email_buyer'];
+                $email_buyer = $book['email_buyer'];
 //                if (isset($email_buyer) && !empty($email_buyer)) {
 //
 //
@@ -2173,15 +2144,14 @@ class apiLocal extends clientAuth
 //
 //                }
 
-                $members = Load::controller( 'members' );
+                $members = Load::controller('members');
                 $members->SendEmailForOther($email_buyer, $RequestNumber);
 
 
                 return $Reserve;
-            }
-            else if (!empty($Reserve) && $Reserve['Result']['ProviderStatus'] != 'Success') {
+            } else if (!empty($Reserve) && $Reserve['Result']['ProviderStatus'] != 'Success') {
 
-                if ($book['api_id'] == '14' || $book['api_id'] == '10'|| $book['api_id'] == '18'|| $book['api_id'] == '19') {
+                if ($book['api_id'] == '14' || $book['api_id'] == '10' || $book['api_id'] == '18' || $book['api_id'] == '19') {
                     $cellArray = array(
                         'abbasi_' => '09057078341',
                         'bahrami' => '09351252904',
@@ -2215,7 +2185,7 @@ class apiLocal extends clientAuth
 
 
                 $errorsController = $this->getController('errors');
-                $errMsg = $errorsController->processError($Reserve['Messages']['errorMessage'] , 'flight' , 'reserve' , $book['api_id']);
+                $errMsg = $errorsController->processError($Reserve['Messages']['errorMessage'], 'flight', 'reserve', $book['api_id']);
 
                 $data_error['client_id'] = CLIENT_ID;
                 $data_error['message_agency'] = $errMsg['displayAgency'];
@@ -2258,7 +2228,7 @@ class apiLocal extends clientAuth
             $url = $this->apiAddress . "Flight/reserveByBank/{$RequestNumber}";
 
             $dataSend['price'] = functions::CalculateDiscount($RequestNumber);
-            $dataSend['url'] = ROOT_ADDRESS."/returnBankPrivateSource7?requestNumber={$RequestNumber}";
+            $dataSend['url'] = ROOT_ADDRESS . "/returnBankPrivateSource7?requestNumber={$RequestNumber}";
             $emptyArray = json_encode($dataSend);
             $Reserve = $this->curlExecution($url, $emptyArray, 'yes');
             error_log('try show result method ticketedByBank in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $book['request_number'] . ' AND array Equal  =>' . json_encode($Reserve, true) . " \n", 3, LOGS_DIR . 'log_method_reserve_by_bank.txt');
@@ -2279,8 +2249,8 @@ class apiLocal extends clientAuth
                 $data_error['action'] = 'Reserve';
                 $data_error['creation_date_int'] = time();
                 $this->getController('logErrorFlights')->insertLogErrorFlights($data_error);
-            }else{
-                header("Location:". $Reserve['data']['linkpay']);
+            } else {
+                header("Location:" . $Reserve['data']['linkpay']);
             }
         } else {
             $MessageError = functions::Xmlinformation("InvalidFlight");
@@ -2297,17 +2267,18 @@ class apiLocal extends clientAuth
 
     }
 
-    public function getFinalDataSource7($RequestNumber,$dataReturn)
+    public function getFinalDataSource7($RequestNumber, $dataReturn)
     {
         $url = $this->apiAddress . "Flight/getDataTicket/{$RequestNumber}";
         $dataReturn['price'] = functions::CalculateDiscount($RequestNumber);
-        $dataReturn['url'] = ROOT_ADDRESS."/returnBankPrivateSource7?requestNumber={$RequestNumber}";
+        $dataReturn['url'] = ROOT_ADDRESS . "/returnBankPrivateSource7?requestNumber={$RequestNumber}";
         $data = json_encode($dataReturn);
         $Reserve = $this->curlExecution($url, $data, 'yes');
         error_log('try show result method ticketedByBank in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $RequestNumber . ' AND array Equal  =>' . json_encode($Reserve, true) . " \n", 3, LOGS_DIR . 'log_method_return_Source7_by_bank.txt');
 
         return $Reserve;
     }
+
 #region convert_toman_rial
 
     public function convert_toman_rial($param, $type, $ZoneType = null)
@@ -2330,7 +2301,7 @@ class apiLocal extends clientAuth
             case '12':
             case '13':
                 if ($type == 'charter') {
-                    return (functions::convert_toman_rial(($price + 1500))) ;
+                    return (functions::convert_toman_rial(($price + 1500)));
                 } elseif ($type == 'system') {
                     return ($price) * 10;
                 }
@@ -2353,7 +2324,7 @@ class apiLocal extends clientAuth
               case '16':
               case '5':*/
             default:
-                return (functions::convert_toman_rial($price)) ;
+                return (functions::convert_toman_rial($price));
                 break;
 
         }
@@ -2366,10 +2337,10 @@ class apiLocal extends clientAuth
         $bookLocal = Load::model('book_local');
         $privateCharterSources = functions::privateCharterFlights();
         $ClientIdPrivateCharterSources = functions::ClientIdCharterPrivateFlight();
-        $percentPublic = functions::percentPublic() ;
+        $percentPublic = functions::percentPublic();
 
         $rec = $bookLocal->GetInfoBookLocal($requestNumber);
-        list($TicketPrice,$fare) = $this->get_total_ticket_price($requestNumber, 'no');
+        list($TicketPrice, $fare) = $this->get_total_ticket_price($requestNumber, 'no');
 
         $check_private = ($rec['pid_private'] == '1') ? 'private' : 'public';
 
@@ -2381,11 +2352,11 @@ class apiLocal extends clientAuth
 //                    dar tarikh 13 ordibehesht 1404 tebgh darkhast aghaye afshar systemy ha haman meghdar total azashon kasr beshe
 //                    $totalAmount = $TicketPrice - ($fare * $percentPublic) + ($rec['irantech_commission'] * $rec['count_id']);
 //                    $totalAmount = $TicketPrice - (($TicketPrice - (($TicketPrice * 4573) / 100000)) * (($percentPublic))) + ($rec['irantech_commission'] * $rec['count_id']);
-                    if($rec['api_id'] == 17) {
+                    if ($rec['api_id'] == 17) {
                         //dar tarikh 21 ordibehesht 1404 tebgh darkhast aghaye afshar source 17 bayad 3 darsad fare azash kam she az moshtari gerefte she
-                        $percent = 3 ;
+                        $percent = 3;
                         $totalAmount = $TicketPrice - (($fare * $percent) / 100) + ($rec['irantech_commission'] * $rec['count_id']);
-                    }else{
+                    } else {
                         $totalAmount = $TicketPrice + ($rec['irantech_commission'] * $rec['count_id']);
                     }
                     $type = ' سیستمی پید اشتراکی ';
@@ -2499,8 +2470,7 @@ class apiLocal extends clientAuth
             if ($each['flight_type'] == 'system') {
                 $amount += $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
                 $fare += $each['adt_fare'] + $each['chd_fare'] + $each['inf_fare'];
-            }
-            else {
+            } else {
                 $amount += $each['api_commission'] + $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
                 if ($FlagPriceChange == "yes") {
                     //تغییرات قیمت فقط برای چارتری
@@ -2516,7 +2486,7 @@ class apiLocal extends clientAuth
                 $fare = '0';
             }
         }
-        return array($amount,$fare);
+        return array($amount, $fare);
     }
 
     public function get_total_customer_benefit_system_flight($RequestNumber)
@@ -2685,7 +2655,7 @@ class apiLocal extends clientAuth
 
 
 #region getAmountPenaltyAltrabo
-    public function getAmountPenaltyAltrabo($requestNumber,$dataCancel)
+    public function getAmountPenaltyAltrabo($requestNumber, $dataCancel)
     {
         $url = $this->apiAddress . "Flight/getAmountPenalty/{$requestNumber}";
         $data = json_encode($dataCancel);
@@ -2699,7 +2669,7 @@ class apiLocal extends clientAuth
 #endregion
 
 #region getRefuandAltrabo
-    public function getRefuandAltrabo($requestNumber,$dataCancel)
+    public function getRefuandAltrabo($requestNumber, $dataCancel)
     {
         $url = $this->apiAddress . "Flight/refundAltrabo/{$requestNumber}";
         $data = json_encode($dataCancel);
@@ -2711,34 +2681,42 @@ class apiLocal extends clientAuth
         return $resultGetAmountPenaltyAltrabo;
 
     }
+
     public function clientFlightData()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if($_POST['code']){
+            if ($_POST['code']) {
                 $code = isset($_POST['code']) ? 'code=' . $_POST['code'] : null;
             }
-            if($_POST['date_start']){
+            if ($_POST['date_start']) {
                 $date_start = isset($_POST['date_start']) ? 'date_start=' . $_POST['date_start'] : null;
             }
-            if($_POST['date_end']){
+            if ($_POST['date_end']) {
                 $date_start = isset($_POST['date_end']) ? 'date_end=' . $_POST['date_end'] : null;
 
             }
         }
-        $query_param = implode('',[$code, $date_start, $date_end]);
-        $url = "https://safar360.com/Core/V-1/Flight/getRequestedCode/$query_param" ; //TODO change this url accordingly
+        $query_param = implode('', [$code, $date_start, $date_end]);
+        $url = "https://safar360.com/Core/V-1/Flight/getRequestedCode/$query_param"; //TODO change this url accordingly
 
         header('Content-Type: application/json');
-        $result = functions::curlExecution($url,[]);
-        $final_response = [] ;
-        foreach($result as $data){
+        $result = functions::curlExecution($url, []);
+        $final_response = [];
+        foreach ($result as $data) {
+            $logFile = LOGS_DIR . 'time/search_' . $data['code'] . '.json';
+            if (file_exists($logFile)) {
+                $logFilePath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $logFile);
+                $logFilePathCore = 'http://safar360.com/Core/V-1/Flight/findFilesource15/search_time_' . $data['code'].'.json';
+            }
             $final_response[] = [
-                'id'     => $data['id'] ,
-                'code'     => $data['code'] ,
-                'businessMethodName'     => $data['businessMethodName'] ,
-                'ApiMethodName'     => $data['ApiMethodName'] ,
-                'response'     => htmlentities($data['response']) ,
-                'request'     => htmlentities($data['request']) ,
+                'id' => $data['id'],
+                'code' => $data['code'],
+                'businessMethodName' => $data['businessMethodName'],
+                'ApiMethodName' => $data['ApiMethodName'],
+                'response' => htmlentities($data['response']),
+                'request' => htmlentities($data['request']),
+                'log_file_path' => $logFilePath,
+                'log_file_path_core' => $logFilePathCore,
             ];
         }
         echo json_encode($final_response);

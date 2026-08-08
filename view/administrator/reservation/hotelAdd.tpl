@@ -123,6 +123,7 @@
                             <option value="100">هاستل</option>
                             <option value="101">بوتیک</option>
                             <option value="110">سوییت های سنتی بام خلخال</option>
+                            <option value="111">سازمانی</option>
                         </select>
                     </div>
 
@@ -144,9 +145,9 @@
                             <option value="">انتخاب کنید....</option>
                             {foreach $objFunction->ListCountry() as $country}
                                 {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                            <option value="{$country['id']}">{$country['name']}</option>
+                                    <option value="{$country['id']}">{$country['name']}</option>
                                 {else}
-                            <option value="{$country['id']}">{$country['name_en']}</option>
+                                    <option value="{$country['id']}">{$country['name_en']}</option>
                                 {/if}
                             {/foreach}
                         </select>
@@ -217,11 +218,11 @@
                                id="longitude" placeholder=" طول جغرافیایی را وارد نمائید">
                     </div>
 
-                        <div class="form-group col-sm-6">
-                            <label for="comment" class="control-label">توضیحات</label>
-                            <textarea type="text" class="form-control ckeditor" name="comment" value="{$smarty.post.comment}"
-                                      id="comment" placeholder=" توضیحات را وارد نمائید" ></textarea>
-                        </div>
+                    <div class="form-group col-sm-6">
+                        <label for="comment" class="control-label">توضیحات</label>
+                        <textarea type="text" class="form-control ckeditor" name="comment" value="{$smarty.post.comment}"
+                                  id="comment" placeholder=" توضیحات را وارد نمائید" ></textarea>
+                    </div>
 
                     <div class="form-group col-sm-6">
                         <label for="comment_en" class="control-label">توضیحات انگلیسی</label>
@@ -278,13 +279,13 @@
                                   id="child_conditions_en" placeholder=" قوانین خردسال انگلیسی را وارد نمائید"></textarea>
                     </div>
                     <div class="form-group col-sm-6">
-                            <label for="iframe_code" class="control-label">کد آی فریم</label>
-                            <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
-                                  data-toggle="tooltip" data-placement="top" title=""
-                                  data-original-title=" کد آی فریم کپی شده را در این قسمت وارد نمائید"></span>
-                            {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/iframeLink.tpl"}
-                            <textarea id="iframe_code" name="iframe_code" class="form-control" rows='4'
-                                      placeholder="کد آی فریم را وارد نمائید"></textarea>
+                        <label for="iframe_code" class="control-label">کد آی فریم</label>
+                        <span class='btn btn-info btn-outline fa fa-question-circle font-16 ml-3 my-3 p-2 rounded-max tooltip-info'
+                              data-toggle="tooltip" data-placement="top" title=""
+                              data-original-title=" کد آی فریم کپی شده را در این قسمت وارد نمائید"></span>
+                        {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/iframeLink.tpl"}
+                        <textarea id="iframe_code" name="iframe_code" class="form-control" rows='4'
+                                  placeholder="کد آی فریم را وارد نمائید"></textarea>
                     </div>
 
                     <div class="form-group col-sm-6">
@@ -299,12 +300,12 @@
                             <label for="chk_flag_special"> هتل ویژه </label>
                         </div>
                     </div>
-{*                    <div class="form-group col-sm-2">*}
-{*                        <div class="checkbox checkbox-success">*}
-{*                            <input id="chk_flag_discount" name="chk_flag_discount" type="checkbox" value="1">*}
-{*                            <label for="chk_flag_discount"> هتل تخفیف دار </label>*}
-{*                        </div>*}
-{*                    </div>*}
+                    {*                    <div class="form-group col-sm-2">*}
+                    {*                        <div class="checkbox checkbox-success">*}
+                    {*                            <input id="chk_flag_discount" name="chk_flag_discount" type="checkbox" value="1">*}
+                    {*                            <label for="chk_flag_discount"> هتل تخفیف دار </label>*}
+                    {*                        </div>*}
+                    {*                    </div>*}
                     <div class="form-group col-sm-2">
                         <div class="checkbox checkbox-success">
                             <input id="transfer_went" name="transfer_went" type="checkbox" value="1">

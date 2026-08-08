@@ -35,11 +35,11 @@
                 <p class="text-muted m-b-30">شما با استفاده از فرم زیر میتوانید اطلاعات هتل را در سیستم ویرایش نمائید</p>
 
                 <form id="EditHotel" method="post">
-{*                    {if !$objResult->list['user_id']}*}
-                        <input type="hidden" name="flag" value="EditHotel">
-{*                        {else}*}
-{*                        <input type="hidden" name="flag" value="AcceptHotel">*}
-{*                    {/if}*}
+                    {*                    {if !$objResult->list['user_id']}*}
+                    <input type="hidden" name="flag" value="EditHotel">
+                    {*                        {else}*}
+                    {*                        <input type="hidden" name="flag" value="AcceptHotel">*}
+                    {*                    {/if}*}
 
                     <input type="hidden" name="type_id" value="{$smarty.get.id}">
 
@@ -126,6 +126,7 @@
                             <option value="100" {if $objResult->list['type_code'] eq '100'}selected{/if}>هاستل</option>
                             <option value="101" {if $objResult->list['type_code'] eq '101'}selected{/if}>بوتیک</option>
                             <option value="110" {if $objResult->list['type_code'] eq '110'}selected{/if}>سوییت های سنتی بام خلخال</option>
+                            <option value="111" {if $objResult->list['type_code'] eq '111'}selected{/if}>سازمانی</option>
                         </select>
                     </div>
 
@@ -166,7 +167,7 @@
                         <select name="origin_region" id="origin_region" class="form-control  " {$disabled}>
                             <option value=""></option>
                             {if $objResult->list['region'] neq 0}
-                            <option value="{$objResult->list['region']}">{$objFunction->ShowName(reservation_region_tb,$objResult->list['region'])}</option>
+                                <option value="{$objResult->list['region']}">{$objFunction->ShowName(reservation_region_tb,$objResult->list['region'])}</option>
                             {/if}
                         </select>
                     </div>
@@ -316,12 +317,12 @@
                             <label for="chk_flag_special"> هتل ویژه </label>
                         </div>
                     </div>
-{*                    <div class="form-group col-sm-2">*}
-{*                        <div class="checkbox checkbox-success">*}
-{*                            <input id="chk_flag_discount" name="chk_flag_discount" type="checkbox" value="1" {if $objResult->list['flag_discount'] eq 'yes'}checked="checked"{/if}>*}
-{*                            <label for="chk_flag_discount"> هتل تخفیف دار </label>*}
-{*                        </div>*}
-{*                    </div>*}
+                    {*                    <div class="form-group col-sm-2">*}
+                    {*                        <div class="checkbox checkbox-success">*}
+                    {*                            <input id="chk_flag_discount" name="chk_flag_discount" type="checkbox" value="1" {if $objResult->list['flag_discount'] eq 'yes'}checked="checked"{/if}>*}
+                    {*                            <label for="chk_flag_discount"> هتل تخفیف دار </label>*}
+                    {*                        </div>*}
+                    {*                    </div>*}
                     <div class="form-group col-sm-2">
                         <div class="checkbox checkbox-success">
                             <input id="transfer_went" name="transfer_went" {$disabled} type="checkbox" value="1" {if $objResult->list['transfer_went'] eq 'yes'}checked="checked"{/if}>
@@ -413,11 +414,11 @@
                         <div class="col-sm-6 {if $objResult->list['is_show'] eq '' || $objResult->list['is_show'] eq 'no' }displayN{/if}" id="changePrice" style="float: left;">
                             <div class="white-box">
                                 <div class="row">
-{*                                    <p class="text-muted m-b-10">لطفا افزایش قیمت تور را وارد کنید</p>*}
-{*                                    <div class="col-md-12eservation/reportTour">*}
-{*                                        <input type="text" class="form-control" name="price" value="{$infoTour['change_price']}" id="price"*}
-{*                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" placeholder="مبلغ (ریال)">*}
-{*                                    </div>*}
+                                    {*                                    <p class="text-muted m-b-10">لطفا افزایش قیمت تور را وارد کنید</p>*}
+                                    {*                                    <div class="col-md-12eservation/reportTour">*}
+                                    {*                                        <input type="text" class="form-control" name="price" value="{$infoTour['change_price']}" id="price"*}
+                                    {*                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" placeholder="مبلغ (ریال)">*}
+                                    {*                                    </div>*}
                                     <div class="col-md-12" style="text-align: center;margin-top: 10px;">
                                         <a class="btn btn-success" onclick="showHotelOnSite('{$smarty.get.id}', 'yes')">ثبت تغییرات تایید</a>
                                     </div>
@@ -477,7 +478,7 @@
         aa[row]=row;
         insertTableRow(form, -1)
     }
-    
+
 
     function insertTableRow(form, where) {
 

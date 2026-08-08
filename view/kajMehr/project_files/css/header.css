@@ -64,7 +64,7 @@
 }
 
 .nav-header img {
-    width: 120px
+    width: 160px
 }
 
 .fixicone:hover {
@@ -116,7 +116,7 @@
 }
 
 .nav-menus-wrapper {
-    margin-right: 40px;
+    margin-right: -12px;
     display: flex;
     align-items: center
 }
@@ -634,7 +634,7 @@
 }
 
 .parent-item-footer img {
-    width: 128px
+    width: 160px;
 }
 
 .text-logo-footer {
@@ -891,7 +891,7 @@
     }
 
     .parent-item-footer img {
-        width: 115px
+        width: 140px;
     }
 
     .img-box-footer {
@@ -931,7 +931,7 @@
     }
 
     .nav-header img {
-        width: 100px
+        width: 140px
     }
 
     .namads > a {

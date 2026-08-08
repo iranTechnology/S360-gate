@@ -55,12 +55,19 @@
                         <p class="org-card-description">
                             {$item.description|truncate:500:"..."}
                         </p>
-                        <button class="org-register-btn"
-                                onclick="orgRegisterModule.openModal(this,{$item.id}, '{$item.title}' , '{$item.job_guide}')"
-                                data-rules="{$item.rules|escape:'html'}">
-                            <span>ثبت نام</span>
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="org-terms-btn"
+                                    onclick="orgRegisterModule.openTermsModal(this)"
+                                    data-rules="{$item.rules|escape:'html'}">
+                                <span>قوانین</span>
+                            </button>
+                            <button class="org-register-btn"
+                                    onclick="orgRegisterModule.openModal(this,{$item.id}, '{$item.title}' , '{$item.job_guide}')"
+                                    data-rules="{$item.rules|escape:'html'}">
+                                <span>ثبت نام</span>
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 {foreachelse}
@@ -219,7 +226,7 @@
                         <input type="checkbox" id="org_terms_agree" name="terms_agree" value="1">
                         <label for="org_terms_agree" class="org-terms-label">
                             <span>
-                <a href="javascript:void(0)" onclick="orgRegisterModule.openTermsModal()" class="org-terms-link">
+                <a href="javascript:void(0)" onclick="orgRegisterModule.openTermsModalFromForm()" class="org-terms-link">
                     قوانین
                 </a>
                 را مطالعه کردم و آن را می‌پذیرم
@@ -248,12 +255,55 @@
         // آبجکت اختصاصی برای ماژول سازمان
         const orgRegisterModule = {
 
-            openTermsModal: function () {
+            openTermsModal: function (button = null) {
+                // نمایش مودال
                 document.getElementById('orgTermsOverlay').style.display = 'block';
                 document.getElementById('orgTermsModal').style.display = 'block';
                 document.body.style.overflow = 'hidden';
+
+                // اگر دکمه ارسال شده و دارای data-rules باشد
+                let termsText = '';
+                if (button && button.dataset && button.dataset.rules) {
+                    termsText = button.dataset.rules;
+                } else {
+                    // اگر از جای دیگری صدا زده شد (مثلاً از لینک قوانین در فرم)
+                    // می‌توانیم از دکمه فعال استفاده کنیم
+                    const activeButton = document.querySelector('.org-terms-btn.active');
+                    if (activeButton && activeButton.dataset.rules) {
+                        termsText = activeButton.dataset.rules;
+                    } else {
+                        // اگر هیچ مقداری نبود، پیام پیش‌فرض نمایش بده
+                        termsText = 'هیچ قانونی برای این سازمان ثبت نشده است.';
+                    }
+                }
+
+                document.getElementById('org-terms-content').innerHTML = termsText;
             },
 
+            openTermsModalFromForm: function () {
+                // دریافت محتوای قوانین از دکمه فعال یا از data موجود در مودال
+                const activeButton = document.querySelector('.org-terms-btn');
+                let termsText = '';
+
+                if (activeButton && activeButton.dataset.rules) {
+                    termsText = activeButton.dataset.rules;
+                } else {
+                    // اگر دکمه‌ای موجود نیست، از محتوای ذخیره شده در مودال استفاده کن
+                    const modalContent = document.getElementById('org-terms-content');
+                    if (modalContent && modalContent.innerHTML) {
+                        termsText = modalContent.innerHTML;
+                    } else {
+                        termsText = 'هیچ قانونی برای این سازمان ثبت نشده است.';
+                    }
+                }
+
+                // نمایش مودال
+                document.getElementById('orgTermsOverlay').style.display = 'none';
+                document.getElementById('orgTermsModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+
+                document.getElementById('org-terms-content').innerHTML = termsText;
+            },
             // بستن مودال قوانین
             closeTermsModal: function () {
                 document.getElementById('orgTermsOverlay').style.display = 'none';
@@ -306,6 +356,7 @@
                 document.getElementById('orgModalOverlay').style.display = 'none';
                 document.getElementById('orgCustomModal').style.display = 'none';
                 document.body.style.overflow = 'auto';
+                this.closeTermsModal();
             },
 
             // ارسال فرم با ajaxSubmit

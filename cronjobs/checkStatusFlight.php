@@ -26,7 +26,7 @@ class checkStatusFlight extends clientAuth
         $date_now_int_end = dateTimeSetting::jmktime(23, 59, 59, $date_now_explode[1], $date_now_explode[2], $date_now_explode[0]);
 
         $list_pending_flights = $this->getModel('reportModel')->get()->where('creation_date_int',$date_now_int_start,'>=')->where('creation_date_int',$date_now_int_end,'<=')->openParentheses()->where('successfull', 'pending')->orwhere('successfull', 'processing')->
-        closeParentheses()->groupBy('request_number')->all();
+        closeParentheses()->where('ticketed_sms_sent', '0') ->groupBy('request_number')->all();
 
 
         foreach ($list_pending_flights as $flight) {
@@ -66,6 +66,7 @@ class checkStatusFlight extends clientAuth
                         $this->getController('admin')->ConectDbClient('', $flight['client_id'], "Update", $data, "book_local_tb", $condition);
                         $data['successfull'] = ($flight['pid_private'] == '1') ? 'private_reserve' : 'book';
                         $data['private_m4'] = ($flight['pid_private'] == '1') ? '3' : '0';
+                        $data['ticketed_sms_sent'] = '1';
                         $this->getModel('reportModel')->update($data, $condition);
                     }
                     $this->updateTransactionStatusSuccess($flight['factor_number'], $flight['client_id']);

@@ -34,6 +34,11 @@
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a></li>
                                 </ul>
                             </li>
+                            <li>
+                                <a class="btn-follow" href="https://heligasht24.ir/">
+                                    <span>سایت قدیم</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
