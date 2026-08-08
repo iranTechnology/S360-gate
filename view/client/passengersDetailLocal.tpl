@@ -45,11 +45,11 @@
 </svg>
 
             </span>
-            <h3>##PassengersInformation##</h3>
+                <h3>##PassengersInformation##</h3>
 
-        </div>
-        <i class="separator"></i>
-        <div class="step " >
+            </div>
+            <i class="separator"></i>
+            <div class="step " >
              <span class="flat_icon_airplane">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="25" height="25">
     <g id="Contact_form" data-name="Contact form">
@@ -68,10 +68,10 @@
     </g>
 </svg>
              </span>
-            <h3> ##Approvefinal## </h3>
-        </div>
-        <i class="separator"></i>
-        <div class="step" >
+                <h3> ##Approvefinal## </h3>
+            </div>
+            <i class="separator"></i>
+            <div class="step" >
             <span class="flat_icon_airplane">
                 <svg  enable-background="new 0 0 512 512" height="25" viewBox="0 0 512 512" width="25"
                       xmlns="http://www.w3.org/2000/svg">
@@ -82,58 +82,58 @@
                     </g>
                 </svg>
             </span>
-            <h3> ##TicketReservation## </h3>
+                <h3> ##TicketReservation## </h3>
+            </div>
         </div>
-    </div>
 
         <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"
              style="direction: ltr"> {$objDetail->SetTimeLimit($objDetail->totalQty)}</div>
 
-</div>
+    </div>
 </div>
 
-    {if $objDetail->diff_price gt 0 && $smarty.const.SOFTWARE_LANG eq 'fa'}
-        <div class="Clr"></div>
-        <div class=" s-u-passenger-wrapper-change s-u-passenger-wrapper-change_nn  ">
+{if $objDetail->diff_price gt 0 && $smarty.const.SOFTWARE_LANG eq 'fa'}
+    <div class="Clr"></div>
+    <div class=" s-u-passenger-wrapper-change s-u-passenger-wrapper-change_nn  ">
         <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change color-alert  ">
             <i class="zmdi zmdi-alert-circle  zmdi-hc-fw"></i>
          ##Pricechange##
         </span>
-            <div class="factorl_nn_parent">
-                <div class="factorl_nn">
-                    <ul class="s-u-last-p-bozorgsal_n">
-                        <li>
-                            <div class="s-u-result-wrapper">
+        <div class="factorl_nn_parent">
+            <div class="factorl_nn">
+                <ul class="s-u-last-p-bozorgsal_n">
+                    <li>
+                        <div class="s-u-result-wrapper">
                                 <span class="s-u-result-item-change ">
                                          بلیط به مبلغ {$objDetail->diff_price|number_format}   ریال افزایش  یافته است
                                 </span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
+                        </div>
+                    </li>
+                </ul>
             </div>
+
         </div>
-    {/if}
+    </div>
+{/if}
 
 <div id="lightboxContainer" class="lightboxContainerOpacity"></div>
 
 <!-- last passenger list -->
-    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`passengerPopup.tpl"}
+{include file="`$smarty.const.FRONT_CURRENT_CLIENT`passengerPopup.tpl"}
 <!--end  last passenger list -->
 
 <div id="fligh_Detail_local" class="s-u-content-result">
 
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 s-u-passenger-wrapper">
-            <div class="btn_research__">
-                <!-- <a href="" onclick="return false" class="f-loader-check loaderpassengers"  style="display:none"></a> -->
-                <button type="button" class="cancel-passenger"  data-url="{$objDetail->reSearchAddress}"
-                        style="height: 45px;width: 122px;"
-                        onclick="BackToHome('{$objDetail->reSearchAddress}'); return false">##ChangeSearch## <i
-                            class="loading_on_click fa fa-refresh"></i>
-                </button>
-            </div>
+        <div class="btn_research__">
+            <!-- <a href="" onclick="return false" class="f-loader-check loaderpassengers"  style="display:none"></a> -->
+            <button type="button" class="cancel-passenger"  data-url="{$objDetail->reSearchAddress}"
+                    style="height: 45px;width: 122px;"
+                    onclick="BackToHome('{$objDetail->reSearchAddress}'); return false">##ChangeSearch## <i
+                        class="loading_on_click fa fa-refresh"></i>
+            </button>
+        </div>
         <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color ">
             <i class="zmdi zmdi-ticket-star mart10  zmdi-hc-fw"></i>##Purchasingfollowingticket##
         </span>
@@ -173,14 +173,15 @@
 
 
                 <!-- result item -->
+
                 {foreach key=direction item=item from=$objDetail->Direction}
                     <li class="s-u-result-item s-u-result-item-change blit-flight-passenger mt-0 mt-md-4">
-                        <div class="d-flex gap-5 justify-content-center align-items-center wayticket_passengers-type-class bg-white">
-                            <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{$objDetail->SeatClass[$direction]}</a>
+                        {*                        <div class="d-flex gap-5 justify-content-center align-items-center wayticket_passengers-type-class bg-white">*}
+                        {*                            <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{$objDetail->SeatClass[$direction]}</a>*}
 
-                            <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</a>
+                        {*                            <a href="javascript:" class=" site-bg-main-color border-1 rounded-md py-1 px-2">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</a>*}
 
-                        </div>
+                        {*                        </div>*}
 
                         <div class="blite-rafto-bargasht-text raft-blit">
                             <span>{if $direction eq 'dept'}##Onewayticket##{else}##Returnticket##{/if}</span></div>
@@ -190,8 +191,9 @@
                                     <img src="{$objFunctions->getAirlinePhoto($objDetail->Airline_IATA[$direction])}">
                                 </div>
 
-                                <div class="s-u-result-item-div s-u-result-content-item-div-change">
-                                    <span>##Numflight## : {$objDetail->FlightNo[$direction]}</span>
+                                <div class="s-u-result-item-div s-u-result-content-item-div-change d-flex gap-2 justify-content-center">
+                                    <span>{$objDetail->AirlineName[$direction]} ({$objDetail->FlightNo[$direction]})</span>
+
                                 </div>
                             </div>
                             <div class="s-u-result-item-wrapper s-u-result-item-wrapper-change">
@@ -236,26 +238,28 @@
                                                 <!--<span class="s-u-result-item-date-format miladi">{$objDetail->DeptDateJalali[$direction]}</span>-->
                                             </div>
 
-                                            <div class="s-u-result-item-div s-u-result-items-div-change s-u-result-item-div-last ">
-                                                         {assign var="DestinationAirPlaneTypeData" value=$objDetail->AirPlaneTypeData($objDetail->AircraftCode[$direction])}
+                                            <div class="s-u-result-item-div s-u-result-items-div-change s-u-result-item-div-last justify-content-center">
+                                                {assign var="DestinationAirPlaneTypeData" value=$objDetail->AirPlaneTypeData($objDetail->AircraftCode[$direction])}
 
                                                 {if $DestinationAirPlaneTypeData neq ''}<span>##Typeairline## : {$DestinationAirPlaneTypeData}</span>{/if}
 
-                                                    <div class="s-u-bozorg s-u-bozorg-change font12 d-flex align-items-center justify-content-center Flighttime">
-{*                                                        <span>  ##Flighttime## :</span>*}
-                                                        <div class="d-flex">
-                                                            {assign var="flightHours" value=$objDetail->LongTimeFlightHours($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
-                                                            {assign var="flightMinutes" value=$objDetail->LongTimeFlightMinutes($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
+                                                <div class="s-u-bozorg s-u-bozorg-change font12 d-flex align-items-center justify-content-center Flighttime">
+                                                    {*                                                        <span>  ##Flighttime## :</span>*}
+                                                    <div class="d-flex flex-column gap-2 align-items-center">
+                                                        {assign var="flightHours" value=$objDetail->LongTimeFlightHours($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
+                                                        {assign var="flightMinutes" value=$objDetail->LongTimeFlightMinutes($objDetail->OriginAirportIata[$direction], $objDetail->DestiAirportIata[$direction])|intval}
 
-                                                            <i class="font-chanhe">
+                                                        <span class=" s-u-result-item-date-format s-u-result-item-date-format-change">
                                                                 {if $flightHours > 0}{$flightHours} ##Hour## {/if}
-                                                                {if $flightMinutes > 0}{$flightMinutes} ##Minutes##{/if}
-                                                            </i>
+                                                            {if $flightMinutes > 0}{$flightMinutes} ##Minutes##{/if}
+                                                            </span>
+                                                        <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{$objDetail->SeatClass[$direction]}</span>
 
-                                                        </div>
+                                                        <span class="s-u-result-item-date-format s-u-result-item-date-format-change iranB">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</span>
                                                     </div>
-                                                    <span class="displayib-change flight-class--new" style="display:none !important"> {if $objDetail->FlightType[$direction] eq 'charter'}##CharterType##{else}##SystemType##{/if}</span>
                                                 </div>
+                                                <span class="displayib-change flight-class--new" style="display:none !important"> {if $objDetail->FlightType[$direction] eq 'charter'}##CharterType##{else}##SystemType##{/if}</span>
+                                            </div>
 
                                         </div>
                                         <div class="s-u-result-item-div  s-u-result-items-div-change right-Cell-change fltr padb5 displayB400 ">
@@ -273,10 +277,10 @@
                                                     {$objDetail->AdtPriceType[$direction]}
 
                                         </span>
-{*                                                <span class="displayib-change"> {$objDetail->SeatClass[$direction]}</span>*}
-                                                <div class="shenase-nerkhi">
+                                                {*                                                <span class="displayib-change"> {$objDetail->SeatClass[$direction]}</span>*}
+                                                <div class="shenase-nerkhi s-u-result-items-div-change">
 
-                                                    <span class="Direction-rtl">##RateiD## : {$objDetail->CabinType[$direction]}</span>
+                                                    <span class="Direction-rtl ">##RateiD## : {$objDetail->CabinType[$direction]}</span>
                                                 </div>
 
                                             </div>
@@ -287,43 +291,43 @@
                             </div>
                         {else}
 
-                             {if $direction eq 'multi_destionation'}
-                                 <div class="international-available-box  foreign">
-                                     <div class="international-available-item ">
-                                         <div class="international-available-info">
-                                             <div class="international-available-item-right-Cell international-available-item-right-Cell-detail-flight">
-                                                 {foreach $objDetail->RoutesTicket[$direction] as $key=>$route}
-                                                     {assign var="RouteDepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($route['OriginAirportIata']))}
-                                                     {assign var="RouteArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($route['DestiAirportIata']))}
-                                                     <div class=" international-available-airlines international-available-airlines-detail-new ">
+                            {if $direction eq 'multi_destionation'}
+                                <div class="international-available-box  foreign">
+                                    <div class="international-available-item ">
+                                        <div class="international-available-info">
+                                            <div class="international-available-item-right-Cell international-available-item-right-Cell-detail-flight">
+                                                {foreach $objDetail->RoutesTicket[$direction] as $key=>$route}
+                                                    {assign var="RouteDepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($route['OriginAirportIata']))}
+                                                    {assign var="RouteArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($route['DestiAirportIata']))}
+                                                    <div class=" international-available-airlines international-available-airlines-detail-new ">
 
-                                                         <div class="international-available-airlines-logo">
-                                                             <img src="{$objFunctions->getAirlinePhoto($route['Airline_IATA'])}"
-                                                                  alt="{$route['Airline_IATA']}"
-                                                                  title="{$route['Airline_IATA']}">
-                                                         </div>
-                                                         <div class="international-available-airlines-log-info">
+                                                        <div class="international-available-airlines-logo">
+                                                            <img src="{$objFunctions->getAirlinePhoto($route['Airline_IATA'])}"
+                                                                 alt="{$route['Airline_IATA']}"
+                                                                 title="{$route['Airline_IATA']}">
+                                                        </div>
+                                                        <div class="international-available-airlines-log-info">
                                                                 <span class="open txt13 disN740">
                                                                 {if $objDetail->ArrayDeptForeign|@count gt '1'}##MultiAirline##{else}{$objFunctions->AirlineName($objDetail->RoutesTicket[$direction][0]['Airline_IATA'])}{/if}</span>
 
-                                                             <span class="open txt13 disN740">
+                                                            <span class="open txt13 disN740">
                                                                 {$RouteDepartureInfo['dept'][0]['FlightNumber']}
                                                                 </span>
-                                                         </div>
+                                                        </div>
 
-                                                     </div>
+                                                    </div>
 
-                                                     <div class="international-available-airlines-info international-available-airlines-info-detail-new">
-                                                         <div class="airlines-info txtLeft origin-city">
+                                                    <div class="international-available-airlines-info international-available-airlines-info-detail-new">
+                                                        <div class="airlines-info txtLeft origin-city">
 
                                                             <span class="open city-name-flight">
                                                                 {assign var="OriginCityNameByLanguage" value=$objFunctions->CityForeign($objFunctions->mapIataCode($route['OriginAirportIata']))}
                                                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                                                         </span>
-                                                             {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($route['OriginAirportIata']))}
-                                                             <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
+                                                            {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($route['OriginAirportIata']))}
+                                                            <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
 
-                                                             <div class="date-time">
+                                                            <div class="date-time">
 
 													<span class="date-flight">
 
@@ -334,64 +338,64 @@
 													 <p
                                                              class="foreign-date">{$objFunctions->dateFormatSpecialMiladi($RouteDepartureInfo['dept'][0]['DepartureDate'],'jM')}</p>
 													</span>
-                                                                 <span class="time-flight">
+                                                                <span class="time-flight">
                                                                     {$RouteDepartureInfo['dept'][0]['DepartureTime']|substr:0:5}</span>
-                                                             </div>
+                                                            </div>
 
 
-                                                         </div>
+                                                        </div>
 
-                                                         <div class="airlines-info">
-                                                             <div class="airlines-info-inner">{*11*}
-                                                                 <div class="airline-line">
-                                                                     <div class="loc-icon">
-{*                                                                         <svg version="1.1" class="site-main-text-color"*}
-{*                                                                              id="Layer_1"*}
-{*                                                                              xmlns="http://www.w3.org/2000/svg"*}
-{*                                                                              xmlns:xlink="http://www.w3.org/1999/xlink"*}
-{*                                                                              x="0px" y="0px" width="32px"*}
-{*                                                                              viewBox="0 0 512 512"*}
-{*                                                                              style="enable-background:new 0 0 512 512;"*}
-{*                                                                              xml:space="preserve">*}
-{*																<g>*}
-{*                                                                    <g>*}
-{*                                                                        <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035*}
-{*																			c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719*}
-{*																			c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>*}
-{*                                                                    </g>*}
-{*                                                                </g>*}
-{*																</svg>*}
-                                                                         <i class="flat_circle site-bg-main-color "></i>
+                                                        <div class="airlines-info">
+                                                            <div class="airlines-info-inner">{*11*}
+                                                                <div class="airline-line">
+                                                                    <div class="loc-icon">
+                                                                        {*                                                                         <svg version="1.1" class="site-main-text-color"*}
+                                                                        {*                                                                              id="Layer_1"*}
+                                                                        {*                                                                              xmlns="http://www.w3.org/2000/svg"*}
+                                                                        {*                                                                              xmlns:xlink="http://www.w3.org/1999/xlink"*}
+                                                                        {*                                                                              x="0px" y="0px" width="32px"*}
+                                                                        {*                                                                              viewBox="0 0 512 512"*}
+                                                                        {*                                                                              style="enable-background:new 0 0 512 512;"*}
+                                                                        {*                                                                              xml:space="preserve">*}
+                                                                        {*																<g>*}
+                                                                        {*                                                                    <g>*}
+                                                                        {*                                                                        <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035*}
+                                                                        {*																			c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719*}
+                                                                        {*																			c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>*}
+                                                                        {*                                                                    </g>*}
+                                                                        {*                                                                </g>*}
+                                                                        {*																</svg>*}
+                                                                        <i class="flat_circle site-bg-main-color "></i>
 
 
-                                                                     </div>
+                                                                    </div>
 
-                                                                     <div class="plane-icon">
-{*                                                                         <svg version="1.1" id="Capa_1"*}
-{*                                                                              xmlns="http://www.w3.org/2000/svg"*}
-{*                                                                              xmlns:xlink="http://www.w3.org/1999/xlink"*}
-{*                                                                              x="0px" y="0px"*}
-{*                                                                              width="32px" viewBox="0 0 512 512"*}
-{*                                                                              enable-background="new 0 0 512 512"*}
-{*                                                                              xml:space="preserve">*}
-{*																<path d="M445.355,67.036l-0.391-0.392c-19.986-19.006-59.898,14.749-59.898,14.749l-72.463,57.049l-76.285-13.52*}
-{*																	c11.005-15.953,14.32-31.79,6.983-39.127c-9.503-9.503-33.263-1.15-53.068,18.655c-3.464,3.464-6.568,7.049-9.297,10.657*}
-{*																	l-58.574-10.381L83.346,137.97l159.044,72.979L140.427,334.152l-63.505-11.906l-16.083,16.06L173.696,451.16l16.058-16.082*}
-{*																	l-11.906-63.506l123.204-101.963l72.979,159.043l33.244-39.016l-10.381-58.574c3.609-2.729,7.193-5.832,10.658-9.297*}
-{*																	c19.805-19.805,28.158-43.564,18.656-53.066c-7.339-7.338-23.177-4.022-39.13,6.982l-13.52-76.284l57.049-72.464*}
-{*																	C430.607,126.934,464.363,87.021,445.355,67.036z"/>*}
-{*																</svg>*}
-                                                                         <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>                                                                     </div>
+                                                                    <div class="plane-icon">
+                                                                        {*                                                                         <svg version="1.1" id="Capa_1"*}
+                                                                        {*                                                                              xmlns="http://www.w3.org/2000/svg"*}
+                                                                        {*                                                                              xmlns:xlink="http://www.w3.org/1999/xlink"*}
+                                                                        {*                                                                              x="0px" y="0px"*}
+                                                                        {*                                                                              width="32px" viewBox="0 0 512 512"*}
+                                                                        {*                                                                              enable-background="new 0 0 512 512"*}
+                                                                        {*                                                                              xml:space="preserve">*}
+                                                                        {*																<path d="M445.355,67.036l-0.391-0.392c-19.986-19.006-59.898,14.749-59.898,14.749l-72.463,57.049l-76.285-13.52*}
+                                                                        {*																	c11.005-15.953,14.32-31.79,6.983-39.127c-9.503-9.503-33.263-1.15-53.068,18.655c-3.464,3.464-6.568,7.049-9.297,10.657*}
+                                                                        {*																	l-58.574-10.381L83.346,137.97l159.044,72.979L140.427,334.152l-63.505-11.906l-16.083,16.06L173.696,451.16l16.058-16.082*}
+                                                                        {*																	l-11.906-63.506l123.204-101.963l72.979,159.043l33.244-39.016l-10.381-58.574c3.609-2.729,7.193-5.832,10.658-9.297*}
+                                                                        {*																	c19.805-19.805,28.158-43.564,18.656-53.066c-7.339-7.338-23.177-4.022-39.13,6.982l-13.52-76.284l57.049-72.464*}
+                                                                        {*																	C430.607,126.934,464.363,87.021,445.355,67.036z"/>*}
+                                                                        {*																</svg>*}
+                                                                        <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>                                                                     </div>
 
-                                                                     <div class="loc-icon-destination">
-                                                                         <svg version="1.1" class="site-main-text-color"
-                                                                              id="Layer_1"
-                                                                              xmlns="http://www.w3.org/2000/svg"
-                                                                              xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                              x="0px" y="0px" width="32px"
-                                                                              viewBox="0 0 512 512"
-                                                                              style="enable-background:new 0 0 512 512;"
-                                                                              xml:space="preserve">
+                                                                    <div class="loc-icon-destination">
+                                                                        <svg version="1.1" class="site-main-text-color"
+                                                                             id="Layer_1"
+                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                             xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                             x="0px" y="0px" width="32px"
+                                                                             viewBox="0 0 512 512"
+                                                                             style="enable-background:new 0 0 512 512;"
+                                                                             xml:space="preserve">
 																<g>
                                                                     <g>
                                                                         <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
@@ -400,50 +404,50 @@
                                                                     </g>
                                                                 </g>
 																</svg>
-                                                                     </div>
+                                                                    </div>
 
-                                                                 </div>
+                                                                </div>
 
-                                                             </div>
-                                                             <div class="date-time">
+                                                            </div>
+                                                            <div class="date-time">
                                                                   <span class="date-flight">
                                                                         {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                                                             <p class="farsi-date">{$route['Date']}</p>
                                                                         {/if}
 
                                                                 </span>
-                                                             </div>
-                                                         </div>
-                                                         <div class="airlines-info txtRight destination-city">
+                                                            </div>
+                                                        </div>
+                                                        <div class="airlines-info txtRight destination-city">
                                                             <span class="open city-name-flight">
                                                                 {assign var="DestCityNameByLanguage" value=$objFunctions->CityForeign($objFunctions->mapIataCode($route['DestiAirportIata']))}
                                                                 {$DestCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                                                             </span>
-                                                             {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->RoutesTicket[$direction][$route['DestiAirportIata']]))}
-                                                             <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
-                                                             <div class="date-time">
+                                                            {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->RoutesTicket[$direction][$route['DestiAirportIata']]))}
+                                                            <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
+                                                            <div class="date-time">
                                                                 <span class="date-flight">
 
                                                                      {if $smarty.const.SOFTWARE_LANG neq 'fa'}
                                                                          <p class="foreign-date float-right">($objDetail->dateForeignMiladiArrival[$direction]) </p>
                                                                      {/if}
                                                                 </span>
-                                                                 <span class="time-flight">
+                                                                <span class="time-flight">
                                                                     {$route['ArrivalTime']|substr:0:5}
                                                                 </span>
 
 
-                                                             </div>
+                                                            </div>
 
-                                                         </div>
+                                                        </div>
 
-                                                     </div>
-                                                 {/foreach}
+                                                    </div>
+                                                {/foreach}
 
 
-                                             </div>
-                                             <div class="international-available-item-left-Cell international-available-item-left-Cell-detail-flight">
-                                                 <div class="inner-avlbl-itm ">
+                                            </div>
+                                            <div class="international-available-item-left-Cell international-available-item-left-Cell-detail-flight">
+                                                <div class="inner-avlbl-itm ">
                                                 <span class="iranL priceSortAdt">
                                                         <i class="iranB site-main-text-color-drck">
                                                             {$objFunctions->numberFormat($objDetail->FinalTotalPrice[$direction])}
@@ -451,38 +455,38 @@
                                                             {$objDetail->AdtPriceType[$direction]}
 
 												</span>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             {elseif $smarty.post.ZoneFlight eq 'TestParto'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {elseif $smarty.post.ZoneFlight eq 'TestParto'}
 
-                                 <div class="international-available-box  foreign">
+                                <div class="international-available-box  foreign">
 
-                                     <div class="international-available-item ">
-                                         <div class="international-available-info">
-                                             <div class="international-available-item-right-Cell international-available-item-right-Cell-detail-flight">
-                                                     {if $objDetail->ArrayDeptForeign neq ''}
+                                    <div class="international-available-item ">
+                                        <div class="international-available-info">
+                                            <div class="international-available-item-right-Cell international-available-item-right-Cell-detail-flight">
+                                                {if $objDetail->ArrayDeptForeign neq ''}
 
-                                                         <div class=" international-available-airlines international-available-airlines-detail-new">
+                                                    <div class=" international-available-airlines international-available-airlines-detail-new">
 
-                                                             <div class="international-available-airlines-logo">
-                                                                 <img src="{$objFunctions->getAirlinePhoto($objDetail->ArrayDeptForeign[0]['Airline_IATA'])}"
-                                                                      alt="{$objDetail->ArrayDeptForeign[0]['Airline_IATA']}"
-                                                                      title="{$objDetail->ArrayDeptForeign[0]['Airline_IATA']}">
-                                                             </div>
-                                                             <div class="international-available-airlines-log-info">
+                                                        <div class="international-available-airlines-logo">
+                                                            <img src="{$objFunctions->getAirlinePhoto($objDetail->ArrayDeptForeign[0]['Airline_IATA'])}"
+                                                                 alt="{$objDetail->ArrayDeptForeign[0]['Airline_IATA']}"
+                                                                 title="{$objDetail->ArrayDeptForeign[0]['Airline_IATA']}">
+                                                        </div>
+                                                        <div class="international-available-airlines-log-info">
 
                                                     <span class="open txt13 disN740">
                                                     {if $objDetail->ArrayDeptForeign|@count gt '1'}##MultiAirline##{else}{$objFunctions->AirlineName($objDetail->RoutesTicket[$direction][0]['Airline_IATA'])}{/if}</span>
-                                                             </div>
-                                                             <span class="open txt13 disN740">
+                                                        </div>
+                                                        <span class="open txt13 disN740">
                                                                 {$RouteDepartureInfo['dept'][0]['FlightNumber']}
                                                                 </span>
-                                                         </div>
-                                                         <div class="international-available-airlines-info international-available-airlines-info-detail-new">
-                                                             <div class="airlines-info txtLeft origin-city">
+                                                    </div>
+                                                    <div class="international-available-airlines-info international-available-airlines-info-detail-new">
+                                                        <div class="airlines-info txtLeft origin-city">
 
                                                             <span class="open city-name-flight">
 
@@ -493,10 +497,10 @@
                                                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                                                             </span>
 
-                                                                 {*                                                            <span class="open city-name-flight">{$objDetail->ArrayDeptForeign[0]['OriginCity']}</span>*}
+                                                            {*                                                            <span class="open city-name-flight">{$objDetail->ArrayDeptForeign[0]['OriginCity']}</span>*}
 
-                                                                 <span class="openB airport-name-flight"> ( $OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')] )</span>
-                                                                 <div class="date-time">
+                                                            <span class="openB airport-name-flight"> ( $OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')] )</span>
+                                                            <div class="date-time">
 
                                                                     <span class="date-flight">
 
@@ -507,76 +511,76 @@
                                                                      <p
                                                                              class="foreign-date">{$objFunctions->dateFormatSpecialMiladi($RouteDepartureInfo['return'][(($RouteDepartureInfo['return']|@count) - 1)]['DepartureDate'],'jM')}</p>
                                                                     </span>
-                                                                     <span class="time-flight">{$RouteDepartureInfo['return'][0]['DepartureTime']|substr:0:5}</span>
-                                                                 </div>
-<div class="d-flex gap-5 justify-content-center">
-                                                                 <div class="date-time">
-                                                                     <span class="time-flight">{$objDetail->ArrayDeptForeign[0]['Time']|substr:0:5 }</span>
-                                                                 </div>
-                                                                 <span class="tavaghof ">( {if $objDetail->countRoute[$direction] gt '1'}{($objDetail->ArrayDeptForeign|@count)-1} ##Stopi##{else} ##Nostop##  {/if} )</span>
-</div>
+                                                                <span class="time-flight">{$RouteDepartureInfo['return'][0]['DepartureTime']|substr:0:5}</span>
+                                                            </div>
+                                                            <div class="d-flex gap-5 justify-content-center">
+                                                                <div class="date-time">
+                                                                    <span class="time-flight">{$objDetail->ArrayDeptForeign[0]['Time']|substr:0:5 }</span>
+                                                                </div>
+                                                                <span class="tavaghof ">( {if $objDetail->countRoute[$direction] gt '1'}{($objDetail->ArrayDeptForeign|@count)-1} ##Stopi##{else} ##Nostop##  {/if} )</span>
+                                                            </div>
 
-                                                             </div>
+                                                        </div>
 
-                                                             <div class="airlines-info">
-                                                                 <div class="airlines-info-inner">{*11*}
+                                                        <div class="airlines-info">
+                                                            <div class="airlines-info-inner">{*11*}
 
-                                                                     {if $objDetail->SourceID[$direction] !='8'}
-                                                                         <span class="iranL">
+                                                                {if $objDetail->SourceID[$direction] !='8'}
+                                                                    <span class="iranL">
 
                                                                              {assign var="TotalLongTime" value=":"|explode:$objDetail->ArrayDeptForeign[0]['TotalLongTime']}
-                                                                           {if $TotalLongTime[0] gt '0'} {$TotalLongTime[0]} ##dayand## {/if}{$TotalLongTime[1]}
+                                                                        {if $TotalLongTime[0] gt '0'} {$TotalLongTime[0]} ##dayand## {/if}{$TotalLongTime[1]}
                                                                             ##timeand## {$TotalLongTime[2]}##Minute##
                                                                         </span>
-                                                                     {/if}
-                                                                     <div class="airline-line">
-                                                                         <div class="loc-icon">
-{*                                                                             <svg version="1.1" class="site-main-text-color"*}
-{*                                                                                  id="Layer_1"*}
-{*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
-{*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
-{*                                                                                  x="0px" y="0px" width="32px"*}
-{*                                                                                  viewBox="0 0 512 512"*}
-{*                                                                                  style="enable-background:new 0 0 512 512;"*}
-{*                                                                                  xml:space="preserve">*}
-{*																<g>*}
-{*                                                                    <g>*}
-{*                                                                        <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035*}
-{*																			c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719*}
-{*																			c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>*}
-{*                                                                    </g>*}
-{*                                                                </g>*}
-{*																</svg>*}
-                                                                             <i class="flat_circle site-bg-main-color "></i>
-                                                                         </div>
+                                                                {/if}
+                                                                <div class="airline-line">
+                                                                    <div class="loc-icon">
+                                                                        {*                                                                             <svg version="1.1" class="site-main-text-color"*}
+                                                                        {*                                                                                  id="Layer_1"*}
+                                                                        {*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
+                                                                        {*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
+                                                                        {*                                                                                  x="0px" y="0px" width="32px"*}
+                                                                        {*                                                                                  viewBox="0 0 512 512"*}
+                                                                        {*                                                                                  style="enable-background:new 0 0 512 512;"*}
+                                                                        {*                                                                                  xml:space="preserve">*}
+                                                                        {*																<g>*}
+                                                                        {*                                                                    <g>*}
+                                                                        {*                                                                        <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035*}
+                                                                        {*																			c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719*}
+                                                                        {*																			c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>*}
+                                                                        {*                                                                    </g>*}
+                                                                        {*                                                                </g>*}
+                                                                        {*																</svg>*}
+                                                                        <i class="flat_circle site-bg-main-color "></i>
+                                                                    </div>
 
-                                                                         <div class="plane-icon">
-{*                                                                             <svg version="1.1" id="Capa_1"*}
-{*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
-{*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
-{*                                                                                  x="0px" y="0px"*}
-{*                                                                                  width="32px" viewBox="0 0 512 512"*}
-{*                                                                                  enable-background="new 0 0 512 512"*}
-{*                                                                                  xml:space="preserve">*}
-{*																<path d="M445.355,67.036l-0.391-0.392c-19.986-19.006-59.898,14.749-59.898,14.749l-72.463,57.049l-76.285-13.52*}
-{*																	c11.005-15.953,14.32-31.79,6.983-39.127c-9.503-9.503-33.263-1.15-53.068,18.655c-3.464,3.464-6.568,7.049-9.297,10.657*}
-{*																	l-58.574-10.381L83.346,137.97l159.044,72.979L140.427,334.152l-63.505-11.906l-16.083,16.06L173.696,451.16l16.058-16.082*}
-{*																	l-11.906-63.506l123.204-101.963l72.979,159.043l33.244-39.016l-10.381-58.574c3.609-2.729,7.193-5.832,10.658-9.297*}
-{*																	c19.805-19.805,28.158-43.564,18.656-53.066c-7.339-7.338-23.177-4.022-39.13,6.982l-13.52-76.284l57.049-72.464*}
-{*																	C430.607,126.934,464.363,87.021,445.355,67.036z"/>*}
-{*																</svg>*}
-                                                                             <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
-                                                                         </div>
+                                                                    <div class="plane-icon">
+                                                                        {*                                                                             <svg version="1.1" id="Capa_1"*}
+                                                                        {*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
+                                                                        {*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
+                                                                        {*                                                                                  x="0px" y="0px"*}
+                                                                        {*                                                                                  width="32px" viewBox="0 0 512 512"*}
+                                                                        {*                                                                                  enable-background="new 0 0 512 512"*}
+                                                                        {*                                                                                  xml:space="preserve">*}
+                                                                        {*																<path d="M445.355,67.036l-0.391-0.392c-19.986-19.006-59.898,14.749-59.898,14.749l-72.463,57.049l-76.285-13.52*}
+                                                                        {*																	c11.005-15.953,14.32-31.79,6.983-39.127c-9.503-9.503-33.263-1.15-53.068,18.655c-3.464,3.464-6.568,7.049-9.297,10.657*}
+                                                                        {*																	l-58.574-10.381L83.346,137.97l159.044,72.979L140.427,334.152l-63.505-11.906l-16.083,16.06L173.696,451.16l16.058-16.082*}
+                                                                        {*																	l-11.906-63.506l123.204-101.963l72.979,159.043l33.244-39.016l-10.381-58.574c3.609-2.729,7.193-5.832,10.658-9.297*}
+                                                                        {*																	c19.805-19.805,28.158-43.564,18.656-53.066c-7.339-7.338-23.177-4.022-39.13,6.982l-13.52-76.284l57.049-72.464*}
+                                                                        {*																	C430.607,126.934,464.363,87.021,445.355,67.036z"/>*}
+                                                                        {*																</svg>*}
+                                                                        <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                    </div>
 
-                                                                         <div class="loc-icon-destination">
-                                                                             <svg version="1.1" class="site-main-text-color"
-                                                                                  id="Layer_1"
-                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                                  x="0px" y="0px" width="32px"
-                                                                                  viewBox="0 0 512 512"
-                                                                                  style="enable-background:new 0 0 512 512;"
-                                                                                  xml:space="preserve">
+                                                                    <div class="loc-icon-destination">
+                                                                        <svg version="1.1" class="site-main-text-color"
+                                                                             id="Layer_1"
+                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                             xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                             x="0px" y="0px" width="32px"
+                                                                             viewBox="0 0 512 512"
+                                                                             style="enable-background:new 0 0 512 512;"
+                                                                             xml:space="preserve">
 																<g>
                                                                     <g>
                                                                         <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
@@ -585,74 +589,74 @@
                                                                     </g>
                                                                 </g>
 																</svg>
-                                                                         </div>
+                                                                    </div>
 
-                                                                     </div>
+                                                                </div>
 
 
-                                                                 </div>
+                                                            </div>
 
-                                                             </div>
-{*                                                             <div class="d-flex gap-2 justify-content-center">*}
-{*                                                                 <span class="sit-class">{$objDetail->SeatClass[$direction]}</span>*}
-{*                                                             <span class="flight-type-detail">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</span>*}
+                                                        </div>
+                                                        {*                                                             <div class="d-flex gap-2 justify-content-center">*}
+                                                        {*                                                                 <span class="sit-class">{$objDetail->SeatClass[$direction]}</span>*}
+                                                        {*                                                             <span class="flight-type-detail">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</span>*}
 
-{*                                                             </div>*}
-                                                             <div class="airlines-info txtRight destination-city">
-                                                                 {*                                                            <span class="open city-name-flight">{$objDetail->ArrayDeptForeign[(($objDetail->ArrayDeptForeign|@count) - 1)]['DestiCity']}</span>*}
-                                                                 <span class="open city-name-flight">
+                                                        {*                                                             </div>*}
+                                                        <div class="airlines-info txtRight destination-city">
+                                                            {*                                                            <span class="open city-name-flight">{$objDetail->ArrayDeptForeign[(($objDetail->ArrayDeptForeign|@count) - 1)]['DestiCity']}</span>*}
+                                                            <span class="open city-name-flight">
 
                                                                      {assign var="OriginCityNameByLanguage" value=$objFunctions->CityForeign($objDetail->ArrayDeptForeign[(($objDetail->ArrayDeptForeign|@count) - 1)]['DestiAirportIata'])}
 
 
 
-                                                                     {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
+                                                                {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                                                         </span>
 
-                                                                 <span class="openB airport-name-flight">( {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')]} )</span>
-                                                                 <div class="date-time">
-{*                                                                     <span class="time-flight">{$objDetail->ArrayDeptForeign[0]['ArrivalTime']|substr:0:5 }</span>*}
-                                                                     <span class="time-flight">{$objDetail->ArrayDeptForeign[(($objDetail->ArrayDeptForeign|@count) - 1)]['ArrivalTime']|substr:0:5}</span>
-                                                                 </div>
+                                                            <span class="openB airport-name-flight">( {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')]} )</span>
+                                                            <div class="date-time">
+                                                                {*                                                                     <span class="time-flight">{$objDetail->ArrayDeptForeign[0]['ArrivalTime']|substr:0:5 }</span>*}
+                                                                <span class="time-flight">{$objDetail->ArrayDeptForeign[(($objDetail->ArrayDeptForeign|@count) - 1)]['ArrivalTime']|substr:0:5}</span>
+                                                            </div>
 
-                                                             </div>
+                                                        </div>
 
 
-                                                         </div>
-                                                     {/if}
-                                                     {if $objDetail->ArrayReturnForeign neq ''}
-                                                         <div class=" international-available-airlines international-available-airlines-detail-new">
-                                                             <div class="international-available-airlines-logo">
-                                                                 <img src="{$objFunctions->getAirlinePhoto($objDetail->ArrayReturnForeign[0]['Airline_IATA'])}"
-                                                                      alt="{$objDetail->ArrayReturnForeign[0]['Airline_IATA']}"
-                                                                      title="{$objDetail->ArrayReturnForeign[0]['Airline_IATA']}">
-                                                             </div>
-                                                             <div class="international-available-airlines-log-info">
+                                                    </div>
+                                                {/if}
+                                                {if $objDetail->ArrayReturnForeign neq ''}
+                                                    <div class=" international-available-airlines international-available-airlines-detail-new">
+                                                        <div class="international-available-airlines-logo">
+                                                            <img src="{$objFunctions->getAirlinePhoto($objDetail->ArrayReturnForeign[0]['Airline_IATA'])}"
+                                                                 alt="{$objDetail->ArrayReturnForeign[0]['Airline_IATA']}"
+                                                                 title="{$objDetail->ArrayReturnForeign[0]['Airline_IATA']}">
+                                                        </div>
+                                                        <div class="international-available-airlines-log-info">
 
                                                     <span class="open txt13 disN740">
                                                     {if $objDetail->ArrayReturnForeign|@count gt '1'}##MultiAirline##{else}{$objFunctions->AirlineName($objDetail->RoutesTicket[$direction][0]['Airline_IATA'])}{/if}</span>
-                                                                 <span class="open txt13 disN740">
+                                                            <span class="open txt13 disN740">
 
                                                                  <span class="open txt13 disN740">
                                                     {$objDetail->ArrayReturnForeign[0]['FlightNumber']}</span>
                                                                 </span>                                                             </div>
-                                                         </div>
-                                                         <div class="international-available-airlines-info international-available-airlines-info-detail-new">
-                                                             <div class="airlines-info txtLeft origin-city">
-                                                                 {*                                                            <span class="open city-name-flight">{$objDetail->ArrayReturnForeign[0]['OriginCity']}</span>*}
-                                                                 <span class="open city-name-flight">
+                                                    </div>
+                                                    <div class="international-available-airlines-info international-available-airlines-info-detail-new">
+                                                        <div class="airlines-info txtLeft origin-city">
+                                                            {*                                                            <span class="open city-name-flight">{$objDetail->ArrayReturnForeign[0]['OriginCity']}</span>*}
+                                                            <span class="open city-name-flight">
 
                                                                      {assign var="OriginCityNameByLanguage" value=$objFunctions->CityForeign($objDetail->ArrayDeptForeign[(($objDetail->ArrayDeptForeign|@count) - 1)]['DestiAirportIata'])}
 
 
 
-                                                                     {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
+                                                                {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                                                         </span>
 
-                                                                 <span class="openB airport-name-flight">( {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')]} )</span>
+                                                            <span class="openB airport-name-flight">( {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')]} )</span>
 
 
-                                                                 <div class="date-time">
+                                                            <div class="date-time">
 
                                                                   <span class="date-flight">
                                                                   {if $smarty.const.SOFTWARE_LANG eq 'fa'}
@@ -660,79 +664,79 @@
                                                                   {/if}
                                                                     <p class="foreign-date">{$objDetail->dateReturnForeignMiladiDeparture[$direction]}</p>
                                                                     </span>
-                                                                 </div>
-                                                                 <div class="date-time">
+                                                            </div>
+                                                            <div class="date-time">
 
-                                                                     <span class="time-flight">{$objDetail->ArrayReturnForeign[0]['Time']|substr:0:5}</span>
-                                                                 </div>
-                                                             </div>
+                                                                <span class="time-flight">{$objDetail->ArrayReturnForeign[0]['Time']|substr:0:5}</span>
+                                                            </div>
+                                                        </div>
 
-                                                             <div class="airlines-info">
-                                                                 <div class="airlines-info-inner">{*11*}
+                                                        <div class="airlines-info">
+                                                            <div class="airlines-info-inner">{*11*}
 
 
 
-                                                                     <div class="d-flex gap-5 justify-content-center">
-                                                                     {if $objDetail->SourceID[$direction] !='8'}
-                                                                         <span class="iranL">
+                                                                <div class="d-flex gap-5 justify-content-center">
+                                                                    {if $objDetail->SourceID[$direction] !='8'}
+                                                                        <span class="iranL">
                                                                               {assign var="TotalLongTime" value=":"|explode:$objDetail->ArrayReturnForeign[0]['TotalLongTime']}
                                                                             {if $TotalLongTime[0] gt '0'} {$TotalLongTime[0]}##dayand##{/if}{$TotalLongTime[1]}
                                                                             ##timeand## {$TotalLongTime[2]}##Minute##
                                                                         </span>
-                                                                     {/if}
-                                                                     <span class="tavaghof iranL txt13">( {if $objDetail->ArrayReturnForeign|@count gt '1'}{($objDetail->ArrayReturnForeign|@count)-1} ##Stopi##{else}##Nostop##{/if} )</span>
-                                                                     </div>
-                                                                     <div class="airline-line">
+                                                                    {/if}
+                                                                    <span class="tavaghof iranL txt13">( {if $objDetail->ArrayReturnForeign|@count gt '1'}{($objDetail->ArrayReturnForeign|@count)-1} ##Stopi##{else}##Nostop##{/if} )</span>
+                                                                </div>
+                                                                <div class="airline-line">
 
-                                                                         <div class="loc-icon">
-{*                                                                             <svg version="1.1" class="site-main-text-color"*}
-{*                                                                                  id="Layer_1"*}
-{*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
-{*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
-{*                                                                                  x="0px" y="0px" width="32px"*}
-{*                                                                                  viewBox="0 0 512 512"*}
-{*                                                                                  style="enable-background:new 0 0 512 512;"*}
-{*                                                                                  xml:space="preserve">*}
-{*																<g>*}
-{*                                                                    <g>*}
-{*                                                                        <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035*}
-{*																			c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719*}
-{*																			c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>*}
-{*                                                                    </g>*}
-{*                                                                </g>*}
-{*																</svg>*}
+                                                                    <div class="loc-icon">
+                                                                        {*                                                                             <svg version="1.1" class="site-main-text-color"*}
+                                                                        {*                                                                                  id="Layer_1"*}
+                                                                        {*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
+                                                                        {*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
+                                                                        {*                                                                                  x="0px" y="0px" width="32px"*}
+                                                                        {*                                                                                  viewBox="0 0 512 512"*}
+                                                                        {*                                                                                  style="enable-background:new 0 0 512 512;"*}
+                                                                        {*                                                                                  xml:space="preserve">*}
+                                                                        {*																<g>*}
+                                                                        {*                                                                    <g>*}
+                                                                        {*                                                                        <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035*}
+                                                                        {*																			c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719*}
+                                                                        {*																			c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>*}
+                                                                        {*                                                                    </g>*}
+                                                                        {*                                                                </g>*}
+                                                                        {*																</svg>*}
 
-                                                                             <i class="flat_circle site-bg-main-color "></i>
-                                                                         </div>
+                                                                        <i class="flat_circle site-bg-main-color "></i>
+                                                                    </div>
 
-                                                                         <div class="plane-icon">
-{*                                                                             <svg version="1.1" id="Capa_1"*}
-{*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
-{*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
-{*                                                                                  x="0px" y="0px"*}
-{*                                                                                  width="32px" viewBox="0 0 512 512"*}
-{*                                                                                  enable-background="new 0 0 512 512"*}
-{*                                                                                  xml:space="preserve">*}
-{*																<path d="M445.355,67.036l-0.391-0.392c-19.986-19.006-59.898,14.749-59.898,14.749l-72.463,57.049l-76.285-13.52*}
-{*																	c11.005-15.953,14.32-31.79,6.983-39.127c-9.503-9.503-33.263-1.15-53.068,18.655c-3.464,3.464-6.568,7.049-9.297,10.657*}
-{*																	l-58.574-10.381L83.346,137.97l159.044,72.979L140.427,334.152l-63.505-11.906l-16.083,16.06L173.696,451.16l16.058-16.082*}
-{*																	l-11.906-63.506l123.204-101.963l72.979,159.043l33.244-39.016l-10.381-58.574c3.609-2.729,7.193-5.832,10.658-9.297*}
-{*																	c19.805-19.805,28.158-43.564,18.656-53.066c-7.339-7.338-23.177-4.022-39.13,6.982l-13.52-76.284l57.049-72.464*}
-{*																	C430.607,126.934,464.363,87.021,445.355,67.036z"/>*}
-{*																</svg>*}
-                                                                             <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                    <div class="plane-icon">
+                                                                        {*                                                                             <svg version="1.1" id="Capa_1"*}
+                                                                        {*                                                                                  xmlns="http://www.w3.org/2000/svg"*}
+                                                                        {*                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"*}
+                                                                        {*                                                                                  x="0px" y="0px"*}
+                                                                        {*                                                                                  width="32px" viewBox="0 0 512 512"*}
+                                                                        {*                                                                                  enable-background="new 0 0 512 512"*}
+                                                                        {*                                                                                  xml:space="preserve">*}
+                                                                        {*																<path d="M445.355,67.036l-0.391-0.392c-19.986-19.006-59.898,14.749-59.898,14.749l-72.463,57.049l-76.285-13.52*}
+                                                                        {*																	c11.005-15.953,14.32-31.79,6.983-39.127c-9.503-9.503-33.263-1.15-53.068,18.655c-3.464,3.464-6.568,7.049-9.297,10.657*}
+                                                                        {*																	l-58.574-10.381L83.346,137.97l159.044,72.979L140.427,334.152l-63.505-11.906l-16.083,16.06L173.696,451.16l16.058-16.082*}
+                                                                        {*																	l-11.906-63.506l123.204-101.963l72.979,159.043l33.244-39.016l-10.381-58.574c3.609-2.729,7.193-5.832,10.658-9.297*}
+                                                                        {*																	c19.805-19.805,28.158-43.564,18.656-53.066c-7.339-7.338-23.177-4.022-39.13,6.982l-13.52-76.284l57.049-72.464*}
+                                                                        {*																	C430.607,126.934,464.363,87.021,445.355,67.036z"/>*}
+                                                                        {*																</svg>*}
+                                                                        <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
 
-                                                                         </div>
+                                                                    </div>
 
-                                                                         <div class="loc-icon-destination">
-                                                                             <svg version="1.1" class="site-main-text-color"
-                                                                                  id="Layer_1"
-                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                                  x="0px" y="0px" width="32px"
-                                                                                  viewBox="0 0 512 512"
-                                                                                  style="enable-background:new 0 0 512 512;"
-                                                                                  xml:space="preserve">
+                                                                    <div class="loc-icon-destination">
+                                                                        <svg version="1.1" class="site-main-text-color"
+                                                                             id="Layer_1"
+                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                             xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                             x="0px" y="0px" width="32px"
+                                                                             viewBox="0 0 512 512"
+                                                                             style="enable-background:new 0 0 512 512;"
+                                                                             xml:space="preserve">
 																<g>
                                                                     <g>
                                                                         <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
@@ -741,44 +745,44 @@
                                                                     </g>
                                                                 </g>
 																</svg>
-                                                                         </div>
+                                                                    </div>
 
-                                                                     </div>
-{*                                                                     <div class="d-flex gap-2 justify-content-center">*}
-{*                                                                         <span class="sit-class iranL txt13">{$objDetail->SeatClass[$direction]}</span>*}
+                                                                </div>
+                                                                {*                                                                     <div class="d-flex gap-2 justify-content-center">*}
+                                                                {*                                                                         <span class="sit-class iranL txt13">{$objDetail->SeatClass[$direction]}</span>*}
 
-{*                                                                         <span class=" iranB txt13 flight-type-detail">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</span>*}
-{*                                                                     </div>*}
+                                                                {*                                                                         <span class=" iranB txt13 flight-type-detail">{if $objDetail->FlightType[$direction] eq 'system'}##SystemType##{else} ##CharterType##{/if}</span>*}
+                                                                {*                                                                     </div>*}
 
 
 
-                                                                 </div>
-                                                             </div>
-                                                             <div class="airlines-info txtRight destination-city">
-                                                                 {*                                                            <span class="open city-name-flight">{$objDetail->RoutesTicket[$direction][($objDetail->countRoute[$direction] - 1)]['DestiCity']}</span>*}
-                                                                 <span class="open city-name-flight">
+                                                            </div>
+                                                        </div>
+                                                        <div class="airlines-info txtRight destination-city">
+                                                            {*                                                            <span class="open city-name-flight">{$objDetail->RoutesTicket[$direction][($objDetail->countRoute[$direction] - 1)]['DestiCity']}</span>*}
+                                                            <span class="open city-name-flight">
 
                                                                 {assign var="OriginCityNameByLanguage" value=$objFunctions->CityForeign($objDetail->ArrayDeptForeign[0]['OriginAirportIata'])}
 
 
 
-                                                                     {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
+                                                                {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
 
                                                         </span>
 
-                                                                 <span class="openB airport-name-flight">( {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')]} )</span>
+                                                            <span class="openB airport-name-flight">( {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('Airport')]} )</span>
 
-                                                                 <div class="date-time">
+                                                            <div class="date-time">
 
-                                                                     <span class="time-flight">{$objDetail->ArrayReturnForeign[(($objDetail->ArrayReturnForeign|@count) - 1)]['ArrivalTime']|substr:0:5}</span>
-                                                                 </div>
-                                                             </div>
-                                                         </div>
-                                                     {/if}
+                                                                <span class="time-flight">{$objDetail->ArrayReturnForeign[(($objDetail->ArrayReturnForeign|@count) - 1)]['ArrivalTime']|substr:0:5}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {/if}
 
-                                             </div>
-                                             <div class="international-available-item-left-Cell international-available-item-left-Cell-detail-flight">
-                                                 <div class="inner-avlbl-itm ">
+                                            </div>
+                                            <div class="international-available-item-left-Cell international-available-item-left-Cell-detail-flight">
+                                                <div class="inner-avlbl-itm ">
                                                 <span class="iranL priceSortAdt">
                                                         <i class="iranB site-main-text-color-drck">{$objFunctions->numberFormat($objDetail->FinalTotalPrice[$direction])}</i>
 
@@ -786,10 +790,10 @@
 {$objDetail->AdtPriceType[$direction]}
 
 												</span>
-                                                 </div>
-                                             </div>
-                                         </div>
-<!--                                         <div class="international-available-details">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--                                         <div class="international-available-details">
                                              <div>
                                                  <div class=" international-available-panel-min">
                                                      <ul class="tabs">
@@ -1000,11 +1004,11 @@
                                         </span>
                                              <span class="international-available-detail-btn slideUpAirDescription displayiN"><i class="fa fa-angle-up site-main-text-color"></i></span>
                                          </div>-->
-                                     </div>
+                                    </div>
 
-                                     <div class="clear"></div>
-                                 </div>
-                             {else}
+                                    <div class="clear"></div>
+                                </div>
+                            {else}
                                 <div class="international-available-box  foreign">
 
                                     <div class="international-available-item ">
@@ -1038,11 +1042,11 @@
                 {$objDetail->ArrayDeptForeign[0]['FlightNumber']}
             </span>
                                                                         </div>
-                                                                    {* نمایش آیتم اول رفت *}
-                                                                    {assign var="firstDeptItem" value=$objDetail->ArrayDeptForeign[0]}
-                                                                    <div class="flight-item-wrapper-dept-first w-100">
-                                                                        <div class="international-available-airlines-info international-available-airlines-info-detail-new">
-                                                                            <div class="airlines-info txtLeft origin-city">
+                                                                        {* نمایش آیتم اول رفت *}
+                                                                        {assign var="firstDeptItem" value=$objDetail->ArrayDeptForeign[0]}
+                                                                        <div class="flight-item-wrapper-dept-first w-100">
+                                                                            <div class="international-available-airlines-info international-available-airlines-info-detail-new">
+                                                                                <div class="airlines-info txtLeft origin-city">
                             <span class="open city-name-flight">
                                 {if $smarty.post.ZoneFlight eq 'Local'}
                                     {assign var="OriginCityNameByLanguage" value=$objFunctions->CityInternal($firstDeptItem['OriginAirportIata'])}
@@ -1051,10 +1055,10 @@
                                 {/if}
                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                             </span>
-                                                                                {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($firstDeptItem['OriginAirportIata']))}
-                                                                                <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
+                                                                                    {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($firstDeptItem['OriginAirportIata']))}
+                                                                                    <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
 
-                                                                                <div class="date-time">
+                                                                                    <div class="date-time">
                                 <span class="date-flight">
                                     {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                         <p class="farsi-date">{dateTimeSetting::jdate("dF", functions::FormatDateJalali(str_replace('/', '-', $firstDeptItem['Date'])))}</p>
@@ -1062,44 +1066,44 @@
                                     {/if}
                                     <p class="foreign-date">( {date_format(date_create(functions::ConvertToMiladi(str_replace('/', '-', $firstDeptItem['Date']))), "jM")} )</p>
                                 </span>
-                                                                                </div>
-                                                                                <div class="date-time">
-                                                                                    <span class="time-flight">{$firstDeptItem['Time']|substr:0:5}</span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="airlines-info">
-                                                                                <div class="airlines-info-inner">
-                                                                                    <div class="d-flex gap-5 justify-content-center">
-
-                                                                                        <span class="tavaghof iranL txt13">{if $objDetail->ArrayDeptForeign|@count gt '1'}{($objDetail->ArrayDeptForeign|@count)-1} ##Stopi##{else}##Nostop##{/if} </span>
-
                                                                                     </div>
-                                                                                    <div class="airline-line">
-                                                                                        <div class="loc-icon">
-                                                                                            <i class="flat_circle site-bg-main-color"></i>
+                                                                                    <div class="date-time">
+                                                                                        <span class="time-flight">{$firstDeptItem['Time']|substr:0:5}</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="airlines-info">
+                                                                                    <div class="airlines-info-inner">
+                                                                                        <div class="d-flex gap-5 justify-content-center">
+
+                                                                                            <span class="tavaghof iranL txt13">{if $objDetail->ArrayDeptForeign|@count gt '1'}{($objDetail->ArrayDeptForeign|@count)-1} ##Stopi##{else}##Nostop##{/if} </span>
+
                                                                                         </div>
-                                                                                        <div class="plane-icon">
-                                                                                            <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
-                                                                                        </div>
-                                                                                        <div class="loc-icon-destination">
-                                                                                            <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                                        <div class="airline-line">
+                                                                                            <div class="loc-icon">
+                                                                                                <i class="flat_circle site-bg-main-color"></i>
+                                                                                            </div>
+                                                                                            <div class="plane-icon">
+                                                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                            </div>
+                                                                                            <div class="loc-icon-destination">
+                                                                                                <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
                                                 </g>
                                             </g>
                                         </svg>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
 
-                                                                            <div class="airlines-info txtRight destination-city">
-                                                                                <span class="open city-name-flight">{$objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['DestiCity']}</span>
-                                                                                {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['DestiAirportIata']))}
-                                                                                <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
-                                                                                <div class="date-time">
+                                                                                <div class="airlines-info txtRight destination-city">
+                                                                                    <span class="open city-name-flight">{$objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['DestiCity']}</span>
+                                                                                    {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['DestiAirportIata']))}
+                                                                                    <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
+                                                                                    <div class="date-time">
                                 <span class="date-flight">
                                  {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                      <p class="farsi-date">{dateTimeSetting::jdate("dF", functions::FormatDateJalali(str_replace('/', '-', $objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['ArrivalDate'])))}</p>
@@ -1107,12 +1111,12 @@
                                  {/if}
 <p class="foreign-date">( {date_format(date_create($objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['ArrivalDate']), "jM")} )</p>
                                 </span>
-                                                                                    <span class="time-flight">{$objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['ArrivalTime']|substr:0:5}</span>
+                                                                                        <span class="time-flight">{$objDetail->ArrayDeptForeign[$objDetail->ArrayDeptForeign|@count - 1]['ArrivalTime']|substr:0:5}</span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
 
-                                                                    </div>
+                                                                        </div>
                                                                     </div>
 
                                                                 </div>
@@ -1123,7 +1127,7 @@
 
                                                     {if $objDetail->ArrayReturnForeign neq ''}
                                                         <div class="international-available-airlines-info-one position-relative">
-{*                                                            <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Returnflight##</div>*}
+                                                            {*                                                            <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Returnflight##</div>*}
                                                             <div class="w-100 mt-1">
                                                                 <div class="flight-details-container-return" id="flightDetailsContainerReturn">
                                                                     <div class="d-flex flex-column flex-md-row mb-2">
@@ -1142,11 +1146,11 @@
                 </span>
                                                                             </div>
                                                                         </div>
-                                                                    {* نمایش آیتم اول برگشت *}
-                                                                    {assign var="firstReturnItem" value=$objDetail->ArrayReturnForeign[0]}
-                                                                    <div class="flight-item-wrapper-return-first w-100">
-                                                                        <div class="international-available-airlines-info international-available-airlines-info-detail-new">
-                                                                            <div class="airlines-info txtLeft origin-city">
+                                                                        {* نمایش آیتم اول برگشت *}
+                                                                        {assign var="firstReturnItem" value=$objDetail->ArrayReturnForeign[0]}
+                                                                        <div class="flight-item-wrapper-return-first w-100">
+                                                                            <div class="international-available-airlines-info international-available-airlines-info-detail-new">
+                                                                                <div class="airlines-info txtLeft origin-city">
                             <span class="open city-name-flight">
                                 {if $smarty.post.ZoneFlight eq 'Local'}
                                     {assign var="OriginCityNameByLanguage" value=$objFunctions->CityInternal($firstReturnItem['OriginAirportIata'])}
@@ -1155,63 +1159,63 @@
                                 {/if}
                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                             </span>
-                                                                                {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($firstReturnItem['OriginAirportIata']))}
-                                                                                <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
-                                                                                <div class="date-time">
+                                                                                    {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($firstReturnItem['OriginAirportIata']))}
+                                                                                    <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
+                                                                                    <div class="date-time">
                                 <span class="date-flight">
                                     {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                         <p class="farsi-date">{dateTimeSetting::jdate("dF", functions::FormatDateJalali(str_replace('/', '-', $firstReturnItem['Date'])))}</p>
                                     {/if}
                                     <p class="foreign-date">( {date_format(date_create(functions::ConvertToMiladi(str_replace('/', '-', $firstReturnItem['Date']))), "jM")} )</p>
                                 </span>
-                                                                                </div>
-                                                                                <div class="date-time">
-                                                                                    <span class="time-flight">{$firstReturnItem['Time']|substr:0:5}</span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="airlines-info">
-                                                                                <div class="airlines-info-inner">
-                                                                                    <div class="d-flex gap-5 justify-content-center">
-                                                                                        <span class="tavaghof iranL txt13">{if $objDetail->ArrayReturnForeign|@count gt '1'}{($objDetail->ArrayReturnForeign|@count)-1} ##Stopi##{else}##Nostop##{/if} </span>
-
                                                                                     </div>
-                                                                                    <div class="airline-line">
-                                                                                        <div class="loc-icon">
-                                                                                            <i class="flat_circle site-bg-main-color"></i>
+                                                                                    <div class="date-time">
+                                                                                        <span class="time-flight">{$firstReturnItem['Time']|substr:0:5}</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="airlines-info">
+                                                                                    <div class="airlines-info-inner">
+                                                                                        <div class="d-flex gap-5 justify-content-center">
+                                                                                            <span class="tavaghof iranL txt13">{if $objDetail->ArrayReturnForeign|@count gt '1'}{($objDetail->ArrayReturnForeign|@count)-1} ##Stopi##{else}##Nostop##{/if} </span>
+
                                                                                         </div>
-                                                                                        <div class="plane-icon">
-                                                                                            <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
-                                                                                        </div>
-                                                                                        <div class="loc-icon-destination">
-                                                                                            <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                                        <div class="airline-line">
+                                                                                            <div class="loc-icon">
+                                                                                                <i class="flat_circle site-bg-main-color"></i>
+                                                                                            </div>
+                                                                                            <div class="plane-icon">
+                                                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                            </div>
+                                                                                            <div class="loc-icon-destination">
+                                                                                                <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
                                                 </g>
                                             </g>
                                         </svg>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
 
-                                                                            <div class="airlines-info txtRight destination-city">
-                                                                                <span class="open city-name-flight">{$objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['DestiCity']}</span>
-                                                                                {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['DestiAirportIata']))}
-                                                                                <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
-                                                                                <div class="date-time">
+                                                                                <div class="airlines-info txtRight destination-city">
+                                                                                    <span class="open city-name-flight">{$objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['DestiCity']}</span>
+                                                                                    {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['DestiAirportIata']))}
+                                                                                    <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
+                                                                                    <div class="date-time">
                                 <span class="date-flight">
                                    {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                        <p class="farsi-date">{dateTimeSetting::jdate("dF", functions::FormatDateJalali(str_replace('/', '-', $objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['ArrivalDate'])))}</p>
                                    {/if}
 <p class="foreign-date">( {date_format(date_create($objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['ArrivalDate']), "jM")} )</p>
                                 </span>
-                                                                                    <span class="time-flight">{$objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['ArrivalTime']|substr:0:5}</span>
+                                                                                        <span class="time-flight">{$objDetail->ArrayReturnForeign[$objDetail->ArrayReturnForeign|@count - 1]['ArrivalTime']|substr:0:5}</span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
                                                                         <div class="text-center mb-3 mt-3   ">
                                                                             <button type="button" style="display:none" class="btn-show-details-return-close text-white border-0 px-4 py-2 rounded"
                                                                                     onclick="toggleReturnDetails(this)">
@@ -1452,24 +1456,24 @@
                                                         <div class="w-100">
                                                             <div class="flight-details-container" id="flightDetailsContainer">
                                                                 <div class="d-flex flex-column flex-md-row mb-2">
-                                                                <div class="international-available-airlines international-available-airlines-detail-new ">
-                                                                    <div class="international-available-airlines-logo">
-                                                                        <img src="{$objFunctions->getAirlinePhoto($objDetail->RoutesTicket[$direction][0]['Airline_IATA'])}"
-                                                                             alt="{$objDetail->RoutesTicket[$direction][0]['Airline_IATA']}"
-                                                                             title="{$objDetail->RoutesTicket[$direction]['Airline_IATA']}">
-                                                                    </div>
-                                                                    <span style="display:none;"></span>
-                                                                    <div class="international-available-airlines-log-info">
+                                                                    <div class="international-available-airlines international-available-airlines-detail-new ">
+                                                                        <div class="international-available-airlines-logo">
+                                                                            <img src="{$objFunctions->getAirlinePhoto($objDetail->RoutesTicket[$direction][0]['Airline_IATA'])}"
+                                                                                 alt="{$objDetail->RoutesTicket[$direction][0]['Airline_IATA']}"
+                                                                                 title="{$objDetail->RoutesTicket[$direction]['Airline_IATA']}">
+                                                                        </div>
+                                                                        <span style="display:none;"></span>
+                                                                        <div class="international-available-airlines-log-info">
             <span class="open txt13 disN740">
                 {if $objDetail->countRoute[$direction] gt '1'}##MultiAirline##{else}{$objFunctions->AirlineName($objDetail->RoutesTicket[$direction][0]['Airline_IATA'])}{/if}
             </span>
-                                                                        <span class="open txt13 disN740">
+                                                                            <span class="open txt13 disN740">
                 {$objDetail->RoutesTicket['dept'][0]['FlightNumber']}
             </span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="international-available-airlines-info international-available-airlines-info-detail-new">
-                                                                    <div class="airlines-info txtLeft origin-city">
+                                                                    <div class="international-available-airlines-info international-available-airlines-info-detail-new">
+                                                                        <div class="airlines-info txtLeft origin-city">
                             <span class="open city-name-flight">
                                 {if $smarty.post.ZoneFlight eq 'Local'}
                                     {assign var="OriginCityNameByLanguage" value=$objFunctions->CityInternal($objDetail->RoutesTicket['dept'][0]['OriginAirportIata'])}
@@ -1478,10 +1482,10 @@
                                 {/if}
                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                             </span>
-                                                                        {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->RoutesTicket['dept'][0]['OriginAirportIata']))}
-                                                                        <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
+                                                                            {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->RoutesTicket['dept'][0]['OriginAirportIata']))}
+                                                                            <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
 
-                                                                        <div class="date-time">
+                                                                            <div class="date-time">
                                 <span class="date-flight">
                                     {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                         <p class="farsi-date"> {$objFunctions->dateFormatSpecialJalali($objDetail->RoutesTicket['dept'][0]['ArrivalDate'],'dF')} </p>
@@ -1489,37 +1493,37 @@
                                     {/if}
                                     <p class="foreign-date">( {$objFunctions->dateFormatSpecialMiladi($objDetail->RoutesTicket['dept'][0]['ArrivalDate'],'jM')} )</p>
                                 </span>
+                                                                            </div>
+                                                                            <div class="date-time">
+                                                                                <span class="time-flight">{$objDetail->RoutesTicket['dept'][0]['Time']|substr:0:5}</span>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="date-time">
-                                                                            <span class="time-flight">{$objDetail->RoutesTicket['dept'][0]['Time']|substr:0:5}</span>
-                                                                        </div>
-                                                                    </div>
 
-                                                                    <div class="airlines-info">
-                                                                        <div class="airlines-info-inner">
-                                                                         <span class="tavaghof iranL txt13">{if $objDetail->RoutesTicket['dept']|@count gt '1'}{($objDetail->RoutesTicket['dept']|@count)-1} ##Stopi##{else}##Nostop##{/if} </span>
+                                                                        <div class="airlines-info">
+                                                                            <div class="airlines-info-inner">
+                                                                                <span class="tavaghof iranL txt13">{if $objDetail->RoutesTicket['dept']|@count gt '1'}{($objDetail->RoutesTicket['dept']|@count)-1} ##Stopi##{else}##Nostop##{/if} </span>
 
-                                                                            <div class="airline-line">
-                                                                                <div class="loc-icon">
-                                                                                    <i class="flat_circle site-bg-main-color"></i>
-                                                                                </div>
-                                                                                <div class="plane-icon">
-                                                                                    <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
-                                                                                </div>
-                                                                                <div class="loc-icon-destination">
-                                                                                    <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                                <div class="airline-line">
+                                                                                    <div class="loc-icon">
+                                                                                        <i class="flat_circle site-bg-main-color"></i>
+                                                                                    </div>
+                                                                                    <div class="plane-icon">
+                                                                                        <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                    </div>
+                                                                                    <div class="loc-icon-destination">
+                                                                                        <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
                                                 </g>
                                             </g>
                                         </svg>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
 
-                                                                    <div class="airlines-info txtRight destination-city">
+                                                                        <div class="airlines-info txtRight destination-city">
                             <span class="open city-name-flight">
                               {if $smarty.post.ZoneFlight eq 'Local'}
                                   {assign var="DestCityNameByLanguage" value=$objFunctions->CityInternal($objDetail->RoutesTicket['dept'][$objDetail->RoutesTicket['dept']|@count - 1]['DestiAirportIata'])}
@@ -1528,8 +1532,8 @@
                               {/if}
                                 {$DestCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                             </span>
-                                                                        {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->RoutesTicket['dept'][$objDetail->RoutesTicket['dept']|@count - 1]['DestiAirportIata']))}                                                                        <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
-                                                                        <div class="date-time">
+                                                                            {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($objDetail->RoutesTicket['dept'][$objDetail->RoutesTicket['dept']|@count - 1]['DestiAirportIata']))}                                                                        <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
+                                                                            <div class="date-time">
                                 <span class="date-flight">
                                   {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                       <p class="farsi-date">
@@ -1539,12 +1543,12 @@
                                   {/if}
 <p class="foreign-date">( {date_format(date_create($objDetail->RoutesTicket['dept'][$objDetail->RoutesTicket['dept']|@count - 1]['ArrivalDate']), "jM")} )</p>
                                 </span>
-                                                                            <span class="time-flight">
+                                                                                <span class="time-flight">
                                                                 {$objDetail->RoutesTicket['dept'][$objDetail->RoutesTicket['dept']|@count - 1]['ArrivalTime']|substr:0:5}
                                                             </span>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
 
                                                                 </div>
                                                                 <div class="text-center mb-3 mt-3   ">
@@ -1563,16 +1567,16 @@
                                                                     </div>
                                                                 {/if}
                                                                 <div class="div-wrapper-flight" style="display:none">
-                                                                <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Wentflight##</div>
-                                                                {foreach $objDetail->RoutesTicket['dept'] as $index => $item}
-                                                                    {* wrapper برای هر بخش پرواز *}
+                                                                    <div class="text-center site-bg-main-color border-1 rounded-md py-1 px-2 flight-type-went-and-return">##Wentflight##</div>
+                                                                    {foreach $objDetail->RoutesTicket['dept'] as $index => $item}
+                                                                        {* wrapper برای هر بخش پرواز *}
 
-                                                                    <div class="flight-item-wrapper-{$index} {if $index >= 0}hidden-flight-detail{/if}"
-                                                                         style="{if $index >= 0}display: none;{/if}">
+                                                                        <div class="flight-item-wrapper-{$index} {if $index >= 0}hidden-flight-detail{/if}"
+                                                                             style="{if $index >= 0}display: none;{/if}">
 
 
-                                                                        <div class="international-available-airlines-info international-available-airlines-info-detail-new">
-                                                                            <div class="airlines-info txtLeft origin-city">
+                                                                            <div class="international-available-airlines-info international-available-airlines-info-detail-new">
+                                                                                <div class="airlines-info txtLeft origin-city">
                             <span class="open city-name-flight">
                                 {if $smarty.post.ZoneFlight eq 'Local'}
                                     {assign var="OriginCityNameByLanguage" value=$objFunctions->CityInternal($item['OriginAirportIata'])}
@@ -1581,10 +1585,10 @@
                                 {/if}
                                 {$OriginCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                             </span>
-                                                                                {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['OriginAirportIata']))}
-                                                                                <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
+                                                                                    {assign var="DepartureInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['OriginAirportIata']))}
+                                                                                    <span class="openB airport-name-flight">( {$DepartureInfo[$AirportLangName]} )</span>
 
-                                                                                <div class="date-time">
+                                                                                    <div class="date-time">
                                 <span class="date-flight">
                                     {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                         <p class="farsi-date"> {$objFunctions->dateFormatSpecialJalali($item['ArrivalDate'],'dF')} </p>
@@ -1592,44 +1596,44 @@
                                     {/if}
                                     <p class="foreign-date">( {$objFunctions->dateFormatSpecialMiladi($item['ArrivalDate'],'jM')} )</p>
                                 </span>
+                                                                                    </div>
+                                                                                    <div class="date-time">
+                                                                                        <span class="time-flight">{$item['Time']|substr:0:5}</span>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div class="date-time">
-                                                                                    <span class="time-flight">{$item['Time']|substr:0:5}</span>
-                                                                                </div>
-                                                                            </div>
 
-                                                                            <div class="airlines-info">
-                                                                                <div class="airlines-info-inner">
-                                                                                    <div class="d-flex gap-5 justify-content-center">
-                                                                                        {if $objDetail->SourceID[$direction] !='8'}
-                                                                                            <span class="iranL">
+                                                                                <div class="airlines-info">
+                                                                                    <div class="airlines-info-inner">
+                                                                                        <div class="d-flex gap-5 justify-content-center">
+                                                                                            {if $objDetail->SourceID[$direction] !='8'}
+                                                                                                <span class="iranL">
                                             {assign var="TotalLongTime" value=":"|explode:$item['TotalLongTime']}
-                                                                                                {if $TotalLongTime[0] gt '0'} {$TotalLongTime[0]}##dayand##{/if}{$TotalLongTime[1]}
+                                                                                                    {if $TotalLongTime[0] gt '0'} {$TotalLongTime[0]}##dayand##{/if}{$TotalLongTime[1]}
                                             ##timeand## {$TotalLongTime[2]}##Minute##
                                         </span>
-                                                                                        {/if}
-                                                                                    </div>
-                                                                                    <div class="airline-line">
-                                                                                        <div class="loc-icon">
-                                                                                            <i class="flat_circle site-bg-main-color"></i>
+                                                                                            {/if}
                                                                                         </div>
-                                                                                        <div class="plane-icon">
-                                                                                            <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
-                                                                                        </div>
-                                                                                        <div class="loc-icon-destination">
-                                                                                            <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                                                        <div class="airline-line">
+                                                                                            <div class="loc-icon">
+                                                                                                <i class="flat_circle site-bg-main-color"></i>
+                                                                                            </div>
+                                                                                            <div class="plane-icon">
+                                                                                                <svg id="Capa_1" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" data-v-5483aaca=""><path d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg>
+                                                                                            </div>
+                                                                                            <div class="loc-icon-destination">
+                                                                                                <svg version="1.1" class="site-main-text-color" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                             <g>
                                                 <g>
                                                     <path d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035 c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719 c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"/>
                                                 </g>
                                             </g>
                                         </svg>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
 
-                                                                            <div class="airlines-info txtRight destination-city">
+                                                                                <div class="airlines-info txtRight destination-city">
                             <span class="open city-name-flight">
                                 {if $smarty.post.ZoneFlight eq 'Local'}
                                     {assign var="DestCityNameByLanguage" value=$objFunctions->CityInternal($item['DestiAirportIata'])}
@@ -1638,9 +1642,9 @@
                                 {/if}
                                 {$DestCityNameByLanguage[$objFunctions->changeFieldNameByLanguage('DepartureCity')]}
                             </span>
-                                                                                {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['DestiAirportIata']))}
-                                                                                <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
-                                                                                <div class="date-time">
+                                                                                    {assign var="ArrivalInfo" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['DestiAirportIata']))}
+                                                                                    <span class="openB airport-name-flight">( {$ArrivalInfo[$AirportLangName]} )</span>
+                                                                                    <div class="date-time">
                                 <span class="date-flight">
                                     {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                         <p class="farsi-date"> {dateTimeSetting::jdate("dF", functions::FormatDateJalali(str_replace('/', '-', $item['ArrivalDate'])))} </p>
@@ -1648,33 +1652,33 @@
                                     {/if}
                                     <p class="foreign-date">( {date_format(date_create($item['ArrivalDate']), "jM")} )</p>
                                 </span>
-                                                                                    <span class="time-flight">{$item['ArrivalTime']|substr:0:5}</span>
+                                                                                        <span class="time-flight">{$item['ArrivalTime']|substr:0:5}</span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
 
-                                                                        {if $index < $objDetail->RoutesTicket['dept']|@count - 1}
-                                                                            <div class="international-available-airlines-detail airlines-stops-time"  style="width: 95%;margin:0 auto !important;">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill airlines-stops-time-svg" viewBox="0 0 16 16">
-                                                                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                                                                                </svg>
-                                                                                <span class="iranB lh25 displayib txtRight">
+                                                                            {if $index < $objDetail->RoutesTicket['dept']|@count - 1}
+                                                                                <div class="international-available-airlines-detail airlines-stops-time"  style="width: 95%;margin:0 auto !important;">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill airlines-stops-time-svg" viewBox="0 0 16 16">
+                                                                                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                                                                    </svg>
+                                                                                    <span class="iranB lh25 displayib txtRight">
                         <span class="iranb lh18 displayib">##Stopat##</span>
                         <span class="open displayib">
                             {assign var="Airport" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['DestiAirportIata']))}
                             {$item['DestiCity']} ({$Airport[$AirportLangName]})
                         </span>
                     </span>
-                                                                                <span>بمدت</span>
-                                                                                <span class="open lh25 displayib fltl">
+                                                                                    <span>بمدت</span>
+                                                                                    <span class="open lh25 displayib fltl">
 
                                                                                             {assign var="TotalTransitTime" value=":"|explode:$item['Transit']}
-                                                                                    {$TotalTransitTime[0]} ##timeand## {$TotalTransitTime[1]} ##Minute##
+                                                                                        {$TotalTransitTime[0]} ##timeand## {$TotalTransitTime[1]} ##Minute##
                     </span>
-                                                                            </div>
-                                                                        {/if}
-                                                                    </div>
-                                                                {/foreach}
+                                                                                </div>
+                                                                            {/if}
+                                                                        </div>
+                                                                    {/foreach}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1717,7 +1721,7 @@
                                                 </div>
                                             </div>
                                         </div>
-<!--                                        <div class="international-available-details">
+                                        <!--                                        <div class="international-available-details">
                                             <div>
                                                 <div class=" international-available-panel-min">
                                                     <ul class="tabs">
@@ -1959,9 +1963,9 @@
 
             <input type="hidden" id="PostData" value="{$objDetail->set_session()}" name="PostData">
             {if $objSession->IsLogin()}
-                <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first">
+                <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first d-flex flex-column flex-md-row align-items-center">
 
-                <span class="s-u-last-p-nozad s-u-last-p-nozad-change site-main-text-color">
+                <span class="s-u-last-p-nozad s-u-last-p-nozad-change site-main-text-color p-0 pr-2 information-saler-info" style="width: 18%;">
                    ##InformationSalerInfo##
                 </span>
 
@@ -2000,11 +2004,11 @@
 
                     <div class="panel-default-change">
                         {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                                <div class="panel-heading-change">
+                            <div class="panel-heading-change">
 
-                                    <span class="hidden-xs-down">##Nation##:</span>
+                                <span class="hidden-xs-down">##Nation##:</span>
 
-                                    <span class="kindOfPasenger">
+                                <span class="kindOfPasenger">
                                     <label class="control--checkbox">
                                         <span>##Iranian##</span>
                                         <input type="radio" name="passengerNationalityA{$i}" id="passengerNationalityA{$i}"
@@ -2017,7 +2021,7 @@
                                         </div>
                                     </label>
                                 </span>
-                                    <span class="kindOfPasenger">
+                                <span class="kindOfPasenger">
                                     <label class="control--checkbox">
                                         <span>##Noiranian##</span>
                                         <input type="radio" name="passengerNationalityA{$i}" id="passengerNationalityA{$i}"
@@ -2031,17 +2035,17 @@
                                     </label>
                                 </span>
 
-                                    <span class="member-price">
+                                <span class="member-price">
                                         {assign var="showPice" value="0"}
-                                        {foreach key=direction item=item from=$objDetail->Direction}
-                                                {$showPice = $showPice + $objDetail->AdtPriceByChange[$direction]}
+                                    {foreach key=direction item=item from=$objDetail->Direction}
+                                        {$showPice = $showPice + $objDetail->AdtPriceByChange[$direction]}
 
-                                        {/foreach}
+                                    {/foreach}
                                         <i>{$objFunctions->numberFormat($showPice)}</i> {$objDetail->AdtPriceType[$direction]}
                                     </span>
 
 
-                                </div>
+                            </div>
                         {/if}
 
                         <div class="clear"></div>
@@ -2084,11 +2088,11 @@
                                     <input id="familyFaA{$i}" type="text" placeholder="##Familypersion##"  name="familyFaA{$i}"   onkeypress=" return persianLetters(event, 'familyFaA{$i}')"  class="justpersian">
                                 </div>
                             {/if*}
-                                <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
-                                    <input id="birthdayA{$i}" type="text" placeholder="##shamsihappybirthday##"
-                                           name="birthdayA{$i}"
-                                           class="shamsiAdultBirthdayCalendar" readonly="readonly">
-                                </div>
+                            <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                                <input id="birthdayA{$i}" type="text" placeholder="##shamsihappybirthday##"
+                                       name="birthdayA{$i}"
+                                       class="shamsiAdultBirthdayCalendar" readonly="readonly">
+                            </div>
 
                             <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                                 <input id="birthdayEnA{$i}" type="text"
@@ -2105,8 +2109,8 @@
                                     {foreach $objFunctions->CountryCodes() as $Country}
                                         <option value="{if $objDetail->SourceID['dept']=='10' || $objDetail->SourceID['dept']=='14'
                                         || $objDetail->SourceID['TwoWay']=='10' || $objDetail->SourceID['TwoWay']=='14'
-                                            || $objDetail->SourceID['dept']=='15' || $objDetail->SourceID['TwoWay']=='15'
-                                            || $objDetail->SourceID['dept']=='43' || $objDetail->SourceID['TwoWay']=='43'}{$Country['code_two_letter']}{else}{$Country['code']}{/if}">
+                                        || $objDetail->SourceID['dept']=='15' || $objDetail->SourceID['TwoWay']=='15'
+                                        || $objDetail->SourceID['dept']=='43' || $objDetail->SourceID['TwoWay']=='43'}{$Country['code_two_letter']}{else}{$Country['code']}{/if}">
                                             {$Country[$objFunctions->changeFieldNameByLanguage('title')]}
                                         </option>
                                     {/foreach}
@@ -2144,11 +2148,11 @@
                 </span>
                     <div class="panel-default-change site-border-main-color">
                         {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                        <div class="panel-heading-change">
+                            <div class="panel-heading-change">
 
-                            <span class="hidden-xs-down">##Nation##:</span>
+                                <span class="hidden-xs-down">##Nation##:</span>
 
-                            <span class="kindOfPasenger">
+                                <span class="kindOfPasenger">
 						    <label class="control--checkbox">
                                 <span>##Iranian##</span>
                                 <input type="radio" name="passengerNationalityC{$i}" id="passengerNationalityC{$i}"
@@ -2161,7 +2165,7 @@
                                 </div>
 							</label>
                         </span>
-                            <span class="kindOfPasenger">
+                                <span class="kindOfPasenger">
                             <label class="control--checkbox">
                                 <span>##Noiranian##</span>
                                 <input type="radio" name="passengerNationalityC{$i}" id="passengerNationalityC{$i}"
@@ -2174,37 +2178,37 @@
                                 </div>
 							</label>
                         </span>
-                            <span class="member-price">
+                                <span class="member-price">
                                 {assign var="showPice" value="0"}
-                                {if $objDetail->SourceID['dept']=='8' || $objDetail->SourceID['dept']=='12'}
-                                    {foreach key=direction item=item from=$objDetail->Direction}
-                                        {if $objSession->IsLogin()}
-                                            {$showPice = $showPice + $objDetail->ChdPriceByChange[$direction]}
-                                        {else}
-                                            {$showPice = $showPice + $objDetail->ChdPrice[$direction]}
-                                        {/if}
-                                    {/foreach}
-                                {else}
-                                    {$showPice = $showPice + $objDetail->ChdPriceByChange[$direction]}
-                                {/if}
+                                    {if $objDetail->SourceID['dept']=='8' || $objDetail->SourceID['dept']=='12'}
+                                        {foreach key=direction item=item from=$objDetail->Direction}
+                                            {if $objSession->IsLogin()}
+                                                {$showPice = $showPice + $objDetail->ChdPriceByChange[$direction]}
+                                            {else}
+                                                {$showPice = $showPice + $objDetail->ChdPrice[$direction]}
+                                            {/if}
+                                        {/foreach}
+                                    {else}
+                                        {$showPice = $showPice + $objDetail->ChdPriceByChange[$direction]}
+                                    {/if}
                                 <i>{$objFunctions->numberFormat($showPice)}</i> {$objDetail->AdtPriceType[$direction]}
                             </span>
 
 
-                        </div>
+                            </div>
                         {/if}
 
                         <div class="clear"></div>
 
                         <div class="panel-body-change">
-                                <div class="s-u-passenger-item s-u-passenger-item-change">
-                                    <select id="genderC{$i}" name="genderC{$i}">
-                                        <option value="" >##Sex##</option>
-                                        <option value="Male" selected="selected">##Boy##</option>
-                                        <option value="Female">##Girl##</option>
-                                    </select>
-                                </div>
-                                <div class="s-u-passenger-item s-u-passenger-item-change">
+                            <div class="s-u-passenger-item s-u-passenger-item-change">
+                                <select id="genderC{$i}" name="genderC{$i}">
+                                    <option value="" >##Sex##</option>
+                                    <option value="Male" selected="selected">##Boy##</option>
+                                    <option value="Female">##Girl##</option>
+                                </select>
+                            </div>
+                            <div class="s-u-passenger-item s-u-passenger-item-change">
                                 <input id="nameEnC{$i}" type="text" placeholder="##Nameenglish##" name="nameEnC{$i}"
                                        onkeypress="return isAlfabetKeyFields(event, 'nameEnC{$i}')">
                             </div>
@@ -2214,7 +2218,7 @@
                                        onkeypress="return isAlfabetKeyFields(event, 'familyEnC{$i}')">
                             </div>
 
-                                <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                            <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
                                 <input id="NationalCodeC{$i}" type="tel" placeholder="##Nationalnumber##"
                                        name="NationalCodeC{$i}"
                                        maxlength="10" class="UniqNationalCode"
@@ -2252,8 +2256,8 @@
                                     {foreach $objFunctions->CountryCodes() as $Country}
                                         <option value="{if $objDetail->SourceID['dept']=='10' || $objDetail->SourceID['dept']=='14'
                                         || $objDetail->SourceID['TwoWay']=='10' || $objDetail->SourceID['TwoWay']=='14'
-                                            || $objDetail->SourceID['dept']=='15' || $objDetail->SourceID['TwoWay']=='15'
-                                            || $objDetail->SourceID['dept']=='43' || $objDetail->SourceID['TwoWay']=='43'}{$Country['code_two_letter']}{else}{$Country['code']}{/if}"
+                                        || $objDetail->SourceID['dept']=='15' || $objDetail->SourceID['TwoWay']=='15'
+                                        || $objDetail->SourceID['dept']=='43' || $objDetail->SourceID['TwoWay']=='43'}{$Country['code_two_letter']}{else}{$Country['code']}{/if}"
                                                 {if $smarty.post.ZoneFlight neq 'Local' && $Country['code'] eq 'IRN'}selected="selected"{/if}>{$Country[$objFunctions->changeFieldNameByLanguage('title')]}</option>
                                     {/foreach}
                                 </select>
@@ -2414,29 +2418,29 @@
             {/for}
 
 
-{*            {if $objSession->IsLogin()}*}
-{*                <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first">*}
+            {*            {if $objSession->IsLogin()}*}
+            {*                <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first">*}
 
-{*                <span class="s-u-last-p-nozad s-u-last-p-nozad-change site-main-text-color">*}
-{*                   ##InformationSaler##*}
-{*                </span>*}
+            {*                <span class="s-u-last-p-nozad s-u-last-p-nozad-change site-main-text-color">*}
+            {*                   ##InformationSaler##*}
+            {*                </span>*}
 
-{*                    <div class="clear"></div>*}
-{*                    <div class="panel-default-change-Buyer boxInformationBuyer">*}
-{*                        <div class="s-u-passenger-items widthInputInformationBuyer s-u-passenger-item-change  required_star">*}
-{*                            <input id="Mobile_buyer" type="tel" placeholder="##SalerPhone##" name="Mobile_buyer"*}
-{*                                   value="{$InfoMember.mobile}"*}
-{*                                   onkeypress="return checkNumber(event, 'Mobile_buyer')"/>*}
-{*                        </div>*}
+            {*                    <div class="clear"></div>*}
+            {*                    <div class="panel-default-change-Buyer boxInformationBuyer">*}
+            {*                        <div class="s-u-passenger-items widthInputInformationBuyer s-u-passenger-item-change  required_star">*}
+            {*                            <input id="Mobile_buyer" type="tel" placeholder="##SalerPhone##" name="Mobile_buyer"*}
+            {*                                   value="{$InfoMember.mobile}"*}
+            {*                                   onkeypress="return checkNumber(event, 'Mobile_buyer')"/>*}
+            {*                        </div>*}
 
-{*                        <div class="s-u-passenger-items widthInputInformationBuyer padl0 s-u-passenger-item-change no-star">*}
-{*                            <input id="Email_buyer" type="email" placeholder="##Emailbuyer##" name="Email_buyer" value="{$InfoMember.email}"/>*}
-{*                        </div>*}
-{*                        <div id="errorInfo"></div>*}
-{*                    </div>*}
-{*                    <div class="clear"></div>*}
-{*                </div>*}
-{*            {/if}*}
+            {*                        <div class="s-u-passenger-items widthInputInformationBuyer padl0 s-u-passenger-item-change no-star">*}
+            {*                            <input id="Email_buyer" type="email" placeholder="##Emailbuyer##" name="Email_buyer" value="{$InfoMember.email}"/>*}
+            {*                        </div>*}
+            {*                        <div id="errorInfo"></div>*}
+            {*                    </div>*}
+            {*                    <div class="clear"></div>*}
+            {*                </div>*}
+            {*            {/if}*}
 
             {if not $objSession->IsLogin()}
                 <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer  first">
@@ -2465,7 +2469,7 @@
                 </div>
             {/if}
 
-            
+
             {if ($objDetail->SourceID['dept'] neq '' && ($objDetail->SourceID['dept'] eq '8' || $objDetail->SourceID['dept'] eq '12')) && ($objDetail->SourceID['return'] neq '' && ($objDetail->SourceID['return'] eq '8' || $objDetail->SourceID['return'] eq '12'))}
                 <div class="captcha_flight_">
                     <div class="col-md-6 col_captcha">
@@ -2531,7 +2535,7 @@
 
                     <div class="clear"></div>
                 </div>
-                {elseif ($objDetail->SourceID['return'] eq  '8'  || $objDetail->SourceID['return'] eq '12')}
+            {elseif ($objDetail->SourceID['return'] eq  '8'  || $objDetail->SourceID['return'] eq '12')}
 
                 <div class="col-md-6 col_captcha">
                     <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer  first CaptchaCode">
@@ -2556,49 +2560,49 @@
                     </div>
                 </div>
 
-                {elseif $objDetail->SourceID['TwoWay'] eq  '16'}
-                      <div class="captcha_flight_">
-                            <div class="col-md-6 col_captcha">
-                                <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer  first CaptchaCode">
+            {elseif $objDetail->SourceID['TwoWay'] eq  '16'}
+                <div class="captcha_flight_">
+                    <div class="col-md-6 col_captcha">
+                        <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer  first CaptchaCode">
                              <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-main-text-color site-border-main-color">
                                ##SecuritycodeDept##
                             </span>
-                                    <div class="div-captcha">
+                            <div class="div-captcha">
                                         <span class="againCaptcha">
 
                                         </span>
-                                        <img src="data:image/png;base64,{$objDetail->LinkCaptcha['TwoWay']}"  name="LinkCaptchaImg" id="LinkCaptchaImg">
-                                        <input inputmode="number" id="LinkCaptcha" type="number" placeholder="##Pleaseentersecuritycode##" name="LinkCaptcha">
-                                        <input  id="LinkCaptchaOriginal" type="hidden" value="{$objDetail->originalCaptcha['TwoWay']}" name="LinkCaptchaOriginal">
-                                    </div>
-
-
-                                    <div class="clear"></div>
-                                </div>
+                                <img src="data:image/png;base64,{$objDetail->LinkCaptcha['TwoWay']}"  name="LinkCaptchaImg" id="LinkCaptchaImg">
+                                <input inputmode="number" id="LinkCaptcha" type="number" placeholder="##Pleaseentersecuritycode##" name="LinkCaptcha">
+                                <input  id="LinkCaptchaOriginal" type="hidden" value="{$objDetail->originalCaptcha['TwoWay']}" name="LinkCaptchaOriginal">
                             </div>
-                            <div class="col-md-6 col_captcha">
-                                <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer  first CaptchaCode">
+
+
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col_captcha">
+                        <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer  first CaptchaCode">
                              <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change site-main-text-color site-border-main-color">
                                ##SecuritycodeReturn##
                             </span>
 
-                                    <div class="div-captcha">
+                            <div class="div-captcha">
                                 <span class="againCaptcha">
 
                                 </span>
 
-                                        <img src="data:image/png;base64,{$objDetail->LinkCaptchaReturn['TwoWay']}"
-                                             name="LinkCaptchaImg" id="LinkCaptchaImg">
-                                        <input class="LinkCaptcha" id="LinkCaptchaReturn" type="text"
-                                               placeholder="##Pleaseentersecuritycode##"
-                                               name="LinkCaptchaReturn">
-                                        <input  id="LinkCaptchaReturnOriginal" type="hidden" value="{$objDetail->arrivalCaptcha['TwoWay']}" name="LinkCaptchaReturnOriginal">
-                                    </div>
-
-                                    <div class="clear"></div>
-                                </div>
+                                <img src="data:image/png;base64,{$objDetail->LinkCaptchaReturn['TwoWay']}"
+                                     name="LinkCaptchaImg" id="LinkCaptchaImg">
+                                <input class="LinkCaptcha" id="LinkCaptchaReturn" type="text"
+                                       placeholder="##Pleaseentersecuritycode##"
+                                       name="LinkCaptchaReturn">
+                                <input  id="LinkCaptchaReturnOriginal" type="hidden" value="{$objDetail->arrivalCaptcha['TwoWay']}" name="LinkCaptchaReturnOriginal">
                             </div>
-                      </div>
+
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
             {/if}
 
 
@@ -2617,14 +2621,14 @@
             <div class="btns_factors_n">
 
 
-{*                <div class="btn_research__">*}
-{*                    <!-- <a href="" onclick="return false" class="f-loader-check loaderpassengers"  style="display:none"></a> -->*}
-{*                    <button type="button" class="cancel-passenger"  data-url="{$objDetail->reSearchAddress}"*}
-{*                            onclick="BackToHome('{$objDetail->reSearchAddress}'); return false">##Repeatsearch## <i*}
-{*                                class="loading_on_click fa fa-refresh"></i>*}
-{*                    </button>*}
+                {*                <div class="btn_research__">*}
+                {*                    <!-- <a href="" onclick="return false" class="f-loader-check loaderpassengers"  style="display:none"></a> -->*}
+                {*                    <button type="button" class="cancel-passenger"  data-url="{$objDetail->reSearchAddress}"*}
+                {*                            onclick="BackToHome('{$objDetail->reSearchAddress}'); return false">##Repeatsearch## <i*}
+                {*                                class="loading_on_click fa fa-refresh"></i>*}
+                {*                    </button>*}
 
-{*                </div>*}
+                {*                </div>*}
 
                 <div class="passengersDetailLocal_next">
                     <a href="" onclick="return false" class="f-loader-check loaderpassengers" id="loader_check"
@@ -2723,7 +2727,7 @@
             </button>
             <a class="btn btn_back_home site-main-text-color" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}{$mainPage}">##Returntohome##</a>
 
-       </div>
+        </div>
     </div>
 </div>
 {literal}
@@ -2877,30 +2881,30 @@
         });
     </script>
 
-<!-- counter menu -->
+    <!-- counter menu -->
     <script src="assets/js/classie.js"></script>
     <script src="assets/js/sidebarEffects.js"></script>
 
-<!-- jQuery Site Scipts -->
+    <!-- jQuery Site Scipts -->
     <script src="assets/js/script.js"></script>
 
     <script src="assets/js/jdate.min.js" type="text/javascript"></script>
     <script src="assets/js/jdate.js" type="text/javascript"></script>
     <script src="assets/js/jquery.counter.js" type="text/javascript"></script>
-<script type="text/javascript">
-    $('.counter').counter({});
+    <script type="text/javascript">
+        $('.counter').counter({});
 
-    $('.counter').on('counterStop', function () {
-        $('.lazy_loader_flight').slideDown({
-            start: function () {
-                $(this).css({
-                    display: "flex"
-                })
-            }
+        $('.counter').on('counterStop', function () {
+            $('.lazy_loader_flight').slideDown({
+                start: function () {
+                    $(this).css({
+                        display: "flex"
+                    })
+                }
+            });
+
         });
-
-    });
-</script>
+    </script>
 
     <script type="text/javascript">
         function pad(val) {
@@ -2989,12 +2993,12 @@
             $('.DetailSelectTicket').on('click', function (e) {
                 $(this).parent().siblings('.DetailSelectTicketContect').slideToggle('fast');
             });
-           $('.s-u-passenger-wrapper').each(function() {
-              var $wrapper = $(this);
-              $wrapper.find('input, select').on('change input', function() {
-                 $wrapper.find('.alert_msg').html('');
-              });
-        });
+            $('.s-u-passenger-wrapper').each(function() {
+                var $wrapper = $(this);
+                $wrapper.find('input, select').on('change input', function() {
+                    $wrapper.find('.alert_msg').html('');
+                });
+            });
 
 
         });

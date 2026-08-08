@@ -136,7 +136,6 @@ class ApiHotelCore extends clientAuth {
             $url    = "{$this->urlApi}GetHotelsByName/{$name}";
 
             $result = functions::curlExecution( $url,[], $this->header );
-
             functions::insertLog(json_encode(['req'=>$url,'res'=>$result,'header'=>$this->header,'auth'=>$this->arrayAuth],256|64),'Hotels/GetHotelsByName');
             if (isset($result['StatusCode']) && $result['StatusCode'] == 200 ) {
                 return $result['Result'];

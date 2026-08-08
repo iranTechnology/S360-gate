@@ -8,45 +8,45 @@ class apiBus extends clientAuth
 {
 
     /*'http://safar360.com/CoreTestDeveloper/Bus/';*/
-        public $requestUrl =  'https://safar360.com/Core/V-1/Bus/';
+    public $requestUrl = 'https://safar360.com/Core/V-1/Bus/';
 //        public $requestUrl =  'http://192.168.1.100/CoreTestDeveloper/V-1/Bus/';
 //    public $requestUrl='https://safar360.com/CoreTestDeveloper/V-1/Bus/';
     public $ClientName;
     public $accessData;
-    public $log=true;
-    public $accessBusReservation=false;
+    public $log = true;
+    public $accessBusReservation = false;
 
     public function __construct()
     {
-    
+
         parent::__construct();
 //        if(CLIENT_ID == '166'){
 //            $this->requestUrl =  'https://safar360.com/CoreTestDeveloper/V-1/Bus/' ;
 //        }
-        $this->accessData=$this->accessApiBus();
-	 
-        $this->accessBusReservation=$this->accessBusReservation();
+        $this->accessData = $this->accessApiBus();
+
+        $this->accessBusReservation = $this->accessBusReservation();
 
         $this->admin = Load::controller('admin');
-		
+
     }
 
     private function curlExecutionPost($url, $data)
     {
-        if($this->log){
-            functions::insertLog("request url => ".$url, 'apiBuses');
-            functions::insertLog("request data => ".$data, 'apiBuses');
+        if ($this->log) {
+            functions::insertLog("request url => " . $url, 'apiBuses');
+            functions::insertLog("request data => " . $data, 'apiBuses');
         }
 
-        $handle=curl_init($url);
+        $handle = curl_init($url);
         curl_setopt($handle, CURLOPT_POST, true);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
         curl_setopt($handle, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        $result=curl_exec($handle);
+        $result = curl_exec($handle);
 
-        if($this->log){
-            functions::insertLog("response => ".$result, 'apiBuses');
+        if ($this->log) {
+            functions::insertLog("response => " . $result, 'apiBuses');
         }
         return json_decode($result, true);
     }
@@ -54,8 +54,8 @@ class apiBus extends clientAuth
     #region access
     public function accessApiBus()
     {
-        $result=parent::busAuth();
-        if($result['isAccess']){
+        $result = parent::busAuth();
+        if ($result['isAccess']) {
             defined('USERNAME_CLIENT') or define('USERNAME_CLIENT', $result['username']);
             return true;
         }
@@ -75,15 +75,15 @@ class apiBus extends clientAuth
     #region busSearch
     public function busSearch($jsonData)
     {
-        try{
-            $url=$this->requestUrl."BusSearch";
+        try {
+            $url = $this->requestUrl . "BusSearch";
 
             return $this->curlExecutionPost($url, $jsonData);
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
-            if($this->log){
+            $textError = json_encode($e->getMessage());
+            if ($this->log) {
                 functions::insertLog($textError, 'apiCatchBusSearch');
             }
 
@@ -97,17 +97,18 @@ class apiBus extends clientAuth
     #region busSearch
     public function getCities()
     {
-        try{
-            $url=$this->requestUrl."Cities";
+        try {
+            $url = $this->requestUrl . "Cities";
             return $this->curlExecutionPost($url);
-        }catch(Exception $e){
-            $textError=json_encode($e->getMessage());
-            if($this->log){
+        } catch (Exception $e) {
+            $textError = json_encode($e->getMessage());
+            if ($this->log) {
                 functions::insertLog($textError, 'apiCatchBusSearch');
             }
             return $textError;
         }
     }
+
     #endregion
 
     public function getBusRouteCities($params)
@@ -120,16 +121,16 @@ class apiBus extends clientAuth
     public function busDetail($jsonData)
     {
 
-        try{
+        try {
 
-            $url=$this->requestUrl."BusDetail";
+            $url = $this->requestUrl . "BusDetail";
 
             return $this->curlExecutionPost($url, $jsonData);
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
-            if($this->log){
+            $textError = json_encode($e->getMessage());
+            if ($this->log) {
                 functions::insertLog($textError, 'apiCatchBusDetail');
             }
 
@@ -141,32 +142,44 @@ class apiBus extends clientAuth
     #region busPreReserve
     public function busPreReserve($factorNumber, $preReserveRequired)
     {
-        try{
+        try {
 
-            $Model=Load::library('Model');
-            $sql=" SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
-            $resultCheck=$Model->select($sql);
+            $Model = Load::library('Model');
+            $sql = " SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
+            $resultCheck = $Model->select($sql);
 
-            if(!empty($resultCheck)){
+            if (!empty($resultCheck)) {
 
-                $preReserveRequired['UserName']=USERNAME_CLIENT;
-                $preReserveRequired['factorNumber']=$factorNumber;
+                $preReserveRequired['UserName'] = USERNAME_CLIENT;
+                $preReserveRequired['factorNumber'] = $factorNumber;
 
-                $jsonData=json_encode($preReserveRequired);
+                $jsonData = json_encode($preReserveRequired);
 
-                $url=$this->requestUrl."BusPreReserve";
+                $url = $this->requestUrl . "BusPreReserve";
 
+                $res = $this->curlExecutionPost($url, $jsonData);
 
-                return $this->curlExecutionPost($url, $jsonData);
+                if ($res['response']['successfulStatus'] === false) {
+                    $errorsController = $this->getController('errors');
+                    $errMsg = $errorsController->processError('null', 'bus', 'preReserve', $resultCheck['SourceCode']);
+                    $data_error['message_agency'] = $errMsg['displayAgency'];
+                    $data_error['message_passenger'] = $errMsg['displayPassenger'];
+                    $data_error['message_admin'] = $errMsg['displayAdmin'];
+                    $data_error['client_id'] = CLIENT_ID;
+                    $data_error['request_number'] = $factorNumber;
+                    $data_error['action'] = 'PreReserve';
+                    $this->getController('logErrorBuses')->insertLogErrorBuses($data_error);
+                }
 
+                return $res;
             }
 
             return false;
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
-            if($this->log){
+            $textError = json_encode($e->getMessage());
+            if ($this->log) {
                 functions::insertLog($textError, 'apiCatchBusPreReserve');
             }
             return $textError;
@@ -177,32 +190,45 @@ class apiBus extends clientAuth
     #region busReserve
     public function busReserve($factorNumber)
     {
-        try{
+        try {
 
-            $Model=Load::library('Model');
-            $sql=" SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
-            $resultCheck=$Model->load($sql);
+            $Model = Load::library('Model');
+            $sql = " SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
+            $resultCheck = $Model->load($sql);
 
-            if(!empty($resultCheck)){
-                $requestNumber=$resultCheck['order_code'];
-                $sourceCode=$resultCheck['SourceCode'];
-                $reserveRequestId=$resultCheck['ClientTraceNumber'];
-                $preReserveRequired=[
-                    "requestNumber"=>$requestNumber,
-                    "sourceCode"=>$sourceCode,
-                    "reserveRequestId"=>$reserveRequestId,
-                    "UserName"=>USERNAME_CLIENT
+            if (!empty($resultCheck)) {
+                $requestNumber = $resultCheck['order_code'];
+                $sourceCode = $resultCheck['SourceCode'];
+                $reserveRequestId = $resultCheck['ClientTraceNumber'];
+                $preReserveRequired = [
+                    "requestNumber" => $requestNumber,
+                    "sourceCode" => $sourceCode,
+                    "reserveRequestId" => $reserveRequestId,
+                    "UserName" => USERNAME_CLIENT
                 ];
 
 
-                $jsonData=json_encode($preReserveRequired);
-                if($this->log){
-                    functions::insertLog('request busReserve =>'.$jsonData, 'apiBusReserve');
+                $jsonData = json_encode($preReserveRequired);
+                if ($this->log) {
+                    functions::insertLog('request busReserve =>' . $jsonData, 'apiBusReserve');
                 }
-                $url=$this->requestUrl."BusReserve";
-                $result=$this->curlExecutionPost($url, $jsonData);
-                if($this->log){
-                    functions::insertLog('response busReserve =>'.json_encode($result), 'apiBusReserve');
+                $url = $this->requestUrl . "BusReserve";
+                $result = $this->curlExecutionPost($url, $jsonData);
+                if ($this->log) {
+                    functions::insertLog('response busReserve =>' . json_encode($result), 'apiBusReserve');
+                }
+
+                if ($result['response']['SuccessfulStatus']['provider'] === false || $result['response']['SuccessfulStatus']['client'] === false) {
+                    $errorsController = $this->getController('errors');
+                    $errMsg = $errorsController->processError('null', 'bus', 'reserve', $resultCheck['SourceCode']);
+                    $data_error['message_agency'] = $errMsg['displayAgency'];
+                    $data_error['message_passenger'] = $errMsg['displayPassenger'];
+                    $data_error['message_admin'] = $errMsg['displayAdmin'];
+                    $data_error['client_id'] = CLIENT_ID;
+                    $data_error['request_number'] = $factorNumber;
+                    $data_error['action'] = 'Reserve';
+                    $data_error['creation_date_int'] = time();
+                    $this->getController('logErrorBuses')->insertLogErrorBuses($data_error);
                 }
                 return $result;
 
@@ -210,10 +236,10 @@ class apiBus extends clientAuth
 
             return false;
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
-            if($this->log){
+            $textError = json_encode($e->getMessage());
+            if ($this->log) {
                 functions::insertLog($textError, 'apiCatchBusReserve');
             }
             return $textError;
@@ -222,46 +248,45 @@ class apiBus extends clientAuth
     #endregion
 
     #region busRefundCheck
-    public function busRefundCheck($factorNumber,$ClientId)
+    public function busRefundCheck($factorNumber, $ClientId)
     {
-        try{
+        try {
 
-            $Model=Load::library('Model');
-            $sql=" SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
-            $resultCheck=$this->admin->ConectDbClient($sql, $ClientId, "Select", "", "", "");
+            $Model = Load::library('Model');
+            $sql = " SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
+            $resultCheck = $this->admin->ConectDbClient($sql, $ClientId, "Select", "", "", "");
 
-            if(!empty($resultCheck)){
+            if (!empty($resultCheck)) {
 
-                $requestNumber=$resultCheck['order_code'];
-                $sourceCode=$resultCheck['SourceCode'];
-                $reserveRequestId=$resultCheck['ClientTraceNumber'];
+                $requestNumber = $resultCheck['order_code'];
+                $sourceCode = $resultCheck['SourceCode'];
+                $reserveRequestId = $resultCheck['ClientTraceNumber'];
 
 
-                $clientAuth=Load::library('clientAuth');
+                $clientAuth = Load::library('clientAuth');
                 $clientUserName = $clientAuth->busAuth($ClientId);
 
-                $preReserveRequired=[
-                    "requestNumber"=>$requestNumber,
-                    "sourceCode"=>$sourceCode,
+                $preReserveRequired = [
+                    "requestNumber" => $requestNumber,
+                    "sourceCode" => $sourceCode,
                     //                    "reserveRequestId"=>$reserveRequestId,
-                    "UserName"=>$clientUserName['username']
+                    "UserName" => $clientUserName['username']
                 ];
 
 
+                $jsonData = json_encode($preReserveRequired);
 
-                $jsonData=json_encode($preReserveRequired);
+                $url = $this->requestUrl . "BusRefundCheck";
 
-                $url=$this->requestUrl."BusRefundCheck";
-          
                 return $this->curlExecutionPost($url, $jsonData);
 
             }
 
             return false;
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
+            $textError = json_encode($e->getMessage());
             functions::insertLog($textError, 'apiExternalHotel');
 
             return $textError;
@@ -270,46 +295,46 @@ class apiBus extends clientAuth
     #endregion
 
     #region busRefund
-    public function busRefund($factorNumber,$ClientId)
+    public function busRefund($factorNumber, $ClientId)
     {
-        try{
+        try {
 
-            $Model=Load::library('Model');
-            $sql=" SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
-            $resultCheck=$this->admin->ConectDbClient($sql, $ClientId, "Select", "", "", "");
+            $Model = Load::library('Model');
+            $sql = " SELECT * FROM book_bus_tb WHERE passenger_factor_num = '{$factorNumber}' ";
+            $resultCheck = $this->admin->ConectDbClient($sql, $ClientId, "Select", "", "", "");
 
-            if(!empty($resultCheck)){
+            if (!empty($resultCheck)) {
 
-                $requestNumber=$resultCheck['order_code'];
-                $sourceCode=$resultCheck['SourceCode'];
-                $reserveRequestId=$resultCheck['ClientTraceNumber'];
+                $requestNumber = $resultCheck['order_code'];
+                $sourceCode = $resultCheck['SourceCode'];
+                $reserveRequestId = $resultCheck['ClientTraceNumber'];
 
-                $clientAuth=Load::library('clientAuth');
+                $clientAuth = Load::library('clientAuth');
                 $clientUserName = $clientAuth->busAuth($ClientId);
 
 
-                $preReserveRequired=[
-                    "requestNumber"=>$requestNumber,
-                    "sourceCode"=>$sourceCode,
+                $preReserveRequired = [
+                    "requestNumber" => $requestNumber,
+                    "sourceCode" => $sourceCode,
                     //"reserveRequestId"=>$reserveRequestId,
-                    "UserName"=>$clientUserName['username']
+                    "UserName" => $clientUserName['username']
                 ];
 
 
-                $jsonData=json_encode($preReserveRequired);
+                $jsonData = json_encode($preReserveRequired);
 
-                $url=$this->requestUrl."BusRefund";
-               
+                $url = $this->requestUrl . "BusRefund";
+
                 return $this->curlExecutionPost($url, $jsonData);
 
             }
 
             return false;
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
-            if($this->log){
+            $textError = json_encode($e->getMessage());
+            if ($this->log) {
                 functions::insertLog($textError, 'apiCatchBusRefund');
             }
             return $textError;
@@ -320,20 +345,20 @@ class apiBus extends clientAuth
     #region inquireBusTicket
     public function inquireBusTicket($sourceCode, $orderCode)
     {
-        try{
+        try {
 
-            $data['UserName']=USERNAME_CLIENT;
-            $data['SourceCode']=$sourceCode;
-            $data['ID']=$orderCode;
-            $jsonData=json_encode($data);
-            $url=$this->requestUrl."inquireBusTicket";
-            $result=$this->curlExecutionPost($url, $jsonData);
+            $data['UserName'] = USERNAME_CLIENT;
+            $data['SourceCode'] = $sourceCode;
+            $data['ID'] = $orderCode;
+            $jsonData = json_encode($data);
+            $url = $this->requestUrl . "inquireBusTicket";
+            $result = $this->curlExecutionPost($url, $jsonData);
 
             return $result;
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
+            $textError = json_encode($e->getMessage());
             functions::insertLog($textError, 'apiExternalHotel');
 
             return $textError;
@@ -345,66 +370,67 @@ class apiBus extends clientAuth
     #region cancellationBusTicket
     public function cancellationBusTicket($factorNumber)
     {
-        try{
+        try {
 
-            $Model=Load::library('Model');
-            $sql=" SELECT order_code, pnr, ClientTraceNumber, member_name, price_api, SourceCode 
+            $Model = Load::library('Model');
+            $sql = " SELECT order_code, pnr, ClientTraceNumber, member_name, price_api, SourceCode 
                       FROM book_bus_tb 
                       WHERE passenger_factor_num = '{$factorNumber}' ";
-            $resultReport=$Model->load($sql);
-            if(!empty($resultReport)){
+            $resultReport = $Model->load($sql);
+            if (!empty($resultReport)) {
 
-                $dataRequest['UserName']=USERNAME_CLIENT;
-                $dataRequest['SourceCode']=$resultReport['SourceCode'];
-                $dataRequest['ID']=$resultReport['order_code'];
-                $dataRequest['PassengerName']=$resultReport['member_name'];
-                $dataRequest['TicketPrice']=$resultReport['price_api'];
-                $jsonData=json_encode($dataRequest);
-                $url=$this->requestUrl."cancellationBusTicket";
-                $result=$this->curlExecutionPost($url, $jsonData);
+                $dataRequest['UserName'] = USERNAME_CLIENT;
+                $dataRequest['SourceCode'] = $resultReport['SourceCode'];
+                $dataRequest['ID'] = $resultReport['order_code'];
+                $dataRequest['PassengerName'] = $resultReport['member_name'];
+                $dataRequest['TicketPrice'] = $resultReport['price_api'];
+                $jsonData = json_encode($dataRequest);
+                $url = $this->requestUrl . "cancellationBusTicket";
+                $result = $this->curlExecutionPost($url, $jsonData);
 
                 return $result;
 
-            }else{
+            } else {
                 return false;
             }
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $textError=json_encode($e->getMessage());
+            $textError = json_encode($e->getMessage());
             functions::insertLog($textError, 'apiExternalHotel');
 
             return $textError;
         }
     }
+
     #endregion
 
     public function clientBusData()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if($_POST['code']){
-                $code = 'code='.$_POST['code'] ?? null;
+            if ($_POST['code']) {
+                $code = 'code=' . $_POST['code'] ?? null;
             }
-            if($_POST['date_start']){
-                $date_start = 'date_start='.$_POST['date_start'] ?? null;
+            if ($_POST['date_start']) {
+                $date_start = 'date_start=' . $_POST['date_start'] ?? null;
             }
-            if($_POST['date_end']){
-                $date_end = 'date_end='.$_POST['date_end'] ?? null;
+            if ($_POST['date_end']) {
+                $date_end = 'date_end=' . $_POST['date_end'] ?? null;
             }
         }
-        $query_param = implode('',[$code, $date_start, $date_end]);
-        $url = "https://safar360.com/Core/V-1/Bus/getRequestedCode/$query_param" ; //TODO change this url accordingly
+        $query_param = implode('', [$code, $date_start, $date_end]);
+        $url = "https://safar360.com/Core/V-1/Bus/getRequestedCode/$query_param"; //TODO change this url accordingly
         header('Content-Type: application/json');
-        $result = functions::curlExecution($url,[]);
-        $final_response = [] ;
-        foreach($result as $data){
+        $result = functions::curlExecution($url, []);
+        $final_response = [];
+        foreach ($result as $data) {
             $final_response[] = [
-                'id'     => $data['id'] ,
-                'code'     => $data['requestNumber'] ,
-                'businessMethodName'     => $data['businessMethodName'] ,
-                'ApiMethodName'     => $data['source_id'] ,
-                'response'     => htmlentities($data['response']) ,
-                'request'     => htmlentities($data['request']) ,
+                'id' => $data['id'],
+                'code' => $data['requestNumber'],
+                'businessMethodName' => $data['businessMethodName'],
+                'ApiMethodName' => $data['source_id'],
+                'response' => htmlentities($data['response']),
+                'request' => htmlentities($data['request']),
             ];
         }
         echo json_encode($final_response);

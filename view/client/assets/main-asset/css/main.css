@@ -1466,6 +1466,7 @@
         direction: rtl !important;
         padding: 0 !important;
         margin: 0 !important;
+        z-index: 10000 !important;
     }
 
     .mobile-datepicker .ui-datepicker-header {
@@ -1486,7 +1487,7 @@
         color: #333;
     }
 
-    
+
     .mobile-datepicker .ui-datepicker-calendar {
         width: 100%;
         border-collapse: separate !important;

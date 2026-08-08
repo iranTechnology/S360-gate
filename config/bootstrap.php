@@ -1,11 +1,9 @@
 <?php
 
 //if ($_SERVER['REMOTE_ADDR'] === '93.118.161.174') {
-   // error_reporting(E_ALL);
-   // ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 //}
-
-
 
 date_default_timezone_set('Asia/Tehran');
 // SITE_ROOT contains the full path to the Project folder
@@ -58,20 +56,48 @@ $SqlClient = "
             COlOR.ColorMainBg,
             COlOR.ColorMainBgHover,
             COlOR.ColorMainText,
-            COlOR.ColorMainTextHover
+            COlOR.ColorMainTextHover 
         FROM
             clients_tb AS C
             LEFT JOIN client_colors_tb AS COlOR ON C.id = COlOR.ClientId
             LEFT JOIN client_auth_tb AS AUTH ON AUTH.ClientId = C.id
-            LEFT JOIN client_services_tb AS SERVICE ON AUTH.ServiceId = SERVICE.id
+            LEFT JOIN client_services_tb AS SERVICE ON AUTH.ServiceId = SERVICE.id 
         WHERE
-            C.Domain = '{$domainName}'
+            C.Domain = '{$domainName}' 
             AND AUTH.IsActive = 'Active'
         ";
 $query = $mainConfig->prepare($SqlClient);
 $query->execute();
 $client = $query->fetch(PDO::FETCH_ASSOC);
 
+//lang panel admin fa  ar  en
+if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']!='') {
+    defined('LANG_PANEL_ADMIN') or define('LANG_PANEL_ADMIN', $_SESSION['lang_panel_admin']);
+}
+else if($client['default_lang_admin']!=''){
+    defined('LANG_PANEL_ADMIN') or define('LANG_PANEL_ADMIN', $client['default_lang_admin']);
+}
+else{
+    defined('LANG_PANEL_ADMIN') or define('LANG_PANEL_ADMIN', 'fa');
+}
+
+
+//agar factor ra pardakht nakarde user baste beshe :: safar360.com , admin azad bashe
+if (
+    $client['id']!='4' &&
+    $client['id']!='166' &&
+    $client['status_factor_user'] == 'Close' &&
+    strpos($_SERVER['REQUEST_URI'], '/itadmin/') === false &&      // اگر Admin نیست
+    empty($_SESSION['AgencyId'])  &&       // کاربر عادی، عضو آژانس نیست
+    strpos($_SERVER['REQUEST_URI'], '/gds/ajax') === false  &&  //صفحه لاگین مشتری ها
+    strpos($_SERVER['REQUEST_URI'], '/gds/hotel_ajax.php') === false  &&  //صفحه ایجکس
+    strpos($_SERVER['REQUEST_URI'], '/gds/user_ajax.php') === false  && //صفحه ایجکس
+    strpos($_SERVER['REQUEST_URI'], '/gds/visa_ajax.php') === false  &&  //صفحه ایجکس
+    strpos($_SERVER['REQUEST_URI'], '/gds/library/') === false
+) {
+    header('Location: http://' . $client['MainDomain'] . '/gds/view/client/assets/images/factor/ImageStatusFactorInCustomer.jpg');
+    exit;
+}
 //select id current page panel counter
 if (isset($_SESSION['memberIdCounterInAdmin']) && !isset($pageCallCurllFactorIrantech)) {
     defined('memberIdCounterInAdmin') or define('memberIdCounterInAdmin',$_SESSION['memberIdCounterInAdmin']);
@@ -162,7 +188,7 @@ if(!empty($client['Services'])){
 
             if(!empty($agency['id']))
             {
-           
+
                 $client['id'] = $clientWhiteLabel['client_id'];
                 $client['Domain'] = $agency['domain'];
                 $client['MainDomain'] = $agency['mainDomain'];
@@ -192,159 +218,11 @@ if(!empty($client['Services'])){
         }
     }
 
-
-
-    $mizbanFly=[
-        '192.168.1.1',
-
-    ];
-
-    $safar360FielsR = [
-        '0' => 'yazdseir',
-        '1' => 'jahangardan',
-        '2' => 'marz_por_gohar',
-        '3' => 'bime_saman',
-        '4' => 'oshida',
-        '5' => 'sayare',
-        '6' => 'manshore_solh_new',
-        '7' => 'sufarainvestment',
-        '8' => 'torang_gasht',
-        '9' => 'irantechs360',
-        '15' => 'pabepa360',
-        '16' => 'ava_parvaz',
-        '18' => 'versa360',
-        '19' => 'yazdSeir_I_m',
-        '20' => 'ababil',
-
-        '22' => 'ava_parvaz_modular',
-        '23' => 'ava_parvaz_modular_test_data',
-        '25' => 'asareh_ar',
-        '27' => 'asareh',
-        '28' => 'asareh_en',
-
-        '29' => 'ava_parvaz_ar',
-        '30' => 'ava_parvaz_en',
-        '31' => 'darya_gasht',
-        '33' => 'avan',
-        '34' => 'hayat_seir',
-        '35' => 'homan_seir',
-
-        '36' => 'touring_persia',
-        '39' => 'ghods_gasht360',
-        '40' => 'white_label',
-        '41' => 'adineh360',
-        '42' => 'keyhan_mohajer',
-        '43' => 'ww',
-        '44' => 'raspina360',
-        '45' => 'lika',
-        '46' => 'safar360',
-        '47' => 'paeez_sahra',
-        '48' => 'safiran360',
-        '49' => 'gisoo',
-        '50' => 'solan360',
-        '51' => 'safar360_child',
-        '53' => 'golgasht',
-        '54' => 'pars_parvaz',
-        '55' => 'hotelato',
-        '56' => 'mizbanfly',
-        '57' => 'test_search_box',
-        '58' => 'test1',
-        '59' => 'venos',
-        '60' => 'mahbod',
-        '61' => 'paeizSahraTes',
-        '62' => 'parvazBist',
-        '63' => 'kanonSeir',
-        '64' => 'raymon',
-        '65' => 'gandomTalaee',
-        '66' => 'ww',
-        '67' => 'meraj',
-        '68' => 'salam_aseman',
-        '69' => 'kharazmi',
-        '70' => 'havanavardan',
-        '71' => 'donyaeSafar',
-        '72' => 'midari',
-        '73' => 'atiyeGasht',
-        '74' => 'anis',
-        '75' => 'skyHealth',
-        '76' => 'manshoorTravel',
-        '77' => 'bank_sina',
-        '78' => 'neginRoxan',
-        '79' => 'sepid_gasht_morvarid',
-        '80' => 'irOtagh',
-        '81' => 'arshidaSeirAseman',
-        '82' => 'parvaz_talaee',
-        '83' => 'mahbalSeirGds',
-        '84' => 'setateSamGasht',
-        '85' => 'reshnoParvaz',
-        '86' => 'demo360',
-        '87' => 'aviatop',
-        '88' => 'jeyjet',
-        '89' => 'parsParvazJonob',
-        '90' => 'mahAsalGasht',
-        '91' => 'donyaeSafarNew',
-        '92' => 'gta',
-        '93' => 'airaavia',
-        '94' => 'safirAlIraq',
-        '95' => 'ashiyaneh',
-        '96' => 'karvanSadat',
-        '97' => 'tehranGasht',
-        '98' => 'tavousGasht',
-        '99' => 'kishOnTime',
-        '100' => 'abiBalSeir',
-        '101' => 'rayanet_afzar_gds',
-        '102' => 'afrashteh',
-        '103' => 'afrashtehfive',
-        '104' => 'afrashtehThree',
-        '105' => 'gardima',
-        '106' => 'sanaSeirGds',
-        '107' => 'drBilit',
-        '108' => 'mynaGds',
-        '109' => 'shidrokhGds',
-        '110' => 'yazdmehrGds',
-        '111' => 'sam24Gds',
-        '112' => 'afrashtehSix',
-        '113' => 'shabbadgashtGds',
-        '114' => 'bilitiom',
-        '115' => 'barandazanGds',
-        '116' => 'vanaparvaz',
-        '117' => 'orangGds',
-        '118' => 'shenhayesaheli',
-        '119' => 'bahartravel',
-        '120' => 'taktinsafar',
-        '121' => 'aghayetourGds',
-        '122' => 'azarakhshparse',
-        '123' => 'jazirehganj',
-        '124' => 'watchparvaz',
-        '125' => 'kifsafar',
-        '126' => 'razdonya',
-        '127' => 'bamekhalkhal',
-        '128' => 'ferdosi',
-        '129' => 'karevansadat',
-        '130' => 'hafez',
-        '131' => 'sohrabsepehri',
-        '132' => 'khayam',
-        '133' => 'amirrrrrR',
-        //gardesh
-        '10' => 'pa_be_pa',
-        '11' => 'shidrokh',
-        '12' => 'shidrokh_old',
-        '99' => 'manshore_solh_new',
-        '17' => 'adinehgasht',
-        '37' => 'relaxtourismW',
-        '38' => 'relaxtourism_m',
-        '52' => 'myna',
-    ];
-
-    if(in_array($_SERVER['REMOTE_ADDR'],$mizbanFly)) {
-        $client['jahangaThemeDir'] = 'mizbanfly';
+    if ((isset($_SERVER['REDIRECT_HTTPS']) && $_SERVER['REDIRECT_HTTPS'] == 'on') || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')) {
+        defined('SERVER_HTTP') or define('SERVER_HTTP', 'https://');
+    } else {
+        defined('SERVER_HTTP') or define('SERVER_HTTP', 'http://');
     }
-
-    elseif($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
-    {
-        $client['ThemeDir'] = 'zagrosGasht';
-    }
-
-
 
     defined('CLIENT_SERVICES') or define('CLIENT_SERVICES', $client['Services']);
 
@@ -352,6 +230,7 @@ if(!empty($client['Services'])){
     defined('FRONT_TEMPLATE_NAME') or define('FRONT_TEMPLATE_NAME', $client['ThemeDir']);
     defined('CLIENT_DOMAIN') or define('CLIENT_DOMAIN', $client['Domain']);
     defined('CLIENT_MAIN_DOMAIN') or define('CLIENT_MAIN_DOMAIN', $client['MainDomain']);
+    defined('CLIENT_MAIN_DOMAIN_IFRAME') or define('CLIENT_MAIN_DOMAIN_IFRAME', $client['mainDominIframe']);
     defined('DOMAIN_FOR_URL') or define('DOMAIN_FOR_URL', SERVER_HTTP.$client['MainDomain']);
     defined('TYPE_ADMIN') or define('TYPE_ADMIN', $client['Type']);
     defined('CLIENT_ID') or define('CLIENT_ID', $client['id']);
@@ -429,15 +308,12 @@ if(!empty($client['Services'])){
     }
 
     $firstURL = urldecode($_SERVER['REQUEST_URI']);
-
-
-//    var_dump('dsfsfsdf');
     if($firstURL == '/robots.txt'){
+
         if(file_exists(FRONT_CURRENT_THEME . 'project_files/robots.txt')) {
             header('Location: http://' . CLIENT_MAIN_DOMAIN . '/gds/view/' . FRONT_TEMPLATE_NAME . '/project_files/robots.txt');
             exit();
         }else{
-//            var_dump('sdfsfsdfa3');
             require SITE_ROOT . '/404.shtml';
         }
     }
@@ -455,15 +331,17 @@ if(!empty($client['Services'])){
     }
 
 
+
     if(in_array('gds',$arrUrlFirst)){
+        if(isset($_GET['eventParams'])) {
+            header('Location: ' . SERVER_HTTP .$_SERVER["HTTP_HOST"] . $_SERVER["REDIRECT_URL"] );
+            exit();
+        }
         foreach ( $arrUrlFirst as $part){
-            $part = strip_tags($part);
             $string = str_replace("'", "", $part);
             $string = str_replace("\"", "", $part);
-            $string = str_replace(array("\n", "'", "‘", "’", "'", "“", "”", "„" , '"', '(', ')', '<', '>','</','/>','alert','+'), array(
+            $string = str_replace(array("\n", "'", "‘", "’", "'", "“", "”", "„" , '"', '(', ')', '<', '>','</','/>'), array(
                 "",
-                '',
-                '',
                 '',
                 '',
                 '',
@@ -479,9 +357,7 @@ if(!empty($client['Services'])){
                 '',
                 ''
             ), $part);
-            $string = filter_var($string,FILTER_SANITIZE_STRING);
             $arrUrl[] = $string;
-
         }
         $arrayLanguage = ['fa', 'ar', 'en' , 'ru'];
         if (!in_array($arrUrl[2], $arrayLanguage)) {
@@ -510,7 +386,6 @@ if(!empty($client['Services'])){
             }
             $arrUrl[$keyUrl + 1] = $arrUrlCopy[$keyUrl];
         }
-
 
 
         defined('SOFTWARE_LANG') or define('SOFTWARE_LANG', $arrUrl[2]);
@@ -567,9 +442,9 @@ if(!empty($client['Services'])){
             'trainResult',
             'resultGasht',
             'resultEuropcarLocal', 'resultTourLocal', 'tours', 'resultVisa', 'flatResultVisa', 'agencyListByCity',
-            'roomHotelLocal', 'detailTour', 'detailTour-v2', 'detailTour-v3', 'buses', 'mag', 'news', 'page', 'roomExternalHotel', 'detailEntertainment', 'resultEntertainment',
+            'roomHotelLocal', 'detailTour', 'detailTour-v2', 'detailTour-v3', 'buses', 'mag','lottery', 'organization',  'news', 'page', 'roomExternalHotel', 'detailEntertainment', 'resultEntertainment',
             'searchHotel','detailHotel','articles','recommendation','introductIran','introductCountry','aboutIran','aboutCountry','video','gallery','pay','search-flight' , 'immigration' , 'visa' , 'embassy' , 'pickup', 'hotel' , 'bookings','roomManagement'
-            ,'hotelLog','hotelFinancialCenter' , 'hotelInvoices' , 'newInvoice' , 'exclusive-tour' , 'exclusive-tour-detail', 'search-cip' , 'cip-detail'
+            ,'hotelLog','hotelFinancialCenter' , 'hotelInvoices' , 'newInvoice' , 'exclusive-tour' , 'exclusive-tour-detail' , 'search-cip' , 'cip-detail'
 
         ];
         $array_delete_refer = array(
@@ -695,7 +570,7 @@ if(!empty($client['Services'])){
                         defined('CIP_AIRPORT_SEARCH') or define('CIP_AIRPORT_SEARCH', $arrUrl[4]);
                     }
                     if (isset($arrUrl[5])) {
-                        defined('CIP_DATE_SEARCH') or define('CIP_DATE_SEARCH',$arrUrl[5]);
+                        defined('CIP_DATE_SEARCH') or define('CIP_DATE_SEARCH', $arrUrl[5]);
                     }
                     if (isset($arrUrl[6])) {
                         $flightTypeAndTripType = explode('&', $arrUrl[6]);
@@ -712,24 +587,20 @@ if(!empty($client['Services'])){
                     }
                     defined('REQUEST') or define('REQUEST', GDS_SWITCH);
                     break;
+                }
+                case 'cip-detail':
+                {
+                    if (isset($arrUrl[4])) {
+                        defined('REQUEST_NUMBER') or define('REQUEST_NUMBER', $arrUrl[4]);
+                    }
 
-//                case 'cip-detail':
-//                {
-//                    if (isset($arrUrl[4])) {
-//                        defined('REQUEST_NUMBER') or define('REQUEST_NUMBER', $arrUrl[4]);
-//                    }
-//
-//                    if (isset($arrUrl[5])) {
-//                        defined('SOURCE_ID') or define('SOURCE_ID', $arrUrl[5]);
-//                    }
-//
-//                    if (isset($arrUrl[6])) {
-//                        defined('HOTEL_GLOBAL_ID') or define('HOTEL_GLOBAL_ID', $arrUrl[6]);
-//                    }
-//
-//                    defined('REQUEST') or define('REQUEST', GDS_SWITCH);
-//
-//                    break;
+                    if (isset($arrUrl[5])) {
+                        defined('SOURCE_ID') or define('SOURCE_ID', $arrUrl[5]);
+                    }
+
+                    defined('REQUEST') or define('REQUEST', GDS_SWITCH);
+
+                    break;
                 }
                 case 'international': {
                     $orig_dest = explode('-', $arrUrl[5]);
@@ -808,7 +679,7 @@ if(!empty($client['Services'])){
                     defined('SEARCH_STAR') or define('SEARCH_STAR', isset($arrUrl[9]) ? $arrUrl[9] : 'all');
                     defined('SEARCH_HOTEL_NAME') or define('SEARCH_HOTEL_NAME', isset($arrUrl[10]) ? $arrUrl[10] : 'all');
                     defined('REQUEST') or define('REQUEST', GDS_SWITCH);
-                   
+
                     break;
                 }
                 case 'detailHotel' :{
@@ -825,7 +696,7 @@ if(!empty($client['Services'])){
                     defined('TYPE_APPLICATION') or define('TYPE_APPLICATION', $arrUrl[4]);
                     defined('HOTEL_ID') or define('HOTEL_ID', $arrUrl[5]);
                     defined('HOTEL_NAME_EN') or define('HOTEL_NAME_EN', $arrUrl[6]);
-                    
+
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if (isset($_POST['nights'])) {
                             defined('NIGHTS') or define('NIGHTS', $_POST['nights']);
@@ -1013,7 +884,23 @@ if(!empty($client['Services'])){
 
                     break;
                 }
+                case 'organization': {
 
+
+
+                    defined('ORGANIZATION_TITLE') or define('ORGANIZATION_TITLE', 'ثبت نام سازمانی');
+                    defined('REQUEST') or define('REQUEST', 'organization');
+                    break;
+                }
+                case 'lottery': {
+
+
+
+                    defined('LOTTERY_ID') or define('LOTTERY_ID', $arrUrl[4]);
+                    defined('REQUEST') or define('REQUEST', 'lottery');
+
+                    break;
+                }
                 case 'visa':
                 case 'immigration':
                 case 'pickup':
@@ -1030,7 +917,7 @@ if(!empty($client['Services'])){
                     defined('NEWS_TITLE') or define('NEWS_TITLE', $arrUrl[4]);
                     defined('NEWS_CATEGORY') or define('NEWS_CATEGORY', $arrUrl[5]);
                     defined('MAG_CATEGORY') or define('MAG_CATEGORY', $arrUrl[5]);
-                    
+
                     defined('REQUEST') or define('REQUEST', 'news');
 
                     break;
@@ -1038,6 +925,7 @@ if(!empty($client['Services'])){
                 case 'page': {
 
                     defined('PAGE_TITLE') or define('PAGE_TITLE', $arrUrl[4]);
+                    defined('ID_CONTINENT') or define('ID_CONTINENT', $arrUrl[5]);
                     defined('REQUEST') or define('REQUEST', 'page');
 
                     break;
@@ -1281,6 +1169,7 @@ if(!empty($client['Services'])){
                 {
                     defined('DESTINATION_CODE') or define('DESTINATION_CODE', $arrUrl[4]);
                     defined('VISA_TYPE') or define('VISA_TYPE', $arrUrl[5]);
+                    defined('VISA_COUNTRY') or define('VISA_COUNTRY', $arrUrl[5]);
                     if(isset($arrUrl[7])) {
                         defined('VISA_CATEGORY') or define('VISA_CATEGORY', $arrUrl[7]);
                     }else{
@@ -1392,7 +1281,7 @@ if(!empty($client['Services'])){
                 case 'hotelFinancialCenter':
                 case 'newInvoice':
                 case 'hotelInvoices': {
-              
+
                     defined('MARKET_HOTEL_ID') or define('MARKET_HOTEL_ID', $arrUrl[4]);
                     defined('REQUEST') or define('REQUEST', GDS_SWITCH);
                     break;
@@ -1439,14 +1328,12 @@ if(!empty($client['Services'])){
         }
 
         $rootAddressWithoutLang = SERVER_HTTP . CLIENT_DOMAIN . '/gds';
-
         $rootAddress = $rootAddressWithoutLang . '/' . SOFTWARE_LANG;
         defined('ROOT_ADDRESS_WITHOUT_LANG') or define('ROOT_ADDRESS_WITHOUT_LANG', $rootAddressWithoutLang);
         defined('ROOT_ADDRESS') or define('ROOT_ADDRESS', $rootAddress);
 
 
         if ( isset($arrUrlFirst[1]) && !in_array($arrUrlFirst[1], ['gds', '', 'intro', 'sitemap.xml'])) {
-
             if (isset($_GET['fbclid']) || isset($_GET['hjVerifyInstall'])) {
                 header('Location: ' . SERVER_HTTP . $_SERVER["HTTP_HOST"]);
                 exit();
@@ -1458,7 +1345,7 @@ if(!empty($client['Services'])){
                 defined('GDS_SWITCH') or define('GDS_SWITCH', 'mainPage');
                 defined('REQUEST') or define('REQUEST', GDS_SWITCH);
             } else {
-	  
+
                 header("HTTP/1.0 404 Not Found");
                 include_once './404.html';
                 exit();
@@ -1495,12 +1382,11 @@ if(!empty($client['Services'])){
                 defined('GDS_SWITCH') or define('GDS_SWITCH', 'sitemap');
             }
             else{
-
                 defined('GDS_SWITCH') or define('GDS_SWITCH', 'mainPage');
             }
             defined('REQUEST') or define('REQUEST', GDS_SWITCH);
         }
-        
+
 
     }
 
@@ -1535,17 +1421,17 @@ function detect_and_redirect_xss($array_url = null) {
 
     $final_parameters = [];
 
-        foreach ($parameters as $key => $value) {
-            if(is_array($value)){
-                foreach ($value as $key_array=>$val){
-                    $final_parameters[] = $val;
-                }
-            }else{
-                $final_parameters[$key] = $value;
+    foreach ($parameters as $key => $value) {
+        if(is_array($value)){
+            foreach ($value as $key_array=>$val){
+                $final_parameters[] = $val;
             }
+        }else{
+            $final_parameters[$key] = $value;
         }
+    }
 
-    
+
 
     foreach ($final_parameters as $key => $value) {
 

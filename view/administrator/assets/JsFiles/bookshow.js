@@ -73,7 +73,6 @@ function reReserve(factorNum, RequestNumber, dir) {
                 RequestNumber: RequestNumberObj
             },
             success: function (data) {
-
                 if (data.indexOf('success') > -1) {
                     $.ajax({
                         url: amadeusPath + 'ajax',
@@ -1852,6 +1851,7 @@ function renderBookingCardsSimple(bookings) {
         const serviceIcon = getCardServiceIcon(serviceType);
         const statusClass = getCardStatusClass(Object.values(booking['status'])[0]);
         const errorData = booking['errorData'] ? booking['errorData'] : ''
+        const factorNumber = serviceType === 'اتوبوس' ? booking['request_number'] + ' - ' + booking['factor_number'] : booking['request_number']
         html += `
             <div class="booking-card">
                 <div class="card-header-service ${serviceClass}">
@@ -1870,7 +1870,7 @@ function renderBookingCardsSimple(bookings) {
                 <div class="card-body">
                     <div class="info-item">
                         <div class="info-label">شماره درخواست:</div>
-                        <div class="info-value"><strong>${escapeCardHtml(booking['request_number'] || '-')}</strong> (${escapeCardHtml(booking['request_time'] || '-')})</div>
+                        <div class="info-value"><strong>${escapeCardHtml(factorNumber || '-')}</strong> (${escapeCardHtml(booking['request_time'] || '-')})</div>
                     </div>
              
                     

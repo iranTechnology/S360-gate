@@ -143,25 +143,25 @@ $InfoInsurance.destinationIata == 'IRN'}
                                   ##Destination##: <span>{$InfoInsurance.destination}</span>
                                </span>
                             </div>
-{*                            <span class="insurance-passenger-content-location ">*}
-{*                           <i class="fa fa-map-marker"></i>*}
-{*                          ##Origin##: {$InfoInsurance.origin}*}
-{*                       </span>*}
+                            {*                            <span class="insurance-passenger-content-location ">*}
+                            {*                           <i class="fa fa-map-marker"></i>*}
+                            {*                          ##Origin##: {$InfoInsurance.origin}*}
+                            {*                       </span>*}
 
                         </div>
                         <div class="insurance-passenger-text">
                             <ul>
                                 <li class="insurance-passenger-check-text">
-                                     ##Durationtrip##  :
+                                    ##Durationtrip##  :
                                     <span class="insurance-passenger-date" dir="rtl">{$InfoInsurance.num_day}</span> ##Day##
                                 </li>
                                 <li class="insurance-passenger-check-text">
-                                     ##Countpassengers## :
+                                    ##Countpassengers## :
                                     <span class="insurance-passenger-date" dir="rtl">{$InfoInsurance.member_count}</span> نفر
                                 </li>
                                 {assign var="totalMainCurrency" value=$objFunctions->CurrencyCalculate($InfoInsurance.insurance_price, $InfoInsurance.CurrencyCode)}
                                 <li class="insurance-passenger-check-text">
-                                   ##TotalPrice## :
+                                    ##TotalPrice## :
                                     <span class="insurance-passenger-date" dir="rtl">
                                    {$objFunctions->numberFormat($totalMainCurrency.AmountCurrency)}
                                </span> {$totalMainCurrency.TypeCurrency}
@@ -271,14 +271,14 @@ $InfoInsurance.destinationIata == 'IRN'}
                         <div class="s-u-passenger-item s-u-passenger-item-change">
                             <select id="gender{$i}" name="gender{$i}">
 
-                                <option value="" disabled="" selected="selected">##Sex##</option>
+                                <option value="" disabled="" >##Sex##</option>
                                 {if $AgeTypeMember== Adt}
 
-                                    <option value="Male">##Sir##</option>
+                                    <option value="Male" selected="selected">##Sir##</option>
                                     <option value="Female">##Lady##</option>
                                 {else}
 
-                                    <option value="Male">##Boy##</option>
+                                    <option value="Male" selected="selected">##Boy##</option>
                                     <option value="Female">##Girl##</option>
                                 {/if}
                             </select>
@@ -426,19 +426,70 @@ $InfoInsurance.destinationIata == 'IRN'}
                         </div>
 
 
-                        <div id="gregorian_birthday_{$i}" class="s-u-passenger-item s-u-passenger-item-change birthday-field">
+                        {*                        <div id="gregorian_birthday_{$i}" class="s-u-passenger-item s-u-passenger-item-change birthday-field">*}
+                        {*                            <div class="birthday-select-container">*}
+                        {*                                <select id="birthdayEn_day{$i}" name="birthdayEn_day{$i}" class="birthday-select"*}
+                        {*                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian')">*}
+                        {*                                    <option value="">روز تولد</option>*}
+                        {*                                    {for $day=1 to 31}*}
+                        {*                                        <option value="{$day}">{$day}</option>*}
+                        {*                                    {/for}*}
+                        {*                                </select>*}
+
+                        {*                                <select id="birthdayEn_month{$i}" name="birthdayEn_month{$i}" class="birthday-select"*}
+                        {*                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian')">*}
+                        {*                                    <option value="">ماه تولد</option>*}
+                        {*                                    {for $month=1 to 12}*}
+                        {*                                        <option value="{$month}">*}
+                        {*                                            {if $month == 1}January*}
+                        {*                                            {elseif $month == 2}February*}
+                        {*                                            {elseif $month == 3}March*}
+                        {*                                            {elseif $month == 4}April*}
+                        {*                                            {elseif $month == 5}May*}
+                        {*                                            {elseif $month == 6}June*}
+                        {*                                            {elseif $month == 7}July*}
+                        {*                                            {elseif $month == 8}August*}
+                        {*                                            {elseif $month == 9}September*}
+                        {*                                            {elseif $month == 10}October*}
+                        {*                                            {elseif $month == 11}November*}
+                        {*                                            {elseif $month == 12}December*}
+                        {*                                            {/if}*}
+                        {*                                        </option>*}
+                        {*                                    {/for}*}
+                        {*                                </select>*}
+
+                        {*                                <select id="birthdayEn_year{$i}" name="birthdayEn_year{$i}" class="birthday-select"*}
+                        {*                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian')">*}
+                        {*                                    <option value="">سال تولد</option>*}
+                        {*                                    {assign var="currentGregorianYear" value=$smarty.now|date_format:"%Y"}*}
+                        {*                                    {if $AgeTypeMember == 'Adt'}*}
+                        {*                                        {assign var="minYear" value=$currentGregorianYear-100}*}
+                        {*                                        {assign var="maxYear" value=$currentGregorianYear-12}*}
+                        {*                                    {else}*}
+                        {*                                        {assign var="minYear" value=$currentGregorianYear-12}*}
+                        {*                                        {assign var="maxYear" value=$currentGregorianYear}*}
+                        {*                                    {/if}*}
+
+                        {*                                    {for $year=$minYear to $maxYear}*}
+                        {*                                        <option value="{$year}">{$year}</option>*}
+                        {*                                    {/for}*}
+                        {*                                </select>*}
+                        {*                            </div>*}
+                        {*                            <div id="age_error_en_{$i}" class="age-error-message"></div>*}
+                        {*                        </div>*}
+                        <div id="gregorian_birthday_{$i}" class="s-u-passenger-item s-u-passenger-item-change birthday-field text-center">
                             <div class="birthday-select-container">
                                 <select id="birthdayEn_day{$i}" name="birthdayEn_day{$i}" class="birthday-select"
-                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian')">
-                                    <option value="">روز</option>
+                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian'); convertToJalali({$i})">
+                                    <option value="">روز تولد</option>
                                     {for $day=1 to 31}
                                         <option value="{$day}">{$day}</option>
                                     {/for}
                                 </select>
 
                                 <select id="birthdayEn_month{$i}" name="birthdayEn_month{$i}" class="birthday-select"
-                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian')">
-                                    <option value="">ماه</option>
+                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian'); convertToJalali({$i})">
+                                    <option value="">ماه تولد</option>
                                     {for $month=1 to 12}
                                         <option value="{$month}">
                                             {if $month == 1}January
@@ -459,8 +510,8 @@ $InfoInsurance.destinationIata == 'IRN'}
                                 </select>
 
                                 <select id="birthdayEn_year{$i}" name="birthdayEn_year{$i}" class="birthday-select"
-                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian')">
-                                    <option value="">سال</option>
+                                        onchange="validateAge('{$i}', 'gregorian', '{$AgeTypeMember}'); updateHiddenBirthdayFields('{$i}', 'gregorian'); convertToJalali({$i})">
+                                    <option value="">سال تولد</option>
                                     {assign var="currentGregorianYear" value=$smarty.now|date_format:"%Y"}
                                     {if $AgeTypeMember == 'Adt'}
                                         {assign var="minYear" value=$currentGregorianYear-100}
@@ -476,273 +527,358 @@ $InfoInsurance.destinationIata == 'IRN'}
                                 </select>
                             </div>
                             <div id="age_error_en_{$i}" class="age-error-message"></div>
-                        </div>
 
+                            <!-- اسپن نمایش تاریخ شمسی -->
+                            <div class="d-flex align-items-center flex-column d-md-inline">
+                                <span id="jalali_preview_{$i}" class="showDateNoteStyle" style="color:#cc4444;display:none; margin-top:2px;font-size:16px;position: absolute;left: 55px;"></span>
+                                <span class="showDateNote_{$i} showDateNoteStyle" style="display:none; margin-top:2px;font-size:13px;position: absolute;left: 42px;top: 66px;">اگر تاریخ تولد شمسی شما را اشتباه نشان میدهد</span>
+                                <span class="showDateNote_{$i} showDateNoteStyle" style="display:none; margin-top:2px;font-size:13px;position: absolute;left: 112px;top: 87px;">روز تولد میلادی رو بالا یا پایین کنید</span>
+                            </div>
+                        </div>
                         <input id="birthday{$i}" type="hidden" name="birthday{$i}" value="" />
                         <input id="birthday_display{$i}" type="text" placeholder="##Happybirthday##" readonly="readonly" value="" style="display: none;" />
 
                         <input id="birthdayEn{$i}" type="hidden" name="birthdayEn{$i}" value="" />
                         <input id="birthdayEn_display{$i}" type="text" placeholder="##Happybirthday##" readonly="readonly" value="" style="display: none;" />
 
-{*                        <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>*}
-{*                        <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date-utils.min.js"></script>*}
+                        {*                        <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>*}
+                        {*                        <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date-utils.min.js"></script>*}
                         <script>
 
+                            // تابع تبدیل میلادی به شمسی (ساده و تست شده)
+                            function gregorianToJalaliSimple(gy, gm, gd) {
+                                // الگوریتم ساده تبدیل
+                                var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                                var jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
 
-                           // تابع نمایش فیلد تاریخ مناسب
-                           // منطق نهایی برای نمایش فیلد تاریخ
-                           function shouldShowJalaliCalendar(isDomestic, isIranian) {
-                              return isDomestic && isIranian;
-                           }
+                                // محاسبه روز از ابتدای سال میلادی
+                                var dayOfYear = gd;
+                                for (var i = 0; i < gm - 1; i++) {
+                                    dayOfYear += daysInMonth[i];
+                                }
 
-                           function updateBirthdayFieldVisibility(passengerId, isIranian) {
-                              const isDomestic = {$isDomesticInsurance|json_encode};
-                              const showJalali = shouldShowJalaliCalendar(isDomestic, isIranian);
+                                // محاسبه سال و روز شمسی
+                                var jy = gy - 621;
+                                var jDayOfYear = dayOfYear - 79;
 
-                              if (showJalali) {
-                                 $('#jalali_birthday_' + passengerId).show();
-                                 $('#gregorian_birthday_' + passengerId).hide();
-                              } else {
-                                 $('#gregorian_birthday_' + passengerId).show();
-                                 $('#jalali_birthday_' + passengerId).hide();
-                              }
-                           }
+                                if (jDayOfYear <= 0) {
+                                    jy--;
+                                    jDayOfYear += 365;
+                                }
 
-
-
-
-                           // تغییر ملیت مسافر
-                           $(document).on('change', '.nationalityChange', function() {
-                              const passengerWrapper = $(this).closest('.s-u-passenger-wrapper');
-                              const passengerId = passengerWrapper.index() + 1;
-                              const isIranian = $(this).val() === '0';
-
-                              updateBirthdayFieldVisibility(passengerId, isIranian);
-                           });
-
-                           // مقداردهی اولیه برای هر مسافر
-                           $(document).ready(function() {
-                              console.log('Initializing birthday fields...');
-
-                              $('.s-u-passenger-wrapper').each(function(index) {
-                                 const passengerId = index + 1;
-                                 const isIranian = $(this).find('.nationalityChange:checked').val() === '0';
-
-                                 updateBirthdayFieldVisibility(passengerId, isIranian);
-                              });
-
-                              // مخفی کردن فیلدهای تاریخ قبلی
-                              $('input[id^="birthday"], input[id^="birthdayEn"]').closest('.s-u-passenger-item').hide();
-                           });
-
-                           // تابع اعتبارسنجی سن
-                           function validateAge(passengerId, calendarType, passengerType) {
-                              let day, month, year, errorElement;
-
-                              if (calendarType === 'jalali') {
-                                 day = parseInt($('#birthday_day' + passengerId).val());
-                                 month = parseInt($('#birthday_month' + passengerId).val());
-                                 year = parseInt($('#birthday_year' + passengerId).val());
-                                 errorElement = $('#age_error_' + passengerId);
-                              } else {
-                                 day = parseInt($('#birthdayEn_day' + passengerId).val());
-                                 month = parseInt($('#birthdayEn_month' + passengerId).val());
-                                 year = parseInt($('#birthdayEn_year' + passengerId).val());
-                                 errorElement = $('#age_error_en_' + passengerId);
-                              }
-
-                              if (!day || !month || !year) {
-                                 errorElement.hide();
-                                 return true;
-                              }
-
-                              const age = calculateAgeFromSelection(day, month, year, calendarType);
-                              let isValid = true;
-                              let errorMessage = '';
-
-                              switch(passengerType) {
-                                 case 'Inf':
-                                    if (age < 0 || age > 2) {
-                                       isValid = false;
-                                       errorMessage = 'سن باید بین 0 تا 2 سال باشد';
+                                // محاسبه ماه و روز شمسی
+                                var jm = 1;
+                                var jd = jDayOfYear;
+                                for (var i = 0; i < 12; i++) {
+                                    if (jd <= jDaysInMonth[i]) {
+                                        jm = i + 1;
+                                        break;
                                     }
-                                    break;
-                                 case 'Chd':
-                                    if (age < 2 || age > 12) {
-                                       isValid = false;
-                                       errorMessage = 'سن باید بین 2 تا 12 سال باشد';
+                                    jd -= jDaysInMonth[i];
+                                }
+
+                                return [jy, jm, jd];
+                            }
+
+                            // تابع اصلی که هنگام انتخاب تاریخ صدا زده می‌شود
+                            function convertToJalali(index) {
+                                var day = parseInt(document.getElementById('birthdayEn_day' + index).value);
+                                var month = parseInt(document.getElementById('birthdayEn_month' + index).value);
+                                var year = parseInt(document.getElementById('birthdayEn_year' + index).value);
+
+                                var previewSpan = document.getElementById('jalali_preview_' + index);
+                                var showDateNote = document.getElementsByClassName('showDateNote_' + index); // توجه به زیرخط (_)
+
+                                if (day && month && year) {
+                                    try {
+                                        var jalali = gregorianToJalaliSimple(year, month, day);
+                                        var jalaliDate = jalali[0] + '/' +
+                                            (jalali[1] < 10 ? '0' : '') + jalali[1] + '/' +
+                                            (jalali[2] < 10 ? '0' : '') + jalali[2];
+
+                                        console.log('Jalali date:', jalaliDate);
+
+                                        previewSpan.innerHTML = 'تاریخ تولد شما به شمسی: ' + jalaliDate;
+                                        previewSpan.style.display = 'inline';
+
+                                        // نمایش هر دو پیام
+                                        if (showDateNote.length > 0) {
+                                            for (var i = 0; i < showDateNote.length; i++) {
+                                                showDateNote[i].style.display = 'inline';
+                                            }
+                                        }
+                                    } catch(e) {
+                                        console.log('Error:', e);
+                                        previewSpan.style.display = 'none';
+                                        if (showDateNote.length > 0) {
+                                            for (var i = 0; i < showDateNote.length; i++) {
+                                                showDateNote[i].style.display = 'none';
+                                            }
+                                        }
                                     }
-                                    break;
-                                 case 'Adt':
-                                    if (age < 12) {
-                                       isValid = false;
-                                       errorMessage = 'سن باید بیشتر از 12 سال باشد';
+                                } else {
+                                    previewSpan.style.display = 'none';
+                                    if (showDateNote.length > 0) {
+                                        for (var i = 0; i < showDateNote.length; i++) {
+                                            showDateNote[i].style.display = 'none';
+                                        }
                                     }
-                                    break;
-                              }
+                                }
+                            }
+                            // تابع نمایش فیلد تاریخ مناسب
+                            // منطق نهایی برای نمایش فیلد تاریخ
+                            function shouldShowJalaliCalendar(isDomestic, isIranian) {
+                                return isDomestic && isIranian;
+                            }
 
-                              if (!isValid) {
-                                 errorElement.text(errorMessage).show();
-                                 return false;
-                              } else {
-                                 errorElement.hide();
-                                 return true;
-                              }
-                           }
+                            function updateBirthdayFieldVisibility(passengerId, isIranian) {
+                                const isDomestic = {$isDomesticInsurance|json_encode};
+                                const showJalali = shouldShowJalaliCalendar(isDomestic, isIranian);
 
-                           // تابع محاسبه سن
-                           function calculateAgeFromSelection(day, month, year, calendarType) {
-                              const today = new Date();
-                              let birthDate;
+                                if (showJalali) {
+                                    $('#jalali_birthday_' + passengerId).show();
+                                    $('#gregorian_birthday_' + passengerId).hide();
+                                } else {
+                                    $('#gregorian_birthday_' + passengerId).show();
+                                    $('#jalali_birthday_' + passengerId).hide();
+                                }
+                            }
 
-                              if (calendarType === 'jalali') {
-                                 birthDate = convertJalaliToGregorian(year, month, day);
-                              } else {
-                                 birthDate = new Date(year, month - 1, day);
-                              }
 
-                              let age = today.getFullYear() - birthDate.getFullYear();
-                              const monthDiff = today.getMonth() - birthDate.getMonth();
 
-                              if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                                 age--;
-                              }
 
-                              return age;
-                           }
+                            // تغییر ملیت مسافر
+                            $(document).on('change', '.nationalityChange', function() {
+                                const passengerWrapper = $(this).closest('.s-u-passenger-wrapper');
+                                const passengerId = passengerWrapper.index() + 1;
+                                const isIranian = $(this).val() === '0';
 
-                           // تابع تبدیل تاریخ شمسی به میلادی (تصحیح شده)
-                           function convertJalaliToGregorian(jy, jm, jd) {
-                              // استفاده از کتابخانه PersianDate اگر موجود باشد
-                              if (typeof PersianDate !== 'undefined') {
-                                 const pd = new PersianDate([jy, jm, jd]);
-                                 return new Date(pd.toGregorian());
-                              }
+                                updateBirthdayFieldVisibility(passengerId, isIranian);
+                            });
 
-                              // الگوریتم تبدیل دقیق‌تر
-                              jy = parseInt(jy);
-                              jm = parseInt(jm);
-                              jd = parseInt(jd);
+                            // مقداردهی اولیه برای هر مسافر
+                            $(document).ready(function() {
+                                console.log('Initializing birthday fields...');
 
-                              var gy = jy + 621;
-                              var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                                $('.s-u-passenger-wrapper').each(function(index) {
+                                    const passengerId = index + 1;
+                                    const isIranian = $(this).find('.nationalityChange:checked').val() === '0';
 
-                              // بررسی سال کبیسه میلادی
-                              if ((gy % 4 === 0 && gy % 100 !== 0) || gy % 400 === 0) {
-                                 daysInMonth[1] = 29;
-                              }
+                                    updateBirthdayFieldVisibility(passengerId, isIranian);
+                                });
 
-                              // محاسبه روزهای گذشته از ابتدای سال شمسی
-                              var dayOfYear = jd;
-                              for (var i = 0; i < jm - 1; i++) {
-                                 dayOfYear += (i < 6) ? 31 : 30;
-                              }
+                                // مخفی کردن فیلدهای تاریخ قبلی
+                                $('input[id^="birthday"], input[id^="birthdayEn"]').closest('.s-u-passenger-item').hide();
+                            });
 
-                              // تبدیل به میلادی
-                              var gDate = new Date(gy, 0, 1);
-                              gDate.setDate(gDate.getDate() + dayOfYear - 1);
+                            // تابع اعتبارسنجی سن
+                            function validateAge(passengerId, calendarType, passengerType) {
+                                let day, month, year, errorElement;
 
-                              // تنظیم ماه و روز صحیح
-                              var gMonth = gDate.getMonth();
-                              var gDay = gDate.getDate();
-                              var gYear = gDate.getFullYear();
+                                if (calendarType === 'jalali') {
+                                    day = parseInt($('#birthday_day' + passengerId).val());
+                                    month = parseInt($('#birthday_month' + passengerId).val());
+                                    year = parseInt($('#birthday_year' + passengerId).val());
+                                    errorElement = $('#age_error_' + passengerId);
+                                } else {
+                                    day = parseInt($('#birthdayEn_day' + passengerId).val());
+                                    month = parseInt($('#birthdayEn_month' + passengerId).val());
+                                    year = parseInt($('#birthdayEn_year' + passengerId).val());
+                                    errorElement = $('#age_error_en_' + passengerId);
+                                }
 
-                              return new Date(gYear, gMonth, gDay);
-                           }
+                                if (!day || !month || !year) {
+                                    errorElement.hide();
+                                    return true;
+                                }
 
-                           // تابع تبدیل میلادی به شمسی (تصحیح شده)
-                           function convertGregorianToJalali(gy, gm, gd) {
-                              gy = parseInt(gy);
-                              gm = parseInt(gm);
-                              gd = parseInt(gd);
+                                const age = calculateAgeFromSelection(day, month, year, calendarType);
+                                let isValid = true;
+                                let errorMessage = '';
 
-                              var gDate = new Date(gy, gm - 1, gd);
-                              var gYear = gDate.getFullYear();
-                              var gMonth = gDate.getMonth();
-                              var gDay = gDate.getDate();
+                                switch(passengerType) {
+                                    case 'Inf':
+                                        if (age < 0 || age > 2) {
+                                            isValid = false;
+                                            errorMessage = 'سن باید بین 0 تا 2 سال باشد';
+                                        }
+                                        break;
+                                    case 'Chd':
+                                        if (age < 2 || age > 12) {
+                                            isValid = false;
+                                            errorMessage = 'سن باید بین 2 تا 12 سال باشد';
+                                        }
+                                        break;
+                                    case 'Adt':
+                                        if (age < 12) {
+                                            isValid = false;
+                                            errorMessage = 'سن باید بیشتر از 12 سال باشد';
+                                        }
+                                        break;
+                                }
 
-                              // آرایه‌های مربوط به ماه‌ها
-                              var gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-                              var jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+                                if (!isValid) {
+                                    errorElement.text(errorMessage).show();
+                                    return false;
+                                } else {
+                                    errorElement.hide();
+                                    return true;
+                                }
+                            }
 
-                              // بررسی سال کبیسه میلادی
-                              if ((gYear % 4 === 0 && gYear % 100 !== 0) || gYear % 400 === 0) {
-                                 gDaysInMonth[1] = 29;
-                              }
+                            // تابع محاسبه سن
+                            function calculateAgeFromSelection(day, month, year, calendarType) {
+                                const today = new Date();
+                                let birthDate;
 
-                              // محاسبه روزهای گذشته از ابتدای سال میلادی
-                              var gDayOfYear = gDay;
-                              for (var i = 0; i < gMonth; i++) {
-                                 gDayOfYear += gDaysInMonth[i];
-                              }
+                                if (calendarType === 'jalali') {
+                                    birthDate = convertJalaliToGregorian(year, month, day);
+                                } else {
+                                    birthDate = new Date(year, month - 1, day);
+                                }
 
-                              // محاسبه سال شمسی
-                              var jYear = gYear - 621;
-                              var jDayOfYear = gDayOfYear - 79;
+                                let age = today.getFullYear() - birthDate.getFullYear();
+                                const monthDiff = today.getMonth() - birthDate.getMonth();
 
-                              if (jDayOfYear <= 0) {
-                                 jYear--;
-                                 jDayOfYear += 365;
-                              }
+                                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                                    age--;
+                                }
 
-                              // محاسبه ماه و روز شمسی
-                              var jMonth = 1;
-                              var jDay = jDayOfYear;
+                                return age;
+                            }
 
-                              for (var i = 0; i < 12; i++) {
-                                 if (jDay <= jDaysInMonth[i]) {
-                                    jMonth = i + 1;
-                                    break;
-                                 }
-                                 jDay -= jDaysInMonth[i];
-                              }
+                            // تابع تبدیل تاریخ شمسی به میلادی (تصحیح شده)
+                            function convertJalaliToGregorian(jy, jm, jd) {
+                                // استفاده از کتابخانه PersianDate اگر موجود باشد
+                                if (typeof PersianDate !== 'undefined') {
+                                    const pd = new PersianDate([jy, jm, jd]);
+                                    return new Date(pd.toGregorian());
+                                }
 
-                              return [jYear, jMonth, jDay];
-                           }
+                                // الگوریتم تبدیل دقیق‌تر
+                                jy = parseInt(jy);
+                                jm = parseInt(jm);
+                                jd = parseInt(jd);
 
-                           // تابع updateHiddenBirthdayFields (تصحیح شده)
-                           function updateHiddenBirthdayFields(passengerId, calendarType) {
-                              let day, month, year;
+                                var gy = jy + 621;
+                                var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-                              if (calendarType === 'jalali') {
-                                 day = $('#birthday_day' + passengerId).val();
-                                 month = $('#birthday_month' + passengerId).val();
-                                 year = $('#birthday_year' + passengerId).val();
+                                // بررسی سال کبیسه میلادی
+                                if ((gy % 4 === 0 && gy % 100 !== 0) || gy % 400 === 0) {
+                                    daysInMonth[1] = 29;
+                                }
 
-                                 if (day && month && year) {
-                                    const jalaliDate = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-                                    $('#birthday' + passengerId).val(jalaliDate); // فیلد hidden
-                                    $('#birthday_display' + passengerId).val(jalaliDate); // فیلد متنی (مخفی)
+                                // محاسبه روزهای گذشته از ابتدای سال شمسی
+                                var dayOfYear = jd;
+                                for (var i = 0; i < jm - 1; i++) {
+                                    dayOfYear += (i < 6) ? 31 : 30;
+                                }
 
-                                    const gDate = convertJalaliToGregorian(parseInt(year), parseInt(month), parseInt(day));
-                                    const gFormatted = gDate.getFullYear() + '-' +
-                                       String(gDate.getMonth() + 1).padStart(2, '0') + '-' +
-                                       String(gDate.getDate()).padStart(2, '0');
-                                    $('#birthdayEn' + passengerId).val(gFormatted); // فیلد hidden
-                                    $('#birthdayEn_display' + passengerId).val(gFormatted); // فیلد متنی (مخفی)
-                                 }
-                              } else {
-                                 day = $('#birthdayEn_day' + passengerId).val();
-                                 month = $('#birthdayEn_month' + passengerId).val();
-                                 year = $('#birthdayEn_year' + passengerId).val();
+                                // تبدیل به میلادی
+                                var gDate = new Date(gy, 0, 1);
+                                gDate.setDate(gDate.getDate() + dayOfYear - 1);
 
-                                 if (day && month && year) {
-                                    const gDate = new Date(year, month - 1, day);
-                                    const gFormatted = gDate.getFullYear() + '-' +
-                                       String(gDate.getMonth() + 1).padStart(2, '0') + '-' +
-                                       String(gDate.getDate()).padStart(2, '0');
-                                    $('#birthdayEn' + passengerId).val(gFormatted); // فیلد hidden
-                                    $('#birthdayEn_display' + passengerId).val(gFormatted); // فیلد متنی (مخفی)
+                                // تنظیم ماه و روز صحیح
+                                var gMonth = gDate.getMonth();
+                                var gDay = gDate.getDate();
+                                var gYear = gDate.getFullYear();
 
-                                    const j = convertGregorianToJalali(gDate.getFullYear(), gDate.getMonth() + 1, gDate.getDate());
-                                    const jFormatted = j[0] + '-' +
-                                       String(j[1]).padStart(2, '0') + '-' +
-                                       String(j[2]).padStart(2, '0');
-                                    $('#birthday' + passengerId).val(jFormatted); // فیلد hidden
-                                    $('#birthday_display' + passengerId).val(jFormatted); // فیلد متنی (مخفی)
-                                 }
-                              }
-                           }
+                                return new Date(gYear, gMonth, gDay);
+                            }
+
+                            // تابع تبدیل میلادی به شمسی (تصحیح شده)
+                            function convertGregorianToJalali(gy, gm, gd) {
+                                gy = parseInt(gy);
+                                gm = parseInt(gm);
+                                gd = parseInt(gd);
+
+                                var gDate = new Date(gy, gm - 1, gd);
+                                var gYear = gDate.getFullYear();
+                                var gMonth = gDate.getMonth();
+                                var gDay = gDate.getDate();
+
+                                // آرایه‌های مربوط به ماه‌ها
+                                var gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                                var jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+
+                                // بررسی سال کبیسه میلادی
+                                if ((gYear % 4 === 0 && gYear % 100 !== 0) || gYear % 400 === 0) {
+                                    gDaysInMonth[1] = 29;
+                                }
+
+                                // محاسبه روزهای گذشته از ابتدای سال میلادی
+                                var gDayOfYear = gDay;
+                                for (var i = 0; i < gMonth; i++) {
+                                    gDayOfYear += gDaysInMonth[i];
+                                }
+
+                                // محاسبه سال شمسی
+                                var jYear = gYear - 621;
+                                var jDayOfYear = gDayOfYear - 79;
+
+                                if (jDayOfYear <= 0) {
+                                    jYear--;
+                                    jDayOfYear += 365;
+                                }
+
+                                // محاسبه ماه و روز شمسی
+                                var jMonth = 1;
+                                var jDay = jDayOfYear;
+
+                                for (var i = 0; i < 12; i++) {
+                                    if (jDay <= jDaysInMonth[i]) {
+                                        jMonth = i + 1;
+                                        break;
+                                    }
+                                    jDay -= jDaysInMonth[i];
+                                }
+
+                                return [jYear, jMonth, jDay];
+                            }
+
+                            // تابع updateHiddenBirthdayFields (تصحیح شده)
+                            function updateHiddenBirthdayFields(passengerId, calendarType) {
+                                let day, month, year;
+
+                                if (calendarType === 'jalali') {
+                                    day = $('#birthday_day' + passengerId).val();
+                                    month = $('#birthday_month' + passengerId).val();
+                                    year = $('#birthday_year' + passengerId).val();
+
+                                    if (day && month && year) {
+                                        const jalaliDate = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                                        $('#birthday' + passengerId).val(jalaliDate); // فیلد hidden
+                                        $('#birthday_display' + passengerId).val(jalaliDate); // فیلد متنی (مخفی)
+
+                                        const gDate = convertJalaliToGregorian(parseInt(year), parseInt(month), parseInt(day));
+                                        const gFormatted = gDate.getFullYear() + '-' +
+                                            String(gDate.getMonth() + 1).padStart(2, '0') + '-' +
+                                            String(gDate.getDate()).padStart(2, '0');
+                                        $('#birthdayEn' + passengerId).val(gFormatted); // فیلد hidden
+                                        $('#birthdayEn_display' + passengerId).val(gFormatted); // فیلد متنی (مخفی)
+                                    }
+                                } else {
+                                    day = $('#birthdayEn_day' + passengerId).val();
+                                    month = $('#birthdayEn_month' + passengerId).val();
+                                    year = $('#birthdayEn_year' + passengerId).val();
+
+                                    if (day && month && year) {
+                                        const gDate = new Date(year, month - 1, day);
+                                        const gFormatted = gDate.getFullYear() + '-' +
+                                            String(gDate.getMonth() + 1).padStart(2, '0') + '-' +
+                                            String(gDate.getDate()).padStart(2, '0');
+                                        $('#birthdayEn' + passengerId).val(gFormatted); // فیلد hidden
+                                        $('#birthdayEn_display' + passengerId).val(gFormatted); // فیلد متنی (مخفی)
+
+                                        const j = convertGregorianToJalali(gDate.getFullYear(), gDate.getMonth() + 1, gDate.getDate());
+                                        const jFormatted = j[0] + '-' +
+                                            String(j[1]).padStart(2, '0') + '-' +
+                                            String(j[2]).padStart(2, '0');
+                                        $('#birthday' + passengerId).val(jFormatted); // فیلد hidden
+                                        $('#birthday_display' + passengerId).val(jFormatted); // فیلد متنی (مخفی)
+                                    }
+                                }
+                            }
 
 
 
@@ -844,22 +980,22 @@ $InfoInsurance.destinationIata == 'IRN'}
 
 {literal}
     <script type="text/javascript">
-       $(document).ready(function () {
-          var table = $('#passengers').DataTable();
+        $(document).ready(function () {
+            var table = $('#passengers').DataTable();
 
-          $('#passengers tbody').on('click', 'tr', function () {
-             if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-             } else {
-                table.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-             }
-          });
+            $('#passengers tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
 
-          $('#button').click(function () {
-             table.row('.selected').remove().draw(false);
-          });
-       });
+            $('#button').click(function () {
+                table.row('.selected').remove().draw(false);
+            });
+        });
     </script>
 
     <!-- counter menu -->
@@ -873,126 +1009,126 @@ $InfoInsurance.destinationIata == 'IRN'}
     <script src="assets/js/jdate.js" type="text/javascript"></script>
     <script src="assets/js/jquery.counter.js" type="text/javascript"></script>
     <script type="text/javascript">
-       $('.counter').counter({});
-       $('.counter').on('counterStop', function () {
-          $('.lazy_loader_flight').slideDown({
-             start: function () {
-                $(this).css({
-                   display: "flex"
-                })
-             }
-          });
-       });
+        $('.counter').counter({});
+        $('.counter').on('counterStop', function () {
+            $('.lazy_loader_flight').slideDown({
+                start: function () {
+                    $(this).css({
+                        display: "flex"
+                    })
+                }
+            });
+        });
     </script>
 
     <script type="text/javascript">
-       function pad(val)
-       {
-          var valString = val + "";
-          if (valString.length < 2)
-          {
-             return "0" + valString;
-          } else
-          {
-             return valString;
-          }
-       }
+        function pad(val)
+        {
+            var valString = val + "";
+            if (valString.length < 2)
+            {
+                return "0" + valString;
+            } else
+            {
+                return valString;
+            }
+        }
 
-       $('.s-u-price-detail-accordion-btn').on("click", function (e) {
-          e.preventDefault();
-          $(this).parent().find('.s-u-masir-detal-accordion').slideUp('fast');
-          $(this).parent().find('.s-u-bar-rule-accordion').slideUp('fast');
-          $(this).parent().find('.s-u-price-detail-accordion').slideToggle('fast');
-          $('.s-u-result-item-details > ul > li').removeClass('light-white');
-          $(this).addClass('light-white');
-       });
-       $('.s-u-bar-rules-btn').on("click", function (e) {
-          e.preventDefault();
-          $(this).parent().find('.s-u-masir-detal-accordion').slideUp('fast');
-          $(this).parent().find('.s-u-price-detail-accordion').slideUp('fast');
-          $(this).parent().find('.s-u-bar-rule-accordion').slideToggle('fast');
-          $('.s-u-result-item-details > ul > li').removeClass('light-white');
-          $(this).toggleClass('light-white');
-       });
-       $('.s-u-masir-detail-accordion-btn').on("click", function (e) {
-          e.preventDefault();
-          $(this).parent().find('.s-u-bar-rule-accordion').slideUp('fast');
-          $(this).parent().find('.s-u-price-detail-accordion').slideUp('fast');
-          $(this).parent().find('.s-u-masir-detal-accordion').slideToggle('fast');
-          $('.s-u-result-item-details > ul > li').removeClass('light-white');
-          $(this).toggleClass('light-white');
-       });
-       // bar and ticket rules popup
-       // show popup
-       $(".s-u-ticket-rules-btn").on("click", function () {
-          $('.s-u-result-item-details > ul > li').removeClass('light-white');
-          $(this).toggleClass('light-white');
-          $(this).find('.s-u-t-r-p').fadeIn();
-          $('.s-u-black-container').fadeIn();
-       });
-       // hide popup
-       $('.s-u-t-r-p .s-u-t-r-p-h').on("click", function (e) {
-          e.preventDefault();
-          $(".s-u-black-container").fadeOut('slow');
-          $(".s-u-t-r-p").fadeOut('fast');
-          return false;
-       });
-       $('.s-u-b-r-p .s-u-t-r-p-h').on("click", function (e) {
-          e.preventDefault();
-          $(".s-u-black-container").fadeOut('slow');
-          $(".s-u-b-r-p").fadeOut('fast');
-          return false;
-       });
-       $('.s-u-black-container').on("click", function (e) {
-          e.preventDefault();
-          $('.s-u-black-container').fadeOut('slow');
-          $('.s-u-b-r-p').fadeOut('fast');
-          $('.s-u-t-r-p').fadeOut('fast');
-       });
+        $('.s-u-price-detail-accordion-btn').on("click", function (e) {
+            e.preventDefault();
+            $(this).parent().find('.s-u-masir-detal-accordion').slideUp('fast');
+            $(this).parent().find('.s-u-bar-rule-accordion').slideUp('fast');
+            $(this).parent().find('.s-u-price-detail-accordion').slideToggle('fast');
+            $('.s-u-result-item-details > ul > li').removeClass('light-white');
+            $(this).addClass('light-white');
+        });
+        $('.s-u-bar-rules-btn').on("click", function (e) {
+            e.preventDefault();
+            $(this).parent().find('.s-u-masir-detal-accordion').slideUp('fast');
+            $(this).parent().find('.s-u-price-detail-accordion').slideUp('fast');
+            $(this).parent().find('.s-u-bar-rule-accordion').slideToggle('fast');
+            $('.s-u-result-item-details > ul > li').removeClass('light-white');
+            $(this).toggleClass('light-white');
+        });
+        $('.s-u-masir-detail-accordion-btn').on("click", function (e) {
+            e.preventDefault();
+            $(this).parent().find('.s-u-bar-rule-accordion').slideUp('fast');
+            $(this).parent().find('.s-u-price-detail-accordion').slideUp('fast');
+            $(this).parent().find('.s-u-masir-detal-accordion').slideToggle('fast');
+            $('.s-u-result-item-details > ul > li').removeClass('light-white');
+            $(this).toggleClass('light-white');
+        });
+        // bar and ticket rules popup
+        // show popup
+        $(".s-u-ticket-rules-btn").on("click", function () {
+            $('.s-u-result-item-details > ul > li').removeClass('light-white');
+            $(this).toggleClass('light-white');
+            $(this).find('.s-u-t-r-p').fadeIn();
+            $('.s-u-black-container').fadeIn();
+        });
+        // hide popup
+        $('.s-u-t-r-p .s-u-t-r-p-h').on("click", function (e) {
+            e.preventDefault();
+            $(".s-u-black-container").fadeOut('slow');
+            $(".s-u-t-r-p").fadeOut('fast');
+            return false;
+        });
+        $('.s-u-b-r-p .s-u-t-r-p-h').on("click", function (e) {
+            e.preventDefault();
+            $(".s-u-black-container").fadeOut('slow');
+            $(".s-u-b-r-p").fadeOut('fast');
+            return false;
+        });
+        $('.s-u-black-container').on("click", function (e) {
+            e.preventDefault();
+            $('.s-u-black-container').fadeOut('slow');
+            $('.s-u-b-r-p').fadeOut('fast');
+            $('.s-u-t-r-p').fadeOut('fast');
+        });
     </script>
 
     <script type="text/javascript">
-       $(document).ready(function () {
+        $(document).ready(function () {
 
-          $(this).find(".price-pop").click(function () {
+            $(this).find(".price-pop").click(function () {
 
-             $(".price-Box").toggleClass("displayBlock");
-             $("#lightboxContainer").addClass("displayBlock");
-          });
-          $(this).find(".closeBtn").click(function () {
+                $(".price-Box").toggleClass("displayBlock");
+                $("#lightboxContainer").addClass("displayBlock");
+            });
+            $(this).find(".closeBtn").click(function () {
 
-             $(".price-Box").removeClass("displayBlock");
-             $("#lightboxContainer").removeClass("displayBlock");
-          });
-          $("div#lightboxContainer").click(function () {
+                $(".price-Box").removeClass("displayBlock");
+                $("#lightboxContainer").removeClass("displayBlock");
+            });
+            $("div#lightboxContainer").click(function () {
 
-             $(".price-Box").removeClass("displayBlock");
-             $("#lightboxContainer").removeClass("displayBlock");
-          });
-          $(this).find(".Cancellation-pop").click(function () {
+                $(".price-Box").removeClass("displayBlock");
+                $("#lightboxContainer").removeClass("displayBlock");
+            });
+            $(this).find(".Cancellation-pop").click(function () {
 
-             $(".Cancellation-Box").toggleClass("displayBlock");
-             $("#lightboxContainer").addClass("displayBlock");
-          });
-          $(this).find(".closeBtn").click(function () {
+                $(".Cancellation-Box").toggleClass("displayBlock");
+                $("#lightboxContainer").addClass("displayBlock");
+            });
+            $(this).find(".closeBtn").click(function () {
 
-             $(".Cancellation-Box").removeClass("displayBlock");
-             $("#lightboxContainer").removeClass("displayBlock");
-          });
-          $("div#lightboxContainer").click(function () {
+                $(".Cancellation-Box").removeClass("displayBlock");
+                $("#lightboxContainer").removeClass("displayBlock");
+            });
+            $("div#lightboxContainer").click(function () {
 
-             $(".Cancellation-Box").removeClass("displayBlock");
-             $("#lightboxContainer").removeClass("displayBlock");
-          });
+                $(".Cancellation-Box").removeClass("displayBlock");
+                $("#lightboxContainer").removeClass("displayBlock");
+            });
 
-          $("div#lightboxContainer").click(function () {
-             $(".last-p-popup").css("display", "none");
-          });
-          // $('body').delegate('.DetailSelectTicket','click', function(e) {
-          $('.DetailSelectTicket').on('click', function (e) {
-             $(this).parent().siblings('.DetailSelectTicketContect').slideToggle('fast');
-          });
-       });
+            $("div#lightboxContainer").click(function () {
+                $(".last-p-popup").css("display", "none");
+            });
+            // $('body').delegate('.DetailSelectTicket','click', function(e) {
+            $('.DetailSelectTicket').on('click', function (e) {
+                $(this).parent().siblings('.DetailSelectTicketContect').slideToggle('fast');
+            });
+        });
 
 
     </script>

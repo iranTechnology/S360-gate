@@ -4,7 +4,7 @@
 {load_presentation_object filename="visaType" assign="objType"}
 {assign var='visa_types' value=$objType->allVisaTypeList()}
 {load_presentation_object filename="visa" assign="objVisa"}
-{assign var='visa_list' value=$objVisa->visaListWithTypeWithCountry()}
+{assign var='visa_list' value=$objVisa->visaListWithTypeWithCountry($smarty.const.ID_CONTINENT)}
 {load_presentation_object filename="currencyEquivalent" assign="objCurrencyEquivalent"}
 {assign var='currencies' value=$objCurrencyEquivalent->ListCurrencyEquivalentAdmin()}
 
@@ -14,14 +14,14 @@
 <section class="special-pages-div text-right">
     <div class="container">
 
-{*        {if $smarty.const.GDS_SWITCH neq 'mainPage' || $smarty.const.GDS_SWITCH eq 'page'}*}
-{*            {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/rich/breadcrumb/main.tpl" obj_main_page=$obj_main_page}*}
-{*        {/if}*}
+        {*        {if $smarty.const.GDS_SWITCH neq 'mainPage' || $smarty.const.GDS_SWITCH eq 'page'}*}
+        {*            {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/rich/breadcrumb/main.tpl" obj_main_page=$obj_main_page}*}
+        {*        {/if}*}
 
 
-{*        <div class="head-special-pages mt-3">*}
-{*            <span class='h3'>{$page.heading}</span>*}
-{*        </div>*}
+        {*        <div class="head-special-pages mt-3">*}
+        {*            <span class='h3'>{$page.heading}</span>*}
+        {*        </div>*}
 
 
 
@@ -31,7 +31,7 @@
             <section class="visa-section-page text-right">
                 <div class="container">
                     <!-- Header with Filters and Country Select -->
-<!--                    <div class="visa-header-controls">
+                    <!--                    <div class="visa-header-controls">
                         <div class="row align-items-center">
                             &lt;!&ndash; Right Side: Filter Buttons &ndash;&gt;
                             <div class="col-lg-8 col-md-7 col-sm-12">
@@ -124,7 +124,7 @@
                                                 </div>
                                                 <div class="visa-card-footer">
                                                     <div class="visa-info-item-price">
-{*                                                        <span class="price-label">قیمت</span>*}
+                                                        {*                                                        <span class="price-label">قیمت</span>*}
                                                         <div>
                                                 <span class="price">{number_format($visa.mainCost)}
                                                 </span>

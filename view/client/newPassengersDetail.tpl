@@ -478,6 +478,7 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
                                                name="familyEnA{$keyRooms}{$i}"
                                                oninput="return validateEnglishInput('familyEnA{$keyRooms}{$i}')" class="">
                                     </div>
+
                                     <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                                         <input id="birthdayEnA{$keyRooms}{$i}" type="text" placeholder="##miladihappybirthday##"
                                                name="birthdayEnA{$keyRooms}{$i}" class="gregorianAdultBirthdayCalendar"
@@ -668,6 +669,7 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
                                            name="birthdayEnA{$keyRooms}{$adultNumber}" class="gregorianAdultBirthdayCalendar"
                                            readonly="readonly">
                                 </div>
+
                                 {if $smarty.const.SOFTWARE_LANG eq 'fa' and $source_id neq '17'  }
                                     <div class="s-u-passenger-item s-u-passenger-item-change">
                                         <input id="nameFaA{$keyRooms}{$adultNumber}" type="text" placeholder="##Namepersion##"
@@ -694,6 +696,7 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
                                                name="birthdayA{$keyRooms}{$adultNumber}" class="shamsiAdultBirthdayCalendar" readonly="readonly">
                                     </div>
                                 {/if}
+
                                 {if $IsInternal eq '1'  }
                                     <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
                                         <input id="NationalCodeA{$keyRooms}{$adultNumber}" type="text" placeholder="##Nationalnumber##"

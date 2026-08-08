@@ -3684,7 +3684,7 @@ ul.tabs {
         width: unset;
         order: 1;
     }
-    
+
 
     .inner-avlbl-itm div > a {
         padding: 5px 20px;
@@ -4433,7 +4433,9 @@ input#discount-code {
 .popular-bus-item:hover {
     background-color: #f0f0f0;
 }
-
+.ui-datepicker{
+    transform: translateX(59px);
+}
 
 @media (max-width: 991px) {
     .bus-details .bus-info-grid{
@@ -4508,6 +4510,10 @@ input#discount-code {
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+    .ui-datepicker{
+        transform: translateX(-70px);
+        z-index: 99999999 !important;
     }
 }
 
