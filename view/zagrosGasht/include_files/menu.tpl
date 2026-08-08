@@ -17,62 +17,99 @@
 
                             </a>
                             <ul class="nav-dropdown nav-submenu nav-menu_ul  {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if} ">
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">
-
-                                        پرواز
-
-                                    </a></li>
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
-
-                                        هتل</a></li>
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/package">
-
-                                        پکیج</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/1-all/all/all">پکیج داخلی</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/all">پکیج خارجی</a></li>
+                                <li><a href="javascript:">پکیج تجاری</a></li>
+                                <li><a href="javascript:">پکیج علمی</a></li>
+                                <li><a href="javascript:">پکیج عتبات</a></li>
                             </ul>
                         </li>
                         <li>
                             <a href="javascript:">تور داخلی</a>
-                            {if $objResult->ReservationTourCities('=1', 'return')}
-                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}" style="display: grid; grid-template-columns: 1fr 1fr;">
-                                    {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCities('=1', 'return')}
-                                        <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/1-{$item_tour.id}/all/all">
-                                                {($smarty.const.SOFTWARE_LANG == 'fa') ? $item_tour.name : $item_tour.name_en}
-                                            </a></li>
-                                    {/foreach}
-                                </ul>
-                            {/if}
+                            <ul class="nav-dropdown nav-submenu nav-menu_ul  {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if} ">
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/1-all/all/1">یک روزه</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/1-all/all/2">چند روزه</a></li>
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/23">ویژه کرامت</a></li>
+                                <li>
+                                    <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/30">تورعلمی</a>
+                                    <ul class="nav-dropdown nav-submenu nav-menu_ul {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
+                                        <li><a href="javascript:">سفیران فردا</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+{*                            {if $objResult->ReservationTourCities('=1', 'return')}*}
+{*                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}" style="display: grid; grid-template-columns: 1fr 1fr;">*}
+{*                                    {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCities('=1', 'return')}*}
+{*                                        <li>*}
+{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/1-{$item_tour.id}/all/all">*}
+{*                                                {($smarty.const.SOFTWARE_LANG == 'fa') ? $item_tour.name : $item_tour.name_en}*}
+{*                                            </a></li>*}
+{*                                    {/foreach}*}
+{*                                </ul>*}
+{*                            {/if}*}
                         </li>
                         <li>
                             <a href="javascript:">تور خارجی</a>
-                            {if $objResult->ReservationTourCountries('yes')}
-                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}" style="display: grid; grid-template-columns: 1fr 1fr;">
-                                    {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries('yes')}
-                                        <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/{$item_tour.id}-all/all/all">
-                                                {($smarty.const.SOFTWARE_LANG == 'fa') ? $item_tour.name : $item_tour.name_en}
-                                            </a></li>
-                                    {/foreach}
-                                </ul>
-                            {/if}
+                            <ul class="nav-dropdown  {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if} ">
+                                <li><a href="javascript:">اروپا</a></li>
+                                <li><a href="javascript:">آسیا</a></li>
+                                <li><a href="javascript:">آفریقا</a></li>
+                                <li>
+                                    <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/21">تور تجاری</a>
+                                    <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
+                                        <li><a href="javascript:">رویدادها</a></li>
+                                        <li><a href="javascript:">نمایشگاهی</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+{*                            {if $objResult->ReservationTourCountries('yes')}*}
+{*                                <ul class="nav-dropdown {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}" style="display: grid; grid-template-columns: 1fr 1fr;">*}
+{*                                    {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries('yes')}*}
+{*                                        <li>*}
+{*                                            <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/{$item_tour.id}-all/all/all">*}
+{*                                                {($smarty.const.SOFTWARE_LANG == 'fa') ? $item_tour.name : $item_tour.name_en}*}
+{*                                            </a></li>*}
+{*                                    {/foreach}*}
+{*                                </ul>*}
+{*                            {/if}*}
                         </li>
                         <li class="">
-                            <a href="javascript:">دانستنیها</a>
+                            <a href="javascript:">عتبات عالیات</a>
                             <ul class="nav-dropdown nav-submenu nav-menu_ul {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/weather">هواشناسی</a></li>
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/convertDate">تبدیل تاریخ</a></li>
+                                <li><a href="javascript:">ویژه فرهنگیان</a></li>
+                                <li><a href="javascript:">ویژه اقتصادی</a></li>
+                                <li><a href="javascript:">ویژه گروهی</a></li>
+                                <li><a href="javascript:">ویژه بانوان</a></li>
+                                <li><a href="javascript:">ویژه اتباع</a></li>
                             </ul>
                         </li>
                         <li class="">
-                            <a href="javascript:">آژانس ما</a>
+                            <a href="javascript:">مجله گردشگری</a>
                             <ul class="nav-dropdown nav-submenu nav-menu_ul {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">درباره ما</a></li>
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/authenticate">باشگاه مشتریان</a></li>
+                                <li><a href="javascript:">مدارک سفارتخانه</a></li>
+                                <li><a href="javascript:">راهنمای سفر</a></li>
+                                <li><a href="javascript:">جهانگردی</a></li>
+                                <li><a href="javascript:">ایرانگردی</a></li>
+                            </ul>
+                        </li>
+                        <li class="">
+                            <a href="javascript:">درباره ما</a>
+                            <ul class="nav-dropdown nav-submenu nav-menu_ul {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
+                                <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">معرفی آژانس</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a></li>
+                                <li><a href="javascript:">ویدئو آموزشی</a></li>
+                                <li><a href="javascript:">اخبار</a></li>
+                                <li>
+                                    <a href="javascript:">شعب و دفاتر</a>
+                                    <ul class="nav-dropdown nav-submenu nav-menu_ul {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
+                                        <li><a href="javascript:">شعب استانی</a></li>
+                                        <li><a href="javascript:">دفاتر نمایندگی</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li class="">
-                            <a href="javascript:">پشتیبانی 24/7</a>
+                            <a href="javascript:">پشتیبانی</a>
                             <ul class="nav-dropdown nav-submenu nav-menu_ul {if  $smarty.const.GDS_SWITCH eq 'page'} nav-dropdown-page {/if}">
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">تماس با ما</a></li>
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">پیگیری خرید</a></li>

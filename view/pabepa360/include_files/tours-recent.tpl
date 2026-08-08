@@ -149,7 +149,13 @@
                                      <span class="Money_color font-weight-bold">
                                          <i class="fa-light fa-sack-dollar"></i>
                                         {$item['min_price_r']|number_format}
-                                         <span class="text_toman">ریال</span>
+                                         <span class="text_toman">
+                                             {if $item['min_price']['is_toman'] == true}
+                                                 تومان
+                                             {else}
+                                                 ریال
+                                             {/if}
+                                         </span>
                                     </span>
                                         </div>
                                         <i class="fa-solid fa-caret-left arrow_after"></i>
@@ -262,7 +268,13 @@
                                      <span class="Money_color font-weight-bold">
                                          <i class="fa-light fa-sack-dollar"></i>
                                         {$item['min_price_r']|number_format}
-                                         <span class="text_toman">ریال</span>
+                                         <span class="text_toman">
+                                                                                                 {if $item['min_price']['is_toman'] == true}
+                                                                                                     تومان
+                                                                                                 {else}
+                                                                                                     ریال
+                                                                                                 {/if}
+                                         </span>
                                     </span>
                                         </div>
                                         <i class="fa-solid fa-caret-left arrow_after"></i>
@@ -367,7 +379,13 @@
                                      <span class="Money_color font-weight-bold">
                                          <i class="fa-light fa-sack-dollar"></i>
                                         {$item['min_price_r']|number_format}
-                                         <span class="text_toman">ریال</span>
+                                         <span class="text_toman">
+                                                                                                 {if $item['min_price']['is_toman'] == true}
+                                                                                                     تومان
+                                                                                                 {else}
+                                                                                                     ریال
+                                                                                                 {/if}
+                                         </span>
                                     </span>
                                         </div>
                                         <i class="fa-solid fa-caret-left arrow_after"></i>
@@ -457,7 +475,12 @@
                                          <i class="fa-light fa-sack-dollar"></i>
 
                                           {if $item['min_price_r'] != 0}
-                                              {$item['min_price_r']|number_format} ریال
+                                              {$item['min_price_r']|number_format}
+                                              {if $item['min_price']['is_toman'] == true}
+                                                  تومان
+                                              {else}
+                                                  ریال
+                                              {/if}
                                           {/if}
                                          {if  $item['min_price_r'] != 0 &&  $item['min_price_a'] &&  $item['min_price_a'] != 0} + {/if}
                                          {if $item['min_price_a'] &&  $item['min_price_a'] != 0}
@@ -571,7 +594,13 @@
                                      <span class="Money_color font-weight-bold">
                                          <i class="fa-light fa-sack-dollar"></i>
                                         {$item['min_price_r']|number_format}
-                                         <span class="text_toman">ریال</span>
+                                         <span class="text_toman">
+                                                                                                 {if $item['min_price']['is_toman'] == true}
+                                                                                                     تومان
+                                                                                                 {else}
+                                                                                                     ریال
+                                                                                                 {/if}
+                                         </span>
                                     </span>
                                         </div>
                                         <i class="fa-solid fa-caret-left arrow_after"></i>
@@ -679,7 +708,13 @@
                                      <span class="Money_color font-weight-bold">
                                          <i class="fa-light fa-sack-dollar"></i>
                                         {$item['min_price_r']|number_format}
-                                         <span class="text_toman">ریال</span>
+                                         <span class="text_toman">
+                                                                                                 {if $item['min_price']['is_toman'] == true}
+                                                                                                     تومان
+                                                                                                 {else}
+                                                                                                     ریال
+                                                                                                 {/if}
+                                         </span>
                                     </span>
                                             </div>
                                             <i class="fa-solid fa-caret-left arrow_after"></i>
@@ -795,7 +830,13 @@
 {*                        <span class="Money_color font-weight-bold">*}
 {*                            <i class="fa-light fa-sack-dollar"></i>*}
 {*                            {$item['min_price_r']|number_format}*}
-{*                            <span class="text_toman">ریال</span>*}
+{*                            <span class="text_toman">
+                                                    {if $item['min_price']['is_toman'] == true}
+                                                        تومان
+                                                    {else}
+                                                        ریال
+                                                    {/if}
+                                                    </span>*}
 {*                        </span>*}
 {*                                        </div>*}
 

@@ -325,3 +325,21 @@ if (label) {
         span.textContent = 'CIP';
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    function replaceWithSoon(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.innerHTML = "<div style='    color: var(--mainColor);\n" +
+                "    font-size: 20px;\n" +
+                "    min-height: 114px;\n" +
+                "    display: flex;\n" +
+                "    align-items: center;\n" +
+                "    text-align: center;\n" +
+                "    line-height: 28px;\n" +
+                "    justify-content: center;'>برای کسب اطلاعات بیشتر و رزرو، لطفاً با شماره 09380912284 تماس بگیرید.</div>";
+        }
+    }
+
+    replaceWithSoon("Train");
+});

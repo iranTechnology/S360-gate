@@ -64,7 +64,12 @@
                                 <div class="card_price">
                                     <p>
                                         {if $item['min_price_r'] != 0}
-                                            {$item['min_price_r']|number_format} ریال
+                                            {$item['min_price_r']|number_format}
+                                            {if $item['min_price']['is_toman'] == true}
+                                                تومان
+                                            {else}
+                                                ریال
+                                            {/if}
                                         {/if}
                                         {if  $item['min_price_r'] != 0 &&  $item['min_price_a'] } + {/if}
                                         {if $item['min_price_a']}
