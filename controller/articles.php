@@ -257,49 +257,49 @@ class articles extends positions
 
     public function updateCategory($params) {
 
-                $category_id = $params['$category_id'];
-                $title = $params['update_title'];
-                $language = $params['update_language'];
-                $slug = functions::slugify($params['update_title']);
-                if (isset($params['update_slug']) && $params['update_slug'] != '') {
-                    $slug = functions::slugify($params['update_slug']);
+        $category_id = $params['$category_id'];
+        $title = $params['update_title'];
+        $language = $params['update_language'];
+        $slug = functions::slugify($params['update_title']);
+        if (isset($params['update_slug']) && $params['update_slug'] != '') {
+            $slug = functions::slugify($params['update_slug']);
+        }
+        $article_cat_model = $this->getModel('articleCategoriesModel');
+        $check_slug = $article_cat_model->get()->where('slug', $slug)->where('language' , $params['language'])->where('id', $category_id, '!=')->where('deleted_at', null, 'IS')->find();
+        if (!$check_slug) {
+            $update_data = [
+                'title' => $title,
+                'language' => $language,
+                'slug' => $slug,
+            ];
+
+            if (isset($_FILES['update_image'])) {
+                /** @var application $config */
+                $config = Load::Config('application');
+                $path = "articles/";
+                $config->pathFile($path);
+                $_FILES['update_image']['name'] = self::changeNameUpload($_FILES['update_image']['name']);
+                $feature_upload = $config->UploadFile("pic", "update_image", "5120000");
+                $explode_name_pic = explode(':', $feature_upload);
+                if ($explode_name_pic[0] == 'done') {
+                    $feature_image = $path . $explode_name_pic[1];
+                    $update_data['image'] = $feature_image;
                 }
-                $article_cat_model = $this->getModel('articleCategoriesModel');
-                $check_slug = $article_cat_model->get()->where('slug', $slug)->where('language' , $params['language'])->where('id', $category_id, '!=')->where('deleted_at', null, 'IS')->find();
-               if (!$check_slug) {
-                   $update_data = [
-                       'title' => $title,
-                       'language' => $language,
-                       'slug' => $slug,
-                   ];
+            }
 
-                   if (isset($_FILES['update_image'])) {
-                       /** @var application $config */
-                       $config = Load::Config('application');
-                       $path = "articles/";
-                       $config->pathFile($path);
-                       $_FILES['update_image']['name'] = self::changeNameUpload($_FILES['update_image']['name']);
-                       $feature_upload = $config->UploadFile("pic", "update_image", "5120000");
-                       $explode_name_pic = explode(':', $feature_upload);
-                       if ($explode_name_pic[0] == 'done') {
-                           $feature_image = $path . $explode_name_pic[1];
-                           $update_data['image'] = $feature_image;
-                       }
-                   }
+            $update_result = $this->getModel('articleCategoriesModel')->get()
+                ->updateWithBind($update_data, [
+                    'id' => $params['category_id']
+                ]);
+            if ($update_result) {
+                return functions::JsonSuccess($update_result, 'دسته بندی با موفقیت ویرایش شد');
+            }
 
-                   $update_result = $this->getModel('articleCategoriesModel')->get()
-                       ->updateWithBind($update_data, [
-                           'id' => $params['category_id']
-                       ]);
-                   if ($update_result) {
-                       return functions::JsonSuccess($update_result, 'دسته بندی با موفقیت ویرایش شد');
-                   }
+            return functions::JsonError($update_result, 'خطا در ویرایش دسته بندی', 200);
+        }else {
+            return functions::JsonError(false, 'این دسته بندی از قبل ایجاد شده است', 200);
 
-                   return functions::JsonError($update_result, 'خطا در ویرایش دسته بندی', 200);
-               }else {
-                   return functions::JsonError(false, 'این دسته بندی از قبل ایجاد شده است', 200);
-
-               }
+        }
 
 //        return functions::JsonError(false, 'خطا در یافتن دسته بندی', 200);
     }
@@ -456,126 +456,126 @@ class articles extends positions
 
         $dataInsert = '';
         $check_slug = $article_model->get()->where('slug', $slug)->where('language' , $params['language'])->where('deleted_at', null, 'IS')->find();
-         if (!$check_slug) {
-             $added_metas = '';
+        if (!$check_slug) {
+            $added_metas = '';
 
 
-             $description = [
-                 'name' => 'description',
-                 'content' => filter_var($params['description'], FILTER_SANITIZE_STRING)
-             ];
+            $description = [
+                'name' => 'description',
+                'content' => filter_var($params['description'], FILTER_SANITIZE_STRING)
+            ];
 
-             if (!$params['heading']) {
-                 $params['heading'] = $params['title'];
-             }
+            if (!$params['heading']) {
+                $params['heading'] = $params['title'];
+            }
 
-             if ($params['AddedMeta']) {
-                 $added_metas = json_encode(array_merge($params['AddedMeta'], [$description]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-             }
+            if ($params['AddedMeta']) {
+                $added_metas = json_encode(array_merge($params['AddedMeta'], [$description]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            }
 
-             $dataInsert = [
-                 'language' => $params['language'],
-                 'title' => $params['title'],
-                 'heading' => $params['heading'],
-                 'section' => $params['section'],
-                 'slug' => $slug,
-                 'content' => $params['content'],
-                 'meta_tags' => $added_metas,
-                 'categories' => json_encode($params['selected_category'], 256),
-                 'updated_at' => date('Y-m-d H:i:s', time()),
-                 'lead' => $params['lead'],
-             ];
-             $config = Load::Config('application');
-             $path = "articles/";
-             $config->pathFile($path);
-             if (isset($_FILES['feature_image']) && $_FILES['feature_image'] != "" && $dataInsert['feature_image'] == '') {
-                 $_FILES['feature_image']['name'] = self::changeNameUpload($_FILES['feature_image']['name']);
+            $dataInsert = [
+                'language' => $params['language'],
+                'title' => $params['title'],
+                'heading' => $params['heading'],
+                'section' => $params['section'],
+                'slug' => $slug,
+                'content' => $params['content'],
+                'meta_tags' => $added_metas,
+                'categories' => json_encode($params['selected_category'], 256),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+                'lead' => $params['lead'],
+            ];
+            $config = Load::Config('application');
+            $path = "articles/";
+            $config->pathFile($path);
+            if (isset($_FILES['feature_image']) && $_FILES['feature_image'] != "" && $dataInsert['feature_image'] == '') {
+                $_FILES['feature_image']['name'] = self::changeNameUpload($_FILES['feature_image']['name']);
 
-                 $feature_upload = $config->UploadFile("pic", "feature_image", "5120000");
-                 $explode_name_pic = explode(':', $feature_upload);
+                $feature_upload = $config->UploadFile("pic", "feature_image", "5120000");
+                $explode_name_pic = explode(':', $feature_upload);
 
-                 if ($explode_name_pic[0] == 'done') {
-                     $feature_image = $path . $explode_name_pic[1];
-                     $dataInsert['feature_image'] = $feature_image;
-                     $dataInsert['feature_alt_image'] = $params['feature_alt_image'];
-                 }
-             }
-
-
-             if (isset($_FILES['gallery_files']) && $_FILES['gallery_files'] != "") {
-
-                 $separated_files = functions::separateFiles('gallery_files');
-                 foreach ($separated_files as $image_key => $separated_file) {
-                     $_FILES['file'] = '';
-                     $_FILES['file'] = $separated_file;
-
-                     if ($params['gallery_selected'] && $params['gallery_selected'] == $image_key) {
-                         $_FILES['feature_image'] = $separated_file;
-                         $params['feature_alt_image'] = $params['gallery_file_alts'][$image_key];
-                         $_FILES['feature_image']['name'] = self::changeNameUpload($_FILES['feature_image']['name']);
-                         $feature_upload = $config->UploadFile("pic", "feature_image", "5120000");
-                         $explode_name_pic = explode(':', $feature_upload);
-                         if ($explode_name_pic[0] == 'done') {
-                             $feature_image = $path . $explode_name_pic[1];
-                             $dataInsert['feature_image'] = $feature_image;
-                             $dataInsert['feature_alt_image'] = $params['feature_alt_image'];
-                         }
+                if ($explode_name_pic[0] == 'done') {
+                    $feature_image = $path . $explode_name_pic[1];
+                    $dataInsert['feature_image'] = $feature_image;
+                    $dataInsert['feature_alt_image'] = $params['feature_alt_image'];
+                }
+            }
 
 
-                     }
-                 }
-             }
+            if (isset($_FILES['gallery_files']) && $_FILES['gallery_files'] != "") {
+
+                $separated_files = functions::separateFiles('gallery_files');
+                foreach ($separated_files as $image_key => $separated_file) {
+                    $_FILES['file'] = '';
+                    $_FILES['file'] = $separated_file;
+
+                    if ($params['gallery_selected'] && $params['gallery_selected'] == $image_key) {
+                        $_FILES['feature_image'] = $separated_file;
+                        $params['feature_alt_image'] = $params['gallery_file_alts'][$image_key];
+                        $_FILES['feature_image']['name'] = self::changeNameUpload($_FILES['feature_image']['name']);
+                        $feature_upload = $config->UploadFile("pic", "feature_image", "5120000");
+                        $explode_name_pic = explode(':', $feature_upload);
+                        if ($explode_name_pic[0] == 'done') {
+                            $feature_image = $path . $explode_name_pic[1];
+                            $dataInsert['feature_image'] = $feature_image;
+                            $dataInsert['feature_alt_image'] = $params['feature_alt_image'];
+                        }
 
 
-             $insert = $article_model->insertWithBind($dataInsert);
-             if ($insert) {
-                 if (isset($_FILES['gallery_files']) && $_FILES['gallery_files'] != "") {
-
-                     $separated_files = functions::separateFiles('gallery_files');
-                     foreach ($separated_files as $image_key => $separated_file) {
-                         $_FILES['file'] = $separated_file;
-                         if ($params['gallery_selected'] && $params['gallery_selected'] == $image_key) {
-                             $success = $feature_upload;
-                         } else {
-
-                             $_FILES['file']['name'] = self::changeNameUpload($_FILES['file']['name']);
-                             $success = $config->UploadFile("pic", "file", "5120000");
-                         }
-
-                         $explode_name_pic = explode(':', $success);
-                         if ($explode_name_pic[0] == "done") {
-
-                             $article_gallery_model->insertWithBind([
-                                 'article_id' => $insert,
-                                 'file' => $explode_name_pic[1],
-                                 'alt' => $params['gallery_file_alts'][$image_key],
-                             ]);
-                         }
-
-                     }
-                 }
-
-                 $article_positions_model = $this->getModel('articlePositionsModel');
+                    }
+                }
+            }
 
 
-                 if (isset($params['position']) && $params['position'] != '') {
+            $insert = $article_model->insertWithBind($dataInsert);
+            if ($insert) {
+                if (isset($_FILES['gallery_files']) && $_FILES['gallery_files'] != "") {
 
-                     $this->storePositions('article', $insert, $params['position']);
+                    $separated_files = functions::separateFiles('gallery_files');
+                    foreach ($separated_files as $image_key => $separated_file) {
+                        $_FILES['file'] = $separated_file;
+                        if ($params['gallery_selected'] && $params['gallery_selected'] == $image_key) {
+                            $success = $feature_upload;
+                        } else {
 
-                 }
+                            $_FILES['file']['name'] = self::changeNameUpload($_FILES['file']['name']);
+                            $success = $config->UploadFile("pic", "file", "5120000");
+                        }
 
-                 /*if($formData['show_on_result'] == '1'){
-                     $Model->update(['show_on_result'=>0],"service_group = '{$formData['service_group']}' AND position='{$formData['position']}'");
-                 }*/
+                        $explode_name_pic = explode(':', $success);
+                        if ($explode_name_pic[0] == "done") {
+
+                            $article_gallery_model->insertWithBind([
+                                'article_id' => $insert,
+                                'file' => $explode_name_pic[1],
+                                'alt' => $params['gallery_file_alts'][$image_key],
+                            ]);
+                        }
+
+                    }
+                }
+
+                $article_positions_model = $this->getModel('articlePositionsModel');
 
 
-                 return self::returnJson(true, 'مطلب با موفقیت در سیستم به ثبت رسید', $dataInsert);
-             }
+                if (isset($params['position']) && $params['position'] != '') {
 
-             return self::returnJson(false, 'خطا در ثبت اطلاعات در سیستم.', null, 500);
-         }else{
-             return functions::withError('',200,'آدرس صفحه تکراری می باشد!');
-         }
+                    $this->storePositions('article', $insert, $params['position']);
+
+                }
+
+                /*if($formData['show_on_result'] == '1'){
+                    $Model->update(['show_on_result'=>0],"service_group = '{$formData['service_group']}' AND position='{$formData['position']}'");
+                }*/
+
+
+                return self::returnJson(true, 'مطلب با موفقیت در سیستم به ثبت رسید', $dataInsert);
+            }
+
+            return self::returnJson(false, 'خطا در ثبت اطلاعات در سیستم.', null, 500);
+        }else{
+            return functions::withError('',200,'آدرس صفحه تکراری می باشد!');
+        }
 
     }
 
@@ -749,7 +749,7 @@ class articles extends positions
 
             $this->getController('siteMap')->createSitemap();
 
-                return functions::JsonSuccess($dataUpdate, 'اطلاعات با موفقیت ویرایش گردید');
+            return functions::JsonSuccess($dataUpdate, 'اطلاعات با موفقیت ویرایش گردید');
 
 
         }else {
@@ -1015,7 +1015,7 @@ class articles extends positions
 
     }
 
-    public function getArticles($section, $service_id = null, $category_id = null, $page = null , $order = null) {
+    public function getArticles($section, $service_id = null, $category_id = null, $page = null , $order = null,$selected = false) {
 
 
 
@@ -1052,6 +1052,11 @@ class articles extends positions
         if ($category_id) {
             $articles = $articles->where($article_table . '.category_id', "%$category_id%", 'like');
             $article_count = $article_count->where($article_table . '.category_id', "%$category_id%", 'like');
+        }
+
+        if ($selected === true) {
+            $articles = $articles->where($article_table . '.selected', '1');
+            $article_count = $article_count->where($article_table . '.selected', '1');
         }
 
         $articles = $articles->where('language' , SOFTWARE_LANG);

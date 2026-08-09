@@ -1517,10 +1517,11 @@ function viewResultInternationalHotel(data_response) {
 //    $(".check-in-date-international-js").trigger("focus")
 // }
 function searchInternalHotel(flag , altDomain = null) {
+
    const form = document.getElementById('internal_hotel_form');
    const is_new_tab = form?.target === '_blank';
 
-   let type_application = $("#autoComplateSearchIN_hidden_en")
+   let type_application = $("#autoComplateSearchIN_hidden")
 
    let check_in_date = $(".check-in-date-js")
    let nights_hotel = $(".nights-hotel-js")
@@ -1528,6 +1529,7 @@ function searchInternalHotel(flag , altDomain = null) {
    const no_select_city = $("#no_select_city").val()
    const hotel_id = $("#autoComplateSearchIN_hidden").val()
    const hotel_name_en_local = $("#autoComplateSearchIN_hidden_en").val()
+   // console.log('hotel_name_en_local',hotel_name_en_local)
    checkSearchFields(nights_hotel, check_in_date, type_application)
    nights_hotel = nights_hotel.val()
    check_in_date = check_in_date.val()
@@ -1753,7 +1755,7 @@ function getRulesHTML(rules) {
    //          </ul>
    //      `;
    // } else {
-      return `
+   return `
             <ul class="hotel-rules-list">
                 <li><strong>ساعت ورود:</strong> ۱۴:۰۰ (۲:۰۰ بعد از ظهر)</li>
                 <li><strong>ساعت خروج:</strong> ۱۲:۰۰ (ظهر)</li>
@@ -2976,9 +2978,9 @@ function handleMobileHotelSearch(keyword, search_type) {
 
             let html_items = [];
 
-         if(response.length === 0){
-            html_items.push(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
-         }
+            if(response.length === 0){
+               html_items.push(`<div class='not_found text-center mt-4'>${useXmltag("Noresult")}</div>`);
+            }
 
             if(response.Cities !== undefined){
                response.Cities.forEach((item) => {
@@ -3065,10 +3067,10 @@ function handleMobileHotelSearch(keyword, search_type) {
             }
             console.log(response)
 
-               response.forEach((item) => {
-                  let indexCountry = item.CountryFa || item.CountryEn || " ";
-                  let indexCity = item.DepartureCityFa || item.DepartureCityEn || " ";
-                  html_items.push(`
+            response.forEach((item) => {
+               let indexCountry = item.CountryFa || item.CountryEn || " ";
+               let indexCity = item.DepartureCityFa || item.DepartureCityEn || " ";
+               html_items.push(`
                   <li onclick="selectCity(event , '${item.AirportEn}','${item.AirportFa}','${item.CountryEn}','${item.CountryFa}','${item.DepartureCityEn}','${item.DepartureCityFa}','${item.DepartureCode}')">
                 <div class="mobile-city-item">
                    <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
@@ -3084,7 +3086,7 @@ function handleMobileHotelSearch(keyword, search_type) {
               </li>
               <div class="mobile-divider"></div>
                   `);
-               })
+            })
 
 
             listContainer.html(`
@@ -3200,9 +3202,9 @@ function renderMobileHotelPopularExternalCities(type) {
 
          $(parsedData).each(function(_, index) {
             // if (lang === 'en' || lang === 'ar') {
-               let indexCountry = index.CountryFa || index.CountryEn || " ";
-               let indexCity = index.DepartureCityFa || index.DepartureCityEn || " ";
-               popularListHTML += `
+            let indexCountry = index.CountryFa || index.CountryEn || " ";
+            let indexCity = index.DepartureCityFa || index.DepartureCityEn || " ";
+            popularListHTML += `
                 
  <li onclick="selectCity(event , '${index.AirportEn}','${index.AirportFa}','${index.CountryEn}','${index.CountryFa}','${index.DepartureCityEn}','${index.DepartureCityFa}','${index.DepartureCode}')">
     <div class="mobile-city-item">
@@ -3640,9 +3642,9 @@ function openBoxPopular(e) {
          openMobileHotelDrawer('externalHotel');
       }
    }else{
-   HotelPopular(e);
-   $("#autoComplateSearchIN_2,#autoComplateSearchIN,#destination_city,#destination_country,#autoComplateSearchIN_hidden,#autoComplateSearchINResidence,#autoComplateSearchIN_hiddenResidence").val("");
-}
+      HotelPopular(e);
+      $("#autoComplateSearchIN_2,#autoComplateSearchIN,#destination_city,#destination_country,#autoComplateSearchIN_hidden,#autoComplateSearchINResidence,#autoComplateSearchIN_hiddenResidence").val("");
+   }
 
 }
 
@@ -3814,13 +3816,13 @@ function selectCity_internal(id , name , nameEN , type_application){
       closeMobileHotelDrawer();
       setupMobileHotelDrawerElementsDatePicker('dept')
       setTimeout(()=>{
-      openMobileHotelDrawerDatePicker('dept' , 'internal')
-      $("#startDateForHotelLocal").focus();
+         openMobileHotelDrawerDatePicker('dept' , 'internal')
+         $("#startDateForHotelLocal").focus();
       },200)
 
    }else{
-   $("#startDateForHotelLocal").trigger('click')
-   $("#startDateForHotelLocal").focus();
+      $("#startDateForHotelLocal").trigger('click')
+      $("#startDateForHotelLocal").focus();
    }
    type_application_searchInternalHotel = type_application;
 
@@ -3897,11 +3899,11 @@ function selectCity( e, AirportEn , AirportFa , CountryEn , CountryFa , Departur
       },200)
 
    }else{
-   $("#startDateForExternalHotelInternational").trigger('click')
-   $("#startDateForExternalHotelInternational").focus();
+      $("#startDateForExternalHotelInternational").trigger('click')
+      $("#startDateForExternalHotelInternational").focus();
       $("#startDateForHotelLocal").trigger('click')
       $("#startDateForHotelLocal").focus();
-}
+   }
 }
 
 function item_search(CountryEn,DepartureCityEn,DepartureCityEn,city,country) {

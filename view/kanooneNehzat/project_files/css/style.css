@@ -1933,9 +1933,7 @@ a:hover {
     object-fit: contain
 }
 
-.about .about-img .parent-img img:hover {
-    transform: scale(1.1)
-}
+
 
 .about .parent-about {
     text-align: right;
@@ -2641,7 +2639,36 @@ a:hover {
     gap: 3px;
     align-items: flex-start
 }
+.ul-about .about-slide-item {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+}
 
+.ul-about .about-slide-item.active {
+    border-color: var(--mainColor);
+    background-color: #00a58817;
+}
+
+.ul-about .about-slide-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#aboutMainImage {
+    transition: opacity 0.5s ease-in-out;
+    width: 100%;
+    height: auto;
+}
+
+#aboutMainImage.fade {
+    opacity: 0;
+}
+
+#aboutMainImage.fade-in {
+    opacity: 1;
+}
 @media (max-width: 991px) {
     .parent-top-footer {
         grid-template-columns:repeat(2, 1fr) !important;
