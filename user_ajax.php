@@ -3232,7 +3232,8 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditEntertainment'
     $DateSelected['DateNext']     = functions::DateNext( $_POST['DateSelected'] );
     $DateSelected['DatePrev']     = functions::DatePrev( $_POST['DateSelected'] );
     echo json_encode( $DateSelected );
-} //ZOMOROD
+}
+//ZOMOROD
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'UpdateCounterDetail' ) {
     unset( $_POST['flag'] );
 

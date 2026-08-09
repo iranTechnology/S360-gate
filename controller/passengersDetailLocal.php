@@ -365,7 +365,6 @@ class passengersDetailLocal extends apiLocal
 
                     }
 
-
                     if ($rec['IsInternalFlight'] == '1') {
                         $this->OriginCity[$direction] = $rec['OriginCity'];
                         $this->DestiCity[$direction] = $rec['DestiCity'];
@@ -482,6 +481,7 @@ class passengersDetailLocal extends apiLocal
 
             $searchDate = str_replace('/', '-', $this->Date['dept'] . (!empty($this->Date['return']) ? '&' . $this->Date['return'] : ''));
 
+            functions::insertLog('OriginAirportIata: ' . json_encode($this->OriginAirportIata) , '000shojaee');
             $searchDestination = $this->OriginAirportIata['dept'] . '-' . $this->DestiAirportIata['dept'];
 
         }
