@@ -1694,6 +1694,7 @@ class resultTourLocal extends clientAuth {
         if ( ! empty( $infoTourPackage ) ) {
             $package['id']=$packageId;
             $total_price_package = 0;
+            $total_price_package_a = 0;
             $custom_room = $infoTourPackage[0]['custom_room'] ? json_decode($infoTourPackage[0]['custom_room'],256) : '' ;
             if ( $countSingleRoom > 0 ) {
 
@@ -1718,6 +1719,7 @@ class resultTourLocal extends clientAuth {
 
                 $package['infoRooms']['single_room']['currency_type'] = ($infoTourPackage[0]['currency_type'] );
                 $total_price_package += $package['infoRooms']['single_room']['total_price'] ;
+                $total_price_package_a += $package['infoRooms']['single_room']['total_price_a'] ;
             }
 
             if ( $countDoubleRoom > 0 ) {
@@ -1740,6 +1742,7 @@ class resultTourLocal extends clientAuth {
                 $package['infoRooms']['double_room']['count']         = $countDoubleRoom;
                 $package['infoRooms']['double_room']['currency_type'] = ($infoTourPackage[0]['currency_type']);
                 $total_price_package += $package['infoRooms']['double_room']['total_price'] ;
+                $total_price_package_a += $package['infoRooms']['double_room']['total_price_a'] ;
             }
 
             if ( $countThreeRoom > 0) {
@@ -1762,6 +1765,7 @@ class resultTourLocal extends clientAuth {
                 $package['infoRooms']['three_room']['count']         = $countThreeRoom;
                 $package['infoRooms']['three_room']['currency_type'] = ($infoTourPackage[0]['currency_type'] ) ;
                 $total_price_package += $package['infoRooms']['three_room']['total_price'] ;
+                $total_price_package_a += $package['infoRooms']['three_room']['total_price_a'] ;
 
             }
 
@@ -1788,6 +1792,7 @@ class resultTourLocal extends clientAuth {
                     $package['infoRooms']['four_room']['count']         = $countFourRoom;
                     $package['infoRooms']['four_room']['currency_type'] = ($infoTourPackage[0]['currency_type'] ) ;
                     $total_price_package += $package['infoRooms']['four_room']['total_price'] ;
+                    $total_price_package_a += $package['infoRooms']['four_room']['total_price_a'] ;
                 }
 
                 if ( $countFiveRoom > 0 && $custom['fiveRoom'] ) {
@@ -1809,6 +1814,7 @@ class resultTourLocal extends clientAuth {
                     $package['infoRooms']['five_room']['count']         = $countFiveRoom;
                     $package['infoRooms']['five_room']['currency_type'] = ($infoTourPackage[0]['currency_type'] ) ;
                     $total_price_package += $package['infoRooms']['five_room']['total_price'] ;
+                    $total_price_package_a += $package['infoRooms']['five_room']['total_price_a'] ;
 
                 }
 
@@ -1833,6 +1839,7 @@ class resultTourLocal extends clientAuth {
                     $package['infoRooms']['six_room']['count']         = $countSixRoom;
                     $package['infoRooms']['six_room']['currency_type'] = ($infoTourPackage[0]['currency_type'] ) ;
                     $total_price_package += $package['infoRooms']['six_room']['total_price'] ;
+                    $total_price_package_a += $package['infoRooms']['six_room']['total_price_a'] ;
 
                 }
             }
@@ -1850,6 +1857,7 @@ class resultTourLocal extends clientAuth {
                 $package['infoRooms']['child_with_bed']['total_price_a'] = ($package['infoRooms']['child_with_bed']['price_a']) * $countChildRoom;
                 $package['infoRooms']['child_with_bed']['currency_type'] = ($infoTourPackage[0]['currency_type']);
                 $total_price_package += $package['infoRooms']['child_with_bed']['total_price'] ;
+                $total_price_package_a += $package['infoRooms']['child_with_bed']['total_price_a'] ;
 
             }
 
@@ -1866,6 +1874,7 @@ class resultTourLocal extends clientAuth {
                 $package['infoRooms']['infant_without_bed']['total_price_a'] = ($package['infoRooms']['infant_without_bed']['price_a'] ) * $countInfantWithoutBed;
                 $package['infoRooms']['infant_without_bed']['currency_type'] = ($infoTourPackage[0]['currency_type']);
                 $total_price_package += $package['infoRooms']['infant_without_bed']['total_price'] ;
+                $total_price_package_a += $package['infoRooms']['infant_without_bed']['total_price_a'] ;
 
 
             }
@@ -1883,6 +1892,7 @@ class resultTourLocal extends clientAuth {
                 $package['infoRooms']['infant_without_chair']['total_price_a'] = ($package['infoRooms']['infant_without_chair']['price_a'] ) * $countInfantWithoutChair;
                 $package['infoRooms']['infant_without_chair']['currency_type'] = ($infoTourPackage[0]['currency_type']);
                 $total_price_package += $package['infoRooms']['infant_without_chair']['total_price'] ;
+                $total_price_package_a += $package['infoRooms']['infant_without_chair']['total_price_a'] ;
 
 
             }
@@ -1895,6 +1905,8 @@ class resultTourLocal extends clientAuth {
             }else{
                 $package['total_price_package'] = $total_price_package;
             }
+
+            $package['total_price_package_a'] = $total_price_package_a;
 
 
             foreach ( $infoTourPackage as $k => $val ) {

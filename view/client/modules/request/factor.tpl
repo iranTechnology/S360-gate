@@ -47,13 +47,34 @@
                 <div class="price">
                     <span>##Price## : </span>
                     <span>
+
                         {if $smarty.post.typeTourReserve neq 'oneDayTour'}
                             {assign var="total_price" value= ($arrayTourPackage['total_price_package'] )}
+                            {assign var="total_price_a" value= ($arrayTourPackage['total_price_package_a'] )}
                         {else}
                             {assign var="total_price" value= ($smarty.post.totalPrice)}
                         {/if}
                         {$total_price|number_format:0:".":","}
                                 <p>{$iranCurrency}</p>
+
+
+
+                        {if strpos($smarty.server.REQUEST_URI, 'submitRequest') !== false}
+                            {if isset($total_price_a) and !empty($total_price_a) and $total_price_a != 0}
+
+                                +
+
+                                {$total_price_a|number_format:0:".":","}
+                                <p>
+                                {if $smarty.const.SOFTWARE_LANG neq 'fa'}
+                                    {$objFunctions->changeCurrencyName($arrayTourPackage['infoRooms'][0][''])}
+                                {else}
+                                    {assign var="firstRoom" value=$arrayTourPackage.infoRooms|reset}
+                                    {$firstRoom.currency_type}
+                                {/if}
+                            </p>
+                            {/if}
+                        {/if}
                     </span>
                 </div>
 {*                <p>##acceptrulesregulations##</p>*}

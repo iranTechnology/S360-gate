@@ -868,8 +868,7 @@
                                        value='{$objResult->arrayTour['infoTour']['prepayment_percentage']}'
                                 >
                                 <div class="price-all-tour">
-                                    <span data-name="selected-package-price">0</span>
-                                    {$iranCurrency}
+                                    <span data-name="selected-package-price">0 {$iranCurrency}</span>
                                 </div>
                                 {if $objResult->arrayTour['infoTour']['prepayment_percentage'] gt 0}
                                     <div

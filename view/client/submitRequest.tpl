@@ -8,7 +8,6 @@
 
 
 {assign var="targetDetail" value=$objRequestReservation->getTargetDetail($smarty.post)}
-{*{$targetDetail|var_dump}*}
 {if $smarty.post.serviceName eq 'tour'}
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`modules/request/tourDetail.tpl" targetDetail=$targetDetail}
 {elseif $smarty.post.serviceName eq 'hotel'}
