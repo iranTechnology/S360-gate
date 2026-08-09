@@ -122,6 +122,7 @@
                             <a href="javascript:">تور خارجی</a>
                             <ul class="nav-dropdown">
 
+
                                 {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries('yes' , false , 5)}
                                 <li>
                                     <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/{$item_tour.id}-all/all/all">

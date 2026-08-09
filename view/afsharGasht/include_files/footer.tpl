@@ -29,6 +29,11 @@
           تور
          </a>
         </li>
+        <li>
+         <a href="{$smarty.const.ROOT_ADDRESS}/page/bus">
+          اتوبوس
+         </a>
+        </li>
        </ul>
       </div>
      </div>
@@ -164,7 +169,11 @@
         تور
        </a>
       </li>
-
+      <li>
+       <a href="{$smarty.const.ROOT_ADDRESS}/page/bus">
+        اتوبوس
+       </a>
+      </li>
      </ul>
     </div>
    </div>

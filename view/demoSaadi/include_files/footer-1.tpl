@@ -56,19 +56,19 @@
          </a>
         </div>
         {assign var="socialLinks"  value=$about['social_links']|json_decode:true}
-        {assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref','aparat' => 'aparatHref','youtube' => 'youtubeHref','facebook' => 'facebookHref','linkeDin' => 'linkeDinHref']}
+        {assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref','aparat' => 'aparatHref','youtube' => 'youtubeHref','facebook' => 'facebookHref','linkedin' => 'linkeDinHref']}
 
         {foreach $socialLinks as $key => $val}
          {assign var=$socialLinksArray[$val['social_media']] value=$val['link']}
         {/foreach}
         <div class="__social_class__ footer-icon">
-         <a class="__telegram_class__ fab fa-telegram footer_telegram" href="{if $telegramHref}{$telegramHref}{/if}" target="_blank">
+         <a class="__telegram_class__ fab fa-telegram footer_telegram" href="{if $telegramHref}{$telegramHref}{else}javascript:{/if}" {if $telegramHref}target="_blank"{/if}>
          </a>
-         <a class="__instagram_class__ fab fa-instagram footer_instagram" href="{if $instagramHref}{$instagramHref}{/if}" target="_blank">
+         <a class="__instagram_class__ fab fa-instagram footer_instagram" href="{if $instagramHref}{$instagramHref}{else}javascript:{/if}" {if $instagramHref}target="_blank"{/if}>
          </a>
-         <a class="__whatsapp_class__ fab fa-whatsapp footer_whatsapp" href="{if $whatsappHref}{$whatsappHref}{/if}" target="_blank">
+         <a class="__whatsapp_class__ fab fa-whatsapp footer_whatsapp" href="{if $whatsappHref}{$whatsappHref}{else}javascript:{/if}" {if $whatsappHref}target="_blank"{/if}>
          </a>
-         <a class="__linkdin_class__ fa-brands fa-linkedin-in footer_linkedin" href="{if $linkeDinHref}{$linkeDinHref}{/if}" target="_blank">
+         <a class="__linkdin_class__ fa-brands fa-linkedin-in footer_linkedin" href="{if $linkeDinHref}{$linkeDinHref}{else}javascript:{/if}" {if $linkeDinHref}target="_blank"{/if}>
          </a>
         </div>
        </div>
@@ -167,13 +167,13 @@
          مجوزها
         </h3>
         <div class="namads">
-         <a href="javascript:">
+         <a href="https://farasa.cao.ir/sysworkflow/fa/modern/3810212626028ab03488017019616799/6464336316028ab04e3c618028352200.php">
           <img alt="Enamad1" src="project_files/images/certificate1.png"/>
          </a>
-         <a href="javascript:">
+         <a href="https://bpms.cao.ir/web/inquiry/esls">
           <img alt="namad-1" src="project_files/images/certificate2.png"/>
          </a>
-         <a href="javascript:">
+         <a href="https://www.aira.ir/members">
           <img alt="namad-2" src="project_files/images/certificate3.png"/>
          </a>
          {if !empty($about.enamad_id) && !empty($about.enamad_code)}

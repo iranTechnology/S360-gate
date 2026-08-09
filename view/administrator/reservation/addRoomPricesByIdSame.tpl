@@ -1,5 +1,6 @@
 {load_presentation_object filename="reservationPublicFunctions" assign="objPublic"}
 {load_presentation_object filename="reservationHotel" assign="objResult"}
+{load_presentation_object filename="currencyEquivalent" assign="objCurrencyEquivalent"}
 
 
 {$objPublic->getAllCounter('all')} {*گرفتن لیست انواع کانتر*}
@@ -34,7 +35,7 @@
 
                     <div class="form-group col-sm-4">
                         <label for="origin_country" class="control-label">کشور</label><span class="star">*</span>
-                        <select name="origin_country" id="origin_country" class="form-control ">
+                        <select name="origin_country" id="origin_country" class="form-control " readonly>
                             <option value="{$objResult->infoRoomPrice['id_country']}"
                                     selected="selected">{$objPublic->ShowName(reservation_country_tb,$objResult->infoRoomPrice['id_country'])}</option>
                             {*foreach $objPublic->ListCountry() as $country}
@@ -44,14 +45,14 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="origin_city" class="control-label">شهر</label><span class="star">*</span>
-                        <select name="origin_city" id="origin_city" class="form-control" onChange="ShowAllHotel()">
+                        <select name="origin_city" id="origin_city" class="form-control" onChange="ShowAllHotel()" readonly>
                             <option value="{$objResult->infoRoomPrice['id_city']}"
                                     selected="selected">{$objPublic->ShowName(reservation_city_tb,$objResult->infoRoomPrice['id_city'])}</option>
                         </select>
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="origin_region" class="control-label">منطقه</label>
-                        <select name="origin_region" id="origin_region" class="form-control ">
+                        <select name="origin_region" id="origin_region" class="form-control " readonly>
                             <option value="{$objResult->infoRoomPrice['id_region']}"
                                     selected="selected">{$objPublic->ShowName(reservation_region_tb,$objResult->infoRoomPrice['id_region'])}</option>
                         </select>
@@ -60,7 +61,7 @@
 
                     <div class="form-group col-sm-6">
                         <label for="hotel_name" class="control-label">نام هتل</label><span class="star">*</span>
-                        <select name="hotel_name" id="hotel_name" class="form-control" onChange="ShowAllHotelRoom()">
+                        <select name="hotel_name" id="hotel_name" class="form-control" onChange="ShowAllHotelRoom()" readonly>
                             <option value="{$objResult->infoRoomPrice['id_hotel']}"
                                     selected="selected">{$objPublic->ShowName(reservation_hotel_tb,$objResult->infoRoomPrice['id_hotel'])}</option>
                         </select>
@@ -238,139 +239,141 @@
 
                     <h3 class="box-title m-t-40">قیمت گذاری اتاق ها</h3>
                     <hr>
-                    <div class="form-group col-sm-12">
-                        <div class="table-responsive">
+                    {assign var="counter" value=1}
+                    {foreach key=key item=item from=$objResult->hotelRooms}
+                        {assign var="currentKey" value=$counter}
+                        <div class="form-group col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table color-table purple-table" id="TableRoomPrice">
+                                    <thead>
+                                    <tr>
+                                        <th>نوع اتاق / ظرفیت / حداکثر خرید</th>
+                                        <th>قیمت <span class="star">*</span></th>
+                                        <th>قیمت برد هتل</th>
+                                        <th>قیمت ارزی</th>
+                                        <th>نوع ارزی</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- ردیف اول: DBL -->
+                                    <tr>
+                                        <td>
+                                            <input name="age{$currentKey}1" type="hidden" id="age{$currentKey}1" value="DBL">
+                                            <select name="room_type{$currentKey}" id="room_type{$currentKey}" class="form-control " onFocus="ShowAllHotelRoom('{$currentKey}')">
+                                                <option value="">انتخاب اتاق....</option>
+                                                {foreach $objPublic->ShowName(reservation_room_type_tb, $item['DBL']['id_room'], 'comment') as $roomOption}
+                                                    <option value="{$roomOption.id}" {if $item['DBL']['id_room'] == $roomOption.id}selected{/if}>{$roomOption.comment}</option>
+                                                {/foreach}
+                                            </select>
+                                            <br>
+                                            <input type="text" class="form-control" name="total_capacity{$currentKey}" value="{$item['DBL']['total_capacity']}" id="total_capacity{$currentKey}" placeholder="ظرفیت اتاق را وارد کنید">
+                                        </td>
+                                        <td>
+                                            <div class="input-text">
+                                                <input type="text" class="form-control textPrice" name="online_price{$currentKey}1" value="{$item['DBL']['online_price']|number_format:0:".":","}" id="online_price{$currentKey}1" placeholder="قیمت هتل را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-text">
+                                                <input type="text" class="form-control textBoardPrice" name="board_price{$currentKey}1" value="{$item['DBL']['board_price']|number_format:0:".":","}" id="board_price{$currentKey}1" placeholder="قیمت برد را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="currency_price{$currentKey}1" value="{$item['DBL']['currency_price']}" id="currency_price{$currentKey}1" placeholder="قیمت ارزی را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td>
+                                            <select name="currency_type1" id="currency_type1" class="form-control ">
+                                                <option value="">انتخاب کنید....</option>
+                                                {foreach $objCurrencyEquivalent->ListCurrencyEquivalentAdmin() as $currency}
+                                                    <option value="{$currency.CurrencyCode}" {if $item['DBL']['currency_type'] == $currency.CurrencyCode}selected{/if}>{$currency.CurrencyTitle} ({$currency.EqAmount})</option>
+                                                {/foreach}
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
 
-                            <table class="table color-table purple-table" id="TableRoomPrice">
-                                <thead>
-                                <tr>
-                                    <th>نوع اتاق / ظرفیت / حداکثر خرید</th>
-                                    <th>قیمت <span class="star">*</span></th>
-                                    <th>قیمت برد هتل</th>
-                                    <th>قیمت ارزی</th>
-                                    <th>نوع ارزی</th>
-                                    <th>حذف</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <input name="age11" type="hidden" id="age11" value="DBL">
-                                        <select name="room_type1" id="room_type1" class="form-control "
-                                                onFocus="ShowAllHotelRoom('1')">
-                                            <option value="">انتخاب اتاق....</option>
+                                    <!-- ردیف دوم: EXT (تخت اضافه بزرگسال) -->
+                                    <tr>
+                                        <td>
+                                            <input name="age{$currentKey}2" type="hidden" id="age{$currentKey}2" value="EXT"> تخت اضافه بزرگسال
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="online_price{$currentKey}2" value="{$item['EXT']['online_price']|number_format:0:".":","}" id="online_price{$currentKey}2" placeholder="قیمت هتل را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="board_price{$currentKey}2" value="{$item['EXT']['board_price']|number_format:0:".":","}" id="board_price{$currentKey}2" placeholder="قیمت برد را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="currency_price{$currentKey}2" value="{$item['EXT']['currency_price']}" id="currency_price{$currentKey}2" placeholder="قیمت ارزی را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
 
-                                        </select>
-                                        <br>
-                                        <input type="text" class="form-control" name="total_capacity1" value=""
-                                               id="total_capacity1" placeholder="ظرفیت اتاق را وارد کنید">
-                                    </td>
-                                    <td>
-                                        <div class="input-text">
-                                            <input type="text" class="form-control textPrice" name="online_price11"
-                                                   value="" id="online_price11"
-                                                   placeholder="قیمت هتل را وارد کنید" onkeypress="isDigit(this)"
-                                                   onkeyup="javascript:separator(this);"
-                                                   aria-invalid="false">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-text">
-                                            <input type="text" class="form-control textBoardPrice" name="board_price11"
-                                                   value="" id="board_price11"
-                                                   placeholder="قیمت برد را وارد کنید" onkeypress="isDigit(this)"
-                                                   onkeyup="javascript:separator(this);"
-                                                   aria-invalid="false">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" name="currency_price11" value=""
-                                               id="currency_price11"
-                                               placeholder="قیمت ارزی را وارد کنید" onkeypress="isDigit(this)"
-                                               onkeyup="javascript:separator(this);"
-                                               aria-invalid="false">
-                                    </td>
-                                    <td>
-                                        <select name="currency_type1" id="currency_type1" class="form-control ">
-                                            <option value="">انتخاب کنید....</option>
-                                            <option value="0">ندارد</option>
-                                            <option value="1">دلار</option>
-                                            <option value="2">درهم</option>
-                                            <option value="3">یورو</option>
-                                        </select>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><input name="age12" type="hidden" id="age12" value="EXT"> تخت اضافه بزرگسال</td>
-                                    <td><input type="text" class="form-control" name="online_price12" value=""
-                                               id="online_price12" placeholder="قیمت هتل را وارد کنید"
-                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);"
-                                               aria-invalid="false"></td>
-                                    <td><input type="text" class="form-control" name="board_price12" value=""
-                                               id="board_price12" placeholder="قیمت برد را وارد کنید"
-                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);"
-                                               aria-invalid="false"></td>
-                                    <td><input type="text" class="form-control" name="currency_price12" value=""
-                                               id="currency_price12" placeholder="قیمت ارزی را وارد کنید"
-                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);"
-                                               aria-invalid="false"></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="d-flex align-items-center"><input name="age13" type="hidden" id="age13" value="ECHD">
-                                        تخت کودک
-                                        <select name="childFromAge13" id="childFromAge13" class="form-control  mx-2 " style='width: 45px'>
-                                            {for $var=0 to 12}
-                                                <option value="{$var}">{$var}</option>
-                                            {/for}
-                                        </select>
-                                        تا
-                                        <select name="childToAge13" id="childToAge13" class="form-control  mx-2 " style='width: 45px'>
-                                            {for $var=0 to 12}
-                                                <option value="{$var}">{$var}</option>
-                                            {/for}
-                                        </select>
-                                        سال
-                                    </td>
-                                    <td><input type="text" class="form-control" name="online_price13" value=""
-                                               id="online_price13" placeholder="قیمت هتل را وارد کنید"
-                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);"
-                                               aria-invalid="false"></td>
-                                    <td><input type="text" class="form-control" name="board_price13" value=""
-                                               id="board_price13" placeholder="قیمت برد را وارد کنید"
-                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);"
-                                               aria-invalid="false"></td>
-                                    <td><input type="text" class="form-control" name="currency_price13" value=""
-                                               id="currency_price13" placeholder="قیمت ارزی را وارد کنید"
-                                               onkeypress="isDigit(this)" onkeyup="javascript:separator(this);"
-                                               aria-invalid="false"></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class='d-flex align-items-center'><input name="age14" type="hidden" id="age14" value="CHD">
-                                        تخت کودک رایگان تا
-                                        <select name="childToAge14" id="childToAge14" class="form-control  mx-2 " style='width: 45px'>
-                                            {for $var=0 to 12}
-                                                <option value="{$var}">{$var}</option>
-                                            {/for}
-                                        </select>
-                                        سال
-                                    </td>
-                                    <td><input type="hidden" class="form-control" name="online_price14" value="" id="online_price14" placeholder="قیمت هتل را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false"></td>
-                                    <td><input type="hidden" class="form-control" name="board_price14" value="" id="board_price14" placeholder="قیمت برد را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false"></td>
-                                    <td><input type="hidden" class="form-control" name="currency_price14" value="" id="currency_price14" placeholder="قیمت ارزی را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false"></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                    <!-- ردیف سوم: ECHD (تخت کودک با هزینه) -->
+                                    <tr>
+                                        <td class="d-flex align-items-center">
+                                            <input name="age{$currentKey}3" type="hidden" id="age{$currentKey}3" value="ECHD">
+                                            تخت کودک
+                                            <select name="childFromAge{$currentKey}3" id="childFromAge{$currentKey}3" class="form-control  mx-2 " style='width: 45px'>
+                                                {for $var=0 to 12}
+                                                    <option value="{$var}" {if $item['ECHD']['childFromAge'] == $var}selected{/if}>{$var}</option>
+                                                {/for}
+                                            </select>
+                                            تا
+                                            <select name="childToAge{$currentKey}3" id="childToAge{$currentKey}3" class="form-control  mx-2 " style='width: 45px'>
+                                                {for $var=0 to 12}
+                                                    <option value="{$var}" {if $item['ECHD']['childToAge'] == $var}selected{/if}>{$var}</option>
+                                                {/for}
+                                            </select>
+                                            سال
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="online_price{$currentKey}3" value="{$item['ECHD']['online_price']|number_format:0:".":","}" id="online_price{$currentKey}3" placeholder="قیمت هتل را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="board_price{$currentKey}3" value="{$item['ECHD']['board_price']|number_format:0:".":","}" id="board_price{$currentKey}3" placeholder="قیمت برد را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="currency_price{$currentKey}3" value="{$item['ECHD']['currency_price']}" id="currency_price{$currentKey}3" placeholder="قیمت ارزی را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
 
-                                </tbody>
-                            </table>
-
+                                    <!-- ردیف چهارم: CHD (تخت کودک رایگان) -->
+                                    <tr>
+                                        <td class='d-flex align-items-center'>
+                                            <input name="age{$currentKey}4" type="hidden" id="age{$currentKey}4" value="CHD">
+                                            تخت کودک رایگان تا
+                                            <select name="childToAge{$currentKey}4" id="childToAge{$currentKey}4" class="form-control  mx-2 " style='width: 45px'>
+                                                {for $var=0 to 12}
+                                                    <option value="{$var}" {if $item['CHD']['childToAge'] == $var}selected{/if}>{$var}</option>
+                                                {/for}
+                                            </select>
+                                            سال
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="form-control" name="online_price{$currentKey}4" value="{$item['CHD']['online_price']}" id="online_price{$currentKey}4" placeholder="قیمت هتل را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="form-control" name="board_price{$currentKey}4" value="{$item['CHD']['board_price']}" id="board_price{$currentKey}4" placeholder="قیمت برد را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="form-control" name="currency_price{$currentKey}4" value="{$item['CHD']['currency_price']}" id="currency_price{$currentKey}4" placeholder="قیمت ارزی را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                        {assign var="counter" value=$counter+1}
+                    {/foreach}
+
+                    <input name="countRoom" type="hidden" id="countRoom" value="{$currentKey}">
 
 
                     <div class="row">

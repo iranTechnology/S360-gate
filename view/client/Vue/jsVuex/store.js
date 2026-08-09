@@ -1133,7 +1133,6 @@ const store = new Vuex.Store({
         await commit("setPwaData", {
           panel_index: "pwa_page",
           data: {
-
             client_data: payload.client_data,
             client_name: payload.client_name,
             client_id: payload.client_id,

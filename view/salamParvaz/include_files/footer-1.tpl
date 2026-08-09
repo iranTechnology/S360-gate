@@ -138,24 +138,25 @@
           </a>
          </li>
          <li>
-          <a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">
-           <i class="fal fa-angle-left">
-           </i>
-           پیگیری خرید
-          </a>
-         </li>
-         <li>
           <a href="{$smarty.const.ROOT_ADDRESS}/pay">
            <i class="fal fa-angle-left">
            </i>
            پرداخت آنلاین
           </a>
          </li>
+
          <li>
           <a href="{$smarty.const.ROOT_ADDRESS}/rules">
            <i class="fal fa-angle-left">
            </i>
            قوانین و مقررات
+          </a>
+         </li>
+         <li>
+          <a href="https://sadadpsp.ir/tollpayment">
+           <i class="fal fa-angle-left">
+           </i>
+           عوارض خروج از کشور
           </a>
          </li>
         </ul>

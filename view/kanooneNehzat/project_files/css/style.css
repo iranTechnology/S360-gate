@@ -995,7 +995,7 @@ a:hover {
 .hotel-ghods .link-parent .img-hotel {
     inset: 0;
     width: 100%;
-    height: 330px;
+    height: 280px;
     z-index: 1;
     border-radius: 10px;
     transition: var(--transition);
@@ -1049,7 +1049,7 @@ a:hover {
 
 .hotel-ghods .parent-hotel {
     display: grid;
-    grid-template-columns:repeat(3, 1fr);
+    grid-template-columns:repeat(4, 1fr);
     gap: 30px
 }
 
@@ -1074,13 +1074,13 @@ a:hover {
     }
 
     .hotel-ghods .link-parent .img-hotel {
-        height: 230px
+        height: 200px
     }
 }
 
 @media (max-width: 991px) {
     .hotel-ghods .link-parent .img-hotel {
-        height: 170px
+        height: 250px
     }
 
     .hotel-ghods .parent-ul-hotel #pills-tab-hotel .nav-link {
@@ -1561,6 +1561,9 @@ a:hover {
 }
 
 @media (max-width: 992px) {
+    .hotel-ghods .parent-hotel {
+        grid-template-columns:repeat(2, 1fr);
+    }
     .other .other-parent {
         grid-template-columns:repeat(3, 1fr)
     }

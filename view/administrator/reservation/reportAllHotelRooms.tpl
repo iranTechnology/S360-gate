@@ -21,6 +21,9 @@
         {foreach key=key item=item from=$objResult->reportAllHotelRooms}
             <div class="col-md-3 col-xs-12 col-sm-6">
                 <div class="white-box">
+                    {if $item.isExpired}
+                        <span class="btn btn-danger" style="font-size: 10px">منقضی شده</span>
+                    {/if}
                     {*<h3 class="box-title m-b-0"> ویرایش اتاق ها({$key+1} )</h3>*}
                     <h4 class="m-b-1">اتاق <span class="room-name text-muted text-sm">{$item.room_name}</span> در هتل <span class="hotel-name text-megna text-sm">{$item.hotel_name}</span></h4>
                     <h6 class="box-title m-b-0"> از تاریخ {$objPublic->format_Date($item['minDate'])} تا  {$objPublic->format_Date($item['maxDate'])}</h6>

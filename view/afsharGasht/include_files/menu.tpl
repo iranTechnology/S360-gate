@@ -33,8 +33,11 @@
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/page/favorite-tour">محبوب ترین تورها</a></li>
                             </ul>
                         </li>
-
-
+                        <li>
+                            <a href="{$smarty.const.ROOT_ADDRESS}/page/bus">
+                                اتوبوس
+                            </a>
+                        </li>
                         <li>
                             <a href="javascript:">آژانس ما</a>
                             <ul class="nav-dropdown nav-submenu">

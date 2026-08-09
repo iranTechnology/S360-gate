@@ -155,7 +155,11 @@
                                                                         {$item['min_price_a']|number_format} {$item['currency_type']}
                                                                     {/if}
                                                                     <span>
-
+                                                            {if $item['min_price']['is_toman'] == true}
+                                                                تومان
+                                                            {else}
+                                                                ریال
+                                                            {/if}
                                                             </span>
                                                         </div>
                                                     </div>

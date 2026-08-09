@@ -36,6 +36,16 @@
                     </div>
                 </a>
             </div>
+            <div class="item">
+                <a class="link-parent" href="javascript:">
+                    <div class="img-hotel">
+                        <img alt="img-hotel" src="project_files/images/Untitled3.jpeg" />
+                    </div>
+                    <div class="text-hotel">
+                        <h3>اقامتگاه های سازمانی</h3>
+                    </div>
+                </a>
+            </div>
         </div>
         {*        {include file="./hotels-webservice.tpl"}*}
         <div class="owl-carousel owl-theme parent-hotel-owl">
@@ -66,6 +76,16 @@
                     </div>
                     <div class="text-hotel">
                         <h3>اقامتگاه های شمال</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="item">
+                <a class="link-parent" href="javascript:">
+                    <div class="img-hotel">
+                        <img alt="img-hotel" src="project_files/images/Untitled3.jpeg" />
+                    </div>
+                    <div class="text-hotel">
+                        <h3>اقامتگاه های سازمانی</h3>
                     </div>
                 </a>
             </div>

@@ -66,11 +66,11 @@
 
                                                     </div>
                                                     <div class="price-tour">
-                                                        <div class="start-tour">
-                                                            <i class="fa-solid fa-star"></i>
-                                                            <span class="__degree_class__">{$item['StarCode']}</span>
-                                                            <span class="reviews">320 آرا</span>
-                                                        </div>
+{*                                                        <div class="start-tour">*}
+{*                                                            <i class="fa-solid fa-star"></i>*}
+{*                                                            <span class="__degree_class__">{$item['StarCode']}</span>*}
+{*                                                            <span class="reviews">320 آرا</span>*}
+{*                                                        </div>*}
                                                         <div class="start-price">
                                                             <span>شروع قیمت</span>
                                                             <span class="number-price"><span class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}
@@ -131,15 +131,23 @@
 
                                                     </div>
                                                     <div class="price-tour">
-                                                        <div class="start-tour">
-                                                            <i class="fa-solid fa-star"></i>
-                                                            <span class="__degree_class__">{$item['StarCode']}</span>
-                                                            <span class="reviews">3210 آرا</span>
-                                                        </div>
+{*                                                        <div class="start-tour">*}
+{*                                                            <i class="fa-solid fa-star"></i>*}
+{*                                                            <span class="__degree_class__">{$item['StarCode']}</span>*}
+{*                                                            <span class="reviews">3210 آرا</span>*}
+{*                                                        </div>*}
                                                         <div class="start-price">
                                                             <span>شروع قیمت</span>
-                                                            <span class="number-price"><span class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}
-                                                                <span>
+                                                            <span class="number-price"><span class="___price_class__">
+                                        {if $item['min_price_r'] != 0}
+                                            {$item['min_price_r']|number_format} ریال
+                                        {/if}
+                                                                    {if  $item['min_price_r'] != 0 &&  $item['min_price_a'] } + {/if}
+                                                                    {if $item['min_price_a']}
+
+                                                                        {$item['min_price_a']|number_format} {$item['currency_type']}
+                                                                    {/if}
+                                                                    <span>
                                                             {if $item['min_price']['is_toman'] == true}
                                                                 تومان
                                                             {else}
@@ -149,7 +157,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <img alt="img-tour" class="circle-tour" src="project_files/images/cric1.png"/>
+                                                <img alt="img-tour" class="circle-tour" src="project_files/images/cric3.png"/>
                                             </a>
                                         </div>
 
