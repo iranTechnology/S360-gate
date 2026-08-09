@@ -4795,7 +4795,6 @@ function create_section_package_tour_several_date(_this , start_date, tour_id, e
 }
 
 function create_section_tour_one_day(tour_id, start_date,end_date){
-    console.log('ssddssssssssssssssssssssss')
     const dates = $('[data-name="package-dates"]')
     dates.find("button").each(function () {
         $(this).removeClass("future-date-item-active site-bg-main-color")
@@ -4953,6 +4952,8 @@ function triggerPackageRoomCount(_this,type) {
         has_custom_room = true ;
     }
 
+    const typeTourReserve = $('#typeTourReserve').val();
+
     const selected_package_price=room_input_parent.find('[data-name="selected-package-price"]')
 
 
@@ -4965,7 +4966,7 @@ function triggerPackageRoomCount(_this,type) {
     const selected_package_id=package_form.find('input#packageId').val();
 
 
-
+    const is_request = document.getElementById('is_request').value;
 
 
 
@@ -4990,9 +4991,7 @@ function triggerPackageRoomCount(_this,type) {
         'infant':0,
     }
 
-
-
-
+    let currency_totals = {};
 
     let room_string=''
 
@@ -5005,10 +5004,34 @@ function triggerPackageRoomCount(_this,type) {
         const each_room_type=each_room_input.data('type')
         const each_room_value=each_room_input.val()
 
+        const each_room_currency_price = each_room_input.data('currency-price')
+        const each_room_currency_name = each_room_input.data('currency-name')
+
         if(each_person == 1) {
             final_package_price+=(each_room_value*each_room_price*each_room_coefficient)
         }else{
             final_package_price+=(each_room_value*each_room_price)
+        }
+
+        if (is_request == 1 && each_room_currency_price > 0 && typeTourReserve != 'oneDayTour') {
+
+            const currency_price = Number(each_room_currency_price) || 0;
+            const currency_name = each_room_currency_name;
+
+            if (currency_price > 0 && currency_name) {
+
+                let currency_total = currency_price * Number(each_room_value);
+
+                if (each_person == 1) {
+                    currency_total *= Number(each_room_coefficient) || 1;
+                }
+
+                if (!currency_totals[currency_name]) {
+                    currency_totals[currency_name] = 0;
+                }
+
+                currency_totals[currency_name] += currency_total;
+            }
         }
 
 
@@ -5042,7 +5065,6 @@ function triggerPackageRoomCount(_this,type) {
 
     })
 
-    console.log(room_string)
     if(room_string === "" ) {
         // $.alert({
         //     title:  useXmltag("Tourreservation"),
@@ -5076,16 +5098,41 @@ function triggerPackageRoomCount(_this,type) {
     }else{
         selected_package_prepayment_price.show();
     }
-    console.log('--------------------------')
-    console.log(selected_rooms_type , selected_rooms_count)
-    console.log('---------------------------')
-    selected_package_price.html(final_package_price.toLocaleString("en-US"))
+
+    const currentHtml = selected_package_price.html();
+    const currencyMatch = currentHtml.match(/(تومان|ریال)/);
+    const currencyUnit = currencyMatch ? currencyMatch[0] : 'تومان';
+
+    let final_package_price_html = final_package_price.toLocaleString("en-US") + ' ' + currencyUnit;
+
+    let currency_total = 0;
+
+    if (is_request == 1) {
+
+        Object.keys(currency_totals).forEach(function(currency_name) {
+
+            currency_total = currency_totals[currency_name];
+
+            if (currency_total > 0) {
+                final_package_price_html +=
+                    ' + ' +
+                    currency_total.toLocaleString("en-US") +
+                    ' ' +
+                    currency_name;
+            }
+
+        });
+    }
+
+    selected_package_price.html(`<span data-name="selected-package-price">${final_package_price_html}</span>`);
+
     package_form.find('[name="passengerCount"]').val(selected_rooms_count)
     package_form.find('[name="passengerCountADT"]').val(selected_rooms_type['adult'])
     package_form.find('[name="passengerCountCHD"]').val(selected_rooms_type['child'])
     package_form.find('[name="passengerCountINF"]').val(selected_rooms_type['infant'])
     package_form.find('[name="countRoom"]').val(room_string)
     package_form.find('[name="totalPrice"]').val(final_package_price)
+    package_form.find('[name="totalPriceA"]').val(currency_total)
 
 }
 
