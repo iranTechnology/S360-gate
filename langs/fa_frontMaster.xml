@@ -2222,8 +2222,7 @@
     نمائید
   </ErrorSystemFlight>
   <ErrorSystemFlightGds>
-    اطلاعات مسافر یا مسافران به درستی وارد نشده است یا ایرلاین تغییر نرخ یا ظرفیت داشته است.
-    لطفا دقایقی دیگر مجدد تلاش نمایید
+    ایرلاین تغییر نرخ یا ظرفیت داشته است.لطفا مجدد جستجو نمایید.
   </ErrorSystemFlightGds>
   <RequestCancellationYourPurchaseScrutiny>در خواست کنسلی خرید شما با موفقیت ثبت شد</RequestCancellationYourPurchaseScrutiny>
   <YourPurchaseCancellationRequestSuccessfullySubmittedPlusDetail>در خواست کنسلی خرید شما با موفقیت ثبت شد،برای پیگیری نتیجه لطفا از منوی
