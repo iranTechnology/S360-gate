@@ -5104,7 +5104,8 @@ class reservationTour extends clientAuth
             ], true)
             ->join($reservation_tour_route_table, 'fk_tour_id', 'id', 'INNER')
             ->join($reservation_tour_route_table, 'id', 'destination_city_id', 'INNER', $reservation_city_table)
-            ->join($reservation_tour_package_table, 'fk_tour_id', 'id', 'LEFT');
+            ->join($reservation_tour_package_table, 'fk_tour_id', 'id', 'LEFT')
+        ;
 
 
         // فیلترها
@@ -5174,6 +5175,7 @@ class reservationTour extends clientAuth
 
 //        }
         $reservationTourList = $reservationTourList->all();
+
 
 
         $result = [];
