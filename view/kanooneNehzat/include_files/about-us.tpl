@@ -1,5 +1,5 @@
 {assign var="newsItems" value=$obj_main_page->getNewsArticlesSelected()}
-
+{assign var="newsItemsLimited" value=$newsItems['data']|array_slice:0:5}
 {if $newsItems['data']|count > 0}
     <section class="i_modular_about_us about">
         <div class="container">
@@ -7,11 +7,11 @@
                 <div class="col-lg-5 col-md-12 col-sm-12 col-12 parent-about-col">
                     <div class="parent-about">
                         <div>
-                            <h2>چرا خادمان نهضت ؟</h2>
+                            <h2>خدمات سازمانی</h2>
                         </div>
                         <p class="__aboutUs_class__">{$htmlContent = $about['body']|strip_tags}{$htmlContent|truncate:300}</p>
                         <ul class="ul-about" id="aboutSlider">
-                            {foreach $newsItems['data'] as $key => $item}
+                            {foreach $newsItemsLimited as $key => $item}
 
                                 <li class="about-slide-item" data-index="{$key}" data-image="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/{$item.feature_image}">
                                     <a href="{$item['link']}" class="text-dark">

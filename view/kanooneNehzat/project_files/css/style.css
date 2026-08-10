@@ -2645,6 +2645,7 @@ a:hover {
     padding: 10px 15px;
     border-radius: 8px;
     border: 2px solid transparent;
+    font-size: 14px;
 }
 
 .ul-about .about-slide-item.active {

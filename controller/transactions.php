@@ -16,17 +16,17 @@ class transactions extends clientAuth
     public $apiAddress;
     public $transactions;
     public function __construct() {
-            self::$admin =  Load::controller('admin');
-            $this->modelTransactions = $this->getModel('transactionsModel');
-            $this->apiAddress = functions::UrlSource();
-            $this->transactions = $this->getModel('transactionsModel');
+        self::$admin =  Load::controller('admin');
+        $this->modelTransactions = $this->getModel('transactionsModel');
+        $this->apiAddress = functions::UrlSource();
+        $this->transactions = $this->getModel('transactionsModel');
     }
 
 
     public function index()
     {
 
-       // die(json_encode($this->mergeTransactionsAndSort()));
+        // die(json_encode($this->mergeTransactionsAndSort()));
         $res = [];
         try {
 
@@ -60,37 +60,37 @@ class transactions extends clientAuth
         $updated_at = date("Y-m-d H:i:s", $array['LastEditInt']);
 
 
-            $clientID = $array[0]['clientID'];
-            $price = $array['Price'];
-            $payment_date = $array['PriceDate'];
-            $factor_number = $array['FactorNumber'];
-            $status = (string)$array['status'];
-            $reason = $array['Reason'];
-            $comment = $array['Comment'];
-            $tracking_code = $array['BankTrackingCode'];
-            $payment_status = (string)$array['PaymentStatus'];
-            $creation_date_int = $array['CreationDateInt'];
-            $last_edit_int = $array['LastEditInt'];
-            $created_at = (string)$created_at;
-            $updated_at = (string)$updated_at;
+        $clientID = $array[0]['clientID'];
+        $price = $array['Price'];
+        $payment_date = $array['PriceDate'];
+        $factor_number = $array['FactorNumber'];
+        $status = (string)$array['status'];
+        $reason = $array['Reason'];
+        $comment = $array['Comment'];
+        $tracking_code = $array['BankTrackingCode'];
+        $payment_status = (string)$array['PaymentStatus'];
+        $creation_date_int = $array['CreationDateInt'];
+        $last_edit_int = $array['LastEditInt'];
+        $created_at = (string)$created_at;
+        $updated_at = (string)$updated_at;
 
 
-            $data = [
-                'clientID' => $clientID,
-                'price' => $price,
-                'PriceDate' => $payment_date,
-                'FactorNumber' => $factor_number,
-                'status' => $status,
-                'reason' => $reason,
-                'comment' => $comment,
-                'BankTrackingCode' => $tracking_code,
-                'PaymentStatus' => $payment_status,
-                'CreationDateInt' => $creation_date_int,
-                'LastEditInt' => $last_edit_int,
-                'year' => $year,
-                'created_at' => $created_at,
-                'updated_at' => $updated_at
-            ];
+        $data = [
+            'clientID' => $clientID,
+            'price' => $price,
+            'PriceDate' => $payment_date,
+            'FactorNumber' => $factor_number,
+            'status' => $status,
+            'reason' => $reason,
+            'comment' => $comment,
+            'BankTrackingCode' => $tracking_code,
+            'PaymentStatus' => $payment_status,
+            'CreationDateInt' => $creation_date_int,
+            'LastEditInt' => $last_edit_int,
+            'year' => $year,
+            'created_at' => $created_at,
+            'updated_at' => $updated_at
+        ];
         $this->modelTransactions->insertWithBind($data);
     }
 
@@ -592,16 +592,16 @@ LEFT JOIN report_gasht_tb
         if (!empty($_POST['FactorNumber']) && $_POST['FactorNumber'] > 0) {
             $sql .= " AND t.FactorNumber= '{$_POST['FactorNumber']}'";
         }
-       /*1404_2_29 Ardalani
-        $Reason = !empty($_POST['Reason']) ? $_POST['Reason'] : "all";
-        if ($Reason != 'all') {
-            if($_POST['Reason']=='buy'){
-                $sql .= " AND (t.Reason= 'buy' OR t.Reason= 'buy_hotel' OR t.Reason= 'buy_insurance' OR t.Reason= 'buy_reservation_hotel' OR t.Reason= 'buy_reservation_ticket' OR t.Reason= 'buy_foreign_hotel'
-                    OR t.Reason= 'buy_Europcar' OR t.Reason= 'buy_reservation_tour' OR t.Reason= 'buy_reservation_visa' OR t.Reason= 'buy_gasht_transfer' OR t.Reason= 'buy_train' OR t.Reason= 'buy_bus' OR t.Reason= 'buy_entertainment' OR t.Reason= 'buy_visa_plan' OR t.Reason= 'buy_package' OR t.Reason= 'buy_cip' ) ";
-            }else{
-                $sql .= " AND (t.Reason='{$Reason}') ";
-            }
-        }*/
+        /*1404_2_29 Ardalani
+         $Reason = !empty($_POST['Reason']) ? $_POST['Reason'] : "all";
+         if ($Reason != 'all') {
+             if($_POST['Reason']=='buy'){
+                 $sql .= " AND (t.Reason= 'buy' OR t.Reason= 'buy_hotel' OR t.Reason= 'buy_insurance' OR t.Reason= 'buy_reservation_hotel' OR t.Reason= 'buy_reservation_ticket' OR t.Reason= 'buy_foreign_hotel'
+                     OR t.Reason= 'buy_Europcar' OR t.Reason= 'buy_reservation_tour' OR t.Reason= 'buy_reservation_visa' OR t.Reason= 'buy_gasht_transfer' OR t.Reason= 'buy_train' OR t.Reason= 'buy_bus' OR t.Reason= 'buy_entertainment' OR t.Reason= 'buy_visa_plan' OR t.Reason= 'buy_package' OR t.Reason= 'buy_cip' ) ";
+             }else{
+                 $sql .= " AND (t.Reason='{$Reason}') ";
+             }
+         }*/
 
         $Reason = isset($_POST['Reason']) && $_POST['Reason'] !== '' ? $_POST['Reason'] : 'buy';
         if ($Reason === 'buy') {
@@ -798,11 +798,11 @@ LEFT JOIN report_gasht_tb
                                       WHERE t.Status='2' AND ((t.PaymentStatus = 'success') OR (t.PaymentStatus = 'pending' AND t.CreationDateInt > '{$time}')  )
                                        $condition";
 //            var_dump($sql_charge_search);
-                $ModelBase = Load::library('ModelBase');
-                $buy_search = $ModelBase->select($sql_buy_search);
-                $charge_search = $ModelBase->select($sql_charge_search);
-                $providersArray[$index]['total_remain_transaction'] = $charge_search[0]['total_charge'] - $buy_search[0]['total_buy'] ;
-                $final_array[$index] = $providersArray[$index];
+            $ModelBase = Load::library('ModelBase');
+            $buy_search = $ModelBase->select($sql_buy_search);
+            $charge_search = $ModelBase->select($sql_charge_search);
+            $providersArray[$index]['total_remain_transaction'] = $charge_search[0]['total_charge'] - $buy_search[0]['total_buy'] ;
+            $final_array[$index] = $providersArray[$index];
 //            }
         }
 
@@ -1007,6 +1007,7 @@ LEFT JOIN report_gasht_tb
             case 'PrivateLocalHotel':
             case 'PrivatePortalTour':
             case 'PrivateLocalTour':
+            case 'PrivateCip':
             case 'Private':
                 return 'اختصاصی';
             case "0":
@@ -1014,6 +1015,7 @@ LEFT JOIN report_gasht_tb
             case "PublicPortalInsurance":
             case "PublicLocalInsurance":
             case "PublicPortalHotel":
+            case "PublicCip":
             case "public":
                 return 'اشتراکی';
             default:

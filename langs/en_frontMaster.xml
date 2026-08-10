@@ -1,5 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Main>
+  <RefundPenaltyFromIssueTo3DaysBefore>
+    Refund penalty from ticket issuance until 12:00 noon 3 days before departure is 30%.
+  </RefundPenaltyFromIssueTo3DaysBefore>
+
+  <RefundPenaltyFrom3DaysTo2DaysBefore>
+    Refund penalty from 12:00 noon 3 days before departure until 12:00 noon 2 days before departure is 40%.
+  </RefundPenaltyFrom3DaysTo2DaysBefore>
+
+  <RefundPenaltyFrom2DaysTo1DayBefore>
+    Refund penalty from 12:00 noon 2 days before departure until 12:00 noon 1 day before departure is 70%.
+  </RefundPenaltyFrom2DaysTo1DayBefore>
+
+  <RefundPenaltyFrom1DayTo24HoursBefore>
+    Refund penalty from 12:00 noon 1 day before departure until 24 hours before departure is 80%.
+  </RefundPenaltyFrom1DayTo24HoursBefore>
+
+  <RefundPenaltyFrom24HoursBefore>
+    Refund penalty from 24 hours before departure onwards is 100%.
+  </RefundPenaltyFrom24HoursBefore>
+
+  <RefundPenaltyNote>
+    Note: The mentioned percentages may be subject to change and will be communicated at the time of cancellation.
+  </RefundPenaltyNote>
+
+  <!-- ============= DOMESTIC (English) ============= -->
+
+  <DomesticRefundPenaltyWithin30Minutes>
+    Refund penalty within 30 minutes after booking (only up to 16 hours before departure) is 0%.
+  </DomesticRefundPenaltyWithin30Minutes>
+
+  <DomesticRefundPenaltyFromIssueTo3DaysBefore>
+    Refund penalty from ticket issuance until 12:00 noon 3 days before departure is 30%.
+  </DomesticRefundPenaltyFromIssueTo3DaysBefore>
+
+  <DomesticRefundPenaltyFrom3DaysTo2DaysBefore>
+    Refund penalty from 12:00 noon 3 days before departure until 12:00 noon 2 days before departure is 40%.
+  </DomesticRefundPenaltyFrom3DaysTo2DaysBefore>
+
+  <DomesticRefundPenaltyFrom2DaysTo1DayBefore>
+    Refund penalty from 12:00 noon 2 days before departure until 12:00 noon 1 day before departure is 70%.
+  </DomesticRefundPenaltyFrom2DaysTo1DayBefore>
+
+  <DomesticRefundPenaltyFrom1DayTo24HoursBefore>
+    Refund penalty from 12:00 noon 1 day before departure until 24 hours before departure is 80%.
+  </DomesticRefundPenaltyFrom1DayTo24HoursBefore>
+
+  <DomesticRefundPenaltyFrom24HoursBefore>
+    Refund penalty from 24 hours before departure onwards is 100%.
+  </DomesticRefundPenaltyFrom24HoursBefore>
+
+  <DomesticRefundPenaltyNote>
+    All flight penalty percentages are defined in the online cancellation and refund system. Passengers can cancel and refund their tickets through the link below. Please note that for round-trip fares, refund rules are different and will be calculated based on the entire reference. Thank you.
+  </DomesticRefundPenaltyNote>
+
+  <DomesticRefundLink>
+    https://apstick.ir/api/DeepLink/Refund/V1?language=en
+  </DomesticRefundLink>
+
+  <DomesticRefundContact>
+    For further inquiries, please contact us during office hours at 02123076 extension 430.
+  </DomesticRefundContact>
+
+  <!-- ============= INTERNATIONAL (English) ============= -->
+
+  <IntlRefundPenaltyWithin30Minutes>
+    Refund penalty within 30 minutes after booking (only up to 16 hours before departure) is 0%.
+  </IntlRefundPenaltyWithin30Minutes>
+
+  <IntlRefundPenaltyFromIssueTo3DaysBefore>
+    Refund penalty from ticket issuance until 12:00 noon 3 days before departure is 30%.
+  </IntlRefundPenaltyFromIssueTo3DaysBefore>
+
+  <IntlRefundPenaltyFrom3DaysTo2DaysBefore>
+    Refund penalty from 12:00 noon 3 days before departure until 12:00 noon 2 days before departure is 40%.
+  </IntlRefundPenaltyFrom3DaysTo2DaysBefore>
+
+  <IntlRefundPenaltyFrom2DaysTo1DayBefore>
+    Refund penalty from 12:00 noon 2 days before departure until 12:00 noon 1 day before departure is 70%.
+  </IntlRefundPenaltyFrom2DaysTo1DayBefore>
+
+  <IntlRefundPenaltyFrom1DayTo24HoursBefore>
+    Refund penalty from 12:00 noon 1 day before departure until 24 hours before departure is 100%.
+  </IntlRefundPenaltyFrom1DayTo24HoursBefore>
+
+  <IntlRefundPenaltyFrom24HoursBefore>
+    Refund penalty from 24 hours before departure onwards is 100%.
+  </IntlRefundPenaltyFrom24HoursBefore>
+
+  <IntlRefundPenaltyNote>
+    All flight penalty percentages are defined in the online cancellation and refund system. Passengers can cancel and refund their tickets through the link below. Please note that for round-trip fares, refund rules are different and will be calculated based on the entire reference. Thank you.
+  </IntlRefundPenaltyNote>
+
+  <IntlRefundLink>
+    https://apstick.ir/api/DeepLink/Refund/V1?language=en
+  </IntlRefundLink>
+
+  <IntlRefundContact>
+    For further inquiries, please contact us during office hours at 02123076 extension 430.
+  </IntlRefundContact>
   <PursueThePurchaseOfServices>Pursue the purchase of services</PursueThePurchaseOfServices>
   <Login>login</Login>
   <UserName>user name</UserName>

@@ -1,5 +1,5 @@
 {assign var="main_articles" value=$obj_main_page->getNewsArticles()}
-
+{assign var="newsItemsLimited" value=$main_articles['data']|array_slice:0:6}
 {if $main_articles['data']|count > 0 }
     <section class="i_modular_blog blog-kharazmi">
         <div class="container">
@@ -10,7 +10,7 @@
             </div>
             <div class="parent-special-tours-paeiz">
 
-                {foreach $main_articles['data'] as $key => $item}
+                {foreach $newsItemsLimited as $key => $item}
                     <a class="__i_modular_nc_item_class_0 items-special-tours-paeiz items-special-tours-paeiz1"
                        href="{$item['link']}">
                         <img alt='{$item["alt"]}' class="__image_class__" src='{$item["image"]}' />

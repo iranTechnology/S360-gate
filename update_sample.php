@@ -8,7 +8,8 @@
 
 $client_sql = <<<SQL
 
-
+ALTER TABLE `book_cip_tb` 
+ADD COLUMN `serviceTitle` VARCHAR(255) DEFAULT NULL AFTER `type_app`;
 
 SQL;
 

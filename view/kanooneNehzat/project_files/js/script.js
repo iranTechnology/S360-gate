@@ -276,13 +276,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // توقف اتوماتیک در زمان هاور
-        item.addEventListener('mouseenter', stopAutoPlay);
-        item.addEventListener('mouseleave', startAutoPlay);
     });
 
-    // توقف اتوماتیک در هاور روی عکس
-    mainImage.addEventListener('mouseenter', stopAutoPlay);
-    mainImage.addEventListener('mouseleave', startAutoPlay);
+
 
     // شروع اسلایدر
     changeSlide(0);
