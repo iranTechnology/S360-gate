@@ -8441,8 +8441,8 @@ class bookshowTest extends clientAuth {
             if ( ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                 $totalQty = ( $flightBook['adt_qty_f'] + $flightBook['chd_qty_f'] + $flightBook['inf_qty_f'] ) + $totalQty;
             }
-
-            $DataFlightType = dateTimeSetting::jdate( 'Y-m-d (H:i:s)', $flightBook['creation_date_int'] ) . "<hr style='margin:3px'><span class='FontBold'>" . $flightBook['request_number'] . "</span> <hr style='margin:3px'><span class='FontBold'> " . $flightBook['factor_number'] . "</span> <hr style='margin:3px'>";
+            $webServiceType = $flightBook['serviceTitle'] == 'PrivateCip' ? 'اختصاصی' : 'اشتراکی';
+            $DataFlightType = dateTimeSetting::jdate( 'Y-m-d (H:i:s)', $flightBook['creation_date_int'] ) . "<hr style='margin:3px'><span class='FontBold'>" . $flightBook['request_number'] . "</span> <hr style='margin:3px'><span class='FontBold'> " . $flightBook['factor_number'] . "</span> <hr style='margin:3px'><span class='FontBold'> " . $webServiceType . "</span> <hr style='margin:3px'>";
 //====================================Flight Information ==================
             if ( $flightBook['airport_code'] != '') {
                 $DataFlightInformation  = $flightBook['airport_code'];

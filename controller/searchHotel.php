@@ -310,9 +310,8 @@ class searchHotel extends ApiHotelCore {
                     if (!empty($resultHotelApi['Result'])) {
                         $t2 = microtime(true);
                         $final_result_search = $this->excludeWebserviceHotel($resultHotelApi['Result']);
+
                         foreach ($final_result_search as $Hotel) {
-
-
 
                             $index++;
                             // اضافه کردن کمسیون آژانس به قیمت اتاق
