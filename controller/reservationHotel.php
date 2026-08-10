@@ -391,7 +391,6 @@ class reservationHotel extends clientAuth
 
                 // ارسال اطلاعات برای درج در دیتابیس //
                 $resultDateRoomPrice = $this->DateForRoomPrice($info, 'firstInsert', $isSame);
-                functions::insertLog('$resultDateRoomPrice: ' . json_encode($resultDateRoomPrice) , '0abbasi');
 
                 if ($resultDateRoomPrice != 'success') {
                     $allSuccess = false;
@@ -495,10 +494,8 @@ class reservationHotel extends clientAuth
         $Model = Load::library('Model');
 
         $count_package = $info['count_package'];
-        functions::insertLog('$count_package: ' . json_encode($count_package) , '0abbasi');
         // حلقه به تعداد اتاق های انتخاب شده ی هتل //
         for ($p = 1; $p <= $count_package; $p++) {
-            functions::insertLog('room_type: ' . json_encode($info['room_type' . $p]) , '0abbasi');
             if (isset($info['room_type' . $p]) && $info['room_type' . $p] != '') {
 
                 $hotel_index = strval($info['hotel_name']) . strval($info['room_type' . $p]) . strval($this->user_type) . strval($date) . 'DBL' ;
@@ -646,9 +643,7 @@ class reservationHotel extends clientAuth
                             $this->sql = substr($this->sql, 0, -1);
 
 
-                            functions::insertLog('$this->sql: ' . json_encode($this->sql) , '0abbasi');
                             $resInsert[] = $Model->execQuery($this->sql);
-                            functions::insertLog('execQuery' , '0abbasi');
 
                             $this->sql = " INSERT INTO reservation_hotel_room_prices_tb VALUES";
                         }
@@ -707,7 +702,6 @@ class reservationHotel extends clientAuth
 
         }
 
-        functions::insertLog('$resInsert: ' . json_encode($resInsert) , '0abbasi');
 
         
         if (in_array('0', $resInsert)) {
@@ -989,38 +983,6 @@ class reservationHotel extends clientAuth
     /////////////////////////////////////////////////////////////////////////////
 
     //////////گزارش هتل//////////
-    ///
-//    public function reportHotel()
-//    {
-//
-////        $mod = '';
-////        $format = 'Y' . $mod . 'm' . $mod . 'd';
-////        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
-//
-//
-////        $nextMonthDate = dateTimeSetting::jdate($format, strtotime('+1 week'), '', '', 'en');
-//
-//        $Model = Load::library('Model');
-//
-//        $sql
-//            = "SELECT HRP.*,
-//                     SUM(HRP.total_capacity) AS all_capacity,
-//                     SUM(HRP.maximum_capacity) AS all_maximum_capacity,
-//                     SUM(HRP.remaining_capacity) AS all_remaining_capacity,
-//                     MAX(HRP.date) AS max_date
-//                 FROM reservation_hotel_room_prices_tb HRP
-//                 RIGHT JOIN  reservation_hotel_room_tb HR ON HR.id_room = HRP.id_room
-//                 WHERE HRP.flat_type='DBL' AND HRP.is_del='no'
-//                 GROUP BY HRP.id_hotel
-//                 ORDER BY HRP.id_country, HRP.id_city ASC";
-//
-//        $hotel = $Model->select($sql);
-//
-//        return $hotel;
-//
-//
-//    }
-
     public function reportHotel()
     {
 

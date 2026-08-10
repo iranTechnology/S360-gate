@@ -53,7 +53,7 @@
                                     {if $min_internal <= $max_internal}
 
                                         <div class="__i_modular_nc_item_class_0 item">
-                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
+                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                                 <div class="parent-img-tour">
                                                     <img alt="{$item['tour_name']}" class="__image_class__" src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                                 </div>
@@ -84,7 +84,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {if $item['type_vehicle_name'] eq 'اتبوس'}
+
+                                                {if $item['["type_vehicle_na'] eq 'اتوبوس'}
                                                     {$type_vehicle_image = 'project_files/images/cric1.png'}
                                                 {elseif $item['type_vehicle_name'] eq 'هواپیما'}
                                                     {$type_vehicle_image = 'project_files/images/cric3.png'}
@@ -118,7 +119,7 @@
                                     {if $min_external <= $max_external}
 
                                         <div class="__i_modular_nc_item_class_0 item">
-                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
+                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                                 <div class="parent-img-tour">
                                                     <img alt="{$item['tour_name']}" class="__image_class__" src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                                 </div>
@@ -140,24 +141,36 @@
                                                             <span>شروع قیمت</span>
                                                             <span class="number-price"><span class="___price_class__">
                                         {if $item['min_price_r'] != 0}
-                                            {$item['min_price_r']|number_format} ریال
+                                            {$item['min_price_r']|number_format}
+                                            {if $item['min_price']['is_toman'] == true}
+                                                تومان
+                                            {else}
+                                                ریال
+                                            {/if}
                                         {/if}
-                                                                    {if  $item['min_price_r'] != 0 &&  $item['min_price_a'] } + {/if}
-                                                                    {if $item['min_price_a']}
+                                                                    {if  $item['min_price_r'] != 0 && $item['min_price_a'] != 0 &&  $item['min_price_a'] } + {/if}
+                                                                    {if $item['min_price_a'] && $item['min_price_a'] != 0}
 
                                                                         {$item['min_price_a']|number_format} {$item['currency_type']}
                                                                     {/if}
                                                                     <span>
-                                                            {if $item['min_price']['is_toman'] == true}
-                                                                تومان
-                                                            {else}
-                                                                ریال
-                                                            {/if}
                                                             </span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <img alt="img-tour" class="circle-tour" src="project_files/images/cric3.png"/>
+
+                                                {if $item['type_vehicle_name'] eq 'اتوبوس'}
+                                                    {$type_vehicle_image = 'project_files/images/cric1.png'}
+                                                {elseif $item['type_vehicle_name'] eq 'هواپیما'}
+                                                    {$type_vehicle_image = 'project_files/images/cric3.png'}
+                                                {elseif $item['type_vehicle_name'] eq 'قطار'}
+                                                    {$type_vehicle_image = 'project_files/images/cric2.png'}
+                                                {elseif $item['type_vehicle_name'] eq 'کشتی'}
+                                                    {$type_vehicle_image = 'project_files/images/cric4.png'}
+                                                {else}
+                                                    {$type_vehicle_image = 'project_files/images/cric1.png'}
+                                                {/if}
+                                                <img alt="img-tour" class="circle-tour" src="{$type_vehicle_image}"/>
                                             </a>
                                         </div>
 
