@@ -388,6 +388,13 @@ abstract class mainPage extends clientAuth
         $article_controller->page_limit=3;
         return $article_controller->getArticles('news');
     }
+    public function getNewsArticlesSelected() {
+
+        /** @var articles $article_controller */
+        $article_controller=$this->getController('articles');
+        $article_controller->page_limit=5;
+        return $article_controller->getArticles('news', null, null, null, null, true);
+    }
 
 
     public function getReservationTourCities($type = 'internal') {

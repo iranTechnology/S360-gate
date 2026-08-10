@@ -370,8 +370,6 @@ class ApiHotelCore extends clientAuth {
     }
 
     public function DirectDetail( $param ) {
-
-
         if ( $this->auth == 'True' ) {
             if ( ! $param['hotelIndex'] ) {
                 return $this->showError( 'hotelIndex is required' );
@@ -382,7 +380,6 @@ class ApiHotelCore extends clientAuth {
             $EndDate    = functions::ConvertToJalali( date( 'Y-m-d', strtotime( '+1 day' ) ), '-' );
             $reqData['IsInternal'] = true;
             $reqData['HotelIndex'] = $param['hotelIndex'];
-
             $reqData['StartDate'] = ($param['StartDate']) ? $param['StartDate'] : $StartDate;
             $reqData['EndDate'] = ($param['EndDate']) ? $param['EndDate'] : $EndDate;
 
