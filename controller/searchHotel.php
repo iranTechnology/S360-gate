@@ -805,7 +805,7 @@ WHERE
         if ( is_array( $apiResult ) && count( $apiResult ) > 0 ) {
             $apiResult = $this->excludeWebserviceHotel($apiResult);
             foreach ( $apiResult as $hotel ) {
-                if(isset($hotel['NameEn'] ) && !empty($hotel['NameEn'] )){
+//                if(isset($hotel['NameEn'] ) && !empty($hotel['NameEn'] )){
                     $i ++;
                     $hotelNameEn = strtolower( trim( urldecode( $hotel['NameEn'] ) ) );
                     $hotelNameEn = str_replace( "  ", " ", $hotelNameEn );
@@ -817,11 +817,8 @@ WHERE
                         'CityName'    => $hotel['CityName'],
                         'CityId'      => $hotel['CityId'],
                     ];
-
                     $result['ApiHotels'][] = $ApiHotel;
-                }
-
-
+//                }
             }
         }
 

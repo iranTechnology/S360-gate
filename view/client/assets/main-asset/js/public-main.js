@@ -201,6 +201,8 @@ function dateNow(mode) {
 }
 
 function checkSearchFields(...data) {
+
+
   let items_name = []
 
   data.forEach(item => {

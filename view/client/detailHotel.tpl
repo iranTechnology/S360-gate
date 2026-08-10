@@ -621,6 +621,7 @@
     'searchRooms' => $searchRooms,
     'typeApplication' => $typeApplication,
     'lang'=>$smarty.const.SOFTWARE_LANG]}
+
     <input type="hidden" value='{$objFunctions->clearJsonHiddenCharacters($paramDetail|json_encode:256)}' id="dataDetailHotel">
 {else}
     {assign var="paramDetail" value=[

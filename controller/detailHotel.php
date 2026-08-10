@@ -538,9 +538,11 @@ class detailHotel extends ApiHotelCore
         /** @var Model $model */
         $admin = Load::controller('admin');
         $apiHotel = json_decode(parent::DirectDetail($param), true);
+        functions::insertLog('data: ' . json_encode($data) , 'shojaee');
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
         }
+
         $this->hotelId = $param['hotelIndex'];
         $this->Stars = $apiHotel['Result']['Stars'];
         $cityName = $apiHotel['Result']['City'];

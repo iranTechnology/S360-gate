@@ -98,7 +98,7 @@ $('.parent-hotel-owl').owlCarousel({
             items:1
         },
         576 :{
-          items: 2
+            items: 2
         },
     }
 });
@@ -118,7 +118,7 @@ $('.parent-hotel-reservetion-owl').owlCarousel({
             items:1
         },
         576 :{
-          items: 2
+            items: 2
         },
     }
 });
@@ -208,4 +208,92 @@ document.addEventListener("DOMContentLoaded", function() {
 
     replaceWithFn("#pills-tab-user-tracking #pills-home-tab", 'پیگیری و استرداد');
     replaceWithFn("#pills-tab-user-tracking #pills-profile-tab", 'پیگیری خدمات');
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sliderItems = document.querySelectorAll('.about-slide-item');
+    const mainImage = document.getElementById('aboutMainImage');
+    let currentIndex = 0;
+    let slideInterval = null;
+
+    // تابع تغییر اسلاید
+    function changeSlide(index) {
+        // حذف کلاس active از همه
+        sliderItems.forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // افزودن کلاس active به آیتم انتخاب شده
+        const selectedItem = sliderItems[index];
+        if (selectedItem) {
+            selectedItem.classList.add('active');
+        }
+
+        // تغییر عکس با افکت محو شدن
+        const newImageSrc = selectedItem ? selectedItem.dataset.image : sliderItems[0].dataset.image;
+
+        // افکت محو شدن
+        mainImage.classList.remove('fade-in');
+        mainImage.classList.add('fade');
+
+        setTimeout(() => {
+            mainImage.src = newImageSrc;
+            mainImage.classList.remove('fade');
+            mainImage.classList.add('fade-in');
+        }, 300);
+
+        currentIndex = index;
+    }
+
+    // رفتن به اسلاید بعدی
+    function nextSlide() {
+        const nextIndex = (currentIndex + 1) % sliderItems.length;
+        changeSlide(nextIndex);
+    }
+
+    // شروع اتوماتیک
+    function startAutoPlay() {
+        if (slideInterval) {
+            clearInterval(slideInterval);
+        }
+        slideInterval = setInterval(nextSlide, 5000); // هر 5 ثانیه
+    }
+
+    // توقف اتوماتیک
+    function stopAutoPlay() {
+        if (slideInterval) {
+            clearInterval(slideInterval);
+            slideInterval = null;
+        }
+    }
+
+    // رویداد کلیک روی هر آیتم
+    sliderItems.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            stopAutoPlay(); // توقف اتوماتیک
+            changeSlide(index);
+            startAutoPlay(); // شروع مجدد اتوماتیک
+        });
+
+        // توقف اتوماتیک در زمان هاور
+        item.addEventListener('mouseenter', stopAutoPlay);
+        item.addEventListener('mouseleave', startAutoPlay);
+    });
+
+    // توقف اتوماتیک در هاور روی عکس
+    mainImage.addEventListener('mouseenter', stopAutoPlay);
+    mainImage.addEventListener('mouseleave', startAutoPlay);
+
+    // شروع اسلایدر
+    changeSlide(0);
+    startAutoPlay();
+
+    // تنظیم مجدد در صورت تغییر برگه
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    });
 });
