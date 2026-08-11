@@ -4,7 +4,10 @@ require CONFIG_DIR . 'config.php';
 require LIBRARY_DIR . 'Load.php';
 require CONFIG_DIR . 'application.php';
 spl_autoload_register(array('Load', 'autoload'));
-
+//    error_reporting(1);
+//    error_reporting(E_ALL | E_STRICT);
+//    @ini_set('display_errors', 1);
+//    @ini_set('display_errors', 'on');
 class ModalCreator extends clientAuth {
     #region variable
 
@@ -78,9 +81,9 @@ class ModalCreator extends clientAuth {
                         <div class="col-md-1 "><input class="form-control SelectUser" type="checkbox"
                                                       name="SelectUser[]" id="SelectUser"
                                                       value="<?php echo ($info['passenger_national_code'] != '0000000000' && $info['passenger_national_code'] != null) ? $info['passenger_national_code'] . '-' . $info['passenger_age'] : $info['passportNumber'] . '-' . $info['passenger_age'] ?>"
-                                    <?php
-                                    echo (!empty($info['Status']) && !empty($NationalCodeUser) && ($info['Status'] != 'Nothing' && $info['Status'] != 'close')) ? 'disabled ="disabled"' : '';
-                                    ?>
+                                <?php
+                                echo (!empty($info['Status']) && !empty($NationalCodeUser) && ($info['Status'] != 'Nothing' && $info['Status'] != 'close')) ? 'disabled ="disabled"' : '';
+                                ?>
 
                             ></div>
                         <div class="col-md-2">
@@ -274,7 +277,7 @@ class ModalCreator extends clientAuth {
                     <div class="col-md-3 col-lg-3 col-sm-12  nopad ">
                         <div class='d-flex align-items-center'>
                             <input type="checkbox" id="backCredit" name="backCredit" class="ml-1">
-                        <label for='backCredit' class="mb-0"><?php echo functions::Xmlinformation("BackToCredit") ?></label>
+                            <label for='backCredit' class="mb-0"><?php echo functions::Xmlinformation("BackToCredit") ?></label>
                         </div>
 
                     </div>
@@ -324,24 +327,24 @@ class ModalCreator extends clientAuth {
                         <div class="DescriptionReason showContentTextModal" style="display : none"></div>
                     </div>
 
-<!--                    <div class="col-md-12 modal-text-center modal-h mb-3">-->
-                        <!--						<label for="ReasonUser">--><?php //echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?><!--</label>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-3 col-lg-3 col-sm-12  nopad ">-->
-<!--                        <select class="form-control mart5" name="ReasonUser"-->
-<!--                                id="ReasonUser">-->
-<!--                            <option value=""> --><?php //echo functions::Xmlinformation("Choosereasonfortheconsole") ?><!--</option>-->
-<!--                            <option value="PersonalReason">--><?php //echo functions::Xmlinformation("Canselforpersonalreasons") ?><!--</option>-->
-<!--                            --><?php //if (isset($param2) && $param2 == 'flight') { ?>
-<!--                                <option value="DelayTwoHours">--><?php //echo functions::Xmlinformation("Delaymorethantwohours") ?><!--</option>-->
-<!--                                <option value="CancelByAirline">--><?php //echo functions::Xmlinformation("AbandonedbyAirline") ?><!--</option>-->
-<!--                            --><?php //} elseif($param2 == 'train') { ?>
-<!--                                <option value="DelayTwoHours">--><?php //echo functions::Xmlinformation("delayTrain") ?><!--</option>-->
-<!--                            --><?php //}else{
-//                                //else
-//                            } ?>
-<!--                        </select>-->
-<!--                    </div>-->
+                    <!--                    <div class="col-md-12 modal-text-center modal-h mb-3">-->
+                    <!--						<label for="ReasonUser">--><?php //echo functions::Xmlinformation("Pleaseselectyourdesiredoptions") ?><!--</label>-->
+                    <!--                    </div>-->
+                    <!--                    <div class="col-md-3 col-lg-3 col-sm-12  nopad ">-->
+                    <!--                        <select class="form-control mart5" name="ReasonUser"-->
+                    <!--                                id="ReasonUser">-->
+                    <!--                            <option value=""> --><?php //echo functions::Xmlinformation("Choosereasonfortheconsole") ?><!--</option>-->
+                    <!--                            <option value="PersonalReason">--><?php //echo functions::Xmlinformation("Canselforpersonalreasons") ?><!--</option>-->
+                    <!--                            --><?php //if (isset($param2) && $param2 == 'flight') { ?>
+                    <!--                                <option value="DelayTwoHours">--><?php //echo functions::Xmlinformation("Delaymorethantwohours") ?><!--</option>-->
+                    <!--                                <option value="CancelByAirline">--><?php //echo functions::Xmlinformation("AbandonedbyAirline") ?><!--</option>-->
+                    <!--                            --><?php //} elseif($param2 == 'train') { ?>
+                    <!--                                <option value="DelayTwoHours">--><?php //echo functions::Xmlinformation("delayTrain") ?><!--</option>-->
+                    <!--                            --><?php //}else{
+                    //                                //else
+                    //                            } ?>
+                    <!--                        </select>-->
+                    <!--                    </div>-->
                 </div>
                 <div class="row">
                     <?php
@@ -2720,12 +2723,12 @@ public function ModalShowBook($Param, $type) {
                                             foreach ($entData as $ent) {
 
                                                 $title = isset($ent['tourTitle']) && $ent['tourTitle'] != ''
-                                                        ? $ent['tourTitle']
-                                                        : 'تفریح';
+                                                    ? $ent['tourTitle']
+                                                    : 'تفریح';
 
                                                 $price = isset($ent['final_price']) && $ent['final_price'] != ''
-                                                        ? number_format($ent['final_price'])
-                                                        : '0';
+                                                    ? number_format($ent['final_price'])
+                                                    : '0';
 
                                                 echo '<div class="ent-item">';
                                                 echo '<div class="ent-title">'.$title.'</div>';
@@ -2977,12 +2980,12 @@ public function ModalShowBook($Param, $type) {
                                 <div class="col-md-4">
                                     <strong>نوع پرواز :</strong>
                                     <?= $first['flight_type'] === "inbound"
-                                            ? "پرواز ورودی به فرودگاه"
-                                            : "پرواز خروجی از فرودگاه (" .
-                                            ($first['trip_type'] === 'international'
-                                                    ? "پرواز بین المللی"
-                                                    : "پرواز داخلی")
-                                            . ")"
+                                        ? "پرواز ورودی به فرودگاه"
+                                        : "پرواز خروجی از فرودگاه (" .
+                                        ($first['trip_type'] === 'international'
+                                            ? "پرواز بین المللی"
+                                            : "پرواز داخلی")
+                                        . ")"
                                     ?>
                                 </div>
                             </div>
@@ -3186,12 +3189,12 @@ public function ModalShowBook($Param, $type) {
                                 foreach ($entData as $ent) {
 
                                     $title = isset($ent['CipName']) && $ent['CipName'] != ''
-                                            ? $ent['CipName']
-                                            : 'بدون نام';
+                                        ? $ent['CipName']
+                                        : 'بدون نام';
 
                                     $price = isset($ent['Price']) && $ent['Price'] != ''
-                                            ? number_format($ent['Price'])
-                                            : '0';
+                                        ? number_format($ent['Price'])
+                                        : '0';
 
                                     echo '<div class="ent-item">';
                                     echo '<div class="ent-title">'.$title.'</div>';
@@ -4104,43 +4107,43 @@ public function ModalShowBook($Param, $type) {
             if (!empty($InfoCancelTicketBus) && !empty($InfoCancelTicketBus[0]['passenger_factor_num'])) {
 
                 $busRefundCheck = $apiBus->busRefundCheck(
-                        $InfoCancelTicketBus[0]['passenger_factor_num'],
-                        $ClientId
+                    $InfoCancelTicketBus[0]['passenger_factor_num'],
+                    $ClientId
                 );
 
                 if (
-                        !empty($busRefundCheck['response']['SuccessfulStatus']['client']) &&
-                        !empty($busRefundCheck['response']['SuccessfulStatus']['provider'])
+                    !empty($busRefundCheck['response']['SuccessfulStatus']['client']) &&
+                    !empty($busRefundCheck['response']['SuccessfulStatus']['provider'])
                 ) {
                     $totalRefundableAmount = $busRefundCheck['response']['data']['totalRefundableAmount'];
                     $totalPenaltyAmount    = $busRefundCheck['response']['data']['totalPenaltyAmount'];
 
                     $busRefund = [
-                            'percentage'       => functions::getPercentage($InfoCancelTicketBus[0]['total_price'], $totalRefundableAmount) . '%',
-                            'PenaltyAmount'    => $totalPenaltyAmount,
-                            'RefundableAmount' => $totalRefundableAmount,
-                            'totalPrice'       => $InfoCancelTicketBus[0]['total_price'],
-                            'refundable'       => true,
+                        'percentage'       => functions::getPercentage($InfoCancelTicketBus[0]['total_price'], $totalRefundableAmount) . '%',
+                        'PenaltyAmount'    => $totalPenaltyAmount,
+                        'RefundableAmount' => $totalRefundableAmount,
+                        'totalPrice'       => $InfoCancelTicketBus[0]['total_price'],
+                        'refundable'       => true,
                     ];
                 } else {
                     // هم‌ارز نسخه قدیمی (هیچ کلیدی جا نیفتد)
                     $busRefund = [
-                            'percentage'       => '0%',
-                            'PenaltyAmount'    => 0,
-                            'RefundableAmount' => 0,
-                            'totalPrice'       => !empty($InfoCancelTicketBus[0]['total_price']) ? $InfoCancelTicketBus[0]['total_price'] : 0,
-                            'refundable'       => false,
+                        'percentage'       => '0%',
+                        'PenaltyAmount'    => 0,
+                        'RefundableAmount' => 0,
+                        'totalPrice'       => !empty($InfoCancelTicketBus[0]['total_price']) ? $InfoCancelTicketBus[0]['total_price'] : 0,
+                        'refundable'       => false,
                     ];
                 }
 
             } else {
                 // fallback خیلی امن
                 $busRefund = [
-                        'percentage'       => '0%',
-                        'PenaltyAmount'    => 0,
-                        'RefundableAmount' => 0,
-                        'totalPrice'       => 0,
-                        'refundable'       => false,
+                    'percentage'       => '0%',
+                    'PenaltyAmount'    => 0,
+                    'RefundableAmount' => 0,
+                    'totalPrice'       => 0,
+                    'refundable'       => false,
                 ];
             }
         }
@@ -4167,10 +4170,10 @@ public function ModalShowBook($Param, $type) {
                 }
 
                 $dataCancel = [
-                        'FlightRefundType' => 1,
-                        'FlightReasonType' => $caseTitle,
+                    'FlightRefundType' => 1,
+                    'FlightReasonType' => $caseTitle,
                     // نسخه جدید: array_column (مثل تو) ولی حتماً array باشد
-                        'passportNumber'   => !empty($infoCancelFlight) ? array_values(array_filter(array_column($infoCancelFlight, 'passportNumber'))) : []
+                    'passportNumber'   => !empty($infoCancelFlight) ? array_values(array_filter(array_column($infoCancelFlight, 'passportNumber'))) : []
                 ];
 
                 $viewCancel = $apiFlight->getAmountPenaltyAltrabo($Param, $dataCancel);
@@ -4179,24 +4182,24 @@ public function ModalShowBook($Param, $type) {
                 $responseOk = (!empty($viewCancel['response']['successful']));
 
                 $dataCancelView = [
-                        'responseSuccessfull' => $responseOk ? true : false,
-                        'penaltyAmount'       => '—',
-                        'totalPayAmount'      => 0,
-                        'totalAmount'         => 0,
+                    'responseSuccessfull' => $responseOk ? true : false,
+                    'penaltyAmount'       => '—',
+                    'totalPayAmount'      => 0,
+                    'totalAmount'         => 0,
                 ];
 
                 if ($responseOk && !empty($viewCancel['data'])) {
                     $crcnType = !empty($viewCancel['data']['penaltyPassengers'][0]['crcnType'])
-                            ? $viewCancel['data']['penaltyPassengers'][0]['crcnType']
-                            : 'Value';
+                        ? $viewCancel['data']['penaltyPassengers'][0]['crcnType']
+                        : 'Value';
 
                     $dataCancelView['totalAmount']    = !empty($viewCancel['data']['totalAmount']) ? $viewCancel['data']['totalAmount'] : 0;
                     $dataCancelView['totalPayAmount'] = !empty($viewCancel['data']['totalPayAmount']) ? $viewCancel['data']['totalPayAmount'] : 0;
 
                     $totalPenaltyAmount = !empty($viewCancel['data']['totalPenaltyAmount']) ? $viewCancel['data']['totalPenaltyAmount'] : 0;
                     $dataCancelView['penaltyAmount']  = ($crcnType === 'Value')
-                            ? ($totalPenaltyAmount . ' ریال')
-                            : ($totalPenaltyAmount . ' درصد');
+                        ? ($totalPenaltyAmount . ' ریال')
+                        : ($totalPenaltyAmount . ' درصد');
                 }
             }
         }
@@ -4210,22 +4213,22 @@ public function ModalShowBook($Param, $type) {
 
 
         $apiProviders = [
-                '1'  => 'سرور 5',
-                '5'  => 'سرور 4',
-                '8'  => 'سرور 7',
-                '10' => 'سرور 9',
-                '11' => 'سرور 10',
-                '12' => 'سرور 12',
-                '13' => 'سرور 13',
-                '14' => 'سرور 14',
-                '15' => 'سرور 15',
-                '16' => 'سرور 16',
-                '17' => 'سرور 17',
-                '18' => 'سرور 18',
-                '19' => 'سرور 19',
-                '20' => 'سپهر',
-                '21' => 'چارتر118',
-                '43' => 'سیتی نت',
+            '1'  => 'سرور 5',
+            '5'  => 'سرور 4',
+            '8'  => 'سرور 7',
+            '10' => 'سرور 9',
+            '11' => 'سرور 10',
+            '12' => 'سرور 12',
+            '13' => 'سرور 13',
+            '14' => 'سرور 14',
+            '15' => 'سرور 15',
+            '16' => 'سرور 16',
+            '17' => 'سرور 17',
+            '18' => 'سرور 18',
+            '19' => 'سرور 19',
+            '20' => 'سپهر',
+            '21' => 'چارتر118',
+            '43' => 'سیتی نت',
         ];
 
         $apiId = isset($flight['api_id']) ? $flight['api_id'] : null;
@@ -4339,8 +4342,8 @@ public function ModalShowBook($Param, $type) {
                                     <span>
                                     <?php
                                     echo !empty($p['passenger_national_code'])
-                                            ? $p['passenger_national_code']
-                                            : (!empty($p['passportNumber']) ? $p['passportNumber'] : '—');
+                                        ? $p['passenger_national_code']
+                                        : (!empty($p['passportNumber']) ? $p['passportNumber'] : '—');
                                     ?>
                                 </span>
 
@@ -4464,7 +4467,7 @@ public function ModalShowBook($Param, $type) {
                                         class="form-control LimitInput"
                                         id="PercentIndemnity"
                                         placeholder="درصد"
-                                        <?php echo $canSetPercent ? '' : 'disabled'; ?>
+                                    <?php echo $canSetPercent ? '' : 'disabled'; ?>
                                 >
                                 <span>% از fare</span>
                             </div>
@@ -4485,7 +4488,7 @@ public function ModalShowBook($Param, $type) {
                                     type="button"
                                     class="btn-submit-action"
                                     onclick="SendPercentForAgency('<?php echo $Param; ?>','<?php echo $id; ?>','<?php echo $ClientId; ?>')"
-                                    <?php echo $canSetPercent ? '' : 'disabled'; ?>
+                                <?php echo $canSetPercent ? '' : 'disabled'; ?>
                             >
                                 ارسال اطلاعات
                             </button>
@@ -4588,15 +4591,15 @@ public function ModalShowBook($Param, $type) {
                 $totalPenaltyAmount=$busRefundCheck['response']['data']['totalPenaltyAmount'];
 
                 $busRefund=[
-                        'percentage'=>functions::getPercentage($InfoCancelTicket[0]['total_price'],$totalRefundableAmount).'%',
-                        'PenaltyAmount'=>$totalPenaltyAmount,
-                        'RefundableAmount'=>$totalRefundableAmount,
-                        'refundable'=>true,
+                    'percentage'=>functions::getPercentage($InfoCancelTicket[0]['total_price'],$totalRefundableAmount).'%',
+                    'PenaltyAmount'=>$totalPenaltyAmount,
+                    'RefundableAmount'=>$totalRefundableAmount,
+                    'refundable'=>true,
                 ];
             }else{
                 $busRefund=[
-                        'percentage'=>'0%',
-                        'refundable'=>false,
+                    'percentage'=>'0%',
+                    'refundable'=>false,
                 ];
             }
 
@@ -4783,15 +4786,15 @@ public function ModalShowBook($Param, $type) {
                 $totalPenaltyAmount=$busRefundCheck['response']['data']['totalPenaltyAmount'];
 
                 $busRefund=[
-                        'percentage'=>functions::getPercentage($InfoCancelTicket[0]['total_price'],$totalRefundableAmount).'%',
-                        'PenaltyAmount'=>$totalPenaltyAmount,
-                        'RefundableAmount'=>$totalRefundableAmount,
-                        'refundable'=>true,
+                    'percentage'=>functions::getPercentage($InfoCancelTicket[0]['total_price'],$totalRefundableAmount).'%',
+                    'PenaltyAmount'=>$totalPenaltyAmount,
+                    'RefundableAmount'=>$totalRefundableAmount,
+                    'refundable'=>true,
                 ];
             }else{
                 $busRefund=[
-                        'percentage'=>'0%',
-                        'refundable'=>false,
+                    'percentage'=>'0%',
+                    'refundable'=>false,
                 ];
             }
 
@@ -5548,7 +5551,12 @@ public function ModalShowBook($Param, $type) {
         $ClientId = CLIENT_ID;
 
         $InfoTicket = functions::InfoFlight($Param);
-
+        $checkSmsSend = functions::checkSendSmsManualToClient($InfoTicket['request_number']);
+        $message='';
+        if($checkSmsSend){
+            $date = dateTimeSetting::jdate( "H:i:s d-m-Y", $checkSmsSend['creationDateInt']);
+            $message = 'پیامک در تاریخ ' . $date . ' ارسال شده است';
+        }
         if ($InfoTicket['passenger_name']=='' && $InfoTicket['passenger_family']=='') {
             $InfoTicket['passenger_name'] = $InfoTicket['passenger_name_en'];
             $InfoTicket['passenger_family'] = $InfoTicket['passenger_family_en'];
@@ -5560,7 +5568,7 @@ public function ModalShowBook($Param, $type) {
             <div class="modal-content">
                 <div class="modal-header site-bg-main-color">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">ارسال پیام</h4>
+                    <h4 class="modal-title">ارسال پیام <span style="color: #c61021;">(<?= $message ?>)</span></h4>
                 </div>
                 <div class="modal-body">
 
@@ -6276,6 +6284,8 @@ public function ModalShowBook($Param, $type) {
         $jalaliDateFlight = dateTimeSetting::gregorian_to_jalali($gy, $gm, $gd, '-');
 
         $time_flight = $Tickets[0]['time_flight']; // مثلا "14:35:00"
+        $flight_number = $Tickets[0]['flight_number'];
+
         list($hour, $minute) = explode(':', $time_flight);
         ?>
         <div class="modal-dialog modal-lg">
@@ -6323,7 +6333,7 @@ public function ModalShowBook($Param, $type) {
                                        name="flightDate" id="flightDate"/>
                             </div>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>ایرلاین</label>
                                 <select class="form-control select2" name="airline" id="airline">
                                     <option value="">انتخاب کنید...</option>
@@ -6337,6 +6347,13 @@ public function ModalShowBook($Param, $type) {
                                     }
                                     ?>
                                 </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>شماره پرواز</label>
+                                <input type="text" class="form-control"
+                                       value="<?php echo $flight_number;?>"
+                                       name="flightNumber"
+                                       id="flightNumber"/>
                             </div>
                         </div>
                         <div class="row">
@@ -6375,8 +6392,8 @@ public function ModalShowBook($Param, $type) {
                                 </div>
                                 <input type="hidden"
                                        value="<?php echo ($ticket['passenger_national_code'] != '0000000000')
-                                               ? $ticket['passenger_national_code']
-                                               : $ticket['passportNumber']; ?>"
+                                           ? $ticket['passenger_national_code']
+                                           : $ticket['passportNumber']; ?>"
                                        name="nationalCode[]" />
                             <?php } ?>
 
@@ -10097,9 +10114,9 @@ public function ModalCancelAdmin($Param, $param2) {
                                     <input class="form-control SelectUser" type="checkbox"
                                            name="SelectUser[]" id="SelectUser"
                                            value="<?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] . '-' . $info['passenger_age'] : $info['passportNumber'] . '-' . $info['passenger_age'] ?>"
-                                            <?php
-                                            echo (!empty($info['Status']) && !empty($NationalCodeUser) && $info['Status'] != 'Nothing' ) ? 'disabled ="disabled"' : '';
-                                            ?>
+                                        <?php
+                                        echo (!empty($info['Status']) && !empty($NationalCodeUser) && $info['Status'] != 'Nothing' ) ? 'disabled ="disabled"' : '';
+                                        ?>
 
                                     ></div>
 
@@ -10579,32 +10596,32 @@ public function ModalCancelAdmin($Param, $param2) {
                                 <div class="col-md-12 mb-3 IconBox ">
                                     <?php
                                     $icons=[
-                                            'fa fa-plane',
-                                            'fa fa-hand-o-left',
-                                            'fa fa-hospital-o',
-                                            'fa fa-home',
-                                            'fa fa-building',
-                                            'fa fa-building-o',
-                                            'fa fa-bullhorn',
-                                            'fa fa-bus',
-                                            'fa fa-tachometer',
-                                            'fa fa-train',
-                                            'fa fa-truck',
-                                            'fa fa-sliders',
-                                            'fa fa-bicycle',
-                                            'fa fa-automobile',
-                                            'fa fa-wheelchair',
-                                            'fa fa-user',
-                                            'fa fa-product-hunt',
-                                            'fa fa-globe',
-                                            'fa fa-heartbeat',
-                                            'fa fa-heart',
-                                            'fa fa-tags',
-                                            'fa fa-cc-visa',
-                                            'fa fa-asterisk',
-                                            'fa fa-check',
-                                            'fa fa-calculator',
-                                            'fa fa-dollar',];
+                                        'fa fa-plane',
+                                        'fa fa-hand-o-left',
+                                        'fa fa-hospital-o',
+                                        'fa fa-home',
+                                        'fa fa-building',
+                                        'fa fa-building-o',
+                                        'fa fa-bullhorn',
+                                        'fa fa-bus',
+                                        'fa fa-tachometer',
+                                        'fa fa-train',
+                                        'fa fa-truck',
+                                        'fa fa-sliders',
+                                        'fa fa-bicycle',
+                                        'fa fa-automobile',
+                                        'fa fa-wheelchair',
+                                        'fa fa-user',
+                                        'fa fa-product-hunt',
+                                        'fa fa-globe',
+                                        'fa fa-heartbeat',
+                                        'fa fa-heart',
+                                        'fa fa-tags',
+                                        'fa fa-cc-visa',
+                                        'fa fa-asterisk',
+                                        'fa fa-check',
+                                        'fa fa-calculator',
+                                        'fa fa-dollar',];
                                     foreach($icons as $icon){
                                         ?>
                                         <div data-target="IconBoxSelector" data-value="<?php echo $icon; ?>"
@@ -11100,7 +11117,7 @@ public function ModalCancelAdmin($Param, $param2) {
                     if(TYPE_ADMIN != 1){
                         $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
                         $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )
-                                . '</span>';
+                            . '</span>';
                     }
 
                     if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -11564,9 +11581,9 @@ public function ModalCancelAdmin($Param, $param2) {
 
         $cancelTicketDetailsModel = $this->getModel('cancelTicketDetailsModel');
         $InfoCancel = $cancelTicketDetailsModel
-                ->get('*')
-                ->where('RequestNumber', $Param)
-                ->find(false);
+            ->get('*')
+            ->where('RequestNumber', $Param)
+            ->find(false);
 
         $infoMember = functions::infoMember($InfoCancel['MemberId']);
         $InfoFlight = functions::InfoFlight($Param);
@@ -13726,15 +13743,15 @@ public function ModalCancelAdmin($Param, $param2) {
 
         $airline_close_time_model = $this->getModel('airlineCloseTimeModel');
         $airline = $airline_close_time_model
-                ->get()
-                ->where('type' , 'airline')
-                ->where('type_id' , $airlineId)
-                ->find();
+            ->get()
+            ->where('type' , 'airline')
+            ->where('type_id' , $airlineId)
+            ->find();
         $globalTime = $airline_close_time_model
-                ->get()
-                ->where('type' , 'airline')
-                ->where('type_id' , '0')
-                ->find();
+            ->get()
+            ->where('type' , 'airline')
+            ->where('type_id' , '0')
+            ->find();
 
         $internalTime='';
         $externalTime='';
@@ -13782,14 +13799,14 @@ public function ModalCancelAdmin($Param, $param2) {
                                     <?php for ($n = 0; $n <= 9; $n++): ?>
                                         <?php $value = "0" . $n; ?>
                                         <option value="<?php echo $value; ?>"
-                                                <?php if ($internalTimeMinute == $value) echo 'selected'; ?>>
+                                            <?php if ($internalTimeMinute == $value) echo 'selected'; ?>>
                                             <?php echo $value; ?>
                                         </option>
                                     <?php endfor; ?>
 
                                     <?php for ($n = 10; $n <= 60; $n++): ?>
                                         <option value="<?php echo $n; ?>"
-                                                <?php if ($internalTimeMinute == $n) echo 'selected'; ?>>
+                                            <?php if ($internalTimeMinute == $n) echo 'selected'; ?>>
                                             <?php echo $n; ?>
                                         </option>
                                     <?php endfor; ?>
@@ -13801,14 +13818,14 @@ public function ModalCancelAdmin($Param, $param2) {
                                     <?php for ($n = 0; $n <= 9; $n++): ?>
                                         <?php $value = "0" . $n; ?>
                                         <option value="<?php echo $value; ?>"
-                                                <?php if ($internalTimeHour == $value) echo 'selected'; ?>>
+                                            <?php if ($internalTimeHour == $value) echo 'selected'; ?>>
                                             <?php echo $value; ?>
                                         </option>
                                     <?php endfor; ?>
 
                                     <?php for ($n = 10; $n <= 24; $n++): ?>
                                         <option value="<?php echo $n; ?>"
-                                                <?php if ($internalTimeHour == $n) echo 'selected'; ?>>
+                                            <?php if ($internalTimeHour == $n) echo 'selected'; ?>>
                                             <?php echo $n; ?>
                                         </option>
                                     <?php endfor; ?>
@@ -13825,14 +13842,14 @@ public function ModalCancelAdmin($Param, $param2) {
                                     <?php for ($n = 0; $n <= 9; $n++): ?>
                                         <?php $value = "0" . $n; ?>
                                         <option value="<?php echo $value; ?>"
-                                                <?php if ($externalTimeMinute == $value) echo 'selected'; ?>>
+                                            <?php if ($externalTimeMinute == $value) echo 'selected'; ?>>
                                             <?php echo $value; ?>
                                         </option>
                                     <?php endfor; ?>
 
                                     <?php for ($n = 10; $n <= 60; $n++): ?>
                                         <option value="<?php echo $n; ?>"
-                                                <?php if ($externalTimeMinute == $n) echo 'selected'; ?>>
+                                            <?php if ($externalTimeMinute == $n) echo 'selected'; ?>>
                                             <?php echo $n; ?>
                                         </option>
                                     <?php endfor; ?>
@@ -13844,14 +13861,14 @@ public function ModalCancelAdmin($Param, $param2) {
                                     <?php for ($n = 0; $n <= 9; $n++): ?>
                                         <?php $value = "0" . $n; ?>
                                         <option value="<?php echo $value; ?>"
-                                                <?php if ($externalTimeHour == $value) echo 'selected'; ?>>
+                                            <?php if ($externalTimeHour == $value) echo 'selected'; ?>>
                                             <?php echo $value; ?>
                                         </option>
                                     <?php endfor; ?>
 
                                     <?php for ($n = 10; $n <= 24; $n++): ?>
                                         <option value="<?php echo $n; ?>"
-                                                <?php if ($externalTimeHour == $n) echo 'selected'; ?>>
+                                            <?php if ($externalTimeHour == $n) echo 'selected'; ?>>
                                             <?php echo $n; ?>
                                         </option>
                                     <?php endfor; ?>

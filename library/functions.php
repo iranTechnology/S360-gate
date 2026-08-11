@@ -2616,6 +2616,20 @@ class functions {
         return $ResultFlight;
 
     }
+
+    public static function checkSendSmsManualToClient($requestNumber){
+
+        Load::autoload( 'Model' );
+
+        $Model = new Model();
+
+        $SqlSms = "SELECT * FROM sms_reports_tb WHERE request_number='{$requestNumber}'";
+
+        $ResultSms = $Model->load( $SqlSms );
+
+        return $ResultSms;
+    }
+
     #endregion
 
     #region Show Minimum Price in Date
