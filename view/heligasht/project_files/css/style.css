@@ -2537,7 +2537,6 @@ a:hover {
     animation: blink 1.5s ease-in-out infinite;
     display: inline-block;
     padding: 8px 16px;
-    background-color: #ff4444;
     color: white;
     border-radius: 5px;
     text-decoration: none;
