@@ -7,6 +7,7 @@
 {if $smarty.session.layout neq 'pwa' }{include file="include_files/menu.tpl"}{/if}
 <main>
     {include file="include_files/search-box.tpl"}
+    {include file="include_files/fast_flight_search-1.tpl"}
     {include file="include_files/tours.tpl"}
     {include file="include_files/hotels-webservice.tpl"}
 {*    {include file="include_files/news-letters.tpl"}*}

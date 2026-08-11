@@ -4505,9 +4505,7 @@ function create_section_package_tour_several_date(_this , start_date, tour_id, e
 
 
     let check_request_tour = $("#typeTourReserve").val();
-    console.log(check_request_tour)
     let method_name = (check_request_tour === 'oneDayTour') ? 'getTourById':'callGetTourPackage';
-    console.log(check_request_tour)
 
     const dates = $('[data-name="package-dates"]')
     dates.find("button").each(function () {

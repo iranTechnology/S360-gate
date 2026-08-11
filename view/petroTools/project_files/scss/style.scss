@@ -7,7 +7,7 @@ body {
   overflow-x: hidden;
   direction: rtl;
   padding: 0;
-  background: #e8e8e8 !important;
+  background: #f8f5f4 !important;
   line-height: 24px;
   text-align: right;
   color: #4b5259 !important;
@@ -1704,8 +1704,7 @@ main{
 //APP
 .app-demo {
   padding: 40px 0 0;
-  background: #e8e8e8;
-  margin-bottom: -50px;
+  margin-bottom: -58px;
 
   .parent-app-demo {
     @include grid-style(3, 20px, 20px);
