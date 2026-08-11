@@ -341,7 +341,7 @@ if(!empty($client['Services'])){
 
     elseif($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
     {
-        $client['ThemeDir'] = 'kanooneNehzat';
+        $client['ThemeDir'] = 'petroTools';
     }
 
 
