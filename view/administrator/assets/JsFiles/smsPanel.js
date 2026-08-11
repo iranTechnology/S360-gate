@@ -1,8 +1,103 @@
 $(document).ready(function () {
 
+
+
     //for activate/deactivate messages
     $('.js-switch').each(function() {
         new Switchery($(this)[0], $(this).data());
+    });
+
+    $("#SearchSmsReport").validate({
+        rules: {
+            request_number: {
+                required: true,
+                minlength: 1
+            }
+        },
+        messages: {
+            request_number: {
+                required: "لطفاً شماره درخواست را وارد کنید"
+            }
+        },
+        errorElement: "em",
+        errorPlacement: function (error, element) {
+            error.addClass("help-block");
+            if (element.prop("type") === "checkbox") {
+                error.insertAfter(element.parent("label"));
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function (form) {
+            // نمایش وضعیت در حال بارگذاری
+            $('.btn-primary', form).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> در حال جستجو...');
+
+            $(form).ajaxSubmit({
+                url: amadeusPath + 'user_ajax.php',
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (response) {
+                    // فعال کردن مجدد دکمه
+                    $('.btn-primary', form).prop('disabled', false).html('شروع جستجو');
+
+                    if (response.status == 'success') {
+                        // نمایش نتایج
+                        if (response.data && response.data.length > 0) {
+                            // به‌روزرسانی جدول با نتایج جدید
+                            updateReportsTable(response.data, form);
+
+                            $.toast({
+                                heading: 'جستجوی پیامک',
+                                text: response.data.length + ' رکورد یافت شد',
+                                position: 'top-right',
+                                icon: 'success',
+                                hideAfter: 3500,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                        } else {
+                            $.toast({
+                                heading: 'جستجوی پیامک',
+                                text: 'هیچ نتیجه‌ای یافت نشد',
+                                position: 'top-right',
+                                icon: 'info',
+                                hideAfter: 3500,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                        }
+                    } else {
+                        $.toast({
+                            heading: 'خطا در جستجو',
+                            text: response.message || 'خطایی رخ داده است',
+                            position: 'top-right',
+                            icon: 'error',
+                            hideAfter: 3500,
+                            textAlign: 'right',
+                            stack: 6
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('.btn-primary', form).prop('disabled', false).html('شروع جستجو');
+                    $.toast({
+                        heading: 'خطا',
+                        text: 'مشکل در ارتباط با سرور',
+                        position: 'top-right',
+                        icon: 'error',
+                        hideAfter: 3500,
+                        textAlign: 'right',
+                        stack: 6
+                    });
+                }
+            });
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).parents(".form-group").addClass("has-error").removeClass("has-success");
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).parents(".form-group").addClass("has-success").removeClass("has-error");
+        }
     });
 
     //add and edit sms message
@@ -255,16 +350,16 @@ function Addpattern() {
     $('.Dynamicpattern select[data-parent="patternValues"]').each(function () {
         console.log(CountDivInEach)
         $(this).attr(
-          "name",
-          "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+            "name",
+            "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
         )
         CountDivInEach = CountDivInEach + 1
     })
     var CountDivInEach = 0
     $('.Dynamicpattern input[data-parent="patternValues"]').each(function () {
         $(this).attr(
-          "name",
-          "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+            "name",
+            "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
         )
         CountDivInEach = CountDivInEach + 1
     })
@@ -276,27 +371,61 @@ function Addpattern() {
 
 function Removepattern(thiss) {
     if (
-      thiss.parent().parent().parent().parent().find('div[data-target="BasepatternDiv"]').length > 1
+        thiss.parent().parent().parent().parent().find('div[data-target="BasepatternDiv"]').length > 1
     ) {
         thiss.parent().parent().parent().remove()
 
         var CountDivInEach = 0
         $('.Dynamicpattern select[data-parent="patternValues"]').each(
-          function () {
-              $(this).attr(
-                "name",
-                "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
-              )
-              CountDivInEach = CountDivInEach + 1
-          }
+            function () {
+                $(this).attr(
+                    "name",
+                    "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+                )
+                CountDivInEach = CountDivInEach + 1
+            }
         )
         var CountDivInEach = 0
         $('.Dynamicpattern input[data-parent="patternValues"]').each(
-          function () {
-              $(this).attr("name", "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
-              )
-              CountDivInEach = CountDivInEach + 1
-          }
+            function () {
+                $(this).attr("name", "pattern[" + CountDivInEach + "][" + $(this).attr("data-target") + "]"
+                )
+                CountDivInEach = CountDivInEach + 1
+            }
         )
     }
+}
+
+function updateReportsTable(data, form) {
+    var tbody = $('#myTable tbody');
+    tbody.empty();
+
+    if (!data || data.length === 0) {
+        tbody.append('<tr><td colspan="8" class="text-center">هیچ داده‌ای یافت نشد</td></tr>');
+        return;
+    }
+
+    var type = $('input[name="type"]', form).val();
+    var rowNumber = 0;
+
+    $.each(data, function(index, item) {
+        rowNumber++;
+        var statusText = (item.sendStatus == 1 || item.sendStatus === true || item.sendStatus == '1') ? 'موفق' : 'ناموفق';
+        var statusClass = (item.sendStatus == 1 || item.sendStatus === true || item.sendStatus == '1') ? 'text-success' : 'text-danger';
+
+        var row = '<tr>';
+        row += '<td class="align-middle">' + rowNumber + '</td>';
+        row += '<td class="align-middle">' + (item.smsMessage || '') + '</td>';
+        if (type == 'manual') {
+            row += '<td class="align-middle">' + (item.sendTo || '') + '</td>';
+        }
+        row += '<td class="align-middle">' + (item.creationDateInt ? item.creationDateInt : '') + '</td>';
+        row += '<td class="align-middle">' + (item.request_number || '') + '</td>';
+        row += '<td class="align-middle">' + (item.pnr_number || '') + '</td>';
+        row += '<td class="align-middle">' + (item.receiverMobile || '') + '</td>';
+        row += '<td class="align-middle ' + statusClass + '">' + statusText + '</td>';
+        row += '</tr>';
+
+        tbody.append(row);
+    });
 }
