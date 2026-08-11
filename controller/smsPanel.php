@@ -1,10 +1,10 @@
 <?php
 
 
-    //    error_reporting(1);
-    //    error_reporting(E_ALL | E_STRICT);
-    //    @ini_set('display_errors', 1);
-    //    @ini_set('display_errors', 'on');
+//        error_reporting(1);
+//        error_reporting(E_ALL | E_STRICT);
+//        @ini_set('display_errors', 1);
+//        @ini_set('display_errors', 'on');
 /**
  * Class smsPanel
  * @property smsPanel $smsPanel
@@ -12,7 +12,7 @@
 class smsPanel extends Model
 {
     #region cunstruct
-     private $services;
+    private $services;
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class smsPanel extends Model
     public function getAllSmsServices()
     {
         $ModelBase = Load::library('ModelBase');
-     
+
         $sqlSelect = "SELECT * FROM sms_services_tb";
         return $ModelBase->select($sqlSelect);
     }
@@ -51,11 +51,11 @@ class smsPanel extends Model
             Load::autoload("ModelBase");
             $ModelBase = new ModelBase();
             $dataUpdate = [
-            'UsernameSms' => $data['smsUsername'],
-            'PasswordSms' =>$data['smsPassword'] ,
-            'AllowSendSms'=> 1,
-            'PanelSms' => $data['smsService'],
-            'NumberSms' => $data['smsNumber']
+                'UsernameSms' => $data['smsUsername'],
+                'PasswordSms' =>$data['smsPassword'] ,
+                'AllowSendSms'=> 1,
+                'PanelSms' => $data['smsService'],
+                'NumberSms' => $data['smsNumber']
             ];
             if(!empty($result)){
 
@@ -63,7 +63,7 @@ class smsPanel extends Model
                 $condition = "id='{$result['id']}'";
                 $resultInsert = $admin->ConectDbClient('', $clientID, 'Update', $data, 'sms_service_info_tb', $condition);
                 $updateClient = $ModelBase->updateWithBind($dataUpdate, ['id' => $clientID] ,'clients_tb');
-        
+
                 if ($resultInsert || $updateClient) {
                     $output['result_status'] = 'success';
                     $output['result_message'] = 'ویرایش سرویس پیامک با موفقیت انجام شد';
@@ -174,6 +174,7 @@ class smsPanel extends Model
             'bookedSuccessfullyGasht' => 'پس از رزرو قطعی گشت',
             'bookedSuccessfullyBus' => 'پس از رزرو قطعی اتوبوس',
             'custom' => 'متفرقه',
+            'memberLogin' => 'ورود کاربر به پنل',
             'organizationCategoryAfterRegisterUser' => 'دسته بندی سازمانی بعد از ثبت نام کاربر',
             'organizationCategoryAfterAcceptUser' => 'دسته بندی سازمانی بعد از تایید کاربر',
             'organizationCategoryAfterRejectUser' => 'دسته بندی سازمانی بعد از رد کاربر',
@@ -334,8 +335,6 @@ class smsPanel extends Model
     #region getGroupReports
     public function getGroupReports($type)
     {
-
-
         $sendType = filter_var($type, FILTER_SANITIZE_STRING);
 
         if($sendType == 'manual'){
@@ -345,6 +344,7 @@ class smsPanel extends Model
         }
 
         $Model = Load::library('Model');
+
         $query = "SELECT report.*,
                    blt.pnr as pnr_number
             FROM sms_reports_tb AS report
@@ -356,12 +356,63 @@ class smsPanel extends Model
                 FROM sms_reports_tb
                 WHERE sameID = report.sameID
             )
+            AND report.creationDateInt >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 10 DAY))
             ORDER BY report.creationDateInt DESC
             LIMIT 50
 ";
 
 
         return $Model->select($query);
+    }
+
+    public function searchSmsReports() {
+        try {
+            $sendType = isset($_POST['type']) ? trim(filter_var($_POST['type'], FILTER_SANITIZE_STRING)) : 'manual';
+
+            if (empty($_POST['request_number'])) {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'لطفاً شماره درخواست را وارد کنید'
+                ]);
+                return;
+            }
+
+            $sendType = ($sendType == 'manual') ? 'manual' : 'auto';
+
+            $Model = Load::library('Model');
+
+            $query = "SELECT report.*,
+                         blt.pnr as pnr_number
+                  FROM sms_reports_tb AS report
+                  LEFT JOIN book_local_tb blt 
+                      ON report.request_number = blt.request_number
+                  WHERE report.sendType = '{$sendType}' 
+                      AND report.request_number = '{$_POST['request_number']}'
+                      ";
+
+            $results = $Model->select($query);
+
+            if (empty($results)) {
+                echo json_encode([
+                    'status' => 'success',
+                    'data' => [],
+                    'message' => 'هیچ نتیجه‌ای یافت نشد'
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 'success',
+                    'data' => $results,
+                    'count' => count($results)
+                ]);
+            }
+
+        } catch (Exception $e) {
+            functions::insertLog('SMS Search Error: ' . $e->getMessage(), 'sms_search_error');
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'خطا در جستجو: ' . $e->getMessage()
+            ]);
+        }
     }
     #endregion
 
@@ -387,8 +438,8 @@ class smsPanel extends Model
     #region checkReportDelivery
     public function checkReportDelivery($successCode)
     {
-	    /** @var smsServices $smsServices */
-	    $smsServices = Load::controller('smsServices');
+        /** @var smsServices $smsServices */
+        $smsServices = Load::controller('smsServices');
         $objSms      = $smsServices->initService(0);
         if($objSms) {
             $smsServices->checkDelivery($successCode);

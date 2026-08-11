@@ -2396,6 +2396,7 @@ class bookshow extends clientAuth
                 $dataPassenger['airline_name']   = $data['airline_name'];
                 $dataPassenger['time_flight']    = $data['flight_time']; // همون‌جوری که هست ذخیره شه
                 $dataPassenger['date_flight']    = $data['flight_date']; // تاریخ پرواز
+                $dataPassenger['flight_number']    = $data['flight_number'];
 
                 $ClientID = $data['ClientID'];
 

@@ -1,7 +1,6 @@
 {load_presentation_object filename="smsPanel" assign="objSms"}
 {assign var="reportsList" value=$objSms->getGroupReports($smarty.get.type)}
 
-
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
@@ -18,9 +17,36 @@
 
         <!-- /.col-lg-12 -->
     </div>
-
     <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box my-2">
+                <h3 class="box-title m-b-0">جستجو براساس شماره درخواست</h3>
+                <form id="SearchSmsReport" method="post" onsubmit="return false">
+                    <input type="hidden" name="flag" id="flag" value="searchByReqeustNumberSmsReports">
+                    <input type="hidden" name="type" id="searchType" value="{$smarty.get.type}">
 
+                    <div class="form-group col-sm-12">
+                        <label for="requestNumber" class="control-label">شماره درخواست</label>
+                        <input type="text" class="form-control" name="request_number"
+                               value="{$smarty.post.request_number}" id="requestNumber"
+                               placeholder="شماره درخواست را وارد نمائید">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group pull-right">
+                                <button type="submit" class="btn btn-primary" id="btnSearchSms">
+                                    <i class="fa fa-search"></i> شروع جستجو
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12">
             <div class="white-box">
                 <div class="table-responsive">
@@ -31,6 +57,7 @@
                             <th>پیام ارسالی</th>
                             {if $smarty.get.type eq 'manual'}<th>ارسال به</th>{/if}
                             <th>تاریخ و ساعت ارسال</th>
+                            <th>شماره درخواست</th>
                             <th>شماره Pnr</th>
                             <th>شماره ارسالی</th>
                             <th>وضعیت ارسال</th>
@@ -49,6 +76,7 @@
                                 <td class="align-middle">{$item.smsMessage}</td>
                                 {if $smarty.get.type eq 'manual'}<td>{$item.sendTo}</td>{/if}
                                 <td class="align-middle">{$objDate->jdate('Y-m-d (H:i:s)', $item.creationDateInt)}</td>
+                                <td class="align-middle">{$item.request_number}</td>
                                 <td class="align-middle">{$item.pnr_number}</td>
                                 <td class="align-middle">{$item.receiverMobile}</td>
                                 <td class="align-middle">
