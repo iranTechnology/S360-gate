@@ -9,7 +9,7 @@
                 {include file="./sections/bus/date_bus.tpl"}
                 <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-6 col-sm-6 col-12 btn_s col_search">
                     <button type="button" class="btn theme-btn seub-btn b-0 "
-                            onclick="searchBus()"><span>جستجو</span></button>
+                            onclick="searchBus()"><span>##Search##</span></button>
                 </div>
             </form>
         </div>

@@ -22,34 +22,34 @@
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/Tour">Trip</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">Hotel</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/bus">Bus</a></li>
-                        <li>
-                            <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">Visa</a>
-                            <ul class="nav-dropdown">
-                                {foreach $visaObj->getVisaListByCategoryId(['category_id' => 1]) as $key => $visa}
-                                <li>
-                                    <a href="{$smarty.const.ROOT_ADDRESS}/resultVisa/{$visa['country_code']}/all/1-0-0/1">
-                                        {if $visa['country_name_en']}
-                                           {$visa['country_name_en']}
-                                        {else}
-                                           {$visa['country_name']}
-                                        {/if}
-                                    </a>
-                                    {if $visa['visa_list']}
-                                        <ul class="nav-dropdown nav-submenu nav-menu_ul">
-                                            {foreach $visa['visa_list'] as $key => $visa_type}
-                                                <li>
-                                                    <a href='{$smarty.const.ROOT_ADDRESS}/visa/{$visa['country_code']}/{$visa_type['id']}'>
-                                                        {$visa_type['type_title']}
-                                                    </a>
-                                                </li>
-                                            {/foreach}
-                                        </ul>
-                                    {/if}
-                                </li>
-                                {/foreach}
-                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa">Searching immigration</a></li>
-                            </ul>
-                        </li>
+{*                        <li>*}
+{*                            <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">Visa</a>*}
+{*                            <ul class="nav-dropdown">*}
+{*                                {foreach $visaObj->getVisaListByCategoryId(['category_id' => 1]) as $key => $visa}*}
+{*                                <li>*}
+{*                                    <a href="{$smarty.const.ROOT_ADDRESS}/resultVisa/{$visa['country_code']}/all/1-0-0/1">*}
+{*                                        {if $visa['country_name_en']}*}
+{*                                           {$visa['country_name_en']}*}
+{*                                        {else}*}
+{*                                           {$visa['country_name']}*}
+{*                                        {/if}*}
+{*                                    </a>*}
+{*                                    {if $visa['visa_list']}*}
+{*                                        <ul class="nav-dropdown nav-submenu nav-menu_ul">*}
+{*                                            {foreach $visa['visa_list'] as $key => $visa_type}*}
+{*                                                <li>*}
+{*                                                    <a href='{$smarty.const.ROOT_ADDRESS}/visa/{$visa['country_code']}/{$visa_type['id']}'>*}
+{*                                                        {$visa_type['type_title']}*}
+{*                                                    </a>*}
+{*                                                </li>*}
+{*                                            {/foreach}*}
+{*                                        </ul>*}
+{*                                    {/if}*}
+{*                                </li>*}
+{*                                {/foreach}*}
+{*                                <li><a href="{$smarty.const.ROOT_ADDRESS}/page/visa">Searching immigration</a></li>*}
+{*                            </ul>*}
+{*                        </li>*}
                         <li><a href="javascript:">Our agency</a>
                             <ul class="nav-dropdown">
                                 <li><a href="{$smarty.const.ROOT_ADDRESS}/mag">Blog</a></li>

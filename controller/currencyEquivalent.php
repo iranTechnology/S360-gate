@@ -523,6 +523,7 @@ parent::__construct();
 
             if ($hasAccess && isset($customer_default_currency['EqAmount']) && $customer_default_currency['EqAmount'] > 0) {
                 $currency['EqAmount'] = $customer_default_currency['EqAmount'];
+                $currency['CurrencyCode'] = $customer_default_currency['CurrencyCode'];
             }else{
            $currency['EqAmount'] = $currency['CurrencyPrice'];
        }

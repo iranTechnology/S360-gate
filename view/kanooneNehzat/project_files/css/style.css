@@ -46,7 +46,7 @@ a:hover {
 }
 
 .hotel-ghods{
-    margin: 0 0 40px 0 !important;
+    margin: 290px 0 40px 0 !important;
 }
 
 @media (max-width: 576px) {
@@ -323,6 +323,10 @@ a:hover {
 @media (max-width: 991px) {
     .banner-safiran .banner {
         height: 550px !important
+    }
+
+    .banner-safiran {
+        height: auto;
     }
 }
 
@@ -619,6 +623,12 @@ a:hover {
 
 @media (max-width: 992px) {
     .search_box {
+        display: none;
+    }
+    .hotel-ghods{
+        margin-top: 0 !important;
+    }
+    .search_box {
         bottom: -11px
     }
 
@@ -628,12 +638,6 @@ a:hover {
 
     .title-banner {
         margin-top: 100px
-    }
-}
-
-@media (max-width: 768px) {
-    .banner-safiran {
-        margin-bottom: -74px
     }
 }
 

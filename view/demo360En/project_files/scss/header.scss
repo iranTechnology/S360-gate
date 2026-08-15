@@ -10,10 +10,12 @@ $height-header: 95px;
     gap: 10px;
     margin-left: auto;
 }
-
+.logIn > i {
+    display: none;
+}
 .button_header {
     border: 1px solid $mainColor;
-    padding: 12px 25px;
+    padding: 10px 17px;
     border-radius: 999px;
     background: $mainColor;
     font-family: $fontFamilyBold;
@@ -24,7 +26,13 @@ $height-header: 95px;
     align-items: center;
     justify-content: center;
 }
+.nav-header img {
+    width: 120px;
+}
 
+.fixicone:hover{
+    color: $secondColor;
+}
 .button_header:hover {
     background: #f1f1f1;
     color: #666;
@@ -57,6 +65,10 @@ $height-header: 95px;
     color: #666;
 }
 
+.nav-toggle:hover svg {
+    fill: #666;
+}
+
 .nav-toggle {
     width: 42px;
     height: 42px;
@@ -65,9 +77,9 @@ $height-header: 95px;
     justify-content: center;
     align-items: center;
     padding: 7px;
-    border: 1px solid #ddd;
-    border-radius: $rounded;
-    background: #fefefe;
+    border: 1px solid $mainColor;
+    border-radius: 999px;
+    background: $mainColor;
     color: #666;
     font-size: 14px;
     transition: all .3s;
@@ -79,7 +91,8 @@ $height-header: 95px;
 .nav-toggle > svg {
     width: 100%;
     height: 100%;
-    fill: #777;
+    fill: #fff;
+    transition: all .3s;
 }
 
 .navigation-portrait .nav-toggle {
@@ -110,7 +123,6 @@ $height-header: 95px;
 }
 
 .navigation-portrait .nav-menus-wrapper-close-button > svg {
-    width: 100%;
     height: 100%;
     fill: #777;
     transition: all .3s
@@ -122,12 +134,12 @@ $height-header: 95px;
 
 .navigation-portrait .nav-menus-wrapper-close-button {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     cursor: pointer;
     width: 50px;
     height: 50px;
-    padding: 10px
+    padding: 10px 0;
 }
 
 .nav-menu {
@@ -138,7 +150,6 @@ $height-header: 95px;
     flex-wrap: wrap;
     height: 100%;
     align-items: center;
-    gap: 10px;
 }
 
 .navigation-portrait .nav-menu {
@@ -173,7 +184,7 @@ $height-header: 95px;
     justify-content: center;
     position: relative;
     gap: 5px;
-    font-size: 18px;
+    font-size: 16px;
     padding:  15px;
     height: $height-header;
     font-family: $fontFamilyBold;
@@ -205,7 +216,7 @@ $height-header: 95px;
 }
 
 .nav-dropdown {
-    min-width: 170px;
+    min-width: 140px;
     margin: 0;
     display: none;
     position: absolute;
@@ -225,7 +236,12 @@ $height-header: 95px;
 
 .nav-dropdown > li {
     display: flex;
-    position: relative
+    position: relative;
+    border-bottom: 1px solid #eee;
+
+    &:last-child{
+        border-bottom: 0;
+    }
 }
 
 .a_header_active {
@@ -250,22 +266,22 @@ $height-header: 95px;
 }
 
 .nav-dropdown .submenu-indicator svg {
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
 }
 .navigation-portrait .submenu-indicator.submenu-indicator-up svg{
     fill: #fff;
 }
 
 .nav-dropdown .nav-dropdown {
-    left: 100%;
+    right: 100%;
 }
 
 .nav-dropdown > li > a {
     width: 100%;
-    padding: 10px 10px;
+    padding: 5px;
     float: right;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
     color: #555;
     font-family: $fontFamilyBold;
     text-align: right;
@@ -430,13 +446,19 @@ $height-header: 95px;
     .nav-menus-wrapper{
         padding-right: 10px;
     }
+    .text-count-passenger {
+        font-size: 11px;
+    }
     .nav-menu > li > a{
-        padding: 0 6px !important;
+        padding: 10px;
     }
 }
 @media (max-width: 992px) {
     .special_tour_banner > .container > h3{
         display: none !important;
+    }
+    .text-count-passenger {
+        font-size: 14px;
     }
 }
 @media (max-width: 991px) {
@@ -490,7 +512,7 @@ $height-header: 95px;
     }
 
     .box_button_header {
-        margin-right: 10px;
+        margin-right: auto
     }
 
     .nav-menu {
@@ -530,6 +552,7 @@ $height-header: 95px;
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+    padding-left: 10px;
 }
 .img-box-footer {
     display: flex;
@@ -555,6 +578,7 @@ $height-header: 95px;
 }
 .child-item-footer {
     color: #666;
+    font-size: 14px;
 }
 .child-item-footer i {
     margin-right: 5px;
@@ -580,7 +604,7 @@ $height-header: 95px;
     display: flex;
     align-items: center;
     justify-content: right;
-    margin-top: 5px;
+    margin-top: 0;
     gap: 30px;
 }
 .footer-icon a {
@@ -593,9 +617,12 @@ $height-header: 95px;
     font-size: 28px;
 
     &:hover{
-        color: $mainColor;
         text-decoration: none;
+        color: $mainColor;
     }
+}
+.footer_instagram:hover{
+    color: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
 }
 .box-item-footer {
     margin-top: 24px;
@@ -613,7 +640,8 @@ $height-header: 95px;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 19px;
+    justify-content: center;
+    gap: 15px;
 }
 .box-item-footer ul li a {
     color: #222;
@@ -636,18 +664,17 @@ $height-header: 95px;
     text-align: right;
 }
 .namads {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-column-gap: 5px;
-    grid-row-gap: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 230px;
+    gap: 10px;
 }
 .namads > a {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 85px;
     background: #fff;
     border-radius: 5px;
     padding: 5px 10px;
-    margin: 5px 0;
     border: 1px solid #ccc;
 }
 .namads > a > img {
@@ -665,7 +692,7 @@ $height-header: 95px;
     margin-right: 3px;
 }
 .last_text a:hover {
-    color: #333;
+    color: $mainColor;
     text-decoration: none;
 }
 .last_text {
@@ -680,6 +707,10 @@ $height-header: 95px;
 .footer-gisoo{
     margin-top: 50px;
     border-top: 1px solid #ccc;
+}
+.header-page{
+    position: relative;
+    background: rgba(87, 87, 87, 0.62);
 }
 .parent-namad h3{
     color: #333;
@@ -738,8 +769,47 @@ $height-header: 95px;
 }
 
 @media (max-width: 991px) {
+    .footer-icon {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-icon {
+        margin-top: 0;
+    }
+    .namads > a {
+        width: 80px;
+        height: 75px;
+    }
+    .footer-icon a {
+        font-size: 25px;
+    }
+    .namads {
+        width: unset;
+    }
+    .parent-item-footer img {
+        width: 115px;
+    }
+    .img-box-footer {
+        margin-bottom: -5px;
+    }
+    .box-item-footer {
+        margin-top: 25px;
+    }
+    .box-item-footer h3 {
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+    .parent-namad h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
     .parent-namad{
-        display: none;
+        margin-top: 25px;
+    }
+    .div-footer-parent {
+        padding: 10px 0 20px 0;
     }
 }
 
@@ -747,10 +817,14 @@ $height-header: 95px;
     #scroll-top{
         display: none !important;
     }
-    .parent-namad{
-        display: block;
-    }
     .namads{
         grid-template-columns: repeat(4, 1fr);
+    }
+    .nav-header img {
+        width: 155px;
+    }
+    .namads > a {
+        width: 70px;
+        height: 65px;
     }
 }

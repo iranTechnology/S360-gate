@@ -2532,7 +2532,7 @@ a:hover {
     box-shadow: none;
     border-color: var(--mainColor) !important;
 }
-/* انیمیشن چشمک زن */
+
 .blink-button {
     animation: blink 1.5s ease-in-out infinite;
     display: inline-block;
