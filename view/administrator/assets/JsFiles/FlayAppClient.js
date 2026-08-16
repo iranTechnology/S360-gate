@@ -972,8 +972,34 @@ $("#flightDataCode").validate({
                             logDisplay = `<td><span></span></td>`;
                         }
 
+                        let apiHeaderContent = '';
+                        if (item.apiHeader) {
+                            // اگر apiHeader آرایه است، به JSON تبدیل کن
+                            if (Array.isArray(item.apiHeader)) {
+                                apiHeaderContent = JSON.stringify(item.apiHeader);
+                            } else if (typeof item.apiHeader === 'object') {
+                                apiHeaderContent = JSON.stringify(item.apiHeader);
+                            } else {
+                                apiHeaderContent = item.apiHeader;
+                            }
+                        }
+
+                        // فرار دادن کاراکترهای خاص برای جلوگیری از خرابی HTML
+                        apiHeaderContent = apiHeaderContent.replace(/"/g, '&quot;');
+
+                        let apiHeader = '';
+                        if(item.businessMethodName == 'Search'){
+                            apiHeader = ` <td><a target="_blank" href="http://safar360.com/Core/V-1/Flight/findFilesource15/${apiHeaderContent}">مشاهده هدر</a></td>`;
+                        }else{
+                            apiHeader = ` <td class="download-log"
+            data-id="${item.code}"
+            data-type="apiHeader"
+            data-method="${item.businessMethodName}"
+            data-content="${apiHeaderContent}">دانلود فایل هدر</td>`;
+                        }
 
 
+                        console.log(item.apiHeader)
                         tbody += `
                         <tr id="${item.id}">
                             <td>${index + 1}</td>
@@ -986,6 +1012,7 @@ $("#flightDataCode").validate({
                             data-method="${item.businessMethodName}"
                             data-content="${item.request}">دانلود فایل درخواست</td>
                             ${response}
+                            ${apiHeader}
                             ${logDisplay}
                         </tr>
                     `;

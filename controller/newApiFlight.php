@@ -744,7 +744,7 @@ class newApiFlight extends clientAuth
         $data['Hour'] = functions::Xmlinformation('Hour')->__toString();
         $data['Minutes'] = functions::Xmlinformation('Minutes')->__toString();
         $data['And'] = functions::Xmlinformation('And')->__toString();
-
+        $data['no_baggage_zero_kg'] =  functions::Xmlinformation('NoBaggage')->__toString() . ' (0' . functions::Xmlinformation('Kg')->__toString() . ' )';
         return $data;
     }
     //endregion
@@ -1638,6 +1638,11 @@ class newApiFlight extends clientAuth
 
         $after_arrays = date('H:i:s',time());
 
+        $baggageOptions = $this->extractBaggageOptions($flights_search, $translateVariable);
+        $optionsFilterFlight = array(
+            'baggage_filter' => $baggageOptions,
+        );
+
         if (!empty($flights_search)) {
 
             if (!$this->multi_destination) {
@@ -1646,6 +1651,7 @@ class newApiFlight extends clientAuth
                 // اگر روزی خواستیم این رو برگردونیم تا فیلتر ها اعمال بشه خط اول که کامنت شده رو از کامنتی در میاریم خط بعد رو کامنت میکنیم
 
                 $flights = $this->filterFlight($flights_search, $list_config_airline);
+
 //                $flights = $flights_search;
             } else {
                 $flights = $flights_search;
@@ -1663,7 +1669,7 @@ class newApiFlight extends clientAuth
 
 
 
-            $this->tickets = $this->filterInternationalFlight($translateVariable);
+            $this->tickets = $this->filterInternationalFlight($translateVariable , $optionsFilterFlight);
 
 
 
@@ -2473,15 +2479,95 @@ class newApiFlight extends clientAuth
      * @param $translateVariable
      * @return array
      */
-    private function filterInternationalFlight($translateVariable) {
+    private function filterInternationalFlight($translateVariable , $options = null) {
         return array('request_number' => $this->UniqueCode, 'count_flight' => $this->count, 'name_departure' => $this->originName, 'name_arrival' => $this->destinationName, 'interrupt' => array('no_interrupt' => array('name_fa' => $translateVariable['no_interrupt'], 'name_en' => 'no_interrupt',), 'one_interrupt' => array('name_fa' => $translateVariable['one_interrupt'], 'name_en' => 'one_interrupt',), 'two_interrupt' => array('name_fa' => $translateVariable['two_interrupt'], 'name_en' => 'two_interrupt',),), 'time_filter' => array('morning' => array('name_fa' => $translateVariable['morning'], 'time' => 'early', 'value' => '0-8',), 'day' => array('name_fa' => $translateVariable['Time_morning'], 'time' => 'morning', 'value' => '8-12',), 'evening' => array('name_fa' => $translateVariable['evening'], 'time' => 'afternoon', 'value' => '12-18',), 'night' => array('name_fa' => $translateVariable['night'], 'time' => 'night', 'value' => '18-24',),), 'type_flight_filter' => array('system' => array('name_fa' => $translateVariable['system_flight'], 'name_en' => 'system',), 'charter' => array('name_fa' => $translateVariable['charter_flight'], 'name_en' => 'charter',),), 'seat_class_filter' => array(
             'economy' => array('name_fa' => $translateVariable['economics_type'], 'name_en' => 'economy'),
             'premium_economy' => array('name_fa' => $translateVariable['premium_economy_type'], 'name_en' => 'premium_economy'),
             'business' => array('name_fa' => $translateVariable['business_type'], 'name_en' => 'business')
-        ),);
+        ), 'baggage_filter' => isset($options['baggage_filter']) ? $options['baggage_filter'] : [],);
     }
     //endregion
+    private function extractBaggageOptions($flights, $translateVariable) {
+        $baggageSet = array();
+        $baggageDisplay = array();
 
+        if (empty($flights) || !is_array($flights)) {
+            return null;
+        }
+
+        foreach ($flights as $flight) {
+            // بررسی OutputRoutes
+            if (isset($flight['OutputRoutes']) && is_array($flight['OutputRoutes'])) {
+                foreach ($flight['OutputRoutes'] as $route) {
+                    if (isset($route['Baggage']) && is_array($route['Baggage'])) {
+                        foreach ($route['Baggage'] as $bag) {
+                            functions::insertLog('$bag: ' . json_encode($bag) , '000shojaee');
+                            $result = $this->extractBaggageValueFromBag($bag);
+                            if ($result !== null) {
+                                $key = $result['display'];
+                                $baggageSet[$key] = $result;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // بررسی مستقیم Baggage
+            if (isset($flight['Baggage']) && is_array($flight['Baggage'])) {
+                foreach ($flight['Baggage'] as $bag) {
+                    $result = $this->extractBaggageValueFromBag($bag);
+                    if ($result !== null) {
+                        $key = $result['display'];
+                        $baggageSet[$key] = $result;
+                    }
+                }
+            }
+        }
+
+        // اگر هیچ بار معتبری پیدا نشد
+        if (empty($baggageSet)) {
+            return null;
+        }
+
+        // ساخت گزینه‌ها
+        $options = array();
+
+        foreach ($baggageSet as $item) {
+            $options[$item['display']] = array(
+                'name_fa' => $item['display'],
+                'name_en' => $item['display'],
+                'value' => $item['display'],
+            );
+        }
+
+        return $options;
+    }
+
+    /**
+     * استخراج مقدار بار از آبجکت Baggage
+     * فقط متن اصلی را برمی‌گرداند
+     */
+    private function extractBaggageValueFromBag($bag) {
+        if (empty($bag)) return null;
+
+        $display = null;
+
+        // لیست فیلدهای احتمالی برای استخراج بار
+        $fields = ['allowanceAmount', 'baggageTextDisplay', 'Charge'];
+
+        foreach ($fields as $field) {
+            if (isset($bag[$field]) && !empty($bag[$field])) {
+                $display = (string)$bag[$field];
+                break;
+            }
+        }
+
+        if ($display === null) return null;
+
+        return array(
+            'display' => $display,
+        );
+    }
     //region [filterFlight]
 
     public function pointClub($ticket, $info_price , $checkPrivate) {
@@ -2545,7 +2631,7 @@ class newApiFlight extends clientAuth
                 }
             } else {
 
-                return $data_translate['no_baggage'];
+                return $data_translate['no_baggage_zero_kg'];
             }
         } elseif (in_array($source_id, ['8', '16'])) {
             if ($baggageCharge > 0) {
@@ -2575,7 +2661,7 @@ class newApiFlight extends clientAuth
             return functions::StrReplaceInArray(['@@numberPiece@@' => '1', '@@amountPiece@@' => $baggageCharge], $data_translate['amount_baggage']);
         }
 
-        return $data_translate['Call'];
+        return $data_translate['no_baggage_zero_kg'];
     }
     //endregion
 
