@@ -161,7 +161,7 @@ class apiBus extends clientAuth
 
                 if ($res['response']['successfulStatus'] === false) {
                     $errorsController = $this->getController('errors');
-                    $errMsg = $errorsController->processError('null', 'bus', 'preReserve', $resultCheck['SourceCode']);
+                    $errMsg = $errorsController->processError($res, 'bus', 'preReserve', $resultCheck['SourceCode']);
                     $data_error['message_agency'] = $errMsg['displayAgency'];
                     $data_error['message_passenger'] = $errMsg['displayPassenger'];
                     $data_error['message_admin'] = $errMsg['displayAdmin'];
@@ -220,7 +220,7 @@ class apiBus extends clientAuth
 
                 if ($result['response']['SuccessfulStatus']['provider'] === false || $result['response']['SuccessfulStatus']['client'] === false) {
                     $errorsController = $this->getController('errors');
-                    $errMsg = $errorsController->processError('null', 'bus', 'reserve', $resultCheck['SourceCode']);
+                    $errMsg = $errorsController->processError($result, 'bus', 'reserve', $resultCheck['SourceCode']);
                     $data_error['message_agency'] = $errMsg['displayAgency'];
                     $data_error['message_passenger'] = $errMsg['displayPassenger'];
                     $data_error['message_admin'] = $errMsg['displayAdmin'];

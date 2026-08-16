@@ -2565,6 +2565,7 @@ function getRulesHTML(rules) {
             },
             success: function(data) {
                let value = data.Hotels
+
                let advertises = data.Advertises
                $('#webServiceType').val(data.WebServiceType)
                $('.silence_span').html(`<b id='countHotelHtml'>${data.Count}</b> ${useXmltag('NumberHotelsFound')}`)

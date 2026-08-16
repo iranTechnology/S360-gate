@@ -72,7 +72,7 @@ class hotelList {
         hl.id as hotel_local_id,
         hl.city_id,
         hl.type,
-        hl.name_fa,
+        hl.name,
         hl.name_en,
         hl.star_code,
         hl.address,
@@ -92,7 +92,7 @@ class hotelList {
         -- اطلاعات شهر از جدول domestic_cities_tb
         dc.id as city_id,
         dc.name as city_name,
-        dc.name_fa as city_name_fa,
+        dc.name as city_name_fa,
         dc.province_id
     FROM hotel_source_tb hs
     LEFT JOIN hotels_local_tb hl 

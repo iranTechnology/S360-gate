@@ -268,6 +268,9 @@
                         <td>
                             <p>{if !$passenger['passenger_birth_date']} {$passenger['passenger_birth_date_en']} {else} {$passenger['passenger_birth_date']}{/if}</p>
                         </td>
+                        <td>
+                            <p> {$passenger['passenger_birth_date_en']}</p>
+                        </td>
                         <td><p>{$passenger['passport_number']}</p></td>
                         <td><p>{$objFunctions->numberFormat($everyMainCurrency.AmountCurrency)}</p></td>
                     </tr>

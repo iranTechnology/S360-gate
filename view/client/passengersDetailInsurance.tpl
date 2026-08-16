@@ -530,7 +530,7 @@ $InfoInsurance.destinationIata == 'IRN'}
 
                             <!-- اسپن نمایش تاریخ شمسی -->
                             <div class="d-flex align-items-center flex-column d-md-inline">
-                                <span id="jalali_preview_{$i}" class="showDateNoteStyle" style="color:#cc4444;display:none; margin-top:2px;font-size:16px;position: absolute;left: 55px;"></span>
+                                <span id="jalali_preview_{$i}" class="showDateNoteStyle" style="color:#cc4444;display:none; margin-top:2px;font-size:16px;position: absolute;left: 0;width: 110%;"></span>
                                 <span class="showDateNote_{$i} showDateNoteStyle" style="display:none; margin-top:2px;font-size:13px;position: absolute;left: 42px;top: 66px;">اگر تاریخ تولد شمسی شما را اشتباه نشان میدهد</span>
                                 <span class="showDateNote_{$i} showDateNoteStyle" style="display:none; margin-top:2px;font-size:13px;position: absolute;left: 112px;top: 87px;">روز تولد میلادی رو بالا یا پایین کنید</span>
                             </div>
