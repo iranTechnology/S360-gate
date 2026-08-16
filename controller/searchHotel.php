@@ -832,8 +832,7 @@ WHERE
     }
     public function excludeWebserviceHotel($hotel_list) {
         $webserviceHotelController = $this->getController('webserviceHotel') ;
-        $webserviceHotel = $webserviceHotelController->getNotIncludeWebservice('13');
-
+        $webserviceHotel = $webserviceHotelController->getNotIncludeWebservice('40');
         $result = [] ;
         foreach ($hotel_list as $hotel) {
             if(!in_array( $hotel['index'] , $webserviceHotel )){

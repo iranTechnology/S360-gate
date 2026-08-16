@@ -1258,23 +1258,27 @@ class resultHotelLocal extends apiHotelLocal
                         $this->stayingTime = $arr_sell_for_night[$count_arr - 1];
                     }
 
-                } else {
+                }
+                else {
 
                     $this->stayingTime = $nights;
 
                 }
 
 
-            } else {
+            }
+            else {
 
                 $this->stayingTime = $nights;
             }
 
 
-        } else {
+        }
+        else {
 
             $this->stayingTime = $nights;
         }
+
 
 
     }
