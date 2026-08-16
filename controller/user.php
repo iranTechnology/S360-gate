@@ -2883,14 +2883,14 @@ class user extends baseController
             $bookList[$key]['reservationProofVersa'] = '';
             if ($item['status'] == 'BookedSuccessfully') {
                 if(CLIENT_ID == 317) {
-                    $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
+                    $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
                 }else{
                     if ($item['isInternal'] != 0) {
 //                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
-                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
+                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
 
                     }else {
-                        $bookList[$key]['pdfHotel']  = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookhotelshow&id=' . $item['factor_number'];
+                        $bookList[$key]['pdfHotel']  = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
                     }
                 }
             }
@@ -5127,15 +5127,15 @@ class user extends baseController
                 $bookList[$key]['reservationProofVersa'] = '';
                 if ($item['statusBook'] == 'BookedSuccessfully') {
                     if(CLIENT_ID == 317) {
-                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
+                        $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
                     }else{
                         if ($item['isInternal'] != 0) {
 //                            $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
-                            $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&lang=en&target=bookhotelshow&id=' . $item['factor_number'];
+                            $bookList[$key]['pdfHotel'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
 
                         }
                         else {
-                            $bookList[$key]['pdfHotel']  = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookhotelshow&id=' . $item['factor_number'];
+                            $bookList[$key]['pdfHotel']  = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=BookingHotelNew&id=' . $item['factor_number'];
                         }
                     }
 

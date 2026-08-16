@@ -1,4 +1,8 @@
 {assign var='cities' value=$obj_main_page->getBusRoutes()}
+{assign var="langVar" value=""}
+{if $smarty.const.SOFTWARE_LANG neq 'fa'}
+    {assign var="langVar" value="_en"}
+{/if}
 
 <div class="tab-pane {if  $smarty.const.GDS_SWITCH eq 'page' || $client['order_number'] == '1'} active {/if}" id="Bus">
     <div class="col-md-12 col-12">
@@ -9,7 +13,7 @@
                 {include file="./sections/bus/date_bus.tpl"}
                 <div class="{if isset($col) } {$col} {else} col-lg-2{/if} col-md-6 col-sm-6 col-12 btn_s col_search">
                     <button type="button" class="btn theme-btn seub-btn b-0 "
-                            onclick="searchBus()"><span>جستجو</span></button>
+                            onclick="searchBus()"><span>##Search##</span></button>
                 </div>
             </form>
         </div>

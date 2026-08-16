@@ -126,7 +126,9 @@ a:hover {
 
     p {
       color: #676977;
-      @include text-limit(2);
+      @include text-limit(10);
+      line-height: 36px;
+      text-align: justify;
     }
 
     .ul-about {
@@ -232,8 +234,8 @@ a:hover {
         background: rgba(0, 0, 0, 0);
 
         &.active {
-          background: $mainColor;
-          color: #fff;
+          background: $mainColor !important;
+          color: #fff !important;
           border-color: $mainColor;
         }
       }
@@ -304,7 +306,7 @@ a:hover {
 
       h3 {
         font-family: $fontFamilyBold;
-        color: #fff;
+        color: #fff3cd;
         margin-bottom: 0;
         font-size: 26px;
       }
@@ -354,7 +356,7 @@ a:hover {
     font-family: $fontFamilyBold;
     color: #333;
     margin-bottom: 0;
-    font-size: 30px;
+    font-size: 26px;
   }
 }
 .search_flight{
@@ -421,7 +423,6 @@ a:hover {
           width: 100%;
           transition: all .3s;
           cursor: pointer;
-          justify-content: center;
           &:hover{
             background-color:#e7edfd !important;
           }
@@ -439,7 +440,7 @@ a:hover {
       gap: 10px;
       position: absolute;
       top: 0;
-      right: 210px;
+      right: 0;
       .nav-link{
         display: flex;
         align-items: center;
@@ -449,7 +450,7 @@ a:hover {
         background-color: transparent;
         color: $mainColor;
         height: 45px;
-        padding: 10px 25px;
+        padding: 10px 20px;
         gap: 5px;
         cursor: pointer;
         border-radius: 16px;
@@ -463,13 +464,13 @@ a:hover {
     }
     .search_flight_grid {
       display: grid;
-      margin-top: 1rem;
+      margin-top: 30px;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: 1fr;
       grid-column-gap: 20px;
       grid-row-gap: 20px;
       >div{
-        padding: 30px;
+        padding: 15px 30px;
         border-radius: $rounded;
         background: #fff;
         display: flex;
@@ -509,7 +510,6 @@ a:hover {
             width: 30px;
             height: 30px;
             fill: $mainColor;
-            transform: rotate(180deg);
           }
         }
       }
@@ -559,7 +559,6 @@ a:hover {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    height: 100%;
     border-radius: $rounded;
     align-items: center;
 
@@ -608,6 +607,7 @@ a:hover {
         border: none;
         font-size: 17px;
         height: 50px;
+        width: 100%;
       }
       a{
         background: $mainColor;
@@ -898,7 +898,7 @@ a:hover {
   transition: all ease .3s;
 }
 .parent-text-tour{
-  padding: 20px 20px 0 20px;
+  padding: 10px 20px 0 20px;
   /*! border-radius: 0 0 8px 8px; */
   overflow: hidden;
 }
@@ -921,8 +921,9 @@ a:hover {
   align-items: center;
   font-size: 14px;
   color: #797F86;
-  justify-content: right;
+  justify-content: left;
   margin-bottom: 18px;
+  gap: 3px;
 }
 .night-tour i{
   color: $mainColor;
@@ -931,7 +932,7 @@ a:hover {
 .price-tour{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   padding: 10px 0;
   border-top: 1px solid #ccc;
 }
@@ -962,7 +963,14 @@ a:hover {
   color: $mainColor !important;
   font-family: $fontFamilyBold !important;
   margin-left: 1px !important;
-  font-size: 16px !important;
+  font-size: 18px !important;
+
+  span{
+    color: $mainColor !important;
+    font-family: $fontFamilyBold !important;
+    margin-left: 1px !important;
+    font-size: 18px !important;
+  }
 }
 .start-price span{
   font-size: 12px;
@@ -987,7 +995,7 @@ a:hover {
   position: absolute;
   width: 60px !important;
   height: 60px;
-  top: 44%;
+  top: 46%;
   right: 20px;
 }
 .parent-ul-tour{
@@ -1009,15 +1017,59 @@ a:hover {
   background: rgba(0,0,0,0);
 }
 .tour-demo #pills-tab .nav-link.active {
-  background: $mainColor;
-  color: #fff;
+  background: $mainColor !important;
+  color: #fff !important;
   border-color: $mainColor;
 }
 
 
 
 
-
+//start app
+.app {
+  padding: 70px 0; /*background: #f7f8fa;*/
+  background: url(../images/bg-tour.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.app-text h3 {
+  font-family: 'iranbold', sans-serif;
+  color: #000;
+}
+.app-text p {
+  color: #797F86;
+  line-height: 30px;
+  text-align: justify;
+  margin: 30px 0;
+}
+.app-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app-img img {
+  width: 450px;
+}
+.parent-btn-app img {
+  transition: all ease .3s;
+  width: 400px;
+}
+.parent-btn-app img:hover {
+  transform: translateY(-5px);
+}
+.parent-btn-app a:first-child {
+  /*! margin-left: 10px; */
+}
+.parent-btn-app {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.app-text > img{
+  display: none;
+}
+//end app
 
 
 
@@ -1051,12 +1103,12 @@ a:hover {
       font-family: $fontFamilyBold;
       color: #333;
       margin-bottom: 0;
-      font-size: 30px;
+      font-size: 26px;
     }
 
     p {
       color: rgba(74, 74, 74, .58);
-      font-size: 18px;
+      font-size: 16px;
       margin-bottom: 0;
     }
   }
@@ -1100,6 +1152,7 @@ a:hover {
     font-family: $fontFamilyBold;
     @include flex-center-all();
     gap: 5px;
+    flex: 0 0 auto;
 
     svg {
       width: 10px;
@@ -1155,6 +1208,33 @@ a:hover {
   }
   .about-ghods .parent-about{
     grid-template-columns: repeat(1, 1fr);
+  }
+  .app-img {
+    display: none;
+  }
+  .parent-btn-app {
+    align-items: center;
+  }
+}
+@media (max-width: 1200px) {
+  #searchBoxTabs{
+    gap:unset !important;
+  }
+}
+
+@media (max-width: 769px) {
+  .app-text > img {
+    display: block;
+    width: 500px;
+    margin: 20px auto;
+  }
+  .parent-btn-app {
+    order: 3;
+    margin-top: 20px;
+  }
+  .app-text {
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -1218,27 +1298,24 @@ a:hover {
     display: none;
   }
   .newsletters .newsletterMain .text_newsletter div h2{
-    font-size: 16px;
+    font-size: 22px;
   }
   .newsletters .newsletterMain .text_newsletter .parent-svg-newsletters svg{
-    width: 100px;
+    width: 114px;
   }
-  .newsletters .newsletterMain{
-    padding: 10px !important;
+  .app-text > img {
+    width: 100%;
   }
-  .newsletters .newsletterMain .text_newsletter div p{
-    font-size: 12px;
+  .newsletters{
+    margin-top: 0;
   }
-  .visa a .text-visa p{
-    font-size: 14px;
-    text-align: center;
-    color: #f1f1f1;
+  .banner-demo .parent-banner-demo{
+    height: unset;
   }
-  .visa a .text-visa h2{
-    font-size: 16px;
-    text-align: center;
+  .text-nav-brand{
+    display: none !important;
   }
-  .visa a{
-    padding: 10px;
+  .banner-demo .container {
+    height: unset;
   }
 }

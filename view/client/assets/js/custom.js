@@ -8403,6 +8403,8 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                 // $(".item-discount__label").html(useXmltag("AmountPayableAfterApplyingDiscountCode"));
                 $(".price-after-discount-code").html(number_format(price_after_discount));
 
+                console.log('hi: ')
+
                 $.ajax({
                     type: 'POST',
                     url: amadeusPath + 'user_ajax.php',
@@ -8418,7 +8420,7 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                             typeApplication:typeApplication
                         },
                     success: function (data) {
-
+                        console.log('data: ' , data)
                     }
                 });
 

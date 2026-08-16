@@ -8,7 +8,7 @@
                id="raftobar">
         <label for="raftobar"
                class="switch-label switch-label-on">
-            خارجی
+            ##Foreign##
         </label>
         <input autocomplete="off"
                type="radio"
@@ -19,7 +19,7 @@
                id="raft">
         <label for="raft"
                class="switch-label switch-label-off">
-            داخلی
+            ##Internal##
         </label>
         <span class="switch-selection"></span>
     </div>

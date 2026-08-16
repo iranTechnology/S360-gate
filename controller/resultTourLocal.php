@@ -1279,11 +1279,14 @@ class resultTourLocal extends clientAuth {
 //            var_dump($oneDayTour);
 //            die;
 //        }
+
+        $currencyModel = Load::getModel('currencyModel');
+
         if ($oneDayTour == 'yes') {
 
             $sql = "
             SELECT
-                id_same, change_price, adult_price_one_day_tour_r, adult_price_one_day_tour_a, currency_type_one_day_tour
+                id_same, change_price, adult_price_one_day_tour_r, adult_price_one_day_tour_a, currency_type_one_day_tour , currency_code_one_day_tour
             FROM
                 reservation_tour_tb
             WHERE
@@ -1306,10 +1309,17 @@ class resultTourLocal extends clientAuth {
 
             $minPrice['minPriceA'] = $resultMinPrice['adult_price_one_day_tour_a'];
 
+            $currency = $currencyModel->get()
+                ->where('CurrencyCode', $resultMinPrice['currency_code_one_day_tour'])
+                ->where('IsEnable', 'Enable')
+                ->find();
+
             $minPrice['CurrencyTitleFa'] = $resultMinPrice['currency_type_one_day_tour'];
+            $minPrice['CurrencyTitleEn'] = $currency['CurrencyTitleEn'];
             $minPrice['is_toman'] = $this->is_toman();
 
-        } else {
+        }
+        else {
 
             $sql = "
     SELECT
@@ -1329,7 +1339,8 @@ class resultTourLocal extends clientAuth {
             WHEN P.single_room_price_r > 0 THEN P.single_room_price_a
             ELSE P.three_room_price_a
         END AS min_price_a,
-        P.currency_type
+        P.currency_type,
+        P.currency_code
     FROM
         reservation_tour_tb AS T
         LEFT JOIN reservation_tour_package_tb AS P ON T.id = P.fk_tour_id 
@@ -1380,7 +1391,13 @@ class resultTourLocal extends clientAuth {
 
             $minPrice['minPriceA'] = $resultMinPrice['min_price_a'];
 
+            $currency = $currencyModel->get()
+                ->where('CurrencyCode', $resultMinPrice['currency_code'])
+                ->where('IsEnable', 'Enable')
+                ->find();
+
             $minPrice['CurrencyTitleFa'] = $resultMinPrice['currency_type'];
+            $minPrice['CurrencyTitleEn'] = $currency['CurrencyTitleEn'];
             $minPrice['is_toman'] = $this->is_toman();
         }
         

@@ -7,7 +7,7 @@
     {include file="include_files/search-box.tpl"}
     {include file="include_files/fast_flight_search.tpl"}
     {include file="include_files/tours_special.tpl"}
-    {include file="include_files/visa.tpl"}
+{*    {include file="include_files/visa.tpl"}*}
     {include file="include_files/hotels.tpl"}
     {include file="include_files/newsletter.tpl"}
 </main>

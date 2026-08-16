@@ -699,6 +699,7 @@ class reservationTour extends clientAuth
                         '',
                         '',
                         '',
+                        '',
                         '" . $dateNow . "',
                         '" . date('H:i:s') . "',
                         '" . $data['is_show'] . "',
@@ -1067,7 +1068,8 @@ class reservationTour extends clientAuth
 
                         $objCurrency = Load::controller('currencyEquivalent');
                         $infoCurrency = isset($param['currencyType' . $countPackage]) ? $objCurrency->InfoCurrency($param['currencyType' . $countPackage]) : null;
-                        $dataPackage['currency_type'] = (isset($infoCurrency['CurrencyTitleFa']) && $infoCurrency['CurrencyTitleFa'] != '') ? $infoCurrency['CurrencyTitleFa'] : '';
+                        $dataPackage['currency_type'] = (isset($infoCurrency['CurrencyTitle']) && $infoCurrency['CurrencyTitle'] != '') ? $infoCurrency['CurrencyTitle'] : '';
+                        $dataPackage['currency_code'] =  $infoCurrency['CurrencyCode'];
 
                         $dataPackage['number_package'] = $countPackage;
                         $dataPackage['is_del'] = 'no';
@@ -1122,6 +1124,7 @@ class reservationTour extends clientAuth
                             '" . $dataPackage['infant_without_chair_price_r'] . "',
                             '" . $dataPackage['infant_without_chair_price_a'] . "',
                             '" . $dataPackage['currency_type'] . "',
+                            '" . $dataPackage['currency_code'] . "',
                             '" . $dataPackage['three_room_capacity'] . "',
                             '" . $dataPackage['double_room_capacity'] . "',
                             '" . $dataPackage['single_room_capacity'] . "',
@@ -1271,7 +1274,8 @@ class reservationTour extends clientAuth
         if (isset($param['currencyTypeOneDayTour']) && $param['currencyTypeOneDayTour'] != '') {
             $objCurrency = Load::controller('currencyEquivalent');
             $infoCurrency = $objCurrency->InfoCurrency($param['currencyTypeOneDayTour']);
-            $data['currency_type_one_day_tour'] = $infoCurrency['CurrencyTitleFa'];
+            $data['currency_type_one_day_tour'] = $infoCurrency['CurrencyTitle'];
+            $data['currency_code_one_day_tour'] = $infoCurrency['CurrencyCode'];
         } else {
             $data['currency_type_one_day_tour'] = '';
         }
@@ -1474,7 +1478,7 @@ class reservationTour extends clientAuth
 
                 $objCurrency = Load::controller('currencyEquivalent');
                 $infoCurrency = $objCurrency->InfoCurrency($param['currencyType' . $countPackage]);
-                $dataPackage['currency_type'] = $infoCurrency['CurrencyTitleFa'];
+                $dataPackage['currency_type'] = $infoCurrency['CurrencyTitle'];
 
                 $dataPackage['number_package'] = $countPackage;
                 $dataPackage['is_del'] = 'no';
@@ -1605,7 +1609,7 @@ class reservationTour extends clientAuth
         if (isset($param['currencyTypeOneDayTour']) && $param['currencyTypeOneDayTour'] != '') {
             $objCurrency = Load::controller('currencyEquivalent');
             $infoCurrency = $objCurrency->InfoCurrency($param['currencyTypeOneDayTour']);
-            $data['currency_type_one_day_tour'] = $infoCurrency['CurrencyTitleFa'];
+            $data['currency_type_one_day_tour'] = $infoCurrency['CurrencyTitle'];
         } else {
             $data['currency_type_one_day_tour'] = '';
         }
@@ -2717,6 +2721,7 @@ class reservationTour extends clientAuth
                     $objCurrency = Load::controller('currencyEquivalent');
                     $infoCurrency = $objCurrency->InfoCurrency($param['currencyType' . $countPackage]);
                     $dataPackage[$countPackage]['currency_type'] = $infoCurrency['CurrencyTitle'];
+                    $dataPackage[$countPackage]['currency_code'] = $infoCurrency['CurrencyCode'];
 
                     $dataPackage[$countPackage]['number_package'] = $countPackage;
                     $dataPackage[$countPackage]['is_del'] = 'no';
@@ -2949,6 +2954,7 @@ class reservationTour extends clientAuth
             $objCurrency = Load::controller('currencyEquivalent');
             $infoCurrency = $objCurrency->InfoCurrency($param['currencyTypeOneDayTour']);
             $data['currency_type_one_day_tour'] = $infoCurrency['CurrencyTitle'];
+            $data['currency_code_one_day_tour'] = $infoCurrency['CurrencyCode'];
         } else {
             $data['currency_type_one_day_tour'] = '';
         }
@@ -5291,6 +5297,7 @@ class reservationTour extends clientAuth
             $result[$key]['min_price_r'] = $min_price['minPriceR'];
             $result[$key]['min_price_a'] = $min_price['minPriceA'];
             $result[$key]['currency_type'] = $min_price['CurrencyTitleFa'];
+            $result[$key]['currency_type_en'] = $min_price['CurrencyTitleEn'];
             if(isset($request['rate']) && $request['rate'] == 'yes') {
                 $reservationRateList = $this->master_rate_model
                     ->get([

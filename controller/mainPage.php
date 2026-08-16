@@ -381,12 +381,12 @@ abstract class mainPage extends clientAuth
 
         return $this->getController('reservationHotel')->hotelReservationMarketPlaceData($params);
     }
-    public function getNewsArticles() {
+    public function getNewsArticles($service_id = null, $category_id = null, $page = null , $order = null,$selected = '') {
 
         /** @var articles $article_controller */
         $article_controller=$this->getController('articles');
         $article_controller->page_limit=3;
-        return $article_controller->getArticles('news');
+        return $article_controller->getArticles('news' , $service_id , $category_id , $page , $order , $selected);
     }
     public function getNewsArticlesSelected() {
 

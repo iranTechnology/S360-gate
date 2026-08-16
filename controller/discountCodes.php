@@ -435,8 +435,6 @@ class discountCodes extends clientAuth
                     $output['result_message'] = 'اعتبار کد تخفیف مورد نظر به پایان رسیده است';
                 }
             }
-            }
-
 
 
         } else {

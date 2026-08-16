@@ -33,9 +33,16 @@
     background: $mainColor;
     border-color: $mainColor;
 }
+.switch_routs:hover i{
+   color: #fff;
+    transition: all ease .3s;
+}
 .switch_routs:hover svg{
    fill: #fff;
     transition: all ease .3s;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] .city_start{
+    color: #fff !important;
 }
 .d_contents {
     display: contents;
@@ -49,7 +56,9 @@
     padding: 0;
     margin-bottom: 20px;
 }
-
+.search_box .nav-link.active{
+    background: transparent !important;
+}
 #titr_searchBox em {
     font-style: normal;
 }
@@ -62,7 +71,7 @@
     z-index: 2;
     position: relative;
     @include flex-direction-colum();
-    gap: 27px;
+    gap: 20px;
 }
 .form-group{
     margin-bottom: 0 !important;
@@ -91,7 +100,8 @@
     display: flex;
     position: relative;
     padding: 0;
-    gap: 30px;
+    gap: 20px;
+    margin-right: 10px;
 }
 
 #searchBoxTabs .nav-link.active i {
@@ -134,13 +144,13 @@
 }
 
 #searchBoxTabs .nav-link i {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     display: flex;
     justify-content: center;
     align-items: center;
     background: transparent;
-    border-radius: 50%;
+    border-radius: 10px;
 }
 
 #searchBoxTabs .nav-link i svg {
@@ -183,7 +193,7 @@
 .col_search input:focus {outline: none}
 .col_search input {
     font-family: $fontFamily, serif;
-    padding: 10px 15px 10px 15px;
+    padding: 10px 5px 10px 15px;
     height: 50px;
     font-size: 16px;
     border: 1px solid #c0c1c1;
@@ -191,8 +201,9 @@
 }
 
 .col_search input.went {
-    border-radius: 1rem 0 0 1rem ;
+    border-radius: 1rem 0 0 1rem;
     border: 1px solid #ccc;
+    border-right: none;
 }
 
 .col_search input.return_input, .col_search input.return_input2, .col_search input.return_input_train {
@@ -669,6 +680,7 @@ input::placeholder {
     display: flex;
     align-items: center;
     direction: ltr;
+    flex-direction: row-reverse;
 }
 
 .switch-label {
@@ -695,11 +707,11 @@ input::placeholder {
 }
 
 .switch-input:checked + .switch-label-on ~ .switch-selection {
-    right: 89px;
+    left: 89px;
 }
 
 .switch-input:checked + .switch-label-on_multiTrack ~ .switch-selection {
-    right: 178px;
+    left: 178px;
 }
 
 .switch-selection {
@@ -710,15 +722,15 @@ input::placeholder {
     position: absolute;
     z-index: 1;
     top: 2px;
-    right: 2px;
+    left: 2px;
     width: 93px;
     height: 29px;
     border-radius: 1rem;
     background-color: $mainColor;
-    -webkit-transition: right 0.15s ease-out;
-    -moz-transition: right 0.15s ease-out;
-    -o-transition: right 0.15s ease-out;
-    transition: right 0.15s ease-out;
+    -webkit-transition: left 0.15s ease-out;
+    -moz-transition: left 0.15s ease-out;
+    -o-transition: left 0.15s ease-out;
+    transition: left 0.15s ease-out;
 }
 
 
@@ -750,29 +762,30 @@ input::placeholder {
 
     &.active::after{
         content: "";
-        background: transparent;
-        border-right: 20px solid transparent;
-        border-bottom: 20px solid #fff;
-        border-left: 20px solid transparent;
-        width: 35px;
-        height: 20px;
+        width: 80%;
+        height: 4px;
+        border-radius: 100px;
+        background: $mainColor;
         position: absolute;
-        bottom: -28px;
+        bottom: -23px;
+        //left: 0;
     }
 }
 .search_box{
     width: 100%;
 }
 #searchBoxTabs .nav-link i svg{
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     fill: #fff;
 }
 #searchBoxTabs .nav-link h4{
    color: #fff;
     margin-bottom: 0;
-    font-size: 20px;
+    font-size: 18px;
     font-family: $fontTitle;
+    text-align:center;
+    margin-top:10px !important;
 }
 .flaticon {
     background-size: contain;
@@ -859,7 +872,7 @@ input::placeholder {
 }
 .empty-div{
     width: 100%;
-    height: 54px;
+    height: 54px !important;
 }
 .btn_close_box{
     display: flex;
@@ -909,11 +922,10 @@ input::placeholder {
 }
 
 .myroom-hotel-item, .myroom-hotel_local-item, .myroom-package-item {
-    flex: 0 0 calc(25% - 20px);
     text-align: right;
-    margin: 10px;
     background: white;
     border-radius: 5px;
+    width: 100%;
 }
 
 .myroom-hotel-item-title, .myroom-hotel_local-item-title, .myroom-package-item-title {
@@ -1320,11 +1332,17 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 .city_start {
     display: flex;
     align-items: center;
-    font-size: 12px;
+    font-size: 14px;
     color: #555;
     padding: 5px 0;
 }
-
+#flight_khareji .div_c_sr:hover i.svg_icon, #international_flight .div_c_sr:hover i.svg_icon, #flight_dakheli .div_c_sr:hover i.svg_icon, #internal_flight .div_c_sr:hover i.svg_icon, #flight_multi_way .div_c_sr:hover i.svg_icon, #Flight .div_c_sr:hover:hover i.svg_icon, #Package .div_c_sr:hover:hover i.svg_icon{
+    background: $mainColor !important;
+}
+.search_flight #search_flight-tabContent .nav.nav-pills .nav-link.active {
+    background-color: $mainColor !important;
+    color: #fff;
+}
 .city_start i {
     color: #ccc;
     margin-left: 10px;
@@ -1371,6 +1389,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     font-size: 16px;
     color: #555;
     text-align: revert;
+    list-style: none;
 }
 
 .hotel_passenger_picker ul em, .hotel_local_passenger_picker ul em, .package_passenger_picker ul em {
@@ -1652,6 +1671,20 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
         left: 9px;
         transform: rotate(90deg);
     }
+    #searchBoxTabs .nav-link i svg {
+        width: 33px;
+        height: 33px;
+    }
+    #searchBoxTabs .nav-link i {
+        width: 60px;
+        height: 60px;
+    }
+    #searchBoxTabs .nav-link h4 {
+        font-size: 16px;
+    }
+    #searchBoxTabs .nav-link {
+        gap: 4px;
+    }
 }
 
 
@@ -1680,11 +1713,14 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 
 @media (max-width: 576px) {
     .search_box{
-        margin-top: 150px;
+        margin-top: 100px;
     }
     #searchBoxTabs{
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         padding: 0 !important;
+        grid-column-gap: 0px !important;
+        grid-row-gap: 10px !important;
+        margin: 0;
     }
     .cntr{
         position: static !important;
@@ -1697,3 +1733,190 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
         height: unset !important;
     }
 }
+
+.__search_box_tabs__{
+    flex-wrap:unset;
+}
+
+#searchBoxTabs .nav-link i::before{
+    color:#fff;
+    font-size:30px;
+    font-weight: 399;
+}
+/* start passenger Count insurance */
+.parent-input-search-box {
+    position: relative
+}
+
+.dropdown-item-insurance span {
+    font-size: 14px
+}
+
+.parent-svg-input-search-box svg {
+    width: 16px;
+    height: 16px;
+    fill: #9792a1
+}
+
+.caption-input-search-box {
+    font-size: 10px;
+    color: #9792a1;
+    position: absolute;
+    bottom: 0;
+    right: 24px;
+    user-select: none;
+    margin-bottom: 0;
+    cursor: pointer
+}
+
+.parent-input-search-box {
+    height: 51px;
+    align-items: center !important;
+    display: flex;
+    width: 100%
+}
+
+.parent-svg-input-search-box {
+    padding-top: 3px
+}
+
+.gap-search-box {
+    gap: 18px
+}
+
+.parent-empty-search-box {
+    width: 100%;
+    height: 30px
+}
+
+.package_passenger_picker {
+    padding-left: 0
+}
+
+.hotel_local_passenger_picker {
+    padding-left: 0
+}
+
+.dropdown-insurance {
+    position: relative;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height:50px
+}
+
+.dropdown-toggle-insurance {
+    width: 100%;
+    padding-right: 8px;
+    cursor: pointer;
+    text-align: right;
+    font-size: 14px;
+    color: #737373;
+    margin-top:13px
+}
+
+.dropdown-menu-insurance {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    text-align: right;
+    z-index: 10;
+    top:49px
+}
+
+.dropdown-menu-insurance:last-child {
+    text-align: center
+}
+
+.title-dropdown-item-insurance {
+    padding: 10px 10px 0;
+    display: grid;
+    grid-template-columns:repeat(2, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    font-size: 11px
+}
+
+.dropdown-item-insurance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee
+}
+
+.dropdown-item-insurance:last-child {
+    border-bottom: none
+}
+
+.counter-insurance {
+    display: flex;
+    align-items: center
+}
+
+.counter-insurance button {
+    width: 25px;
+    height: 25px;
+    border: none;
+    background-color: var(--mainColor);
+    cursor: pointer;
+    border-radius: 7px;
+    transition: all ease .5s;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.counter-insurance button:hover {
+    background: #190606
+}
+
+.counter-insurance button svg {
+    fill: #fff;
+    width: 14px;
+    height: 14px
+}
+
+.counter-insurance span {
+    margin: 0 10px;
+    min-width: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #333
+}
+
+#external-content {
+    display: none
+}
+
+.hotel_passenger_picker > span, .hotel_local_passenger_picker > span, .package_passenger_picker > span {
+    font-size: 12px;
+    color: #8e8e8e;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 100%
+}
+
+.hotel_passenger_picker ul, .hotel_local_passenger_picker ul, .package_passenger_picker ul {
+    padding: 0;
+    display: flex;
+    line-height: 30px;
+    margin: 0;
+    width: 100%;
+    list-style: none;
+    cursor: pointer
+}
+
+.ul-inputSearch-externalHotel {
+    margin: 0
+}
+
+.hotel_passenger_picker ul em, .hotel_local_passenger_picker ul em, .package_passenger_picker ul em {
+    font-style: normal;
+    padding: 0 3px
+}
+/* end passenger Count insurance */

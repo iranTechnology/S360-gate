@@ -1,5 +1,5 @@
 <section class="hotel-ghods">
-    <div class="container" style="margin-top: 290px;">
+    <div class="container">
         <div class="title-safiran">
             <div class="text-title-safiran">
                 <h2>اقامتگاه‌ها</h2>
@@ -37,7 +37,7 @@
                 </a>
             </div>
             <div class="item">
-                <a class="link-parent" href="javascript:">
+                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=163&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">
                     <div class="img-hotel">
                         <img alt="img-hotel" src="project_files/images/Untitled3.jpeg" />
                     </div>
@@ -80,7 +80,7 @@
                 </a>
             </div>
             <div class="item">
-                <a class="link-parent" href="javascript:">
+                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=163&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">
                     <div class="img-hotel">
                         <img alt="img-hotel" src="project_files/images/Untitled3.jpeg" />
                     </div>

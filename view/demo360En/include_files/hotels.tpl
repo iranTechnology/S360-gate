@@ -10,7 +10,6 @@
 
 {if $foregin_hotels}
 <section class="i_modular_hotels_webservice hotel-ghods">
-    <img src="project_files/images/bg1.jpg" alt="img-bg" class="hotel-bg1">
     <div class="container" style="position: relative; z-index: 2">
         <div class="title-demo">
             <div class="text-title-demo">

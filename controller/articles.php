@@ -1015,7 +1015,7 @@ class articles extends positions
 
     }
 
-    public function getArticles($section, $service_id = null, $category_id = null, $page = null , $order = null,$selected = false) {
+    public function getArticles($section, $service_id = null, $category_id = null, $page = null , $order = null,$selected = '') {
 
 
 
@@ -1057,6 +1057,9 @@ class articles extends positions
         if ($selected === true) {
             $articles = $articles->where($article_table . '.selected', '1');
             $article_count = $article_count->where($article_table . '.selected', '1');
+        } elseif ($selected === false) {
+            $articles = $articles->where($article_table . '.selected', '0');
+            $article_count = $article_count->where($article_table . '.selected', '0');
         }
 
         $articles = $articles->where('language' , SOFTWARE_LANG);
