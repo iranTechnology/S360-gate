@@ -11,7 +11,7 @@
                             <img src="project_files/images/logo.png" alt="footer-logo">
                             <div class="text-logo-footer">
                                 <span>Travel Agency</span>
-                                <h4>Travel360</h4>
+                                <h4>Safar360</h4>
                             </div>
                         </div>
                         <div class="child-item-footer">
@@ -74,12 +74,6 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">
-                                    <i class="fal fa-angle-left"></i>
-                                    Visa
-                                </a>
-                            </li>
-                            <li>
                                 <a href="{$smarty.const.ROOT_ADDRESS}/currency">
                                     <i class="fal fa-angle-left"></i>
                                     Currency
@@ -98,12 +92,6 @@
                     <div class="box-item-footer text-right">
                         <h3>Easy Access</h3>
                         <ul>
-                            <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/rules">
-                                    <i class="fal fa-angle-left"></i>
-                                    Rules and Regulations
-                                </a>
-                            </li>
                             <li>
                                 <a href="{$smarty.const.ROOT_ADDRESS}/mag">
                                     <i class="fal fa-angle-left"></i>

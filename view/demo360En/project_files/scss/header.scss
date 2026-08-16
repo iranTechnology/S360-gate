@@ -479,7 +479,6 @@ $height-header: 95px;
     #navbar {
         position: static;
         border-bottom: none;
-        border-top: 1px solid #bfbfc5;
     }
 
     .nav-dropdown > li {
@@ -489,7 +488,6 @@ $height-header: 95px;
     .logIn {
         @include width_height(42px);
         padding: 0;
-        border-radius: $rounded !important;
         svg{
             fill: #fff !important;
             width: 26px;
@@ -512,7 +510,7 @@ $height-header: 95px;
     }
 
     .box_button_header {
-        margin-right: auto
+        margin-right: 10px
     }
 
     .nav-menu {
