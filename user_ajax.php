@@ -1272,7 +1272,24 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_client' ) {
 
     $partner = Load::controller( 'partner' );
     unset( $_POST['flag'] );
-    echo $partner->UpdateClient( $_POST );
+    $UpdateClient = $partner->UpdateClient( $_POST );
+    if (strpos($UpdateClient, 'success') !== false) {
+        $aboutUsModel = Load::getModel('aboutUsModel');
+        $update_data=[
+                'social_links'=>json_encode($_POST['socialLinks'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        ];
+        $UpdateSocialLinks = $aboutUsModel->updateWithBind($update_data,['page_type' => 'about_us']);
+
+        if ($UpdateSocialLinks !== false) {
+            echo $UpdateClient;
+        } else {
+            echo 'error : خطا در ویرایش اطلاعات ';
+        }
+
+
+    } else {
+        echo $UpdateClient;
+    }
 
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'updateDocs' ) {
@@ -1424,7 +1441,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_airline' ) {
         case 'train':
             /** @var \trainBooking $trainBooking */
             $trainBooking = Load::controller( 'trainBooking' );
-            $result   = $trainBooking->infoTrainTicket( $_POST['request_number'] );
+            $result   = $trainBooking->infoTrainTicket( $_POST['request_number'], $_POST['phone_number'] );
             break;
         case 'cip':
             /** @var \trainBooking $trainBooking */
@@ -2013,8 +2030,9 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
 
     $controller = Load::controller( 'discountCodes' );
     $currencyCode = ( ! empty( $_POST['currencyCode'] ) ? filter_var( $_POST['currencyCode'], FILTER_VALIDATE_INT ) : 0 );
+    $typeApplication = $_POST['typeApplication'] ;
     if ( Session::IsLogin() ) {
-        $result = $controller->CheckDiscountCode( $_POST['discountCode'], Session::getUserId(), $_POST['serviceType'], $currencyCode );
+        $result = $controller->CheckDiscountCode( $_POST['discountCode'], Session::getUserId(), $_POST['serviceType'], $typeApplication );
     } else {
         $result['result_status'] = 'error';
         if ( isset( $_POST['Type'] ) && $_POST['Type'] == 'App' ) {
@@ -2086,12 +2104,20 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkMemberCredit' ) {
 
     if ( $dataPost['creditUse'] == 'member_credit' ) {
         $member = Load::controller( 'members' );
+        $user = Load::controller( 'user' );
         $member->get();
 
         if ( Session::IsLogin() && $member->list['fk_counter_type_id'] == '5' ) {
-            $credit = $member->getMemberCredit();
+            $credit = $user->getCreditMember();
 
+            $check = [];
+
+            if ($_POST['typeApplication'] == 'reservation') {
+                $check['status'] = 'TRUE';
+            } else {
             $check = $objTransaction->checkCredit( $dataPost['priceToPay'] );
+            }
+
 
 
 

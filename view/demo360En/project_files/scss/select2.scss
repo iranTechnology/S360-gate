@@ -21,7 +21,9 @@
   user-select: none;
   -webkit-user-select: none;
 }
-
+.select2-container--default .select2-results__option--highlighted[aria-selected] .city_start i{
+  color: #fff;
+}
 .select2-container .select2-selection--single .select2-selection__rendered {
   display: block;
   padding-left: 10px;
@@ -183,7 +185,7 @@
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-  color: #737373;
+  color: #555;
   line-height: 50px;
   font-size: 16px;
   direction: ltr;
@@ -411,7 +413,7 @@
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #083b5a;
+  background-color: $mainColor !important;
   color: white;
 }
 

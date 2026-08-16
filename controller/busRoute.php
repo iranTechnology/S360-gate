@@ -26,6 +26,7 @@ class busRoute extends clientAuth{
             $result['results'][] = [
                 "id" => $bus_route['iataCode'],
                 "text" => $bus_route['name_fa'],
+                "text_en" => $bus_route['name_en'],
             ];
         }
         return functions::toJson($result);

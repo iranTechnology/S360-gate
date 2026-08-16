@@ -193,7 +193,7 @@
 .col_search input:focus {outline: none}
 .col_search input {
     font-family: $fontFamily, serif;
-    padding: 10px 15px 10px 5px;
+    padding: 10px 5px 10px 15px;
     height: 50px;
     font-size: 16px;
     border: 1px solid #c0c1c1;
@@ -201,13 +201,13 @@
 }
 
 .col_search input.went {
-    border-radius: 0 1rem 1rem 0;
+    border-radius: 1rem 0 0 1rem;
     border: 1px solid #ccc;
-    border-left: none;
+    border-right: none;
 }
 
 .col_search input.return_input, .col_search input.return_input2, .col_search input.return_input_train {
-    border-radius: 1rem 0 0 1rem;
+    border-radius: 0 1rem 1rem 0;
     border: 1px solid #ccc;
 }
 
@@ -680,6 +680,7 @@ input::placeholder {
     display: flex;
     align-items: center;
     direction: ltr;
+    flex-direction: row-reverse;
 }
 
 .switch-label {
@@ -706,11 +707,11 @@ input::placeholder {
 }
 
 .switch-input:checked + .switch-label-on ~ .switch-selection {
-    right: 89px;
+    left: 89px;
 }
 
 .switch-input:checked + .switch-label-on_multiTrack ~ .switch-selection {
-    right: 178px;
+    left: 178px;
 }
 
 .switch-selection {
@@ -721,15 +722,15 @@ input::placeholder {
     position: absolute;
     z-index: 1;
     top: 2px;
-    right: 2px;
+    left: 2px;
     width: 93px;
     height: 29px;
     border-radius: 1rem;
     background-color: $mainColor;
-    -webkit-transition: right 0.15s ease-out;
-    -moz-transition: right 0.15s ease-out;
-    -o-transition: right 0.15s ease-out;
-    transition: right 0.15s ease-out;
+    -webkit-transition: left 0.15s ease-out;
+    -moz-transition: left 0.15s ease-out;
+    -o-transition: left 0.15s ease-out;
+    transition: left 0.15s ease-out;
 }
 
 
@@ -1788,14 +1789,6 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     height: 30px
 }
 
-.hotel_passenger_picker, .package_passenger_picker, .hotel_local_passenger_picker {
-    width: 100%;
-    height: 51px;
-    display: flex;
-    padding: 0 !important;
-    border: none !important
-}
-
 .package_passenger_picker {
     padding-left: 0
 }
@@ -1920,12 +1913,6 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
 
 .ul-inputSearch-externalHotel {
     margin: 0
-}
-
-.hotel_passenger_picker ul li, .hotel_local_passenger_picker ul li, .package_passenger_picker ul li {
-    font-size: 14px;
-    color: #000;
-    text-align: revert
 }
 
 .hotel_passenger_picker ul em, .hotel_local_passenger_picker ul em, .package_passenger_picker ul em {

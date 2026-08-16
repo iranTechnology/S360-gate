@@ -7,7 +7,7 @@
                 tabindex="-1" aria-hidden="true">
             <option value="">##ChoseOption##...</option>
             {foreach $cities as $city}
-                <option value="{$city['id']}">{$city['text']}</option>
+                <option value="{$city['id']}">{$city["text$langVar"]}</option>
             {/foreach}
         </select>
     </div>

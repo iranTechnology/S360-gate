@@ -510,7 +510,6 @@ a:hover {
             width: 30px;
             height: 30px;
             fill: $mainColor;
-            transform: rotate(180deg);
           }
         }
       }
@@ -1153,6 +1152,7 @@ a:hover {
     font-family: $fontFamilyBold;
     @include flex-center-all();
     gap: 5px;
+    flex: 0 0 auto;
 
     svg {
       width: 10px;

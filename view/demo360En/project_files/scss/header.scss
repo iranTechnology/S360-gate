@@ -55,7 +55,7 @@ $height-header: 95px;
 }
 
 .nav-menus-wrapper {
-    margin-right: 40px;
+    margin-left: 40px;
     display: flex;
     align-items: center;
 }
@@ -103,7 +103,7 @@ $height-header: 95px;
     width: 320px;
     height: 100%;
     top: 0;
-    left: -400px;
+    right: -400px;
     position: fixed;
     background-color: #fff;
     z-index: 102;
@@ -115,7 +115,7 @@ $height-header: 95px;
 }
 
 .navigation-portrait .nav-menus-wrapper.nav-menus-wrapper-open {
-    left: 0;
+    right: 0;
 }
 
 .nav-menus-wrapper-close-button {
@@ -444,7 +444,7 @@ $height-header: 95px;
 
 @media (max-width: 1200px) {
     .nav-menus-wrapper{
-        padding-right: 10px;
+        padding-left: 10px;
     }
     .text-count-passenger {
         font-size: 11px;
@@ -819,7 +819,7 @@ $height-header: 95px;
         grid-template-columns: repeat(4, 1fr);
     }
     .nav-header img {
-        width: 155px;
+        width: 100px;
     }
     .namads > a {
         width: 70px;
