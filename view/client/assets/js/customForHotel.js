@@ -1238,6 +1238,7 @@ function internalHotelSearchDetails() {
 
 
                let value = data.Hotels
+
                let request_number = data.requestNumber
                let advertises = data.Advertises
                let hotelType  = [];

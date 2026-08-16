@@ -592,6 +592,7 @@ class ApiHotelCore extends clientAuth {
                 'ApiMethodName'     => $data['source'] ,
                 'response'     => htmlentities($data['response_body']) ,
                 'request'     => htmlentities($data['request_body']) ,
+                'apiHeader'     => htmlentities($data['api_header']) ,
             ];
         }
         echo json_encode($final_response);

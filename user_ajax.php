@@ -5127,7 +5127,14 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'orderServicesAdd' ) {
     $credit = functions::getGrsCharge('irantechTest');
     echo number_format(round( $credit['total'] ) ) . ' ' . 'ریال';
 
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'answerVoteUser' ) {
+}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkCityNetCredit' ) {
+
+    $credit = functions::getCityNetCharge('irantechTest');
+    $total = $credit['credit'] + $credit['wallet'];
+    echo number_format( $total  ) . ' ' . 'ریال';
+
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'answerVoteUser' ) {
 
     unset($_POST['flag']);
     $voteData = $_POST;
