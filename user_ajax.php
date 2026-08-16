@@ -342,6 +342,13 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
     $result     = $controller->getBankData( $_POST['temporaryID'] );
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'signout' || isset( $_GET['flag'] ) && $_GET['flag'] == 'signout') {
 
+     if ($_SERVER['REMOTE_ADDR']) {
+         error_reporting(1);
+         error_reporting(E_ALL | E_STRICT);
+         @ini_set('display_errors', 1);
+         @ini_set('display_errors', 'on');
+     }
+
 
     echo $sessionTemplate = Session::getSessionTemplate();
     unset( $_COOKIE['LoginPanel'] );
@@ -918,20 +925,29 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_cip' ) {
 
     $prices = $reserveInfo[0]['total_price'];
 
-    $comment = "خرید تشریفات فرودگاه "
+
+
+    $isPrivate = isset($reserveInfo[0]['serviceTitle']) && $reserveInfo[0]['serviceTitle'] == 'PrivateCip';
+    $serviceTypeText = $isPrivate ? 'اختصاصی' : 'اشتراکی';
+
+
+    $comment = "خرید تشریفات فرودگاه {$serviceTypeText} "
             . $reserveInfo[0]['cip_name']
             . " به شماره رزرو "
-            . $reserveInfo[0]['reserve_number'];
+        . $reserveInfo[0]['reserve_number']
+        . " {$request_number}";
+
 
     $total_price += $prices;
-    $comment     .= ' ' . $request_number;
-
     $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
 
 
 
     if ( empty( $existTransaction ) ) {
         // Caution: اعتبارسنجی صاحب سیستم
+        if($reserveInfo[0]['serviceTitle'] == 'PrivateCip'){
+            $total_price = 0;
+        }
         $check = $objTransaction->checkCreditNew( $total_price, 'online' ,'', $total_price , $_POST['selectedBank']);
 
         if ( $check['status'] == 'TRUE' ) {
@@ -1149,12 +1165,18 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCip' ) {
 
     // Caution: اعتبارسنجی اعتبار کانتر
     if ( $counterCredit > $total_amount ) {
+        $isPrivate = isset($reserveInfo[0]['serviceTitle']) && $reserveInfo[0]['serviceTitle'] == 'PrivateCip';
+        $serviceTypeText = $isPrivate ? 'اختصاصی' : 'اشتراکی';
 
-        $comment = "خرید تشریفات فرودگاه "
+        $comment = "خرید تشریفات فرودگاه {$serviceTypeText} "
                 . $reserveInfo[0]['cip_name']
                 . " به شماره رزرو "
                 . $reserveInfo[0]['reserve_number'];
         $comment     .= ' ' . $request_number;
+
+        if($reserveInfo[0]['serviceTitle'] == 'PrivateCip'){
+            $total_amount = 0;
+        }
 
         // Caution: کاهش اعتبار کانتر
         $objMember->decreaseCounterCredit( $total_amount, $request_number, $reserveInfo, 'cip' );
@@ -2147,7 +2169,7 @@ else if ( isset($_POST['flag']) && $_POST['flag'] == 'EditInfoPassenger' ) {
     $hour   = isset($_POST['flightHour']) ? sprintf('%02d', $_POST['flightHour']) : "00";
     $minute = isset($_POST['flightMinute']) ? sprintf('%02d', $_POST['flightMinute']) : "00";
     $flight_time = $hour . ':' . $minute;
-
+    $flight_number = $_POST['flightNumber'];
     $flightDateJalali = filter_var($_POST['flightDate'], FILTER_SANITIZE_STRING);
     if (!empty($flightDateJalali)) {
         // فرض: تاریخ به شکل 1403-06-15 میاد
@@ -2166,6 +2188,7 @@ else if ( isset($_POST['flag']) && $_POST['flag'] == 'EditInfoPassenger' ) {
             "RequestNumber"      => filter_var($_POST['RequestNumber'], FILTER_SANITIZE_STRING),
             "flight_time"        => $flight_time,
             "flight_date"        => $gregorianFlightDate,
+        "flight_number"        => $flight_number,
             "airline_iata"       => $airline[0],
             "airline_name"       => $airline[1],
             "passengerNameFa"    => filter_var_array($_POST['passengerNameFa'], FILTER_SANITIZE_STRING),
@@ -2348,133 +2371,170 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_hotel' ) {
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) {
 
-    unset( $_POST['flag'] );
-    $factorNumber    = trim( $_POST['factorNumber'] );
-    $typeApplication = trim( $_POST['typeApplication'] );
-    $discountCode = trim( $_POST['discountCode'] );
+unset( $_POST['flag'] );
+$factorNumber    = trim( $_POST['factorNumber'] );
+$typeApplication = trim( $_POST['typeApplication'] );
+$discountCode = trim( $_POST['discountCode'] );
 
-    /** @var members $objMember */
-    /** @var transaction $objTransaction */
-    $objMember      = Load::controller( 'members' );
-    $objTransaction = Load::controller( 'transaction' );
-    $objUser = Load::controller( 'user' );
-    $objMemberCredit = Load::controller( 'memberCredit');
-    $objDiscountCodes     = Load::controller( 'discountCodes' );
+/** @var members $objMember */
+/** @var transaction $objTransaction */
+$objMember      = Load::controller( 'members' );
+$objTransaction = Load::controller( 'transaction' );
+$objUser = Load::controller( 'user' );
+$objMemberCredit = Load::controller( 'memberCredit');
+$objDiscountCodes     = Load::controller( 'discountCodes' );
 
-    if (empty($discountCode)) {
-        $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
-        $discountCode = $getDiscountCode['discountCode'];
-    }
+if (empty($discountCode)) {
+    $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
+    $discountCode = $getDiscountCode['discountCode'];
+}
 
-    // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
-    if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
-        $credit = $objUser->getCreditMember();
+// Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
+if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
+    $credit = $objUser->getCreditMember();
 
-    } else {
-        $credit = $objMember->getCredit();
+} else {
+    $credit = $objMember->getCredit();
 
-    }
+}
 
-    $reserveInfo   = functions::GetInfoHotel( $factorNumber );
-    if ($reserveInfo['hotel_payments_price']>0) {
-        $amount        = $reserveInfo['hotel_payments_price'];
+$reserveInfo   = functions::GetInfoHotel( $factorNumber );
+if ($reserveInfo['hotel_payments_price']>0) {
+    $amount        = $reserveInfo['hotel_payments_price'];
 
 
-    }else{
-        $amount        = $reserveInfo['total_price'];
+}else{
+    $amount        = $reserveInfo['total_price'];
 
-    }
+}
 
-    $memberId = Session::getUserId();
+$memberId = Session::getUserId();
 
-    $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
+$amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
 
-    if ( $_POST['paymentStatus'] == 'prePayment' ) {
-        $comment = ' پیش رزرو هتل ';
-    } else {
-        $comment     = 'رزرو قطعی هتل ';
-    }
-    $totalPriceBank = $reserveInfo['hotel_payments_price'];
-    // Caution: اعتبارسنجی اعتبار کانتر
-    if ( $credit > $amount ) {
-        $reserveInfo['payment_status'] = $_POST['paymentStatus'];
+if ( $_POST['paymentStatus'] == 'prePayment' ) {
+    $comment = ' پیش رزرو هتل ';
+} else {
+    $comment     = 'رزرو قطعی هتل ';
+}
+$totalPriceBank = $reserveInfo['hotel_payments_price'];
+
+
+// ابتدا بررسی کنید که سرویس خصوصی است یا خیر
+    if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle'] == 'PrivatePortalHotel' ) {
+        // اگر سرویس خصوصی بود، نیازی به بررسی اعتبار کانتر نیست
+
         $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
-        if ( $typeApplication == 'api' || $typeApplication == 'externalApi' ) {
+        $checkRepeat = 'yes';
+        $total_price = 0;
+        $comment .= " - اختصاصی";
+        $reason = 'buy_hotel';
 
-            $checkRepeat = 'yes';
-            if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle']=='PrivatePortalHotel' ) {
-
-                $total_price = 0;
-                $comment     .= " - اختصاصی";
-            } else {
-                $total_price = $reserveInfo['totalPriceTransaction'];
-                $comment     .= " - اشتراکی";
-            }
-
-            $reason = 'buy_hotel';
-
-            if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-                $total_price += $reserveInfo['irantech_commission'];
-//				$total_price += ($reserveInfo['irantech_commission'] * $reserveInfo['countPassengers']);
-            }
-
-        } elseif ( $typeApplication == 'reservation' ) {
-            $checkRepeat = 'no';
-            $total_price = 0;
-            $reason      = 'buy_reservation_hotel';
-        } elseif ( $typeApplication == 'externalApi' ) {
-            $roomCount = count( json_decode( $reserveInfo['search_rooms'] ) );
-
-            $comment     = " رزرو " . " " . $roomCount . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " در " . " " . $reserveInfo['hotel_name'] . " " . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
-            $checkRepeat = 'yes';
-            $total_price = $reserveInfo['totalPriceTransaction'];
-            $reason      = 'buy_foreign_hotel';
-
-            if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-                $total_price += $reserveInfo['irantech_commission'] * $reserveInfo['countPassengers'];
-            }
+        if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
+            $total_price += $reserveInfo['irantech_commission'];
         }
 
-        if ($_POST['creditUse'] == 'member_credit') {
-            $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
-        } else {
-            // Caution: کاهش اعتبار کانتر
-            $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
-        }
-
-        $check = [];
-
-        if ($typeApplication == 'reservation') {
-            $check['status'] = 'TRUE';
-        }
-        else {
-            // Caution: اعتبارسنجی صاحب پنل
-            $check = $objTransaction->checkCredit( $total_price );
-        }
+        $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
+        $check = $objTransaction->checkCredit( $total_price );
 
         if ( $check['status'] == 'TRUE' ) {
-
             $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
             if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
-
-                // Caution: کاهش اعتبار صاحب سیستم
                 $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
                 if ( $reduceTransaction ) {
                     echo 'success:' . $amount;
                 } else {
                     echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
                 }
-
             } else {
                 echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
             }
-
         } else {
             echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
         }
 
-    } else {
-        echo 'error: ' . functions::Xmlinformation( 'EndCreditAgency' );
+    }
+    else {
+        if ( $credit > $amount ) {
+            $reserveInfo['payment_status'] = $_POST['paymentStatus'];
+            $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
+            if ( $typeApplication == 'api' || $typeApplication == 'externalApi' ) {
+
+                $checkRepeat = 'yes';
+                if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle']=='PrivatePortalHotel' ) {
+
+                    $total_price = 0;
+                    $comment     .= " - اختصاصی";
+                } else {
+                    $total_price = $reserveInfo['totalPriceTransaction'];
+                    $comment     .= " - اشتراکی";
+                }
+
+                $reason = 'buy_hotel';
+
+                if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
+                    $total_price += $reserveInfo['irantech_commission'];
+//				$total_price += ($reserveInfo['irantech_commission'] * $reserveInfo['countPassengers']);
+                }
+
+            } elseif ( $typeApplication == 'reservation' ) {
+                $checkRepeat = 'no';
+                $total_price = 0;
+                $reason      = 'buy_reservation_hotel';
+            } elseif ( $typeApplication == 'externalApi' ) {
+                $roomCount = count( json_decode( $reserveInfo['search_rooms'] ) );
+
+                $comment     = " رزرو " . " " . $roomCount . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " در " . " " . $reserveInfo['hotel_name'] . " " . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
+                $checkRepeat = 'yes';
+                $total_price = $reserveInfo['totalPriceTransaction'];
+                $reason      = 'buy_foreign_hotel';
+
+                if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
+                    $total_price += $reserveInfo['irantech_commission'] * $reserveInfo['countPassengers'];
+                }
+            }
+
+            if ($_POST['creditUse'] == 'member_credit') {
+                $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
+            } else {
+                // Caution: کاهش اعتبار کانتر
+                $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
+            }
+
+            $check = [];
+
+            if ($typeApplication == 'reservation') {
+                $check['status'] = 'TRUE';
+            }
+            else {
+                // Caution: اعتبارسنجی صاحب پنل
+                $check = $objTransaction->checkCredit( $total_price );
+            }
+
+            if ( $check['status'] == 'TRUE' ) {
+
+                $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
+                if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
+
+                    // Caution: کاهش اعتبار صاحب سیستم
+                    $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
+                    if ( $reduceTransaction ) {
+                        echo 'success:' . $amount;
+                    } else {
+                        echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
+                    }
+
+                } else {
+                    echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
+                }
+
+            } else {
+                echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
+            }
+
+        } else {
+            echo 'error: ' . functions::Xmlinformation( 'EndCreditAgency' );
+        }
     }
 
 
@@ -3685,7 +3745,17 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'createExcelForRavisHotel'
 
     echo $result;
 
-}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setLangPanelAdmin' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'searchByReqeustNumberSmsReports' ) {
+    unset( $_POST['flag'] );
+
+    $objSmsPanel = Load::controller( 'smsPanel' );
+    $result = $objSmsPanel->searchSmsReports();
+    functions::insertLog('$resul$resultt: ' . json_encode($result) , '000shojaee');
+    return $result;
+
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setLangPanelAdmin' ) {
     unset( $_POST['flag'] );
 
     $objBookShow = Load::controller( 'admin' );

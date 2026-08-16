@@ -490,7 +490,7 @@ class discountCodes extends clientAuth
     }
     #endregion
 
-    public function reduceAmountViaDiscountCodePending($factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null , $typeApplication) {
+    public function reduceAmountViaDiscountCodePending($factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null , $typeApplication = null) {
         $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode , $typeApplication);
 
         $addResult = '';
