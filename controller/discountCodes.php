@@ -481,7 +481,11 @@ class discountCodes extends clientAuth
                 if($typeDiscount === 'percent'){
                     $amount = $amount - ($amount * $discountResult['discountAmount'] / 100);
                 }else{
-                    $amount -= $discountResult['discountAmount'];
+                    if ($discountResult['discountAmount'] > $amount) {
+                        $amount = 0;
+                    } else {
+                        $amount -= $discountResult['discountAmount'];
+                    }
                 }
             }
         }

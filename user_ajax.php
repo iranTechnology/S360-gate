@@ -2211,7 +2211,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'AddPnr' ) {
     $airline = filter_var( $_POST['airline'], FILTER_SANITIZE_STRING );
     $airline = explode( '|', $airline );
 
-    $data = Array(
+    $data = array(
             "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
             "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
             "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -2234,7 +2234,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'AddHotelPnr' ) {
     unset( $_POST['flag'] );
 
 
-    $data = Array(
+    $data = array(
             "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
             "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
             "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -2251,7 +2251,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookPendingHotel' ) {
 
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
             "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
             "factorNumber" => filter_var( $_POST['factorNumber'], FILTER_SANITIZE_STRING ),
             "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -2420,9 +2420,7 @@ if ( $_POST['paymentStatus'] == 'prePayment' ) {
 $totalPriceBank = $reserveInfo['hotel_payments_price'];
 
 
-// ابتدا بررسی کنید که سرویس خصوصی است یا خیر
     if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle'] == 'PrivatePortalHotel' ) {
-        // اگر سرویس خصوصی بود، نیازی به بررسی اعتبار کانتر نیست
 
         $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
         $checkRepeat = 'yes';
@@ -2434,8 +2432,20 @@ $totalPriceBank = $reserveInfo['hotel_payments_price'];
             $total_price += $reserveInfo['irantech_commission'];
         }
 
-        $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
-        $check = $objTransaction->checkCredit( $total_price );
+        if ($_POST['creditUse'] == 'member_credit') {
+            $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
+        } else {
+            $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
+        }
+
+        $check = [];
+
+        if ($typeApplication == 'reservation') {
+            $check['status'] = 'TRUE';
+        }
+        else {
+            $check = $objTransaction->checkCredit( $total_price );
+        }
 
         if ( $check['status'] == 'TRUE' ) {
             $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
@@ -2497,7 +2507,6 @@ $totalPriceBank = $reserveInfo['hotel_payments_price'];
             if ($_POST['creditUse'] == 'member_credit') {
                 $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
             } else {
-                // Caution: کاهش اعتبار کانتر
                 $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
             }
 
@@ -2516,8 +2525,8 @@ $totalPriceBank = $reserveInfo['hotel_payments_price'];
                 $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
                 if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
 
-                    // Caution: کاهش اعتبار صاحب سیستم
                     $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
+
                     if ( $reduceTransaction ) {
                         echo 'success:' . $amount;
                     } else {
@@ -3330,14 +3339,16 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'UpdateCounterDetail' ) {
     $result     = $controller->organizationAdd( $_POST );
 
     echo json_encode( $result );
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationEdit' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationEdit' ) {
 
     unset( $_POST['flag'] );
     $controller = Load::controller( 'organizationLevel' );
     $result     = $controller->organizationEdit( $_POST );
 
     echo json_encode( $result );
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
 
     unset( $_POST['flag'] );
     $controller = Load::controller( 'organizationLevel' );
@@ -3996,7 +4007,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insertSourceAgency' ) {
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'convertToBook' ) {
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
             "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
             "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
             "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -5141,6 +5152,11 @@ elseif((isset($_POST['flag']) && $_POST['flag'] == 'loginAgency')){
             $orderAppointment = Load::controller( 'appointments' );
             $result   = $orderAppointment->infoAppointmentTracking( $_POST['request_service_number'] );
             break;
+        case 'organization':
+            /** @var \appointment $appointment */
+            $organizationalCategory = Load::controller( 'organizationalCategory' );
+            $result   = $organizationalCategory->TrackingInfo( $_POST['request_service_number'] );
+            break;
         default:
             $result = '';
             break;
@@ -5294,7 +5310,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'deleteRequestOffline' ) {
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
             "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
             "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
             "ParamId"       => filter_var( $_POST['ParamId'], FILTER_SANITIZE_STRING ),
@@ -5316,7 +5332,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'ConfirmReturnBankUser' ) {
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
             "ClientID"      => filter_var( $_POST['memberId'], FILTER_SANITIZE_STRING ),
             "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
             "ParamId"       => filter_var( $_POST['ParamId'], FILTER_SANITIZE_STRING ),
@@ -5335,7 +5351,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'GuestUpdateUsers' ) {
         $data['entry']=functions::checkParamsInput( $_POST['entry']);
     }
 
-    $data = Array(
+    $data = array(
             "name"        => functions::sanitizeString( trim( filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) ) ),
             "family"      => functions::sanitizeString( trim( filter_var( $_POST['family'], FILTER_SANITIZE_STRING ) ) ),
             "mobile"      => functions::sanitizeString( trim( trim( filter_var( $_POST['mobile'], FILTER_SANITIZE_NUMBER_INT ), '‌' ) ) ),
@@ -5734,7 +5750,38 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'calculatePrice'){
 elseif(isset($_POST['flag']) && $_POST['flag'] == 'chargeClient'){
     $obj = Load::controller('safarBankController');
     echo $obj->chargeClient($_POST);
-}elseif(isset($_POST['flag']) && $_POST['flag'] == 'deductClient'){
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'deductClient'){
     $obj = Load::controller('safarBankController');
     echo $obj->deductClient($_POST);
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationRegisterUser' ) {
+
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->organizationRegisterUser( $_POST );
+
+    echo json_encode( $result );
+}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'acceptUserOrganizationalCategory' ) {
+
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->acceptOrganizationalUser( $_POST );
+
+    echo json_encode( $result );
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'rejectUserOrganizationalCategory' ) {
+
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->rejectOrganizationalUser( $_POST );
+
+    echo json_encode( $result );
+}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'changeStatusOrganizationalCategory' ) {
+
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->changeStatusOrganizationalCategory( $_POST );
+
+    echo json_encode( $result );
 }
