@@ -5927,6 +5927,9 @@ class bookshowTest extends clientAuth {
             }
             else{
                 $DataAllPrice .=  number_format( $hotel['total_price'] - $hotel['discount_code_amount'] );
+                if ($hotel['discount_code_amount'] > $hotel['total_price']) {
+                    $DataAllPrice = 0;
+                }
             }
 
             if (!empty($hotel['discount_code_amount']) && $hotel['discount_code_amount'] != 0) {
@@ -5934,7 +5937,11 @@ class bookshowTest extends clientAuth {
             }
 
             if ( $hotel['type_application'] == 'reservation' ) {
-                $DataAllPriceFor = $hotel['total_price'] - $hotel['discount_code_amount'];
+                if ($hotel['discount_code_amount'] > $hotel['total_price']) {
+                    $DataAllPriceFor = 0;
+                }else {
+                    $DataAllPriceFor = $hotel['total_price'] - $hotel['discount_code_amount'];
+                }
 
             } else {
                 $DataAllPriceFor = $hotel['total_price'];

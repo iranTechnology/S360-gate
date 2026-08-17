@@ -153,6 +153,9 @@
       <a href="https://trustseal.enamad.ir/?id=180335&Code=iApZM9XWSwCuilt4gjhx" referrerpolicy="origin" target="_blank">
        <img alt="" id="iApZM9XWSwCuilt4gjhx" referrerpolicy="origin" src="https://trustseal.enamad.ir/logo.aspx?id=180335&amp;Code=iApZM9XWSwCuilt4gjhx" style="cursor:pointer">
       </a>
+      <a href="https://sadadpsp.ir/TollPayment/UploadFile">
+       <img alt="namad-4" src="project_files/images/certificate4.png"/>
+      </a>
      </div>
      <div class="about-namad">
       <h4>
@@ -309,6 +312,9 @@
     </a>
     <a href="https://trustseal.enamad.ir/?id=180335&Code=iApZM9XWSwCuilt4gjhx" referrerpolicy="origin" target="_blank">
      <img alt="" id="iApZM9XWSwCuilt4gjhx" referrerpolicy="origin" src="https://trustseal.enamad.ir/logo.aspx?id=180335&amp;Code=iApZM9XWSwCuilt4gjhx" style="cursor:pointer">
+    </a>
+    <a href="https://sadadpsp.ir/TollPayment/UploadFile">
+     <img alt="namad-4" src="project_files/images/certificate4.png"/>
     </a>
    </div>
   </div>

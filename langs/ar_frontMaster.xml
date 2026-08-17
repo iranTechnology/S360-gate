@@ -3360,5 +3360,8 @@
   <ReservedRooms>الغرف المحجوزة</ReservedRooms>
   <HotelBooking>حجز فندق في إنجلترا</HotelBooking>
   <PhoneNumberBuyer>رقم الهاتف المحمول الذي استخدمته لإجراء عملية الشراء.</PhoneNumberBuyer>
+  <PaymentWithADiscountCode>الدفع باستخدام رمز خصم</PaymentWithADiscountCode>
+  <AsADiscountCodeHasBeenApplied>نظراً لتطبيق رمز الخصم وتسوية مبلغ الفاتورة، لا يلزم سداد أي مبالغ إضافية. ولإتمام العملية، يرجى اختيار زر "الدفع باستخدام رمز الخصم".</AsADiscountCodeHasBeenApplied>
+
 
 </Main>

@@ -2428,10 +2428,6 @@ $totalPriceBank = $reserveInfo['hotel_payments_price'];
         $comment .= " - اختصاصی";
         $reason = 'buy_hotel';
 
-        if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-            $total_price += $reserveInfo['irantech_commission'];
-        }
-
         if ($_POST['creditUse'] == 'member_credit') {
             $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
         } else {
@@ -2482,11 +2478,6 @@ $totalPriceBank = $reserveInfo['hotel_payments_price'];
 
                 $reason = 'buy_hotel';
 
-                if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-                    $total_price += $reserveInfo['irantech_commission'];
-//				$total_price += ($reserveInfo['irantech_commission'] * $reserveInfo['countPassengers']);
-                }
-
             } elseif ( $typeApplication == 'reservation' ) {
                 $checkRepeat = 'no';
                 $total_price = 0;
@@ -2499,9 +2490,6 @@ $totalPriceBank = $reserveInfo['hotel_payments_price'];
                 $total_price = $reserveInfo['totalPriceTransaction'];
                 $reason      = 'buy_foreign_hotel';
 
-                if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-                    $total_price += $reserveInfo['irantech_commission'] * $reserveInfo['countPassengers'];
-                }
             }
 
             if ($_POST['creditUse'] == 'member_credit') {

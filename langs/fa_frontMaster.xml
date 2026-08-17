@@ -1,51 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Main>
-  <RefundPenaltyFromIssueTo3DaysBefore>
-    جریمه استرداد از زمان صدور بلیت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد می باشد.
-  </RefundPenaltyFromIssueTo3DaysBefore>
-  <RefundPenaltyFrom3DaysTo2DaysBefore>
-    جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد می باشد.
-  </RefundPenaltyFrom3DaysTo2DaysBefore>
-  <RefundPenaltyFrom2DaysTo1DayBefore>
-    جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد می باشد.
-  </RefundPenaltyFrom2DaysTo1DayBefore>
-  <RefundPenaltyFrom1DayTo24HoursBefore>
-    جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 80 درصد می باشد.
-  </RefundPenaltyFrom1DayTo24HoursBefore>
-  <RefundPenaltyFrom24HoursBefore>
-    جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد می باشد.
-  </RefundPenaltyFrom24HoursBefore>
-  <RefundPenaltyNote>
-    توجه: در مواقعی این احتمال وجود دارد که درصدهای ذکر شده تغییراتی داشته باشد که در زمان کنسلی اطلاع رسانی خواهد شد.
-  </RefundPenaltyNote>
-
-  <IntlRefundPenaltyFromIssueTo3DaysBefore>جریمه استرداد از زمان صدور بليت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</IntlRefundPenaltyFromIssueTo3DaysBefore>
-  <IntlRefundPenaltyFrom3DaysTo2DaysBefore>جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد می باشد.</IntlRefundPenaltyFrom3DaysTo2DaysBefore>
-  <IntlRefundPenaltyFrom2DaysTo1DayBefore>جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد می باشد.</IntlRefundPenaltyFrom2DaysTo1DayBefore>
-  <IntlRefundPenaltyFrom1DayTo24HoursBefore>جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 100 درصد مي باشد.</IntlRefundPenaltyFrom1DayTo24HoursBefore>
-  <IntlRefundPenaltyFrom24HoursBefore>جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد می باشد.</IntlRefundPenaltyFrom24HoursBefore>
-  <IntlRefundPenaltyNote>توجه: در مواقعی این احتمال وجود دارد که درصدهای ذکر شده تغییراتی داشته باشد که در زمان کنسلی اطلاع رسانی خواهد شد.</IntlRefundPenaltyNote>
-
-  <DomesticRefundPenaltyWithin30MinutesPorsetare>جریمه استرداد تا 30 دقیقه بعد از رزرو (فقط تا 16 ساعت قبل از پرواز) 0 درصد مي باشد.</DomesticRefundPenaltyWithin30MinutesPorsetare>
-  <DomesticRefundPenaltyFromIssueTo3DaysBeforePorsetare>جریمه استرداد از زمان صدور بلیت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</DomesticRefundPenaltyFromIssueTo3DaysBeforePorsetare>
-  <DomesticRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد مي باشد.</DomesticRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>
-  <DomesticRefundPenaltyFrom2DaysTo1DayBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد مي باشد.</DomesticRefundPenaltyFrom2DaysTo1DayBeforePorsetare>
-  <DomesticRefundPenaltyFrom1DayTo24HoursBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 80 درصد مي باشد.</DomesticRefundPenaltyFrom1DayTo24HoursBeforePorsetare>
-  <DomesticRefundPenaltyFrom24HoursBeforePorsetare>جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد مي باشد.</DomesticRefundPenaltyFrom24HoursBeforePorsetare>
-  <DomesticRefundPenaltyNotePorsetare>تمامی درصد جریمه های پروازی بر روی سیستم کنسلی و استرداد آنلاین تعریف شده است و مسافرین محترم میتوانند از طریق لینک زیر اقدام به ثبت کنسلی و استرداد بلیت های خود نمایند. ضمنا در صورت خرید نرخ های دو مسیره قوانین استرداد متفاوت بوده و بر اساس کل رفرنس محاسبه میگردد با تشکر</DomesticRefundPenaltyNotePorsetare>
-  <DomesticRefundLinkPorsetare>https://apstick.ir/api/DeepLink/Refund/V1?language=fa</DomesticRefundLinkPorsetare>
-  <DomesticRefundContactPorsetare>برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</DomesticRefundContactPorsetare>
-
-  <IntlRefundPenaltyWithin30MinutesPorsetare>جریمه استرداد تا 30 دقيقه بعد از رزرو (فقط تا 16 ساعت قبل از پرواز) 0 درصد مي باشد.</IntlRefundPenaltyWithin30MinutesPorsetare>
-  <IntlRefundPenaltyFromIssueTo3DaysBeforePorsetare>جریمه استرداد از زمان صدور بليت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</IntlRefundPenaltyFromIssueTo3DaysBeforePorsetare>
-  <IntlRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد مي باشد.</IntlRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>
-  <IntlRefundPenaltyFrom2DaysTo1DayBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد مي باشد.</IntlRefundPenaltyFrom2DaysTo1DayBeforePorsetare>
-  <IntlRefundPenaltyFrom1DayTo24HoursBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 100 درصد مي باشد.</IntlRefundPenaltyFrom1DayTo24HoursBeforePorsetare>
-  <IntlRefundPenaltyFrom24HoursBeforePorsetare>جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد مي باشد.</IntlRefundPenaltyFrom24HoursBeforePorsetare>
-  <IntlRefundPenaltyNotePorsetare>تمامی درصد جریمه های پروازی بر روی سیستم کنسلی و استرداد آنلاین تعریف شده است و مسافرین محترم میتوانند از طریق لینک زیر اقدام به ثبت کنسلی و استرداد بلیت های خود نمایند. ضمنا در صورت خرید نرخ های دو مسیره قوانین استرداد متفاوت بوده و بر اساس کل رفرنس محاسبه میگردد با تشکر</IntlRefundPenaltyNotePorsetare>
-  <IntlRefundLinkPorsetare>https://apstick.ir/api/DeepLink/Refund/V1?language=fa</IntlRefundLinkPorsetare>
-  <IntlRefundContactPorsetare>برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</IntlRefundContactPorsetare>
-
     <PursueThePurchaseOfServices>پیگیری خرید و استرداد</PursueThePurchaseOfServices>
   <Login>ورود</Login>
   <UserName>نام کاربری</UserName>
@@ -1239,6 +1193,7 @@
   <BaggageRule>قوانین بار</BaggageRule>
   <AmountBaggage>@@numberPiece@@ بسته(هر بسته @@amountPiece@@ کیلو گرم)</AmountBaggage>
   <Themainbed>تخت اصلی</Themainbed>
+  <BaggageAllowance>میزان بار</BaggageAllowance>
   <Presencepassengerobligatoryhalfhoursbeforetimeflightairport>حضور مسافر حداقل ۳ ساعت قبل از پرواز در فرودگاه الزامی است.</Presencepassengerobligatoryhalfhoursbeforetimeflightairport>
   <Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>مسئولیت کنسلی، تأخیر یا تعجیل پرواز بر عهدهٔ شرکت هواپیمایی می‌باشد.</Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>
   <Unavailable>نا موجود</Unavailable>
@@ -1521,6 +1476,53 @@
     و پایان ویزا و مدت زمان اقامت مندرج در ویزا تطبیق دهید.
     مسئولیت مغایرت تاریخ آن ها به عهده مسافر می باشد
   </NotMissFlightMatchTermsConditionsPresenceAirlinePassengersBeforeTicketPurchased>
+  <RefundPenaltyFromIssueTo3DaysBefore>
+    جریمه استرداد از زمان صدور بلیت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد می باشد.
+  </RefundPenaltyFromIssueTo3DaysBefore>
+  <RefundPenaltyFrom3DaysTo2DaysBefore>
+    جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد می باشد.
+  </RefundPenaltyFrom3DaysTo2DaysBefore>
+  <RefundPenaltyFrom2DaysTo1DayBefore>
+    جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد می باشد.
+  </RefundPenaltyFrom2DaysTo1DayBefore>
+  <RefundPenaltyFrom1DayTo24HoursBefore>
+    جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 80 درصد می باشد.
+  </RefundPenaltyFrom1DayTo24HoursBefore>
+  <RefundPenaltyFrom24HoursBefore>
+    جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد می باشد.
+  </RefundPenaltyFrom24HoursBefore>
+  <RefundPenaltyNote>
+    توجه: در مواقعی این احتمال وجود دارد که درصدهای ذکر شده تغییراتی داشته باشد که در زمان کنسلی اطلاع رسانی خواهد شد.
+  </RefundPenaltyNote>
+
+  <IntlRefundPenaltyFromIssueTo3DaysBefore>جریمه استرداد از زمان صدور بليت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</IntlRefundPenaltyFromIssueTo3DaysBefore>
+  <IntlRefundPenaltyFrom3DaysTo2DaysBefore>جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد می باشد.</IntlRefundPenaltyFrom3DaysTo2DaysBefore>
+  <IntlRefundPenaltyFrom2DaysTo1DayBefore>جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد می باشد.</IntlRefundPenaltyFrom2DaysTo1DayBefore>
+  <IntlRefundPenaltyFrom1DayTo24HoursBefore>جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 100 درصد مي باشد.</IntlRefundPenaltyFrom1DayTo24HoursBefore>
+  <IntlRefundPenaltyFrom24HoursBefore>جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد می باشد.</IntlRefundPenaltyFrom24HoursBefore>
+  <IntlRefundPenaltyNote>توجه: در مواقعی این احتمال وجود دارد که درصدهای ذکر شده تغییراتی داشته باشد که در زمان کنسلی اطلاع رسانی خواهد شد.</IntlRefundPenaltyNote>
+
+  <DomesticRefundPenaltyWithin30MinutesPorsetare>جریمه استرداد تا 30 دقیقه بعد از رزرو (فقط تا 16 ساعت قبل از پرواز) 0 درصد مي باشد.</DomesticRefundPenaltyWithin30MinutesPorsetare>
+  <DomesticRefundPenaltyFromIssueTo3DaysBeforePorsetare>جریمه استرداد از زمان صدور بلیت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</DomesticRefundPenaltyFromIssueTo3DaysBeforePorsetare>
+  <DomesticRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد مي باشد.</DomesticRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>
+  <DomesticRefundPenaltyFrom2DaysTo1DayBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد مي باشد.</DomesticRefundPenaltyFrom2DaysTo1DayBeforePorsetare>
+  <DomesticRefundPenaltyFrom1DayTo24HoursBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 80 درصد مي باشد.</DomesticRefundPenaltyFrom1DayTo24HoursBeforePorsetare>
+  <DomesticRefundPenaltyFrom24HoursBeforePorsetare>جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد مي باشد.</DomesticRefundPenaltyFrom24HoursBeforePorsetare>
+  <DomesticRefundPenaltyNotePorsetare>تمامی درصد جریمه های پروازی بر روی سیستم کنسلی و استرداد آنلاین تعریف شده است و مسافرین محترم میتوانند از طریق لینک زیر اقدام به ثبت کنسلی و استرداد بلیت های خود نمایند. ضمنا در صورت خرید نرخ های دو مسیره قوانین استرداد متفاوت بوده و بر اساس کل رفرنس محاسبه میگردد با تشکر</DomesticRefundPenaltyNotePorsetare>
+  <DomesticRefundLinkPorsetare>https://apstick.ir/api/DeepLink/Refund/V1?language=fa</DomesticRefundLinkPorsetare>
+  <DomesticRefundContactPorsetare>برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</DomesticRefundContactPorsetare>
+
+  <IntlRefundPenaltyWithin30MinutesPorsetare>جریمه استرداد تا 30 دقيقه بعد از رزرو (فقط تا 16 ساعت قبل از پرواز) 0 درصد مي باشد.</IntlRefundPenaltyWithin30MinutesPorsetare>
+  <IntlRefundPenaltyFromIssueTo3DaysBeforePorsetare>جریمه استرداد از زمان صدور بليت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</IntlRefundPenaltyFromIssueTo3DaysBeforePorsetare>
+  <IntlRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد مي باشد.</IntlRefundPenaltyFrom3DaysTo2DaysBeforePorsetare>
+  <IntlRefundPenaltyFrom2DaysTo1DayBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد مي باشد.</IntlRefundPenaltyFrom2DaysTo1DayBeforePorsetare>
+  <IntlRefundPenaltyFrom1DayTo24HoursBeforePorsetare>جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 100 درصد مي باشد.</IntlRefundPenaltyFrom1DayTo24HoursBeforePorsetare>
+  <IntlRefundPenaltyFrom24HoursBeforePorsetare>جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد مي باشد.</IntlRefundPenaltyFrom24HoursBeforePorsetare>
+  <IntlRefundPenaltyNotePorsetare>تمامی درصد جریمه های پروازی بر روی سیستم کنسلی و استرداد آنلاین تعریف شده است و مسافرین محترم میتوانند از طریق لینک زیر اقدام به ثبت کنسلی و استرداد بلیت های خود نمایند. ضمنا در صورت خرید نرخ های دو مسیره قوانین استرداد متفاوت بوده و بر اساس کل رفرنس محاسبه میگردد با تشکر</IntlRefundPenaltyNotePorsetare>
+  <IntlRefundLinkPorsetare>https://apstick.ir/api/DeepLink/Refund/V1?language=fa</IntlRefundLinkPorsetare>
+  <IntlRefundContactPorsetare>برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</IntlRefundContactPorsetare>
+
+
   <MoreDetails>جزئیات بیشتر</MoreDetails>
   <Here>اینجا</Here>
   <PleaseClickForPrintTicket>لطفا جهت چاپ بلیط بر روی</PleaseClickForPrintTicket>
@@ -1552,6 +1554,7 @@
   <DeliveryTime>زمان تحویل</DeliveryTime>
   <ValidityDuration>مدت اعتبار</ValidityDuration>
   <GetWatcher>دریافت واچر</GetWatcher>
+  <PrintWatcher>چاپ واچر</PrintWatcher>
   <FlightSentCoordinateSupportViaSMS>پرواز با مشخصات زیر از طریق پیامک به پشتیبانی جهت هماهنگی ارسال خواهد شد</FlightSentCoordinateSupportViaSMS>
   <ToFlightNumber>به شماره پرواز</ToFlightNumber>
   <WithRateID>با شناسه نرخی</WithRateID>
@@ -2044,6 +2047,7 @@
   <Onedaypatrol>لیست گشت یک روزه</Onedaypatrol>
   <NoReservable>در حال حاضر امکان رزرو این شناسه نرخی وجود ندارد، لطفا نرخ دیگری را انتخاب نمائید</NoReservable>
   <Stopat>توقف در</Stopat>
+  <LayoverAirportsOutboundFlight>فرودگاه های توقف در پرواز رفت</LayoverAirportsOutboundFlight>
   <descriptionCancelTrain>امکان کنسلی آنلاین نبوده لطفا جهت در خواست کنسلی فرم ذیل را تکمیل نمایید ، همکاران ما در اولین فرصت با شما تماس خواهند
     گرفت
   </descriptionCancelTrain>
@@ -2550,6 +2554,7 @@
   <AddDay>اضافه کردن روز</AddDay>
   <WithOut>بدون</WithOut>
   <FlightDuration>مدت پرواز</FlightDuration>
+  <TransitDuration>مدت توقف</TransitDuration>
   <EndOfTravel>پایان سفر</EndOfTravel>
   <TourInformation>اطلاعات تور</TourInformation>
   <TourDates>تاریخ های تور</TourDates>
@@ -3912,4 +3917,10 @@
 <ReceiveInfoError>خطا در دریافت اطلاعات</ReceiveInfoError>
   <ReservedRooms>اتاق های رزرو شده</ReservedRooms>
   <HotelBooking>رزرو هتل انگلیسی</HotelBooking>
+  <Organization>خدمات سازمانی</Organization>
+  <OrganizationName>سازمان</OrganizationName>
+  <jobCategory>رده شغلی</jobCategory>
+  <Reference>رفرنس</Reference>
+  <PaymentWithADiscountCode>پرداخت با کد تخفیف</PaymentWithADiscountCode>
+  <AsADiscountCodeHasBeenApplied>با توجه به استفاده از کد تخفیف و تسویه مبلغ فاکتور نیازی به پرداخت نمیباشد.در صورت تایید نهایی، لطفا دکمه پرداخت با کد تخفیف را انتخاب نمایید.</AsADiscountCodeHasBeenApplied>
 </Main>
