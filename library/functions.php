@@ -3197,29 +3197,63 @@ class functions {
      * @return early for (0-8) or morning for (8-12) or afternoon for (12-18) or night for (18-24)
      * @author Naime Barati
      */
-    public static function classTimeLOCAL( $time,$echo=true ) {
-
-        if ( substr( $time, 0, 1 ) == '0' ) {
-            $hour = substr( $time, 1, 1 );
+    public static function classTimeLOCAL($time, $echo = true) {
+        if (empty($time)) {
+            $result = '';
         } else {
-            $hour = substr( $time, 0, 2 );
-        }
-        $result = '';
-        if ( $hour >= 0 && $hour < 8 ) {
-            $result = 'early';
-        } elseif ( $hour >= 8 && $hour < 12 ) {
-            $result = 'morning';
-        } elseif ( $hour >= 12 && $hour < 18 ) {
-            $result = 'afternoon';
-        } elseif ( $hour >= 18 && $hour < 24 ) {
-            $result = 'night';
+            if (substr($time, 0, 1) == '0') {
+                $hour = substr($time, 1, 1);
+            } else {
+                $hour = substr($time, 0, 2);
+            }
+            $hour = (int)$hour;
+
+            $result = '';
+            if ($hour >= 0 && $hour < 5) {
+                $result = 'early';      // 00:00 - 04:59
+            } elseif ($hour >= 5 && $hour < 12) {
+                $result = 'morning';    // 05:00 - 11:59
+            } elseif ($hour >= 12 && $hour < 18) {
+                $result = 'afternoon';  // 12:00 - 17:59
+            } elseif ($hour >= 18 && $hour < 24) {
+                $result = 'night';      // 18:00 - 23:59
+            }
         }
 
-        if(!$echo) {
+        if (!$echo) {
             return $result;
         }
         echo $result;
+    }
+    public static function classTimeArrivalLOCAL($time, $echo = true) {
+        if (empty($time)) {
+            $result = '';
+        } else {
+            // استخراج ساعت از زمان
+            if (substr($time, 0, 1) == '0') {
+                $hour = substr($time, 1, 1);
+            } else {
+                $hour = substr($time, 0, 2);
+            }
+            $hour = (int)$hour;
 
+            $result = '';
+            // ✅ بازه‌های زمانی جدید برای زمان رسیدن
+            if ($hour >= 0 && $hour < 5) {
+                $result = 'arrival_early';      // 00:00 - 04:59
+            } elseif ($hour >= 5 && $hour < 12) {
+                $result = 'arrival_morning';    // 05:00 - 11:59
+            } elseif ($hour >= 12 && $hour < 18) {
+                $result = 'arrival_afternoon';  // 12:00 - 17:59
+            } elseif ($hour >= 18 && $hour < 24) {
+                $result = 'arrival_night';      // 18:00 - 23:59
+            }
+        }
+
+        if (!$echo) {
+            return $result;
+        }
+        echo $result;
     }
     #endregion
 

@@ -7619,7 +7619,9 @@ process Flight cdd
     -webkit-animation: fadeout 1s linear;
     animation: fadeout 1s linear;
 }
-
+.filter-baggage-label{
+    direction:rtl !important;
+}
 
 .selectOneFlightVue {
     width: 100%;

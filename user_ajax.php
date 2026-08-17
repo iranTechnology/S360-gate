@@ -2349,14 +2349,30 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     unset( $_POST['flag'] );
     $factorNumber    = trim( $_POST['factorNumber'] );
     $typeApplication = trim( $_POST['typeApplication'] );
+$discountCode = trim( $_POST['discountCode'] );
 
     /** @var members $objMember */
     /** @var transaction $objTransaction */
     $objMember      = Load::controller( 'members' );
     $objTransaction = Load::controller( 'transaction' );
+$objUser = Load::controller( 'user' );
+$objMemberCredit = Load::controller( 'memberCredit');
+$objDiscountCodes     = Load::controller( 'discountCodes' );
+
+if (empty($discountCode)) {
+    $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
+    $discountCode = $getDiscountCode['discountCode'];
+}
 
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
-    $counterCredit = $objMember->getCredit();
+if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
+    $credit = $objUser->getCreditMember();
+
+} else {
+    $credit = $objMember->getCredit();
+
+}
+
     $reserveInfo   = functions::GetInfoHotel( $factorNumber );
     if ($reserveInfo['hotel_payments_price']>0) {
         $amount        = $reserveInfo['hotel_payments_price'];
@@ -2366,6 +2382,11 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
         $amount        = $reserveInfo['total_price'];
 
     }
+
+$memberId = Session::getUserId();
+
+$amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
+
     if ( $_POST['paymentStatus'] == 'prePayment' ) {
         $comment = ' پیش رزرو هتل ';
     } else {
@@ -2409,53 +2430,79 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
 
     }
     else {
-        if ( $counterCredit > $amount ) {
+        if ( $credit > $amount ) {
             $reserveInfo['payment_status'] = $_POST['paymentStatus'];
             $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
-
             if ( $typeApplication == 'api' || $typeApplication == 'externalApi' ) {
+
                 $checkRepeat = 'yes';
                 if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle']=='PrivatePortalHotel' ) {
+
                     $total_price = 0;
-                    $comment .= " - اختصاصی";
+                    $comment     .= " - اختصاصی";
                 } else {
                     $total_price = $reserveInfo['totalPriceTransaction'];
-                    $comment .= " - اشتراکی";
+                    $comment     .= " - اشتراکی";
                 }
+
                 $reason = 'buy_hotel';
+
                 if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
                     $total_price += $reserveInfo['irantech_commission'];
+//				$total_price += ($reserveInfo['irantech_commission'] * $reserveInfo['countPassengers']);
                 }
+
             } elseif ( $typeApplication == 'reservation' ) {
                 $checkRepeat = 'no';
                 $total_price = 0;
-                $reason = 'buy_reservation_hotel';
+                $reason      = 'buy_reservation_hotel';
             } elseif ( $typeApplication == 'externalApi' ) {
                 $roomCount = count( json_decode( $reserveInfo['search_rooms'] ) );
-                $comment = " رزرو " . " " . $roomCount . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " در " . " " . $reserveInfo['hotel_name'] . " " . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
+
+                $comment     = " رزرو " . " " . $roomCount . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " در " . " " . $reserveInfo['hotel_name'] . " " . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
                 $checkRepeat = 'yes';
                 $total_price = $reserveInfo['totalPriceTransaction'];
-                $reason = 'buy_foreign_hotel';
+                $reason      = 'buy_foreign_hotel';
+
                 if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
                     $total_price += $reserveInfo['irantech_commission'] * $reserveInfo['countPassengers'];
                 }
             }
 
+            if ($_POST['creditUse'] == 'member_credit') {
+                $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
+            } else {
+                // Caution: کاهش اعتبار کانتر
             $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
+            }
+
+            $check = [];
+
+            if ($typeApplication == 'reservation') {
+                $check['status'] = 'TRUE';
+            }
+            else {
+                // Caution: اعتبارسنجی صاحب پنل
             $check = $objTransaction->checkCredit( $total_price );
+            }
 
             if ( $check['status'] == 'TRUE' ) {
+
                 $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
                 if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
+
+                    // Caution: کاهش اعتبار صاحب سیستم
                     $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
                     if ( $reduceTransaction ) {
                         echo 'success:' . $amount;
                     } else {
                         echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
                     }
+
                 } else {
                     echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
                 }
+
             } else {
                 echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
             }
@@ -5115,6 +5162,11 @@ elseif((isset($_POST['flag']) && $_POST['flag'] == 'loginAgency')){
             $orderAppointment = Load::controller( 'appointments' );
             $result   = $orderAppointment->infoAppointmentTracking( $_POST['request_service_number'] );
             break;
+        case 'organization':
+            /** @var \appointment $appointment */
+            $organizationalCategory = Load::controller( 'organizationalCategory' );
+            $result   = $organizationalCategory->TrackingInfo( $_POST['request_service_number'] );
+            break;
         default:
             $result = '';
             break;
@@ -5677,5 +5729,34 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'chargeClient'){
     $obj = Load::controller('safarBankController');
     echo $obj->deductClient($_POST);
 }
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationRegisterUser' ) {
 
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->organizationRegisterUser( $_POST );
+
+    echo json_encode( $result );
+}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'acceptUserOrganizationalCategory' ) {
+
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->acceptOrganizationalUser( $_POST );
+
+    echo json_encode( $result );
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'rejectUserOrganizationalCategory' ) {
+
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->rejectOrganizationalUser( $_POST );
+
+    echo json_encode( $result );
+}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'changeStatusOrganizationalCategory' ) {
+
+    unset( $_POST['flag'] );
+    $controller = Load::controller( 'organizationalCategory' );
+    $result     = $controller->changeStatusOrganizationalCategory( $_POST );
+
+    echo json_encode( $result );
+}
 

@@ -1239,6 +1239,7 @@
   <BaggageRule>قوانین بار</BaggageRule>
   <AmountBaggage>@@numberPiece@@ بسته(هر بسته @@amountPiece@@ کیلو گرم)</AmountBaggage>
   <Themainbed>تخت اصلی</Themainbed>
+  <BaggageAllowance>میزان بار</BaggageAllowance>
   <Presencepassengerobligatoryhalfhoursbeforetimeflightairport>حضور مسافر حداقل ۳ ساعت قبل از پرواز در فرودگاه الزامی است.</Presencepassengerobligatoryhalfhoursbeforetimeflightairport>
   <Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>مسئولیت کنسلی، تأخیر یا تعجیل پرواز بر عهدهٔ شرکت هواپیمایی می‌باشد.</Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>
   <Unavailable>نا موجود</Unavailable>
@@ -2044,6 +2045,7 @@
   <Onedaypatrol>لیست گشت یک روزه</Onedaypatrol>
   <NoReservable>در حال حاضر امکان رزرو این شناسه نرخی وجود ندارد، لطفا نرخ دیگری را انتخاب نمائید</NoReservable>
   <Stopat>توقف در</Stopat>
+  <LayoverAirportsOutboundFlight>فرودگاه های توقف در پرواز رفت</LayoverAirportsOutboundFlight>
   <descriptionCancelTrain>امکان کنسلی آنلاین نبوده لطفا جهت در خواست کنسلی فرم ذیل را تکمیل نمایید ، همکاران ما در اولین فرصت با شما تماس خواهند
     گرفت
   </descriptionCancelTrain>
@@ -2550,6 +2552,7 @@
   <AddDay>اضافه کردن روز</AddDay>
   <WithOut>بدون</WithOut>
   <FlightDuration>مدت پرواز</FlightDuration>
+  <TransitDuration>مدت توقف</TransitDuration>
   <EndOfTravel>پایان سفر</EndOfTravel>
   <TourInformation>اطلاعات تور</TourInformation>
   <TourDates>تاریخ های تور</TourDates>
