@@ -1799,6 +1799,7 @@ WHERE JSON_UNQUOTE(JSON_EXTRACT(data, '$.city_id')) = '{$info['type_id']}'
                 $data['logo'] = $explod_name_pic[1];
             }
 
+
         }
         #endregion
 
@@ -1896,7 +1897,8 @@ WHERE JSON_UNQUOTE(JSON_EXTRACT(data, '$.city_id')) = '{$info['type_id']}'
 
         if ($res) {
 
-            $this->getController('siteMap')->createSitemap();
+            $this->getController('siteMap')->createSitemap(true);
+
 
             // کارگزار هتل
             if (isset($info['count_package']) && $info['count_package'] > 0) {

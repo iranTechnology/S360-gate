@@ -13,7 +13,7 @@
                     <a href="/apk/kaajmehr.apk" class="">
                         <img src="project_files/images/download-apk.png" alt="app">
                     </a>
-                    <a href="" class="">
+                    <a href="javascript:" class="">
                         <img src="project_files/images/bazar.png" alt="app">
                     </a>
                     <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/app" class="">

@@ -528,6 +528,8 @@ class searchService extends clientAuth
 
             $params = $this->prepareTourExternalStations($params);
 
+            functions::insertLog('$params: ' . json_encode($params) , '0abbasi');
+
             $method = $params['methode'] ;
             if($method == 'getTourCities') {
                 $params['to_json']  = false;
