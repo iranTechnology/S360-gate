@@ -321,7 +321,9 @@ class memberCredit extends clientAuth{
                 $dataCredit['comment'] = $comment;
                 $dataCredit['status'] = 'success';
                 $dataCredit['creationDateInt'] = time();
+                functions::insertLog('$dataCredit: ' . json_encode($dataCredit) , '0abbasi');
                 $insert = $membersCreditModel->insertWithBind($dataCredit);
+                functions::insertLog('$insert: ' . json_encode($insert) , '0abbasi');
 
                 if ($insert) {
                     return 'success :' . functions::Xmlinformation("DecreaseUser");

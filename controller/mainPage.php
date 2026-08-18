@@ -136,19 +136,34 @@ abstract class mainPage extends clientAuth
     public function dataFastSearchInternalFlight($params) {
 
         $array_cities = array();
-        $params_search['limit'] = isset($params['limit']) ? $params['limit'] : '';
-        $params_search['is_group'] = isset($params['is_group']) ? $params['is_group'] : '';
+
+        // پارامترهای مشترک
+        $params_search = [];
+        $params_search['limit']           = isset($params['limit']) ? $params['limit'] : '';
+        $params_search['is_group']        = isset($params['is_group']) ? $params['is_group'] : '';
         $params_search['use_customer_db'] = isset($params['use_customer_db']) ? $params['use_customer_db'] : '';
+
+        // 1. لیست شهرهای اصلی (با فیلتر value اگر وجود داشته باشد)
+        if (isset($params['value']) && $params['value']) {
+            $params_search['value'] = $params['value'];
+        }
         $cities = $this->getController('routeFlight')->flightRouteInternal($params_search);
-        
+
+        // 2. لیست کامل شهرها برای sub_cities (بدون value)
+        $params_full = $params_search;
+        unset($params_full['value']); // حذف فیلتر value
+        $all_cities = $this->getController('routeFlight')->flightRouteInternal($params_full);
+
         $array_cities['start_date'] = date('Y-m-d');
+
         foreach ($cities as $key => $city) {
             $array_cities['cities_flight'][$key]['main'] = $city;
-            foreach ($cities as $key_sub_city => $sub_city) {
+
+            // sub_cities را از لیست کامل می‌سازیم
+            foreach ($all_cities as $sub_city) {
                 if ($sub_city['Departure_Code'] != $city['Departure_Code']) {
                     $array_cities['cities_flight'][$key]['sub_cities'][] = $sub_city;
                 }
-
             }
         }
 

@@ -481,7 +481,11 @@ class discountCodes extends clientAuth
                 if($typeDiscount === 'percent'){
                     $amount = $amount - ($amount * $discountResult['discountAmount'] / 100);
                 }else{
-                    $amount -= $discountResult['discountAmount'];
+                    if ($discountResult['discountAmount'] > $amount) {
+                        $amount = 0;
+                    } else {
+                        $amount -= $discountResult['discountAmount'];
+                    }
                 }
             }
         }
@@ -490,7 +494,7 @@ class discountCodes extends clientAuth
     }
     #endregion
 
-    public function reduceAmountViaDiscountCodePending($factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null , $typeApplication) {
+    public function reduceAmountViaDiscountCodePending($factorNumber, $memberId, $discountCode, $serviceType, $currencyCode = null , $typeApplication = null) {
         $discountResult = $this->CheckDiscountCode($discountCode, $memberId, $serviceType, $currencyCode , $typeApplication);
 
         $addResult = '';

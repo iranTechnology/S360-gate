@@ -1,6 +1,11 @@
-
-{assign var="params" value=['limit'=>'7','is_group'=>true]}
+{assign var="params" value=[
+'value'=>['یزد','تهران','مشهد'],
+'limit'=>'6',
+'is_group'=>true
+]}
 {assign var="cities" value=$obj_main_page->dataFastSearchInternalFlight($params)}
+
+
 {assign var="foreign_cities" value=['IKA','DXBALL','ISTALL','KUL', 'MOWALL' , 'NJF' , 'TBS']}
 {assign var="__local_max_var__" value=4}
 

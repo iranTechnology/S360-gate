@@ -342,6 +342,13 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
     $result     = $controller->getBankData( $_POST['temporaryID'] );
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'signout' || isset( $_GET['flag'] ) && $_GET['flag'] == 'signout') {
 
+     if ($_SERVER['REMOTE_ADDR']) {
+         error_reporting(1);
+         error_reporting(E_ALL | E_STRICT);
+         @ini_set('display_errors', 1);
+         @ini_set('display_errors', 'on');
+     }
+
 
     echo $sessionTemplate = Session::getSessionTemplate();
     unset( $_COOKIE['LoginPanel'] );
@@ -931,6 +938,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_cip' ) {
         . " {$request_number}";
 
 
+
     $total_price += $prices;
     $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
 
@@ -1165,6 +1173,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCip' ) {
             . $reserveInfo[0]['cip_name']
             . " به شماره رزرو "
             . $reserveInfo[0]['reserve_number'];
+
         $comment     .= ' ' . $request_number;
 
         if($reserveInfo[0]['serviceTitle'] == 'PrivateCip'){
@@ -2177,7 +2186,7 @@ else if ( isset($_POST['flag']) && $_POST['flag'] == 'EditInfoPassenger' ) {
         "passengerNameEn"    => filter_var_array($_POST['passengerNameEn'], FILTER_SANITIZE_STRING),
         "passengerFamilyEn"  => filter_var_array($_POST['passengerFamilyEn'], FILTER_SANITIZE_STRING),
         "nationalCode"       => filter_var_array($_POST['nationalCode'], FILTER_SANITIZE_STRING),
-    );
+
 
     /** @var bookshow $bookshow */
     $bookshow = Load::controller('bookshow');
@@ -2192,6 +2201,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'AddPnr' ) {
     $airline = filter_var( $_POST['airline'], FILTER_SANITIZE_STRING );
     $airline = explode( '|', $airline );
 
+
     $data = Array(
         "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
@@ -2203,6 +2213,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'AddPnr' ) {
         "time_flight"   => filter_var( $_POST['flightTime'], FILTER_SANITIZE_STRING ),
         "nationalCode"  => filter_var_array( $_POST['nationalCode'], FILTER_SANITIZE_STRING ),
         "eTicketNumber" => filter_var_array( $_POST['eTicketNumber'], FILTER_SANITIZE_STRING )
+
     );
 
     /** @var bookshow $bookshow */
@@ -2220,7 +2231,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'AddHotelPnr' ) {
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
         "voucher_number"    => filter_var( $_POST['voucher_No'], FILTER_SANITIZE_STRING )
-    );
+
 
     $hotelController = Load::controller( 'detailHotel' );
 
@@ -2237,7 +2248,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookPendingHotel' ) {
         "factorNumber" => filter_var( $_POST['factorNumber'], FILTER_SANITIZE_STRING ),
         "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
         "voucher_number"    => filter_var( $_POST['voucher_No'], FILTER_SANITIZE_STRING )
-    );
+
 
     $hotelController = Load::controller( 'detailHotel' );
 
@@ -2346,15 +2357,16 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_hotel' ) {
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) {
 
-    unset( $_POST['flag'] );
-    $factorNumber    = trim( $_POST['factorNumber'] );
-    $typeApplication = trim( $_POST['typeApplication'] );
+
+unset( $_POST['flag'] );
+$factorNumber    = trim( $_POST['factorNumber'] );
+$typeApplication = trim( $_POST['typeApplication'] );
 $discountCode = trim( $_POST['discountCode'] );
 
-    /** @var members $objMember */
-    /** @var transaction $objTransaction */
-    $objMember      = Load::controller( 'members' );
-    $objTransaction = Load::controller( 'transaction' );
+/** @var members $objMember */
+/** @var transaction $objTransaction */
+$objMember      = Load::controller( 'members' );
+$objTransaction = Load::controller( 'transaction' );
 $objUser = Load::controller( 'user' );
 $objMemberCredit = Load::controller( 'memberCredit');
 $objDiscountCodes     = Load::controller( 'discountCodes' );
@@ -2364,7 +2376,8 @@ if (empty($discountCode)) {
     $discountCode = $getDiscountCode['discountCode'];
 }
 
-    // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
+
+// Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
 if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
     $credit = $objUser->getCreditMember();
 
@@ -2373,31 +2386,26 @@ if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
 
 }
 
-    $reserveInfo   = functions::GetInfoHotel( $factorNumber );
-    if ($reserveInfo['hotel_payments_price']>0) {
-        $amount        = $reserveInfo['hotel_payments_price'];
+$reserveInfo   = functions::GetInfoHotel( $factorNumber );
+if ($reserveInfo['hotel_payments_price']>0) {
+    $amount        = $reserveInfo['hotel_payments_price'];
 
 
-    }else{
-        $amount        = $reserveInfo['total_price'];
-
-    }
 
 $memberId = Session::getUserId();
 
 $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
 
-    if ( $_POST['paymentStatus'] == 'prePayment' ) {
-        $comment = ' پیش رزرو هتل ';
-    } else {
-        $comment     = 'رزرو قطعی هتل ';
-    }
-    $totalPriceBank = $reserveInfo['hotel_payments_price'];
+if ( $_POST['paymentStatus'] == 'prePayment' ) {
+    $comment = ' پیش رزرو هتل ';
+} else {
+    $comment     = 'رزرو قطعی هتل ';
+}
+$totalPriceBank = $reserveInfo['hotel_payments_price'];
 
 
-// ابتدا بررسی کنید که سرویس خصوصی است یا خیر
     if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle'] == 'PrivatePortalHotel' ) {
-        // اگر سرویس خصوصی بود، نیازی به بررسی اعتبار کانتر نیست
+
 
         $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
         $checkRepeat = 'yes';
@@ -2405,12 +2413,26 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
         $comment .= " - اختصاصی";
         $reason = 'buy_hotel';
 
+
         if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
             $total_price += $reserveInfo['irantech_commission'];
         }
 
-        $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
-        $check = $objTransaction->checkCredit( $total_price );
+        if ($_POST['creditUse'] == 'member_credit') {
+            $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
+        } else {
+            $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
+        }
+
+        $check = [];
+
+        if ($typeApplication == 'reservation') {
+            $check['status'] = 'TRUE';
+        }
+        else {
+            $check = $objTransaction->checkCredit( $total_price );
+        }
+
 
         if ( $check['status'] == 'TRUE' ) {
             $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
@@ -3349,14 +3371,16 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'UpdateCounterDetail' ) {
     $result     = $controller->organizationAdd( $_POST );
 
     echo json_encode( $result );
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationEdit' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationEdit' ) {
 
     unset( $_POST['flag'] );
     $controller = Load::controller( 'organizationLevel' );
     $result     = $controller->organizationEdit( $_POST );
 
     echo json_encode( $result );
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
 
     unset( $_POST['flag'] );
     $controller = Load::controller( 'organizationLevel' );
@@ -4015,13 +4039,14 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insertSourceAgency' ) {
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'convertToBook' ) {
     unset( $_POST['flag'] );
 
+
     $data = Array(
         "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
         "nationalCode"  => filter_var_array( $_POST['nationalCode'], FILTER_SANITIZE_STRING ),
         "eTicketNumber" => filter_var_array( $_POST['eTicketNumber'], FILTER_SANITIZE_STRING )
-    );
+
 
     $bookshow  = Load::controller( 'bookshow' );
     $InsertPnr = $bookshow->FlightConvertToBook( $data );
@@ -5303,7 +5328,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "ParamId"       => filter_var( $_POST['ParamId'], FILTER_SANITIZE_STRING ),
         "priceBack"     => filter_var( $_POST['priceBack'], FILTER_SANITIZE_STRING )
-    );
+
 
     /** @var memberCredit $memberCredit */
     $memberCredit  = Load::controller( 'memberCredit' );
@@ -5314,11 +5339,13 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'ConfirmReturnBankUser' ) {
     unset( $_POST['flag'] );
 
+
     $data = Array(
         "ClientID"      => filter_var( $_POST['memberId'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "ParamId"       => filter_var( $_POST['ParamId'], FILTER_SANITIZE_STRING ),
         "TypeCancel"       => filter_var( $_POST['TypeCancel'], FILTER_SANITIZE_STRING )
+
     );
     /** @var memberCredit $memberCredit */
     $memberCredit  = Load::controller( 'memberCredit' );
@@ -5333,6 +5360,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'GuestUpdateUsers' ) {
         $data['entry']=functions::checkParamsInput( $_POST['entry']);
     }
 
+
     $data = Array(
         "name"        => functions::sanitizeString( trim( filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) ) ),
         "family"      => functions::sanitizeString( trim( filter_var( $_POST['family'], FILTER_SANITIZE_STRING ) ) ),
@@ -5340,7 +5368,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'GuestUpdateUsers' ) {
         "email"       => functions::sanitizeString( trim( trim( filter_var( $_POST['email'], FILTER_VALIDATE_EMAIL ), '‌' ) ) ),
         "is_member"   => 1,
         "TypeOs"      => functions::getOsUser()
-    );
 
     /** @var members $controller */
     $controller  = Load::controller( 'members' );
@@ -5725,7 +5752,8 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'calculatePrice'){
 elseif(isset($_POST['flag']) && $_POST['flag'] == 'chargeClient'){
     $obj = Load::controller('safarBankController');
     echo $obj->chargeClient($_POST);
-}elseif(isset($_POST['flag']) && $_POST['flag'] == 'deductClient'){
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'deductClient'){
     $obj = Load::controller('safarBankController');
     echo $obj->deductClient($_POST);
 }
@@ -5758,5 +5786,4 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'rejectUserOrganizationalC
     $result     = $controller->changeStatusOrganizationalCategory( $_POST );
 
     echo json_encode( $result );
-}
 

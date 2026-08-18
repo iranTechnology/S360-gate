@@ -8388,22 +8388,31 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                         display_discount_currency.text('%');
                     }
                     else{
-                        var price_after_discount = price_before_discount - data.discountAmount;
+                        if (data.discountAmount > price_before_discount) {
+                            var price_after_discount = 0;
+                        } else {
+                            var price_after_discount = price_before_discount - data.discountAmount;
+                        }
                         if (price_after_discount % 1 !== 0) {
                             price_after_discount = price_after_discount.toFixed(2); //float
                         }
                         display_discount_currency.text(typeCurrency);
                     }
 
+                    let dataDiscountAmount = data.discountAmount;
+
+                    if (data.discountAmount > price_before_discount) {
+                        dataDiscountAmount = price_before_discount;
+                    }
+
 
 
 
                 $(".discount-code-error").html(data.result_message);
-                $(".discountAmount").html(number_format(data.discountAmount));
+                $(".discountAmount").html(number_format(dataDiscountAmount));
                 // $(".item-discount__label").html(useXmltag("AmountPayableAfterApplyingDiscountCode"));
                 $(".price-after-discount-code").html(number_format(price_after_discount));
 
-                console.log('hi: ')
 
                 $.ajax({
                     type: 'POST',
@@ -8420,7 +8429,7 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                             typeApplication:typeApplication
                         },
                     success: function (data) {
-                        console.log('data: ' , data)
+
                     }
                 });
 

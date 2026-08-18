@@ -1529,7 +1529,6 @@ function searchInternalHotel(flag , altDomain = null) {
    const no_select_city = $("#no_select_city").val()
    const hotel_id = $("#autoComplateSearchIN_hidden").val()
    const hotel_name_en_local = $("#autoComplateSearchIN_hidden_en").val()
-   // console.log('hotel_name_en_local',hotel_name_en_local)
    checkSearchFields(nights_hotel, check_in_date, type_application)
    nights_hotel = nights_hotel.val()
    check_in_date = check_in_date.val()
@@ -3943,32 +3942,64 @@ function searchCity(e) {
 
       hotelLoader()
       setTimeout(()=>{
-         $.post(amadeusPath + 'hotel_ajax.php',
-             {
-                inputSearchValue: autoComplateSearchIN,
-                flag: e === 'externalHotel' ? 'searchCityForExternalHotel' : 'searchCityHotelForInternalHotel' ,
-                json:true,
-             },
-             function(data) {
-                if(e === 'externalHotel') {
-                   let data_parse = JSON.parse(data)
 
-                   if (data_parse.length >= 1) {
-                      $('#listSearchCity , #listSearchCity_2, #listSearchCityResidence').html('');
-                      data_parse.forEach((index) => {
-                         let indexCountry;
-                         if(!index.CountryFa){
-                            index.CountryFa = index.CountryEn
-                         }
-                         console.log(index.CountryFa)
-                         if(index.CountryFa !== null && lang == 'fa'){
-                            indexCountry = index.CountryFa
-                         }else if(index.CountryEn !== null){
-                            indexCountry = index.CountryEn
-                         } else {
-                            indexCountry = " "
-                         }
-                         document.querySelector('#listSearchCity_2').innerHTML+= `
+         $.ajax({
+            url: amadeusPath + 'hotel_ajax.php',
+            type: 'POST',
+            data: {
+               inputSearchValue: autoComplateSearchIN,
+               flag: e === 'externalHotel' ? 'searchCityForExternalHotel' : 'searchCityHotelForInternalHotel',
+               json: true
+            },
+            success: function(data) {
+               console.log('Success data:', data);
+               processHotelData(data, e);
+            },
+            error: function(xhr, status, error) {
+               console.log('Error Status:', xhr.status);           // 403
+               console.log('Response Text:', xhr.responseText);    // اینجا داده JSON هست
+
+               // حتی با وجود 403، داده را پردازش می‌کنیم
+               if (xhr.responseText) {
+                  try {
+                     let data = xhr.responseText;
+                     console.log('Data from error:', data);
+                     processHotelData(data, e);   // همان منطقی که در success داشتی
+                  } catch (err) {
+                     console.error('Parse error:', err);
+                     hotelNothingFound();
+                  }
+               } else {
+                  hotelNothingFound();
+               }
+            }
+         });
+
+      },500)
+   }
+
+}
+
+function processHotelData(data, e) {
+   if(e === 'externalHotel') {
+      let data_parse = JSON.parse(data)
+
+      if (data_parse.length >= 1) {
+         $('#listSearchCity , #listSearchCity_2, #listSearchCityResidence').html('');
+         data_parse.forEach((index) => {
+            let indexCountry;
+            if(!index.CountryFa){
+               index.CountryFa = index.CountryEn
+            }
+            console.log(index.CountryFa)
+            if(index.CountryFa !== null && lang == 'fa'){
+               indexCountry = index.CountryFa
+            }else if(index.CountryEn !== null){
+               indexCountry = index.CountryEn
+            } else {
+               indexCountry = " "
+            }
+            document.querySelector('#listSearchCity_2').innerHTML+= `
                               <li onclick="selectCity(event,'${index.AirportEn}','${index.AirportFa}','${index.CountryEn}','${index.CountryFa}','${index.DepartureCityEn}','${index.DepartureCityFa}','${index.DepartureCode}')"> 
                                <i class="div_c_sr_i">
                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M272 192C272 236.2 236.2 272 192 272C147.8 272 112 236.2 112 192C112 147.8 147.8 112 192 112C236.2 112 272 147.8 272 192zM192 160C174.3 160 160 174.3 160 192C160 209.7 174.3 224 192 224C209.7 224 224 209.7 224 192C224 174.3 209.7 160 192 160zM384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192H384zM192 48C112.5 48 48 112.5 48 192C48 204.4 52.49 223.6 63.3 249.2C73.78 274 88.66 301.4 105.8 329.1C134.2 375.3 167.2 419.1 192 451.7C216.8 419.1 249.8 375.3 278.2 329.1C295.3 301.4 310.2 274 320.7 249.2C331.5 223.6 336 204.4 336 192C336 112.5 271.5 48 192 48V48z"/></svg>
@@ -3984,20 +4015,20 @@ function searchCity(e) {
                                </div>
                               </li>`
 
-                      })
-                   } else {
-                      hotelNothingFound();
-                   }
+         })
+      } else {
+         hotelNothingFound();
+      }
 
-                }
-                else{
-                   let data_parse = JSON.parse(data)
-                   setTimeout(function() {
-                      if (Object.keys(data_parse).length > 0) {
-                         document.querySelector('#listSearchCity').innerHTML=""
-                         if(data_parse.Cities !== undefined){
-                            data_parse.Cities.forEach((item) => {
-                               document.querySelector('#listSearchCity').innerHTML+= `
+   }
+   else{
+      let data_parse = JSON.parse(data)
+      setTimeout(function() {
+         if (Object.keys(data_parse).length > 0) {
+            document.querySelector('#listSearchCity').innerHTML=""
+            if(data_parse.Cities !== undefined){
+               data_parse.Cities.forEach((item) => {
+                  document.querySelector('#listSearchCity').innerHTML+= `
                               <li onclick="selectCity_internal('${item.CityId}','${item.CityName}' , '${item.CityNameEn}' , 'city')"> 
                                <i class="div_c_sr_i">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M272 192C272 236.2 236.2 272 192 272C147.8 272 112 236.2 112 192C112 147.8 147.8 112 192 112C236.2 112 272 147.8 272 192zM192 160C174.3 160 160 174.3 160 192C160 209.7 174.3 224 192 224C209.7 224 224 209.7 224 192C224 174.3 209.7 160 192 160zM384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192H384zM192 48C112.5 48 48 112.5 48 192C48 204.4 52.49 223.6 63.3 249.2C73.78 274 88.66 301.4 105.8 329.1C134.2 375.3 167.2 419.1 192 451.7C216.8 419.1 249.8 375.3 278.2 329.1C295.3 301.4 310.2 274 320.7 249.2C331.5 223.6 336 204.4 336 192C336 112.5 271.5 48 192 48V48z"></path></svg>
@@ -4009,11 +4040,11 @@ function searchCity(e) {
                                   </span>
                                </div>
                               </li>`
-                            })
-                         }
-                         if(data_parse.ApiHotels !== undefined){
-                            data_parse.ApiHotels.forEach((item) => {
-                               document.querySelector('#listSearchCity').innerHTML+= `
+               })
+            }
+            if(data_parse.ApiHotels !== undefined){
+               data_parse.ApiHotels.forEach((item) => {
+                  document.querySelector('#listSearchCity').innerHTML+= `
                               <li class="div_c_sr_blue" onclick="selectCity_internal('${item.HotelId}','${item.HotelName}' , '${item.HotelNameEn}' , 'api')"> 
                                <i class="div_c_sr_i">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M336 304C336 295.2 343.2 288 352 288H384C392.8 288 400 295.2 400 304V336C400 344.8 392.8 352 384 352H352C343.2 352 336 344.8 336 336V304zM336 112C336 103.2 343.2 96 352 96H384C392.8 96 400 103.2 400 112V144C400 152.8 392.8 160 384 160H352C343.2 160 336 152.8 336 144V112zM352 256C343.2 256 336 248.8 336 240V208C336 199.2 343.2 192 352 192H384C392.8 192 400 199.2 400 208V240C400 248.8 392.8 256 384 256H352zM448 0C483.3 0 512 28.65 512 64V448C512 483.3 483.3 512 448 512H288C252.7 512 224 483.3 224 448V64C224 28.65 252.7 0 288 0H448zM448 48H288C279.2 48 272 55.16 272 64V448C272 456.8 279.2 464 288 464H448C456.8 464 464 456.8 464 448V64C464 55.16 456.8 48 448 48zM192 176H72C58.75 176 48 186.7 48 200V440C48 453.3 58.75 464 72 464H193.3C196.4 482.3 204.6 498.8 216.4 512H72C32.24 512 0 479.8 0 440V200C0 160.2 32.24 128 72 128H192V176zM144 320C152.8 320 160 327.2 160 336V368C160 376.8 152.8 384 144 384H112C103.2 384 96 376.8 96 368V336C96 327.2 103.2 320 112 320H144zM144 224C152.8 224 160 231.2 160 240V272C160 280.8 152.8 288 144 288H112C103.2 288 96 280.8 96 272V240C96 231.2 103.2 224 112 224H144z"/></svg>
@@ -4024,11 +4055,11 @@ function searchCity(e) {
                                   </span>
                                </div>
                               </li>`
-                            })
-                         }
-                         if(data_parse.ReservationHotels !== undefined){
-                            data_parse.ReservationHotels.forEach((item) => {
-                               document.querySelector('#listSearchCity').innerHTML+= `
+               })
+            }
+            if(data_parse.ReservationHotels !== undefined){
+               data_parse.ReservationHotels.forEach((item) => {
+                  document.querySelector('#listSearchCity').innerHTML+= `
                               <li class="div_c_sr_blue" onclick="selectCity_internal('${item.HotelId}','${item.HotelName}' , '${item.HotelNameEn}' , 'reservation')"> 
                                <i class="div_c_sr_i">
                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M336 488C336 501.3 325.3 512 312 512C298.7 512 288 501.3 288 488V56C288 25.07 313.1 0 344 0H456C486.9 0 512 25.07 512 56V192H544V120C544 106.7 554.7 96 568 96C581.3 96 592 106.7 592 120V192.6C619.1 196.4 640 219.8 640 248V488C640 501.3 629.3 512 616 512C602.7 512 592 501.3 592 488V248C592 243.6 588.4 240 584 240H464V56C464 51.58 460.4 48 456 48H344C339.6 48 336 51.58 336 56V488zM368 96C368 87.16 375.2 80 384 80H416C424.8 80 432 87.16 432 96V128C432 136.8 424.8 144 416 144H384C375.2 144 368 136.8 368 128V96zM416 176C424.8 176 432 183.2 432 192V224C432 232.8 424.8 240 416 240H384C375.2 240 368 232.8 368 224V192C368 183.2 375.2 176 384 176H416zM368 288C368 279.2 375.2 272 384 272H416C424.8 272 432 279.2 432 288V320C432 328.8 424.8 336 416 336H384C375.2 336 368 328.8 368 320V288zM544 272C552.8 272 560 279.2 560 288V320C560 328.8 552.8 336 544 336H512C503.2 336 496 328.8 496 320V288C496 279.2 503.2 272 512 272H544zM496 384C496 375.2 503.2 368 512 368H544C552.8 368 560 375.2 560 384V416C560 424.8 552.8 432 544 432H512C503.2 432 496 424.8 496 416V384zM224 160C224 166 223 171 222 176C242 190 256 214 256 240C256 285 220 320 176 320H160V480C160 498 145 512 128 512C110 512 96 498 96 480V320H80C35 320 0 285 0 240C0 214 13 190 33 176C32 171 32 166 32 160C32 107 74 64 128 64C181 64 224 107 224 160z"/></svg>
@@ -4039,18 +4070,15 @@ function searchCity(e) {
                                   </span>
                                </div>
                               </li>`
-                            })
-                         }
-                      } else {
-                         hotelNothingFound();
-                      }
-                   }, 10)
-                }
-             })
-      },500)
+               })
+            }
+         } else {
+            hotelNothingFound();
+         }
+      }, 10)
    }
-
 }
+
 function hotelLoader(){
    $('#listSearchCity , #listSearchCity_2').html("");
    $('#listSearchCity , #listSearchCity_2').html(`
