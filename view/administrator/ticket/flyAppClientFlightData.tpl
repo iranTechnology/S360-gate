@@ -63,6 +63,8 @@
                             <th>تامین کننده</th>
                             <th>درخواست</th>
                             <th>ریسپانس</th>
+                            <th>هدر</th>
+                            <th>time</th>
                         </tr>
                         </thead>
                     </table>

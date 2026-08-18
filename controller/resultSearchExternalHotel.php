@@ -27,8 +27,7 @@ class resultSearchExternalHotel extends clientAuth
 
     public function getHotels($param)
     {
-        functions::insertLog( 'getHotels START' , '0ardalani' );
-        functions::insertLog('param=' . json_encode($param, JSON_UNESCAPED_UNICODE), '0ardalani', 'yes');
+
 
         functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => '.json_encode($param), 'times', 'yes');
         $t1 = microtime(true);
@@ -60,8 +59,7 @@ class resultSearchExternalHotel extends clientAuth
         // واکشی اطلاعات کامل هتل های رزرواسیون و امکانات هتل های خارجی //
 
         $resultHotelDB = $objExternalHotel->getHotelsFromDB($param['countryNameEn'], $param['cityNameEn'], $param['startDate'], $param['nights'] , $param['rooms']);
-        functions::insertLog('resultHotelDB count=' . (is_array($resultHotelDB) ? count($resultHotelDB) : 'false'), '0ardalani', 'yes');
-        functions::insertLog('resultHotelDB=' . json_encode($resultHotelDB, JSON_UNESCAPED_UNICODE), '0ardalani', 'yes');
+
 
         $t2 = microtime(true);
 //        functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => after getHotelsFromDb', 'times', 'yes');
@@ -225,7 +223,6 @@ class resultSearchExternalHotel extends clientAuth
 //            functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => before searchHotel', 'times', 'yes');
             functions::insertLog(CLIENT_NAME. '  searchParams = '.json_encode($searchParams), 'times', 'yes');
             $resultApi = $objApiExternalHotel->searchHotel($searchParams);
-            functions::insertLog('searchHotel RAW=' . $resultApi, '0ardalani', 'yes');
             functions::insertLog(CLIENT_NAME. '  searchParams = '.json_encode($resultApi), 'times', 'yes');
 //            functions::insertLog(CLIENT_NAME. ' ' .CLIENT_ID . ' => after searchHotel', 'times', 'yes');
             $t5 = microtime(true);
@@ -236,7 +233,7 @@ class resultSearchExternalHotel extends clientAuth
 
 //			functions::insertLog( 'response :' . PHP_EOL . $resultApi, 'hotel-api-response' );
             $ApiResult = json_decode($resultApi, true);
-            functions::insertLog('ApiResult=' . json_encode($ApiResult, JSON_UNESCAPED_UNICODE), '0ardalani', 'yes');
+
             $requestNumber = $ApiResult['RequestNumber'];
 
             $t6 = microtime(true);
@@ -247,7 +244,7 @@ class resultSearchExternalHotel extends clientAuth
                 $Model = Load::library('Model');
                 functions::insertLog('getHotels before foreach result ' . microtime(true), 'times');
                 foreach ($ApiResult['Result'] as $apiKey => $apiHotel) {
-                    $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code=" . $apiHotel['HotelIndex'];
+                    $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code='" . $apiHotel['HotelIndex']."' ";
 
                     $res = $Model->select($query);
                     if($apiHotel['SourceId'] == '18') {
@@ -325,7 +322,7 @@ class resultSearchExternalHotel extends clientAuth
                 if (!empty($hotels)) {
                     $t9 = microtime(true);
                     foreach ($hotels as $k => $hotel) {
-                        $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code=" . $hotel['HotelIndex'];
+                        $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code='" . $hotel['HotelIndex']."' ";
 
                         $res = $ModelReservtion->select($query);
 

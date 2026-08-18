@@ -226,10 +226,8 @@ class detailHotel extends ApiHotelCore
             }
 
             if($temporaryHotel['source_id'] == '29') {
-
                 $result[$c]['price_current'] = $price_current;
             }
-
             $result[$c]['AdultsCount'] = $thisRoomAdultsCount;
             $result[$c]['RoomIndex'] = $c;
             $result[$c]['ChildCount'] = $thisRoomChildrenCount;
@@ -260,7 +258,7 @@ class detailHotel extends ApiHotelCore
         $admin = Load::controller('admin');
         $currency_controller = Load::controller('currency');
         $apiHotel = json_decode(parent::Detail($param), true);
-
+        functions::insertLog('$apiHotel: ' . json_encode($apiHotel) , '000shojaee');
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
         }
@@ -538,6 +536,7 @@ class detailHotel extends ApiHotelCore
         /** @var Model $model */
         $admin = Load::controller('admin');
         $apiHotel = json_decode(parent::DirectDetail($param), true);
+
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
         }
@@ -1802,6 +1801,7 @@ class detailHotel extends ApiHotelCore
                         'LastNameEn' => $room['passenger_family_en'],
                         'Birthday' => $room['passenger_birthday'],
                         'RoomIndex' => ($room['room_index'] + 1),
+                        'NationalCode' => $room['passenger_national_code'],
                         'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
                         'BirthdayEn' => $birthday,
                     ];
@@ -2123,6 +2123,7 @@ class detailHotel extends ApiHotelCore
 
     public function Reserve($hotel_details = [])
     {
+
         $requestNumber = isset($hotel_details['request_number']) ? $hotel_details['request_number'] : null;
         $session_id = isset($hotel_details['price_session_id']) ? $hotel_details['price_session_id'] : null;
         if (!$requestNumber) {
