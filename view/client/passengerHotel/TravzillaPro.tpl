@@ -435,7 +435,7 @@
     <input type="hidden" id="is_internal" name="is_internal" value="{$IsInternal}">
     <input type="hidden" id="CurrencyCode" name="CurrencyCode" value="{$smarty.post.CurrencyCode}">
     <input type="hidden" value="" name="idMember" id="idMember">
-
+    <input type="hidden" name="Temporary_Room_Id" id="Temporary_Room_Id" value="{$temproryRooms[0].room_id}">
     <div class="btns_factors_n">
         <div class="next_hotel__">
             <a href="" onclick="return false" class="f-loader-check loaderpassengers" id="loader_check" style="display:none"></a>
