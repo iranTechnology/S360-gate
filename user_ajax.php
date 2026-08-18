@@ -342,6 +342,13 @@ if ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberRegister' ) {
     $result     = $controller->getBankData( $_POST['temporaryID'] );
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'signout' || isset( $_GET['flag'] ) && $_GET['flag'] == 'signout') {
 
+    if ($_SERVER['REMOTE_ADDR']) {
+        error_reporting(1);
+        error_reporting(E_ALL | E_STRICT);
+        @ini_set('display_errors', 1);
+        @ini_set('display_errors', 'on');
+    }
+
 
     echo $sessionTemplate = Session::getSessionTemplate();
     unset( $_COOKIE['LoginPanel'] );
@@ -1676,8 +1683,10 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
         'Reason'        => FILTER_SANITIZE_STRING
     );
     $dataPost = filter_var_array( $_POST, $arg );
+
     $Sql = "SELECT * FROM report_tb WHERE request_number='{$dataPost['RequestNumber']}'";
     $res = $ModelBase->load( $Sql );
+
     if ( ! empty( $res ) ) {
         $Client = functions::infoClient( $res['client_id'] );
 
@@ -1713,6 +1722,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
 
             }
         }
+
         echo "success : پیام شما با موفقیت ارسال شد";
     } else {
         echo "error : درخواست معتبر نمی باشد";
@@ -2103,14 +2113,22 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkMemberCredit' ) {
     $dataPost = filter_var_array( $_POST, $arg );
 
     if ( $dataPost['creditUse'] == 'member_credit' ) {
+
         $member = Load::controller( 'members' );
         $user = Load::controller( 'user' );
         $member->get();
 
         if ( Session::IsLogin() && $member->list['fk_counter_type_id'] == '5' ) {
-            $credit = $member->getMemberCredit();
+            $credit = $user->getCreditMember();
 
-            $check = $objTransaction->checkCredit( $dataPost['priceToPay'] );
+            $check = [];
+
+            if ($_POST['typeApplication'] == 'reservation') {
+                $check['status'] = 'TRUE';
+            } else {
+                $check = $objTransaction->checkCredit( $dataPost['priceToPay'] );
+            }
+
 
 
 
@@ -2120,14 +2138,15 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkMemberCredit' ) {
             }elseif ( $credit > 0 && ( intval( $credit ) < intval( $dataPost['priceToPay'] ) ) ) {
                 $result['result_status']  = 'half_credit';
                 $credit                   = number_format( $dataPost['priceToPay'] - $credit );
-                $result['result_message'] = functions::StrReplaceInXml( [ "@@creditPayment@@" => $credit ], "MessagePaymentByCreditUser" );
+//                $result['result_message'] = functions::StrReplaceInXml( [ "@@creditPayment@@" => $credit ], "MessagePaymentByCreditUser" );
+                $result['result_message'] = functions::Xmlinformation( 'notEnoughCredit' );
             } elseif ( $credit > 0 && ( intval( $credit ) > intval( $dataPost['priceToPay'] ) ) ) {
                 $result['result_status']  = 'full_credit';
                 $result['result_message'] = functions::Xmlinformation( 'CompletePayment' );
             } else {
                 $result['result_status']  = 'none_credit';
                 $result['result_order']  = '1';
-                $result['result_message'] = functions::Xmlinformation( 'ZeroCredit' );
+                $result['result_message'] = functions::Xmlinformation( 'notEnoughCredit' );
             }
         } else {
             $result['result_status']  = 'none_credit';
@@ -2192,7 +2211,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'AddPnr' ) {
     $airline = filter_var( $_POST['airline'], FILTER_SANITIZE_STRING );
     $airline = explode( '|', $airline );
 
-    $data = Array(
+    $data = array(
         "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -2215,7 +2234,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'AddHotelPnr' ) {
     unset( $_POST['flag'] );
 
 
-    $data = Array(
+    $data = array(
         "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -2232,7 +2251,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'bookPendingHotel' ) {
 
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
         "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
         "factorNumber" => filter_var( $_POST['factorNumber'], FILTER_SANITIZE_STRING ),
         "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -2291,15 +2310,21 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_hotel' ) {
 
     // Caution: اعتبارسنجی صاحب سیستم
 
+    $check = [];
 
+    if ($typeApplication == 'reservation' || $typeApplication == 'reservation_app') {
+        $check['status'] = 'TRUE';
+    }
+    else {
+        $check = $objTransaction->checkCreditNew( $total_price, 'online','',$total_price , $_POST['selectedBank'] );
+    }
 
-    $check = $objTransaction->checkCreditNew( $total_price, 'online','',$total_price , $_POST['selectedBank'] );
 
     if ( $check['status'] == 'TRUE' ) {
 
         $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
 
-        if ( empty( $existTransaction ) || $reserveInfo['status']==='RequestAccepted' ) {
+        if ( empty( $existTransaction ) || $reserveInfo['status']==='RequestAccepted' || $reserveInfo['status']==='bank' ) {
             if ( $checkBankIranTech && isset($_POST['selectedBank']) && $_POST['selectedBank'] == 'publicBank') {
                 $commentIranTech = 'شارژ درگاه سفر360 برای خرید هتل به شماره فاکتور ' . $factorNumber . 'از این درگاه ';
                 functions::insertLog( 'in GetWayIranTech With factorNumber=>' . $factorNumber . ' has Amount Ticket=>' . $total_price, 'iranTechGetWayBuy' );
@@ -2349,29 +2374,29 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     unset( $_POST['flag'] );
     $factorNumber    = trim( $_POST['factorNumber'] );
     $typeApplication = trim( $_POST['typeApplication'] );
-$discountCode = trim( $_POST['discountCode'] );
+    $discountCode = trim( $_POST['discountCode'] );
 
     /** @var members $objMember */
     /** @var transaction $objTransaction */
     $objMember      = Load::controller( 'members' );
     $objTransaction = Load::controller( 'transaction' );
-$objUser = Load::controller( 'user' );
-$objMemberCredit = Load::controller( 'memberCredit');
-$objDiscountCodes     = Load::controller( 'discountCodes' );
+    $objUser = Load::controller( 'user' );
+    $objMemberCredit = Load::controller( 'memberCredit');
+    $objDiscountCodes     = Load::controller( 'discountCodes' );
 
-if (empty($discountCode)) {
-    $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
-    $discountCode = $getDiscountCode['discountCode'];
-}
+    if (empty($discountCode)) {
+        $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
+        $discountCode = $getDiscountCode['discountCode'];
+    }
 
-    // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
-if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
-    $credit = $objUser->getCreditMember();
+// Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
+    if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
+        $credit = $objUser->getCreditMember();
 
-} else {
-    $credit = $objMember->getCredit();
+    } else {
+        $credit = $objMember->getCredit();
 
-}
+    }
 
     $reserveInfo   = functions::GetInfoHotel( $factorNumber );
     if ($reserveInfo['hotel_payments_price']>0) {
@@ -2383,9 +2408,9 @@ if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
 
     }
 
-$memberId = Session::getUserId();
+    $memberId = Session::getUserId();
 
-$amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
+    $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
 
     if ( $_POST['paymentStatus'] == 'prePayment' ) {
         $comment = ' پیش رزرو هتل ';
@@ -2395,9 +2420,7 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
     $totalPriceBank = $reserveInfo['hotel_payments_price'];
 
 
-// ابتدا بررسی کنید که سرویس خصوصی است یا خیر
     if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle'] == 'PrivatePortalHotel' ) {
-        // اگر سرویس خصوصی بود، نیازی به بررسی اعتبار کانتر نیست
 
         $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
         $checkRepeat = 'yes';
@@ -2405,12 +2428,20 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
         $comment .= " - اختصاصی";
         $reason = 'buy_hotel';
 
-        if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-            $total_price += $reserveInfo['irantech_commission'];
+        if ($_POST['creditUse'] == 'member_credit') {
+            $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
+        } else {
+            $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
         }
 
-        $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
-        $check = $objTransaction->checkCredit( $total_price );
+        $check = [];
+
+        if ($typeApplication == 'reservation') {
+            $check['status'] = 'TRUE';
+        }
+        else {
+            $check = $objTransaction->checkCredit( $total_price );
+        }
 
         if ( $check['status'] == 'TRUE' ) {
             $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
@@ -2447,11 +2478,6 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
 
                 $reason = 'buy_hotel';
 
-                if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-                    $total_price += $reserveInfo['irantech_commission'];
-//				$total_price += ($reserveInfo['irantech_commission'] * $reserveInfo['countPassengers']);
-                }
-
             } elseif ( $typeApplication == 'reservation' ) {
                 $checkRepeat = 'no';
                 $total_price = 0;
@@ -2464,16 +2490,12 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
                 $total_price = $reserveInfo['totalPriceTransaction'];
                 $reason      = 'buy_foreign_hotel';
 
-                if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-                    $total_price += $reserveInfo['irantech_commission'] * $reserveInfo['countPassengers'];
-                }
             }
 
             if ($_POST['creditUse'] == 'member_credit') {
                 $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
             } else {
-                // Caution: کاهش اعتبار کانتر
-            $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
+                $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
             }
 
             $check = [];
@@ -2483,7 +2505,7 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
             }
             else {
                 // Caution: اعتبارسنجی صاحب پنل
-            $check = $objTransaction->checkCredit( $total_price );
+                $check = $objTransaction->checkCredit( $total_price );
             }
 
             if ( $check['status'] == 'TRUE' ) {
@@ -2491,8 +2513,8 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
                 $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
                 if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
 
-                    // Caution: کاهش اعتبار صاحب سیستم
                     $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
+
                     if ( $reduceTransaction ) {
                         echo 'success:' . $amount;
                     } else {
@@ -2512,78 +2534,32 @@ $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber
         }
     }
 
-    // Caution: اعتبارسنجی اعتبار کانتر
-//    if ( $counterCredit > $amount ) {
-//        $reserveInfo['payment_status'] = $_POST['paymentStatus'];
-//        $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
-//        if ( $typeApplication == 'api' || $typeApplication == 'externalApi' ) {
-//
-//            $checkRepeat = 'yes';
-//            if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle']=='PrivatePortalHotel' ) {
-//
-//                $total_price = 0;
-//                $comment     .= " - اختصاصی";
-//            } else {
-//                $total_price = $reserveInfo['totalPriceTransaction'];
-//                $comment     .= " - اشتراکی";
-//            }
-//
-//            $reason = 'buy_hotel';
-//
-//            if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-//                $total_price += $reserveInfo['irantech_commission'];
-////				$total_price += ($reserveInfo['irantech_commission'] * $reserveInfo['countPassengers']);
-//            }
-//
-//        }
-//        elseif ( $typeApplication == 'reservation' ) {
-//            $checkRepeat = 'no';
-//            $total_price = 0;
-//            $reason      = 'buy_reservation_hotel';
-//        }
-//        elseif ( $typeApplication == 'externalApi' ) {
-//            $roomCount = count( json_decode( $reserveInfo['search_rooms'] ) );
-//
-//            $comment     = " رزرو " . " " . $roomCount . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " در " . " " . $reserveInfo['hotel_name'] . " " . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
-//            $checkRepeat = 'yes';
-//            $total_price = $reserveInfo['totalPriceTransaction'];
-//            $reason      = 'buy_foreign_hotel';
-//
-//            if ( isset( $reserveInfo['irantech_commission'] ) && $reserveInfo['irantech_commission'] > 0 ) {
-//                $total_price += $reserveInfo['irantech_commission'] * $reserveInfo['countPassengers'];
-//            }
-//        }
-//        // Caution: کاهش اعتبار کانتر
-//        $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
-//        // Caution: اعتبارسنجی صاحب پنل
-//        $check = $objTransaction->checkCredit( $total_price );
-//
-//        if ( $check['status'] == 'TRUE' ) {
-//
-//            $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
-//            if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
-//
-//                // Caution: کاهش اعتبار صاحب سیستم
-//                $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
-//                if ( $reduceTransaction ) {
-//                    echo 'success:' . $amount;
-//                } else {
-//                    echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
-//                }
-//
-//            } else {
-//                echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
-//            }
-//
-//        } else {
-//            echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
-//        }
-//
-//    } else {
-//        echo 'error: ' . functions::Xmlinformation( 'EndCreditAgency' );
-//    }
+
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'setDiscountCodePending' ) {
+
+    unset( $_POST['flag'] );
+    $factorNumber    = trim( $_POST['factorNumber'] );
+    $objDiscountCodes     = Load::controller( 'discountCodes' );
+    $memberId = Session::getUserId();
+    $Model = Load::library('Model');
+    $ModelBase = Load::library('ModelBase');
+
+    $d['discount_code_amount'] = $_POST['discountAmount'];
+    $d['type_discount'] = $_POST['typeDiscount'];
+    $condition = " factor_number = '{$factorNumber}'";
+    $Model->setTable("book_hotel_local_tb");
+    $res = $Model->update($d, $condition);
+    if ($res) {
+        $ModelBase->setTable("report_hotel_tb");
+        $ModelBase->update($d, $condition);
+    }
 
 
+
+    $reduceAmountViaDiscountCode = $objDiscountCodes->reduceAmountViaDiscountCodePending( $factorNumber, $memberId, $_POST['discountCode'], $_POST['serviceType'] );
+
+    echo $reduceAmountViaDiscountCode;
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_car' ) {
 
@@ -2623,7 +2599,8 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'check_credit_car' ) {
     } else {
         echo 'FALSE';
     }
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditCarLocal' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditCarLocal' ) {
 
     unset( $_POST['flag'] );
     $factorNumber   = trim( $_POST['factorNumber'] );
@@ -3312,7 +3289,8 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditEntertainment'
     $DateSelected['DateNext']     = functions::DateNext( $_POST['DateSelected'] );
     $DateSelected['DatePrev']     = functions::DatePrev( $_POST['DateSelected'] );
     echo json_encode( $DateSelected );
-} //ZOMOROD
+}
+//ZOMOROD
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'UpdateCounterDetail' ) {
     unset( $_POST['flag'] );
 
@@ -3349,14 +3327,16 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'UpdateCounterDetail' ) {
     $result     = $controller->organizationAdd( $_POST );
 
     echo json_encode( $result );
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationEdit' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationEdit' ) {
 
     unset( $_POST['flag'] );
     $controller = Load::controller( 'organizationLevel' );
     $result     = $controller->organizationEdit( $_POST );
 
     echo json_encode( $result );
-} elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
 
     unset( $_POST['flag'] );
     $controller = Load::controller( 'organizationLevel' );
@@ -4015,7 +3995,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insertSourceAgency' ) {
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'convertToBook' ) {
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
         "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "pnr"           => filter_var( $_POST['pnr'], FILTER_SANITIZE_STRING ),
@@ -4045,8 +4025,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insertSourceAgency' ) {
     echo $objUserBuy->$methodName( $_POST );
 
 }elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'memberResultSearch' ) {
-//   var_dump('cccccc');
-//   die;
     unset( $_POST['flag'] );
     $objUserBuy = Load::controller( 'userBuy' );
     echo $objUserBuy->getBuyBookMember( $_POST );
@@ -5198,7 +5176,29 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'orderServicesAdd' ) {
     $credit = functions::getGrsCharge('irantechTest');
     echo number_format(round( $credit['total'] ) ) . ' ' . 'ریال';
 
-}elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkCityNetCredit' ) {
+}
+if ($_POST['flag'] == 'checkCancellations') {
+    $listCancel = new listCancel();
+    $listCancelAdmin = $listCancel->ListCancelAdmin();
+
+    $hasNewCancel = false;
+    foreach ($listCancelAdmin as $item) {
+        if (trim($item['note_admin']) == "") {
+            $hasNewCancel = true;
+            break;
+        }
+    }
+
+    // ارسال پاسخ JSON
+    header('Content-Type: application/json');
+    echo json_encode([
+        'hasNewCancel' => $hasNewCancel,
+        'count' => $hasNewCancel ? count($listCancelAdmin) : 0,
+        'message' => $hasNewCancel ? 'کنسلی جدید دارید' : 'بدون کنسلی جدید'
+    ]);
+    exit;
+}
+elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkCityNetCredit' ) {
 
     $credit = functions::getCityNetCharge('irantechTest');
     $total = $credit['credit'] + $credit['wallet'];
@@ -5298,7 +5298,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'deleteRequestOffline' ) {
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
         "ClientID"      => filter_var( $_POST['ClientID'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "ParamId"       => filter_var( $_POST['ParamId'], FILTER_SANITIZE_STRING ),
@@ -5306,15 +5306,21 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'BackWallet' ) {
     );
 
     /** @var memberCredit $memberCredit */
-    $memberCredit  = Load::controller( 'memberCredit' );
+    $memberCredit  = Load::controller( 'memberCredit');
+    $cancelTicketDetailsModel = Load::getModel('cancelTicketDetailsModel');
     $InsertPrice = $memberCredit->ReturnAdminToWalletUser( $data );
+
+    if (strpos($InsertPrice, 'Success') !== false) {
+        $insertPriceIndemnity = $cancelTicketDetailsModel->updateWithBind(['PriceIndemnity' => $data['priceBack']], ['RequestNumber' => $data['RequestNumber']]);
+    }
+
     echo $InsertPrice;
 }
 
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'ConfirmReturnBankUser' ) {
     unset( $_POST['flag'] );
 
-    $data = Array(
+    $data = array(
         "ClientID"      => filter_var( $_POST['memberId'], FILTER_SANITIZE_STRING ),
         "RequestNumber" => filter_var( $_POST['RequestNumber'], FILTER_SANITIZE_STRING ),
         "ParamId"       => filter_var( $_POST['ParamId'], FILTER_SANITIZE_STRING ),
@@ -5333,7 +5339,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'GuestUpdateUsers' ) {
         $data['entry']=functions::checkParamsInput( $_POST['entry']);
     }
 
-    $data = Array(
+    $data = array(
         "name"        => functions::sanitizeString( trim( filter_var( $_POST['name'], FILTER_SANITIZE_STRING ) ) ),
         "family"      => functions::sanitizeString( trim( filter_var( $_POST['family'], FILTER_SANITIZE_STRING ) ) ),
         "mobile"      => functions::sanitizeString( trim( trim( filter_var( $_POST['mobile'], FILTER_SANITIZE_NUMBER_INT ), '‌' ) ) ),
@@ -5367,6 +5373,13 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'DirectCancellationFlightAdmi
     unset($_POST['flag']);
     $objController = Load::controller('listCancelUser');
     $result = $objController->DirectCancellationFlightAdmin($_POST);
+    echo $result;
+
+}
+elseif (isset($_POST['flag']) && $_POST['flag'] == 'DirectCancellationHotelAdmin') {
+    unset($_POST['flag']);
+    $objController = Load::controller('listCancelUser');
+    $result = $objController->DirectCancellationHotelAdmin($_POST);
     echo $result;
 
 }
@@ -5725,7 +5738,8 @@ elseif(isset($_POST['flag']) && $_POST['flag'] == 'calculatePrice'){
 elseif(isset($_POST['flag']) && $_POST['flag'] == 'chargeClient'){
     $obj = Load::controller('safarBankController');
     echo $obj->chargeClient($_POST);
-}elseif(isset($_POST['flag']) && $_POST['flag'] == 'deductClient'){
+}
+elseif(isset($_POST['flag']) && $_POST['flag'] == 'deductClient'){
     $obj = Load::controller('safarBankController');
     echo $obj->deductClient($_POST);
 }
@@ -5759,4 +5773,3 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'rejectUserOrganizationalC
 
     echo json_encode( $result );
 }
-
