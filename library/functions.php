@@ -1,5 +1,10 @@
 <?php
 
+//error_reporting(1);
+//error_reporting(E_ALL | E_STRICT);
+//@ini_set('display_errors', 1);
+//@ini_set('display_errors', 'on');
+
 class functions {
 
 
@@ -537,15 +542,13 @@ class functions {
         return number_format($total_transaction) .' '. self::Xmlinformation('Rial');
     }
 
+    #endregion
     public static function CalculateMemberCredit() {
         $objUser = Load::controller( 'user' );
         $credit = $objUser->getCreditMember();
 
         return number_format($credit) .' '. self::Xmlinformation('Rial');
     }
-
-    #endregion
-
 
     #region TypeUser
 
@@ -1026,13 +1029,8 @@ class functions {
     #region Xmlinformation
 
     public static function Xmlinformation( $tagname ) {
-        if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']!='') {//agar admin hast file xml ==> fa ar en
-            $lang=LANG_PANEL_ADMIN;
-        }
-        else{
-            $lang=SOFTWARE_LANG;
-        }
-        $xmldata = simplexml_load_file( SITE_ROOT . "/langs/" . $lang . "_frontMaster.xml" );
+
+        $xmldata = simplexml_load_file( SITE_ROOT . "/langs/" . SOFTWARE_LANG . "_frontMaster.xml" );
 
         return  empty( $xmldata->$tagname ) ? "" : $xmldata->$tagname;
 
@@ -2617,6 +2615,7 @@ class functions {
 
     }
 
+    #endregion
     public static function checkSendSmsManualToClient($requestNumber){
 
         Load::autoload( 'Model' );
@@ -2629,9 +2628,6 @@ class functions {
 
         return $ResultSms;
     }
-
-    #endregion
-
     #region Show Minimum Price in Date
 
     public static function TotalPrice( $RequestNumber, $FlagPriceChange = 'yes', $calculat = null ) {
@@ -3198,21 +3194,56 @@ class functions {
      * @author Naime Barati
      */
     public static function classTimeLOCAL( $time,$echo=true ) {
-
+        if (empty($time)) {
+            $result = '';
+        } else {
         if ( substr( $time, 0, 1 ) == '0' ) {
             $hour = substr( $time, 1, 1 );
         } else {
             $hour = substr( $time, 0, 2 );
         }
+            $hour = (int)$hour;
+
+            $result = '';
+            if ($hour >= 0 && $hour < 5) {
+                $result = 'early';      // 00:00 - 04:59
+            } elseif ($hour >= 5 && $hour < 12) {
+                $result = 'morning';    // 05:00 - 11:59
+            } elseif ($hour >= 12 && $hour < 18) {
+                $result = 'afternoon';  // 12:00 - 17:59
+            } elseif ($hour >= 18 && $hour < 24) {
+                $result = 'night';      // 18:00 - 23:59
+            }
+        }
+
+        if (!$echo) {
+            return $result;
+        }
+        echo $result;
+    }
+    public static function classTimeArrivalLOCAL($time, $echo = true) {
+        if (empty($time)) {
         $result = '';
-        if ( $hour >= 0 && $hour < 8 ) {
-            $result = 'early';
-        } elseif ( $hour >= 8 && $hour < 12 ) {
-            $result = 'morning';
+        } else {
+            // استخراج ساعت از زمان
+            if (substr($time, 0, 1) == '0') {
+                $hour = substr($time, 1, 1);
+            } else {
+                $hour = substr($time, 0, 2);
+            }
+            $hour = (int)$hour;
+
+            $result = '';
+            // ✅ بازه‌های زمانی جدید برای زمان رسیدن
+            if ($hour >= 0 && $hour < 5) {
+                $result = 'arrival_early';      // 00:00 - 04:59
+            } elseif ($hour >= 5 && $hour < 12) {
+                $result = 'arrival_morning';    // 05:00 - 11:59
         } elseif ( $hour >= 12 && $hour < 18 ) {
-            $result = 'afternoon';
+                $result = 'arrival_afternoon';  // 12:00 - 17:59
         } elseif ( $hour >= 18 && $hour < 24 ) {
-            $result = 'night';
+                $result = 'arrival_night';      // 18:00 - 23:59
+            }
         }
 
         if(!$echo) {
@@ -3464,7 +3495,7 @@ class functions {
         $model = new Model();
 
         $query  = "SELECT DC.amount FROM discount_codes_used_tb AS DCU INNER JOIN discount_codes_tb AS DC ON DCU.discountCode = DC.code
-                  WHERE DCU.factorNumber = '{$factorNumber}'";
+                  WHERE DCU.factorNumber = '{$factorNumber}' AND DCU.status = 'success'";
         $result = $model->load( $query );
 
         if ( ! empty( $result ) ) {
@@ -7995,7 +8026,6 @@ class functions {
             "train"         => self::Xmlinformation( 'Train' ),
             "entertainment" => self::Xmlinformation( 'Entertainment' ),
             "package"       => self::Xmlinformation( 'Package' ),
-            "cip"       => self::Xmlinformation( 'Cip' )
         );
         foreach ( $ArrayInstead AS $key => $value ) {
             if ( $key == $String ) {
@@ -9224,14 +9254,7 @@ class functions {
 
     #region timeNow
     public static function timeNow() {
-        if (defined('LANG_PANEL_ADMIN') && in_array(LANG_PANEL_ADMIN, ['en', 'ar'])) {
-            // Gregorian date
-            return date("Y-m-d");
-        } else {
-            // Jalali date
         return dateTimeSetting::jdate( "Y-m-d", time(), '', '', 'en' );
-    }
-        // return dateTimeSetting::jdate( "Y-m-d", time(), '', '', 'en' );
     }
     public static function daysAgo($days) {
         return dateTimeSetting::jdate(
@@ -9263,7 +9286,7 @@ class functions {
      * @return bool
      */
     public static function isTestServer( $host = '' ) {
-        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir');
+        $servers = array( 'online.1011.ir', 'agency.1011.ir', 'test.1011.ir', '192.168.1.100','online.miss24.ir','ababil24.ir','localhost');
         $res     = false;
         if ( ! empty( $host ) ) {
             if ( is_array( $host ) ) {
@@ -9512,7 +9535,7 @@ class functions {
     #region [configData]
     public static function configDataRoute( $data ) {
 
-
+        functions::insertLog('$data$data: ' . json_encode($_POST) , '000shojaee');
         // for multiway routes
         if(is_array($data))
         {

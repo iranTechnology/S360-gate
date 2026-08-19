@@ -434,7 +434,7 @@ class searchService extends clientAuth
         ];
         $params['methode'] = 'getCountry';
         $params['group_by'] = 'reservation_country_tb.id';
-       
+
         if (isset($params['conditions'])) {
             if (isset($params['conditions']['destination_country'])) {
                 $custom_conditions = [
@@ -447,8 +447,10 @@ class searchService extends clientAuth
                 ];
                 $reservation_tour_tb_condition = [];
                 $params['methode'] = 'getCityListByCountry';
-            }else if (isset($params['conditions']['origin_country'])) {
-               
+                $params['group_by'] = 'reservation_city_tb.id';
+            }
+            else if (isset($params['conditions']['origin_country'])) {
+
                 $custom_conditions = [
                     [
                         'index' => 'id_country',
@@ -528,7 +530,6 @@ class searchService extends clientAuth
 
             $params = $this->prepareTourExternalStations($params);
 
-            functions::insertLog('$params: ' . json_encode($params) , '0abbasi');
 
             $method = $params['methode'] ;
             if($method == 'getTourCities') {

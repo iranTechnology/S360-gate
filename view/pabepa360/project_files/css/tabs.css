@@ -44,7 +44,7 @@
 }
 
 #searchBoxContent {
-    min-height: 147px;
+    min-height: 148px;
     flex-wrap: wrap;
     display: flex;
     width: 100%;
@@ -1129,7 +1129,7 @@ input#coupe[type="checkbox"]:checked:focus + label:before, input#coupe[type="che
     margin: auto;
     display: flex;
     align-items: center;
-    padding: 15px 0;
+    padding: 14px 0;
 }
 
 .btn-radio {

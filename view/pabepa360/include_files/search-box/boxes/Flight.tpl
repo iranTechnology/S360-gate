@@ -1,5 +1,5 @@
 {assign var="obj_main_page" value=$obj_main_page }
-<div class="tab-pane {if $smarty.const.GDS_SWITCH neq 'page'}active{/if}" id="{$client['MainService']}">
+<div class="tab-pane {if $smarty.const.GDS_SWITCH eq 'page'}active{/if}" id="{$client['MainService']}">
     <div id="internal_flight" class="d_flex flex-wrap internal-flight-js">
         <form method="post" class="d_contents" target="_blank" id="internal_flight_form" name="internal_flight_form">
             {include file="./sections/flight/internal/btn_type_way.tpl"}
