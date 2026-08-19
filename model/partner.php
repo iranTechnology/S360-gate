@@ -251,6 +251,473 @@ class partner_tb extends ModelBase
         return !empty($result); // اگر مقدار داشت موفق
     }
 
+    protected function insertSpecialPage($slug ){
+
+        $slug_suffix = $slug === 'none' ?  '' : '-' . $slug;
+        $specialPages = [
+            [
+                'title' => 'خرید بلیط هواپیما خارجی و داخلی ارزان ',
+                'heading' => 'خرید بلیط هواپیما خارجی',
+                'slug' => 'flight' . $slug_suffix,
+                'description' => 'خرید بلیط هواپیما خارجی و داخلی با بهترین قیمت', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"خرید بلیط هواپیما خارجی و داخلی با بهترین قیمت"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Flight',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file'=> '{"src":"08565875108565-5708.jpg","alt":"flight"}',
+                'main_file_alt' => 'بلیط هواپیما',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'رزرو هتل ارزان و لوکس ',
+                'heading' => 'رزرو هتل خارجی و داخلی',
+                'slug' => 'hotel'. $slug_suffix,
+                'description' => 'رزرو هتل ارزان و لوکس در سراسر ایران و جهان', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"رزرو هتل ارزان و لوکس در سراسر ایران و جهان"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Hotel',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file'=> '{"src":"09502634709502-4243.jpg","alt":"hotel"}',
+                'main_file_alt' => 'رزرو هتل',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'رزرو تور گردشگری',
+                'heading' => 'تورهای داخلی و خارجی',
+                'slug' => 'tour'.  $slug_suffix,
+                'description' => 'رزرو تورهای گردشگری با بهترین قیمت', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"رزرو تورهای گردشگری با بهترین قیمت"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Tour',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file'=> '{"src":"19314157519314-1860.jpg","alt":"tour"}',
+                'main_file_alt' => 'رزرو تور',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'ویزای مسافرتی',
+                'heading' => 'دریافت ویزا',
+                'slug' => 'visa'. $slug_suffix,
+                'description' => 'دریافت ویزای توریستی و کاری', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"دریافت ویزای توریستی و کاری"}]',
+                'content' => '<p dir="rtl">خدمات اخذ ویزا برای کشورهای مختلف با بهترین شرایط</p>',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Visa',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file'=>'{"src":"special_pages\/05407582505407-1060.jpg","alt":"visa"}',
+                'main_file_alt' => 'ویزا',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'بیمه مسافرتی',
+                'heading' => 'بیمه مسافرتی ارزان',
+                'slug' => 'insurance'. $slug_suffix,
+                'description' => 'خرید بیمه مسافرتی داخلی و خارجی', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"خرید بیمه مسافرتی داخلی و خارجی"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'main_file' => '{"src":"41504634841504-3590.jpg","alt":"Insurance"}',
+                'page_type' => 'separate',
+                'positions' => 'Insurance',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file_alt' => 'بیمه مسافرتی',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'اتوبوس',
+                'heading' => 'بلیط اتوبوس',
+                'slug' => 'bus'. $slug_suffix,
+                'description' => 'خرید بلیط اتوبوس ارزان', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"خرید بلیط قطار و اتوبوس ارزان"}]',
+                'content' => '<p dir="rtl">خرید اینترنتی بلیط قطار و اتوبوس با بهترین قیمت</p>',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Bus',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file' => '{"src":"54501752354501-255.jpg","alt":"bus"}',
+                'main_file_alt' => 'بلیط اتوبوس',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'قطار',
+                'heading' => 'رزرو قطار',
+                'slug' => 'train'. $slug_suffix,
+                'description' => 'خرید بلیط قطار', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"قطار"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Train',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file' => '{"src":"034484645train.jpg","alt":"train"}',
+                'main_file_alt' => 'بلیط قطار',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'اجاره ماشین',
+                'heading' => 'اجاره خودرو',
+                'slug' => 'europcar'. $slug_suffix,
+                'description' => 'اجاره ماشین در سراسر ایران', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"اجاره ماشین در سراسر ایران"}]',
+                'content' => '<p dir="rtl">اجاره انواع خودرو با بهترین قیمت و شرایط</p>',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Europcar',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file' => '{"src":"2851082983.jpg","alt":"europcar"}',
+                'main_file_alt' => 'اجاره ماشین',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'تفریحات',
+                'heading' => 'تفریحات',
+                'slug' => 'entertainment'. $slug_suffix,
+                'description' => 'تفریحات گردشگری', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"تفریحات"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Entertainment',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file' => '{"src":"066353902tafrih.jpg","alt":"entertainment"}',
+                'main_file_alt' => 'تفریحات',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'پکیج تور',
+                'heading' => 'پکیج تور',
+                'slug' => 'package'. $slug_suffix,
+                'description' => 'پکیج های تور گردشگری', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"پکیج تور"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Package',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file' => '{"src":"456344477package.jpg","alt":"package"}',
+                'main_file_alt' => 'پکیج تور',
+                'has_search_box' => true
+            ],
+            [
+                'title' => 'تشریفات فرودگاه',
+                'heading' => 'تشریفات فرودگاه',
+                'slug' => 'cip'. $slug_suffix,
+                'description' => 'خدمات تشریفات فرودگاهی', // ⬅️ اضافه شود
+                'meta_tags' => '[{"name":"","content":""},{"name":"description","content":"تشریفات فرودگاه"}]',
+                'content' => '',
+                'language' => 'fa',
+                'attach_files' => NULL,
+                'page_type' => 'separate',
+                'positions' => 'Cip',
+                'attach_type' => 'other_page',
+                'AddedMeta' => [],
+                'main_file' => '',
+                'main_file_alt' => 'تشریفات فرودگاه',
+                'has_search_box' => true
+            ]
+
+        ];
+
+        $specialPagesModel = $this->specialPages;
+
+        $allSuccess = true;
+
+        foreach ($specialPages as $specialPage){
+            $result = $specialPagesModel->addSpecialPage($specialPage);
+            if (!isset($result['status']) || $result['status'] !== 'success') {
+                $allSuccess = false;
+            }
+        }
+
+        return $allSuccess;
+    }
+
+    protected function insertBanner($client_id,$demo){
+        $id = '';
+        switch ($demo){
+            case 'attar':
+                $id = '532';
+                break;
+            case 'jami':
+                $id = '525';
+                break;
+            case 'ferdosi':
+                $id = '423';
+                break;
+            case 'foroogh':
+                $id = '530';
+                break;
+            case 'khayam':
+                $id = '531';
+                break;
+            case 'mowlavi':
+                $id = '528';
+                break;
+            case 'saadi':
+                $id = '527';
+                break;
+            case 'shahriar':
+                $id = '529';
+                break;
+            case 'sepehri':
+                $id = '361';
+                break;
+            case 'hafez':
+                $id = '166';
+                break;
+            default:
+                return '';
+        }
+
+        $source = PIC_ROOT."/galleryBanner/$id";
+        $destination = PIC_ROOT."/galleryBanner/$client_id";
+        $resCopy = $this->recurseCopy($source,$destination);
+
+        if($resCopy){
+            $files = scandir($destination);
+            $counter = 1;
+
+            foreach($files as $file){
+                if(preg_match('/\.(jpg|jpeg|png|gif|webp|bmp|svg|ico|tiff|jfif)$/i', $file)){
+                    $bannerModel = $this->galleryBanner;
+                    $data = [
+                        'title' => 'بنر ' . $counter,
+                        'description' => 'توضیحات بنر ' . $counter,
+                        'language' => 'fa',
+                        'pic' => $file,
+                        'link' => ''
+                    ];
+
+                    $result = $bannerModel->insertGalleryBannerFromCopy($data);
+
+                    if($result){
+                        $counter++;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+
+    }
+
+    protected function insertBookmarks($clientId ,$domain){
+
+        $domain_fixd = 'https://'.$domain;
+
+        $bookmarksData = [
+            [
+                'title' => 'سوابق خرید',
+                'url' => $domain_fixd . '/gds/itadmin/ticket/mainTicketHistory',
+                'sort_order' => '1',
+            ],
+            [
+                'title' => 'سوابق کنسلی',
+                'url' => $domain_fixd . '/gds/itadmin/ticket/userTicketCancellationHistory',
+                'sort_order' => '2',
+            ],
+            [
+                'title' => 'تراکنش ها',
+                'url' => $domain_fixd . '/gds/itadmin/transactionUser',
+                'sort_order' => '3',
+            ],
+            [
+                'title' => 'تنظیمات تخفیف',
+                'url' => $domain_fixd . '/gds/itadmin/servicesDiscount',
+                'sort_order' => '4',
+            ],
+            [
+                'title' => 'وبلاگ',
+                'url' => $domain_fixd . '/gds/itadmin/articles/list?section=mag',
+                'sort_order' => '5',
+            ],
+            [
+                'title' => 'اخبار',
+                'url' => $domain_fixd . '/gds/itadmin/articles/list?section=news',
+                'sort_order' => '6',
+            ],
+            [
+                'title' => 'درباره ما',
+                'url' => $domain_fixd . '/gds/itadmin/aboutUs/main',
+                'sort_order' => '7',
+            ],
+            [
+                'title' => 'پروفایل',
+                'url' => $domain_fixd . '/gds/itadmin/myProfile',
+                'sort_order' => '8',
+            ],
+            [
+                'title' => 'گالری بنر',
+                'url' => $domain_fixd . '/gds/itadmin/galleryBanner/list',
+                'sort_order' => '9',
+            ],
+            [
+                'title' => 'سوالات متداول',
+                'url' => $domain_fixd . '/gds/itadmin/faqs/list',
+                'sort_order' => '10',
+            ],
+            [
+                'title' => 'تغییرات قیمت پرواز',
+                'url' => $domain_fixd . '/gds/itadmin/ticket/flightPriceChanges',
+                'sort_order' => '11',
+            ],
+            [
+                'title' => 'ثبت تور',
+                'url' => $domain_fixd . '/gds/itadmin/reservation/addTour',
+                'sort_order' => '12',
+            ],
+
+        ];
+
+        $allSuccess = true;
+        foreach ($bookmarksData as $bookmark){
+
+            $result = $this->userBookmarks->addBookmark($bookmark['title'],$bookmark['url'],$clientId , $bookmark['sort_order']);
+            if (!isset($result['status']) || $result['status'] !== 'success') {
+                $allSuccess = false;
+            }
+
+        }
+
+        return $allSuccess;
+
+    }
+
+    protected function insertColor($mainColor , $secondColor , $clientID){
+
+        $dataInsert = [
+            'ClientId' => $clientID,
+            'ColorMainBg' => $mainColor,
+            'ColorMainBgHover' => $secondColor,
+            'ColorMainText' => '#ffffff',
+            'ColorMainTextHover' => '#ffffff',
+        ];
+
+        if(!empty($mainColor) && !empty($secondColor) && !empty($clientID)){
+            $res = $this->insertWithBind($dataInsert,'client_colors_tb');
+            if($res){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        return false;
+    }
+    protected function updateColor($mainColor , $secondColor , $clientID){
+
+        $dataUpdate = [
+            'ColorMainBg' => $mainColor,
+            'ColorMainBgHover' => $secondColor,
+        ];
+
+        if(!empty($mainColor) && !empty($secondColor) && !empty($clientID)){
+            $res = $this->updateWithBind($dataUpdate, "ClientId = '$clientID'", 'client_colors_tb');
+            if($res){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    protected function insertOrderSearchBox($clientId){
+
+        $dataInsert = [
+            [ 'client_id' => $clientId,
+                'service_group_id' => '1', // flight
+                'order_number' => '1'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '2', // hotel
+                'order_number' => '2'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '12', // exclusiveTour
+                'order_number' => '3'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '9', // train
+                'order_number' => '4'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '8', // bus
+                'order_number' => '5'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '3', // insurance
+                'order_number' => '6'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '7', // visa
+                'order_number' => '7'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '10', // entertainment
+                'order_number' => '8'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '4', // europcar
+                'order_number' => '9'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '11', // package
+                'order_number' => '10'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '13', // visa
+                'order_number' => '11'
+            ],
+            [ 'client_id' => $clientId,
+                'service_group_id' => '5', // gashtTransfer
+                'order_number' => '12'
+            ],
+        ];
+
+        if(!empty($clientId)){
+            $allSuccess = true;
+            foreach ($dataInsert as $item){
+                $res = $this->insertWithBind($item,'search_service_order_tb');
+                if(!$res){
+                    $allSuccess = false;
+                }
+            }
+        }
+
+        return $allSuccess;
+
+    }
 
     public function InsertClientModel($Info)
     {
@@ -345,10 +812,14 @@ class partner_tb extends ModelBase
                     'link' => 'http://' . $Info['Domain'],
                 ];
                 $this->insertUserPassCustomer($dataUserPass);
-                $this->insertUserPassCustomer($dataUserPass);
-
                 $this->createDatabaseForCustomer('safar360_'.$dbNameNew);
-
+                $this->agency->agencyModel()->getPDO()->query("USE `safar360_$dbNameNew`");
+                $this->insertAgency($data);
+                $this->insertSpecialPage($Info['usedDemo']);
+                $this->insertBanner($last_id,$Info['usedDemo']);
+                $this->insertBookmarks($last_id,$Info['Domain']);
+                $this->insertColor($Info['mainColor'], $Info['secondColor'],$last_id);
+                $this->insertOrderSearchBox($last_id);
                 return "success : مشتری جدید با موفقیت ثبت شد";
 
             } else {
