@@ -4392,6 +4392,7 @@ External
     font-size: 14px;
     width: fit-content;
     margin-left: 0 !important;
+    flex-shrink: 0;
 }
 .main-banks-logo {
     width: 100%;

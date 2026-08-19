@@ -13,9 +13,6 @@ class flightRouteModel extends ModelBase
      */
     public function getFlightRoutInternal($params = null)
     {
-        $searched_converted_params = functions::switchAlphabet($params['value']);
-        $searched_params = $params['value'];
-
         $result = $this->get([
             'Departure_Code',
             'Departure_City',
@@ -24,27 +21,70 @@ class flightRouteModel extends ModelBase
             'priorityDeparture'
         ])->where('local_portal', '0');
 
+        $values = [];
         if (isset($params['value']) && $params['value']) {
+
+            $values = is_array($params['value'])
+                ? $params['value']
+                : explode(',', $params['value']);
+
             $result = $result->openParentheses();
-            $result = $result->like('Departure_City', $searched_params);
-            $result = $result->like('Departure_City', $searched_converted_params);
-            $result = $result->like('Departure_CityEn', $searched_params);
-            $result = $result->like('Departure_CityEn', $searched_converted_params);
-            $result = $result->like('Departure_Code', $searched_params);
+
+            foreach ($values as $val) {
+                $val = trim($val);
+                if (empty($val)) continue;
+
+                $converted = functions::switchAlphabet($val);
+
+                $result = $result->like('Departure_City', $val);
+                $result = $result->like('Departure_City', $converted);
+                $result = $result->like('Departure_CityEn', $val);
+                $result = $result->like('Departure_CityEn', $converted);
+                $result = $result->like('Departure_Code', $val);
+                $result = $result->like('Departure_Code', $converted);
+            }
+
             $result = $result->closeParentheses();
         }
 
-        // FIX: correct groupBy
         $result = $result->groupBy('Departure_Code')
             ->orderBy('priorityDeparture=0,priorityDeparture', 'ASC');
 
-            if (isset($params['limit']) && $params['limit']) {
-                $result = $result->limit(0, $params['limit']);
+        if (isset($params['limit']) && $params['limit']) {
+            $result = $result->limit(0, $params['limit']);
+        }
+
+        $cities = $result->all();
+
+        // اگر value ارسال شده، ترتیب را بر اساس ترتیب آرایه value حفظ کن
+        if (!empty($values)) {
+            $ordered = [];
+            $cities_by_name = [];
+
+            // ایندکس کردن شهرها بر اساس نام فارسی، انگلیسی و کد
+            foreach ($cities as $city) {
+                $cities_by_name[mb_strtolower(trim($city['Departure_City']))] = $city;
+                $cities_by_name[mb_strtolower(trim($city['Departure_CityEn']))] = $city;
+                $cities_by_name[mb_strtolower(trim($city['Departure_Code']))] = $city;
             }
 
-        return $result->all();
-    }
+            foreach ($values as $val) {
+                $val = mb_strtolower(trim($val));
+                if (isset($cities_by_name[$val])) {
+                    $ordered[] = $cities_by_name[$val];
+                    // جلوگیری از تکراری شدن
+                    unset($cities_by_name[$val]);
+                }
+            }
 
+            // اگر شهری پیدا نشد، بقیه را اضافه کن (اختیاری)
+            // $ordered = array_merge($ordered, array_values($cities_by_name));
+
+            return $ordered;
+        }
+
+        return $cities;
+    }
 
 
     /**

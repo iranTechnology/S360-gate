@@ -1,5 +1,5 @@
 {assign var="obj_main_page" value=$obj_main_page }
-<div class="tab-pane   {if $smarty.const.GDS_SWITCH eq 'page'} active {/if}" id="Tour">
+<div class="tab-pane {if $smarty.const.GDS_SWITCH eq 'mainPage'}active{/if}" id="Tour">
                 {include file="./sections/tour/internal/btn_radio_internal_external.tpl"}
     <div id="internal_tour" class="internal-tour-js">
         <div class="col-12">

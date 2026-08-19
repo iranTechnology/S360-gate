@@ -3126,6 +3126,8 @@
   <pendingFlight>Ожидает выдачи</pendingFlight>
   <upperThanTwoHundredAndFifty>Увеличение кредита не может превышать 2 500 000 000 риалов</upperThanTwoHundredAndFifty>
   <moreImage>еще изображения</moreImage>
+  <PaymentWithADiscountCode>Оплата с использованием кода скидки</PaymentWithADiscountCode>
+  <AsADiscountCodeHasBeenApplied>Поскольку код скидки был применен, а сумма по счету погашена, дополнительная оплата не требуется. Для завершения процесса, пожалуйста, нажмите кнопку «Оплатить с использованием кода скидки».</AsADiscountCodeHasBeenApplied>
 
 </Main>
 

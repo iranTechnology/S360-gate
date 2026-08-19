@@ -1,12 +1,7 @@
-
-
 <form method="post" id="formPassengerDetailHotelLocal" action="{$smarty.const.ROOT_ADDRESS}/factorHotelNew">
     <input type="hidden" name="StatusRefresh" id="StatusRefresh" value="NoRefresh">
     <input type="hidden" id="numberRow" value="0">
     <input type="hidden" value="{$requestNumber}" name="requestNumber">
-    {*    <code style='color: red;'>{$smarty.post|json_encode}</code>*}
-
-
     {assign var="i" value=0}
     {assign var="rooms_count" value=0}
     <input type="hidden" name="ZoneFlight" id="ZoneFlight" value="external">
@@ -26,21 +21,14 @@
 
             <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first pb-2">
                 <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color direcR">
-
                    {$objFunctions->displayRoomName($room_name,$adultNumber,'Adt',true)}
-                    {*{$room['room_name']} <span class="countRoom">(##Informationpassenger## {$keyRooms} - {$adultNumber})</span>*}
-                   <!-- <i class="soap-icon-family"></i> -->
                </span>
-
                 <input type="hidden" name="RoomCount_Reserve{$room['room_id']}" id="RoomCount_Reserve{$room['room_id']}"
                        value="1">
                 <input type="hidden" name="Id_Select_Room{$keyRooms}" id="Id_Select_Room{$keyRooms}" value="{$room['room_id']}">
-
                 <div class="panel-default-change site-border-main-color pb-2">
                     <div class="panel-heading-change">
-
                         <span class="hidden-xs-down">##Nation##:</span>
-
                         <span class="kindOfPasenger">
                             <label class="control--checkbox">
                                 <span>##Iranian##</span>
@@ -125,9 +113,6 @@
                             <input id="passportNumberA{$keyRooms}{$adultNumber}" type="text" placeholder="##Numpassport##"
                                    name="passportNumberA{$keyRooms}{$adultNumber}" class="UniqPassportNumber">
                         </div>
-
-
-
                         <input type="hidden" id="BedType{$keyRooms}{$adultNumber}" name="BedType{$keyRooms}{$adultNumber}" value="Twin">
                         <div class="alert_msg" id="messageA{$keyRooms}{$adultNumber}"></div>
                     </div>
@@ -156,9 +141,7 @@
 
                     <div class="panel-default-change site-border-main-color">
                         <div class="panel-heading-change">
-
                             <span class="hidden-xs-down">##Nation##:</span>
-
                             <span class="kindOfPasenger">
                             <label class="control--checkbox">
                                 <span>##Iranian##</span>

@@ -313,6 +313,10 @@ class searchHotel extends ApiHotelCore {
 
                         foreach ($final_result_search as $Hotel) {
 
+                            functions::insertLog(json_encode($Hotel) , '000shojaee');
+
+
+
                             $index++;
                             // اضافه کردن کمسیون آژانس به قیمت اتاق
 //                        $Hotel['']
@@ -834,7 +838,7 @@ WHERE
         $webserviceHotelController = $this->getController('webserviceHotel') ;
         $webserviceHotel = $webserviceHotelController->getNotIncludeWebservice('13');
 
-        $result = [] ;
+        $result = [] ; 
         foreach ($hotel_list as $hotel) {
             if(!in_array( $hotel['index'] , $webserviceHotel )){
                 $result[] = $hotel;

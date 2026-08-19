@@ -92,6 +92,10 @@ if (isset($_POST['flag'])) {
             $Bus = Load::controller('busPanel');
             $result = $Bus->select2BusRouteSearch($_POST);
             break;
+        case 'getBusCities':
+            $Bus = load::controller('resultBusTicket');
+            $destinations = $Bus->getBusCities();
+            break;
         default:
             $result = 'not fund ' . $flag;
             break;

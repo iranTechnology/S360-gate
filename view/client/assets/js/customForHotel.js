@@ -2,6 +2,32 @@
  * Custom functions added By Qorbani
  */
 
+let hotelSearchMeta = {
+    startDateJs: '',
+    endDateJs: '',
+    nightsJs: ''
+};
+
+function setGlobalHotelDates(searched_details = {}, value = {}) {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let urlStartDate = urlParams.get('startDate');
+    let urlEndDate = urlParams.get('endDate');
+    let urlNights = urlParams.get('nights');
+
+    let apiStartDate = searched_details?.StartDate;
+    let apiEndDate = searched_details?.EndDate;
+    let apiNights = value?.NightsCount;
+
+    hotelSearchMeta.startDateJs =
+        (apiStartDate && apiStartDate !== 'undefined') ? apiStartDate : urlStartDate;
+
+    hotelSearchMeta.endDateJs =
+        (apiEndDate && apiEndDate !== 'undefined') ? apiEndDate : urlEndDate;
+
+    hotelSearchMeta.nightsJs =
+        (apiNights && apiNights !== '0' && apiNights !== 0) ? apiNights : urlNights;
+}
 
 function getRulesHTML(rules, checkin, checkout) {
     // مقادیر پیش‌فرض
@@ -182,15 +208,9 @@ function internalHotelSearchDetails() {
                roomHtml += `<span class='online-badge'><span class='online-txt'><i class='fas fa-user site-main-text-color'></i>  ${useXmltag('NoExtraCapacity')} </span></span>`
 
             }
-             /*
-           باشد . (دکمه جزئیات قیمت)  roomHtml این بلاک باید داخل
-             <div class='divided-list-item detail_div_local '>
-               <div class='DetailRoom DetailRoom_local showCancelRule' id='btnCancelRule-${Rate.RoomToken}' data-RoomCode='${Rate.RoomToken}' style='opacity: 1; cursor: pointer;'>
 
-                   <span>${useXmltag('Detailprice')}</span>
-                   <i class='fa fa-angle-down'></i>
-               </div>
-            </div> */
+           // باشد . (دکمه جزئیات قیمت)  roomHtml این بلاک باید داخل
+
             roomHtml += ` 
 
                        </span>
@@ -206,7 +226,13 @@ function internalHotelSearchDetails() {
                                              </span>
                                            </span>
                                         </div>
+                                    <div class='divided-list-item detail_div_local '>
+               <div class='DetailRoom DetailRoom_local showCancelRule' id='btnCancelRule-${Rate.RoomToken}' data-RoomCode='${Rate.RoomToken}' style='opacity: 1; cursor: pointer;'>
                                    
+                   <span>${useXmltag('Detailprice')}</span>
+                   <i class='fa fa-angle-down'></i>
+               </div>
+            </div> 
                                </div>
                        </div>
 `
@@ -434,7 +460,7 @@ function internalHotelSearchDetails() {
                                         <div class="divided-list">
                                         <div class="divided-list-item text-center">
                                             <span class="title_price">
-                                                 ${translateXmlByParams('PriceTotalHotel', {'TotalNights': value.Result.NightsCount})}
+                                                 ${translateXmlByParams('PriceTotalHotel', {'TotalNights': hotelSearchMeta.nightsJs})}
                                             </span> `
             if(Rate.CalculatedDiscount.off_percent > 0 ){
                roomHtml += ` <span class='currency priceOff'>  <i class="price_number"> ${number_format(Rate.TotalPrices.afterChange)}</i>${useXmltag('Rial')} </span>`
@@ -626,6 +652,17 @@ function internalHotelSearchDetails() {
 
       }
       let generateRoomSelectForm = function(result, hotelValue, RequestNumber) {
+
+          console.log('=== generateRoomSelectForm  177===');
+          console.log('hotelValue:', hotelValue);
+          console.log('hotelValue.History:', hotelValue?.History);
+          console.log('StartDate:', hotelValue?.History?.StartDate);
+          console.log('EndDate:', hotelValue?.History?.EndDate);
+          console.log('CheckIn:', hotelValue?.History?.CheckIn);
+          console.log('CheckOut:', hotelValue?.History?.CheckOut);
+          console.log('Rooms:', hotelValue?.History?.Rooms);
+          console.log('PaxRooms:', hotelValue?.History?.PaxRooms);
+
          let modal = ''
          let eachRoom = ''
          let RoomIds = []
@@ -898,7 +935,7 @@ function internalHotelSearchDetails() {
             $('#autoComplateSearchIN').val(searched_details.Country + ' - ' + searched_details.City)
          }
 
-
+        /*
          $('#idCity').val(value.CityId)
          $('#nights').val(value.NightsCount)
          $('#startDate,#startDateForeign').val(searched_details.StartDate)
@@ -907,6 +944,17 @@ function internalHotelSearchDetails() {
          // $('#countRoom').attr('data-rooms',JSON.stringify(searched_details.Rooms)).val(searched_details.Rooms.length).select2().trigger('change');
 
          $('span.stayingTime').text(`${value.NightsCount} ${useXmltag('Night')}`)
+         */
+          setGlobalHotelDates(searched_details, value);
+
+          $('#idCity').val(value.CityId);
+          $('#nights').val(hotelSearchMeta.nightsJs);
+          $('#startDate,#startDateForeign').val(hotelSearchMeta.startDateJs);
+          $('#endDate,#endDateForeign').val(hotelSearchMeta.endDateJs);
+          $('#stayingTime').val(hotelSearchMeta.nightsJs);
+          $('span.stayingTime').text(`${hotelSearchMeta.nightsJs} ${useXmltag('Night')}`);
+
+
          let class_hotel_name = (IsInternal == '1')?'internal-hotel-name': 'external-hotel-name';
          let class_detail_hotel = (IsInternal == '1') ? 'internal-hotel-detail' : 'external-hotel-detail';
          let hotel_transfer = ''
@@ -1238,7 +1286,7 @@ function internalHotelSearchDetails() {
 
 
                let value = data.Hotels
-
+                value = filterDuplicateHotelsByPattern(value);
                let request_number = data.requestNumber
                let advertises = data.Advertises
                let hotelType  = [];
@@ -1693,7 +1741,7 @@ function CalculateNewRoomPrice(idRoom, isInternal = true, addChild = false) {
    let ThisTempInputEl = $('#tempInput' + idRoom)
    let ThisTempExtraBedEl = $('#tempExtraBed' + idRoom)
    let ThisExtraBedEl = $('#ExtraBed' + idRoom)
-
+    console.log(ThisRoomPriceEl)
    let RoomCount = ThisRoomCountEl.val()
    let priceRoom = ThisRoomPriceEl.val()
    let priceRoomToShow = ThisRoomPriceEl.data('amount')
@@ -1860,6 +1908,38 @@ function CalculateNewRoomPrice(idRoom, isInternal = true, addChild = false) {
 // };
 
 function BuyHotelWithoutInputsApiNew(RoomId) {
+    const resetReserveButton = function() {
+        let reserveBtn = document.getElementById('reserve_input' + RoomId)
+        if (reserveBtn) {
+            reserveBtn.style.opacity = '1'
+            reserveBtn.style.cursor = 'pointer'
+            reserveBtn.style.pointerEvents = 'auto'
+            reserveBtn.innerHTML = 'رزرو'
+        }
+    }
+
+    const getUrlParams = function() {
+        try {
+            return new URLSearchParams(window.location.search)
+        } catch (e) {
+            return null
+        }
+    }
+
+    const normalizeValue = function(val) {
+        if (
+            val === undefined ||
+            val === null ||
+            val === '' ||
+            val === 'undefined' ||
+            val === 'null'
+        ) {
+            return ''
+        }
+        return val
+    }
+
+    try {
    let webServiceType = $('#webServiceType').val()
    webServiceType = 'public'
    let requestNumber = $('#requestNumber').val()
@@ -1867,11 +1947,65 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
    let pricesDetail = JSON.parse(thisPricesResult)
    let hotelDetail = $('#ThisHotelResult').val()
    let hotelParse = JSON.parse(hotelDetail)
+
+        let urlParams = getUrlParams()
+
    let IdCity = hotelParse.Result.CityId
    let IdHotel = $('#idHotel_reserve').val()
-   let SDate = $('#startDate_reserve').val()
-   let EDate = $('#endDate_reserve').val()
-   let Nights = $('#nights_reserve').val()
+
+        // اولویت: input hidden -> hotelSearchMeta -> History -> URL
+        let SDate = normalizeValue($('#startDate_reserve').val())
+        let EDate = normalizeValue($('#endDate_reserve').val())
+        let Nights = normalizeValue($('#nights_reserve').val())
+        let searchRooms = normalizeValue($('#searchRooms').val())
+
+        if (!SDate && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.startDate) {
+            SDate = hotelSearchMeta.startDate
+        }
+        if (!EDate && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.endDate) {
+            EDate = hotelSearchMeta.endDate
+        }
+        if (!Nights && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.nights) {
+            Nights = hotelSearchMeta.nights
+        }
+        if (!searchRooms && typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.searchRooms) {
+            searchRooms = hotelSearchMeta.searchRooms
+        }
+
+        if (!SDate && hotelParse?.History?.CheckIn) {
+            SDate = hotelParse.History.CheckIn
+        }
+        if (!EDate && hotelParse?.History?.CheckOut) {
+            EDate = hotelParse.History.CheckOut
+        }
+
+        if (!searchRooms && hotelParse?.History?.PaxRooms?.length) {
+            let room = hotelParse.History.PaxRooms[0]
+            let adults = room.Adults || 1
+            let children = room.Children || 0
+            searchRooms = 'R:' + adults + '-' + children + '-0'
+        }
+
+        if (urlParams) {
+            if (!SDate) {
+                SDate = normalizeValue(urlParams.get('startDate'))
+            }
+            if (!EDate) {
+                EDate = normalizeValue(urlParams.get('endDate'))
+            }
+            if (!Nights) {
+                Nights = normalizeValue(urlParams.get('nights'))
+            }
+            if (!searchRooms) {
+                searchRooms = normalizeValue(urlParams.get('searchRooms'))
+            }
+        }
+
+        // اگر لازم بود hidden inputها هم sync شوند
+        $('#startDate_reserve').val(SDate)
+        $('#endDate_reserve').val(EDate)
+        $('#nights_reserve').val(Nights)
+        $('#searchRooms').val(searchRooms)
 
    let TotalNumberRoom_Reserve = RoomId + '-1'
 
@@ -1880,9 +2014,21 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
    let TotalNumberExtraBed_Reserve = 0
    let IsInternal = $('#IsInternal').val()
    let typeApplication = 'externalApi'
-   let searchRooms = $('#searchRooms').val()
    let factorNumber = $('#factorNumber').val()
-   // let requestNumber = $('input[name="requestNumber"]').val();
+
+        // جلوگیری از ارسال داده خراب
+        if (!SDate || !EDate || !searchRooms) {
+            resetReserveButton()
+            $.alert({
+                title: useXmltag('Reservationhotel'),
+                icon: 'fa fa-trash',
+                content: 'اطلاعات تاریخ یا تعداد مسافر کامل نیست. صفحه را یک بار رفرش و دوباره تلاش کنید.',
+                rtl: true,
+                type: 'red',
+            })
+            return
+        }
+
    let ajaxData = {
       searchRooms: searchRooms,
       IsInternal: IsInternal,
@@ -1902,25 +2048,84 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
       webServiceType: webServiceType,
       flag: 'nextStepReserveApiHotelNew'
    }
-   // return false;
+
+
+        console.log({
+            RoomId: RoomId,
+            SDate: SDate,
+            EDate: EDate,
+            Nights: Nights,
+            searchRooms: searchRooms,
+            IdCity: IdCity,
+            IdHotel: IdHotel,
+            IsInternal: IsInternal,
+            PriceSessionId: pricesDetail.PriceSessionId,
+            PricesLength: pricesDetail?.Result?.length,
+            HotelDetail: hotelDetail
+        });
    $.ajax({
       url: amadeusPath + 'hotel_ajax.php',
       data: ajaxData,
-      // dataType: 'JSON',
       type: 'POST',
+            dataType: 'text',
       success: function(data) {
+                console.log('BuyHotelWithoutInputsApiNew => response:', data)
 
-         if (data.indexOf('success_NextStepReserveHotel') > -1) {
+                if (typeof data === 'string' && data.indexOf('success_NextStepReserveHotel') > -1) {
             let result = data.split(':')
             $('#factorNumber').val(result[1])
 
             $('#IsInternal').val(IsInternal)
             $('#searchRooms').val(searchRooms)
             let href = $('#href').val()
-            // return false;
             $('#formHotelReserve').attr('action', amadeusPathByLang + href).submit()
+                } else if (typeof data === 'string' && data.indexOf('error_NextStepReserveHotel') > -1) {
+                    resetReserveButton()
 
-         } else if (data.indexOf('error_NextStepReserveHotel') > -1) {
+                    $.alert({
+                        title: useXmltag('Reservationhotel'),
+                        icon: 'fa fa-trash',
+                        content: useXmltag('PleaseAgainBookingHotel'),
+                        rtl: true,
+                        type: 'red',
+                    })
+                } else {
+                    resetReserveButton()
+
+                    console.warn('BuyHotelWithoutInputsApiNew => unexpected response:', data)
+
+                    $.alert({
+                        title: useXmltag('Reservationhotel'),
+                        icon: 'fa fa-trash',
+                        content: useXmltag('PleaseAgainBookingHotel'),
+                        rtl: true,
+                        type: 'red',
+                    })
+                }
+            },
+            error: function(xhr, status, error) {
+                resetReserveButton()
+
+                console.error('BuyHotelWithoutInputsApiNew => ajax error:', {
+                    status: status,
+                    error: error,
+                    responseText: xhr && xhr.responseText ? xhr.responseText : null
+                })
+
+                $.alert({
+                    title: useXmltag('Reservationhotel'),
+                    icon: 'fa fa-trash',
+                    content: useXmltag('PleaseAgainBookingHotel'),
+                    rtl: true,
+                    type: 'red',
+                })
+            }
+        })
+    } catch (e) {
+        resetReserveButton()
+
+        console.error('BuyHotelWithoutInputsApiNew => exception:', e)
+
             $.alert({
                title: useXmltag('Reservationhotel'),
                icon: 'fa fa-trash',
@@ -1929,8 +2134,6 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
                type: 'red',
             })
          }
-      },
-   })
 }
 
 function childAgeItem(RoomToken, count, MinAge, MaxAge) {
@@ -2665,7 +2868,6 @@ function ReserveExternalApiHotel(RoomToken) {
    let TotalNumberRoom_Reserve = RoomToken + '-1'
    $('#TotalNumberRoom_Reserve').val(TotalNumberRoom_Reserve)
    $.ajax({
-      // dataType : 'HTML',
       type: 'POST',
       data: {
          flag: 'CheckedLogin',
@@ -2674,7 +2876,14 @@ function ReserveExternalApiHotel(RoomToken) {
       success: function(response) {
          if (response.indexOf('successLoginHotel') > -1) {
             $('#img').show()
-            $('#reserve_input' + RoomToken).attr('disabled', 'disabled').css('opacity', '0.5').css('cursor', 'progress').html(useXmltag('Pending'))
+
+                let reserveBtn = document.getElementById('reserve_input' + RoomToken)
+                if (reserveBtn) {
+                    reserveBtn.style.opacity = '0.5'
+                    reserveBtn.style.cursor = 'progress'
+                    reserveBtn.style.pointerEvents = 'none'
+                    reserveBtn.innerHTML = useXmltag('Pending')
+                }
 
             BuyHotelWithoutInputsApiNew(RoomToken)
          } else if (response.indexOf('errorLoginHotel') > -1) {
@@ -2685,7 +2894,7 @@ function ReserveExternalApiHotel(RoomToken) {
             if (isShowLoginPopup == '' || isShowLoginPopup == '1') {
                $('#login-popup').trigger('click')
             } else {
-               popupBuyNoLogin('newApiHotelExternal', `'${RoomToken}'`)
+                    popupBuyNoLogin('newApiHotelExternal', RoomToken)
             }
          }
       },
@@ -4013,6 +4222,18 @@ function addCommas(nStr) {
 
 function ReserveTemprory(factorNumber, typeApplication) {
 
+    var element = document.querySelector('.price-after-discount-code');
+    var priceText = element.textContent.trim();
+
+    var priceNumber = priceText.replace('ریال', '').trim();
+
+    var priceValue = parseInt(priceNumber.replace(/,/g, ''));
+
+
+    if (priceValue == 0) {
+        createCreditPayButton('#creditpay', '.main-pay-content', useXmltag('PaymentWithADiscountCode'));
+    }
+
    if (!$('#RulsCheck').is(':checked')) {
       $.alert({
          title: useXmltag('Reservationhotel'),
@@ -4058,13 +4279,16 @@ function ReserveTemprory(factorNumber, typeApplication) {
                setTimeout(function() {
                   $('#final_ok_and_insert_passenger').removeAttr('onclick').attr('disabled', true).css('cursor', 'not-allowed').text(useXmltag('Accepted'))
 
+
+
                   $('.main-pay-content').css('display', 'flex')
                   $('#loader_check').css('display', 'none')
                   $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow')
                }, 2000)
 
 
-            } else if (obj['book'] == 'OnRequest') {
+            }
+            else if (obj['book'] == 'OnRequest') {
 
                if (obj['user_type'] == '5') {
 
@@ -4085,7 +4309,8 @@ function ReserveTemprory(factorNumber, typeApplication) {
                }
 
 
-            } else if (obj['book'] == 'no') {
+            }
+            else if (obj['book'] == 'no') {
 
                $('#messageBook').html(useXmltag('ThisHotelCanNotBooked'))
 
@@ -4102,6 +4327,44 @@ function ReserveTemprory(factorNumber, typeApplication) {
       })
 
 
+}
+
+function createCreditPayButton(sourceSelector, targetDivSelector, newText) {
+    const original = document.querySelector(sourceSelector);
+    document.getElementById('factor_bank').style.display = 'none';
+
+    if (!original) {
+        console.error('المنت مبدأ پیدا نشد:', sourceSelector);
+        return null;
+    }
+
+    // کلون دکمه
+    const clone = original.cloneNode(true);
+    clone.textContent = newText;
+
+    // جلوگیری از id تکراری
+    if (clone.id) {
+        clone.id = clone.id + '-clone';
+    }
+
+
+    // ساخت المنت متن (سمت راست دکمه)
+    const creditText = document.createElement('p');
+    creditText.className = 'creditText mart20 none_credit mt-0';
+    creditText.textContent = useXmltag('AsADiscountCodeHasBeenApplied');
+
+    // پیدا کردن دایو هدف
+    const target = document.querySelector(targetDivSelector);
+    if (!target) {
+        console.error('دایو هدف پیدا نشد:', targetDivSelector);
+        return null;
+    }
+
+    // اضافه کردن دکمه و متن (متن سمت راست دکمه قرار می‌گیره)
+    target.appendChild(creditText);
+    target.appendChild(clone);
+
+    return { button: clone, text: creditText };
 }
 
 function showTypePayment(factorNumber, typeApplication, typeTrip, paymentPrice, serviceType, currencyCode, currencyEquivalent) {
@@ -7219,8 +7482,238 @@ $(document).ready(function () {
    }, 3000);
 });
 
+// ============================================
+// کد کامل فیلتر هتل‌های تکراری با تشخیص آدرس
+// ============================================
 
+function filterDuplicateHotelsByPattern(hotels) {
+    if (!hotels) {
+        console.warn('⚠️ hotels is null or undefined');
+        return [];
+    }
 
+    if (!Array.isArray(hotels)) {
+        console.warn('⚠️ hotels is not an array, converting to array');
+        hotels = Object.values(hotels);
+    }
 
+    if (hotels.length === 0) {
+        return [];
+    }
+
+    // ============================================
+    // 1️⃣ توابع کمکی (کاملاً داینامیک)
+    // ============================================
+
+    // نرمال‌سازی نام هتل (بدون حذف کلمات خاص)
+    function normalizeHotelName(name) {
+        if (!name) return '';
+        return name
+            .toString()
+            .replace(/ي/g, 'ی')
+            .replace(/ك/g, 'ک')
+            .replace(/[‌ـ]/g, ' ')
+            .replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
+    }
+
+    // نرمال‌سازی آدرس
+    function normalizeAddress(address) {
+        if (!address) return '';
+        return address
+            .toString()
+            .replace(/ي/g, 'ی')
+            .replace(/ك/g, 'ک')
+            .replace(/[۰-۹0-9]/g, '')
+            .replace(/[،,\.:؛;()\-_\/]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
+    }
+
+    // محاسبه شباهت دو رشته
+    function similarPercent(str1, str2) {
+        if (!str1 || !str2) return 0;
+
+        const s1 = String(str1).trim().replace(/\s+/g, ' ');
+        const s2 = String(str2).trim().replace(/\s+/g, ' ');
+
+        if (s1 === s2) return 100;
+        if (s1.length === 0 || s2.length === 0) return 0;
+
+        const distance = levenshteinDistance(s1, s2);
+        const maxLength = Math.max(s1.length, s2.length);
+
+        return ((maxLength - distance) / maxLength) * 100;
+    }
+
+    function levenshteinDistance(str1, str2) {
+        const m = str1.length;
+        const n = str2.length;
+        const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+
+        for (let i = 0; i <= m; i++) dp[i][0] = i;
+        for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+        for (let i = 1; i <= m; i++) {
+            for (let j = 1; j <= n; j++) {
+                const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                dp[i][j] = Math.min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + cost
+                );
+            }
+        }
+        return dp[m][n];
+    }
+
+    // تشخیص شباهت آدرس
+    function areAddressesSimilar(addr1, addr2) {
+        if (!addr1 || !addr2) return false;
+
+        const norm1 = normalizeAddress(addr1);
+        const norm2 = normalizeAddress(addr2);
+
+        if (norm1 === norm2 && norm1.length > 5) return true;
+        if (norm1.includes(norm2) || norm2.includes(norm1)) return true;
+
+        const similarity = similarPercent(norm1, norm2);
+        return similarity >= 60;
+    }
+
+    // ============================================
+    // 2️⃣ جدا کردن API از Reservation
+    // ============================================
+
+    const apiHotels = [];
+    const reservationHotels = [];
+
+    hotels.forEach(hotel => {
+        if (hotel.type_application === 'api') {
+            apiHotels.push(hotel);
+        } else {
+            reservationHotels.push(hotel);
+        }
+    });
+
+    // console.log(`📊 API Hotels: ${apiHotels.length}, Reservation Hotels: ${reservationHotels.length}`);
+
+    if (apiHotels.length === 0) {
+        // console.log('ℹ️ No API hotels found, returning all hotels');
+        return hotels;
+    }
+
+    // ============================================
+    // 3️⃣ گروه‌بندی هتل‌های API
+    // ============================================
+
+    const groups = {};
+    const processed = new Set();
+
+    apiHotels.forEach((hotel, index) => {
+        if (processed.has(index)) return;
+
+        const hotelName = hotel.hotel_name || '';
+        const address = hotel.address || hotel.address_en || '';
+
+        let foundGroup = null;
+
+        for (const key of Object.keys(groups)) {
+            const groupInfo = groups[key];
+
+            for (const existingHotel of groupInfo.hotels) {
+                const existingName = existingHotel.hotel_name || '';
+                const existingAddress = existingHotel.address || existingHotel.address_en || '';
+
+                const normName1 = normalizeHotelName(hotelName);
+                const normName2 = normalizeHotelName(existingName);
+
+                let nameSimilarity = similarPercent(normName1, normName2);
+
+                // اگر یکی از نام‌ها داخل دیگری باشد (مثل لاله و لاله تهران)
+                if (normName1.includes(normName2) || normName2.includes(normName1)) {
+                    nameSimilarity = Math.max(nameSimilarity, 80);
+                }
+
+                const addressSimilar = areAddressesSimilar(address, existingAddress);
+
+                // if (nameSimilarity > 40) {
+                //     console.log(`🔍 مقایسه: "${hotelName}" با "${existingName}"`);
+                //     console.log(`   شباهت نام: ${Math.round(nameSimilarity)}% | آدرس: ${addressSimilar ? '✅' : '❌'}`);
+                // }
+
+                // شرط نهایی
+                if (nameSimilarity >= 55 && addressSimilar) {
+                    foundGroup = key;
+                    break;
+                }
+            }
+
+            if (foundGroup) break;
+        }
+
+        if (foundGroup) {
+            groups[foundGroup].hotels.push(hotel);
+            processed.add(index);
+        } else {
+            const newKey = `group_${index}`;
+            groups[newKey] = {
+                name: hotelName,
+                address: address,
+                hotels: [hotel]
+            };
+        }
+    });
+
+    // ============================================
+    // 4️⃣ انتخاب ارزان‌ترین هتل از هر گروه
+    // ============================================
+
+    const filteredApiHotels = [];
+
+    Object.keys(groups).forEach(key => {
+        const group = groups[key];
+        const hotelsInGroup = group.hotels;
+
+        if (hotelsInGroup.length === 1) {
+            filteredApiHotels.push(hotelsInGroup[0]);
+            return;
+        }
+
+        // console.log(`🔄 گروه "${group.name}" دارای ${hotelsInGroup.length} هتل تکراری:`);
+        // hotelsInGroup.forEach(h => {
+            // console.log(`   - ${h.hotel_name} (${h.min_room_price})`);
+        // });
+
+        let cheapest = hotelsInGroup[0];
+        let minPrice = parseFloat(cheapest.min_room_price) || Infinity;
+
+        hotelsInGroup.forEach(hotel => {
+            const price = parseFloat(hotel.min_room_price) || Infinity;
+            if (price < minPrice) {
+                minPrice = price;
+                cheapest = hotel;
+            }
+        });
+
+        // console.log(`   ✅ انتخاب: ${cheapest.hotel_name} (${cheapest.min_room_price})`);
+        // console.log('---');
+
+        filteredApiHotels.push(cheapest);
+    });
+
+    // ============================================
+    // 5️⃣ ترکیب با Reservation
+    // ============================================
+
+    const result = [...filteredApiHotels, ...reservationHotels];
+
+    // console.log(`📊 Result: ${result.length} hotels (${filteredApiHotels.length} API + ${reservationHotels.length} Reservation)`);
+
+    return result;
+}
 
 

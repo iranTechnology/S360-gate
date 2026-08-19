@@ -226,10 +226,8 @@ class detailHotel extends ApiHotelCore
             }
 
             if($temporaryHotel['source_id'] == '29') {
-
                 $result[$c]['price_current'] = $price_current;
             }
-
             $result[$c]['AdultsCount'] = $thisRoomAdultsCount;
             $result[$c]['RoomIndex'] = $c;
             $result[$c]['ChildCount'] = $thisRoomChildrenCount;
@@ -260,7 +258,7 @@ class detailHotel extends ApiHotelCore
         $admin = Load::controller('admin');
         $currency_controller = Load::controller('currency');
         $apiHotel = json_decode(parent::Detail($param), true);
-
+        functions::insertLog('$apiHotel: ' . json_encode($apiHotel) , '000shojaee');
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
         }
@@ -538,7 +536,7 @@ class detailHotel extends ApiHotelCore
         /** @var Model $model */
         $admin = Load::controller('admin');
         $apiHotel = json_decode(parent::DirectDetail($param), true);
-        functions::insertLog('data: ' . json_encode($data) , 'shojaee');
+
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
         }

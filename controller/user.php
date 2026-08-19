@@ -2810,6 +2810,9 @@ class user extends baseController
                 $bookList[$key]['price_final'] = number_format($price_final);
             }else{
                 $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+                if ($item['discount_code_amount'] > $item['total_price']) {
+                    $bookList[$key]['price_final'] = 0;
+                }
             }
             if (!empty($item['discount_code_amount']) && $item['discount_code_amount'] != 0) {
                 $bookList[$key]['price_final'].='<br/><del>'.number_format($item['total_price']).'</del>';
@@ -5054,6 +5057,9 @@ class user extends baseController
                     $bookList[$key]['price_final'] = number_format($price_final);
                 }else{
                     $bookList[$key]['price_final'] = number_format($item['total_price'] - $item['discount_code_amount']);
+                    if ($item['discount_code_amount'] > $item['total_price']) {
+                        $bookList[$key]['price_final'] = 0;
+                    }
                 }
 
                 if (!empty($item['discount_code_amount']) && $item['discount_code_amount'] != 0) {

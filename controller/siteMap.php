@@ -31,7 +31,7 @@ class siteMap extends clientAuth
         return $return;
     }
 
-    public function createSitemap() {
+    public function createSitemap($silent = false) {
 
         if(functions::checkClientConfigurationAccess('siteMap')) {
 
@@ -44,6 +44,8 @@ class siteMap extends clientAuth
         Load::autoload('Model');
         $Model = new Model();
         $list_module_client = $this->modelAccess->get()->where('client_id' , CLIENT_ID)->get()->all();
+
+
 
         foreach ($list_module_client as $key => $value) {
             $get_module_info = $this->modelModule->get()->where('id' , $value['gds_module_id'])->find();
@@ -81,14 +83,19 @@ class siteMap extends clientAuth
         $file_handle = fopen($file, 'w+') or die("خطا: سطح دسترسی برای ویرایش فایل در سرور تنظیم نیست!");
         if ($file_handle) {
         fwrite($file_handle, $xml);
+        if (!$silent) {
             return self::returnJson(true, 'سایت مپ با موفقیت ایجاد شد');
+        }
         }else{
-            return self::returnJson(false, 'خطا در ایجاد سایت مپ', null, 500);
-
+            if (!$silent) {
+                return self::returnJson(false, 'خطا در ایجاد سایت مپ', null, 503);
+            }
         }
         }
        else{
-           return self::returnJson(false, 'شما دسترسی ایجاد سایت مپ را ندارید، لطفا با پشتیبانی تماس بگیرید', null, 500);
+           if (!$silent) {
+           return self::returnJson(false, 'شما دسترسی ایجاد سایت مپ را ندارید، لطفا با پشتیبانی تماس بگیرید', null, 403);
+           }
        }
 
 
