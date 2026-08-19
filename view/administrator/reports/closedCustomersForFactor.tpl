@@ -14,7 +14,7 @@
 							<i class="ti-timer"></i> آخرین بررسی فاکتورها: {$lastUpdate}
 						</span>
 					{/if}
-						
+
                     <div class="pull-right"><i class="ti-minus"></i></div>
                 </h6>
             </div>

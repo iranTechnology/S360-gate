@@ -1,9 +1,9 @@
 <?php
 
 error_reporting(0);
-    //error_reporting(E_ALL | E_STRICT);
-    //@ini_set('display_errors', 1);
-    //@ini_set('display_errors', 'on');
+//error_reporting(E_ALL | E_STRICT);
+//@ini_set('display_errors', 1);
+//@ini_set('display_errors', 'on');
 
 class BookingHotelNew extends clientAuth
 {
@@ -41,13 +41,13 @@ class BookingHotelNew extends clientAuth
         $bankInfo = $bankModel->getByBankDir($initialValues);
 
         $data['name_bank_port'] = $bankDir;
-	    $data['number_bank_port'] = $bankInfo['param1'];
+        $data['number_bank_port'] = $bankInfo['param1'];
 
         $Model = Load::library('Model');
         $Model->setTable('book_hotel_local_tb');
 
         $condition = " factor_number='{$factorNumber}'";
-	    $res = $Model->update($data, $condition);
+        $res = $Model->update($data, $condition);
         if ($res) {
             $ModelBase = Load::library('ModelBase');
             $ModelBase->setTable('report_hotel_tb');
@@ -139,24 +139,30 @@ class BookingHotelNew extends clientAuth
 
         /** @var reportHotelModel $report_model */
         $report_model = Load::getModel('reportHotelModel');
-	    /** @var bookHotelLocalModel $book_model */
-	    $book_model = load::getModel('bookHotelLocalModel');
-	    $Hotel = $book_model
-		    ->get()
-		    ->where('factor_number',$this->factor_number)
-		    ->where('status','PreReserve')
-		    ->orWhere('status','RequestAccepted')
-		    ->groupBy('factor_number')
-		    ->find();
-
+        /** @var bookHotelLocalModel $book_model */
+        $book_model = load::getModel('bookHotelLocalModel');
+        $Hotel = $book_model
+            ->get()
+            ->where('factor_number',$this->factor_number)
+            ->openParentheses()
+                ->where('status','PreReserve')
+                ->orWhere('status','RequestAccepted')
+            ->closeParentheses()
+            ->groupBy('factor_number')
+            ->find();
 //	            $sql        = " SELECT * FROM book_hotel_local_tb WHERE factor_number='{$this->factor_number}' AND status='PreReserve' GROUP BY factor_number ";
 //
 //	            $Hotel = $Model->load($sql);
 
-	    error_log('try show result method Hotel in : ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel). " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+        error_log('try show result method Hotel in : ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel). " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 //        error_log('SQL=>'.$sql,3,LOGS_DIR.'log_method_ReserveHotel.txt');
 //        error_log('Hotel=>'.$Hotel,3,LOGS_DIR.'log_method_ReserveHotel.txt');
 
+        if (empty($Hotel)) {
+            $this->okHotel = false;
+            $this->errorMessage = 'رکورد رزرو هتل برای این شماره فاکتور یافت نشد.';
+            return;
+        }
         $this->hotelId = $Hotel['hotel_id'];
         $this->type_application = $Hotel['type_application'];
         $this->hotelInfo = $Hotel;
@@ -165,18 +171,28 @@ class BookingHotelNew extends clientAuth
 
         if ($Hotel['type_application'] == 'api' || $Hotel['type_application'] == 'externalApi' || $Hotel['type_application'] == 'api_app') {
 
-	        /** @var detailHotel $detailHotel */
-	        $apiReserveHotel = $detailHotel->Reserve( $Hotel);
-
+            /** @var detailHotel $detailHotel */
+            functions::insertLog('->Call Reserve: ' . print_r($Hotel, true), '0ardalani');
+            $apiReserveHotel = $detailHotel->Reserve( $Hotel);
+            functions::insertLog('Call Response: ' . print_r($apiReserveHotel, true), '0ardalani');
             error_log('try show result method Hotel in : ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel). " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
             error_log('try show result method Hotel in : ' . date('Y/m/d H:i:s') . ' buy Credit array equal in => : ' . $apiReserveHotel. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
             $ReserveHotel = json_decode($apiReserveHotel,true);
+            // لاگ ۲: بررسی اینکه آیا JSON به درستی به آرایه تبدیل شده یا خیر
+            if (is_array($ReserveHotel)) {
+                functions::insertLog('Decoded JSON (Success): ' . ($ReserveHotel['Success'] ? 'TRUE' : 'FALSE'), '0ardalani');
+                if (!$ReserveHotel['Success']) {
+                    // لاگ ۳: اگر خطا داده، متن خطا چیست؟
+                    functions::insertLog('API Error Content: ' . json_encode($ReserveHotel['Result']['Error'] ?? $ReserveHotel), '0ardalani');
+                }
+            } else {
+                functions::insertLog('JSON Decode Failed! Raw string was not a valid JSON.', '0ardalani');
+            }
+            $request_number = isset($ReserveHotel['RequestNumber']) ? $ReserveHotel['RequestNumber'] : $Hotel['request_number'];
 
-            $request_number = $ReserveHotel['RequestNumber'];
-
-	        error_log(' ' . date('Y/m/d H:i:s') . ' RN : ' . $Hotel['request_number']. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+            error_log(' ' . date('Y/m/d H:i:s') . ' RN : ' . $Hotel['request_number']. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
             error_log(PHP_EOL . date('Y/m/d H:i:s') ."reserve_hotel_result" .  json_encode($ReserveHotel), 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
 //	        echo Load::plog($ReserveHotel);
@@ -187,15 +203,15 @@ class BookingHotelNew extends clientAuth
                 error_log(PHP_EOL . date('Y/m/d H:i:s') . "isSuccess ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
                 $data['payment_date'] = date('Y-m-d H:i:s');
-	            if(isset($ReserveHotel['Result']['ManualBook']) && $ReserveHotel['Result']['ManualBook'] == true){
-		            $data['manual_book'] = '1';
+                if(isset($ReserveHotel['Result']['ManualBook']) && $ReserveHotel['Result']['ManualBook'] == true){
+                    $data['manual_book'] = '1';
                     $data['status'] = 'pending';
-	            }else{
+                }else{
 
                     $data['status'] = 'BookedSuccessfully';
                 }
-	            $data['payment_type'] = 'credit';
-	            $data['creation_date_int'] = time();
+                $data['payment_type'] = 'credit';
+                $data['creation_date_int'] = time();
 
                 $this->hotel_status = $data['status']  ;
 
@@ -213,9 +229,9 @@ class BookingHotelNew extends clientAuth
                     $this->getController('historyPointClub')->setPointMemberIntoTable($data_point);
 
                 }
-	            //                $data['voucher_url'] = $ReserveHotel['VoucherUrl'];
+                //                $data['voucher_url'] = $ReserveHotel['VoucherUrl'];
 
-	            //	            echo Load::plog($ReserveHotel['Result']['VouchersDetails']);
+                //	            echo Load::plog($ReserveHotel['Result']['VouchersDetails']);
 
 
 //	            $sql = "SELECT * FROM book_hotel_local_tb WHERE request_number = '{$request_number}'" ;
@@ -224,32 +240,32 @@ class BookingHotelNew extends clientAuth
 //                /** @var bookHotelLocalModel $book_model */
 //                $book_model = load::getModel('bookHotelLocalModel');
                 $books = $book_model->get()->where('request_number',$request_number)->all();
-	            //	            echo Load::plog($books[0]['passenger_national_code']);
+                //	            echo Load::plog($books[0]['passenger_national_code']);
                 error_log(PHP_EOL . date('Y/m/d H:i:s') . " before foreach VoucherDetails ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
-	            foreach ($ReserveHotel['Result']['VouchersDetails'] as $key => $VouchersDetail) {
-		            $data['voucher_number'] = isset($VouchersDetail['VoucherNumber']) ? $VouchersDetail['VoucherNumber'] : '';
-		            $data['pnr'] = isset($ReserveHotel['Result']['PNR']) ? $ReserveHotel['Result']['PNR'] : '';
+                foreach ($ReserveHotel['Result']['VouchersDetails'] as $key => $VouchersDetail) {
+                    $data['voucher_number'] = isset($VouchersDetail['VoucherNumber']) ? $VouchersDetail['VoucherNumber'] : '';
+                    $data['pnr'] = isset($ReserveHotel['Result']['PNR']) ? $ReserveHotel['Result']['PNR'] : '';
                     error_log(PHP_EOL . date('Y/m/d H:i:s') . " before books ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
                     error_log(PHP_EOL . date('Y/m/d H:i:s') . " books ".json_encode($books,256|64), 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
-		            foreach ( $books as $index => $book ) {
-			            $condition = "request_number = '{$request_number}' AND factor_number = '{$this->factor_number}' AND  (passenger_national_code = '{$book['passenger_national_code']}' OR passportNumber = '{$book['passportNumber']}')";
+                    foreach ( $books as $index => $book ) {
+                        $condition = "request_number = '{$request_number}' AND factor_number = '{$this->factor_number}' AND  (passenger_national_code = '{$book['passenger_national_code']}' OR passportNumber = '{$book['passportNumber']}')";
 
 //			            $Model->setTable('book_hotel_local_tb');
                         $res = $book_model->update($data,$condition);
                         error_log(PHP_EOL . date('Y/m/d H:i:s') . " UpdateWithBind ".json_encode($res)." ".json_encode($data,256|64), 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 //		                $res = $Model->update($data, $condition);
-		                if ($res) {
+                        if ($res) {
                             error_log(PHP_EOL . date('Y/m/d H:i:s') . " res is true ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
                             $res2 = $report_model->update($data,$condition);
                             error_log(PHP_EOL . date('Y/m/d H:i:s') . " res2 is ".json_encode($res2), 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
-			                $this->okHotel = true;
-			                $this->payment_date = $data['payment_date'];
+                            $this->okHotel = true;
+                            $this->payment_date = $data['payment_date'];
                             error_log(PHP_EOL . date('Y/m/d H:i:s') . " okHotel is true ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
-		                }else{
+                        }else{
                             error_log(PHP_EOL . date('Y/m/d H:i:s') . " okHotel is false ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
                             $this->okHotel = false;
                         }
-	                }
+                    }
                 }
                 error_log(PHP_EOL . date('Y/m/d H:i:s') . " before CalculateProfitClient ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
                 $objTransaction->calculateProfitClient($books[0],'Hotel');
@@ -506,7 +522,12 @@ class BookingHotelNew extends clientAuth
 //
 //	    /** @var Model $Model */
 //	    $Hotel = $Model->load($sql,'assoc');
-        $Hotel = $book_model->get()->where('factor_number',$this->factor_number)->where('status','bank')->where('tracking_code_bank','','!=')->groupBy('factor_number')->find();
+        $Hotel = $book_model->get()
+            ->where('factor_number',$this->factor_number)
+            ->where('status','bank')
+            ->where('tracking_code_bank','','!=')
+            ->groupBy('factor_number')
+            ->find();
         $this->hotelId = $Hotel['hotel_id'];
         $this->type_application = $Hotel['type_application'];
         $this->payment_status = $Hotel['payment_status'];
@@ -515,11 +536,11 @@ class BookingHotelNew extends clientAuth
 
         #region [api or reservation]
         if ($Hotel['type_application'] == 'api' || $Hotel['type_application'] == 'externalApi' || $Hotel['type_application'] == 'api_app') {
-	        /** @var detailHotel $detailHotel */
-	        $ReserveHotel = json_decode( $detailHotel->Reserve( $Hotel ),true);
+            /** @var detailHotel $detailHotel */
+            $ReserveHotel = json_decode( $detailHotel->Reserve( $Hotel ),true);
 
-	        functions::insertLog(json_encode($Hotel,256|64).PHP_EOL.' RN : '.$Hotel['request_number'],'log_method_ReserveHotel');
-	        functions::insertLog(json_encode($ReserveHotel,256|64).PHP_EOL.' RN : '.$Hotel['request_number'],'log_method_ReserveHotel');
+            functions::insertLog(json_encode($Hotel,256|64).PHP_EOL.' RN : '.$Hotel['request_number'],'log_method_ReserveHotel');
+            functions::insertLog(json_encode($ReserveHotel,256|64).PHP_EOL.' RN : '.$Hotel['request_number'],'log_method_ReserveHotel');
 
 //            error_log('try show result method Hotel in : ' . date('Y/m/d H:i:s') . ' buy Cash array eqaul in => : ' . json_encode($ReserveHotel, true) . " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
@@ -532,9 +553,9 @@ class BookingHotelNew extends clientAuth
                 $books = $book_model->get()->where('request_number',$request_number)->all();
                 // Caution: آپدیت تراکنش به موفق
                 $objTransaction->setCreditToSuccess($this->factor_number, $Hotel['tracking_code_bank']);
-	            if(isset($ReserveHotel['Result']['ManualBook']) && $ReserveHotel['Result']['ManualBook'] == true){
-		            $data['manual_book'] = '1';
-	            }
+                if(isset($ReserveHotel['Result']['ManualBook']) && $ReserveHotel['Result']['ManualBook'] == true){
+                    $data['manual_book'] = '1';
+                }
 
 
                 $data['status'] = 'BookedSuccessfully';
@@ -563,27 +584,27 @@ class BookingHotelNew extends clientAuth
                     $this->getController('historyPointClub')->setPointMemberIntoTable($data_point);
 
                 }
-	            foreach ($ReserveHotel['Result']['VouchersDetails'] as $key => $VouchersDetail) {
-		            $data['voucher_number'] = $VouchersDetail['VoucherNumber'];
-		            $data['pnr'] = $ReserveHotel['Result']['PNR'];
+                foreach ($ReserveHotel['Result']['VouchersDetails'] as $key => $VouchersDetail) {
+                    $data['voucher_number'] = $VouchersDetail['VoucherNumber'];
+                    $data['pnr'] = $ReserveHotel['Result']['PNR'];
 
-		            foreach ( $books as $index => $book ) {
-			            $condition = "request_number = '{$request_number}' AND factor_number = '{$factorNumber}' AND  (passenger_national_code = '{$book['passenger_national_code']}' OR passportNumber = '{$book['passportNumber']}')";
+                    foreach ( $books as $index => $book ) {
+                        $condition = "request_number = '{$request_number}' AND factor_number = '{$factorNumber}' AND  (passenger_national_code = '{$book['passenger_national_code']}' OR passportNumber = '{$book['passportNumber']}')";
 
 //			            $Model->setTable('book_hotel_local_tb');
 //			            $res = $Model->update($data, $condition);
                         $res = $book_model->updateWithBind($data,$condition);
-			            if ($res) {
+                        if ($res) {
                             $res2 = $report_model->updateWithBind($data,$condition);
 //				            $ModelBase->setTable('report_hotel_tb');
 //				            $ModelBase->update($data, $condition);
-				            $this->okHotel = true;
-				            $this->payment_date = $data['payment_date'];
+                            $this->okHotel = true;
+                            $this->payment_date = $data['payment_date'];
 
-			            }
-		            }
+                        }
+                    }
 
-	            }
+                }
 
                 if(functions::checkClientConfigurationAccess('call_back')) {
                     $call_back_api =$this->getController('callBackUrl');
@@ -804,15 +825,15 @@ class BookingHotelNew extends clientAuth
                             );
 
                             if ($infoBook['payment_status'] == 'prePayment') {
-                            $smsArray = array(
-                                'smsMessage' => $smsController->getUsableMessage('afterHotelPreReservePayment', $messageVariables),
-                                'cellNumber' => $mobile,
-                                'smsMessageTitle' => 'afterHotelPreReservePayment',
-                                'memberID' => (!empty($Hotel['member_id']) ? $Hotel['member_id'] : ''),
-                                'receiverName' => $messageVariables['sms_name'],
-                            );
+                                $smsArray = array(
+                                    'smsMessage' => $smsController->getUsableMessage('afterHotelPreReservePayment', $messageVariables),
+                                    'cellNumber' => $mobile,
+                                    'smsMessageTitle' => 'afterHotelPreReservePayment',
+                                    'memberID' => (!empty($Hotel['member_id']) ? $Hotel['member_id'] : ''),
+                                    'receiverName' => $messageVariables['sms_name'],
+                                );
 
-                             }else{
+                            }else{
                                 $smsArray = array(
                                     'smsMessage' => $smsController->getUsableMessage('afterHotelReserve', $messageVariables),
                                     'cellNumber' => $mobile,
@@ -1595,7 +1616,7 @@ class BookingHotelNew extends clientAuth
         // محاسبه شماره واچر
 
 
-            $voucherNumber = $firstInfo['pnr'];
+        $voucherNumber = $firstInfo['pnr'];
 
         if (!empty($firstInfo['payment_date'])) {
 
@@ -1803,7 +1824,7 @@ class BookingHotelNew extends clientAuth
                 </table>
             </div>
         </div>';
-        
+
 
         if ($firstInfo['type_application'] == 'api') {
             // قوانین کنسلی
@@ -1824,14 +1845,14 @@ class BookingHotelNew extends clientAuth
 
                 <div class="note-item" style="font-family: yekanbakh;">
             '
-               .
+                .
                 $firstInfo['hotel_rules'] . '
                 </div> .
 
             </div>';
         }
         // نکات مهم
-            $html .= '
+        $html .= '
             <div class="important-notes" style="font-family: yekanbakh;">
                 <div class="section-title" style="font-family: yekanbakh;"> نکات مهم برای پذیرش در هتل</div>
 
@@ -1869,7 +1890,7 @@ class BookingHotelNew extends clientAuth
         }
 
         $phone = !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : CLIENT_PHONE ;
-    $address =  !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : CLIENT_ADDRESS;
+        $address =  !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : CLIENT_ADDRESS;
 
         // Footer
         $html .= '
@@ -1977,10 +1998,10 @@ class BookingHotelNew extends clientAuth
 
     public function getPriceWithChange($factor_number){
         $info_hotel = $this->getModel('reportHotelModel')->get()->where('factor_number',$factor_number)->find();
-            if($info_hotel['agency_commission_price_type']=='percent'){
-                return $info_hotel['total_price_api'] + ($info_hotel['total_price_api'] * ($info_hotel['agency_commission']/100));
-            }
-            return $info_hotel['total_price_api'] + $info_hotel['agency_commission'] ;
+        if($info_hotel['agency_commission_price_type']=='percent'){
+            return $info_hotel['total_price_api'] + ($info_hotel['total_price_api'] * ($info_hotel['agency_commission']/100));
+        }
+        return $info_hotel['total_price_api'] + $info_hotel['agency_commission'] ;
     }
 
     public function updateStatusPreReserve($params = []) {

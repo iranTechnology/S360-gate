@@ -306,7 +306,8 @@ $city_name_fa
 
     public function getHotelsFromDB( $countryNameEn, $cityNameEn, $sDate, $nights,$searched_rooms = null ) {
 //        functions::insertLog('start getHotelsFromDB', '00000-checkExternalHotel', 'yes');
-		if ( SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr( $sDate, "0", "4" ) > 2000 ) {
+
+        if ( SOFTWARE_LANG == 'en' || SOFTWARE_LANG == 'ar' || substr( $sDate, "0", "4" ) > 2000 ) {
 			$sDatePersian = functions::ConvertToJalali( $sDate );
 		} else {
 			$sDatePersian = $sDate;

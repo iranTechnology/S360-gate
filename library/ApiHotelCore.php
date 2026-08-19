@@ -26,7 +26,7 @@ class ApiHotelCore extends clientAuth {
 
         $this->urlApi    = $base_url.'Hotels/';
 //        $this->urlApi    = 'http://192.168.1.100/Core/V-1/Hotels/';
-          //   $this->urlApi    = 'http://192.168.1.100/CoreTestDeveloper/V-1/Hotels/';
+        //   $this->urlApi    = 'http://192.168.1.100/CoreTestDeveloper/V-1/Hotels/';
 //		$this->urlApi    = 'https://safar360.com/Core/V-1/Hotels/';
 
 //        $this->urlApi    = 'https://safar360.com/CoreTestDeveloper/V-1/Hotels/';
@@ -134,7 +134,7 @@ class ApiHotelCore extends clientAuth {
         if ( $this->auth == 'True' ) {
             $name = urlencode( $name );
             $url    = "{$this->urlApi}GetHotelsByName/{$name}";
-
+            functions::insertLog('data urlApi: ' . json_encode($this->urlApi) , '000shojaee');
             $result = functions::curlExecution( $url,[], $this->header );
             functions::insertLog(json_encode(['req'=>$url,'res'=>$result,'header'=>$this->header,'auth'=>$this->arrayAuth],256|64),'Hotels/GetHotelsByName');
             if (isset($result['StatusCode']) && $result['StatusCode'] == 200 ) {
@@ -414,10 +414,10 @@ class ApiHotelCore extends clientAuth {
                 }
             }
 
+            functions::insertLog('$param: ' . json_encode($reqData) , '000shojaee');
             functions::insertLog( 'Hotel DirectDetail Method Request: ' . json_encode( $reqData, 256|64 ), 'DirectDetail' );
 
             $resultHotel = functions::curlExecution( $url, json_encode( $reqData ), $this->header );
-
             functions::insertLog( 'Hotel DirectDetail Method Response: ' . json_encode( $resultHotel, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ), 'DirectDetail' );
 
 
@@ -490,11 +490,7 @@ class ApiHotelCore extends clientAuth {
             $dataSearch['RequestNumber'] = $param['RequestNumber'];
             functions::insertLog( '=====' . PHP_EOL . 'Reserve Request: ' . json_encode( $param, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ), "Hotels/{$dataSearch['RequestNumber']}"  );
 
-
             $resultHotel = functions::curlExecution( $url, json_encode( $param ), $this->header );
-
-//			$resultHotel = ['StatusCode'=>200,'Result'=>['Test']];
-
             functions::insertLog( 'Reserve Response: ' . json_encode( $resultHotel, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ), "Hotels/{$dataSearch['RequestNumber']}" );
 
             return $this->returnJson( $resultHotel, $resultHotel['StatusCode'] );

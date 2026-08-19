@@ -35,10 +35,10 @@ include "library/Jalali.php";
 include "library/functions.php";
 include "controller/dateTimeSetting.php";
 date_default_timezone_set('Asia/Tehran');
-
+require('/home/commin_config/password.php');
 defined('DB_DATABASE_BASE') or define('DB_DATABASE_BASE', 'safar360_gds');
 defined('DB_USERNAME_BASE') or define('DB_USERNAME_BASE', 'safar360');
-defined('DB_PASSWORD_BASE') or define('DB_PASSWORD_BASE', 'GW@!pvGOZ$h9Mk[JdoU');
+defined('DB_PASSWORD_BASE') or define('DB_PASSWORD_BASE', $PasswordAllSystem);
 
 //$conn = mysql_connect("localhost", DB_USERNAME_BASE, DB_PASSWORD_BASE) or die("Invalid server or user.");
 $connection = mysqli_connect('localhost',DB_USERNAME_BASE,DB_PASSWORD_BASE,DB_DATABASE_BASE) or die("Invalid server or user.");

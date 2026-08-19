@@ -24,8 +24,8 @@ class functions {
         $apiAddress = '';
         $isTest     = self::isTestServer();
         $apiAddress = 'http://safar360.com/Core/V-1/';
-
         if ( $isTest ) {//local
+
 //            $apiAddress = 'http://safar360.com/CoreTestDeveloper/V-1/';
             $apiAddress = 'http://192.168.1.100/CoreTestDeveloper/V-1/';
         }
@@ -230,7 +230,7 @@ class functions {
                 ':company'     => $company,
                 ':counterId'   => $counterId,
             );
-           return $Model->runSP( $query, $params );
+            return $Model->runSP( $query, $params );
 
         }
         catch ( PDOException $ex ) {
@@ -334,27 +334,29 @@ class functions {
                        ";
             $id_FactorNumber = $admin->ConectDbClient($sql_id, $id, "Select", "", "", "");
             if($id_FactorNumber['id']>0)
-               $command_FactorNumber=" and id< '".$id_FactorNumber['id']."' ";
+                $command_FactorNumber=" and id< '".$id_FactorNumber['id']."' ";
         }
 
         if($numberFactor!='' && $command_FactorNumber=='') {//اگر شماره فاکتور اومد باید شرطش هم به وجود اومده باشه والا هیچی دیده نشه
             $TotalCharge='ErrorCharge';
         }
         else{
-             $sql_charge = "SELECT sum(Price) AS total_charge 
+            $sql_charge = "SELECT sum(Price) AS total_charge 
                              FROM transaction_tb 
                              WHERE 
                                  Status='1' AND 
                                  PaymentStatus = 'success'
                                  ".$command_FactorNumber."
                              ";
-              $charge = $admin->ConectDbClient($sql_charge, $id, "Select", "", "", "");
-              $TotalCharge=0;
-              $total_buy=0;
-              if($charge){
-                 $total_charge = $charge['total_charge'];
+            $charge = $admin->ConectDbClient($sql_charge, $id, "Select", "", "", "");
+            $TotalCharge=0;
+            $total_buy=0;
+            if($charge){
 
-                 $sql_buy = "SELECT SUM(Price) AS total_buy 
+
+                $total_charge = $charge['total_charge'];
+
+                $sql_buy = "SELECT SUM(Price) AS total_buy 
                              FROM transaction_tb 
                              WHERE 
                                   Status='2' AND 
@@ -364,11 +366,11 @@ class functions {
                                   )
                                   ".$command_FactorNumber."
                              ";
-                 $buy = $admin->ConectDbClient($sql_buy, $id, "Select", "", "", "");
-                 $total_buy = $buy['total_buy'];
+                $buy = $admin->ConectDbClient($sql_buy, $id, "Select", "", "", "");
+                $total_buy = $buy['total_buy'];
 
-                 $TotalCharge = $total_charge - $total_buy;
-              }
+                $TotalCharge = $total_charge - $total_buy;
+            }
         }//end else $numberFactor
         return $TotalCharge;
     }
@@ -562,7 +564,7 @@ class functions {
     }
 
     #endregion
-    
+
     #region compareDate
 
     public static function compareDate( $DepartureDate, $DepartureTime, $Type24H = null ) {
@@ -1033,7 +1035,6 @@ class functions {
         $xmldata = simplexml_load_file( SITE_ROOT . "/langs/" . SOFTWARE_LANG . "_frontMaster.xml" );
 
         return  empty( $xmldata->$tagname ) ? "" : $xmldata->$tagname;
-
     }
 
     #endregion
@@ -1094,13 +1095,13 @@ class functions {
         $SqlMember = "SELECT * FROM members_tb WHERE id='{$id}'";
         //        $Member = $Model->load($SqlMember);
         $ClientId = ! empty( $ClientId ) ? $ClientId : CLIENT_ID;
-        
+
         if ( TYPE_ADMIN == '1' ):
             $Member = $admin->ConectDbClient( $SqlMember, $ClientId, "Select", "", "", "" );
         else:
             $Member = $admin->ConectDbClient( $SqlMember, CLIENT_ID, "Select", "", "", "" );
         endif;
-      
+
         return $Member;
     }
     #endregion
@@ -1147,9 +1148,9 @@ class functions {
             //در هر رکورد فقط یکی از قیمت ها با توجه به سن مقدار دارد و دوتای دیگر صفر هستند
             if ( strtolower( $each['flight_type'] ) == 'system' ) {
 
-               $isCounter = Load::controller( 'login' )->isCounter();
+                $isCounter = Load::controller( 'login' )->isCounter();
                 $isCounter = json_decode($isCounter);
-               $isSafar360 = self::isSafar360();
+                $isSafar360 = self::isSafar360();
 
                 // اگر میخواهید تخفیف برای منبع درست کار کند مانند شرط زیر برای منبع مورد نظر هم یک شرط بزارید-
 
@@ -1171,72 +1172,72 @@ class functions {
                             }
 
                         } elseif ( $each['pid_private'] == '1' ) {
-                           if ($isCounter || $isSafar360) {
-                              $amount += ($each['adt_price'] - $each['adt_com']) - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
-                              $amount += ($each['chd_price'] - $each['chd_com']) - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
-                              $amount += ($each['inf_price'] - $each['inf_com']) - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
-                           } else {
-                              $amount += $each['adt_price'] - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
-                              $amount += $each['chd_price'] - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
-                              $amount += $each['inf_price'] - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
-                           }
+                            if ($isCounter || $isSafar360) {
+                                $amount += ($each['adt_price'] - $each['adt_com']) - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
+                                $amount += ($each['chd_price'] - $each['chd_com']) - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
+                                $amount += ($each['inf_price'] - $each['inf_com']) - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
+                            } else {
+                                $amount += $each['adt_price'] - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
+                                $amount += $each['chd_price'] - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
+                                $amount += $each['inf_price'] - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
+                            }
 
                         }
                     }
                     else {
-                       if ($each['pid_private'] == '0') {
-                          $amount += $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
-                       } elseif ($each['pid_private'] == '1') {
-                          if ($isCounter || $isSafar360) {
-                             $amount += ($each['adt_price'] - $each['adt_com']) + ($each['chd_price'] - $each['chd_com']) + ($each['inf_price'] - $each['inf_com']);
-                          } else {
-                             $amount += $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
-                          }
-                       }
+                        if ($each['pid_private'] == '0') {
+                            $amount += $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
+                        } elseif ($each['pid_private'] == '1') {
+                            if ($isCounter || $isSafar360) {
+                                $amount += ($each['adt_price'] - $each['adt_com']) + ($each['chd_price'] - $each['chd_com']) + ($each['inf_price'] - $each['inf_com']);
+                            } else {
+                                $amount += $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
+                            }
+                        }
                     }
                 }
                 else {
                     if ( $each['IsInternal'] == '0' || $each['api_id'] == '14') {
 
-                       $airlineModel = Load::getModel('airlineModel');
-                       $airlineForCom = $airlineModel->get(['abbreviation','foreignAirline','amadeusStatus'], true)->where('abbreviation', $each['airline_iata'])->all();
-                       if (!isset($airlineForCom[0]['foreignAirline'])) {
-                          $foreignAirline = null;
-                       }
-                       if ($airlineForCom[0]['foreignAirline'] == 'active' || $airlineForCom[0]['foreignAirline'] == null || empty($airlineForCom[0]['foreignAirline']) ) {
-                          $foreignAirline = true;
-                       } else {
-                          $foreignAirline = false;
-                       }
+                        $airlineModel = Load::getModel('airlineModel');
+                        $airlineForCom = $airlineModel->get(['abbreviation','foreignAirline','amadeusStatus'], true)->where('abbreviation', $each['airline_iata'])->all();
+                        if (!isset($airlineForCom[0]['foreignAirline'])) {
+                            $foreignAirline = null;
+                        }
+                        if ($airlineForCom[0]['foreignAirline'] == 'active' || $airlineForCom[0]['foreignAirline'] == null || empty($airlineForCom[0]['foreignAirline']) ) {
+                            $foreignAirline = true;
+                        } else {
+                            $foreignAirline = false;
+                        }
 
-                            if (!$foreignAirline) {
-                                if ( $each['pid_private'] == '0' ) {
+                        if (!$foreignAirline) {
+                            if ( $each['pid_private'] == '0' ) {
 
-                                    if (isset($each['adt_price']) && $each['adt_price'] > 0) {
-                                        $amount += $each['adt_price'] - ($each['system_flight_commission'] * ($each['percent_discount'] / 100));
-                                    }
-                                    if (isset($each['chd_price']) && $each['chd_price'] > 0) {
-                                        $amount += $each['chd_price'] - ($each['system_flight_commission'] * ($each['percent_discount'] / 100));
-                                    }
-                                    if (isset($each['inf_price']) && $each['inf_price'] > 0) {
-                                        $amount += $each['inf_price'] - ($each['system_flight_commission'] * ($each['percent_discount'] / 100));
-                                    }
-
+                                if (isset($each['adt_price']) && $each['adt_price'] > 0) {
+                                    $amount += $each['adt_price'] - ($each['system_flight_commission'] * ($each['percent_discount'] / 100));
                                 }
-                                elseif ( $each['pid_private'] == '1' ) {
+                                if (isset($each['chd_price']) && $each['chd_price'] > 0) {
+                                    $amount += $each['chd_price'] - ($each['system_flight_commission'] * ($each['percent_discount'] / 100));
+                                }
+                                if (isset($each['inf_price']) && $each['inf_price'] > 0) {
+                                    $amount += $each['inf_price'] - ($each['system_flight_commission'] * ($each['percent_discount'] / 100));
+                                }
 
-                                   if ($isCounter || $isSafar360) {
-                                      $amount += ($each['adt_price'] - $each['adt_com']) - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
-                                      $amount += ($each['chd_price'] - $each['chd_com']) - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
-                                      $amount += ($each['inf_price'] - $each['inf_com']) - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
-                                   } else {
-                                      $amount += $each['adt_price'] - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
-                                      $amount += $each['chd_price'] - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
-                                      $amount += $each['inf_price'] - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
-                                   }
+                            }
+                            elseif ( $each['pid_private'] == '1' ) {
+
+                                if ($isCounter || $isSafar360) {
+                                    $amount += ($each['adt_price'] - $each['adt_com']) - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
+                                    $amount += ($each['chd_price'] - $each['chd_com']) - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
+                                    $amount += ($each['inf_price'] - $each['inf_com']) - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
+                                } else {
+                                    $amount += $each['adt_price'] - ( $each['adt_com'] * ( $each['percent_discount'] / 100 ) );
+                                    $amount += $each['chd_price'] - ( $each['chd_com'] * ( $each['percent_discount'] / 100 ) );
+                                    $amount += $each['inf_price'] - ( $each['inf_com'] * ( $each['percent_discount'] / 100 ) );
                                 }
                             }
-                            else {
+                        }
+                        else {
 
                             $everyAmount = $each['api_commission'] + $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
 
@@ -1245,35 +1246,35 @@ class functions {
 
 
 
-                        if ( $each['price_change'] > 0 && $each['price_change_type'] == 'percent' ) {
+                            if ( $each['price_change'] > 0 && $each['price_change_type'] == 'percent' ) {
 
-                          if($each['IsInternal'] == '1' &&  $each['api_id'] == '14'){
-                              $everyAmountFake = $each['api_commission'] + $each['adt_fare'] + $each['chd_fare'] + $each['inf_fare'];
-                          }
-                          else{
-                              $everyAmountFake = $each['api_commission'] + $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
+                                if($each['IsInternal'] == '1' &&  $each['api_id'] == '14'){
+                                    $everyAmountFake = $each['api_commission'] + $each['adt_fare'] + $each['chd_fare'] + $each['inf_fare'];
+                                }
+                                else{
+                                    $everyAmountFake = $each['api_commission'] + $each['adt_price'] + $each['chd_price'] + $each['inf_price'];
 
-                          }
+                                }
 
-                          $ChangeAmount    = $everyAmountFake * ( $each['price_change'] / 100 );
-
-
-                           
-                          $everyAmount     += $ChangeAmount;
-
-                          $amount          += $everyAmount - ( ( $ChangeAmount * $each['percent_discount'] ) / 100 );
+                                $ChangeAmount    = $everyAmountFake * ( $each['price_change'] / 100 );
 
 
-                        }
-                        else if ( $each['price_change'] > 0 && $each['price_change_type'] == 'cost' ) {
-                            $ChangeAmount = $each['price_change'];
-                            $everyAmount  += $ChangeAmount;
-                            $amount       += $everyAmount - ( ( $ChangeAmount * $each['percent_discount'] ) / 100 );
-                        }
-                        else {
-                            $amount += $everyAmount;
-                        }
+
+                                $everyAmount     += $ChangeAmount;
+
+                                $amount          += $everyAmount - ( ( $ChangeAmount * $each['percent_discount'] ) / 100 );
+
+
                             }
+                            else if ( $each['price_change'] > 0 && $each['price_change_type'] == 'cost' ) {
+                                $ChangeAmount = $each['price_change'];
+                                $everyAmount  += $ChangeAmount;
+                                $amount       += $everyAmount - ( ( $ChangeAmount * $each['percent_discount'] ) / 100 );
+                            }
+                            else {
+                                $amount += $everyAmount;
+                            }
+                        }
                     }
                 }
             }
@@ -1327,194 +1328,194 @@ class functions {
 
     #region calculateFare
 
-   public static function CalculateDiscountOnePerson( $RequestNumber, $nationalCode, $FlagPriceChange = 'yes' ) {
+    public static function CalculateDiscountOnePerson( $RequestNumber, $nationalCode, $FlagPriceChange = 'yes' ) {
 
-      //yes means nesesary calculate  price changes
-      $modelBase = Load::library( 'Model' );
-
-
-
-      $Sql = "SELECT *  FROM book_local_tb WHERE (request_number='{$RequestNumber}' OR factor_number='{$RequestNumber}') AND (passenger_national_code='{$nationalCode}' OR passportNumber='{$nationalCode}')";
-
-      $rec = $modelBase->load( $Sql );
-
-
-      $amount     = 0;
-      $isInternal = ( $rec['IsInternal'] == '1' ) ? 'internal' : 'external';
-      if ( strtolower( $rec['flight_type'] ) == 'system' ) {
-
-         $isCounter = Load::controller( 'login' )->isCounter();
-         $isCounter = json_decode($isCounter);
-         $isSafar360 = self::isSafar360();
-
-         // اگر میخواهید تخفیف برای منبع درست کار کند مانند شرط زیر برای منبع مورد نظر هم یک شرط بزارید-
-
-         if ( ($rec['IsInternal'] == '1' && $rec['api_id'] != '14') || ($rec['api_id'] != '10' && $rec['api_id'] != '15' && $rec['api_id'] != '17' && $rec['api_id'] != '14' && $rec['api_id'] != '8' && $rec['api_id'] != '43' && $rec['api_id'] != '21' && $rec['api_id'] != '20') ) {
+        //yes means nesesary calculate  price changes
+        $modelBase = Load::library( 'Model' );
 
 
 
-            if ( $rec['percent_discount'] > 0 ) {
-               if ( $rec['pid_private'] == '0' ) {
+        $Sql = "SELECT *  FROM book_local_tb WHERE (request_number='{$RequestNumber}' OR factor_number='{$RequestNumber}') AND (passenger_national_code='{$nationalCode}' OR passportNumber='{$nationalCode}')";
 
-                  if (isset($rec['adt_price']) && $rec['adt_price'] != '0') {
-                     $amount += $rec['adt_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                  }
-                  if (isset($rec['chd_price']) && $rec['chd_price'] != '0') {
-                     $amount += $rec['chd_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                  }
-                  if (isset($rec['inf_price']) && $rec['inf_price'] != '0') {
-                     $amount += $rec['inf_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                  }
+        $rec = $modelBase->load( $Sql );
 
-               } elseif ( $rec['pid_private'] == '1' ) {
-                  if ($isCounter || $isSafar360) {
-                     $amount += ($rec['adt_price'] - $rec['adt_com']) - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
-                     $amount += ($rec['chd_price'] - $rec['chd_com']) - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
-                     $amount += ($rec['inf_price'] - $rec['inf_com']) - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
-                  } else {
-                     $amount += $rec['adt_price'] - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
-                     $amount += $rec['chd_price'] - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
-                     $amount += $rec['inf_price'] - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
-                  }
 
-               }
+        $amount     = 0;
+        $isInternal = ( $rec['IsInternal'] == '1' ) ? 'internal' : 'external';
+        if ( strtolower( $rec['flight_type'] ) == 'system' ) {
+
+            $isCounter = Load::controller( 'login' )->isCounter();
+            $isCounter = json_decode($isCounter);
+            $isSafar360 = self::isSafar360();
+
+            // اگر میخواهید تخفیف برای منبع درست کار کند مانند شرط زیر برای منبع مورد نظر هم یک شرط بزارید-
+
+            if ( ($rec['IsInternal'] == '1' && $rec['api_id'] != '14') || ($rec['api_id'] != '10' && $rec['api_id'] != '15' && $rec['api_id'] != '17' && $rec['api_id'] != '14' && $rec['api_id'] != '8' && $rec['api_id'] != '43' && $rec['api_id'] != '21' && $rec['api_id'] != '20') ) {
+
+
+
+                if ( $rec['percent_discount'] > 0 ) {
+                    if ( $rec['pid_private'] == '0' ) {
+
+                        if (isset($rec['adt_price']) && $rec['adt_price'] != '0') {
+                            $amount += $rec['adt_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        }
+                        if (isset($rec['chd_price']) && $rec['chd_price'] != '0') {
+                            $amount += $rec['chd_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        }
+                        if (isset($rec['inf_price']) && $rec['inf_price'] != '0') {
+                            $amount += $rec['inf_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        }
+
+                    } elseif ( $rec['pid_private'] == '1' ) {
+                        if ($isCounter || $isSafar360) {
+                            $amount += ($rec['adt_price'] - $rec['adt_com']) - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
+                            $amount += ($rec['chd_price'] - $rec['chd_com']) - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
+                            $amount += ($rec['inf_price'] - $rec['inf_com']) - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
+                        } else {
+                            $amount += $rec['adt_price'] - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
+                            $amount += $rec['chd_price'] - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
+                            $amount += $rec['inf_price'] - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
+                        }
+
+                    }
+                }
+                else {
+                    if ($rec['pid_private'] == '0') {
+                        $amount += $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+                    } elseif ($rec['pid_private'] == '1') {
+                        if ($isCounter || $isSafar360) {
+                            $amount += ($rec['adt_price'] - $rec['adt_com']) + ($rec['chd_price'] - $rec['chd_com']) + ($rec['inf_price'] - $rec['inf_com']);
+                        } else {
+                            $amount += $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+                        }
+                    }
+                }
             }
             else {
-               if ($rec['pid_private'] == '0') {
-                  $amount += $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
-               } elseif ($rec['pid_private'] == '1') {
-                  if ($isCounter || $isSafar360) {
-                     $amount += ($rec['adt_price'] - $rec['adt_com']) + ($rec['chd_price'] - $rec['chd_com']) + ($rec['inf_price'] - $rec['inf_com']);
-                  } else {
-                     $amount += $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
-                  }
-               }
+                if ( $rec['IsInternal'] == '0' || $rec['api_id'] == '14') {
+
+                    $airlineModel = Load::getModel('airlineModel');
+                    $airlineForCom = $airlineModel->get(['abbreviation','foreignAirline','amadeusStatus'], true)->where('abbreviation', $rec['airline_iata'])->all();
+                    if (!isset($airlineForCom[0]['foreignAirline'])) {
+                        $foreignAirline = null;
+                    }
+                    if ($airlineForCom[0]['foreignAirline'] == 'active' || $airlineForCom[0]['foreignAirline'] == null || empty($airlineForCom[0]['foreignAirline']) ) {
+                        $foreignAirline = true;
+                    } else {
+                        $foreignAirline = false;
+                    }
+
+                    if (!$foreignAirline) {
+                        if ( $rec['pid_private'] == '0' ) {
+
+                            if (isset($rec['adt_price']) && $rec['adt_price'] > 0) {
+                                $amount += $rec['adt_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                            }
+                            if (isset($rec['chd_price']) && $rec['chd_price'] > 0) {
+                                $amount += $rec['chd_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                            }
+                            if (isset($rec['inf_price']) && $rec['inf_price'] > 0) {
+                                $amount += $rec['inf_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                            }
+
+                        }
+                        elseif ( $rec['pid_private'] == '1' ) {
+
+                            if ($isCounter || $isSafar360) {
+                                $amount += ($rec['adt_price'] - $rec['adt_com']) - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
+                                $amount += ($rec['chd_price'] - $rec['chd_com']) - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
+                                $amount += ($rec['inf_price'] - $rec['inf_com']) - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
+                            } else {
+                                $amount += $rec['adt_price'] - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
+                                $amount += $rec['chd_price'] - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
+                                $amount += $rec['inf_price'] - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
+                            }
+                        }
+                    }
+                    else {
+
+                        $everyAmount = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+
+
+
+
+
+
+                        if ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'percent' ) {
+
+                            if($rec['IsInternal'] == '1' &&  $rec['api_id'] == '14'){
+                                $everyAmountFake = $rec['api_commission'] + $rec['adt_fare'] + $rec['chd_fare'] + $rec['inf_fare'];
+                            }
+                            else{
+                                $everyAmountFake = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+
+                            }
+
+                            $ChangeAmount    = $everyAmountFake * ( $rec['price_change'] / 100 );
+
+
+
+                            $everyAmount     += $ChangeAmount;
+
+                            $amount          += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
+
+
+                        }
+                        else if ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'cost' ) {
+                            $ChangeAmount = $rec['price_change'];
+                            $everyAmount  += $ChangeAmount;
+                            $amount       += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
+                        }
+                        else {
+                            $amount += $everyAmount;
+                        }
+                    }
+                }
             }
-         }
-         else {
-            if ( $rec['IsInternal'] == '0' || $rec['api_id'] == '14') {
-
-               $airlineModel = Load::getModel('airlineModel');
-               $airlineForCom = $airlineModel->get(['abbreviation','foreignAirline','amadeusStatus'], true)->where('abbreviation', $rec['airline_iata'])->all();
-               if (!isset($airlineForCom[0]['foreignAirline'])) {
-                  $foreignAirline = null;
-               }
-               if ($airlineForCom[0]['foreignAirline'] == 'active' || $airlineForCom[0]['foreignAirline'] == null || empty($airlineForCom[0]['foreignAirline']) ) {
-                  $foreignAirline = true;
-               } else {
-                  $foreignAirline = false;
-               }
-
-               if (!$foreignAirline) {
-                  if ( $rec['pid_private'] == '0' ) {
-
-                     if (isset($rec['adt_price']) && $rec['adt_price'] > 0) {
-                        $amount += $rec['adt_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                     }
-                     if (isset($rec['chd_price']) && $rec['chd_price'] > 0) {
-                        $amount += $rec['chd_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                     }
-                     if (isset($rec['inf_price']) && $rec['inf_price'] > 0) {
-                        $amount += $rec['inf_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                     }
-
-                  }
-                  elseif ( $rec['pid_private'] == '1' ) {
-
-                     if ($isCounter || $isSafar360) {
-                        $amount += ($rec['adt_price'] - $rec['adt_com']) - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
-                        $amount += ($rec['chd_price'] - $rec['chd_com']) - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
-                        $amount += ($rec['inf_price'] - $rec['inf_com']) - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
-                     } else {
-                        $amount += $rec['adt_price'] - ( $rec['adt_com'] * ( $rec['percent_discount'] / 100 ) );
-                        $amount += $rec['chd_price'] - ( $rec['chd_com'] * ( $rec['percent_discount'] / 100 ) );
-                        $amount += $rec['inf_price'] - ( $rec['inf_com'] * ( $rec['percent_discount'] / 100 ) );
-                     }
-                  }
-               }
-               else {
-
-                  $everyAmount = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+        }
+        else {
 
 
+            $everyAmount = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
 
-
-
-
-                  if ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'percent' ) {
-
-                     if($rec['IsInternal'] == '1' &&  $rec['api_id'] == '14'){
-                        $everyAmountFake = $rec['api_commission'] + $rec['adt_fare'] + $rec['chd_fare'] + $rec['inf_fare'];
-                     }
-                     else{
-                        $everyAmountFake = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
-
-                     }
-
-                     $ChangeAmount    = $everyAmountFake * ( $rec['price_change'] / 100 );
-
-
-
-                     $everyAmount     += $ChangeAmount;
-
-                     $amount          += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
-
-
-                  }
-                  else if ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'cost' ) {
-                     $ChangeAmount = $rec['price_change'];
-                     $everyAmount  += $ChangeAmount;
-                     $amount       += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
-                  }
-                  else {
-                     $amount += $everyAmount;
-                  }
-               }
+            if ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'cost' ) {
+                $everyAmount  += $rec['irantech_commission'];
+                $ChangeAmount = $rec['price_change'];
+                $everyAmount  += $ChangeAmount;
+                if ( $rec['passenger_age'] == 'Adt' || $rec['passenger_age'] == 'Chd' ) {
+                    $amount += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
+                } else if ( $rec['passenger_age'] == 'Inf' ) {
+                    $amount += $everyAmount;
+                }
             }
-         }
-      }
-      else {
+            elseif ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'percent' ) {
+                $everyAmountFake = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+                $ChangeAmount    = $everyAmountFake * ( $rec['price_change'] / 100 );
+
+                $everyAmount += $ChangeAmount;
+                $everyAmount += $rec['irantech_commission'];
 
 
-         $everyAmount = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
-
-         if ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'cost' ) {
-            $everyAmount  += $rec['irantech_commission'];
-            $ChangeAmount = $rec['price_change'];
-            $everyAmount  += $ChangeAmount;
-            if ( $rec['passenger_age'] == 'Adt' || $rec['passenger_age'] == 'Chd' ) {
-               $amount += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
-            } else if ( $rec['passenger_age'] == 'Inf' ) {
-               $amount += $everyAmount;
+                if ( $rec['passenger_age'] == 'Adt' || $rec['passenger_age'] == 'Chd' ) {
+                    $amount += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
+                } else if ( $rec['passenger_age'] == 'Inf' ) {
+                    $amount += $everyAmount;
+                }
+            } else {
+                if ( $rec['passenger_age'] == 'Adt' || $rec['passenger_age'] == 'Chd' ) {
+                    $ChangeAmount = 0;
+                    $everyAmount  += $rec['irantech_commission'];
+                    $amount       += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
+                } else if ( $rec['passenger_age'] == 'Inf' ) {
+                    $everyAmount += $rec['irantech_commission'];
+                    $amount      += $everyAmount;
+                }
             }
-         }
-         elseif ( $rec['price_change'] > 0 && $rec['price_change_type'] == 'percent' ) {
-            $everyAmountFake = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
-            $ChangeAmount    = $everyAmountFake * ( $rec['price_change'] / 100 );
+        }
 
-            $everyAmount += $ChangeAmount;
-            $everyAmount += $rec['irantech_commission'];
-
-
-            if ( $rec['passenger_age'] == 'Adt' || $rec['passenger_age'] == 'Chd' ) {
-               $amount += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
-            } else if ( $rec['passenger_age'] == 'Inf' ) {
-               $amount += $everyAmount;
-            }
-         } else {
-            if ( $rec['passenger_age'] == 'Adt' || $rec['passenger_age'] == 'Chd' ) {
-               $ChangeAmount = 0;
-               $everyAmount  += $rec['irantech_commission'];
-               $amount       += $everyAmount - ( ( $ChangeAmount * $rec['percent_discount'] ) / 100 );
-            } else if ( $rec['passenger_age'] == 'Inf' ) {
-               $everyAmount += $rec['irantech_commission'];
-               $amount      += $everyAmount;
-            }
-         }
-      }
-
-      return round( $amount );
-   }
+        return round( $amount );
+    }
     #endregion
 
     #region CalculatePriceTicketOnePerson
@@ -1544,76 +1545,76 @@ class functions {
 
         if ( strtolower( $rec['flight_type'] == 'system' ) ) {
 
-           if ($rec['IsInternal'] == '1') {
-               if ($rec['percent_discount'] > 0) {
-                   $checkPrivate = ($rec['pid_private'] == '1') ? 'private' : 'public';
+            if ($rec['IsInternal'] == '1') {
+                if ($rec['percent_discount'] > 0) {
+                    $checkPrivate = ($rec['pid_private'] == '1') ? 'private' : 'public';
 
-                   if ($checkPrivate == 'public') {
+                    if ($checkPrivate == 'public') {
 
-                       if (isset($rec['adt_price']) && $rec['adt_price'] != 0) {
-                           $amount += $rec['adt_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                       } else if (isset($rec['chd_price']) && $rec['chd_price'] != 0) {
-                           $amount += $rec['chd_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                       } else if (isset($rec['inf_price']) && $rec['inf_price'] != 0) {
-                           $amount += $rec['inf_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                       }
-                   } elseif ($checkPrivate == 'private') {
-                       $amount += $rec['adt_price'] - ($rec['adt_fare'] * ($rec['percent_discount'] / 100));
-                       $amount += $rec['chd_price'] - ($rec['chd_fare'] * ($rec['percent_discount'] / 100));
-                       $amount += $rec['inf_price'];
-                   }
-               } else {
-                   $amount += $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
-               }
-           }
-           else {
-               if ($rec['percent_discount'] > 0) {
-                   $airlineModel = Load::getModel('airlineModel');
-                   $airlineForCom = $airlineModel->get(['abbreviation','foreignAirline','amadeusStatus'], true)->where('abbreviation', $rec['airline_iata'])->all();
-                   if (!isset($airlineForCom[0]['foreignAirline'])) {
-                       $foreignAirline = null;
-                   }
-                   if ($airlineForCom[0]['foreignAirline'] == 'active' || $airlineForCom[0]['foreignAirline'] == null || empty($airlineForCom[0]['foreignAirline']) ) {
-                       $foreignAirline = true;
-                   } else {
-                       $foreignAirline = false;
-                   }
+                        if (isset($rec['adt_price']) && $rec['adt_price'] != 0) {
+                            $amount += $rec['adt_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        } else if (isset($rec['chd_price']) && $rec['chd_price'] != 0) {
+                            $amount += $rec['chd_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        } else if (isset($rec['inf_price']) && $rec['inf_price'] != 0) {
+                            $amount += $rec['inf_price'] - ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        }
+                    } elseif ($checkPrivate == 'private') {
+                        $amount += $rec['adt_price'] - ($rec['adt_fare'] * ($rec['percent_discount'] / 100));
+                        $amount += $rec['chd_price'] - ($rec['chd_fare'] * ($rec['percent_discount'] / 100));
+                        $amount += $rec['inf_price'];
+                    }
+                } else {
+                    $amount += $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+                }
+            }
+            else {
+                if ($rec['percent_discount'] > 0) {
+                    $airlineModel = Load::getModel('airlineModel');
+                    $airlineForCom = $airlineModel->get(['abbreviation','foreignAirline','amadeusStatus'], true)->where('abbreviation', $rec['airline_iata'])->all();
+                    if (!isset($airlineForCom[0]['foreignAirline'])) {
+                        $foreignAirline = null;
+                    }
+                    if ($airlineForCom[0]['foreignAirline'] == 'active' || $airlineForCom[0]['foreignAirline'] == null || empty($airlineForCom[0]['foreignAirline']) ) {
+                        $foreignAirline = true;
+                    } else {
+                        $foreignAirline = false;
+                    }
 
-                   if (!$foreignAirline) {
-                       if (isset($rec['adt_price']) && $rec['adt_price'] != 0) {
-                           $rec['adt_price'] -= ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                       } else if (isset($rec['chd_price']) && $rec['chd_price'] != 0) {
-                           $rec['chd_price'] -= ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                       } else if (isset($rec['inf_price']) && $rec['inf_price'] != 0) {
-                           $rec['inf_price'] -= ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
-                       }
-                   }
+                    if (!$foreignAirline) {
+                        if (isset($rec['adt_price']) && $rec['adt_price'] != 0) {
+                            $rec['adt_price'] -= ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        } else if (isset($rec['chd_price']) && $rec['chd_price'] != 0) {
+                            $rec['chd_price'] -= ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        } else if (isset($rec['inf_price']) && $rec['inf_price'] != 0) {
+                            $rec['inf_price'] -= ($rec['system_flight_commission'] * ($rec['percent_discount'] / 100));
+                        }
+                    }
 
-               }
+                }
 
 
-               $everyAmount = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+                $everyAmount = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
 
-               if ($rec['price_change'] > 0 && $rec['price_change_type'] == 'percent') {
-                   if($rec['IsInternal'] == '1' && $rec['api_id'] == '14'){
-                       $everyAmountFake = $rec['api_commission'] + $rec['adt_fare'] + $rec['chd_fare'] + $rec['inf_fare'];
-                   }else{
+                if ($rec['price_change'] > 0 && $rec['price_change_type'] == 'percent') {
+                    if($rec['IsInternal'] == '1' && $rec['api_id'] == '14'){
+                        $everyAmountFake = $rec['api_commission'] + $rec['adt_fare'] + $rec['chd_fare'] + $rec['inf_fare'];
+                    }else{
 
-                       $everyAmountFake = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
-                   }
-                   $ChangeAmount = $everyAmountFake * ($rec['price_change'] / 100);
-                   $everyAmount += $ChangeAmount;
-                   $amount += $everyAmount - (($ChangeAmount * $rec['percent_discount']) / 100);
-               }
-               else if ($rec['price_change'] > 0 && $rec['price_change_type'] == 'cost') {
-                   $ChangeAmount = $rec['price_change'];
-                   $everyAmount += $ChangeAmount;
-                   $amount += $everyAmount - (($ChangeAmount * $rec['percent_discount']) / 100);
-               }
-               else {
-                   $amount += $everyAmount;
-               }
-           }
+                        $everyAmountFake = $rec['api_commission'] + $rec['adt_price'] + $rec['chd_price'] + $rec['inf_price'];
+                    }
+                    $ChangeAmount = $everyAmountFake * ($rec['price_change'] / 100);
+                    $everyAmount += $ChangeAmount;
+                    $amount += $everyAmount - (($ChangeAmount * $rec['percent_discount']) / 100);
+                }
+                else if ($rec['price_change'] > 0 && $rec['price_change_type'] == 'cost') {
+                    $ChangeAmount = $rec['price_change'];
+                    $everyAmount += $ChangeAmount;
+                    $amount += $everyAmount - (($ChangeAmount * $rec['percent_discount']) / 100);
+                }
+                else {
+                    $amount += $everyAmount;
+                }
+            }
 
 
         } else {
@@ -2375,7 +2376,7 @@ class functions {
             case '10175':
                 return functions::Xmlinformation( 'WrongNationalTravelerCode' );
                 break;
-                case '10175':
+            case '10175':
                 return functions::Xmlinformation( 'WrongNationalTravelerCode' );
                 break;
             default:
@@ -2856,49 +2857,49 @@ class functions {
         ob_start();
         ?>
 
-      <a href="javascript:void(0)" class="carouseller__left">
-        <i class="zmdi zmdi-chevron-left "
-           onclick="LowestPriceFlight('<?php echo $PersianDepartureDate ?>' ,'<?php echo $Departure_Code ?>','<?php echo $Arrival_Code ?>','<?php echo $adult ?>','<?php echo $child ?>','<?php echo $infant ?>','Next'); return false"></i>
-      </a>
-      <div class="carouseller__wrap">
-        <div class="carouseller__list">
-            <?php
+        <a href="javascript:void(0)" class="carouseller__left">
+            <i class="zmdi zmdi-chevron-left "
+               onclick="LowestPriceFlight('<?php echo $PersianDepartureDate ?>' ,'<?php echo $Departure_Code ?>','<?php echo $Arrival_Code ?>','<?php echo $adult ?>','<?php echo $child ?>','<?php echo $infant ?>','Next'); return false"></i>
+        </a>
+        <div class="carouseller__wrap">
+            <div class="carouseller__list">
+                <?php
 
-            while ( $DateCalculatedStart < $DateCalculatedEnd ) {
+                while ( $DateCalculatedStart < $DateCalculatedEnd ) {
 
-                $ex    = explode( '-', $DateCalculatedStart );
-                $ex[2] = ( $ex[2] > 9 ) ? $ex[2] : str_replace( '0', '', $ex[2] );
-                $ex[1] = str_replace( '0', '', $ex[1] );
+                    $ex    = explode( '-', $DateCalculatedStart );
+                    $ex[2] = ( $ex[2] > 9 ) ? $ex[2] : str_replace( '0', '', $ex[2] );
+                    $ex[1] = str_replace( '0', '', $ex[1] );
 
-                $DateCalculatedStart    = $ex[0] . '-' . $ex[1] . '-' . $ex[2];
-                $DateCalculatedStartInt = dateTimeSetting::jmktime( '0', '0', '0', $ex[1], $ex[2], $ex[0] );
+                    $DateCalculatedStart    = $ex[0] . '-' . $ex[1] . '-' . $ex[2];
+                    $DateCalculatedStartInt = dateTimeSetting::jmktime( '0', '0', '0', $ex[1], $ex[2], $ex[0] );
 
-                if ( ! empty( $ResultApiNew[ $DateCalculatedStart ] ) ) {
-                    $prices   = self::array_column( $ResultApiNew, 'MinPrice' );
-                    $minPrice = min( $prices );
-                    $Class    = ( $ResultApiNew[ $DateCalculatedStart ]['MinPrice'] == $minPrice ) ? 'site-bg-main-color' : '';
-                    ?>
-                  <div class="quickTicksBox car__by5 <?php echo $Class ?>">
-                    <a clear="quickTicksLink"
-                       href="<?php echo $Root ?>/local/1/<?php echo $Origin ?>-<?php echo $Destination ?>/<?php echo $DateCalculatedStart ?>/Y/<?php echo $Adult ?>-<?php echo $Child ?>-<?php echo $Infant ?>/">
+                    if ( ! empty( $ResultApiNew[ $DateCalculatedStart ] ) ) {
+                        $prices   = self::array_column( $ResultApiNew, 'MinPrice' );
+                        $minPrice = min( $prices );
+                        $Class    = ( $ResultApiNew[ $DateCalculatedStart ]['MinPrice'] == $minPrice ) ? 'site-bg-main-color' : '';
+                        ?>
+                        <div class="quickTicksBox car__by5 <?php echo $Class ?>">
+                            <a clear="quickTicksLink"
+                               href="<?php echo $Root ?>/local/1/<?php echo $Origin ?>-<?php echo $Destination ?>/<?php echo $DateCalculatedStart ?>/Y/<?php echo $Adult ?>-<?php echo $Child ?>-<?php echo $Infant ?>/">
                             <span class="cheaperTicketPrice site-bg-main-color site-bg-color-dock-border-right-b site-bg-color-dock-border-top ">
                                <p>
                                 <?php echo number_format( $ResultApiNew[ $DateCalculatedStart ]['MinPrice'] * 10 ) ?> <i> ریال</i>
                                </p>
                               </span>
-                      <span class="cheaperTicketDate">
+                                <span class="cheaperTicketDate">
                                 <p><?php echo dateTimeSetting::jdate( "l", dateTimeSetting::jmktime( '0', '0', '0', $ex[1], $ex[2], $ex[0] ) ) ?></p>
                               </span>
-                      <span class="cheaperTicketDate">
+                                <span class="cheaperTicketDate">
                                  <p class="font15"><?php echo $DateCalculatedStart ?></p>
                               </span>
-                    </a>
-                  </div>
-                <?php } else { ?>
-                  <div class="quickTicksBox car__by5">
+                            </a>
+                        </div>
+                    <?php } else { ?>
+                        <div class="quickTicksBox car__by5">
                           <span clear="quickTicksLink" href="" onclick="return false;">
                              <span
-                               class="cheaperTicketPrice site-bg-main-color site-bg-color-dock-border-right-b site-bg-color-dock-border-top">
+                                     class="cheaperTicketPrice site-bg-main-color site-bg-color-dock-border-right-b site-bg-color-dock-border-top">
                                <p>
                                     <i>موجود نیست</i>
                                </p>
@@ -2910,20 +2911,20 @@ class functions {
                                 <p class="font15"><?php echo $DateCalculatedStart ?></p>
                               </span>
                            </span>
-                  </div>
-                    <?php
+                        </div>
+                        <?php
+                    }
+
+                    $DateCalculatedStart = dateTimeSetting::jdate( "Y-m-d", $MktTimeStart + ( $i ++ * 24 * 60 * 60 ), "", "", "en" );
+
                 }
-
-                $DateCalculatedStart = dateTimeSetting::jdate( "Y-m-d", $MktTimeStart + ( $i ++ * 24 * 60 * 60 ), "", "", "en" );
-
-            }
-            ?>
+                ?>
+            </div>
         </div>
-      </div>
-      <a href="javascript:void(0)" class="carouseller__right">
-        <i class="zmdi zmdi-chevron-right"
-           onclick="LowestPriceFlight('<?php echo $PersianDepartureDateFirst ?>','<?php echo $Departure_Code ?>','<?php echo $Arrival_Code ?>','<?php echo $adult ?>','<?php echo $child ?>','<?php echo $infant ?>','Perv'); return false"></i>
-      </a>
+        <a href="javascript:void(0)" class="carouseller__right">
+            <i class="zmdi zmdi-chevron-right"
+               onclick="LowestPriceFlight('<?php echo $PersianDepartureDateFirst ?>','<?php echo $Departure_Code ?>','<?php echo $Arrival_Code ?>','<?php echo $adult ?>','<?php echo $child ?>','<?php echo $infant ?>','Perv'); return false"></i>
+        </a>
         <?php
 
         return $PrintTicket = ob_get_clean();
@@ -3557,14 +3558,14 @@ class functions {
                 ':date'            => $date,
                 ':typeApplication' => $typeApplication
             );
-			$result = $Model->runSP( $query, $params );
+            $result = $Model->runSP( $query, $params );
 
-			return $result;
+            return $result;
 
-		} catch ( PDOException $ex ) {
-			return false;
-		}
-	}
+        } catch ( PDOException $ex ) {
+            return false;
+        }
+    }
     #endregion
 
 
@@ -3616,11 +3617,11 @@ class functions {
 
     #region calcDiscountCodeByFactor: calculate discount code amount by factor number and if it exists
 
-   public static function calculateHotelPrice1($price_changes,$service_discount = 0, $price = 0,$only_calculated = false)
+    public static function calculateHotelPrice1($price_changes,$service_discount = 0, $price = 0,$only_calculated = false)
     {
 
         $base_price = $price;
-       
+
         $result = array();
         $result['discount'] = $service_discount;
         $result['discount_amount'] = 0;
@@ -3721,191 +3722,191 @@ class functions {
             $Param['FlightType'] = 'charter';
         }
         ?>
-      <div class="pop-up-h site-bg-main-color">
-        <span> <?php echo functions::Xmlinformation( 'CabinTypeDetails' ) ?>:<?php echo $Param['CabinType'] ?></span>
-      </div>
-      <div class="price-Content site-border-main-color">
-        <p id="AlertPanelHTC"></p>
-
-        <div class="tblprice">
-          <div>
-            <div class="tdpricelabel"><?php echo functions::Xmlinformation( 'Priceadult' ) ?> :</div>
-            <div class="tdprice">
-
-                <?php
-                $SubFlightType = strtolower( $Param['FlightType'] ) == 'system' ? 'system' : 'charter';
-                //
-                $SubPriceCalculate  = functions::setPriceChanges( $Param['Airline'], $SubFlightType, $Param['AdtPrice'], $Param['AdtFare'], 'Local', strtolower( $Param['FlightType'] ) == 'system' ? '' : 'public' );
-                $SubPriceCalculated = explode( ':', $SubPriceCalculate );
-
-                if ( Session::IsLogin() ) {
-                    if ( $SubPriceCalculated[2] == 'YES' ) {
-                        ?>
-                      <i class="text-decoration-line"><?php echo number_format( $SubPriceCalculated[1] ) ?></i>
-                      <i class="bg-price-box "><?php echo number_format( $SubPriceCalculated[0] ); ?></i>ریال
-                        <?php
-                    } else {
-                        ?>
-                      <i class="bg-price-box "><?php echo number_format( $SubPriceCalculated[1] ) ?></i>ریال<?php
-                    }
-                    ?>
-                <?php } else { ?>
-                  <i><?php echo number_format( $SubPriceCalculated[1] ) . ' ' . functions::Xmlinformation( 'Rial' ) ?></i>
-                <?php } ?>
-            </div>
-            <!-- </tr>
-                    <tr> -->
-            <div class="tdpricelabel"><?php echo functions::Xmlinformation( 'Pricechild' ) ?> :</div>
-            <div class="tdprice">
-
-                <?php
-                if ( ! empty( $Param['ChdPrice'] ) ) {
-                    $SubFlightType = strtolower( $Param['FlightType'] ) == 'system' ? 'system' : 'charter';
-                    //
-                    $SubPriceCalculate  = functions::setPriceChanges( $Param['Airline'], $SubFlightType, $Param['ChdPrice'], $Param['ChdFare'], 'Local', strtolower( $Param['FlightType'] ) == 'system' ? '' : 'public' );
-                    $SubPriceCalculated = explode( ':', $SubPriceCalculate );
-
-                    if ( Session::IsLogin() ) {
-                        if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
-                            $OriginPriceWithOutDiscount = $SubPriceCalculated[1] - ceil( ( ( $SubPriceCalculated[1] * 11768 ) / 100000 ) );
-                            if ( $SubPriceCalculated[2] == 'YES' ) {
-                                $PriceAfterDiscount = $SubPriceCalculated[0] - ceil( ( ( $SubPriceCalculated[0] * 11768 ) / 100000 ) );
-                                ?>
-                              <i class="text-decoration-line"><?php echo number_format( round( $OriginPriceWithOutDiscount, - 1 ) ) ?></i>
-                              <i class="bg-price-box site-bg-main-color"><?php echo number_format( round( $PriceAfterDiscount, - 1 ) ); ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?>
-                                <?php
-                            } else {
-                                ?>
-                              <i class="bg-price-box site-bg-main-color"><?php echo number_format( round( $OriginPriceWithOutDiscount,
-                                    - 1 ) ) ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?><?php
-                            }
-                        } else {
-                            if ( $SubPriceCalculated[2] == 'YES' ) {
-                                ?>
-                              <i class="text-decoration-line"><?php echo number_format( $SubPriceCalculated[1] ) ?></i>
-                              <i class="bg-price-box site-bg-main-color"><?php echo number_format( $SubPriceCalculated[0] ); ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?>
-                                <?php
-                            } else {
-                                ?>
-                              <i class="bg-price-box site-bg-main-color"><?php echo number_format( $SubPriceCalculated[1] ) ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?><?php
-                            }
-                        }
-
-                        ?>
-                    <?php } else { ?>
-                      <i><?php
-
-                          if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
-                              $OriginPriceWithOutDiscount = $Param['ChdPrice'] - ceil( ( ( $Param['ChdPrice'] * 11768 ) / 100000 ) );
-                              echo number_format( round( $OriginPriceWithOutDiscount, - 1 ) );
-                          } else {
-                              echo number_format( $Param['ChdPrice'] );
-                          }
-                          ?><?php echo functions::Xmlinformation( 'Rial' ) ?></i>
-                        <?php
-                    }
-                } else {
-                    ?><i><?php echo functions::Xmlinformation( 'PreInvoiceStep' ) ?></i><?php
-                }
-                ?>
-            </div>
-            <!--   </tr>
-                      <tr> -->
-            <div class="tdpricelabel"> <?php echo functions::Xmlinformation( 'Pricebaby' ) ?>:</div>
-            <div class="tdprice">
-
-                <?php
-                $PriceInfant = $Param['InfPrice'] - ceil( ( $Param['InfPrice'] * 75586 ) / 100000 );
-                if ( functions::checkConfigPid( $Param['Airline'], 'internal', strtolower( $Param['FlightType'] ) ) == 'public' ) {
-
-                    if ( strtolower( $Param['FlightType'] ) == 'system' ) {
-
-                        if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
-
-
-                            ?>
-                          <i><?php echo number_format( round( $PriceInfant, - 1 ) ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
-                            <?php
-                        } else {
-                            ?>
-
-                          <i><?php echo number_format( $Param['InfPrice'] ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
-                            <?php
-                        }
-                    } else {
-                        echo functions::Xmlinformation( 'PreInvoiceStep' );
-                    }
-                } else {
-                    if ( strtolower( $Param['FlightType'] ) == 'system' ) {
-
-                        if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
-
-
-                            ?>
-                          <i><?php echo number_format( round( $PriceInfant, - 1 ) ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
-                            <?php
-                        } else {
-                            ?>
-
-                          <i><?php echo number_format( $Param['InfPrice'] ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
-                            <?php
-                        }
-                    } else {
-                        echo functions::Xmlinformation( 'PreInvoiceStep' );
-                    }
-                }
-                ?>
-            </div>
-          </div>
+        <div class="pop-up-h site-bg-main-color">
+            <span> <?php echo functions::Xmlinformation( 'CabinTypeDetails' ) ?>:<?php echo $Param['CabinType'] ?></span>
         </div>
+        <div class="price-Content site-border-main-color">
+            <p id="AlertPanelHTC"></p>
+
+            <div class="tblprice">
+                <div>
+                    <div class="tdpricelabel"><?php echo functions::Xmlinformation( 'Priceadult' ) ?> :</div>
+                    <div class="tdprice">
+
+                        <?php
+                        $SubFlightType = strtolower( $Param['FlightType'] ) == 'system' ? 'system' : 'charter';
+                        //
+                        $SubPriceCalculate  = functions::setPriceChanges( $Param['Airline'], $SubFlightType, $Param['AdtPrice'], $Param['AdtFare'], 'Local', strtolower( $Param['FlightType'] ) == 'system' ? '' : 'public' );
+                        $SubPriceCalculated = explode( ':', $SubPriceCalculate );
+
+                        if ( Session::IsLogin() ) {
+                            if ( $SubPriceCalculated[2] == 'YES' ) {
+                                ?>
+                                <i class="text-decoration-line"><?php echo number_format( $SubPriceCalculated[1] ) ?></i>
+                                <i class="bg-price-box "><?php echo number_format( $SubPriceCalculated[0] ); ?></i>ریال
+                                <?php
+                            } else {
+                                ?>
+                                <i class="bg-price-box "><?php echo number_format( $SubPriceCalculated[1] ) ?></i>ریال<?php
+                            }
+                            ?>
+                        <?php } else { ?>
+                            <i><?php echo number_format( $SubPriceCalculated[1] ) . ' ' . functions::Xmlinformation( 'Rial' ) ?></i>
+                        <?php } ?>
+                    </div>
+                    <!-- </tr>
+                            <tr> -->
+                    <div class="tdpricelabel"><?php echo functions::Xmlinformation( 'Pricechild' ) ?> :</div>
+                    <div class="tdprice">
+
+                        <?php
+                        if ( ! empty( $Param['ChdPrice'] ) ) {
+                            $SubFlightType = strtolower( $Param['FlightType'] ) == 'system' ? 'system' : 'charter';
+                            //
+                            $SubPriceCalculate  = functions::setPriceChanges( $Param['Airline'], $SubFlightType, $Param['ChdPrice'], $Param['ChdFare'], 'Local', strtolower( $Param['FlightType'] ) == 'system' ? '' : 'public' );
+                            $SubPriceCalculated = explode( ':', $SubPriceCalculate );
+
+                            if ( Session::IsLogin() ) {
+                                if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
+                                    $OriginPriceWithOutDiscount = $SubPriceCalculated[1] - ceil( ( ( $SubPriceCalculated[1] * 11768 ) / 100000 ) );
+                                    if ( $SubPriceCalculated[2] == 'YES' ) {
+                                        $PriceAfterDiscount = $SubPriceCalculated[0] - ceil( ( ( $SubPriceCalculated[0] * 11768 ) / 100000 ) );
+                                        ?>
+                                        <i class="text-decoration-line"><?php echo number_format( round( $OriginPriceWithOutDiscount, - 1 ) ) ?></i>
+                                        <i class="bg-price-box site-bg-main-color"><?php echo number_format( round( $PriceAfterDiscount, - 1 ) ); ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?>
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <i class="bg-price-box site-bg-main-color"><?php echo number_format( round( $OriginPriceWithOutDiscount,
+                                            - 1 ) ) ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?><?php
+                                    }
+                                } else {
+                                    if ( $SubPriceCalculated[2] == 'YES' ) {
+                                        ?>
+                                        <i class="text-decoration-line"><?php echo number_format( $SubPriceCalculated[1] ) ?></i>
+                                        <i class="bg-price-box site-bg-main-color"><?php echo number_format( $SubPriceCalculated[0] ); ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?>
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <i class="bg-price-box site-bg-main-color"><?php echo number_format( $SubPriceCalculated[1] ) ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?><?php
+                                    }
+                                }
+
+                                ?>
+                            <?php } else { ?>
+                                <i><?php
+
+                                    if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
+                                        $OriginPriceWithOutDiscount = $Param['ChdPrice'] - ceil( ( ( $Param['ChdPrice'] * 11768 ) / 100000 ) );
+                                        echo number_format( round( $OriginPriceWithOutDiscount, - 1 ) );
+                                    } else {
+                                        echo number_format( $Param['ChdPrice'] );
+                                    }
+                                    ?><?php echo functions::Xmlinformation( 'Rial' ) ?></i>
+                                <?php
+                            }
+                        } else {
+                            ?><i><?php echo functions::Xmlinformation( 'PreInvoiceStep' ) ?></i><?php
+                        }
+                        ?>
+                    </div>
+                    <!--   </tr>
+                              <tr> -->
+                    <div class="tdpricelabel"> <?php echo functions::Xmlinformation( 'Pricebaby' ) ?>:</div>
+                    <div class="tdprice">
+
+                        <?php
+                        $PriceInfant = $Param['InfPrice'] - ceil( ( $Param['InfPrice'] * 75586 ) / 100000 );
+                        if ( functions::checkConfigPid( $Param['Airline'], 'internal', strtolower( $Param['FlightType'] ) ) == 'public' ) {
+
+                            if ( strtolower( $Param['FlightType'] ) == 'system' ) {
+
+                                if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
 
 
-      </div>
+                                    ?>
+                                    <i><?php echo number_format( round( $PriceInfant, - 1 ) ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
+                                    <?php
+                                } else {
+                                    ?>
+
+                                    <i><?php echo number_format( $Param['InfPrice'] ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
+                                    <?php
+                                }
+                            } else {
+                                echo functions::Xmlinformation( 'PreInvoiceStep' );
+                            }
+                        } else {
+                            if ( strtolower( $Param['FlightType'] ) == 'system' ) {
+
+                                if ( ( $Param['SourceId'] == '1' || $Param['SourceId'] == '11' ) ) {
+
+
+                                    ?>
+                                    <i><?php echo number_format( round( $PriceInfant, - 1 ) ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
+                                    <?php
+                                } else {
+                                    ?>
+
+                                    <i><?php echo number_format( $Param['InfPrice'] ) ?></i> <?php echo functions::Xmlinformation( 'Rial' ) ?>
+                                    <?php
+                                }
+                            } else {
+                                echo functions::Xmlinformation( 'PreInvoiceStep' );
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
 
         <?php if ( ! empty( $Fee ) && strtolower( $Param['FlightType'] ) == 'system' ) { ?>
-        <div class="cancel-policy">
+            <div class="cancel-policy">
 
-          <div class="cancel-policy-inner">
-            <div class="cancel-policy-item">
-              <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromthetimeticketissueuntilnoondaysbeforeflight' ) ?></span>
-              <span
-                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThreeDaysBefore'] ) ?
-                      $Fee['ThreeDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeDaysBefore']; ?> </span>
+                <div class="cancel-policy-inner">
+                    <div class="cancel-policy-item">
+                        <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromthetimeticketissueuntilnoondaysbeforeflight' ) ?></span>
+                        <span
+                                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThreeDaysBefore'] ) ?
+                                $Fee['ThreeDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeDaysBefore']; ?> </span>
+                    </div>
+                    <div class="cancel-policy-item">
+                        <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromnoondaysbeforeflightnoondaybeforeflight' ) ?></span>
+                        <span
+                                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['OneDaysBefore'] ) ?
+                                $Fee['OneDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OneDaysBefore']; ?> </span>
+                    </div>
+                    <div class="cancel-policy-item">
+                        <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromnoondaybeforeflighthoursbeforeflight' ) ?></span>
+                        <span
+                                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThreeHoursBefore'] ) ?
+                                $Fee['ThreeHoursBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeHoursBefore']; ?> </span>
+                    </div>
+                    <div class="cancel-policy-item">
+                        <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromhoursbeforeflighttominutesbeforeflight' ) ?></span>
+                        <span
+                                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThirtyMinutesAgo'] ) ?
+                                $Fee['ThirtyMinutesAgo'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThirtyMinutesAgo']; ?> </span>
+                    </div>
+                    <div class="cancel-policy-item">
+                        <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Minutesbeforetheflight' ) ?></span>
+                        <span
+                                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['OfThirtyMinutesAgoToNext'] ) ?
+                                $Fee['OfThirtyMinutesAgoToNext'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OfThirtyMinutesAgoToNext']; ?> </span>
+                    </div>
+                </div>
             </div>
-            <div class="cancel-policy-item">
-              <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromnoondaysbeforeflightnoondaybeforeflight' ) ?></span>
-              <span
-                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['OneDaysBefore'] ) ?
-                      $Fee['OneDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OneDaysBefore']; ?> </span>
-            </div>
-            <div class="cancel-policy-item">
-              <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromnoondaybeforeflighthoursbeforeflight' ) ?></span>
-              <span
-                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThreeHoursBefore'] ) ?
-                      $Fee['ThreeHoursBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeHoursBefore']; ?> </span>
-            </div>
-            <div class="cancel-policy-item">
-              <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromhoursbeforeflighttominutesbeforeflight' ) ?></span>
-              <span
-                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThirtyMinutesAgo'] ) ?
-                      $Fee['ThirtyMinutesAgo'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThirtyMinutesAgo']; ?> </span>
-            </div>
-            <div class="cancel-policy-item">
-              <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Minutesbeforetheflight' ) ?></span>
-              <span
-                class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['OfThirtyMinutesAgoToNext'] ) ?
-                      $Fee['OfThirtyMinutesAgoToNext'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OfThirtyMinutesAgoToNext']; ?> </span>
-            </div>
-          </div>
-        </div>
         <?php } else if ( empty( $Fee ) && strtolower( $Param['FlightType'] ) == 'system' ) { ?>
-        <div class="cancel-policy cancel-policy-charter">
-          <span class=""><?php echo functions::Xmlinformation( 'Contactbackupunitinformationaboutamountconsignmentfines' ) ?></span>
-        </div>
+            <div class="cancel-policy cancel-policy-charter">
+                <span class=""><?php echo functions::Xmlinformation( 'Contactbackupunitinformationaboutamountconsignmentfines' ) ?></span>
+            </div>
         <?php } else { ?>
-        <div class="cancel-policy cancel-policy-charter">
-          <span class=""><?php echo functions::Xmlinformation( 'ThecharterflightscharterunderstandingCivilAviationOrganization' ) ?></span>
-        </div>
+            <div class="cancel-policy cancel-policy-charter">
+                <span class=""><?php echo functions::Xmlinformation( 'ThecharterflightscharterunderstandingCivilAviationOrganization' ) ?></span>
+            </div>
             <?php
         }
 
@@ -4260,9 +4261,9 @@ class functions {
                 . " GROUP BY R.direction ";
             $result    = $ModelBase->select( $sql );
 
-       
 
-               $info_cancel_sql = " SELECT 
+
+            $info_cancel_sql = " SELECT 
                           cancel.NationalCode,
                             detail.*
                          FROM cancel_ticket_details_tb AS detail
@@ -4427,7 +4428,7 @@ class functions {
 
             $result['info_detail_cancel'] =   $Model->select( $info_cancel_sql );
         }
-     
+
         return $result ;
     }
 
@@ -6124,9 +6125,9 @@ class functions {
 
     public static function GetInfoTour( $factorNumber , $is_api=false ) {
         $factorNumber = trim( $factorNumber );
-      
+
         if ( TYPE_ADMIN == '1' || $is_api ) {
-         
+
             $ModelBase = Load::library( 'ModelBase' );
 
             $sql    = "select *," . " (SELECT COUNT(id) FROM report_tour_tb WHERE factor_number='{$factorNumber}') AS CountId "
@@ -6136,7 +6137,7 @@ class functions {
             Load::autoload( 'Model' );
             $Model = new Model();
 
-             $sql    = "select *,"
+            $sql    = "select *,"
                 . " (SELECT COUNT(id) FROM book_tour_local_tb WHERE factor_number='{$factorNumber}') AS CountId "
                 . " from book_tour_local_tb  where factor_number='{$factorNumber}' ";
 
@@ -6413,7 +6414,7 @@ class functions {
     #endregion
 
 
-        #region TotalPriceNetTicketCharter
+    #region TotalPriceNetTicketCharter
 
     public static function TotalPriceNetTicketCharter( $InfoTicketsCancel ) {
 
@@ -6445,7 +6446,7 @@ class functions {
      */
     public static function CalculatePenaltyPriceCancel( $Price, $fare, $InfoCancel ) {
 
-        
+
         if ( $fare <= 0 ) {
             /** @var TYPE_NAME $fare */
             $fare = $Price - ( ( $Price * 4573 ) / 100000 );
@@ -6465,9 +6466,9 @@ class functions {
 
     #region CalculatePenaltyPriceCancelCharter
     public static function CalculatePenaltyPriceCancelCharter($Price, $InfoCancel) {
-       /* if ( $InfoCancel['pid_private'] == '0' ) {
-            return 0;
-        }*/
+        /* if ( $InfoCancel['pid_private'] == '0' ) {
+             return 0;
+         }*/
 
 
         return ($Price - ($Price * (intval($InfoCancel['PercentIndemnity']) / 100 )));
@@ -6696,7 +6697,7 @@ class functions {
 
         $jsonData = str_replace( chr( 127 ), "", $jsonData );
         $jsonData = str_replace('﻿','',$jsonData);
-     
+
         // This is the most common part
         // Some file begins with 'efbbbf' to mark the beginning of the file. (binary level)
         // here we detect it and we remove it, basically it's the first 3 characters
@@ -6795,7 +6796,7 @@ class functions {
 
     public static function convertJalaliDateToGregInt( $param ,$mode='-') {
         $explode_jalali_date = explode( $mode, $param );
-        
+
         $date    = dateTimeSetting::jalali_to_gregorian( $explode_jalali_date[0], $explode_jalali_date[1], $explode_jalali_date[2] );
         return mktime( 0, 0, 0, $date[1], $date[2], $date[0] );
 
@@ -7161,7 +7162,7 @@ class functions {
             if ( $code == '31' && $capacity == '4' ) {
                 $result['logo'] = 'arg.png';
             }
-            
+
             return ROOT_ADDRESS_WITHOUT_LANG . "/pic/companyBusImages/" . $result['logo'];
         } else {
             return ROOT_ADDRESS_WITHOUT_LANG . "/pic/companyBusImages/no-photo-train.png";
@@ -7392,7 +7393,7 @@ class functions {
         $Time['time']    = $ArrivalTime;
         $Time['Hour']    = $hour_long;
         $Time['Minutes'] = $Minutes_long;
-        
+
         return $Time;
     }
 
@@ -7488,7 +7489,7 @@ class functions {
     }
 
     public static function dateFormatSpecialJalaliWithoutZeroDay( $date, $type ) {
-         $date_selected = dateTimeSetting::jdate( $type, self::FormatDateJalali( str_replace( '/', '-', $date ) ), '', '', 'en' );
+        $date_selected = dateTimeSetting::jdate( $type, self::FormatDateJalali( str_replace( '/', '-', $date ) ), '', '', 'en' );
         $date_selected = explode('/',$date_selected);
 
         $year = isset($date_selected[2]) ? $date_selected[2] : '';
@@ -7511,7 +7512,8 @@ class functions {
     #region info_train_client
 
     public static function checkIncreasePrice( $newPrice, $OldPrice, $type, $currencyCode, $flightType, $direction ) {
-       
+
+
         $direction           = ( $direction == 'dept' ) ? self::Xmlinformation( 'routewent' ) : self::Xmlinformation( 'Wayback' );
         $changePrice         = intval( $newPrice ) - intval( $OldPrice );
         $changePriceCurrency = self::CurrencyCalculate( $changePrice, $currencyCode );
@@ -7690,7 +7692,7 @@ class functions {
 
     public static function checkExistChangePrice( $arrayBook, $arrayTemprory ) {
 
-       
+
         if ( isset( $arrayBook['dept'] ) ) {
             foreach ( $arrayBook['dept'] as $key => $dept ) {
                 if($dept['api_id'] == '17' && $dept['IsInternal'] == "1" && $dept['flight_type'] == "system") {
@@ -8036,41 +8038,41 @@ class functions {
 
     //endregion
 
-     public  function ConvertByLanguage( $String ) {
+    public  function ConvertByLanguage( $String ) {
 
-      switch ($String) {
-          case "flight" :
-            $value = self::Xmlinformation( 'Flight' )->__toString() ;
-          break ;
-          case "hotel" :
-              $value = self::Xmlinformation( 'Hotel' )->__toString() ;
-              break ;
-          case "insurance" :
-              $value = self::Xmlinformation( 'Insurance' )->__toString() ;
-              break ;
-          case "gashttransfer" :
-              $value = self::Xmlinformation( 'PatrolTransfer' )->__toString() ;
-              break ;
-          case "europcar" :
-               $value = self::Xmlinformation( 'Carrental' )->__toString() ;
-              break ;
-          case "visa" :
-            $value = self::Xmlinformation( 'Visa' )->__toString() ;
-            break ;
-          case "bus" :
-              $value = self::Xmlinformation( 'Bus' )->__toString() ;
-              break ;
-          case "train" :
-              $value = self::Xmlinformation( 'train' )->__toString() ;
-              break ;
-          case "entertainment" :
-              $value = self::Xmlinformation( 'Entertainment' )->__toString() ;
-              break ;
-          default:
-            $value = '' ;
-      }
+        switch ($String) {
+            case "flight" :
+                $value = self::Xmlinformation( 'Flight' )->__toString() ;
+                break ;
+            case "hotel" :
+                $value = self::Xmlinformation( 'Hotel' )->__toString() ;
+                break ;
+            case "insurance" :
+                $value = self::Xmlinformation( 'Insurance' )->__toString() ;
+                break ;
+            case "gashttransfer" :
+                $value = self::Xmlinformation( 'PatrolTransfer' )->__toString() ;
+                break ;
+            case "europcar" :
+                $value = self::Xmlinformation( 'Carrental' )->__toString() ;
+                break ;
+            case "visa" :
+                $value = self::Xmlinformation( 'Visa' )->__toString() ;
+                break ;
+            case "bus" :
+                $value = self::Xmlinformation( 'Bus' )->__toString() ;
+                break ;
+            case "train" :
+                $value = self::Xmlinformation( 'train' )->__toString() ;
+                break ;
+            case "entertainment" :
+                $value = self::Xmlinformation( 'Entertainment' )->__toString() ;
+                break ;
+            default:
+                $value = '' ;
+        }
 
-      return $value;
+        return $value;
     }
     public static function registerClub( $data ) {
         $url = "https://www.iran-tech.com/old/v10/fa/admin/cronjob/insertDataToClubOfGds.php";
@@ -8082,62 +8084,62 @@ class functions {
         self::insertLog( 'LogInsertUserClub=>' . json_encode( $result ), 'LogInsertUserClub' );
     }
 
-	#region ConvertArrayByLanguage
+    #region ConvertArrayByLanguage
 
-	public static function curlExecution( $url, $data, $flag = null ) {
+    public static function curlExecution( $url, $data, $flag = null ) {
 
-		/**
-		 * This function execute curl with a url & datas
-		 *
-		 * @param $url  string
-		 * @param $data array   an associative array of elements
-		 *
-		 * @return array    json decoded output
-		 * @author Naime Barati
-		 */
-		$handle = curl_init( $url );
-		curl_setopt( $handle, CURLOPT_POST, true );
-		curl_setopt( $handle, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $handle, CURLOPT_SSL_VERIFYHOST, 0 );
-		curl_setopt( $handle, CURLOPT_SSL_VERIFYPEER, 0 );
-		curl_setopt( $handle, CURLOPT_POSTFIELDS, $data );
-		if ( isset( $flag['auth_user'] ) && isset( $flag['auth_pass'] ) ) {
-			curl_setopt( $handle, CURLOPT_USERPWD, $flag['auth_user'] . ":" . $flag['auth_pass'] );
-		}
-		if ( $flag == 'yes' || $flag == 'json' ) {
-			curl_setopt( $handle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json' ) );
-		} else if ( $flag == 'balance' || $flag == 'form' ) {
-			curl_setopt( $handle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-www-form-urlencoded' ) );
-		} elseif ( is_array( $flag ) ) {
-			//			$headers = array_($flag,'Content-Type: application/json');
-			curl_setopt( $handle, CURLOPT_HTTPHEADER, $flag );
-		}
+        /**
+         * This function execute curl with a url & datas
+         *
+         * @param $url  string
+         * @param $data array   an associative array of elements
+         *
+         * @return array    json decoded output
+         * @author Naime Barati
+         */
+        $handle = curl_init( $url );
+        curl_setopt( $handle, CURLOPT_POST, true );
+        curl_setopt( $handle, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $handle, CURLOPT_SSL_VERIFYHOST, 0 );
+        curl_setopt( $handle, CURLOPT_SSL_VERIFYPEER, 0 );
+        curl_setopt( $handle, CURLOPT_POSTFIELDS, $data );
+        if ( isset( $flag['auth_user'] ) && isset( $flag['auth_pass'] ) ) {
+            curl_setopt( $handle, CURLOPT_USERPWD, $flag['auth_user'] . ":" . $flag['auth_pass'] );
+        }
+        if ( $flag == 'yes' || $flag == 'json' ) {
+            curl_setopt( $handle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json' ) );
+        } else if ( $flag == 'balance' || $flag == 'form' ) {
+            curl_setopt( $handle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-www-form-urlencoded' ) );
+        } elseif ( is_array( $flag ) ) {
+            //			$headers = array_($flag,'Content-Type: application/json');
+            curl_setopt( $handle, CURLOPT_HTTPHEADER, $flag );
+        }
 
-		$result  = curl_exec( $handle );
+        $result  = curl_exec( $handle );
 
 
         self::insertLog( 'response curlExecution: ' . $url.'=>'. $data.'=>'.$result, 'check_final_log' );
-		$dataStr = is_array( $data ) ? json_encode( $data, 256 | 64 ) : $data;
-		if(strpos($url,'yekpay') !== false){
-			self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'yekpay_log' );
-			self::insertLog( 'response curlExecution: ' . $result, 'yekpay_log' );
-		}
-    if(strpos($url,'sepehr.shaparak.ir') !== false){
-			self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'saderat_log' );
-			self::insertLog( 'response curlExecution: ' . $result, 'saderat_log' );
-			self::insertLog( 'response curlError: ' . json_encode( curl_error($handle), 256 | 64 ), 'saderat_log' );
-		}
-		if(strpos($url,'shaparak') !== false){
-			self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'shaparak_log' );
-			self::insertLog( 'response curlExecution: ' . $result, 'shaparak_log' );
-		}
+        $dataStr = is_array( $data ) ? json_encode( $data, 256 | 64 ) : $data;
+        if(strpos($url,'yekpay') !== false){
+            self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'yekpay_log' );
+            self::insertLog( 'response curlExecution: ' . $result, 'yekpay_log' );
+        }
+        if(strpos($url,'sepehr.shaparak.ir') !== false){
+            self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'saderat_log' );
+            self::insertLog( 'response curlExecution: ' . $result, 'saderat_log' );
+            self::insertLog( 'response curlError: ' . json_encode( curl_error($handle), 256 | 64 ), 'saderat_log' );
+        }
+        if(strpos($url,'shaparak') !== false){
+            self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'shaparak_log' );
+            self::insertLog( 'response curlExecution: ' . $result, 'shaparak_log' );
+        }
         if(strpos($url,'Train') !== false){
-			self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'train_log' );
-			self::insertLog( 'response curlExecution: ' . $result, 'train_log' );
-		}
-		if(strpos($url,'Hotels') !== false){
-			self::insertLog( 'url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'hotels_log' );
-			self::insertLog( 'response curlExecution: ' . $result, 'hotels_log' );
+            self::insertLog( 'DOMAIN: '. CLIENT_MAIN_DOMAIN . ' url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'train_log' );
+            self::insertLog( 'response curlExecution: ' . $result, 'train_log' );
+        }
+        if(strpos($url,'Hotels') !== false){
+            self::insertLog( 'url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), 'hotels_log' );
+            self::insertLog( 'response curlExecution: ' . $result, 'hotels_log' );
         }
 //		self::insertLog( 'url : ' . $url . ' request curlExecution: ' . $dataStr . ' Headers: ' . json_encode( $flag, 256 | 64 ), '000curlExecution' );
 //		self::insertLog( 'response curlExecution: ' . $result, '000curlExecution' );
@@ -8145,7 +8147,7 @@ class functions {
 
 //       echo json_encode($result);
 //       die;
-   
+
         return json_decode( $result, true );
     }
     #endregion insertLog
@@ -8232,11 +8234,11 @@ class functions {
 
                 $baggage = 'Contact   support' ;
             }else{
-              if(!empty($route['Baggage'])){
-                  $baggage = $route['Baggage'] . ' kg' ;
-              }else{
-                  $baggage = (($arrayTicket['SeatClass'] == 'B' || $arrayTicket['SeatClass'] == 'C') ? '40' : '30').' Kg';
-              }
+                if(!empty($route['Baggage'])){
+                    $baggage = $route['Baggage'] . ' kg' ;
+                }else{
+                    $baggage = (($arrayTicket['SeatClass'] == 'B' || $arrayTicket['SeatClass'] == 'C') ? '40' : '30').' Kg';
+                }
             }
 
             return  $baggage ;
@@ -8413,7 +8415,7 @@ class functions {
 
     #region numberOfRoomsExternalHotelSearch
     public static function numberOfRoomsExternalHotelSearch( $rooms ) {
-       
+
         $return   = array( 'rooms' => [], 'adultCount' => 0, 'childrenCount' => 0, 'countRoom' => 0 );
         $expRooms = explode( "R:", trim( $rooms ) );
 
@@ -9198,12 +9200,12 @@ class functions {
 
 
         $charge_provider = intval( $compareCredit['data']['child_charge'] ) ;
-       Load::controller('infoCreditCharter724')->setRecordeCreditCharter724($charge_provider) ;
+        Load::controller('infoCreditCharter724')->setRecordeCreditCharter724($charge_provider) ;
 
         $amount_client = intval( $amountBuy ) ;
         if ( ( $charge_provider - $amount_client ) < 200000000 ) {
-          $charge_provider = number_format($charge_provider/10);
-          $amount_client =  number_format($amount_client/10);
+            $charge_provider = number_format($charge_provider/10);
+            $amount_client =  number_format($amount_client/10);
             $objSms = $smsController->initService( '1' );
             if ( $objSms ) {
                 $sms       = "{$charge_provider}  ومبلغ خرید مشتری {$amount_client} است";
@@ -10063,7 +10065,7 @@ class functions {
 
         $clientId  = ( $clientId ) ? $clientId : CLIENT_ID;
         $is_active = (int) $is_active;
-       
+
 
         $access    = self::checkClientConfigurationAccess( $configuration_title, $clientId );
 
@@ -10183,7 +10185,7 @@ class functions {
     }
 
     public static function getMarketPlaceOptionByKey( $param ) {
-      
+
         $admin    = Load::controller( 'admin' );
         $clientID = filter_var( $param['clientID'], FILTER_VALIDATE_INT );
 
@@ -10520,7 +10522,7 @@ class functions {
      *
      * @return array
      */
-    public static function separateFiles($file_name) {
+    public static function separateFiles( $file_name ) {
         $file_indexes = array(
             'name',
             'type',
@@ -10528,8 +10530,7 @@ class functions {
             'error',
             'size',
         );
-
-        $file = array();
+        $file         = array();
 
         // اگر فقط یک فایل آپلود شده است
         if (!is_array($_FILES[$file_name]['name'])) {
@@ -10540,9 +10541,9 @@ class functions {
         }
 
         // اگر چند فایل آپلود شده است
-        for ($j = 0; $j < count($_FILES[$file_name]['name']); $j++) {
-            foreach ($file_indexes as $index) {
-                $file[$j][$index] = $_FILES[$file_name][$index][$j];
+        for ( $j = 0; $j < count( $_FILES[ $file_name ]['name'] ); $j ++ ) {
+            foreach ( $file_indexes as $index ) {
+                $file[ $j ][ $index ] = $_FILES[ $file_name ][ $index ][ $j ];
             }
         }
 
@@ -10584,7 +10585,7 @@ class functions {
     public static function duration_time_source($source_id,$duration,$data_text_translate) {
 
         if(in_array($source_id,['10','14','15','17','21','43'])){
-           
+
             //0:00:00:00
 
             if($source_id=='17'){
@@ -10608,7 +10609,7 @@ class functions {
     }
     public static function new_duration_time_source($source_id,$duration,$data_text_translate) {
         if(in_array($source_id,['10','14','15','17'])){
-          //0:00:00:00
+            //0:00:00:00
             if($source_id=='17'){
                 $duration = strlen($duration)==10 ? $duration : '0:'.$duration ;
             }
@@ -10639,7 +10640,7 @@ class functions {
             'DNZ','CAN','ISU','EBL','LHR','BKK','PVG','KZN','DLM','BEY','FRA','DEL','PEK',
             'MIL','ROM','HKT','DAM','BOM','MZR','CGN','GZP','TAS','HAM','LHE','DYU','KIK',
             'KWI','DOH','KDH','OHS','KER','LRR');
-           }
+    }
 
     public static function displayRoomName( $room_name = '', $number = '',$age_type = 'Adt',$is_external = false,$is_single = false ) {
         if($is_single){
@@ -11280,7 +11281,7 @@ class functions {
                 $dates[$i]['value'] = $year_select.'-'.$thisMonthEdited.'-01';
 
                 $dates[$i]['text'] = $CalenderMonthName .  '-' . $year_select;
-                $month_select_counter = $month_select_counter+1 ; 
+                $month_select_counter = $month_select_counter+1 ;
             }
 
         }
@@ -11314,7 +11315,7 @@ class functions {
                 $os_platform = $value;
             }
         }
-            return $os_platform;
+        return $os_platform;
 
     }
 
@@ -11325,10 +11326,10 @@ class functions {
     }
 
     public static function createEmoji($src) {
-            $replaced = preg_replace("/\\\\u([0-9A-F]{1,4})/i", "&#x$1;", $src);
-            $result = mb_convert_encoding($replaced, "UTF-16", "HTML-ENTITIES");
-            $result = mb_convert_encoding($result, 'utf-8', 'utf-16');
-            return $result;
+        $replaced = preg_replace("/\\\\u([0-9A-F]{1,4})/i", "&#x$1;", $src);
+        $result = mb_convert_encoding($replaced, "UTF-16", "HTML-ENTITIES");
+        $result = mb_convert_encoding($result, 'utf-8', 'utf-16');
+        return $result;
 
     }
 
@@ -11360,9 +11361,9 @@ class functions {
         /**
          * It will create session, If on "android" apk file
          */
-      /*  elseif (isset($_SERVER['HTTP_X_REQUESTED_WITH']) ) {
-            self::createPwaSession();
-        } */
+        /*  elseif (isset($_SERVER['HTTP_X_REQUESTED_WITH']) ) {
+              self::createPwaSession();
+          } */
         elseif (GDS_SWITCH == 'mainPage') {
             self::removePwaSession();
 
@@ -11449,15 +11450,15 @@ class functions {
 
     public static function selfPhoneCustomers() {
         return array(
-          '164'
+            '164'
         );
     }
     public static function disableServiceBank($service) {
         $data_client =  [] ;
-/*  'PublicLocalHotel' ,
-             'PublicPortalHotel' ,
-             'PrivatePortalHotel' ,
-             'PrivateLocalHotel' ,*/
+        /*  'PublicLocalHotel' ,
+                     'PublicPortalHotel' ,
+                     'PrivatePortalHotel' ,
+                     'PrivateLocalHotel' ,*/
         $services_hotel = [
 
         ];
@@ -11534,7 +11535,7 @@ class functions {
         // Note: if $height is set to TRUE then we automatically calculate the height based on the ratio
         $height = $height === true ? (ImageSY($image) * $width / ImageSX($image)) : $height;
         // create image
- 
+
         $resized_image = imagecreatetruecolor($width, $height);
         $transparent_color = imagecolorallocatealpha($resized_image, 255, 255, 255, 127);
         imagefill($resized_image, 0, 0, $transparent_color);
@@ -11549,12 +11550,12 @@ class functions {
     }
 
     public static function DeleteImages($folder, $inputName) {
-            $path = PIC_ROOT.$folder."/".$inputName;
-            $pathThumb = PIC_ROOT.$folder."/thumb/".$inputName;
-            $pathMedium = PIC_ROOT.$folder."/medium/".$inputName;
-           if (file_exists($path)) {
-               unlink($path);
-           }
+        $path = PIC_ROOT.$folder."/".$inputName;
+        $pathThumb = PIC_ROOT.$folder."/thumb/".$inputName;
+        $pathMedium = PIC_ROOT.$folder."/medium/".$inputName;
+        if (file_exists($path)) {
+            unlink($path);
+        }
         if (file_exists($pathThumb)) {
             unlink($pathThumb);
         }
@@ -11702,7 +11703,7 @@ class functions {
     }
 
     public static function substrDataSmarty($param,$start,$end) {
-            return  substr($param,$start,$end);
+        return  substr($param,$start,$end);
     }
 
     public static function getCodeMember($params) {
@@ -11744,7 +11745,7 @@ class functions {
     public static function dateNowMiladi($mode='') {
         return date('Y'.$mode.'m'.$mode.'d',time());
     }
-    
+
     public static function isEnableSetting($title) {
 
         $reservationSetting = Load::controller('reservationSetting');
@@ -11787,10 +11788,10 @@ class functions {
     }
 
     public static function switchAlphabet($englishString){
-      if(!self::checkFarsiAlphabet($englishString)) {
-          return self::convertToPersian($englishString);
-      }
-      return $englishString ; 
+        if(!self::checkFarsiAlphabet($englishString)) {
+            return self::convertToPersian($englishString);
+        }
+        return $englishString ;
     }
     public static function checkFarsiAlphabet($str){
         $farsiUnicodeRanges = array(
@@ -11816,7 +11817,7 @@ class functions {
         $farsiChars = array(
             106 => 'ت'  , 105 => 'ه' ,  118 => 'ر'  , 104 => 'ا' , 107 => 'ن'  , 108 => 'م'  , 97 => 'ش' , 110 => 'د' , 119 => 'ص' , 116 => 'ف' ,
             97 => 'ش' , 100 => 'ی' , 99 => 'ز'  , 102 => 'ب' , 216 => 'ر' , 115 => 'س', 44 => 'و', 103 => 'ل', 39 => 'گ', 59 => 'ک', 114 => 'ق',
-            121 => 'غ', 117 => 'ع', 120 => 'ط', 122 => 'ظ', 113 => 'ض', 67 => 'ژ', 98 => 'ذ', 111 => 'خ', 112 => 'ح', 93 => 'چ', 91 => 'ج' 
+            121 => 'غ', 117 => 'ع', 120 => 'ط', 122 => 'ظ', 113 => 'ض', 67 => 'ژ', 98 => 'ذ', 111 => 'خ', 112 => 'ح', 93 => 'چ', 91 => 'ج'
         );
 
 
@@ -11827,7 +11828,7 @@ class functions {
         for ($i = 0; $i < strlen($englishString); $i++) {
             $char = $englishString[$i];
             $ascii = ord($char);
-           
+
             if (in_array($char, $englishChars)) {
                 $persianString .= $farsiChars[$ascii];
             } else {
@@ -11843,9 +11844,9 @@ class functions {
     }
 
     public static function existDoubtfulCharacter($parameters) {
-      
+
         $array_special_char = ["{","}",";","\n","--","'", "‘", "’", "'", "“", "”", "„" , '"', "(", ")", "<", ">","</","/>","alert","+","sleep","from","script"] ;
-        
+
 
         if(empty($parameters)){
             $parameters = [];
@@ -11886,8 +11887,8 @@ class functions {
                 return true ;
             }
         }
-        
-        
+
+
         return false ;
     }
 
@@ -11898,7 +11899,7 @@ class functions {
 
     public static function redirectToNewUrl() {
         $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-     
+
         $redirect_controller  = Load::controller( 'redirect' );
         $redirect = $redirect_controller->getRedirectByOldUrl($called_url) ;
         if(isset($redirect) && !empty($redirect['url_new'])) {
@@ -11930,116 +11931,116 @@ class functions {
 
 
     public static function urlWithDate($url) {
-      switch($url) {
-          case 'resultExternalHotel' :
-              $country = SEARCH_COUNTRY;
-              $city = SEARCH_CITY;
-              $firstURL = urldecode($_SERVER['REQUEST_URI']);
-              $arrUrlFirst = explode('/', $firstURL);
-              if(count($arrUrlFirst) <= 6 && isset($country) && isset($city)){
-                  $today = dateTimeSetting::jtoday();
-                  $tomorrow = dateTimeSetting::tomorrow();
-                  $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/$today/$tomorrow/1/1-0-0";
+        switch($url) {
+            case 'resultExternalHotel' :
+                $country = SEARCH_COUNTRY;
+                $city = SEARCH_CITY;
+                $firstURL = urldecode($_SERVER['REQUEST_URI']);
+                $arrUrlFirst = explode('/', $firstURL);
+                if(count($arrUrlFirst) <= 6 && isset($country) && isset($city)){
+                    $today = dateTimeSetting::jtoday();
+                    $tomorrow = dateTimeSetting::tomorrow();
+                    $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/$today/$tomorrow/1/1-0-0";
 
-                  header("Location: " .$called_url);
-                  exit;
-              }
-            break ;
-          case 'searchHotel' :
+                    header("Location: " .$called_url);
+                    exit;
+                }
+                break ;
+            case 'searchHotel' :
 
-              $firstURL = urldecode($_SERVER['QUERY_STRING']);
-              $arrUrlFirst = explode('/', $firstURL);
-              $parsedGetUrl = explode('&', $arrUrlFirst[count($arrUrlFirst) - 1]);
+                $firstURL = urldecode($_SERVER['QUERY_STRING']);
+                $arrUrlFirst = explode('/', $firstURL);
+                $parsedGetUrl = explode('&', $arrUrlFirst[count($arrUrlFirst) - 1]);
 
-              if(count($parsedGetUrl) <= 3 && isset($parsedGetUrl[2]) ){
-                  $arrUrlCity = explode('=', $parsedGetUrl[2]);
+                if(count($parsedGetUrl) <= 3 && isset($parsedGetUrl[2]) ){
+                    $arrUrlCity = explode('=', $parsedGetUrl[2]);
 
-                  if($arrUrlCity[0] == 'city' && isset($arrUrlCity[1]) && !empty($arrUrlCity[1])) {
-                      $today = dateTimeSetting::jtoday();
-                      $requested_url = str_replace( "&amp;", "&" , $_SERVER[REQUEST_URI]);
-                      $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$requested_url&startDate=$today&nights=1&rooms=R:1-0-0";
-                      header("Location: " .$called_url);
-                  }
-              }
-              break ;
-      }
+                    if($arrUrlCity[0] == 'city' && isset($arrUrlCity[1]) && !empty($arrUrlCity[1])) {
+                        $today = dateTimeSetting::jtoday();
+                        $requested_url = str_replace( "&amp;", "&" , $_SERVER[REQUEST_URI]);
+                        $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$requested_url&startDate=$today&nights=1&rooms=R:1-0-0";
+                        header("Location: " .$called_url);
+                    }
+                }
+                break ;
+        }
     }
     public static function setCorrectName($url) {
 
-      switch($url) {
-          case 'roomHotelLocal' :
-              $firstURL = urldecode($_SERVER['REQUEST_URI']);
-              $arrUrlFirst = explode('/', $firstURL);
-              $type_application = TYPE_APPLICATION ; 
-              if($type_application != 'reservation'){
-                  include_once './404.html';
-                  exit();
-              }
-              if(count($arrUrlFirst) >= 6){
-                  $hotel_controller = Load::controller( 'reservationHotel' );
-                  $hotel = $hotel_controller->getHotelById(['id' => $arrUrlFirst[5]]);
-                  $name_en = $hotel['name_en'] ;
-                  $name_en = str_replace(' ' , '_' , $name_en);
-                  if($name_en) {
+        switch($url) {
+            case 'roomHotelLocal' :
+                $firstURL = urldecode($_SERVER['REQUEST_URI']);
+                $arrUrlFirst = explode('/', $firstURL);
+                $type_application = TYPE_APPLICATION ;
+                if($type_application != 'reservation'){
+                    include_once './404.html';
+                    exit();
+                }
+                if(count($arrUrlFirst) >= 6){
+                    $hotel_controller = Load::controller( 'reservationHotel' );
+                    $hotel = $hotel_controller->getHotelById(['id' => $arrUrlFirst[5]]);
+                    $name_en = $hotel['name_en'] ;
+                    $name_en = str_replace(' ' , '_' , $name_en);
+                    if($name_en) {
 
-                      if($arrUrlFirst[6] != $name_en) {
-                          unset($arrUrlFirst[6]);
+                        if($arrUrlFirst[6] != $name_en) {
+                            unset($arrUrlFirst[6]);
 
-                          $request_url = implode('/', $arrUrlFirst);
-                          $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$request_url/$name_en";
+                            $request_url = implode('/', $arrUrlFirst);
+                            $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$request_url/$name_en";
 
-                          if($_SERVER['REMOTE_ADDR']=='84.241.4.20'){
-                             
-                              if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                                  // Not a POST request
-                                  // Generate a form to POST the data to the new URL
-                                  echo '<form id="redirectForm" method="POST" action="' . htmlspecialchars($called_url) . '">';
-                                  $request_data = [
-                                      'startDate'  => $_POST['startDateForHotelLocal'] ,
-                                      'nights'      => $_POST['nights']
-                                  ];
-                                  // Add POST data as hidden fields if needed
-                                  foreach ($request_data as $key => $value) {
-                                      echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
-                                  }
+                            if($_SERVER['REMOTE_ADDR']=='84.241.4.20'){
 
-                                  echo '</form>';
-                                  echo '<script>document.getElementById("redirectForm").submit();</script>';
-                                  exit();
-                              }
+                                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                                    // Not a POST request
+                                    // Generate a form to POST the data to the new URL
+                                    echo '<form id="redirectForm" method="POST" action="' . htmlspecialchars($called_url) . '">';
+                                    $request_data = [
+                                        'startDate'  => $_POST['startDateForHotelLocal'] ,
+                                        'nights'      => $_POST['nights']
+                                    ];
+                                    // Add POST data as hidden fields if needed
+                                    foreach ($request_data as $key => $value) {
+                                        echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
+                                    }
 
-                          }
-                          header("HTTP/1.1 301 Moved Permanently");
-                          header("Location: " .$called_url);
-                          exit();
-                      }
-                  }
-              }
-            break ;
-          case 'resultTourLocal' :
-              $firstURL = urldecode($_SERVER['REQUEST_URI']);
-              $arrUrlFirst = explode('/', $firstURL);
-              $tour_type = SEARCH_TOUR_TYPE ;
-              if($tour_type != 'all' && (!$tour_type || !is_numeric($tour_type)) ){
-                  $arrUrlFirst[7] = 'all' ;
-                  $request_url = implode('/', $arrUrlFirst);
-                  $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$request_url";
-                  header("Location: " .$called_url);
-                  exit();
-              }
+                                    echo '</form>';
+                                    echo '<script>document.getElementById("redirectForm").submit();</script>';
+                                    exit();
+                                }
 
-            break ;
-      }
+                            }
+                            header("HTTP/1.1 301 Moved Permanently");
+                            header("Location: " .$called_url);
+                            exit();
+                        }
+                    }
+                }
+                break ;
+            case 'resultTourLocal' :
+                $firstURL = urldecode($_SERVER['REQUEST_URI']);
+                $arrUrlFirst = explode('/', $firstURL);
+                $tour_type = SEARCH_TOUR_TYPE ;
+                if($tour_type != 'all' && (!$tour_type || !is_numeric($tour_type)) ){
+                    $arrUrlFirst[7] = 'all' ;
+                    $request_url = implode('/', $arrUrlFirst);
+                    $called_url     = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$request_url";
+                    header("Location: " .$called_url);
+                    exit();
+                }
+
+                break ;
+        }
     }
-    
-    
+
+
     public static function redirectWithLang(){
         $firstURL = urldecode($_SERVER['REQUEST_URI']);
         if(strpos($firstURL, '/fa/') == false){
 
             $address = ROOT_ADDRESS   ;
             $firstURL =  str_replace('/gds' , '' , $firstURL);
-          
+
             header('HTTP/1.1 301 Moved Permanently');
             header('Location: ' . $address . $firstURL);
             exit();
@@ -12047,74 +12048,74 @@ class functions {
     }
 
     public static function isDateShamsi($date) {
-             // Assume the date format is YYYY-MM-DD
-            $parts = explode('-', $date);
-            if (count($parts) != 3) {
-                return false; // Invalid date format
-            }
+        // Assume the date format is YYYY-MM-DD
+        $parts = explode('-', $date);
+        if (count($parts) != 3) {
+            return false; // Invalid date format
+        }
 
-            $year = intval($parts[0]);
+        $year = intval($parts[0]);
 
-            // If the year is more than 1300, assume it's a Shamsi date
-            if ($year > 1300 && $year < 1500) {
-                return true; // Shamsi date
-            } else {
-                return false; // Miladi date
-            }
-     }
+        // If the year is more than 1300, assume it's a Shamsi date
+        if ($year > 1300 && $year < 1500) {
+            return true; // Shamsi date
+        } else {
+            return false; // Miladi date
+        }
+    }
 
     public static function checkNoIndex() {
 
         $client_list = ['327' , '333'];
         $url_list = [
-           'search-flight' ,
-           'international' ,
-           'searchHotel'  ,
-           'detailHotel' ,
-           'resultExternalHotel',
+            'search-flight' ,
+            'international' ,
+            'searchHotel'  ,
+            'detailHotel' ,
+            'resultExternalHotel',
             'roomHotelLocal',
-           'buses',
-           'detailTour',
-           'resultInsurance',
+            'buses',
+            'detailTour',
+            'resultInsurance',
             'mag' ,
             'news'
         ];
         $date = '';
         if(in_array(CLIENT_ID , $client_list) && in_array(GDS_SWITCH , $url_list)) {
-          
-          if(GDS_SWITCH == 'search-flight') {
-            $date = SEARCH_DEPT_DATE;
-            if($date != 'SEARCH_DEPT_DATE' && $date != '') {
-                return true ;
-            }else{
-                return false;
+
+            if(GDS_SWITCH == 'search-flight') {
+                $date = SEARCH_DEPT_DATE;
+                if($date != 'SEARCH_DEPT_DATE' && $date != '') {
+                    return true ;
+                }else{
+                    return false;
+                }
             }
-          }
-          else if(GDS_SWITCH == 'international') {
-              $date = SEARCH_DEPT_DATE;
-              if($date != 'SEARCH_DEPT_DATE' && $date != '') {
-                  return true ;
-              }else{
-                  return false;
-              }
-          }
-          else if(GDS_SWITCH == 'searchHotel') {
+            else if(GDS_SWITCH == 'international') {
+                $date = SEARCH_DEPT_DATE;
+                if($date != 'SEARCH_DEPT_DATE' && $date != '') {
+                    return true ;
+                }else{
+                    return false;
+                }
+            }
+            else if(GDS_SWITCH == 'searchHotel') {
 
-              if($date != 'SEARCH_START_DATE' && ($date != '' || (isset($_GET['startDate']) && $_GET['startDate'] != ''))) {
-                  return true ;
-              }else{
-                  return false;
-              }
-          }
-          else if(GDS_SWITCH == 'resultExternalHotel') {
-              $date = SEARCH_START_DATE;
+                if($date != 'SEARCH_START_DATE' && ($date != '' || (isset($_GET['startDate']) && $_GET['startDate'] != ''))) {
+                    return true ;
+                }else{
+                    return false;
+                }
+            }
+            else if(GDS_SWITCH == 'resultExternalHotel') {
+                $date = SEARCH_START_DATE;
 
-              if($date != 'SEARCH_START_DATE' && $date != '') {
-                  return true ;
-              }else{
-                  return false;
-              }
-          }
+                if($date != 'SEARCH_START_DATE' && $date != '') {
+                    return true ;
+                }else{
+                    return false;
+                }
+            }
             else if(GDS_SWITCH == 'roomHotelLocal') {
                 $date = START_DATE;
                 if($date != 'START_DATE'  && $date != '') {
@@ -12123,46 +12124,46 @@ class functions {
                     return false;
                 }
             }
-          else if(GDS_SWITCH == 'buses') {
-              $date = SEARCH_DATE_MOVE;
-              if($date != 'SEARCH_DATE_MOVE'  && $date != '') {
-                  return true ;
-              }else{
-                  return false;
-              }
-          }
-          else if(GDS_SWITCH == 'detailHotel') {
-              $date = REQUEST_NUMBER;
+            else if(GDS_SWITCH == 'buses') {
+                $date = SEARCH_DATE_MOVE;
+                if($date != 'SEARCH_DATE_MOVE'  && $date != '') {
+                    return true ;
+                }else{
+                    return false;
+                }
+            }
+            else if(GDS_SWITCH == 'detailHotel') {
+                $date = REQUEST_NUMBER;
 
-              if($date != 'REQUEST_NUMBER'  && $date != '') {
-                  return true ;
-              }else{
-                  return false;
-              }
-          }
-          else if(GDS_SWITCH == 'mag' || GDS_SWITCH == 'news') {
-              $page = $_GET['page'];
+                if($date != 'REQUEST_NUMBER'  && $date != '') {
+                    return true ;
+                }else{
+                    return false;
+                }
+            }
+            else if(GDS_SWITCH == 'mag' || GDS_SWITCH == 'news') {
+                $page = $_GET['page'];
 
-              if($page != '') {
-                  return true ;
-              }else{
-                  return false;
-              }
-          }
-          return true ;
+                if($page != '') {
+                    return true ;
+                }else{
+                    return false;
+                }
+            }
+            return true ;
         }
         return false;
     }
-   public static function getMemberCreditPayment($trackingCodeBank ,$totalPrice ) {
+    public static function getMemberCreditPayment($trackingCodeBank ,$totalPrice ) {
         $Model = Load::library('Model');
         $credit = 0;
         $result = 0;
         if ($trackingCodeBank != ''){
             $credit_query = " SELECT * FROM  members_credit_tb  WHERE bankTrackingCode='{$trackingCodeBank}' LIMIT 1";
-        $res_credit = $Model->load($credit_query);
+            $res_credit = $Model->load($credit_query);
 //         var_dump($res_credit['amount']);
-        $result = $totalPrice - $res_credit['amount'];
-        $credit = $res_credit['amount'];
+            $result = $totalPrice - $res_credit['amount'];
+            $credit = $res_credit['amount'];
         }
         return array( $credit ,  $result );
     }
@@ -12171,21 +12172,21 @@ class functions {
         $user_role_controller =  Load::controller( 'userRole' );
         $reservation_hotel_controller =  Load::controller( 'reservationHotel' );
         $is_admin =  $reservation_hotel_controller->isHotelAdmin(['hotel_id' => $item]) ;
-        
+
         if($is_admin || Session::getCounterTypeId() == 1) {
-          return [
-            'has_access' => true ,
-              'type'       => 'admin'
-          ];
+            return [
+                'has_access' => true ,
+                'type'       => 'admin'
+            ];
         }
         $params = [
-          'type'    => $type ,
-          'item_id' => $item
+            'type'    => $type ,
+            'item_id' => $item
         ];
         $user_has_role =  $user_role_controller->hasAccessItem($params) ;
         if($user_has_role) {
             foreach($user_has_role as $role) {
-              $role_list[] = $role['role'];
+                $role_list[] = $role['role'];
             }
             return [
                 'has_access' => true ,
@@ -12241,47 +12242,47 @@ class functions {
         return $ServiceDiscount->getDiscountByServiceAndMarketIdAndCounterId( $TitleServiceDiscount, $CounterId , $market_id );
     }
 
- /**
- * Gets current domain and creates a mini slug (uppercase first few letters)
- * 
- * @param int $length Number of characters to include in mini slug (default: 4)
- * @return string The mini slug in uppercase
- */
-public static function getCurrentDomainMiniSlug($length = 4) {
-    // Get current domain from server variables
-    $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
-    // Remove port number if present (e.g., localhost:8080)
-    $domain = preg_replace('/:\d+$/', '', $domain);
-    // Remove www. prefix if present
-    $domain = preg_replace('/^www\./', '', $domain);
-    // Get the main part of the domain (before TLD)
-    $domainParts = explode('.', $domain);
-    $mainDomain = $domainParts[0];
-    // Get the first $length characters and convert to uppercase
-    $miniSlug = strtoupper(substr($mainDomain, 0, $length));
-    return $miniSlug;
-}
-	public static function getApiClient() {
-      	return ['386'] ;
+    /**
+     * Gets current domain and creates a mini slug (uppercase first few letters)
+     *
+     * @param int $length Number of characters to include in mini slug (default: 4)
+     * @return string The mini slug in uppercase
+     */
+    public static function getCurrentDomainMiniSlug($length = 4) {
+        // Get current domain from server variables
+        $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
+        // Remove port number if present (e.g., localhost:8080)
+        $domain = preg_replace('/:\d+$/', '', $domain);
+        // Remove www. prefix if present
+        $domain = preg_replace('/^www\./', '', $domain);
+        // Get the main part of the domain (before TLD)
+        $domainParts = explode('.', $domain);
+        $mainDomain = $domainParts[0];
+        // Get the first $length characters and convert to uppercase
+        $miniSlug = strtoupper(substr($mainDomain, 0, $length));
+        return $miniSlug;
+    }
+    public static function getApiClient() {
+        return ['386'] ;
     }
 
     public function ChangeDateForTransactions($date_of,$to_date){
-       if (!empty($date_of) && !empty($to_date)) {
+        if (!empty($date_of) && !empty($to_date)) {
             $StartDateExplode = explode('-', $date_of);
             $StartPostDate = dateTimeSetting::jalali_to_gregorian($StartDateExplode[0], $StartDateExplode[1], $StartDateExplode[2], '-');
 
             $EndDateExplode = explode('-', $to_date);
             $EndPostDate = dateTimeSetting::jalali_to_gregorian($EndDateExplode[0], $EndDateExplode[1], $EndDateExplode[2], '-');
 
-             $start_date=$StartPostDate . ' 00:00:00';
-             $end_date=$EndPostDate . ' 23:59:59';
+            $start_date=$StartPostDate . ' 00:00:00';
+            $end_date=$EndPostDate . ' 23:59:59';
         }
-       else {//miladi
-             $date = dateTimeSetting::jdate("Y-m-d", time());
-             $start_date=$date . ' 00:00:00';
-             $end_date=$date . ' 23:59:59';
-      }
-       return array($start_date,$end_date);
+        else {//miladi
+            $date = dateTimeSetting::jdate("Y-m-d", time());
+            $start_date=$date . ' 00:00:00';
+            $end_date=$date . ' 23:59:59';
+        }
+        return array($start_date,$end_date);
     }
 
 

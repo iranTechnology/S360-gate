@@ -196,9 +196,6 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
         $('.loader-box-count-hotels').addClass('displayN');
 
         // -- sort ترکیبی O(n log n) --
-        // دقیقاً همان خروجی کد اصلی:
-        // 1. special اول
-        // 2. بقیه: قیمت صعودی، صفر آخر
         data.hotels.sort(function (a, b) {
             const aSpecial = a.isSpecial === 'yes' ? 0 : 1;
             const bSpecial = b.isSpecial === 'yes' ? 0 : 1;
@@ -240,7 +237,7 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
                 ? `<div class='ribbon-special-hotel'>${t.specialHotel}</div>`
                 : '';
 
-            const single_detail_link = `${amadeusPathByLang}detailHotel/${item.typeApp}/${item.HotelIndex}/${item.RequestNumber}&searchRooms=${searched_rooms}&type=${type}&nationality=${nat}&nights=${nights}&startDate=${startDate}&endDate=${endDate}`;
+            const single_detail_link = `${amadeusPathByLang}detailHotel/${item.typeApp}/${item.HotelIndex}/${item.RequestNumber}&searchRooms=${searched_rooms}&type=${type}&nationality=${nat}`;
 
             const nameWithLink = `<a target='_blank' href='javascript:' class='hotel-result-item-name hotelNameResult text-left'>${item.HotelName}</a>`
                 + `<kbd style="color:rgba(0,0,0,0);background:none;box-shadow:none;">S${item.SourceId}</kbd>`;
@@ -251,18 +248,26 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
 
             const imgClick = `<a><img src="${item.pictureUrl}" alt="${item.HotelName}"></a>`;
 
+            // امن‌سازی قیمت بدون تخفیف
             let withoutDiscountPrice = '';
             if (item.has_discount) {
+                const discountPriceAmount = (item.priceWithoutDiscountCurrency && item.priceWithoutDiscountCurrency.AmountCurrency)
+                    ? item.priceWithoutDiscountCurrency.AmountCurrency
+                    : (item.priceWithoutDiscount || 0);
+
                 withoutDiscountPrice = `
                 <div class="d-flex style_Discount">
-                    <span class="currency priceOff CurrencyCal" data-amount="${item.priceWithoutDiscount}">
-                        ${number_format(item.priceWithoutDiscountCurrency.AmountCurrency)}
+                    <span class="currency priceOff CurrencyCal" data-amount="${item.priceWithoutDiscount || 0}">
+                        ${number_format(discountPriceAmount)}
                     </span>
                     <div class="ribbon-hotel site-bg-color-dock-border-top">
                         <span><i>%${item.discount}</i></span>
                     </div>
                 </div>`;
             }
+
+            // تعیین امن واحد پول (Currency)
+            const currencyText = (item.mainCurrency && item.mainCurrency.TypeCurrency) ? item.mainCurrency.TypeCurrency : 'ریال';
 
             let realPrice;
             if (item.commissionPercent && item.commissionPercent > 0) {
@@ -280,7 +285,7 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
                             style="color:#000;font-size:16px;margin:0;">
                             ${number_format(item.minimumRoomPrice)}
                         </h2>
-                        <span class="CurrencyText" style="font-size:14px;color:#000;">${item.mainCurrency.TypeCurrency}</span>
+                        <span class="CurrencyText" style="font-size:14px;color:#000;">${currencyText}</span>
                     </div>
                 </div>`;
             } else {
@@ -291,14 +296,19 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
                             style="color:#000;font-size:16px;margin:0;">
                             ${number_format(item.MinimumRoomPriceEachNightWithOutCom || item.minimumRoomPrice)}
                         </h2>
-                        <span class="CurrencyText" style="font-size:14px;color:#000;">${item.mainCurrency.TypeCurrency}</span>
+                        <span class="CurrencyText" style="font-size:14px;color:#000;">${currencyText}</span>
                     </div>
                 </div>`;
             }
 
+            // امن‌سازی قیمت هر شب
+            const amountCurrencyEachNight = (item.mainCurrencyEachNight && item.mainCurrencyEachNight.AmountCurrency)
+                ? item.mainCurrencyEachNight.AmountCurrency
+                : (item.minimumRoomPriceEachNight || 0);
+
             const perNightHtml = nights > 1
                 ? `<div class='d-flex align-items-center pricePerNight'>
-                       <h2 class='CurrencyCal' data-amount='${item.minimumRoomPriceEachNight}'>${number_format(item.mainCurrencyEachNight.AmountCurrency)}</h2>
+                       <h2 class='CurrencyCal' data-amount='${item.minimumRoomPriceEachNight || 0}'>${number_format(amountCurrencyEachNight)}</h2>
                        <span>${t.pricePerNight}</span>
                    </div>`
                 : '';
