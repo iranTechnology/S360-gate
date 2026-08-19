@@ -138,8 +138,6 @@
                 </label>
 
                 <span
-                    :data-inactive="useXmltag('Inactive')"
-                    :data-active="useXmltag('Active')"
                     :class="[
     'tzCBPart',
     'site-bg-filter-color',
@@ -180,9 +178,9 @@
                   <label for="filter-interrupt">
                     <span>{{ useXmltag('All') }} </span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active') "
-                        class="tzCBPart site-bg-filter-color checked filter-to-check all_stop"
-                        @click="stopFilterFlight('all_stop')" filtered="all_stop"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color checked filter-to-check all_stop"
+                      @click="stopFilterFlight('all_stop')" filtered="all_stop"></span>
                   <input class="check-switch" type="checkbox" id="filter-interrupt" value="allStop"
                          checked="checked"/>
 
@@ -192,10 +190,10 @@
                   <label :for="`filter-${turn_interrupt.name_en}`">
                     <span>{{ turn_interrupt.name_fa }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color stop"
-                        @click="stopFilterFlight(turn_interrupt.name_en)"
-                        :class="`${turn_interrupt.name_en}`"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color stop"
+                      @click="stopFilterFlight(turn_interrupt.name_en)"
+                      :class="`${turn_interrupt.name_en}`"></span>
                   <input class="check-switch" type="checkbox" :id="`filter-${turn_interrupt.name_en}`"
                          :value="`${turn_interrupt.name_en}`"/>
 
@@ -220,9 +218,9 @@
                   <label for="filter-type">
                     <span>{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color checked filter-to-check type_flight all_type_flight"
-                        @click="typeFilterFlight('all_type_flight')"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color checked filter-to-check type_flight all_type_flight"
+                      @click="typeFilterFlight('all_type_flight')"></span>
                   <input class="check-switch" type="checkbox" id="filter-type" value="allFlightType"
                          checked="checked"/>
 
@@ -232,10 +230,10 @@
                   <label :for="`filter-${filter_flight.name_en}`">
                     <span>{{ filter_flight.name_fa }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color type_flight"
-                        @click="typeFilterFlight(filter_flight.name_en)"
-                        :class="`${filter_flight.name_en}`"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color type_flight"
+                      @click="typeFilterFlight(filter_flight.name_en)"
+                      :class="`${filter_flight.name_en}`"></span>
                   <input class="check-switch" type="checkbox" :id="`filter-${filter_flight.name_en}`"
                          :value="`${filter_flight.name_en}`"/>
                 </li>
@@ -257,9 +255,9 @@
                   <label for="filter-seat">
                     <span>{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color checked filter-to-check all_seat_class"
-                        @click="seatClassFilterFlight('all_seat_class')"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color checked filter-to-check all_seat_class"
+                      @click="seatClassFilterFlight('all_seat_class')"></span>
                   <input class="check-switch" type="checkbox" id="filter-seat" value="allSeatClass"
                          checked="checked"/>
                 </li>
@@ -268,10 +266,10 @@
                   <label :for="`filter-${seat_class.name_en}`">
                     <span>{{ seat_class.name_fa }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color seat_class"
-                        @click="seatClassFilterFlight(seat_class.name_en)"
-                        :class="`${seat_class.name_en}`"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color seat_class"
+                      @click="seatClassFilterFlight(seat_class.name_en)"
+                      :class="`${seat_class.name_en}`"></span>
                   <input class="check-switch" type="checkbox" :id="`filter-${seat_class.name_en}`"
                          :value="`${seat_class.name_en}`"/>
                 </li>
@@ -287,9 +285,9 @@
                   <label for="filter-airline">
                     <span>{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color checked filter-to-check  all_airline"
-                        @click="airlineFilterFlight('all_airline')"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color checked filter-to-check  all_airline"
+                      @click="airlineFilterFlight('all_airline')"></span>
                   <input class="check-switch" type="checkbox" id="filter-airline" value="allAirline"
                          checked="checked"/>
 
@@ -297,14 +295,14 @@
 
                 <template v-for="data_each_airline in minPriceAirline">
                   <li :id="`${data_each_airline.name_en}-filter`">
-                    <label :for="`filter-${data_each_airline.name_en}`" class='align-items-center'>
+                    <label :for="`filter-${data_each_airline.name_en}`" class='align-items-center justify-content-between'>
                       <i :id="`${data_each_airline.name_en}-minPrice`">{{ data_each_airline.price }}</i>
                       <span class='text-left'>{{ data_each_airline.name }}</span>
                     </label>
-                    <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                          class="tzCBPart site-bg-filter-color airline"
-                          @click="airlineFilterFlight(data_each_airline.name_en)"
-                          :class="`${data_each_airline.name_en}`"></span>
+                    <span
+                        class="tzCBPart site-bg-filter-color airline"
+                        @click="airlineFilterFlight(data_each_airline.name_en)"
+                        :class="`${data_each_airline.name_en}`"></span>
                     <input class="check-switch" type="checkbox"
                            :id="`filter-${data_each_airline.name_en}`"
                            v-model="data_each_airline.name_en"/>
@@ -327,8 +325,6 @@
                     <span>{{ useXmltag('All') }}</span>
                   </label>
                   <span
-                      :data-inactive="useXmltag('Inactive')"
-                      :data-active="useXmltag('Active')"
                       class="tzCBPart site-bg-filter-color checked filter-to-check all_baggage"
                       @click="baggageFilterFlight('all_baggage')">
                </span>
@@ -346,8 +342,6 @@
                     <span class="filter-baggage-label">{{ baggage.name_fa }}</span>
                   </label>
                   <span
-                      :data-inactive="useXmltag('Inactive')"
-                      :data-active="useXmltag('Active')"
                       class="tzCBPart site-bg-filter-color baggage"
                       :class="['baggage_' + key.replace(/\s/g, '_')]"
                       @click="baggageFilterFlight(key)">
@@ -363,128 +357,47 @@
           </li>
           <!-- time filter -->
           <li class="s-u-filter-item" data-group="flight-time">
-            <span class="s-u-filter-title "><i
-                class="zmdi zmdi-time site-main-text-color-drck"></i>{{ useXmltag('RunTime') }} </span>
+  <span class="s-u-filter-title">
+    <i class="zmdi zmdi-time site-main-text-color-drck"></i>
+    {{ useXmltag('RunTime') }}
+  </span>
             <div class="s-u-filter-content">
-              <ul class="s-u-filter-item-time filter-time-ul filter-time-ul-f">
-                <li>
-                  <label for="filter-time">
-                    <span>{{ useXmltag('All') }}</span>
+              <ul class="s-u-filter-item-time filter-time-ul filter-time-ul-f departure-time-wrapper">
+                <!-- گزینه همه -->
+                <li class="departure-time-all-item d-none">
+                  <label for="filter-time" class="departure-time-all-label">
+                    <span class="departure-time-all-text">{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color checked filter-to-check all_time"
-                        id="allTime"
-                        v-on:click="timeFilterFlightForeign('all_time')"></span>
+                  <span
+                      class="tzCBPart site-bg-filter-color checked filter-to-check all_time"
+                      id="allTime"
+                      @click="timeFilterFlightForeign('all_time')">
+        </span>
                   <input class="check-switch" type="checkbox" id="filter-time" value="allTime"
                          checked="checked"/>
-
-                </li>
-                <template v-for="each_time in timeFilter">
-                  <li>
-                    <label :for="`filter-${each_time.name_en}`">
-                      <i>{{ each_time.value }}</i>
-                      <span>{{ each_time.name_fa }}</span>
-                    </label>
-                    <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
-                          class="tzCBPart site-bg-filter-color time"
-                          @click="timeFilterFlightForeign(each_time.time)"
-                          :class="`${each_time.time}`"></span>
-                    <input class="check-switch" type="checkbox" :id="`filter-${each_time.time}`"
-                           v-model="each_time.time"/>
-                  </li>
-                </template>
-              </ul>
-            </div>
-          </li>
-          <li class="s-u-filter-item" data-group="flight-arrival-time">
-    <span class="s-u-filter-title">
-        <i class="zmdi zmdi-time site-main-text-color-drck"></i>
-        {{ useXmltag('ArrivingTime') }}
-    </span>
-            <div class="s-u-filter-content">
-              <ul class="s-u-filter-item-time filter-arrival-time-ul filter-arrival-time-ul-f">
-                <!-- گزینه همه -->
-                <li>
-                  <label for="filter-arrival-time">
-                    <span>{{ useXmltag('All') }}</span>
-                  </label>
-                  <span
-                      :data-inactive="useXmltag('Inactive')"
-                      :data-active="useXmltag('Active')"
-                      class="tzCBPart site-bg-filter-color checked filter-to-check all_arrival_time"
-                      id="allArrivalTime"
-                      @click="arrivalTimeFilterFlight('all_arrival_time')">
-                </span>
-                  <input class="check-switch" type="checkbox" id="filter-arrival-time" value="allArrivalTime"
-                         checked="checked"/>
                 </li>
 
-                <!-- گزینه‌های زمان رسیدن -->
-                <template v-for="each_time in timeArrivalFilter">
-                  <li>
-                    <label :for="`filter-${each_time.time}`">
-                      <i>{{ each_time.value }}</i>
-                      <span>{{ each_time.name_fa }}</span>
+                <!-- گزینه‌های زمان رفت -->
+                <template v-for="(each_time, key) in timeFilter">
+                  <li
+                      :key="key"
+                      class="departure-time-grid-item"
+                      :class="{ 'departure-time-grid-item-selected': each_time.checked }"
+                      @click.stop="toggleDepartureTime(each_time)"
+                  >
+                    <label :for="`filter-${each_time.time}`" class="departure-time-grid-label" @click.stop>
+                      <i class="departure-time-grid-icon" v-html="getDepartureIcon(each_time.time)"></i>
+                      <span class="departure-time-grid-name">{{ each_time.name_fa }}</span>
+                      <span class="departure-time-grid-range">{{ each_time.value }}</span>
                     </label>
                     <span
-                        :data-inactive="useXmltag('Inactive')"
-                        :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color arrival_time"
-                        @click="arrivalTimeFilterFlight(each_time.time)"
+                        class="tzCBPart site-bg-filter-color time"
                         :class="`${each_time.time}`">
-                    </span>
+          </span>
                     <input class="check-switch" type="checkbox" :id="`filter-${each_time.time}`"
-                           v-model="each_time.time"/>
+                           v-model="each_time.checked"/>
                   </li>
                 </template>
-              </ul>
-            </div>
-          </li>
-          <li class="s-u-filter-item" data-group="flight-transit-airports">
-    <span class="s-u-filter-title">
-        <i class="zmdi zmdi-pin-drop site-main-text-color-drck"></i>
-        {{ useXmltag('LayoverAirportsOutboundFlight') }}
-    </span>
-            <div class="s-u-filter-content">
-              <ul class="s-u-filter-item-time filter-transit-airports-ul filter-transit-airports-ul-f">
-                <!-- گزینه همه -->
-                <li>
-                  <label for="filter-transit-airports">
-                    <span>{{ useXmltag('All') }}</span>
-                  </label>
-                  <span
-                      :data-inactive="useXmltag('Inactive')"
-                      :data-active="useXmltag('Active')"
-                      class="tzCBPart site-bg-filter-color checked filter-to-check all_transit_airports"
-                      @click="transitAirportsFilterFlight('all_transit_airports')">
-                </span>
-                  <input class="check-switch" type="checkbox" id="filter-transit-airports" value="allTransitAirports"
-                         checked="checked"/>
-                </li>
-
-                <!-- گزینه‌های فرودگاه‌های توقف -->
-                <template v-for="(airport, index) in transitAirports">
-                  <li>
-                    <label :for="`filter-transit-${airport.code}`">
-                      <i>{{ airport.code }}</i>
-                      <span>{{ airport.airport_name || airport.name }}</span>
-                    </label>
-                    <span
-                        :data-inactive="useXmltag('Inactive')"
-                        :data-active="useXmltag('Active')"
-                        class="tzCBPart site-bg-filter-color transit_airport"
-                        @click="transitAirportsFilterFlight(airport.code)"
-                        :class="airport.code">
-        </span>
-                    <input class="check-switch" type="checkbox" :id="`filter-transit-${airport.code}`"
-                           :value="airport.code"/>
-                  </li>
-                </template>
-
-                <!-- پیام "بدون توقف" -->
-                <li v-if="transitAirports && transitAirports.length === 0">
-                  <span class="text-muted">{{ useXmltag('NoTransitFlights') }}</span>
-                </li>
               </ul>
             </div>
           </li>
@@ -510,6 +423,96 @@
               </vue-slider>
             </div>
           </li>
+          <li class="s-u-filter-item" data-group="flight-arrival-time">
+  <span class="s-u-filter-title">
+    <i class="zmdi zmdi-time site-main-text-color-drck"></i>
+    {{ useXmltag('ArrivingTime') }}
+  </span>
+            <div class="s-u-filter-content">
+              <ul class="s-u-filter-item-time filter-arrival-time-ul filter-arrival-time-ul-f arrival-time-wrapper">
+                <!-- گزینه همه - بدون هیچ تغییری -->
+                <li class="arrival-time-all-item">
+                  <label for="filter-arrival-time" class="arrival-time-all-label">
+                    <span class="arrival-time-all-text">{{ useXmltag('All') }}</span>
+                  </label>
+                  <span
+                      class="tzCBPart site-bg-filter-color checked filter-to-check all_arrival_time"
+                      id="allArrivalTime"
+                      @click="arrivalTimeFilterFlight('all_arrival_time')">
+        </span>
+                  <input class="check-switch" type="checkbox" id="filter-arrival-time" value="allArrivalTime"
+                         checked="checked"/>
+                </li>
+
+                <!-- گزینه‌های زمان رسیدن -->
+                <template v-for="(each_time, key) in timeArrivalFilter">
+                  <li
+                      :key="key"
+                      class="arrival-time-grid-item"
+                      :class="{ 'arrival-time-grid-item-selected': each_time.checked }"
+                      @click.stop="toggleArrivalTime(each_time)"
+                  >
+                    <label :for="`filter-${each_time.time}`" class="arrival-time-grid-label" @click.stop>
+                      <i class="arrival-time-grid-icon" v-html="getArrivalIcon(each_time.time)"></i>
+                      <span class="arrival-time-grid-name">{{ each_time.name_fa }}</span>
+                      <span class="arrival-time-grid-range">{{ each_time.value }}</span>
+                    </label>
+                    <span
+                        class="tzCBPart site-bg-filter-color arrival_time"
+                        :class="`${each_time.time}`">
+          </span>
+                    <input class="check-switch" type="checkbox" :id="`filter-${each_time.time}`"
+                           v-model="each_time.checked"/>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </li>
+          <li class="s-u-filter-item" data-group="flight-transit-airports">
+    <span class="s-u-filter-title">
+        <i class="zmdi zmdi-pin-drop site-main-text-color-drck"></i>
+        {{ useXmltag('LayoverAirportsOutboundFlight') }}
+    </span>
+            <div class="s-u-filter-content">
+              <ul class="s-u-filter-item-time filter-transit-airports-ul filter-transit-airports-ul-f">
+                <!-- گزینه همه -->
+                <li>
+                  <label for="filter-transit-airports">
+                    <span>{{ useXmltag('All') }}</span>
+                  </label>
+                  <span
+                      class="tzCBPart site-bg-filter-color checked filter-to-check all_transit_airports"
+                      @click="transitAirportsFilterFlight('all_transit_airports')">
+                </span>
+                  <input class="check-switch" type="checkbox" id="filter-transit-airports" value="allTransitAirports"
+                         checked="checked"/>
+                </li>
+
+                <!-- گزینه‌های فرودگاه‌های توقف -->
+                <template v-for="(airport, index) in transitAirports">
+                  <li>
+                    <label :for="`filter-transit-${airport.code}`" class="justify-content-between">
+                      <i>{{ airport.code }}</i>
+                      <span>{{ airport.airport_name || airport.name }}</span>
+                    </label>
+                    <span
+                        class="tzCBPart site-bg-filter-color transit_airport"
+                        @click="transitAirportsFilterFlight(airport.code)"
+                        :class="airport.code">
+        </span>
+                    <input class="check-switch" type="checkbox" :id="`filter-transit-${airport.code}`"
+                           :value="airport.code"/>
+                  </li>
+                </template>
+
+                <!-- پیام "بدون توقف" -->
+                <li v-if="transitAirports && transitAirports.length === 0">
+                  <span class="text-muted">{{ useXmltag('NoTransitFlights') }}</span>
+                </li>
+              </ul>
+            </div>
+          </li>
+
           <div class="articles-list d-none">
             <h6>{{ useXmltag('RelatedArticles') }}</h6>
             <ul></ul>
@@ -527,7 +530,7 @@ import mainSidebar from './mainSidebar'
 
 export default {
   name: "sidebar",
-  props: ['dataSearch', 'price', 'interrupt', 'timeFilter', 'timeArrivalFilter', 'typeFlightFilter', 'seatClassFilter', 'minPriceAirline', 'countFlights', 'baggageFilter', 'transitAirports','transitDurationFilter'],
+  props: ['dataSearch', 'price', 'interrupt', 'timeFilter', 'timeArrivalFilter', 'typeFlightFilter', 'seatClassFilter', 'minPriceAirline', 'countFlights', 'baggageFilter', 'transitAirports', 'transitDurationFilter'],
   data() {
     return {
       is_show_currency_list: false,
@@ -567,11 +570,142 @@ export default {
       transitDurationValue: [0, 24],
       transitDurationMin: 0,
       transitDurationMax: 24,
+      localTimeFilter: [],
+      localTimeArrivalFilter: [],
       svg_icon_1: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" x="0" y="0" viewBox="0 0 907.62 907.619" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><g xmlns="http://www.w3.org/2000/svg"><path d="M591.672,907.618c28.995,0,52.5-23.505,52.5-52.5V179.839l42.191,41.688c10.232,10.11,23.567,15.155,36.898,15.155   c13.541,0,27.078-5.207,37.347-15.601c20.379-20.625,20.18-53.865-0.445-74.244L626.892,15.155C617.062,5.442,603.803,0,589.993,0   c-0.104,0-0.211,0-0.314,0.001c-13.923,0.084-27.244,5.694-37.03,15.6l-129.913,131.48c-20.379,20.625-20.18,53.865,0.445,74.244   c20.626,20.381,53.866,20.181,74.245-0.445l41.747-42.25v676.489C539.172,884.113,562.677,907.618,591.672,907.618z"></path><path d="M315.948,0c-28.995,0-52.5,23.505-52.5,52.5v676.489l-41.747-42.25c-20.379-20.625-53.62-20.825-74.245-0.445   c-20.625,20.379-20.825,53.619-0.445,74.244l129.912,131.479c9.787,9.905,23.106,15.518,37.029,15.601   c0.105,0.001,0.21,0.001,0.315,0.001c13.81,0,27.07-5.442,36.899-15.155L484.44,760.78c20.625-20.379,20.824-53.619,0.445-74.244   c-20.379-20.626-53.62-20.825-74.245-0.445l-42.192,41.688V52.5C368.448,23.505,344.943,0,315.948,0z" style=""></path></g></g></svg>`,
       svg_icon_2: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g transform="matrix(-1,-1.2246467991473532e-16,1.2246467991473532e-16,-1,512,512)"><g xmlns="http://www.w3.org/2000/svg"><g><path d="M374.108,373.328c-7.829-7.792-20.492-7.762-28.284,0.067L276,443.557V20c0-11.046-8.954-20-20-20    c-11.046,0-20,8.954-20,20v423.558l-69.824-70.164c-7.792-7.829-20.455-7.859-28.284-0.067c-7.83,7.793-7.859,20.456-0.068,28.285    l104,104.504c0.006,0.007,0.013,0.012,0.019,0.018c7.792,7.809,20.496,7.834,28.314,0.001c0.006-0.007,0.013-0.012,0.019-0.018    l104-104.504C381.966,393.785,381.939,381.121,374.108,373.328z" style="" class=""></path></g></g></g></svg>`,
     }
   },
   methods: {
+    getDepartureIcon(time) {
+      const icons = {
+        'early': `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 10V3M12 3L9 6M12 3L15 6M6 12L5 11M18 12L19 11M3 18H21M5 21H19M7 18C7 15.2386 9.23858 13 12 13C14.7614 13 17 15.2386 17 18" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+        'morning': `
+       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="35" height="35"><path d="M 24.90625 3.96875 C 24.863281 3.976563 24.820313 3.988281 24.78125 4 C 24.316406 4.105469 23.988281 4.523438 24 5 L 24 11 C 23.996094 11.359375 24.183594 11.695313 24.496094 11.878906 C 24.808594 12.058594 25.191406 12.058594 25.503906 11.878906 C 25.816406 11.695313 26.003906 11.359375 26 11 L 26 5 C 26.011719 4.710938 25.894531 4.433594 25.6875 4.238281 C 25.476563 4.039063 25.191406 3.941406 24.90625 3.96875 Z M 10.65625 9.84375 C 10.28125 9.910156 9.980469 10.183594 9.875 10.546875 C 9.769531 10.914063 9.878906 11.304688 10.15625 11.5625 L 14.40625 15.8125 C 14.648438 16.109375 15.035156 16.246094 15.410156 16.160156 C 15.78125 16.074219 16.074219 15.78125 16.160156 15.410156 C 16.246094 15.035156 16.109375 14.648438 15.8125 14.40625 L 11.5625 10.15625 C 11.355469 9.933594 11.054688 9.820313 10.75 9.84375 C 10.71875 9.84375 10.6875 9.84375 10.65625 9.84375 Z M 39.03125 9.84375 C 38.804688 9.875 38.59375 9.988281 38.4375 10.15625 L 34.1875 14.40625 C 33.890625 14.648438 33.753906 15.035156 33.839844 15.410156 C 33.925781 15.78125 34.21875 16.074219 34.589844 16.160156 C 34.964844 16.246094 35.351563 16.109375 35.59375 15.8125 L 39.84375 11.5625 C 40.15625 11.265625 40.246094 10.800781 40.0625 10.410156 C 39.875 10.015625 39.460938 9.789063 39.03125 9.84375 Z M 24.90625 15 C 24.875 15.007813 24.84375 15.019531 24.8125 15.03125 C 24.75 15.035156 24.6875 15.046875 24.625 15.0625 C 24.613281 15.074219 24.605469 15.082031 24.59375 15.09375 C 19.289063 15.320313 15 19.640625 15 25 C 15 30.503906 19.496094 35 25 35 C 30.503906 35 35 30.503906 35 25 C 35 19.660156 30.746094 15.355469 25.46875 15.09375 C 25.433594 15.09375 25.410156 15.0625 25.375 15.0625 C 25.273438 15.023438 25.167969 15.003906 25.0625 15 C 25.042969 15 25.019531 15 25 15 C 24.96875 15 24.9375 15 24.90625 15 Z M 24.9375 17 C 24.957031 17 24.980469 17 25 17 C 25.03125 17 25.0625 17 25.09375 17 C 29.46875 17.050781 33 20.613281 33 25 C 33 29.421875 29.421875 33 25 33 C 20.582031 33 17 29.421875 17 25 C 17 20.601563 20.546875 17.035156 24.9375 17 Z M 4.71875 24 C 4.167969 24.078125 3.78125 24.589844 3.859375 25.140625 C 3.9375 25.691406 4.449219 26.078125 5 26 L 11 26 C 11.359375 26.003906 11.695313 25.816406 11.878906 25.503906 C 12.058594 25.191406 12.058594 24.808594 11.878906 24.496094 C 11.695313 24.183594 11.359375 23.996094 11 24 L 5 24 C 4.96875 24 4.9375 24 4.90625 24 C 4.875 24 4.84375 24 4.8125 24 C 4.78125 24 4.75 24 4.71875 24 Z M 38.71875 24 C 38.167969 24.078125 37.78125 24.589844 37.859375 25.140625 C 37.9375 25.691406 38.449219 26.078125 39 26 L 45 26 C 45.359375 26.003906 45.695313 25.816406 45.878906 25.503906 C 46.058594 25.191406 46.058594 24.808594 45.878906 24.496094 C 45.695313 24.183594 45.359375 23.996094 45 24 L 39 24 C 38.96875 24 38.9375 24 38.90625 24 C 38.875 24 38.84375 24 38.8125 24 C 38.78125 24 38.75 24 38.71875 24 Z M 15 33.875 C 14.773438 33.90625 14.5625 34.019531 14.40625 34.1875 L 10.15625 38.4375 C 9.859375 38.679688 9.722656 39.066406 9.808594 39.441406 C 9.894531 39.8125 10.1875 40.105469 10.558594 40.191406 C 10.933594 40.277344 11.320313 40.140625 11.5625 39.84375 L 15.8125 35.59375 C 16.109375 35.308594 16.199219 34.867188 16.039063 34.488281 C 15.882813 34.109375 15.503906 33.867188 15.09375 33.875 C 15.0625 33.875 15.03125 33.875 15 33.875 Z M 34.6875 33.875 C 34.3125 33.941406 34.011719 34.214844 33.90625 34.578125 C 33.800781 34.945313 33.910156 35.335938 34.1875 35.59375 L 38.4375 39.84375 C 38.679688 40.140625 39.066406 40.277344 39.441406 40.191406 C 39.8125 40.105469 40.105469 39.8125 40.191406 39.441406 C 40.277344 39.066406 40.140625 38.679688 39.84375 38.4375 L 35.59375 34.1875 C 35.40625 33.988281 35.148438 33.878906 34.875 33.875 C 34.84375 33.875 34.8125 33.875 34.78125 33.875 C 34.75 33.875 34.71875 33.875 34.6875 33.875 Z M 24.90625 37.96875 C 24.863281 37.976563 24.820313 37.988281 24.78125 38 C 24.316406 38.105469 23.988281 38.523438 24 39 L 24 45 C 23.996094 45.359375 24.183594 45.695313 24.496094 45.878906 C 24.808594 46.058594 25.191406 46.058594 25.503906 45.878906 C 25.816406 45.695313 26.003906 45.359375 26 45 L 26 39 C 26.011719 38.710938 25.894531 38.433594 25.6875 38.238281 C 25.476563 38.039063 25.191406 37.941406 24.90625 37.96875 Z"/></svg>
+      `,
+        'afternoon': `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 18H2M6.31412 12.3141L4.8999 10.8999M17.6858 12.3141L19.1 10.8999M22 18H20M7 18C7 15.2386 9.23858 13 12 13C14.7614 13 17 15.2386 17 18M22 22H2M16 5L12 9M12 9L8 5M12 9V2" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+        'night': `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 11.5 20.95 11.01 20.85 10.54C19.86 12.08 18.14 13.1 16.18 13.1C13.08 13.1 10.56 10.58 10.56 7.48C10.56 5.52 11.58 3.8 13.12 2.81C12.76 2.64 12.38 2.5 12 2.5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `
+      };
+      return icons[time] || icons['morning'];
+    },
+
+    toggleDepartureTime(each_time) {
+      if (!each_time) return;
+
+      // غیرفعال کردن "همه"
+      const allCheckbox = document.getElementById('filter-time');
+      const allSpan = document.getElementById('allTime');
+
+      if (allCheckbox && allCheckbox.checked) {
+        allCheckbox.checked = false;
+        if (allSpan) allSpan.classList.remove('checked');
+      }
+
+      // تغییر وضعیت انتخاب
+      each_time.checked = !each_time.checked;
+
+      // اگر هیچ گزینه‌ای انتخاب نشد، "همه" رو فعال کن
+      const anySelected = this.localTimeFilter.some(item => item.checked === true);
+
+      if (!anySelected) {
+        if (allCheckbox) {
+          allCheckbox.checked = true;
+          if (allSpan) allSpan.classList.add('checked');
+        }
+      }
+
+      // فراخوانی متد فیلتر
+      this.timeFilterFlightForeign(each_time.time);
+    },
+
+    timeFilterFlightForeign(value) {
+      if (value === 'all_time') {
+        this.localTimeFilter.forEach(item => {
+          item.checked = false;
+        });
+      }
+
+      this.$emit('filterFlights', value, 'time');
+    },
+    getArrivalIcon(time) {
+      const icons = {
+        // بامداد (00:00 - 04:59) - ماه و ستاره
+        'arrival_early': `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 10V3M12 3L9 6M12 3L15 6M6 12L5 11M18 12L19 11M3 18H21M5 21H19M7 18C7 15.2386 9.23858 13 12 13C14.7614 13 17 15.2386 17 18" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `,
+
+        // صبح (05:00 - 11:59) - خورشید طلوع
+        'arrival_morning': `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="35" height="35"><path d="M 24.90625 3.96875 C 24.863281 3.976563 24.820313 3.988281 24.78125 4 C 24.316406 4.105469 23.988281 4.523438 24 5 L 24 11 C 23.996094 11.359375 24.183594 11.695313 24.496094 11.878906 C 24.808594 12.058594 25.191406 12.058594 25.503906 11.878906 C 25.816406 11.695313 26.003906 11.359375 26 11 L 26 5 C 26.011719 4.710938 25.894531 4.433594 25.6875 4.238281 C 25.476563 4.039063 25.191406 3.941406 24.90625 3.96875 Z M 10.65625 9.84375 C 10.28125 9.910156 9.980469 10.183594 9.875 10.546875 C 9.769531 10.914063 9.878906 11.304688 10.15625 11.5625 L 14.40625 15.8125 C 14.648438 16.109375 15.035156 16.246094 15.410156 16.160156 C 15.78125 16.074219 16.074219 15.78125 16.160156 15.410156 C 16.246094 15.035156 16.109375 14.648438 15.8125 14.40625 L 11.5625 10.15625 C 11.355469 9.933594 11.054688 9.820313 10.75 9.84375 C 10.71875 9.84375 10.6875 9.84375 10.65625 9.84375 Z M 39.03125 9.84375 C 38.804688 9.875 38.59375 9.988281 38.4375 10.15625 L 34.1875 14.40625 C 33.890625 14.648438 33.753906 15.035156 33.839844 15.410156 C 33.925781 15.78125 34.21875 16.074219 34.589844 16.160156 C 34.964844 16.246094 35.351563 16.109375 35.59375 15.8125 L 39.84375 11.5625 C 40.15625 11.265625 40.246094 10.800781 40.0625 10.410156 C 39.875 10.015625 39.460938 9.789063 39.03125 9.84375 Z M 24.90625 15 C 24.875 15.007813 24.84375 15.019531 24.8125 15.03125 C 24.75 15.035156 24.6875 15.046875 24.625 15.0625 C 24.613281 15.074219 24.605469 15.082031 24.59375 15.09375 C 19.289063 15.320313 15 19.640625 15 25 C 15 30.503906 19.496094 35 25 35 C 30.503906 35 35 30.503906 35 25 C 35 19.660156 30.746094 15.355469 25.46875 15.09375 C 25.433594 15.09375 25.410156 15.0625 25.375 15.0625 C 25.273438 15.023438 25.167969 15.003906 25.0625 15 C 25.042969 15 25.019531 15 25 15 C 24.96875 15 24.9375 15 24.90625 15 Z M 24.9375 17 C 24.957031 17 24.980469 17 25 17 C 25.03125 17 25.0625 17 25.09375 17 C 29.46875 17.050781 33 20.613281 33 25 C 33 29.421875 29.421875 33 25 33 C 20.582031 33 17 29.421875 17 25 C 17 20.601563 20.546875 17.035156 24.9375 17 Z M 4.71875 24 C 4.167969 24.078125 3.78125 24.589844 3.859375 25.140625 C 3.9375 25.691406 4.449219 26.078125 5 26 L 11 26 C 11.359375 26.003906 11.695313 25.816406 11.878906 25.503906 C 12.058594 25.191406 12.058594 24.808594 11.878906 24.496094 C 11.695313 24.183594 11.359375 23.996094 11 24 L 5 24 C 4.96875 24 4.9375 24 4.90625 24 C 4.875 24 4.84375 24 4.8125 24 C 4.78125 24 4.75 24 4.71875 24 Z M 38.71875 24 C 38.167969 24.078125 37.78125 24.589844 37.859375 25.140625 C 37.9375 25.691406 38.449219 26.078125 39 26 L 45 26 C 45.359375 26.003906 45.695313 25.816406 45.878906 25.503906 C 46.058594 25.191406 46.058594 24.808594 45.878906 24.496094 C 45.695313 24.183594 45.359375 23.996094 45 24 L 39 24 C 38.96875 24 38.9375 24 38.90625 24 C 38.875 24 38.84375 24 38.8125 24 C 38.78125 24 38.75 24 38.71875 24 Z M 15 33.875 C 14.773438 33.90625 14.5625 34.019531 14.40625 34.1875 L 10.15625 38.4375 C 9.859375 38.679688 9.722656 39.066406 9.808594 39.441406 C 9.894531 39.8125 10.1875 40.105469 10.558594 40.191406 C 10.933594 40.277344 11.320313 40.140625 11.5625 39.84375 L 15.8125 35.59375 C 16.109375 35.308594 16.199219 34.867188 16.039063 34.488281 C 15.882813 34.109375 15.503906 33.867188 15.09375 33.875 C 15.0625 33.875 15.03125 33.875 15 33.875 Z M 34.6875 33.875 C 34.3125 33.941406 34.011719 34.214844 33.90625 34.578125 C 33.800781 34.945313 33.910156 35.335938 34.1875 35.59375 L 38.4375 39.84375 C 38.679688 40.140625 39.066406 40.277344 39.441406 40.191406 C 39.8125 40.105469 40.105469 39.8125 40.191406 39.441406 C 40.277344 39.066406 40.140625 38.679688 39.84375 38.4375 L 35.59375 34.1875 C 35.40625 33.988281 35.148438 33.878906 34.875 33.875 C 34.84375 33.875 34.8125 33.875 34.78125 33.875 C 34.75 33.875 34.71875 33.875 34.6875 33.875 Z M 24.90625 37.96875 C 24.863281 37.976563 24.820313 37.988281 24.78125 38 C 24.316406 38.105469 23.988281 38.523438 24 39 L 24 45 C 23.996094 45.359375 24.183594 45.695313 24.496094 45.878906 C 24.808594 46.058594 25.191406 46.058594 25.503906 45.878906 C 25.816406 45.695313 26.003906 45.359375 26 45 L 26 39 C 26.011719 38.710938 25.894531 38.433594 25.6875 38.238281 C 25.476563 38.039063 25.191406 37.941406 24.90625 37.96875 Z"/></svg>
+    `,
+
+        // بعد از ظهر (12:00 - 17:59) - خورشید غروب
+        'arrival_afternoon': `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 18H2M6.31412 12.3141L4.8999 10.8999M17.6858 12.3141L19.1 10.8999M22 18H20M7 18C7 15.2386 9.23858 13 12 13C14.7614 13 17 15.2386 17 18M22 22H2M16 5L12 9M12 9L8 5M12 9V2" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `,
+
+        // شب (18:00 - 23:59) - ماه کامل
+        'arrival_night': `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 11.5 20.95 11.01 20.85 10.54C19.86 12.08 18.14 13.1 16.18 13.1C13.08 13.1 10.56 10.58 10.56 7.48C10.56 5.52 11.58 3.8 13.12 2.81C12.76 2.64 12.38 2.5 12 2.5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `
+      };
+      return icons[time] || icons['arrival_morning'];
+    },
+    toggleArrivalTime(each_time) {
+      if (!each_time) return;
+
+      // غیرفعال کردن "همه"
+      const allCheckbox = document.getElementById('filter-arrival-time');
+      const allSpan = document.getElementById('allArrivalTime');
+
+      if (allCheckbox && allCheckbox.checked) {
+        allCheckbox.checked = false;
+        if (allSpan) allSpan.classList.remove('checked');
+      }
+
+      // تغییر وضعیت انتخاب
+      each_time.checked = !each_time.checked;
+
+      // اگر هیچ گزینه‌ای انتخاب نشد، "همه" رو فعال کن
+      const anySelected = this.localTimeArrivalFilter.some(item => item.checked === true);
+
+      if (!anySelected) {
+        if (allCheckbox) {
+          allCheckbox.checked = true;
+          if (allSpan) allSpan.classList.add('checked');
+        }
+      }
+
+      // فراخوانی متد فیلتر
+      this.arrivalTimeFilterFlight(each_time.time);
+    },
+    arrivalTimeFilterFlight(value) {
+      if (value === 'all_arrival_time') {
+        this.localTimeArrivalFilter.forEach(item => {
+          item.checked = false;
+        });
+      }
+
+      this.$emit('filterFlights', value, 'arrival_time');
+    },
     formatDate(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -1111,14 +1245,8 @@ export default {
     transitDurationFilterFlight(value) {
       this.$emit('filterTransitDuration', value);
     },
-    timeFilterFlightForeign(value) {
-      this.$emit('filterFlights', value, 'time');
-    },
     transitAirportsFilterFlight(value) {
       this.$emit('filterFlights', value, 'transit_airports');
-    },
-    arrivalTimeFilterFlight(value) {
-      this.$emit('filterFlights', value, 'arrival_time');
     },
     stopFilterFlight(value) {
       this.$emit('filterFlights', value, 'stop');
@@ -1224,6 +1352,37 @@ export default {
 
   },
   watch: {
+    timeFilter: {
+      handler(newVal) {
+        if (newVal && typeof newVal === 'object') {
+          this.localTimeFilter = Object.keys(newVal).map(key => ({
+            ...newVal[key],
+            key: key,
+            checked: false
+          }));
+        } else {
+          this.localTimeFilter = [];
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    timeArrivalFilter: {
+      handler(newVal) {
+        if (newVal && typeof newVal === 'object') {
+          // تبدیل object به array و اضافه کردن checked
+          this.localTimeArrivalFilter = Object.keys(newVal).map(key => ({
+            ...newVal[key],
+            key: key,
+            checked: false
+          }));
+        } else {
+          this.localTimeArrivalFilter = [];
+        }
+      },
+      immediate: true,
+      deep: true
+    },
     flights: {
       handler(newFlights) {
         if (newFlights && newFlights.length > 0 && !this.firstTimeApplied) {

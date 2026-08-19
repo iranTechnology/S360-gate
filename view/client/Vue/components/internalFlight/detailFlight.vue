@@ -9,58 +9,58 @@
             <button class="sidebar-close-btn sidebar-close-btn-times" @click="closeSidebar"><i class="fa fa-times"></i></button>
           </div>
           <div class="sidebar-content">
-            <div class="international-available-details border-0">
-              <div>
-                <div class=" international-available-panel-min">
-                  <ul class="tabs">
-                    <li data-tab="tab-1-0" class="tab-link current  ">
-                      {{useXmltag('Informationflight')}}
-                    </li>
-                    <li data-tab="tab-2-0" class="tab-link  detailShow">
-                      {{useXmltag('Price')}}
-                    </li>
-                    <li data-tab="tab-3-0" class="tab-link " @click="getFeeCancel(`${flight.flight_type_li}`,`${flight.airline}`,`${flight.cabin_type}`)">
-                      {{useXmltag('TermsandConditions')}}
-                    </li>
-                    <li class="tab-link"  :data-tab="`tab-4-0`"
-                        @click="getAirRules()" v-show="flight.source_id=='14'">
-                      {{ useXmltag('Ticketrules')}}
-                    </li>
-                  </ul>
-                  <div id="tab-1-0" class="tab-content current">
-                    <div class="international-available-airlines-detail-tittle">
+  <div class="international-available-details border-0">
+    <div>
+      <div class=" international-available-panel-min">
+        <ul class="tabs">
+          <li data-tab="tab-1-0" class="tab-link current  ">
+            {{useXmltag('Informationflight')}}
+          </li>
+          <li data-tab="tab-2-0" class="tab-link  detailShow">
+            {{useXmltag('Price')}}
+          </li>
+          <li data-tab="tab-3-0" class="tab-link " @click="getFeeCancel(`${flight.flight_type_li}`,`${flight.airline}`,`${flight.cabin_type}`)">
+            {{useXmltag('TermsandConditions')}}
+          </li>
+          <li class="tab-link"  :data-tab="`tab-4-0`"
+              @click="getAirRules()" v-show="flight.source_id=='14'">
+            {{ useXmltag('Ticketrules')}}
+          </li>
+        </ul>
+        <div id="tab-1-0" class="tab-content current">
+          <div class="international-available-airlines-detail-tittle">
                         <span
                             class="iranB  lh25 displayb txtRight" style="font-size:1.1rem !important">
                             <i class="fa fa-circle site-main-text-color "></i>
-                          <!--                                                  {{useXmltag('Flight')}}-->
-                          <!--                                                  {{flight.departure_name}}-->
-                          <!--                                                   {{useXmltag('On')}}-->
-                          <!--                                                 {{flight.arrival_name}}-->
+<!--                                                  {{useXmltag('Flight')}}-->
+<!--                                                  {{flight.departure_name}}-->
+<!--                                                   {{useXmltag('On')}}-->
+<!--                                                 {{flight.arrival_name}}-->
 {{flightTitle }}
                                                    </span>
-                      <div class="international-available-airlines-details mt-3" style="font-size: 0.85rem;">
-                        <div class=" international-available-airlines-detail">
-                          <div class="d-flex align-items-center gap-4 w-100">
-                            <div class="international-available-airlines-logo-detail international-available-airlines-logo-detail-internal logo-airline-ico"></div>
-                            <div class="international-available-airlines-info-detail my-info-detail">
+            <div class="international-available-airlines-details mt-3" style="font-size: 0.85rem;">
+            <div class=" international-available-airlines-detail">
+              <div class="d-flex align-items-center gap-4 w-100">
+              <div class="international-available-airlines-logo-detail international-available-airlines-logo-detail-internal logo-airline-ico"></div>
+              <div class="international-available-airlines-info-detail my-info-detail">
                                  <span class="airline_s">
                                         {{flight.airline_name}} ({{flight.airline}})
 
                                  </span>
 
-                              <!--                                 <span class="capacity_s " v-if="flight.capacity > 0">-->
-                              <!--                                        <i>{{useXmltag('Capacity')}} : </i>-->
-                              <!--                                        {{flight.capacity}}-->
-                              <!--                                        <em>-</em>-->
-                              <!--                                 </span>-->
+                <!--                                 <span class="capacity_s " v-if="flight.capacity > 0">-->
+                <!--                                        <i>{{useXmltag('Capacity')}} : </i>-->
+                <!--                                        {{flight.capacity}}-->
+                <!--                                        <em>-</em>-->
+                <!--                                 </span>-->
 
-                              <!--                <span class="flighttime_s">-->
-                              <!--                                            {{useXmltag('Flighttime')}} :-->
-                              <!--                                            {{flight.duration_time}}-->
-                              <!--                                 </span>-->
-                            </div>
-                          </div>
-                          <div class="d-flex align-items-center justify-content-center justify-content-md-start detail-flight-internal gap-10 w-100 mt-2">
+<!--                <span class="flighttime_s">-->
+<!--                                            {{useXmltag('Flighttime')}} :-->
+<!--                                            {{flight.duration_time}}-->
+<!--                                 </span>-->
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center justify-content-md-start detail-flight-internal gap-10 w-100 mt-2">
               <span class="" >
                 <i> {{useXmltag('FlightNumber')}} : </i>
                 {{flight.flight_number}}
@@ -69,276 +69,276 @@
                 <i class="openL"></i>
 
               </span>
-                            <span class="padt0 iranL  lh18 displayb" v-if="flight.cabin_type !=''">
+              <span class="padt0 iranL  lh18 displayb" v-if="flight.cabin_type !=''">
                                     {{useXmltag('Classrate')}} :
                                     <i class="openL"></i>
                 <i> {{flight.cabin_type}}</i>
                 <i class="openL"></i>
                   <em>|</em>
                                 </span>
-                            <span class="seatClass_s">
+              <span class="seatClass_s">
                                         {{flight.seat_class}}
 
                                  </span>
-                          </div>
-                        </div>
-                        <div class="international-available-airlines-detail   site-border-right-main-color">
-                          <div class="d-flex align-items-center w-100 justify-content-center text-center">
-                            <div class="airlines-detail-box ">
-                              <span class="airlines-detail-box-color">{{flight.departure_name}}</span>
-                              <!--                <span class="airlines-detail-box-color openB">{{flight.departure_date}} </span>-->
-                              <span class="airlines-detail-box-color openB ">{{flight.departure_time}}</span>
-                            </div>
-                            <span data-v-ba52cdde=""><svg data-v-ba52cdde="" id="Capa_1" viewBox="0 0 24 24" width="30px" height="30px" fill="currentColor" data-v-5483aaca=""><path data-v-ba52cdde="" d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg></span>
-                            <div class="airlines-detail-box ">
-                              <span class="airlines-detail-box-color">{{flight.arrival_name}}</span>
-                              <!--                <span class="airlines-detail-box-color openB">{{flight.arrival_date}} </span>-->
-                              <span class="airlines-detail-box-color openB ">{{flight.arrival_time}}</span>
-                            </div>
-                          </div>
-                          <div class="airlines-detail-box-2 mt-2">
+            </div>
+            </div>
+            <div class="international-available-airlines-detail   site-border-right-main-color">
+              <div class="d-flex align-items-center w-100 justify-content-center text-center">
+              <div class="airlines-detail-box ">
+                <span class="airlines-detail-box-color">{{flight.departure_name}}</span>
+<!--                <span class="airlines-detail-box-color openB">{{flight.departure_date}} </span>-->
+                <span class="airlines-detail-box-color openB ">{{flight.departure_time}}</span>
+              </div>
+                <span data-v-ba52cdde=""><svg data-v-ba52cdde="" id="Capa_1" viewBox="0 0 24 24" width="30px" height="30px" fill="currentColor" data-v-5483aaca=""><path data-v-ba52cdde="" d="M.601 12.008c0 .929.297 1.545 1.003 1.857.392.172.802.226 1.46.22l.362-.009 5.656-.24.26.368.326.493.42.659.87 1.41 1.573 2.626 1.678 2.855a2.204 2.204 0 0 0 1.858 1.155.9.9 0 0 0 .878-1.198l-3.018-8.582c-.008-.021-.002-.03.006-.03l6.447-.29.79 2.114.035.13c.257.593.77.862 1.287.761.61-.12 1.008-.711.889-1.322l-.005-.09.009-5.947c.05-.488-.338-1.007-.9-1.12-.546-.107-1.029.189-1.246.665l-.832 2.22-6.446-.29a.013.013 0 0 1-.011-.017l3.179-8.595a.9.9 0 0 0-.92-1.209l-.161.014c-.69.02-1.352.4-1.754 1.013L12.426 4.8l-1.21 2.02-.8 1.308-.54.86-.45.693-.238.347-.107.149-5.602-.264h-.623l-.16.007-.206.016c-1.287.127-1.889.767-1.889 2.072Z" fill-rule="evenodd"></path></svg></span>
+              <div class="airlines-detail-box ">
+                <span class="airlines-detail-box-color">{{flight.arrival_name}}</span>
+<!--                <span class="airlines-detail-box-color openB">{{flight.arrival_date}} </span>-->
+                <span class="airlines-detail-box-color openB ">{{flight.arrival_time}}</span>
+              </div>
+              </div>
+              <div class="airlines-detail-box-2 mt-2">
                                 <span class="padt0 iranb  lh18 displayb" v-if="flight.baggage !=''">
                                     {{useXmltag('Permissible')}} :
                                     <span class="iranNum ">{{flight.baggage}} </span>
                                 </span>
 
-                            <span class="padt0 iranb  lh18 displayb" v-if="flight.aircraft !=''">
+                <span class="padt0 iranb  lh18 displayb" v-if="flight.aircraft !=''">
                                     {{useXmltag('Typeairline')}} :
                                     <i class="iranNum">{{flight.aircraft}} </i>
                                 </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="tab-2-0" class="tab-content price-Box-Tab" >
-                    <div class="pop-up-h">
-                      <span>{{ useXmltag('TicketDetailsBasedPriceID')}}</span>
-                    </div>
-                    <div class="price-Content site-border-main-color" style="position: relative; overflow: visible">
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-2-0" class="tab-content price-Box-Tab" >
+          <div class="pop-up-h">
+            <span>{{ useXmltag('TicketDetailsBasedPriceID')}}</span>
+          </div>
+          <div class="price-Content site-border-main-color" style="position: relative; overflow: visible">
                                                   <span class="hidden-data" style="top: -10px">
                               fare: {{ flight.price.adult.p_fare_for_test.toLocaleString() }}
                               tax: {{ flight.price.adult.p_tax_for_test.toLocaleString() }}
                            </span>
-                      <p id="AlertPanelHTC"></p>
-                      <div class="tblprice">
+            <p id="AlertPanelHTC"></p>
+            <div class="tblprice">
 
-                        <!-- MOBILE PRICE TABS -->
-                        <div class="price-tabs-mobile">
-                          <ul class="price-tabs-header">
-                            <li
-                                v-for="row in priceTableRows"
-                                :key="row.key"
-                                :class="{ active: activePriceTab === row.key }"
-                                @click="activePriceTab = row.key"
-                            >
-                              {{ row.label }}
-                            </li>
-                          </ul>
+              <!-- MOBILE PRICE TABS -->
+              <div class="price-tabs-mobile">
+                <ul class="price-tabs-header">
+                  <li
+                      v-for="row in priceTableRows"
+                      :key="row.key"
+                      :class="{ active: activePriceTab === row.key }"
+                      @click="activePriceTab = row.key"
+                  >
+                    {{ row.label }}
+                  </li>
+                </ul>
 
-                          <div
-                              v-for="row in priceTableRows"
-                              :key="row.key + '-content'"
-                              v-show="activePriceTab === row.key"
-                              class="price-card-mobile"
-                          >
-                            <div class="price-row">
-                              <span>قیمت پایه</span>
-                              <strong>{{ row.fareDisplay }}</strong>
-                            </div>
-
-                            <div class="price-row">
-                              <span>مالیات و عوارض</span>
-                              <strong>{{ row.taxDisplay }}</strong>
-                            </div>
-
-                            <div
-                                class="price-row"
-                                v-if="$store.state.isCounter && flight.flight_type_li == 'system'"
-                            >
-                              <span>کمیسیون آژانس</span>
-                              <strong>{{ row.markupDisplay }}</strong>
-                            </div>
-
-                            <div class="price-row">
-                              <span>تخفیف</span>
-                              <strong>{{ row.discountDisplay }}</strong>
-                            </div>
-
-                            <div class="price-row price-total">
-                              <span>قیمت نهایی</span>
-                              <strong>{{ row.finalDisplay }} ریال</strong>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <!--                            <div v-else class="parent-grid-ticket-details">-->
-                        <!--                               <div class="parent-price-ticket-details">-->
-                        <!--                                  <div class="tdpricelabel"> {{useXmltag('Adt')}} :</div>-->
-                        <!--                                  <div class="tdprice">-->
-                        <!--                                     <i v-if="flight.price.adult.has_discount=='yes'">{{flight.price.adult.with_discount}}</i>-->
-                        <!--                                     <i v-else>{{flight.price.adult.price}}</i>-->
-                        <!--                                     {{flight.price.adult.type_currency}}-->
-                        <!--                                  </div>-->
-                        <!--                               </div>-->
-                        <!--                                <div class="parent-price-ticket-details">-->
-                        <!--                                   <div class="tdpricelabel"> {{useXmltag('Chd')}} :</div>-->
-                        <!--                                   <div class="tdprice">-->
-                        <!--                                      <i v-if="flight.price.child.price > 0 ">{{flight.price.child.price}}</i>-->
-                        <!--                                      <i v-else>{{useXmltag('PreInvoiceStep')}}</i>-->
-                        <!--                                   </div>-->
-                        <!--                                </div>-->
-                        <!--                               <div class="parent-price-ticket-details">-->
-                        <!--                                  <div class="tdpricelabel"> {{useXmltag('Inf')}} :</div>-->
-                        <!--                                  <div class="tdprice">-->
-                        <!--                                     <i v-if="flight.price.infant.price > 0 ">{{flight.price.infant.price}}</i>-->
-                        <!--                                     <i v-else>{{useXmltag('PreInvoiceStep')}}</i>-->
-                        <!--                                  </div>-->
-                        <!--                               </div>-->
-                        <!--                            </div>-->
-
-                      </div>
-                    </div>
-
-
-
-                    <!--                        <template v-if="fee_cancel !='' ">
-                                                <div class="cancel-policy cancel_modal">
-                                                    <div class="cancel-policy-head">
-                                                        <div class="cancel-policy-head-text">{{useXmltag('DetailMoneyCancel')}}</div>
-                                                        <div class="cancel-policy-class">
-                                                            <span>{{useXmltag('Classflight')}} :</span>
-                                                            <span> {{useXmltag('TypeClass')}} </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="cancel-policy-inner">
-                                                      <div class="cancel-policy-item cancel_modal">
-                                                          <span class="cancel-policy-item-text site-main-text-color">{{useXmltag('Fromthetimeticketissueuntilnoondaysbeforeflight')}}</span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-if="isNaN(`'${fee_cancel.ThreeDaysBefore}'`)">
-                                                          {{ fee_cancel.ThreeDaysBefore }}
-                                                      </span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
-                                                           {{ fee_cancel.ThreeDaysBefore }} {{useXmltag('PenaltyPercent')}}
-                                                      </span>
-                                                      </div>
-
-                                                      <div class="cancel-policy-item cancel_modal">
-                                                      <span class="cancel-policy-item-text site-main-text-color">
-                                                          {{useXmltag('Fromnoondaysbeforeflightnoondaybeforeflight')}}
-                                                          </span>
-                                                         <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color"
-                                                                v-if="isNaN(`'${fee_cancel.OneDaysBefore}'`)">
-                                                          {{ fee_cancel.OneDaysBefore}}
-                                                         </span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
-                                                           {{ fee_cancel.OneDaysBefore}} {{useXmltag('PenaltyPercent')}}
-                                                      </span>
-                                                      </div>
-                                                      <div class="cancel-policy-item cancel_modal">
-
-                                                      <span class="cancel-policy-item-text site-main-text-color">
-                                                          {{useXmltag('Fromnoondaybeforeflighthoursbeforeflight')}}
-                                                      </span>
-
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color"
-                                                                v-if="isNaN(`'${fee_cancel.ThreeHoursBefore}'`)">
-                                                          {{ fee_cancel.ThreeHoursBefore}}
-                                                      </span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
-                                                           {{ fee_cancel.ThreeHoursBefore}} {{useXmltag('PenaltyPercent')}}
-                                                      </span>
-                                                      </div>
-                                                      <div class="cancel-policy-item cancel_modal">
-                                                          <span class="cancel-policy-item-text site-main-text-color">
-                                                          {{useXmltag('Fromhoursbeforeflighttominutesbeforeflight')}}
-                                                          </span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color site-bg-main-color"
-                                                                v-if="isNaN(`'${fee_cancel.ThirtyMinutesAgo}'`)">
-                                                          {{ fee_cancel.ThirtyMinutesAgo}}
-                                                      </span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
-                                                           {{ fee_cancel.ThirtyMinutesAgo}} {{useXmltag('PenaltyPercent')}}
-                                                      </span>
-                                                      </div>
-
-                                                      <div class="cancel-policy-item cancel_modal">
-                                                          {{ useXmltag('Minutesbeforetheflight')}}
-                                                          <span class="cancel-policy-item-text site-main-text-color ">
-                                                      </span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color"
-                                                                v-if="isNaN(`'${fee_cancel.OfThirtyMinutesAgoToNext}'`)">
-                                                          {{ fee_cancel.ThirtyMinutesAgo}}
-                                                      </span>
-                                                          <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
-                                                           {{ fee_cancel.ThirtyMinutesAgo}} {{useXmltag('OfThirtyMinutesAgoToNext')}}
-                                                      </span>
-                                                      </div>
-                                                    </div>
-                                                </div>
-                                            </template>-->
-
-                    <!--          <div class="cancel-policy cancel-policy-charter" v-if="flight.flight_type_li !='system'">-->
-                    <!--                        <span class="">-->
-                    <!--                            {{useXmltag('ThecharterflightscharterunderstandingCivilAviationOrganization')}}-->
-                    <!--                        </span>-->
-                    <!--          </div>-->
-
+                <div
+                    v-for="row in priceTableRows"
+                    :key="row.key + '-content'"
+                    v-show="activePriceTab === row.key"
+                    class="price-card-mobile"
+                >
+                  <div class="price-row">
+                    <span>قیمت پایه</span>
+                    <strong>{{ row.fareDisplay }}</strong>
                   </div>
-                  <div id="tab-3-0" class="tab-content"><p class="iranL  lh25 displayb"></p>
-                    <ul v-if="flight.flight_type_li =='system'">
-                      <li>1- {{useXmltag('AccordingCivilAviationOrganizationResponsibilityResponsibleFlying')}}</li>
-                      <li>2- {{useXmltag('ResponsibilityAllTravelInformationEntryIncorrectPassengerRePurchase')}}</li>
-                      <li>3- {{useXmltag('MustEnterValidMobileNecessary')}}</li>
-                      <li>4- {{useXmltag('AviationRegulationsBabyChildAdultAges')}}</li>
-                      <li>5- {{useXmltag('CanNotBuyBabyChildTicketOnlineIndividuallySeparatelyAdultTickets')}}</li>
-                      <li>6- {{useXmltag('AircraftDeterminedAnyChangeAircraftCarrierHoldingFlight')}}</li>
-                      <li>7- {{useXmltag('PresenceDomesticFlightsRequiredForeignFlightsRequiredDocuments')}}</li>
-                    </ul>
 
-
-                    <ul v-else-if="flight.flight_type_li !='system' && flight.source_id =='22'">
-                      <li>1- {{useXmltag('DomesticRefundPenaltyWithin30MinutesPorsetare')}}</li>
-                      <li>2- {{useXmltag('DomesticRefundPenaltyFromIssueTo3DaysBeforePorsetare')}}</li>
-                      <li>3- {{useXmltag('DomesticRefundPenaltyFrom3DaysTo2DaysBeforePorsetare')}}</li>
-                      <li>4- {{useXmltag('DomesticRefundPenaltyFrom2DaysTo1DayBeforePorsetare')}}</li>
-                      <li>5- {{useXmltag('DomesticRefundPenaltyFrom1DayTo24HoursBeforePorsetare')}}</li>
-                      <li>6- {{useXmltag('DomesticRefundPenaltyFrom24HoursBeforePorsetare')}}</li>
-                      <li>7- {{useXmltag('DomesticRefundPenaltyNotePorsetare')}}</li>
-                      <li>{{useXmltag('DomesticRefundContactPorsetare')}}</li>
-                      <li><a href="https://apstick.ir/api/DeepLink/Refund/V1?language=fa" target="_blank">{{useXmltag('DomesticRefundLinkPorsetare')}}</a></li>
-
-                    </ul>
-
-                    <ul v-else>
-                      <li>1- {{useXmltag('RefundPenaltyFromIssueTo3DaysBefore')}}</li>
-                      <li>2- {{useXmltag('RefundPenaltyFrom3DaysTo2DaysBefore')}}</li>
-                      <li>3- {{useXmltag('RefundPenaltyFrom2DaysTo1DayBefore')}}</li>
-                      <li>4- {{useXmltag('RefundPenaltyFrom1DayTo24HoursBefore')}}</li>
-                      <li>5- {{useXmltag('RefundPenaltyFrom24HoursBefore')}}</li>
-                      <li>{{useXmltag('RefundPenaltyNote')}}</li>
-                    </ul>
-
-
-                    <cancel-policy
-                        :fee_cancel="fee_cancel"
-                        :flight_type_li="flight.flight_type_li"
-                    />
+                  <div class="price-row">
+                    <span>مالیات و عوارض</span>
+                    <strong>{{ row.taxDisplay }}</strong>
                   </div>
-                  <div :id="`tab-4-0`" class="tab-content w-100" v-show="flight.source_id=='14'">
 
-                    <img :src="`${getUrlWithoutLang()}/view/client/assets/images/load21.gif`"
-                         width="120px"
-                         alt="" class="loaderDetail"
-                         style="width: 50px;position: relative;"
-                         :id="`loaderDetail${flight.flight_id}`" v-if="is_show_loader">
+                  <div
+                      class="price-row"
+                      v-if="$store.state.isCounter && flight.flight_type_li == 'system'"
+                  >
+                    <span>کمیسیون آژانس</span>
+                    <strong>{{ row.markupDisplay }}</strong>
+                  </div>
 
-                    <rules-flight :data_rules="data_rules" v-if='is_show_rules'></rules-flight>
+                  <div class="price-row">
+                    <span>تخفیف</span>
+                    <strong>{{ row.discountDisplay }}</strong>
+                  </div>
+
+                  <div class="price-row price-total">
+                    <span>قیمت نهایی</span>
+                    <strong>{{ row.finalDisplay }} ریال</strong>
                   </div>
                 </div>
               </div>
 
+
+              <!--                            <div v-else class="parent-grid-ticket-details">-->
+              <!--                               <div class="parent-price-ticket-details">-->
+              <!--                                  <div class="tdpricelabel"> {{useXmltag('Adt')}} :</div>-->
+              <!--                                  <div class="tdprice">-->
+              <!--                                     <i v-if="flight.price.adult.has_discount=='yes'">{{flight.price.adult.with_discount}}</i>-->
+              <!--                                     <i v-else>{{flight.price.adult.price}}</i>-->
+              <!--                                     {{flight.price.adult.type_currency}}-->
+              <!--                                  </div>-->
+              <!--                               </div>-->
+              <!--                                <div class="parent-price-ticket-details">-->
+              <!--                                   <div class="tdpricelabel"> {{useXmltag('Chd')}} :</div>-->
+              <!--                                   <div class="tdprice">-->
+              <!--                                      <i v-if="flight.price.child.price > 0 ">{{flight.price.child.price}}</i>-->
+              <!--                                      <i v-else>{{useXmltag('PreInvoiceStep')}}</i>-->
+              <!--                                   </div>-->
+              <!--                                </div>-->
+              <!--                               <div class="parent-price-ticket-details">-->
+              <!--                                  <div class="tdpricelabel"> {{useXmltag('Inf')}} :</div>-->
+              <!--                                  <div class="tdprice">-->
+              <!--                                     <i v-if="flight.price.infant.price > 0 ">{{flight.price.infant.price}}</i>-->
+              <!--                                     <i v-else>{{useXmltag('PreInvoiceStep')}}</i>-->
+              <!--                                  </div>-->
+              <!--                               </div>-->
+              <!--                            </div>-->
+
             </div>
+          </div>
+
+
+
+          <!--                        <template v-if="fee_cancel !='' ">
+                                      <div class="cancel-policy cancel_modal">
+                                          <div class="cancel-policy-head">
+                                              <div class="cancel-policy-head-text">{{useXmltag('DetailMoneyCancel')}}</div>
+                                              <div class="cancel-policy-class">
+                                                  <span>{{useXmltag('Classflight')}} :</span>
+                                                  <span> {{useXmltag('TypeClass')}} </span>
+                                              </div>
+                                          </div>
+                                          <div class="cancel-policy-inner">
+                                            <div class="cancel-policy-item cancel_modal">
+                                                <span class="cancel-policy-item-text site-main-text-color">{{useXmltag('Fromthetimeticketissueuntilnoondaysbeforeflight')}}</span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-if="isNaN(`'${fee_cancel.ThreeDaysBefore}'`)">
+                                                {{ fee_cancel.ThreeDaysBefore }}
+                                            </span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
+                                                 {{ fee_cancel.ThreeDaysBefore }} {{useXmltag('PenaltyPercent')}}
+                                            </span>
+                                            </div>
+
+                                            <div class="cancel-policy-item cancel_modal">
+                                            <span class="cancel-policy-item-text site-main-text-color">
+                                                {{useXmltag('Fromnoondaysbeforeflightnoondaybeforeflight')}}
+                                                </span>
+                                               <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color"
+                                                      v-if="isNaN(`'${fee_cancel.OneDaysBefore}'`)">
+                                                {{ fee_cancel.OneDaysBefore}}
+                                               </span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
+                                                 {{ fee_cancel.OneDaysBefore}} {{useXmltag('PenaltyPercent')}}
+                                            </span>
+                                            </div>
+                                            <div class="cancel-policy-item cancel_modal">
+
+                                            <span class="cancel-policy-item-text site-main-text-color">
+                                                {{useXmltag('Fromnoondaybeforeflighthoursbeforeflight')}}
+                                            </span>
+
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color"
+                                                      v-if="isNaN(`'${fee_cancel.ThreeHoursBefore}'`)">
+                                                {{ fee_cancel.ThreeHoursBefore}}
+                                            </span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
+                                                 {{ fee_cancel.ThreeHoursBefore}} {{useXmltag('PenaltyPercent')}}
+                                            </span>
+                                            </div>
+                                            <div class="cancel-policy-item cancel_modal">
+                                                <span class="cancel-policy-item-text site-main-text-color">
+                                                {{useXmltag('Fromhoursbeforeflighttominutesbeforeflight')}}
+                                                </span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color site-bg-main-color"
+                                                      v-if="isNaN(`'${fee_cancel.ThirtyMinutesAgo}'`)">
+                                                {{ fee_cancel.ThirtyMinutesAgo}}
+                                            </span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
+                                                 {{ fee_cancel.ThirtyMinutesAgo}} {{useXmltag('PenaltyPercent')}}
+                                            </span>
+                                            </div>
+
+                                            <div class="cancel-policy-item cancel_modal">
+                                                {{ useXmltag('Minutesbeforetheflight')}}
+                                                <span class="cancel-policy-item-text site-main-text-color ">
+                                            </span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color"
+                                                      v-if="isNaN(`'${fee_cancel.OfThirtyMinutesAgoToNext}'`)">
+                                                {{ fee_cancel.ThirtyMinutesAgo}}
+                                            </span>
+                                                <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color" v-else>
+                                                 {{ fee_cancel.ThirtyMinutesAgo}} {{useXmltag('OfThirtyMinutesAgoToNext')}}
+                                            </span>
+                                            </div>
+                                          </div>
+                                      </div>
+                                  </template>-->
+
+<!--          <div class="cancel-policy cancel-policy-charter" v-if="flight.flight_type_li !='system'">-->
+<!--                        <span class="">-->
+<!--                            {{useXmltag('ThecharterflightscharterunderstandingCivilAviationOrganization')}}-->
+<!--                        </span>-->
+<!--          </div>-->
+
+        </div>
+        <div id="tab-3-0" class="tab-content"><p class="iranL  lh25 displayb"></p>
+          <ul v-if="flight.flight_type_li =='system'">
+            <li>1- {{useXmltag('AccordingCivilAviationOrganizationResponsibilityResponsibleFlying')}}</li>
+            <li>2- {{useXmltag('ResponsibilityAllTravelInformationEntryIncorrectPassengerRePurchase')}}</li>
+            <li>3- {{useXmltag('MustEnterValidMobileNecessary')}}</li>
+            <li>4- {{useXmltag('AviationRegulationsBabyChildAdultAges')}}</li>
+            <li>5- {{useXmltag('CanNotBuyBabyChildTicketOnlineIndividuallySeparatelyAdultTickets')}}</li>
+            <li>6- {{useXmltag('AircraftDeterminedAnyChangeAircraftCarrierHoldingFlight')}}</li>
+            <li>7- {{useXmltag('PresenceDomesticFlightsRequiredForeignFlightsRequiredDocuments')}}</li>
+          </ul>
+
+
+          <ul v-else-if="flight.flight_type_li !='system' && flight.source_id =='22'">
+            <li>1- {{useXmltag('DomesticRefundPenaltyWithin30MinutesPorsetare')}}</li>
+            <li>2- {{useXmltag('DomesticRefundPenaltyFromIssueTo3DaysBeforePorsetare')}}</li>
+            <li>3- {{useXmltag('DomesticRefundPenaltyFrom3DaysTo2DaysBeforePorsetare')}}</li>
+            <li>4- {{useXmltag('DomesticRefundPenaltyFrom2DaysTo1DayBeforePorsetare')}}</li>
+            <li>5- {{useXmltag('DomesticRefundPenaltyFrom1DayTo24HoursBeforePorsetare')}}</li>
+            <li>6- {{useXmltag('DomesticRefundPenaltyFrom24HoursBeforePorsetare')}}</li>
+            <li>7- {{useXmltag('DomesticRefundPenaltyNotePorsetare')}}</li>
+            <li>{{useXmltag('DomesticRefundContactPorsetare')}}</li>
+            <li><a href="https://apstick.ir/api/DeepLink/Refund/V1?language=fa" target="_blank">{{useXmltag('DomesticRefundLinkPorsetare')}}</a></li>
+
+          </ul>
+
+          <ul v-else>
+            <li>1- {{useXmltag('RefundPenaltyFromIssueTo3DaysBefore')}}</li>
+            <li>2- {{useXmltag('RefundPenaltyFrom3DaysTo2DaysBefore')}}</li>
+            <li>3- {{useXmltag('RefundPenaltyFrom2DaysTo1DayBefore')}}</li>
+            <li>4- {{useXmltag('RefundPenaltyFrom1DayTo24HoursBefore')}}</li>
+            <li>5- {{useXmltag('RefundPenaltyFrom24HoursBefore')}}</li>
+            <li>{{useXmltag('RefundPenaltyNote')}}</li>
+          </ul>
+
+
+          <cancel-policy
+              :fee_cancel="fee_cancel"
+              :flight_type_li="flight.flight_type_li"
+          />
+        </div>
+        <div :id="`tab-4-0`" class="tab-content w-100" v-show="flight.source_id=='14'">
+
+          <img :src="`${getUrlWithoutLang()}/view/client/assets/images/load21.gif`"
+               width="120px"
+               alt="" class="loaderDetail"
+               style="width: 50px;position: relative;"
+               :id="`loaderDetail${flight.flight_id}`" v-if="is_show_loader">
+
+          <rules-flight :data_rules="data_rules" v-if='is_show_rules'></rules-flight>
+        </div>
+      </div>
+    </div>
+
+  </div>
           </div>
 
           <div class="sidebar-footer">
@@ -441,15 +441,15 @@
              <div class="text_div_morei site-main-text-color iranM " v-if="flight.point_club > 0 ">
                      {{ useXmltag('Yourpurchasepoints')}} {{ flight.point_club}} {{ useXmltag('Point')}}
                  </div>
-      <!--            <div class="my-more-info slideDownAirDescription">-->
-      <!--                {{useXmltag('MoreDetails')}}-->
-      <!--                <i class="fa fa-angle-down"></i>-->
-      <!--            </div>-->
+<!--            <div class="my-more-info slideDownAirDescription">-->
+<!--                {{useXmltag('MoreDetails')}}-->
+<!--                <i class="fa fa-angle-down"></i>-->
+<!--            </div>-->
         </span>
-    </div>
-    <!--    <span class="international-available-detail-btn  slideUpAirDescription displayiN">-->
-    <!--            <i class="fa fa-angle-up site-main-text-color"></i>-->
-    <!--        </span>-->
+      </div>
+<!--    <span class="international-available-detail-btn  slideUpAirDescription displayiN">-->
+<!--            <i class="fa fa-angle-up site-main-text-color"></i>-->
+<!--        </span>-->
   </div>
 </template>
 
@@ -1042,10 +1042,10 @@ export default {
   color:#0f172a !important;
 }
 .airlines-detail-box  .openB{
-  font-weight: 700;
-  color: var(--mainColor);
-  direction: ltr;
-  display: inline-block;
+font-weight: 700;
+color: var(--mainColor);
+direction: ltr;
+display: inline-block;
 }
 .sidebar-close-btn{
   background: none;

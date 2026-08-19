@@ -97,7 +97,7 @@
             }
         },
         created: function () {
-
+          console.log('asdfasdfasdfasdfa')
         },
         watch: {
             flights() {

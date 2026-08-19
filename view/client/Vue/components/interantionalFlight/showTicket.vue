@@ -6,26 +6,25 @@
         <header-flight-foreign :dataSearch='dataSearch' @sortByTime='timeSort'
                                @sortByPrice='priceSort'></header-flight-foreign>
         <div class='fullCapacity_div' v-if='!is_show_loader && (this.$store.state.isComplete || flights.length == 0)'>
-          <img v-if="full_capacity['pic_url'] !='' && full_capacity['pic']" :src="full_capacity['pic_url']"
-               alt="fullCapacity">
-          <img v-else :src="`${getUrlWithoutLang()}view/client/assets/images/fullCapacity.png`" alt="fullCapacity">
+          <img v-if="full_capacity['pic_url'] !='' && full_capacity['pic']"  :src="full_capacity['pic_url']" alt="fullCapacity">
+          <img v-else  :src="`${getUrlWithoutLang()}view/client/assets/images/fullCapacity.png`" alt="fullCapacity">
 
           <h2 v-if='this.$store.state.isSearchLimit'>Look 2 Book Alert</h2>
-          <h2 v-else-if='flights.length === 0'>{{ useXmltag('Noflight') }}</h2>
+          <h2 v-else-if='flights.length === 0'>{{useXmltag('Noflight')}}</h2>
           <h2 v-else-if='this.$store.state.isComplete'>{{ useXmltag('FullCapacityRequestOffline') }}</h2>
           <request-offline v-if='has_request_offline_access && (this.$store.state.isComplete || flights.length == 0)'
                            :dataSearch='dataSearch'></request-offline>
         </div>
         <div id='s-u-result-wrapper-ul' class='foraign' v-if='!is_show_loader && flights.length > 0'>
-          <div class='items item_flight' id='showTicketItems'>
+                    <div class='items item_flight' id='showTicketItems'>
             <virtual-list
-                :data-key="'flight_id'"
-                :data-sources='flights'
-                :data-component='virtualScrollEachFlight'
-                :extra-props="{data_search:dataSearch}"
-                :item-class="'showListSort'"
-                :page-mode="true"
-                :estimate-size="135"
+                          :data-key="'flight_id'"
+                          :data-sources= 'flights'
+                          :data-component='virtualScrollEachFlight'
+                          :extra-props="{data_search:dataSearch}"
+                          :item-class="'showListSort'"
+                          :page-mode="true"
+                          :estimate-size="135"
             />
             <!--                        <div class="showListSort" v-for="(flight,key_flight) in flights" :key="key_flight">
                                         <div class="international-available-box foreign deptFlight"
@@ -76,7 +75,7 @@ export default {
       return virtualScrollEachFlight
     },
   },
-  props: ['flights', 'dataSearch', 'has_request_offline_access', 'full_capacity'],
+  props: ['flights', 'dataSearch', 'has_request_offline_access' , 'full_capacity'],
   components: {
     'header-flight-foreign': headerFlightForeign,
     'loader': loader,
@@ -103,13 +102,14 @@ export default {
       this.$emit('modalBaggageDetailInMain', value)
     },
   },
-  created: function () {
+  created: function() {
   },
   watch: {
     flights() {
       if (this.flights) {
         this.is_show_loader = false
       }
+
 
 
     },

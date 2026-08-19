@@ -646,7 +646,7 @@ input {
 }
 
 .search-wrapper {
-    padding: 10px;
+    padding: 12px;
 }
 
 .search-wrapper .displayib.padr20.padl20 {
@@ -664,7 +664,7 @@ input {
 
 .tzCBPart {
     background: #bdbfbe;
-    width: 95px;
+    width: 50px;
     height: 23px;
     overflow: hidden;
     border-radius: 3px;
@@ -1176,7 +1176,7 @@ input {
 .s-u-filter-title {
     position: relative;
     display: flex;
-    padding: 10px;
+    padding: 12px;
     color: #444;
     font-family: inherit;
     font-size: 16px;
@@ -1260,8 +1260,9 @@ input {
     display: flex;
     align-items: center;
     direction: ltr;
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px dashed #e1e1e1;
+    justify-content: space-between;
 }
 
 .s-u-filter-item ul li:last-child {
@@ -1270,7 +1271,7 @@ input {
 
 .s-u-filter-item-time label {
     font-family: inherit;
-    width: calc(100% - 78px);
+    width: calc(100% - 50px);
     display: inline-flex;
     vertical-align: middle;
     font-size: 13px;
@@ -1286,7 +1287,6 @@ input {
 
 .s-u-filter-item-time label > i {
     text-align: left;
-    margin-right: auto;
     font-style: normal;
     color: #333;
 }
@@ -10444,5 +10444,267 @@ process Flight cdd
         width: 182% !important;
         transform: translateX(-15px) !important;
     }
+}
+
+
+/* کلاس‌های یونیک برای فیلتر زمان رسیدن */
+.arrival-time-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    list-style: none;
+    direction: ltr;
+}
+
+/* گزینه "همه" */
+.arrival-time-all-item {
+    display: none !important;
+
+}
+
+.arrival-time-all-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
+}
+
+.arrival-time-all-text {
+    font-size: 14px;
+}
+
+.arrival-time-all-item .tzCBPart {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.arrival-time-all-item .tzCBPart.checked {
+    background: #2196F3;
+    border-color: #2196F3;
+}
+
+.arrival-time-all-item .tzCBPart.checked::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+}
+
+.arrival-time-all-item .check-switch {
+    display: none;
+}
+
+/* گزینه‌های زمان - به صورت مربع */
+.arrival-time-grid-item {
+    flex: 0 0 calc(50% - 4px);
+    min-width: 120px;
+    border: 1px solid #ccc !important;
+    border-radius: 10px;
+    padding: 12px 5px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.arrival-time-grid-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100% !important;
+    margin: 0;
+    cursor: pointer;
+    padding-right: 0 !important;
+}
+
+.arrival-time-grid-icon {
+    font-size: 28px;
+    font-style: normal;
+    display: block;
+    margin:unset  !important;
+    line-height: 1.2;
+    color: #555;
+}
+
+.arrival-time-grid-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.arrival-time-grid-range {
+    font-size: 12px;
+    font-weight: 400;
+    color: #888;
+    direction: ltr;
+}
+
+.arrival-time-grid-item .tzCBPart {
+    display: none;
+}
+
+.arrival-time-grid-item .check-switch {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.arrival-time-grid-item:hover {
+    border-color: #b0b0b0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.arrival-time-grid-item-selected {
+    border-color: var(--mainColor) !important;
+}
+
+.arrival-time-grid-item-selected .arrival-time-grid-icon svg path {
+    stroke: var(--mainColor) !important;
+}
+
+.arrival-time-grid-item-selected .arrival-time-grid-name {
+    color: var(--mainColor);
+}
+/* کلاس‌های یونیک برای فیلتر زمان رفت (departure time) */
+.departure-time-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    margin: 0;
+    list-style: none;
+    direction: ltr;
+}
+
+/* گزینه "همه" */
+.departure-time-all-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+}
+
+.departure-time-all-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
+}
+
+.departure-time-all-text {
+    font-size: 14px;
+}
+
+.departure-time-all-item .tzCBPart {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.departure-time-all-item .check-switch {
+    display: none;
+}
+
+/* گزینه‌های زمان - به صورت مربع */
+.departure-time-grid-item {
+    flex: 0 0 calc(50% - 4px);
+    min-width: 120px;
+    border: 1px solid #ccc !important;
+    border-radius: 10px;
+    padding: 12px 5px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.departure-time-grid-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100% !important;
+    margin: 0;
+    cursor: pointer;
+    padding-right:0 !important;
+}
+.departure-time-grid-icon{
+    font-size: 28px;
+    font-style: normal;
+    display: block;
+    margin:unset  !important;
+    line-height: 1.2;
+    color: #555;
+}
+
+
+.departure-time-grid-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.departure-time-grid-range {
+    font-size: 12px;
+    font-weight: 400;
+    color: #888;
+    direction: ltr;
+}
+
+.departure-time-grid-item .tzCBPart {
+    display: none;
+}
+
+.departure-time-grid-item .check-switch {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.departure-time-grid-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.departure-time-grid-item-selected {
+    border-color:  var(--mainColor) !important;
+}
+
+.departure-time-grid-item-selected .departure-time-grid-icon svg path {
+    stroke: var(--mainColor) !important;
+}
+
+.departure-time-grid-item-selected .departure-time-grid-name {
+    color:  var(--mainColor) !important;
 }
 

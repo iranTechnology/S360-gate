@@ -465,8 +465,7 @@
                     </label>
 
                     <span
-                       :data-inactive="useXmltag('Inactive')"
-                       :data-active="useXmltag('Active')"
+
                        :class="[
     'tzCBPart',
     'site-bg-filter-color',
@@ -509,7 +508,8 @@
                   <label for="filter-type">
                     <span>{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                  <span
+
                         class="tzCBPart site-bg-filter-color checked filter-to-check type_flight all_type_flight"
                         @click="typeFilterFlight('all_type_flight')"></span>
                   <input class="check-switch" type="checkbox" id="filter-type" value="allFlightType"
@@ -521,7 +521,8 @@
                   <label :for="`filter-${filter_flight.name_en}`">
                     <span>{{filter_flight.name_fa }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                  <span
+
                         class="tzCBPart site-bg-filter-color type_flight"
                         @click="typeFilterFlight(filter_flight.name_en)"
                         :class="`${filter_flight.name_en}`"></span>
@@ -546,7 +547,8 @@
                   <label for="filter-seat">
                     <span>{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                  <span
+
                         class="tzCBPart site-bg-filter-color checked filter-to-check all_seat_class"
                         @click="seatClassFilterFlight('all_seat_class')"></span>
                   <input class="check-switch" type="checkbox" id="filter-seat" value="allSeatClass"
@@ -557,7 +559,7 @@
                   <label :for="`filter-${seat_class.name_en}`">
                     <span>{{ seat_class.name_fa }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                  <span
                         class="tzCBPart site-bg-filter-color seat_class"
                         @click="seatClassFilterFlight(seat_class.name_en)"
                         :class="`${seat_class.name_en}`"></span>
@@ -572,10 +574,10 @@
             <div class="s-u-filter-content">
               <ul class="s-u-filter-item-time filter-airline-ul filter-airline-ul-f">
                 <li>
-                  <label for="filter-airline">
+                  <label for="filter-airline" >
                     <span>{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                  <span
                         class="tzCBPart site-bg-filter-color checked filter-to-check  all_airline"
                         @click="airlineFilterFlight('all_airline')"></span>
                   <input class="check-switch" type="checkbox" id="filter-airline" value="allAirline"
@@ -585,11 +587,11 @@
 
                 <template v-for="data_each_airline in minPriceAirline">
                   <li :id="`${data_each_airline.name_en}-filter`">
-                    <label :for="`filter-${data_each_airline.name_en}`">
+                    <label :for="`filter-${data_each_airline.name_en}`" class="justify-content-between">
                       <i :id="`${data_each_airline.name_en}-minPrice`">{{data_each_airline.price}}</i>
                       <span class='text-start'>{{ data_each_airline.name}}</span>
                     </label>
-                    <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                    <span
                           class="tzCBPart site-bg-filter-color airline"
                           @click="airlineFilterFlight(data_each_airline.name_en)"
                           :class="`${data_each_airline.name_en}`"></span>
@@ -611,7 +613,7 @@
                   <label for="filter-time">
                     <span>{{ useXmltag('All') }}</span>
                   </label>
-                  <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                  <span
                         class="tzCBPart site-bg-filter-color checked filter-to-check all_time"
                         id="allTime"
                         v-on:click="timeFilterFlightForeign('all_time')"></span>
@@ -621,11 +623,11 @@
                 </li>
                 <template v-for="each_time in timeFilter">
                   <li>
-                    <label :for="`filter-${each_time.name_en}`">
+                    <label :for="`filter-${each_time.name_en}`" class="justify-content-between">
                       <i>{{each_time.value}}</i>
                       <span>{{each_time.name_fa}}</span>
                     </label>
-                    <span :data-inactive="useXmltag('Inactive')" :data-active="useXmltag('Active')"
+                    <span
                           class="tzCBPart site-bg-filter-color time"
                           @click="timeFilterFlightForeign(each_time.time)"
                           :class="`${each_time.time}`"></span>
