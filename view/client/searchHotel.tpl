@@ -53,7 +53,7 @@
     'hotelName'=>null,
     'source'=>'',
     'type_residence'=>$smarty.get.type_residence,
-'lang'=>$smarty.const.SOFTWARE_LANG]}
+    'lang'=>$smarty.const.SOFTWARE_LANG]}
 {else}
     {assign var="search_end_date" value=$objsearch->computingEndDate($smarty.const.SEARCH_START_DATE, $smarty.const.SEARCH_NIGHT)}
     {assign var="paramSearch" value=[
@@ -69,7 +69,7 @@
     'hotelName'=>$smarty.const.SEARCH_HOTEL_NAME,
     'rooms'=>$smarty.get.rooms,
     'type_residence'=>$smarty.get.type_residence,
-'lang'=>$smarty.const.SOFTWARE_LANG]}
+    'lang'=>$smarty.const.SOFTWARE_LANG]}
 {/if}
 {assign var="City" value=$objsearch->getCity($paramSearch.city_id)}
 {$objsearch->validateSearch($paramSearch)}
@@ -335,7 +335,7 @@
             </div>
         </div>
 
-<!--        <div class="loader-for-local-hotel-end">
+        <!--        <div class="loader-for-local-hotel-end">
 
             <div class='container'>
                 <div class="loader">

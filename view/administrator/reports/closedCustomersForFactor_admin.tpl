@@ -7,7 +7,7 @@
             <div class="panel-heading TitleSectionsDashboard" style="cursor: pointer;" data-toggle="collapse" data-target="#ActiveBoxCloseAdmin">
                 <h6 style="font-weight: 500; font-size: 17px; color: #3c3939; margin: 0;">
                     لیست مشتریانی که فاکتورهایش را پرداخت نکرده و سمت ادمین ایشان بسته شده است (شما فقط چک می کنید باید پرداخت کنند تا باز بشود)
-                    
+
 					{* اگر فایل وجود داشت و محتوا داشت، آن را نمایش دهد *}
 					{if $lastUpdate}
 						<span style="font-size: 12px; color: #888; margin-right: 15px; font-weight: normal; background: #eef1f5; padding: 3px 8px; border-radius: 4px;">

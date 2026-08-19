@@ -244,9 +244,6 @@ class resultSearchExternalHotel extends clientAuth
                 $Model = Load::library('Model');
                 functions::insertLog('getHotels before foreach result ' . microtime(true), 'times');
                 foreach ($ApiResult['Result'] as $apiKey => $apiHotel) {
-                    $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code=" . $apiHotel['HotelIndex'];
-
-                    $res = $Model->select($query);
                     if($apiHotel['SourceId'] == '18') {
                         $final_price = $this->getController('currencyEquivalent')->calculateEquivalent($apiHotel['Currency']  ,$apiHotel['MinPrice']) ;
                         $hotelItem[$apiKey]['MinimumRoomPrice'] = $final_price;
@@ -322,9 +319,6 @@ class resultSearchExternalHotel extends clientAuth
                 if (!empty($hotels)) {
                     $t9 = microtime(true);
                     foreach ($hotels as $k => $hotel) {
-                        $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code=" . $hotel['HotelIndex'];
-
-                        $res = $ModelReservtion->select($query);
 
                         $star = $hotel['HotelStars'] > 0 ? $hotel['HotelStars'] : 0;
                         $nameEnUrl = $objExternalHotel->convertStringForUrl($hotel['HotelName']);

@@ -281,7 +281,7 @@ function  getResultBusSearch(cityOrigin, cityDestination, dateMove,lang) {
     $.ajax({
         type: "POST",
         url: amadeusPath + 'bus_ajax.php',
-        dataType: 'JSON',
+        dataType: 'json',
         data: {
             flag: 'getResultBusSearch',
             cityOrigin: cityOrigin,
