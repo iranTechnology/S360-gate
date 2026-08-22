@@ -1,12 +1,17 @@
 <template>
 
-        <div class=" international-available-airlines" v-if="data_search.dataSearch.MultiWay !='multi_destination'">
+        <div class="international-available-airlines" v-if="data_search.dataSearch.MultiWay !='multi_destination'">
           <div class="international-available-airlines-logo foreign" :class="each_airline_flight.airline">
                 <div class="logo-airline-ico-foreign"></div>
             </div>
 
           <div class="international-available-airlines-log-info pt-2">
-            <div class="sandali-span2 iranL text-dark">{{ each_airline_flight.airline_name}} <span class="d-none d-md-block">({{each_airline_flight.airline}})</span></div>
+            <div class="sandali-span2 iranL text-dark">{{ each_airline_flight.airline_name}} <span class="d-none d-md-inline">({{each_airline_flight.airline}})</span></div>
+            <span
+                :class="['iranB txt12 p-0 text-dark' , each_airline_flight.is_private == 'private' ? 'd-none' : '' ]"
+            >
+  {{ each_airline_flight.flight_type }}
+</span>
           </div>
 
 <!--          <div class="international-available-airlines-log-info pt-2 site-main-text-color" v-if="each_airline_flight.capacity > 0">-->

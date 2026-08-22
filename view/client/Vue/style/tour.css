@@ -1119,14 +1119,13 @@ a:hover {
 }
 
 .search-tour .parent-search-tour .box-tour .card-tour-search .parent-img-tour {
-    height: 204px;
+    height: 162px;
     width: 210px
 }
 
 .search-tour .parent-search-tour .box-tour .card-tour-search .parent-img-tour img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }
 
 .search-tour .parent-search-tour .box-tour .card-tour-search .parent-details-rules {
@@ -1758,7 +1757,6 @@ a:hover {
     .container {
         max-width: 1240px !important
     }
-
 }
 
 @media (min-width: 991px)and (max-width: 1200px) {
@@ -1795,8 +1793,7 @@ a:hover {
     }
 
     .search-tour .parent-search-tour .box-tour .card-tour-search .parent-img-tour {
-        width: 150px;
-        height: 230px;
+        width: 150px
     }
 
     .search-tour .parent-search-tour .box-tour .card-tour-search .parent-price-tour {
@@ -1885,9 +1882,6 @@ a:hover {
 }
 
 @media (max-width: 991px) {
-    .search-tour .parent-search-tour .box-tour .card-tour-search .parent-img-tour {
-        height: 244px;
-    }
     .side-bar-tour {
         display: none !important
     }

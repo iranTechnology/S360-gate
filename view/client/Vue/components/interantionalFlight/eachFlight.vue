@@ -139,7 +139,7 @@
 
                 </div>
                 <div :id="`tab-3-${key_flight}`" class="tab-content">
-                  <ul class="ruleText">
+                  <ul v-if="each_flight.flight_type_li =='system'" class="ruleText">
                     <li>
                       {{ useXmltag('Presencepassengerobligatoryhalfhoursbeforetimeflightairport')}}
                     </li>
@@ -192,16 +192,41 @@
 
                     </li>
 
-                      <li>
-                        {{ useXmltag('RuleFlightAirPortIstanbul')}}
-                      </li>
-                    </ul>
-                    <cancel-policy
-                        :fee_cancel="fee_cancel"
-                        :flight_type_li="each_flight.flight_type_li"
-                    />
-                  </div>
-                  <div :id="`tab-4-${key_flight}`" class="tab-content w-100" v-show="each_flight.source_id=='14'">
+                    <li>
+                      {{ useXmltag('RuleFlightAirPortIstanbul')}}
+                    </li>
+                  </ul>
+
+
+
+                  <ul v-else-if="each_flight.flight_type_li !='system' && each_flight.source_id=='22'" class="ruleText">
+                    <li>1- {{useXmltag('IntlRefundPenaltyWithin30MinutesPorsetare')}}</li>
+                    <li>2- {{useXmltag('IntlRefundPenaltyFromIssueTo3DaysBeforePorsetare')}}</li>
+                    <li>3- {{useXmltag('IntlRefundPenaltyFrom3DaysTo2DaysBeforePorsetare')}}</li>
+                    <li>4- {{useXmltag('IntlRefundPenaltyFrom2DaysTo1DayBeforePorsetare')}}</li>
+                    <li>5- {{useXmltag('IntlRefundPenaltyFrom1DayTo24HoursBeforePorsetare')}}</li>
+                    <li>6- {{useXmltag('IntlRefundPenaltyFrom24HoursBeforePorsetare')}}</li>
+                    <li>7- {{useXmltag('IntlRefundPenaltyNotePorsetare')}}</li>
+                    <li>{{useXmltag('IntlRefundContactPorsetare')}}</li>
+                    <li><a href="https://apstick.ir/api/ DeepLink/Refund/V1?language=fa" target="_blank">{{useXmltag('IntlRefundLinkPorsetare')}}</a></li>
+
+
+                  </ul>
+                  <ul v-else class="ruleText">
+                    <li>1- {{useXmltag('IntlRefundPenaltyFromIssueTo3DaysBefore')}}</li>
+                    <li>2- {{useXmltag('IntlRefundPenaltyFrom3DaysTo2DaysBefore')}}</li>
+                    <li>3- {{useXmltag('IntlRefundPenaltyFrom2DaysTo1DayBefore')}}</li>
+                    <li>4- {{useXmltag('IntlRefundPenaltyFrom1DayTo24HoursBefore')}}</li>
+                    <li>5- {{useXmltag('IntlRefundPenaltyFrom24HoursBefore')}}</li>
+                    <li>6- {{useXmltag('IntlRefundPenaltyNote')}}</li>
+                  </ul>
+
+                  <cancel-policy
+                      :fee_cancel="fee_cancel"
+                      :flight_type_li="each_flight.flight_type_li"
+                  />
+                </div>
+                <div :id="`tab-4-${key_flight}`" class="tab-content w-100" v-show="each_flight.source_id=='14'">
 
                   <img :src="`${getUrlWithoutLang()}/view/client/assets/images/load21.gif`"
                        width="120px"

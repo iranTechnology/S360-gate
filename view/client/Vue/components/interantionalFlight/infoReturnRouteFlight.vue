@@ -19,6 +19,9 @@
 <!--               <span class="iranL txt12 position-top&#45;&#45;new">-->
 <!--                   {{ each_return_flight.duration_time_return}}-->
 <!--               </span>-->
+              <span class="iranL txt13 position-bottom--new d-none d-md-block" style="bottom: -12px;" >
+                    {{ each_return_flight.flight_duration }}
+                </span>
                <div class="airline-line">
                        <div class="loc-icon">
                            <span v-html="icon_svg_info_return_flight_1"></span>
@@ -35,24 +38,24 @@
                    </div>
 
 
-               <div class="flight-type-div">
-               <span class="flight-type iranB txt13" v-if="each_return_flight.flight_type_li == 'system'"> {{ each_return_flight.flight_type}}</span>
-                  <span class="flight-type iranB txt13" v-if="each_return_flight.flight_type_li == 'system'"> {{ each_return_flight.flight_type}}</span>
-               </div>
+<!--               <div class="flight-type-div">-->
+<!--               <span class="flight-type iranB txt13" v-if="each_return_flight.flight_type_li == 'system'"> {{ each_return_flight.flight_type}}</span>-->
+<!--                  <span class="flight-type iranB txt13" v-if="each_return_flight.flight_type_li == 'system'"> {{ each_return_flight.flight_type}}</span>-->
+<!--               </div>-->
 
 
 
 
                <span class="tavaghof iranL txt13 position-bottom--new" v-if="each_return_flight.count_transit_return >= 1">
-                       {{ each_return_flight.count_transit_title}}
+                       {{ each_return_flight.count_transit_title}} - {{ each_return_flight.baggage.display }}
                    </span>
                <span class="tavaghof iranL txt13" v-else>
-                        {{ useXmltag('Nostop')}}
+                        {{ useXmltag('Nostop')}} - {{ each_return_flight.baggage.display }}
                    </span>
-               <span :class="[
-  'flight-type iranB',
-  each_return_flight.is_private == 'private' ? 'bg-is-private' : 'd-none'
-]">{{ useXmltag('specialoffer')}} </span>
+              <span class="iranL txt13 position-bottom--new d-block d-md-none">
+                    {{ each_return_flight.flight_duration }}
+                </span>
+
             </div>
                     </div>
         <div class="airlines-info txtRight origin-city">

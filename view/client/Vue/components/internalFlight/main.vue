@@ -11,7 +11,7 @@
              :minPriceAirline="minPriceAirline" :countFlights="filteredFlights.length"
              @filterFlights="filterFlightsFinally"
              @filterPriceFlights="filterPrice"></sidebar>
-    <show-ticket :flights="filteredFlights" :twoWayFlight='filteredTwoWayFlights' :dataSearch="setDataSearch" @sortTimeOfShowTicket="timeSortFlight"
+    <show-ticket  :flights="filteredFlights" :twoWayFlight='filteredTwoWayFlights' :dataSearch="setDataSearch" @sortTimeOfShowTicket="timeSortFlight"
                  :has_request_offline_access='has_request_offline_access' :full_capacity='full_capacity'
                  @sortPriceOfShowTicket="priceSortFlight" ></show-ticket>
   <input type="hidden" value='' name="flight_id_private" id="flight_id_private">

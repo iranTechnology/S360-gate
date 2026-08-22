@@ -7,7 +7,7 @@
       <div class="inner-avlbl-itm">
          <div class="">
             <span class="iranL priceSortAdt">
-               <template v-if="flight.price.adult.with_discount > 0">
+               <template v-if="flight.price.adult.with_discount > 0 && price_adult != price_adult_with_discount">
                   <i
                      class="iranB text-decoration-line displayb CurrencyCal"
                      :data-amount="price_adult"
@@ -15,9 +15,10 @@
                      {{ price_adult | formatNumberDecimal }}
                   </i>
                   <i
+
                      class="iranB text-decoration-line site-main-text-color-drck CurrencyCal"
                      :data-amount="price_adult"
-                     v-else>
+                     v-else >
                      {{
                         ((this.$store.state.isCounter ||
                            this.$store.state.isSafar360) &&

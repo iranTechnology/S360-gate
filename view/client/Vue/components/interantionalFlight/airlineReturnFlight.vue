@@ -5,8 +5,12 @@
             <div class="logo-airline-ico-foreign"></div>
         </div>
       <div class="international-available-airlines-log-info pt-2">
-        <div class="sandali-span2 iranL text-dark">{{ each_return_flight.airline_name}} <span class="d-none d-md-block">({{each_return_flight.airline}})</span></div>
-
+        <div class="sandali-span2 iranL text-dark">{{ each_return_flight.airline_name}} <span class="d-none d-md-inline">({{each_return_flight.airline}})</span></div>
+        <span
+            :class="['iranB txt12 p-0 text-dark', each_return_flight.is_private == 'private' ? 'd-none' : '' ]"
+        >
+  {{ each_return_flight.flight_type }}
+</span>
         <span class="flightnumber_s pt-2">
             {{ each_return_flight.flight_number_return}}
            </span>
