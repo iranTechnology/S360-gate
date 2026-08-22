@@ -485,6 +485,11 @@ class articles extends positions
                 'updated_at' => date('Y-m-d H:i:s', time()),
                 'lead' => $params['lead'],
             ];
+
+            if ($params['section'] == 'mag') {
+                $dataInsert['orders'] = 1;
+            }
+
             $config = Load::Config('application');
             $path = "articles/";
             $config->pathFile($path);

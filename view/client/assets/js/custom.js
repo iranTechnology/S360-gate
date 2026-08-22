@@ -3577,7 +3577,7 @@ function creditBuy(Obj, link, inputs) {
     }
     inputs['discountCode'] = discountCode;
 
-    if(inputs['typeApplication'] == "externalApi"){
+    if(inputs['typeApplication'] == "externalApi" && 1==2){//1405_5_19 غیرفعال شد
 
         $(document).off('click', '#creditpay').one('click', '#creditpay', function(e) {
             e.preventDefault();
@@ -8387,7 +8387,7 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                         var price_after_discount = price_before_discount - (price_before_discount * data.discountAmount / 100);
                         display_discount_currency.text('%');
                     }
-                    else zzz{
+                else{
 
 
                         let price_after_discount = price_before_discount - data.discountAmount;

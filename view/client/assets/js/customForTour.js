@@ -4864,7 +4864,9 @@ function create_section_tour_one_day(tour_id, start_date,end_date){
 function triggerTourPackages(_this , tour_id, start_date,end_date) {
 
 
-    create_section_package_tour_several_date(_this , start_date, tour_id, end_date)
+    create_section_package_tour_several_date(_this , start_date, tour_id, end_date);
+
+    update_route_data_tour(tour_id);
 
     // get_file_package_by_id_tour(_this , start_date, tour_id, end_date)
 
@@ -4874,6 +4876,144 @@ function triggerTourPackages(_this , tour_id, start_date,end_date) {
       }*/
 }
 
+function update_route_data_tour(tour_id) {
+    $.ajax({
+        type: "POST",
+        url: amadeusPath + "ajax",
+        dataType: "json",
+        data: JSON.stringify({
+            method: "getTourRouteData",
+            className: "reservationTour",
+            // ارسال پارامترها به صورت جداگانه
+            tour_id: tour_id,
+            return_json: true,
+        }),
+        success: function (data) {
+
+
+            const tourItems = document.querySelectorAll('.tour-travel-item');
+
+            let destinationIndex = 0;
+
+            for (let i = 1; i < tourItems.length; i++) {
+                const item = tourItems[i];
+                const destination = data.destinations[destinationIndex];
+
+                if (!destination) break;
+
+                // پیدا کردن card-tour-body داخل آیتم جاری
+                const cardBody = item.querySelector('.card-tour-body');
+                if (!cardBody) continue;
+
+                // 1. تنظیم icon در کلاس custom-bg-svg
+                const iconElement = cardBody.querySelector('.custom-bg-svg');
+                if (iconElement && destination.vehicle && destination.vehicle.icon) {
+                    // حذف کلاس‌های قبلی و اضافه کردن کلاس جدید
+                    iconElement.className = `custom-bg-svg ${destination.vehicle.icon}`;
+                }
+
+                // 2. تنظیم src و alt در img
+                const imgElement = cardBody.querySelector('.card-col-flight img');
+                if (imgElement && destination.vehicle) {
+                    if (destination.vehicle.src) {
+                        imgElement.src = destination.vehicle.src;
+                    }
+                    if (destination.vehicle.name_en) {
+                        imgElement.alt = destination.vehicle.name_en;
+                    }
+                }
+
+                // 3. تنظیم name در name-airline
+                const nameAirlineElement = cardBody.querySelector('.name-airline');
+                if (nameAirlineElement && destination.vehicle && destination.vehicle.name) {
+                    if (lang == 'fa') {
+                        nameAirlineElement.textContent = destination.vehicle.name;
+                    } else {
+                        nameAirlineElement.textContent = destination.vehicle.name_en;
+                    }
+                }
+
+                // 4. تنظیم exit_hours در fly-time
+                const flyTimeElement = cardBody.querySelector('.fly-time');
+                if (flyTimeElement && destination.exit_hours) {
+                    flyTimeElement.textContent = destination.exit_hours;
+                }
+
+                // 5. تنظیم hours در flight-duration
+                const durationElement = cardBody.querySelector('.flight-duration');
+                if (durationElement && destination.hours) {
+                    durationElement.textContent = destination.hours;
+                }
+
+                destinationIndex++;
+            }
+
+            const tourItemsMob = document.querySelectorAll('.box-flight-mobile ');
+
+            let destinationIndexMob = 0;
+
+            for (let i = 1; i < tourItemsMob.length; i++) {
+                const item = tourItemsMob[i];
+                const destinationMob = data.destinations[destinationIndexMob];
+
+                if (!destinationMob) break;
+
+                // پیدا کردن card-tour-body داخل آیتم جاری
+                const cardBodyMob = item.querySelector('.flight-mobile-body');
+                if (!cardBodyMob) continue;
+
+                // 1. تنظیم icon در کلاس custom-bg-svg
+                const iconElementMob = cardBodyMob.querySelector('.custom-bg-svg');
+                if (iconElementMob && destinationMob.vehicle && destinationMob.vehicle.icon) {
+                    // حذف کلاس‌های قبلی و اضافه کردن کلاس جدید
+                    iconElementMob.className = `custom-bg-svg ${destinationMob.vehicle.icon}`;
+                }
+
+                // 2. تنظیم src و alt در img
+                const imgElementMob = cardBodyMob.querySelector('.logo-airline-flight-mobile img');
+                if (imgElementMob && destinationMob.vehicle) {
+                    if (destinationMob.vehicle.src) {
+                        imgElementMob.src = destinationMob.vehicle.src;
+                    }
+                    if (destinationMob.vehicle.name_en) {
+                        imgElementMob.alt = destinationMob.vehicle.name_en;
+                    }
+                }
+
+                // 3. تنظیم name در name-airline
+                const nameAirlineElementMob = cardBodyMob.querySelector('.logo-airline-flight-mobile h6');
+                if (nameAirlineElementMob && destinationMob.vehicle && destinationMob.vehicle.name) {
+                    if (lang == 'fa') {
+                        nameAirlineElementMob.textContent = destinationMob.vehicle.name;
+                    } else {
+                        nameAirlineElementMob.textContent = destinationMob.vehicle.name_en;
+                    }
+                }
+
+                // 4. تنظیم exit_hours در fly-time
+                const flyTimeElementMob = cardBodyMob.querySelector('.clock-flight-mobile .parent-clock-flight-mobile:nth-child(1) span:last-child');
+                if (flyTimeElementMob && destinationMob.exit_hours) {
+                    flyTimeElementMob.textContent = destinationMob.exit_hours;
+                }
+
+                // 5. تنظیم hours در flight-duration
+                const durationElementMob = cardBodyMob.querySelector('.clock-flight-mobile .parent-clock-flight-mobile:nth-child(2) span:last-child');
+                if (durationElementMob && destinationMob.hours) {
+                    durationElementMob.textContent = destinationMob.hours;
+                }
+
+                destinationIndexMob++;
+            }
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        },
+    });
+}
+
+function fillTourData(data) {
+
+}
 
 function get_file_package_by_id_tour(_this, start_date, tour_id, end_date) {
     $.ajax({

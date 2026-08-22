@@ -35,8 +35,8 @@
          <i class="fa-light fa-phone">
          </i>
          تلفن:
-         <a class="__phone_class__" href="tel:{$smarty.const.CLIENT_PHONE}">
-          {$smarty.const.CLIENT_PHONE}
+         <a class="__phone_class__" href="tel:+{$smarty.const.CLIENT_PHONE}">
+          {$smarty.const.CLIENT_PHONE}+
          </a>
         </div>
         <div class="child-item-footer">
