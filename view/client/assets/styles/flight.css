@@ -646,7 +646,7 @@ input {
 }
 
 .search-wrapper {
-    padding: 12px;
+    padding: 15px;
 }
 
 .search-wrapper .displayib.padr20.padl20 {
@@ -1168,7 +1168,7 @@ input {
     margin: 0;
     text-align: right;
     direction: rtl;
-    padding: 0;
+    padding: 15px !important;
     background: #fff;
     border-top: 1px solid #ccc;
 }
@@ -1176,7 +1176,7 @@ input {
 .s-u-filter-title {
     position: relative;
     display: flex;
-    padding: 12px;
+    padding: 3px 0px !important;
     color: #444;
     font-family: inherit;
     font-size: 16px;
@@ -1260,7 +1260,7 @@ input {
     display: flex;
     align-items: center;
     direction: ltr;
-    padding: 12px;
+    padding: 12px 0 !important;
     border-bottom: 1px dashed #e1e1e1;
     justify-content: space-between;
 }
@@ -1292,7 +1292,7 @@ input {
 }
 
 .slider_range_parent {
-    padding: 15px;
+    padding: 15px 6px;
 }
 
 .site-bg-filter-color.checked {
@@ -2906,7 +2906,7 @@ ul.tabs.tabs-1 li.tab-link.current {
 }
 
 .cancel-policy-inner .cancel-policy-item {
-    flex: 0 0 18%;
+    flex: 0 0 31%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -9756,6 +9756,8 @@ process Flight cdd
     overflow-y: auto;
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
     transform: translateX(-100%); /* مخفی در چپ */
+    display: flex;
+    flex-direction: column;
 }
 
 /* حالت باز */
@@ -10092,8 +10094,7 @@ process Flight cdd
 
 
 .sidebar-footer {
-    position: fixed;
-    bottom: 0;
+    margin-top: auto;
     width: 100%;
 }
 
@@ -10708,3 +10709,9 @@ process Flight cdd
     color:  var(--mainColor) !important;
 }
 
+
+
+.sidebar-footer.static-footer {
+
+    position: static !important;
+}

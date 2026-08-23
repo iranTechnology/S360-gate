@@ -24,8 +24,8 @@ class functions {
         $apiAddress = '';
         $isTest     = self::isTestServer();
         $apiAddress = 'http://safar360.com/Core/V-1/';
-        if ( $isTest ) {//local
 
+        if ( $isTest ) {//local
 //            $apiAddress = 'http://safar360.com/CoreTestDeveloper/V-1/';
             $apiAddress = 'http://192.168.1.100/CoreTestDeveloper/V-1/';
         }
@@ -352,8 +352,6 @@ class functions {
             $TotalCharge=0;
             $total_buy=0;
             if($charge){
-
-
                 $total_charge = $charge['total_charge'];
 
                 $sql_buy = "SELECT SUM(Price) AS total_buy 
@@ -1035,6 +1033,7 @@ class functions {
         $xmldata = simplexml_load_file( SITE_ROOT . "/langs/" . SOFTWARE_LANG . "_frontMaster.xml" );
 
         return  empty( $xmldata->$tagname ) ? "" : $xmldata->$tagname;
+
     }
 
     #endregion
@@ -3194,15 +3193,15 @@ class functions {
      * @return early for (0-8) or morning for (8-12) or afternoon for (12-18) or night for (18-24)
      * @author Naime Barati
      */
-    public static function classTimeLOCAL( $time,$echo=true ) {
+    public static function classTimeLOCAL($time, $echo = true) {
         if (empty($time)) {
             $result = '';
         } else {
-        if ( substr( $time, 0, 1 ) == '0' ) {
-            $hour = substr( $time, 1, 1 );
-        } else {
-            $hour = substr( $time, 0, 2 );
-        }
+            if (substr($time, 0, 1) == '0') {
+                $hour = substr($time, 1, 1);
+            } else {
+                $hour = substr($time, 0, 2);
+            }
             $hour = (int)$hour;
 
             $result = '';
@@ -3224,7 +3223,7 @@ class functions {
     }
     public static function classTimeArrivalLOCAL($time, $echo = true) {
         if (empty($time)) {
-        $result = '';
+            $result = '';
         } else {
             // استخراج ساعت از زمان
             if (substr($time, 0, 1) == '0') {
@@ -3240,18 +3239,17 @@ class functions {
                 $result = 'arrival_early';      // 00:00 - 04:59
             } elseif ($hour >= 5 && $hour < 12) {
                 $result = 'arrival_morning';    // 05:00 - 11:59
-        } elseif ( $hour >= 12 && $hour < 18 ) {
+            } elseif ($hour >= 12 && $hour < 18) {
                 $result = 'arrival_afternoon';  // 12:00 - 17:59
-        } elseif ( $hour >= 18 && $hour < 24 ) {
+            } elseif ($hour >= 18 && $hour < 24) {
                 $result = 'arrival_night';      // 18:00 - 23:59
             }
         }
 
-        if(!$echo) {
+        if (!$echo) {
             return $result;
         }
         echo $result;
-
     }
     #endregion
 
@@ -7513,7 +7511,6 @@ class functions {
 
     public static function checkIncreasePrice( $newPrice, $OldPrice, $type, $currencyCode, $flightType, $direction ) {
 
-
         $direction           = ( $direction == 'dept' ) ? self::Xmlinformation( 'routewent' ) : self::Xmlinformation( 'Wayback' );
         $changePrice         = intval( $newPrice ) - intval( $OldPrice );
         $changePriceCurrency = self::CurrencyCalculate( $changePrice, $currencyCode );
@@ -8028,6 +8025,7 @@ class functions {
             "train"         => self::Xmlinformation( 'Train' ),
             "entertainment" => self::Xmlinformation( 'Entertainment' ),
             "package"       => self::Xmlinformation( 'Package' ),
+            "cip"       => self::Xmlinformation( 'Cip' )
         );
         foreach ( $ArrayInstead AS $key => $value ) {
             if ( $key == $String ) {
@@ -10522,7 +10520,7 @@ class functions {
      *
      * @return array
      */
-    public static function separateFiles( $file_name ) {
+    public static function separateFiles($file_name) {
         $file_indexes = array(
             'name',
             'type',
@@ -10530,7 +10528,8 @@ class functions {
             'error',
             'size',
         );
-        $file         = array();
+
+        $file = array();
 
         // اگر فقط یک فایل آپلود شده است
         if (!is_array($_FILES[$file_name]['name'])) {
@@ -10541,9 +10540,9 @@ class functions {
         }
 
         // اگر چند فایل آپلود شده است
-        for ( $j = 0; $j < count( $_FILES[ $file_name ]['name'] ); $j ++ ) {
-            foreach ( $file_indexes as $index ) {
-                $file[ $j ][ $index ] = $_FILES[ $file_name ][ $index ][ $j ];
+        for ($j = 0; $j < count($_FILES[$file_name]['name']); $j++) {
+            foreach ($file_indexes as $index) {
+                $file[$j][$index] = $_FILES[$file_name][$index][$j];
             }
         }
 

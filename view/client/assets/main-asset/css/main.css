@@ -1281,7 +1281,7 @@
     max-width:unset !important;
     background-color: #fff;
     /*box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15); !* سایه برای نمایش عمق *!*/
-    z-index: 1001; /* بالاتر از overlay */
+    z-index: 10001; /* بالاتر از overlay */
     transform: translateX(100%); /* در حالت عادی به سمت بیرون صفحه منتقل شده */
     transition: transform 0.2s ease-in-out;
     overflow-y: auto; /* فعال کردن اسکرول در صورت نیاز */

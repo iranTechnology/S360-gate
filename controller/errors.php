@@ -1,4 +1,10 @@
 <?php
+//if(  $_SERVER['REMOTE_ADDR']=='2.176.222.237'  ) {
+//    error_reporting(1);
+//    error_reporting(E_ALL | E_STRICT);
+//    @ini_set('display_errors', 1);
+//    @ini_set('display_errors', 'on');
+//}
 
 class errors extends clientAuth
 {
@@ -57,6 +63,7 @@ class errors extends clientAuth
         $data_update['displayAgency'] = $data['displayAgency'];
         $data_update['displayPassenger'] = $data['displayPassenger'];
         $data_update['displayAdmin'] = $data['displayAdmin'];
+        $data_update['providerError'] = $data['displayProviderError'];
 
         $condition ="id='{$data['id']}'";
         $update_result = $error_model->updateWithBind($data_update , $condition);
@@ -75,10 +82,10 @@ class errors extends clientAuth
     function processError($err , $type , $method , $sourceCode) {
 
         if (is_array($err)) {
-        unset($err['curl_error']);
-        unset($err['info']);
-        unset($err['errno']);
-        unset($err['error']);
+            unset($err['curl_error']);
+            unset($err['info']);
+            unset($err['errno']);
+            unset($err['error']);
         }
 
         $displayErr = $this->extractDisplayError($err , $type , $method , $sourceCode);
@@ -118,6 +125,30 @@ class errors extends clientAuth
             'method'     => $method,
             'sourceCode'         => $sourceCode,
         ]);
+    }
+    public function insertNewErrorWithManual($data)
+    {
+        $error_model = $this->getModel('errorModel');
+
+        $data_insert['displayAgency'] = $data['displayAgency'];
+        $data_insert['displayPassenger'] = $data['displayPassenger'];
+        $data_insert['displayAdmin'] = $data['displayAdmin'];
+        $data_insert['providerError'] = $data['providerError'];
+        $data_insert['sourceCode'] = $data['sourceCode'] ?? 'SYSTEM_ERROR';
+        $data_insert['type'] = $data['type'] ?? 'flight';
+        $data_insert['method'] = $data['methodData'];
+        $data_insert['creation_date_int'] = time();
+
+        $update_result = $error_model->insertWithBind($data_insert);
+
+        if ($update_result) {
+            return functions::JsonSuccess($update_result, [
+                'message' => 'با موفقیت ثبت شد',
+            ], 200);
+        }
+        return functions::JsonError($update_result, [
+            'message' => 'خطا در ثبت ارور ',
+        ], 200);
     }
 
     function compareJsonErr($a, $b, $threshold = 70)

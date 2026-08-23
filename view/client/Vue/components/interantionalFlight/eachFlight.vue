@@ -195,6 +195,9 @@
                     <li>
                       {{ useXmltag('RuleFlightAirPortIstanbul')}}
                     </li>
+                    <li>
+                      {{ useXmltag('penaltyScheduleFollows')}}
+                    </li>
                   </ul>
 
 
@@ -208,6 +211,7 @@
                     <li>6- {{useXmltag('IntlRefundPenaltyFrom24HoursBeforePorsetare')}}</li>
                     <li>7- {{useXmltag('IntlRefundPenaltyNotePorsetare')}}</li>
                     <li>{{useXmltag('IntlRefundContactPorsetare')}}</li>
+                    <li>8- {{useXmltag('penaltyScheduleFollows')}}</li>
                     <li><a href="https://apstick.ir/api/ DeepLink/Refund/V1?language=fa" target="_blank">{{useXmltag('IntlRefundLinkPorsetare')}}</a></li>
 
 
@@ -219,6 +223,7 @@
                     <li>4- {{useXmltag('IntlRefundPenaltyFrom1DayTo24HoursBefore')}}</li>
                     <li>5- {{useXmltag('IntlRefundPenaltyFrom24HoursBefore')}}</li>
                     <li>6- {{useXmltag('IntlRefundPenaltyNote')}}</li>
+                    <li>7- {{useXmltag('penaltyScheduleFollows')}}</li>
                   </ul>
 
                   <cancel-policy

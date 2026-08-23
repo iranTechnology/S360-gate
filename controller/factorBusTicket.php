@@ -116,7 +116,7 @@ class factorBusTicket extends apiBus
 //        $irantechCommission=Load::controller('irantechCommission');
 //        $itCommission=$irantechCommission->getCommission($serviceTitle, $sourceId);
 
-        $priceWithoutDiscount=$price=(round($dataDetailBusTicket['detailBus']['beforeDiscountPrice']));
+        $priceWithoutDiscount=$price=(round($dataDetailBusTicket['detailBus']['price']));
 
         $itCommission=0;
         $company=functions::getIdBaseCompanyBus($dataDetailBusTicket['detailBus']['base_company']);

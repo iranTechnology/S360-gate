@@ -1150,67 +1150,120 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCip' ) {
     $bookModel = Load::getModel('cipModel');
     $objTransaction        = Load::controller( 'transaction' );
     $objMember             = Load::controller( 'members' );
+    $objMemberCredit = Load::controller( 'memberCredit');
     $info_member           = functions::infoAgencyByMemberId(Session::getUserId());
+    $objUser = Load::controller( 'user' );
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
-    $counterCredit = $objMember->getCredit();
+
 
     $request_number = $_POST['requestNumber'];
     $reserveInfo  = $bookModel->getOneByReq($request_number);
     $factorNumber = $reserveInfo[0]['factor_number'];
-
-
-
-
+    $isPrivate = isset($reserveInfo[0]['serviceTitle']) && $reserveInfo[0]['serviceTitle'] == 'PrivateCip';
     $total_amount = $reserveInfo[0]['total_price'];
 
-    // Caution: اعتبارسنجی اعتبار کانتر
-    if ( $counterCredit > $total_amount ) {
-        $isPrivate = isset($reserveInfo[0]['serviceTitle']) && $reserveInfo[0]['serviceTitle'] == 'PrivateCip';
+    $amount = $isPrivate ? 0 : $reserveInfo[0]['total_price'];
         $serviceTypeText = $isPrivate ? 'اختصاصی' : 'اشتراکی';
-
         $comment = "خرید تشریفات فرودگاه {$serviceTypeText} "
             . $reserveInfo[0]['cip_name']
             . " به شماره رزرو "
-            . $reserveInfo[0]['reserve_number'];
-        $comment     .= ' ' . $request_number;
+        . $reserveInfo[0]['reserve_number']
+        . " {$request_number}";
 
-        if($reserveInfo[0]['serviceTitle'] == 'PrivateCip'){
-            $total_amount = 0;
+    functions::insertLog('$_POST: ' . json_encode($_POST) , '000shojaee');
+
+    if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
+        $credit = $objUser->getCreditMember();
+    } else {
+        $counterCredit = $objMember->getCredit();
+    }
+
+    if($credit < $total_amount){
+        echo 'error: ' . functions::Xmlinformation('ZeroCredit');
+        return;
+    }
+
+    if (!$isPrivate && $counterCredit < $total_amount) {
+        echo 'error: ' . functions::Xmlinformation('EndCreditAgency');
+        return;
         }
 
-        // Caution: کاهش اعتبار کانتر
-        $objMember->decreaseCounterCredit( $total_amount, $request_number, $reserveInfo, 'cip' );
+    if ($_POST['creditUse'] == 'member_credit') {
+        $objMemberCredit->decreaseChargeMemberForBuy( $total_amount, $factorNumber, $comment );
+    } else {
+        $objMember->decreaseCounterCredit( $total_amount, $factorNumber, $reserveInfo, 'cip' );
+    }
 
+    $existTransaction = $objTransaction->getTransactionByFactorNumber($factorNumber);
+    if (!empty($existTransaction)) {
+        echo 'error:' . functions::Xmlinformation('ErrorDecreaseCreditByFactorNumber');
+        return;
+    }
 
-        $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
-        if ( empty( $existTransaction ) ) {
-            // Caution: اعتبارسنجی صاحب سیستم
-            $check = $objTransaction->checkCredit( $total_amount );
-            if ( $check['status'] == 'TRUE' ) {
+    $check = $objTransaction->checkCredit($amount);
+    if ($check['status'] !== 'TRUE') {
+        echo 'error:' . functions::Xmlinformation('ChargeRialSystem');
+        return;
+    }
 
-                //set buy status to credit
-                $bookModel->updateToCredit( $factorNumber );
+    $bookModel->updateToCredit($factorNumber);
+    $reduceTransaction = $objTransaction->decreaseSuccessCredit($amount, $factorNumber, $comment, 'buy_cip');
 
-                // Caution: کاهش اعتبار صاحب سیستم
-                $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_amount, $factorNumber, $comment, 'buy_cip' );
-
-                if ( $reduceTransaction ) {
+    if ($reduceTransaction) {
                     echo 'success:' . $total_amount;
                 } else {
-                    echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
+        echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
                 }
 
-            } else {
-                echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
-            }
 
-        } else {
-            echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
-        }
-    }
-    else {
-        echo 'error: ' . functions::Xmlinformation( 'EndCreditAgency' );
-    }
+    // Caution: اعتبارسنجی اعتبار کانتر
+//    if ( $counterCredit > $total_amount ) {
+//
+//        $serviceTypeText = $isPrivate ? 'اختصاصی' : 'اشتراکی';
+//
+//        $comment = "خرید تشریفات فرودگاه {$serviceTypeText} "
+//            . $reserveInfo[0]['cip_name']
+//            . " به شماره رزرو "
+//            . $reserveInfo[0]['reserve_number'];
+//        $comment     .= ' ' . $request_number;
+//
+//        if($reserveInfo[0]['serviceTitle'] == 'PrivateCip'){
+//            $total_amount = 0;
+//        }
+//
+//        // Caution: کاهش اعتبار کانتر
+//        $objMember->decreaseCounterCredit( $total_amount, $request_number, $reserveInfo, 'cip' );
+//
+//
+//        $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
+//        if ( empty( $existTransaction ) ) {
+//            // Caution: اعتبارسنجی صاحب سیستم
+//            $check = $objTransaction->checkCredit( $total_amount );
+//            if ( $check['status'] == 'TRUE' ) {
+//
+//                //set buy status to credit
+//                $bookModel->updateToCredit( $factorNumber );
+//
+//                // Caution: کاهش اعتبار صاحب سیستم
+//                $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_amount, $factorNumber, $comment, 'buy_cip' );
+//
+//                if ( $reduceTransaction ) {
+//                    echo 'success:' . $total_amount;
+//                } else {
+//                    echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
+//                }
+//
+//            } else {
+//                echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
+//            }
+//
+//        } else {
+//            echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
+//        }
+//    }
+//    else {
+//        echo 'error: ' . functions::Xmlinformation( 'EndCreditAgency' );
+//    }
 }
 elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == "select_Airport" ) {
     $Local    = load::library( 'apiLocal' );
@@ -1889,7 +1942,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
     $insurance      = Load::controller( 'insurance' );
     $objTransaction = Load::controller( 'transaction' );
     $objMember      = Load::controller( 'members' );
-
+    $objMemberCredit = Load::controller( 'memberCredit');
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
     $counterCredit = $objMember->getCredit();
 
@@ -1900,51 +1953,92 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
     $reserveInfo      = $Model->load( $queryReserveInfo );
 
     $insuranceObj = $insurance->getSourceInfo( $reserveInfo['source_name'] );
+    $isPublic = ($insuranceObj->publicPrivate ?? '') === 'public';
 
-    // Caution: اعتبارسنجی اعتبار کانتر
-    if ( $counterCredit > $prices['totalPriceIncreased'] ) {
+    $totalPrice = $isPublic
+        ? ($prices['totalPriceIncreased'] - $prices['totalAgencyCommission'] + $prices['irantech_commission'])
+        : 0;
 
-        // Caution: کاهش اعتبار کانتر
 
-        $objMember->decreaseCounterCredit( $prices['totalPrice'], $factorNumber, $reserveInfo, 'Insurance' );
+    if ($isPublic && $counterCredit <= $prices['totalPriceIncreased']) {
+        echo 'error:' . functions::Xmlinformation('EndCreditAgency');
+        return;
+    }
+
+    if ($_POST['creditUse'] == 'member_credit') {
+        $objMemberCredit->decreaseChargeMemberForBuy( $prices['totalPrice'], $factorNumber, $comment );
+    } else {
+        $objMember->decreaseCounterCredit($prices['totalPrice'], $factorNumber, $reserveInfo, 'Insurance');
+    }
+
+
 
         $comment = " رزرو " . " " . $reserveInfo['reserveCount'] . " عدد " . " " . $reserveInfo['source_name_fa'] . " به مقصد " . " " . $reserveInfo['destination'] . " " . "به شماره فاکتور " . " " . $factorNumber . ( $insuranceObj->publicPrivate == 'private' ? ' اختصاصی ' : ' اشتراکی ' );
-        if ( $insuranceObj->publicPrivate == 'public' ) {
 
-            $total_price = ( $prices['totalPriceIncreased'] - $prices['totalAgencyCommission'] ) + $prices['irantech_commission'];
+    $existTransaction = $objTransaction->getTransactionByFactorNumber($factorNumber);
+    if (!empty($existTransaction)) {
+        echo 'error:' . functions::Xmlinformation('ErrorDecreaseCreditByFactorNumber');
+        return;
+    }
 
-        } else {
-            $total_price = 0;
-        }
+    $creditCheck = $objTransaction->checkCredit($totalPrice);
+    if ($creditCheck['status'] !== 'TRUE') {
+        echo 'error:' . functions::Xmlinformation('ChargeRialSystem');
+        return;
+    }
 
-        // Caution: اعتبارسنجی صاحب پنل
-        $check = $objTransaction->checkCredit( $total_price );
+    $reduceTransaction = $objTransaction->decreaseSuccessCredit($totalPrice, $factorNumber, $comment, 'buy_insurance');
 
-        if ( $check['status'] == 'TRUE' ) {
 
-            $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
-            if ( empty( $existTransaction ) ) {
-
-                // Caution: کاهش اعتبار صاحب سیستم
-                $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, 'buy_insurance' );
-
-                if ( $reduceTransaction ) {
+    if ($reduceTransaction) {
                     echo 'success:' . $prices['totalPriceIncreased'];
                 } else {
-                    echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
+        echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
                 }
 
-            } else {
-                echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
-            }
-
-        } else {
-            echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
-        }
-
-    } else {
-        echo 'error:' . functions::Xmlinformation( 'EndCreditAgency' );
-    }
+    // Caution: اعتبارسنجی اعتبار کانتر
+//    if ( $counterCredit > $prices['totalPriceIncreased'] ) {
+//
+//        // Caution: کاهش اعتبار کانتر
+//
+//        $objMember->decreaseCounterCredit( $prices['totalPrice'], $factorNumber, $reserveInfo, 'Insurance' );
+//
+//        if ( $insuranceObj->publicPrivate == 'public' ) {
+//
+//            $total_price = ( $prices['totalPriceIncreased'] - $prices['totalAgencyCommission'] ) + $prices['irantech_commission'];
+//
+//        } else {
+//            $total_price = 0;
+//        }
+//
+//        // Caution: اعتبارسنجی صاحب پنل
+//        $check = $objTransaction->checkCredit( $total_price );
+//
+//        if ( $check['status'] == 'TRUE' ) {
+//
+//            $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
+//            if ( empty( $existTransaction ) ) {
+//
+//                // Caution: کاهش اعتبار صاحب سیستم
+//                $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, 'buy_insurance' );
+//
+//                if ( $reduceTransaction ) {
+//                    echo 'success:' . $prices['totalPriceIncreased'];
+//                } else {
+//                    echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
+//                }
+//
+//            } else {
+//                echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
+//            }
+//
+//        } else {
+//            echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
+//        }
+//
+//    } else {
+//        echo 'error:' . functions::Xmlinformation( 'EndCreditAgency' );
+//    }
 
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'SendInsuranceEmailForOther' ) {
     $members = Load::controller( 'members' );
@@ -2395,7 +2489,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
 
     } else {
         $credit = $objMember->getCredit();
-
     }
 
     $reserveInfo   = functions::GetInfoHotel( $factorNumber );
