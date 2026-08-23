@@ -1616,10 +1616,10 @@ class newApiFlight extends clientAuth
         if (empty($baggage) || !isset($baggage[0])) {
             return [
                 'code' => '',
-                'charge' => 0,
+                'charge' =>  CLIENT_ID == 408 ? 30 :  0,
                 'type' => '',
-                'weight' => '0 کیلوگرم',
-                'display' => 'بدون بار'
+                'weight' =>  CLIENT_ID == 408 ?' 25 کیلوگرم' : '0 کیلوگرم',
+                'display' => CLIENT_ID == 408 ? ' 25 کیلوگرم' :  'بدون بار'
             ];
         }
 
@@ -1628,11 +1628,11 @@ class newApiFlight extends clientAuth
         $type = isset($baggageItem['Type']) ? $baggageItem['Type'] : '';
         $code = isset($baggageItem['Code']) ? $baggageItem['Code'] : '';
         $weightType = strtoupper(trim(substr(strrchr($baggageItem['Charge'], ' '), 1)));
-        // تعیین واحد وزن
-        functions::insertLog('$baggageItem: ' . json_encode($baggageItem) , '000shojaee');
         $weightUnit = ($weightType == 'PC') ? ' چمدان ' : ' کیلوگرم ';
         $weightDisplay = $weight > 0 ? $weight . $weightUnit  : 'بدون بار';
-
+        if(CLIENT_ID == 408){
+            $weightDisplay = $weight > 0 ? $weight . $weightUnit  : ' 25 کیلوگرم';
+        }
         return [
             'code' => $code,
             'charge' => $weight,
@@ -2437,9 +2437,10 @@ class newApiFlight extends clientAuth
             foreach ($this->tickets['flights'] as $keySort => $arraySort) {
                 if (((round($arraySort['price']['adult']['price']) > 0) || in_array($arraySort['source_id'], functions::getAllowSourceEmpty()))) {
                     $sort[] = $arraySort;
-                } else {
-                    $sort_zero[] = $arraySort;
                 }
+//                else {
+//                    $sort_zero[] = $arraySort;
+//                }
             }
 
             $main_sort = array();
@@ -4674,6 +4675,7 @@ class newApiFlight extends clientAuth
 //                        $sort_zero[$direction][] = $arraySort;
 //                    }
 //                }
+
                 $sort = array();
                 $sort_zero = array();
 
@@ -4683,6 +4685,9 @@ class newApiFlight extends clientAuth
                         $sort[$direction][] = $arraySort;
                     }
                 }
+
+
+                $this->tickets['flights'][$direction] = $sort[$direction];
 
                 $main_sort = array();
                 foreach ($sort[$direction] as $key_main_sort => $item_sort)

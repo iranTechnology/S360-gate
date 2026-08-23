@@ -1,59 +1,96 @@
 <template>
-   <div>
-      <template v-if="flight_type_li === 'system'">
+  <div>
+    <template v-if="flight_type_li === 'system'">
 
-         <template v-if="fee_cancel && fee_cancel.length">
-            <div class="cancel-policy cancel_modal">
-               <div class="cancel-policy-head">
-                  <div class="cancel-policy-head-text">{{ useXmltag('DetailMoneyCancel') }}</div>
-                  <div class="cancel-policy-class">
-                     <span>{{ useXmltag('Classflight') }} :</span>
-                     <span>{{ useXmltag('TypeClass') }}</span>
-                  </div>
-               </div>
+      <template v-if="fee_cancel && fee_cancel.length">
+        <div class="cancel-policy cancel_modal">
+          <div class="cancel-policy-head">
+            <div class="cancel-policy-head-text">{{ useXmltag('DetailMoneyCancel') }}</div>
+            <!--                  <div class="cancel-policy-class">-->
+            <!--                     <span>{{ useXmltag('Classflight') }} :</span>-->
+            <!--                     <span>{{ useXmltag('TypeClass') }}</span>-->
+            <!--                  </div>-->
+          </div>
 
-               <div class="cancel-policy-inner">
-                  <div
-                     class="cancel-policy-item cancel_modal"
-                     v-for="(item, index) in fee_cancel"
-                     :key="index"
-                  >
+          <div class="cancel-policy-inner">
+            <div
+                class="cancel-policy-item cancel_modal"
+                v-for="(item, index) in fee_cancel"
+                :key="index"
+            >
               <span class="cancel-policy-item-text site-main-text-color">
                 {{ item.title }}
               </span>
-                     <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color">
+              <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color">
                 {{ item.fine_text }}
               </span>
-                  </div>
-               </div>
             </div>
-         </template>
-
-         <template v-else>
-            <div class="cancel-policy cancel_modal cancel-policy-charter1">
-               <div class="cancel-policy-head">
-                  <div class="cancel-policy-head-text">{{ useXmltag('DetailMoneyCancel') }}</div>
-               </div>
-
-               <span class="site-bg-main-color-admin">
-            {{ useXmltag('Contactbackupunitinformationaboutamountconsignmentfines') }}
-          </span>
-            </div>
-         </template>
-
+          </div>
+        </div>
       </template>
 
-      <div class="cancel-policy cancel-policy-charter" v-else>
+      <template v-else>
+        <div class="cancel-policy cancel_modal">
+          <div class="cancel-policy-head">
+            <div class="cancel-policy-head-text">{{ useXmltag('DetailMoneyCancel') }}</div>
+            <!--               <div class="cancel-policy-class">-->
+            <!--                 <span>{{ useXmltag('Classflight') }} :</span>-->
+            <!--                 <span>{{ useXmltag('TypeClass') }}</span>-->
+            <!--               </div>-->
+          </div>
+
+          <div class="cancel-policy-inner">
+            <div
+                class="cancel-policy-item cancel_modal"
+                v-for="(item, index) in fee_cancel_default"
+                :key="index"
+            >
+              <span class="cancel-policy-item-text site-main-text-color">
+                {{ item.title }}
+              </span>
+              <span class="cancel-policy-item-pnalty site-bg-main-color-admin site-bg-main-color">
+                {{ item.fine_text }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </template>
+
+    </template>
+
+    <div class="cancel-policy cancel-policy-charter" v-else>
       <span>
         {{ useXmltag('ThecharterflightscharterunderstandingCivilAviationOrganization') }}
       </span>
-      </div>
-   </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-   name: "CancelPolicy",
-   props: ["fee_cancel", "flight_type_li"]
+  name: "CancelPolicy",
+  props: ["fee_cancel", "flight_type_li"],
+  data() {
+    return {
+      fee_cancel_default: [
+        {
+          title: 'از زمان صدور تا 12 ظهر 3 روز قبل',
+          fine_text: '%30'
+        },
+        {
+          title: 'از 12 ظهر 3 روز قبل تا 12 ظهر 2 روز قبل',
+          fine_text: '%40'
+        },
+        {
+          title: 'از 12 ظهر 2 روز قبل تا 12 ظهر 1 روز قبل',
+          fine_text: '%70'
+        },
+        {
+          title: 'از 12 ظهر 1 روز قبل تا زمان پرواز',
+          fine_text: '%100'
+        }
+      ]
+    };
+  }
 }
 </script>
