@@ -6935,6 +6935,8 @@ class bookshowTest extends clientAuth {
                 $DataStatus = '<a href="#" onclick="return false;" class="btn btn-primary cursor-default"> هدایت به درگاه </a>';
             } elseif ( $visa['status'] == 'book' ) {
                 $DataStatus = '<a href="#" onclick="return false;" class="btn btn-success cursor-default"> رزرو قطعی </a>';
+            } elseif ( $visa['status'] == 'Requested' ) {
+                $DataStatus = '<a href="#" onclick="return false;" class="btn btn-primary cursor-default"> درخواست کاربر </a>';
             }
 
             if ( TYPE_ADMIN == '1' ) {

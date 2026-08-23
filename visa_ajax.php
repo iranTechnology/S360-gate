@@ -1,5 +1,5 @@
 <?php
-//$array_special_char = ["\n", "‘", "’", "“", "”", "„" , "(", ")", "<", ">","</","/>","alert","+","from","sleep"] ;
+//$array_special_char = ["\n", "ï¿½", "ï¿½", "ï¿½", "ï¿½", "ï¿½" , "(", ")", "<", ">","</","/>","alert","+","from","sleep"] ;
 //
 //$except_char = ['descriptions' , 'documents' , 'title' , 'validityDuration' ,'allowedUseNo'];
 //
@@ -190,10 +190,16 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'visaPreReserve') {
     unset($_POST['flag']);
 
     $factorNumber = filter_var($_POST['factorNumber'], FILTER_SANITIZE_NUMBER_INT);
+    $OnlinePayment = filter_var($_POST['OnlinePayment'], FILTER_SANITIZE_NUMBER_INT);
     $Model = Load::library('Model');
     $ModelBase = Load::library('ModelBase');
 
-    $data['status'] = 'prereserve';
+    if ($OnlinePayment == 'yes') {
+        $data['status'] = 'prereserve';
+    } else {
+        $data['status'] = 'Requested';
+    }
+
 
     $Condition = " factor_number = '{$factorNumber}' ";
     $Model->setTable("book_visa_tb");
@@ -213,7 +219,15 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'visaPreReserve') {
 
     echo json_encode($return);
 }
+if (isset($_POST['flag']) && $_POST['flag'] == 'visaInsertPassenger') {
 
+    unset($_POST['flag']);
+//    echo 'okkkk';
+    $controller = Load::controller('factorVisa');
+    $result = $controller->registerBooks($_POST);
+
+    echo $result;
+}
 if (isset($_POST['flag']) && $_POST['flag'] == 'SendVisaEmailForOther') {
     $members = Load::controller('members');
     unset($_POST['flag']);
@@ -254,7 +268,15 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'changeVisaTypeMoreDetail') {
 
     echo $result;
 }
+elseif (isset($_POST['flag']) && $_POST['flag'] == 'changePriority') {
 
+    unset($_POST['flag']);
+
+    $controller = Load::controller('visa');
+    $result = ['status' => $controller->changePriority($_POST)];
+
+    echo json_encode($result);
+}
 
 if (isset($_POST['flag']) && $_POST['flag'] == 'registerPassengersFileVisa') {
     unset($_POST['flag']);

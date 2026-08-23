@@ -327,6 +327,7 @@
     باشد هزینه طرح خریداری شده معادل 400.000 ريال به مبلغ رزرو اضافه میگردد.
   </AddressStatedCustomerDeliveryReturnCarScope>
   <MessageLowestPrice>ارزانترین پرواز ها از @@origin@@ به @@destination@@ در سی روز آینده</MessageLowestPrice>
+  <VisApplicationSuccess>درخواست ویزای شما به شماره فاکتور @@factorNumber@@ ثبت گردید ، همکاران ما در اسرع وقت با شما ارتباط خواهند گرفت</VisApplicationSuccess>
   <Ticketnumber>شماره بلیط</Ticketnumber>
   <Ticketrules>قوانین خرید بلیط</Ticketrules>
   <Ticketswillisspaidbankagainsite>
@@ -1494,7 +1495,9 @@
   <RefundPenaltyNote>
     توجه: در مواقعی این احتمال وجود دارد که درصدهای ذکر شده تغییراتی داشته باشد که در زمان کنسلی اطلاع رسانی خواهد شد.
   </RefundPenaltyNote>
-
+  <penaltyScheduleFollows>
+    جدول جریمه به شکل زیر است، اما امکان دارد در مواقعی خاص و بر اساس سیاست تامین کننده، تغییراتی داشته باشد.
+  </penaltyScheduleFollows>
   <IntlRefundPenaltyFromIssueTo3DaysBefore>جریمه استرداد از زمان صدور بليت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</IntlRefundPenaltyFromIssueTo3DaysBefore>
   <IntlRefundPenaltyFrom3DaysTo2DaysBefore>جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد می باشد.</IntlRefundPenaltyFrom3DaysTo2DaysBefore>
   <IntlRefundPenaltyFrom2DaysTo1DayBefore>جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد می باشد.</IntlRefundPenaltyFrom2DaysTo1DayBefore>

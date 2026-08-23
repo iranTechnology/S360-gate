@@ -266,6 +266,7 @@
   <PermittedCalculatedDailyBasis>يتم حساب الأميال المسموح بها على أساس يومي يبلغ 300 كم. مثال على حجز لمدة 5 أيام هو 1500 كم ، ويمكن فرض رسوم على الكيلومتر الإضافي الزائد عن قائمة الأسعار.</PermittedCalculatedDailyBasis>
   <AddressStatedCustomerDeliveryReturnCarScope>إذا كان العنوان الذي حدده العميل لتسليم وإرجاع السيارة في نطاق خطة المرور أو الزوجين والفرد ، فإن تكلفة الخطة التي تم شراؤها تعادل 400000 ريال في مبلغ الحجز.</AddressStatedCustomerDeliveryReturnCarScope>
   <MessageLowestPrice>أرخص الرحلات الجوية من @@origin@@ إلى @@destination@@ في الأيام الخمسة عشر القادمة</MessageLowestPrice>
+  <VisApplicationSuccess>تم تسجيل طلب التأشيرة الخاص بك برقم الفاتورة @@factorNumber@@، وسيتصل بك زملاؤنا في أقرب وقت ممكن.</VisApplicationSuccess>
   <Ticketnumber>رقم التذكرة</Ticketnumber>
   <Ticketrules>قوانين التذكرة</Ticketrules>
   <Ticketswillisspaidbankagainsite>في حالة نجاح الدفع، سيتم تأكيد مبلغ الإيداع وتقديم الخدمات ذات الصلة</Ticketswillisspaidbankagainsite>

@@ -70,7 +70,7 @@ class factorVisa
         }else{
 
             $factorNumber = filter_var($_POSTt['factorNumber'], FILTER_SANITIZE_NUMBER_INT);
-            $idMember = filter_var($_POSTt['idMember'], FILTER_VALIDATE_INT);
+            $idMember = Session::getUserId();
             $visaID = filter_var($_POSTt['visaID'], FILTER_VALIDATE_INT);
             $adultQty = filter_var($_POSTt['numAdult'], FILTER_VALIDATE_INT);
             $childQty = filter_var($_POSTt['numChild'], FILTER_VALIDATE_INT);

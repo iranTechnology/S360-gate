@@ -3162,6 +3162,8 @@ class user extends baseController
                 $bookList[$key]['view_status'] =  functions::Xmlinformation('Definitivereservation')->__toString();
             } elseif ($item['status'] == 'cancel') {
                 $bookList[$key]['view_status'] =  functions::Xmlinformation('Cancel')->__toString();
+            } elseif ($item['status'] == 'Requested') {
+                $bookList[$key]['view_status'] =  functions::Xmlinformation('Requested')->__toString();
             } else {
                 $bookList[$key]['view_status'] =  functions::Xmlinformation('Unknow')->__toString();
             }
@@ -5294,6 +5296,8 @@ class user extends baseController
                     $bookList[$key]['view_status'] =  functions::Xmlinformation('Definitivereservation')->__toString();
                 } elseif ($item['statusBook'] == 'cancel') {
                     $bookList[$key]['view_status'] =  functions::Xmlinformation('Cancel')->__toString();
+                }  elseif ($item['statusBook'] == 'Requested') {
+                    $bookList[$key]['view_status'] =  functions::Xmlinformation('Requested')->__toString();
                 } else {
                     $bookList[$key]['view_status'] =  functions::Xmlinformation('Unknow')->__toString();
                 }
