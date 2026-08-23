@@ -7,12 +7,12 @@
         <source media="(min-width:760px)" srcset="{$banner['pic_medium']}">
         <img src="{$banner['pic_thumb']}" alt="{$banner['title']}" style="width:100%;">
     </picture>
-    <div class="titel-banner">
-        <h3>آژانس هواپیمایی پا به پا سفر 🏝️ </h3>
-        <span> تور خارجی و داخلی + رزرو بلیط و هتل </span>
+{*    <div class="titel-banner">*}
+{*        <h3>آژانس هواپیمایی پا به پا سفر 🏝️ </h3>*}
+{*        <span> تور خارجی و داخلی + رزرو بلیط و هتل </span>*}
 {*        <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/all-all/all/15" class="more_banner">*}
 {*            ناکجا*}
 {*        </a>*}
-    </div>
+{*    </div>*}
 
 </section>

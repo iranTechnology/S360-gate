@@ -4829,7 +4829,19 @@ class reservationTour extends clientAuth
         return $result;
     }
 
-    public function getTourRouteData($tour_id) {
+    public function getTourRouteData($params) {
+
+        $tour_id = null;
+        $return_json = false;
+
+        if (is_array($params)) {
+            $tour_id = $params['tour_id'];
+            $return_json = $params['return_json'] ? $params['return_json'] : false;
+        } else {
+            $tour_id = $params;
+        }
+
+
         $reservationPublicFunctions = $this->getController('reservationPublicFunctions');
 
         $tour_route_table = $this->reservation_tour_route_model->getTable();
@@ -4927,10 +4939,18 @@ class reservationTour extends clientAuth
         }
 
 
+        if ($return_json) {
+            return json_encode([
+                'origin' => $origin_route,
+                'destinations' => $destinations,
+            ]);
+        } else {
+
         return [
             'origin' => $origin_route,
             'destinations' => $destinations,
         ];
+        }
     }
 
     public function getTourById($param) {
