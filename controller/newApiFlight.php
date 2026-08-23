@@ -1627,16 +1627,17 @@ class newApiFlight extends clientAuth
         $weight = isset($baggageItem['Charge']) ? (int)$baggageItem['Charge'] : 0;
         $type = isset($baggageItem['Type']) ? $baggageItem['Type'] : '';
         $code = isset($baggageItem['Code']) ? $baggageItem['Code'] : '';
-
+        $weightType = strtoupper(trim(substr(strrchr($baggageItem['Charge'], ' '), 1)));
         // تعیین واحد وزن
-//        $weightUnit = ($type == 'K' || $type == 'KG') ? 'کیلوگرم' : 'پوند';
-        $weightDisplay = $weight > 0 ? $weight . ' کیلوگرم '  : 'بدون بار';
+        functions::insertLog('$baggageItem: ' . json_encode($baggageItem) , '000shojaee');
+        $weightUnit = ($weightType == 'PC') ? ' چمدان ' : ' کیلوگرم ';
+        $weightDisplay = $weight > 0 ? $weight . $weightUnit  : 'بدون بار';
 
         return [
             'code' => $code,
             'charge' => $weight,
             'type' => $type,
-            'weight' => $weight . ' کیلوگرم',
+            'weight' => $weight . $weightUnit,
             'display' => $weightDisplay
         ];
     }
@@ -2671,7 +2672,7 @@ class newApiFlight extends clientAuth
                                     $seenNumbers[] = $number;
 
                                     // ساخت عنوان
-                                    $title = $this->getBaggageTitle($number, $translateVariable);
+                                    $title = $this->getBaggageTitle($number, $translateVariable ,$unit);
 
                                     // ✅ کلید با واحد تشخیص داده شده
                                     $key = $number . ' ' . $unit;
@@ -2703,7 +2704,7 @@ class newApiFlight extends clientAuth
                         if (!in_array($number, $seenNumbers)) {
                             $seenNumbers[] = $number;
 
-                            $title = $this->getBaggageTitle($number, $translateVariable);
+                            $title = $this->getBaggageTitle($number, $translateVariable,$unit);
 
                             $key = $number . ' ' . $unit;
 
@@ -2729,7 +2730,7 @@ class newApiFlight extends clientAuth
                 if (!in_array($number, $seenNumbers)) {
                     $seenNumbers[] = $number;
 
-                    $title = $this->getBaggageTitle($number, $translateVariable);
+                    $title = $this->getBaggageTitle($number, $translateVariable,$unit);
 
                     $key = $number . ' ' . $unit;
 
@@ -2806,7 +2807,7 @@ class newApiFlight extends clientAuth
      * @param array $translateVariable - متغیرهای ترجمه
      * @return string
      */
-    private function getBaggageTitle($number, $translateVariable)
+    private function getBaggageTitle($number, $translateVariable ,$unit)
     {
         // اگر 0 بود، "بدون بار"
         if ($number == 0) {
@@ -2815,7 +2816,8 @@ class newApiFlight extends clientAuth
 
         // بقیه اعداد: "عدد کیلوگرم"
         $kilogramLabel = isset($translateVariable['kg']) ? $translateVariable['kg'] : 'کیلوگرم';
-        return $number . ' ' . $kilogramLabel .  ' کیلوگرم';
+        $unitTitle = $unit == 'PC' ? 'چمدان ' : $kilogramLabel  . ' کیلوگرم ';
+        return $number . ' ' . $unitTitle;
     }
 
     /**
@@ -4662,14 +4664,23 @@ class newApiFlight extends clientAuth
                   }*/
 
 
+//                $sort = array();
+//                $sort_zero = array();
+//
+//                foreach ($this->tickets['flights'][$direction] as $keySort => $arraySort) {
+//                    if ($arraySort['price']['adult']['price'] > 0 ) {
+//                        $sort[$direction][] = $arraySort;
+//                    } else {
+//                        $sort_zero[$direction][] = $arraySort;
+//                    }
+//                }
                 $sort = array();
                 $sort_zero = array();
 
                 foreach ($this->tickets['flights'][$direction] as $keySort => $arraySort) {
-                    if ($arraySort['price']['adult']['price'] > 0 ) {
+
+                    if ($arraySort['price']['adult']['price'] > 0) {
                         $sort[$direction][] = $arraySort;
-                    } else {
-                        $sort_zero[$direction][] = $arraySort;
                     }
                 }
 
