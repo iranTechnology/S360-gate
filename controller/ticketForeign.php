@@ -49,7 +49,7 @@ class ticketForeign extends apiLocal
 
         $PhoneManage = CLIENT_MOBILE;
         $AgencyName = CLIENT_NAME;
-        
+
         $alarm_message = explode('/',$info_ticket[0]['supplier_address']);
         $agency_info = $agencyController->infoAgency($info_ticket[0]['agency_id'], $ClientId);
         if (!empty($info_ticket)) {
@@ -118,7 +118,7 @@ class ticketForeign extends apiLocal
                     }
                 </style>
             </head>
-        <body>
+            <body>
 
             <?php
             $type_member = functions::TypeUser(session::getUserId());
@@ -144,162 +144,162 @@ class ticketForeign extends apiLocal
 
 
                 ?>
-            <div style="width: 100%; overflow: hidden;">
-                <table width="100%" align="center" style="margin: 0px 100px  " cellpadding="0" cellspacing="0"
-                       class="page">
-                <tr>
-                    <td style="padding: 5px; ">
-                        <img src="<?php echo $LogoAgency; ?>" style="max-width: 150px">
-                    </td>
-                </tr>
-                    <tr style="background-color: #CCC; ">
-                        <td style="padding: 5px;" colspan="2" align="left">
-                            Electronic Ticket - pnr : <?php echo $info['pnr'] ?>
-                        </td>
-                    </tr>
-                </table>
-                <div style="width: 48%; float: left;">
-                <table width="100%" align="center" style="margin: 10px 110px " cellpadding="0" cellspacing="0"
-                       class="page">
+                <div style="width: 100%; overflow: hidden;">
+                    <table width="100%" align="center" style="margin: 0px 100px  " cellpadding="0" cellspacing="0"
+                           class="page">
+                        <tr>
+                            <td style="padding: 5px; ">
+                                <img src="<?php echo $LogoAgency; ?>" style="max-width: 150px">
+                            </td>
+                        </tr>
+                        <tr style="background-color: #CCC; ">
+                            <td style="padding: 5px;" colspan="2" align="left">
+                                Electronic Ticket - pnr : <?php echo $info['pnr'] ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="width: 48%; float: left;">
+                        <table width="100%" align="center" style="margin: 10px 110px " cellpadding="0" cellspacing="0"
+                               class="page">
 
 
 
-                    <tr>
-                        <td style="padding: 5px;" align="left" width="80%">
-                            <?php echo $info['passenger_name_en'] . ' ' . $info['passenger_family_en'] ?>
-                        </td>
-                        <td style="padding: 5px;" align="left" width="20%">
-                            :Traveller
-                        </td>
+                            <tr>
+                                <td style="padding: 5px;" align="left" width="80%">
+                                    <?php echo $info['passenger_name_en'] . ' ' . $info['passenger_family_en'] ?>
+                                </td>
+                                <td style="padding: 5px;" align="left" width="20%">
+                                    :Traveller
+                                </td>
 
-                    </tr>
+                            </tr>
 
-                    <tr>
-                        <td style="padding: 5px;" align="left" width="80%">
-                            <?php echo $info['passportNumber'] ?>
-                        </td>
-                        <td style="padding: 5px;" align="left" width="20%">
-                            :Passport Number
-                        </td>
+                            <tr>
+                                <td style="padding: 5px;" align="left" width="80%">
+                                    <?php echo $info['passportNumber'] ?>
+                                </td>
+                                <td style="padding: 5px;" align="left" width="20%">
+                                    :Passport Number
+                                </td>
 
-                    </tr>
+                            </tr>
 
-                    <?php if($info['api_id'] != '16'){?>
-                      <tr>
-                        <td style="padding: 5px;" align="left" width="80%">
-                            <?php echo $info['eticket_number']; ?>
-                        </td>
-                        <td style="padding: 5px;" align="left" width="20%">
-                            :E-TicketNumber
-                        </td>
-                      </tr>
-                    <?php } ?>
-
-
-
-                    <tr>
-                        <td style="padding: 5px;" align="left" width="80%">
-                            <?php echo date('Y M d', strtotime($info['creation_date'])); ?>
-                        </td>
-                        <td style="padding: 5px;" align="left" width="20%">
-                            :Date Of issue
-                        </td>
-
-                    </tr>
-
-                    <tr>
-                        <td style="padding: 5px;" align="left" width="80%">
-
-                            <?php
-                            if ($cash == 'no') {
-                                echo 'cashe';
-                            }else{
-                                $PriceTicket = functions::CalculateDiscountOnePerson($info['request_number'],$info['passportNumber']) ;
+                            <?php if($info['api_id'] != '16'){?>
+                                <tr>
+                                    <td style="padding: 5px;" align="left" width="80%">
+                                        <?php echo $info['eticket_number']; ?>
+                                    </td>
+                                    <td style="padding: 5px;" align="left" width="20%">
+                                        :E-TicketNumber
+                                    </td>
+                                </tr>
+                            <?php } ?>
 
 
-                                $AddOnPrice = ((!empty($info['amount_added']) && $info['amount_added'] > 0) ? $info['amount_added'] : '0');
-                                if($agency_info['type_payment'] == 'currency' && !empty($agency_info)){
-                                    /** @var currencyEquivalent $currency_equivalent_controller */
-                                    $currency_equivalent_controller = Load::controller('currencyEquivalent');
-                                    $priceTotal = functions::ticketPriceCurrency($PriceTicket,$info['currency_equivalent']) +  $AddOnPrice ;
-                                    $info_currency =  $currency_equivalent_controller->InfoCurrency($info['currency_code']);
-                                    $title_currency = $info_currency['CurrencyTitleEn'];
-                                }else{
 
-                                    if(ISCURRENCY == '1' &&  empty($agency_info))
-                                    {
-                                        $price = functions::CurrencyCalculate($PriceTicket );
-                                        $priceTotal = $price['AmountCurrency'] + $AddOnPrice;
-                                        $title_currency = $price['TypeCurrency'];
+                            <tr>
+                                <td style="padding: 5px;" align="left" width="80%">
+                                    <?php echo date('Y M d', strtotime($info['creation_date'])); ?>
+                                </td>
+                                <td style="padding: 5px;" align="left" width="20%">
+                                    :Date Of issue
+                                </td>
 
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 5px;" align="left" width="80%">
+
+                                    <?php
+                                    if ($cash == 'no') {
+                                        echo 'cashe';
                                     }else{
-                                        $priceTotal = $PriceTicket + $AddOnPrice ;
-                                        $title_currency='';
+                                        $PriceTicket = functions::CalculateDiscountOnePerson($info['request_number'],$info['passportNumber']) ;
+
+
+                                        $AddOnPrice = ((!empty($info['amount_added']) && $info['amount_added'] > 0) ? $info['amount_added'] : '0');
+                                        if($agency_info['type_payment'] == 'currency' && !empty($agency_info)){
+                                            /** @var currencyEquivalent $currency_equivalent_controller */
+                                            $currency_equivalent_controller = Load::controller('currencyEquivalent');
+                                            $priceTotal = functions::ticketPriceCurrency($PriceTicket,$info['currency_equivalent']) +  $AddOnPrice ;
+                                            $info_currency =  $currency_equivalent_controller->InfoCurrency($info['currency_code']);
+                                            $title_currency = $info_currency['CurrencyTitleEn'];
+                                        }else{
+
+                                            if(ISCURRENCY == '1' &&  empty($agency_info))
+                                            {
+                                                $price = functions::CurrencyCalculate($PriceTicket );
+                                                $priceTotal = $price['AmountCurrency'] + $AddOnPrice;
+                                                $title_currency = $price['TypeCurrency'];
+
+                                            }else{
+                                                $priceTotal = $PriceTicket + $AddOnPrice ;
+                                                $title_currency='';
+                                            }
+
+                                        }
+
+                                        echo  (Session::getCurrency() && ISCURRENCY == '1') ? number_format($priceTotal,2)  :  number_format($priceTotal);
+                                        echo ' ';
+                                        echo   (($title_currency =="") ? 'IRR' : $title_currency);
                                     }
 
-                                }
+                                    ?>
+                                </td>
+                                <td style="padding: 5px;" align="left" width="20%">
+                                    :Price
+                                </td>
 
-                                echo  (Session::getCurrency() && ISCURRENCY == '1') ? number_format($priceTotal,2)  :  number_format($priceTotal);
-                                echo ' ';
-                                echo   (($title_currency =="") ? 'IRR' : $title_currency);
-                            }
-
-                             ?>
-                        </td>
-                        <td style="padding: 5px;" align="left" width="20%">
-                            :Price
-                        </td>
-
-                    </tr>
+                            </tr>
 
 
-                </table>
+                        </table>
+                    </div>
+                    <?php if ($type_member == 'Counter') {?>
+                        <div style="width: 48%; float: right;">
+                            <table width="100%" align="center" style="margin: 10px 100px " cellpadding="0" cellspacing="0"
+                                   class="page">
+
+                                <!--                        <tr>-->
+                                <!--                            <td style="padding: 5px; height: 20px;">-->
+                                <!--                                <div style="max-width: 150px; height: 20px;">&nbsp;</div>-->
+                                <!--                            </td>-->
+                                <!--                        </tr>-->
+                                <tr>
+                                    <td style="padding: 5px;" colspan="2" align="left">
+                                        Total : <?php echo 'IRR ' . $DataFlightTotal ?>
+                                    </td>
+                                </tr>
+                                <tr style="">
+                                    <td style="padding: 5px;direction: ltr" colspan="2" align="left">
+                                        Fare : <?php echo $DataFlightFare ?>
+                                    </td>
+                                </tr>
+                                <tr style="">
+                                    <td style="padding: 5px;" colspan="2" align="left">
+                                        Commission : <?php echo 'IRR ' . $DataFlightitAgencyCommission ?>
+                                    </td>
+                                </tr>
+                                <tr style="">
+                                    <td style="padding: 5px;" colspan="2" align="left">
+                                        Counter Mark : <?php echo 'IRR ' . $DataFlightPassengerPayData2 ?>
+                                    </td>
+                                </tr>
+
+
+
+
+
+
+
+
+
+
+
+                            </table>
+                        </div>
+                    <?php } ?>
                 </div>
-                <?php if ($type_member == 'Counter') {?>
-                <div style="width: 48%; float: right;">
-                    <table width="100%" align="center" style="margin: 10px 100px " cellpadding="0" cellspacing="0"
-                           class="page">
-
-<!--                        <tr>-->
-<!--                            <td style="padding: 5px; height: 20px;">-->
-<!--                                <div style="max-width: 150px; height: 20px;">&nbsp;</div>-->
-<!--                            </td>-->
-<!--                        </tr>-->
-                        <tr>
-                            <td style="padding: 5px;" colspan="2" align="left">
-                                Total : <?php echo 'IRR ' . $DataFlightTotal ?>
-                            </td>
-                        </tr>
-                        <tr style="">
-                            <td style="padding: 5px;direction: ltr" colspan="2" align="left">
-                                Fare : <?php echo $DataFlightFare ?>
-                            </td>
-                        </tr>
-                        <tr style="">
-                            <td style="padding: 5px;" colspan="2" align="left">
-                                Commission : <?php echo 'IRR ' . $DataFlightitAgencyCommission ?>
-                            </td>
-                        </tr>
-                        <tr style="">
-                            <td style="padding: 5px;" colspan="2" align="left">
-                                Counter Mark : <?php echo 'IRR ' . $DataFlightPassengerPayData2 ?>
-                            </td>
-                        </tr>
-
-
-
-
-
-
-
-
-
-
-
-                    </table>
-                </div>
-                <?php } ?>
-            </div>
 
                 <table width="100%" align="left" style="margin: 10px 100px " cellpadding="0" cellspacing="0"
                        class="page">
@@ -445,7 +445,7 @@ class ticketForeign extends apiLocal
                                 departure.</p>
                             <br/>
                             <p>Passport/Visa/Health</p>
-                          
+
                             <p>Please ensure that you have all the required travel documents for your entire journey i.e., valid Passport & necessary visas, and that you have had the
                                 recommended inoculations for your destination(s).
                                 Insurance</p>
@@ -461,31 +461,58 @@ class ticketForeign extends apiLocal
                                 boarding pass.</p>
 
 
-                           <?php   $ikaAirportEn = (
-                               $info['origin_airport_iata'] === 'IKA' ||
-                               $info['desti_airport_iata'] === 'IKA'
-                           ) ? 'Imam Khomeini' : '';
+                            <?php   $ikaAirportEn = (
+                                $info['origin_airport_iata'] === 'IKA' ||
+                                $info['desti_airport_iata'] === 'IKA'
+                            ) ? 'Imam Khomeini' : '';
 
-                           ?>
+                            ?>
 
 
-                    <?php  if ($info['origin_airport_iata'] == 'IKA'){ ?>
-                          <p style="font-weight:bold !important;">
-                             This flight departs from the terminal  <?=   $infoAirline[0]['out_ika'] . ' ' . $ikaAirportEn ?> It takes place.
-                          </p>
-                        <?php }  if ($info['desti_airport_iata'] == 'IKA'){ ?>
-                          <p style="font-weight:bold !important;">
-                             This flight departs from the arrivals terminal  <?=  $infoAirline[0]['enter_ika'] . ' ' . $ikaAirportEn ?> It takes place.
-                          </p>
-                  <?php } ?>
+                            <?php  if ($info['origin_airport_iata'] == 'IKA'){ ?>
+                                <p style="font-weight:bold !important;">
+                                    This flight departs from the terminal  <?=   $infoAirline[0]['out_ika'] . ' ' . $ikaAirportEn ?> It takes place.
+                                </p>
+                            <?php }  if ($info['desti_airport_iata'] == 'IKA'){ ?>
+                                <p style="font-weight:bold !important;">
+                                    This flight departs from the arrivals terminal  <?=  $infoAirline[0]['enter_ika'] . ' ' . $ikaAirportEn ?> It takes place.
+                                </p>
+                            <?php } ?>
 
                             <br/>
                         </td>
+
                     </tr>
 
 
                 </table>
+                <?php if(CLIENT_ID == 408){ ?>
+                    <table width="100%" align="center" style="margin: 10px 100px;"
+                           cellpadding="0" cellspacing="0" class="page">
+                        <tr style="">
+                            <td style="padding: 5px;" align="right">
+                                <p>1- جریمه استرداد تا 30 دقيقه بعد از رزرو (فقط تا 16 ساعت قبل از پرواز) 0 درصد مي باشد.</p>
+                                <br/>
+                                <p>2- جریمه استرداد از زمان صدور بليت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</p>
+                                <br/>
+                                <p>3- جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد مي باشد.</p>
+                                <br/>
+                                <p>4- جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد مي باشد.</p>
+                                <br/>
+                                <p>5- جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 100 درصد مي باشد.</p>
+                                <br/>
+                                <p>6- جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد مي باشد.</p>
+                                <br/>
+                                <p>7- تمامی درصد جریمه های پروازی بر روی سیستم کنسلی و استرداد آنلاین تعریف شده است و مسافرین محترم میتوانند از طریق لینک زیر اقدام به ثبت کنسلی و استرداد بلیت های خود نمایند. ضمنا در صورت خرید نرخ های دو مسیره قوانین استرداد متفاوت بوده و بر اساس کل رفرنس محاسبه میگردد با تشکر</p>
+                                <br/>
+                                <p>برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</p>
+                                <p>https://apstick.ir/api/DeepLink/Refund/V1?language=fa</p>
 
+
+                            </td>
+                        </tr>
+                    </table>
+                <?php } ?>
 
                 <table width="100%" align="center" style="margin: 10px 100px ;border:1px solid #6c6c6c  "
                        cellpadding="0" cellspacing="0" class="page">
@@ -520,14 +547,14 @@ class ticketForeign extends apiLocal
                 <br/>
                 <br/>
                 <?php if($info['api_id'] == '14'){?>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-              
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+
                 <?php } ?>
 
-            
+
                 <div class="element"></div>
                 <hr style="margin: 50px 100px 100px 100px ; width: 90%"/>
                 <table width="100%" align="center" style="margin: 10px 100px 50px 100px ; font-size: 17px" scellpadding="0"
@@ -539,31 +566,31 @@ class ticketForeign extends apiLocal
                             <?php echo $ClientMainDomain; ?>
 
                         </td>
+                        <?php if($info['api_id'] != '14'){?>
+                            <td> تلفن پشتیبانی :
+                                <?php echo $phone; ?>
+                            </td>
+                            <td> تلفن و تلگرام پشتیبانی :
+                                <?php echo $PhoneManage; ?>
+                            </td>
+                        <?php }?>
+                    </tr>
                     <?php if($info['api_id'] != '14'){?>
-                        <td> تلفن پشتیبانی :
-                            <?php echo $phone; ?>
-                        </td>
-                        <td> تلفن و تلگرام پشتیبانی :
-                            <?php echo $PhoneManage; ?>
-                        </td>
-                    <?php }?>
-                    </tr>
-                <?php if($info['api_id'] != '14'){?>
-                    <tr>
-                        <td colspan="2">
-                            آدرس :
-                            <?php echo $ClientAddress; ?>
+                        <tr>
+                            <td colspan="2">
+                                آدرس :
+                                <?php echo $ClientAddress; ?>
 
-                        </td>
-                    </tr>
-                <?php }?>
+                            </td>
+                        </tr>
+                    <?php }?>
 
                 </table>
                 <?php
 
             }?>
 
-                </body>
+            </body>
             </html>
             <?php
         } else { ?>
