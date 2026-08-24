@@ -10,6 +10,7 @@
 <main>
     {include file="include_files/search-box.tpl"}
     {include file="include_files/tours-2.tpl"}
+    {include file="include_files/tours-3.tpl"}
     {include file="include_files/fast_flight_search-1.tpl"}
     {include file="include_files/about-us-1.tpl"}
     {include file="include_files/blog.tpl"}

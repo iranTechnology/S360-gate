@@ -756,6 +756,7 @@ class bank {
                     if (strval($settle) === '0') {
                     functions::insertLog('after settle=>'.$this->factorNumber.' ==> '.json_encode([$settle,gettype($settle),$client->getError()]),'logBankMellatConfirm');
                         $this->trackingCode = $SaleReferenceId;
+
                     }else{
 						$this->transactionStatus = 'failed';
 					}
