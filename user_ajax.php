@@ -1163,10 +1163,10 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCip' ) {
     $total_amount = $reserveInfo[0]['total_price'];
 
     $amount = $isPrivate ? 0 : $reserveInfo[0]['total_price'];
-        $serviceTypeText = $isPrivate ? 'اختصاصی' : 'اشتراکی';
-        $comment = "خرید تشریفات فرودگاه {$serviceTypeText} "
-            . $reserveInfo[0]['cip_name']
-            . " به شماره رزرو "
+    $serviceTypeText = $isPrivate ? 'اختصاصی' : 'اشتراکی';
+    $comment = "خرید تشریفات فرودگاه {$serviceTypeText} "
+        . $reserveInfo[0]['cip_name']
+        . " به شماره رزرو "
         . $reserveInfo[0]['reserve_number']
         . " {$request_number}";
 
@@ -1186,7 +1186,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCip' ) {
     if (!$isPrivate && $counterCredit < $total_amount) {
         echo 'error: ' . functions::Xmlinformation('EndCreditAgency');
         return;
-        }
+    }
 
     if ($_POST['creditUse'] == 'member_credit') {
         $objMemberCredit->decreaseChargeMemberForBuy( $total_amount, $factorNumber, $comment );
@@ -1210,10 +1210,10 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCip' ) {
     $reduceTransaction = $objTransaction->decreaseSuccessCredit($amount, $factorNumber, $comment, 'buy_cip');
 
     if ($reduceTransaction) {
-                    echo 'success:' . $total_amount;
-                } else {
+        echo 'success:' . $total_amount;
+    } else {
         echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
-                }
+    }
 
 
     // Caution: اعتبارسنجی اعتبار کانتر
@@ -1973,7 +1973,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
 
 
 
-        $comment = " رزرو " . " " . $reserveInfo['reserveCount'] . " عدد " . " " . $reserveInfo['source_name_fa'] . " به مقصد " . " " . $reserveInfo['destination'] . " " . "به شماره فاکتور " . " " . $factorNumber . ( $insuranceObj->publicPrivate == 'private' ? ' اختصاصی ' : ' اشتراکی ' );
+    $comment = " رزرو " . " " . $reserveInfo['reserveCount'] . " عدد " . " " . $reserveInfo['source_name_fa'] . " به مقصد " . " " . $reserveInfo['destination'] . " " . "به شماره فاکتور " . " " . $factorNumber . ( $insuranceObj->publicPrivate == 'private' ? ' اختصاصی ' : ' اشتراکی ' );
 
     $existTransaction = $objTransaction->getTransactionByFactorNumber($factorNumber);
     if (!empty($existTransaction)) {
@@ -1991,10 +1991,10 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'historyTestWebService' ) 
 
 
     if ($reduceTransaction) {
-                    echo 'success:' . $prices['totalPriceIncreased'];
-                } else {
+        echo 'success:' . $prices['totalPriceIncreased'];
+    } else {
         echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
-                }
+    }
 
     // Caution: اعتبارسنجی اعتبار کانتر
 //    if ( $counterCredit > $prices['totalPriceIncreased'] ) {
@@ -3679,6 +3679,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
             }
 
             // Caution: کاهش اعتبار موقت صاحب سیستم
+            $total_price_transaction = $reserveInfo['agency_commission'];
             $reduceTransaction = $objTransaction->decreasePendingCredit( $total_price_transaction, $factorNumber, $comment, $reason );
             if ( $reduceTransaction ) {
                 $output = 'TRUE';
@@ -3731,6 +3732,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
             $total_price_transaction=$total_price_transaction-functions::calculatePercentage($total_price_transaction,0);
         }
 
+
         // Caution: کاهش اعتبار کانتر
         $objMember->decreaseCounterCredit($reserveInfo['total_price'], $factorNumber, $reserveInfo, 'Bus', $checkRepeat);
 
@@ -3743,6 +3745,8 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'organizationDelete' ) {
             if ( empty( $existTransaction ) ) {
 
                 // Caution: کاهش اعتبار صاحب سیستم
+                $total_price_transaction =  $reserveInfo['agency_commission'];
+
                 $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price_transaction, $factorNumber, $comment, $reason );
 
 

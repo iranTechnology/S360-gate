@@ -3446,5 +3446,7 @@
   <PhoneNumberBuyer>The mobile number you used to make the purchase.</PhoneNumberBuyer>
   <PaymentWithADiscountCode>Payment with a discount code</PaymentWithADiscountCode>
   <AsADiscountCodeHasBeenApplied>As a discount code has been applied and the invoice amount is settled, no further payment is required. To finalize the process, please select the "Pay with Discount Code" button.</AsADiscountCodeHasBeenApplied>
-
+  <flightInternatiol>flightInternatiol</flightInternatiol>
+  <flightInternalToAirport>flight Internal To Airport</flightInternalToAirport>
+  <flightInternationalToAirport>flight International To Airport</flightInternationalToAirport>
 </Main>

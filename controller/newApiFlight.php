@@ -2224,7 +2224,7 @@ class newApiFlight extends clientAuth
                             'baggage' => array('code' => $baggage0['Code'],
                                 'charge' => $baggage0['Charge'],
                                 'type' => $baggage0['Type'],
-                                'baggage_statement' => $this->baggageTitle($source_id, $details_dept, $translateVariable)
+                                'baggage_statement' => $this->baggageTitle($source_id, $details_dept, $translateVariable , false , true)
                             ),
                             'airline' => array(
                                 'airline_name' => $airlines_name[$airlineCode_dept][$languageNameField],
@@ -2372,7 +2372,7 @@ class newApiFlight extends clientAuth
                                     'code' => $baggage0Return['Code'],
                                     'charge' => $baggage0Return['Charge'],
                                     'type' => $baggage0Return['Type'],
-                                    'baggage_statement' => $this->baggageTitle($source_id, $details_return,$translateVariable)
+                                    'baggage_statement' => $this->baggageTitle($source_id, $details_return,$translateVariable,false, true)
                                 ),
                                 'airline' => array(
                                     'airline_name' => $airlines_name[$airlineCode_return][$languageNameField],
@@ -2912,8 +2912,12 @@ class newApiFlight extends clientAuth
      * @param bool $reservation
      * @return string|string[]
      */
-    public function baggageTitle($source_id, $route, $data_translate, $reservation = false) {
+    public function baggageTitle($source_id, $route, $data_translate, $reservation = false ,$isInternational = false) {
         $baggageCharge = $route['Baggage'][0]['Charge'] ?  $route['Baggage'][0]['Charge'] :  0;
+
+        if (CLIENT_ID == 408 && $isInternational) {
+            return '25 کیلوگرم';
+        }
 
         if (in_array($source_id, ['10', '1', '14', '15', '17', '18', '19']) && !$reservation) {
             if ($baggageCharge > 0) {

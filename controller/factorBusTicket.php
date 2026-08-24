@@ -56,9 +56,6 @@ class factorBusTicket extends apiBus
 
 
 
-
-
-
         $dataInsertBook['SourceCode']=$dataDetailBusTicket['detailBus']['source_code'];
         $dataInsertBook['SourceName']=$dataDetailBusTicket['detailBus']['source_name'];
         $dataInsertBook['WebServiceType']=$dataDetailBusTicket['detailBus']['web_service_type'];
@@ -77,7 +74,6 @@ class factorBusTicket extends apiBus
         $dataInsertBook['ServiceMessage']=$dataDetailBusTicket['detailBus']['description'];
         $dataInsertBook['BaseCompany']=$dataDetailBusTicket['detailBus']['company'];
         $dataInsertBook['DateMove']=$dataDetailBusTicket['detailBus']['date_move'];
-
         $sqlMember=" SELECT * FROM members_tb WHERE id='{$idMember}'";
         $user=$Model->load($sqlMember);
         if(!empty($user)){
@@ -116,7 +112,7 @@ class factorBusTicket extends apiBus
 //        $irantechCommission=Load::controller('irantechCommission');
 //        $itCommission=$irantechCommission->getCommission($serviceTitle, $sourceId);
 
-        $priceWithoutDiscount=$price=(round($dataDetailBusTicket['detailBus']['price']));
+        $priceWithoutDiscount=$price=(round($dataDetailBusTicket['detailBus']['beforeDiscountPrice']));
 
         $itCommission=0;
         $company=functions::getIdBaseCompanyBus($dataDetailBusTicket['detailBus']['base_company']);
@@ -127,14 +123,22 @@ class factorBusTicket extends apiBus
         $arrayParamPriceChanges['date']=$dataDetailBusTicket['detailBus']['date_move'];
         $arrayParamPriceChanges['price']=$price;
         $resBusTicketPriceChanges=functions::getBusTicketPriceChanges($arrayParamPriceChanges);
+
+        $priceWithCommision =  $price ;
+        if($dataDetailBusTicket['detailBus']['commision'] != 0){
+            $priceWithCommision =  $price - (($price * $dataDetailBusTicket['detailBus']['commision'] ) / 100);
+        }else{
+            $priceWithCommision =  $price ;
+        }
+
         if($resBusTicketPriceChanges!=false){
             $priceWithoutDiscount=$price=$resBusTicketPriceChanges['price'];
 
-            $dataInsertBook['agency_commission']=$resBusTicketPriceChanges['price_change'];
+            $dataInsertBook['agency_commission']=$priceWithCommision;
             $dataInsertBook['agency_commission_price_type']=$resBusTicketPriceChanges['price_type'];
             $dataInsertBook['type_of_price_change']=$resBusTicketPriceChanges['change_type'];
         }else{
-            $dataInsertBook['agency_commission']=0;
+            $dataInsertBook['agency_commission']=$priceWithCommision;
             $dataInsertBook['agency_commission_price_type']='';
             $dataInsertBook['type_of_price_change']='';
         }
