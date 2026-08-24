@@ -3923,4 +3923,7 @@
   <Reference>رفرنس</Reference>
   <PaymentWithADiscountCode>پرداخت با کد تخفیف</PaymentWithADiscountCode>
   <AsADiscountCodeHasBeenApplied>با توجه به استفاده از کد تخفیف و تسویه مبلغ فاکتور نیازی به پرداخت نمیباشد.در صورت تایید نهایی، لطفا دکمه پرداخت با کد تخفیف را انتخاب نمایید.</AsADiscountCodeHasBeenApplied>
+  <flightInternatiol>پرواز بین المللی</flightInternatiol>
+  <flightInternalToAirport>پرواز ورودی به فرودگاه</flightInternalToAirport>
+  <flightInternationalToAirport>پرواز خروجی از فرودگاه</flightInternationalToAirport>
 </Main>

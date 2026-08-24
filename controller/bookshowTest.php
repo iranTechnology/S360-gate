@@ -6935,6 +6935,8 @@ class bookshowTest extends clientAuth {
                 $DataStatus = '<a href="#" onclick="return false;" class="btn btn-primary cursor-default"> هدایت به درگاه </a>';
             } elseif ( $visa['status'] == 'book' ) {
                 $DataStatus = '<a href="#" onclick="return false;" class="btn btn-success cursor-default"> رزرو قطعی </a>';
+            } elseif ( $visa['status'] == 'Requested' ) {
+                $DataStatus = '<a href="#" onclick="return false;" class="btn btn-primary cursor-default"> درخواست کاربر </a>';
             }
 
             if ( TYPE_ADMIN == '1' ) {
@@ -8699,7 +8701,7 @@ class bookshowTest extends clientAuth {
                         $DataFlightActionBtn .= '</div>';
                         $DataFlightActionBtn .= "<div class='pull-left margin-10'>";
                         if ( $flightBook['successfull'] == 'book' ) {
-                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
+                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookCip&id=' . $flightBook['factor_number'] . '"
                                                                            target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
@@ -8845,8 +8847,8 @@ class bookshowTest extends clientAuth {
                                                                 ';
 
 
-                        if ( ( $flightBook['IsInternal'] == '1' && $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightActionBtn .= '<div class="pull-left margin-10"> <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=fa"
+                        if ( $flightBook['successfull'] == 'book'  ) {
+                            $DataFlightActionBtn .= '<div class="pull-left margin-10"> <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookCip&id=' . $flightBook['factor_number'] . '"
                                                                            target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"

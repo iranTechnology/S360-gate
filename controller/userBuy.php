@@ -2069,6 +2069,11 @@ class userBuy extends clientAuth
                 $_POST = $param;
                 $data_book = $objUser->getBookAllExclusiveTour($param);
             }
+            elseif ($param['target'] == 'cip') {
+                parse_str($param['filter'], $param);
+                $_POST = $param;
+                $data_book = $objUser->getBookAllCip($param);
+            }
 
         }
 
