@@ -259,6 +259,7 @@
   <PermittedCalculatedDailyBasis>Разрешенный пробег рассчитывается на ежедневной основе в размере 300 км. Пример 5-дневного бронирования — 1500 км пробега, а дополнительная миля оплачивается согласно прейскуранту.</PermittedCalculatedDailyBasis>
   <AddressStatedCustomerDeliveryReturnCarScope>Если указанный клиентом адрес для доставки и возврата автомобиля в рамках плана движения является парным или личным, то стоимость приобретенного плана составляет 400 000 риалов на сумму бронирования.</AddressStatedCustomerDeliveryReturnCarScope>
   <MessageLowestPrice>Самые дешевые рейсы из @@origin@@ в @@destination@@ в ближайшие 15 дней</MessageLowestPrice>
+  <VisApplicationSuccess>Ваша заявка на визу зарегистрирована под номером счета @@factorNumber@@. Наши сотрудники свяжутся с вами в кратчайшие сроки.</VisApplicationSuccess>
   <Ticketnumber>Номер билета</Ticketnumber>
   <Ticketrules>Правила билета</Ticketrules>
   <Ticketswillisspaidbankagainsite>В случае успешного платежа сумма депозита будет подтверждена и соответствующие услуги будут предоставлены</Ticketswillisspaidbankagainsite>

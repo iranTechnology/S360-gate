@@ -1278,6 +1278,7 @@ function preReserveVisa(factorNumber , currentDate, numAdult, numChild , thiss) 
                        data: {
                            flag: "visaPreReserve",
                            factorNumber: factorNumber,
+                           OnlinePayment: $('#OnlinePayment').val(),
                        },
                        success: function (response) {
                            if (response.result_status == "success") {
@@ -1288,9 +1289,19 @@ function preReserveVisa(factorNumber , currentDate, numAdult, numChild , thiss) 
                                       .css("cursor", "not-allowed")
                                       .text(useXmltag("Accepted"))
 
-                                   $(".main-pay-content").css("display", "flex")
+                                   if ($('#OnlinePayment').val() == 'no') {
+                                       $.alert({
+                                           title: useXmltag("Reservationvisa"),
+                                           icon: "fa shopping-cart",
+                                           content: translateXmlByParams('VisApplicationSuccess', {'factorNumber': factorNumber}),
+                                           rtl: true,
+                                           type: "green",
+                                       })
+                                   } else {
+                                       $(".main-pay-content").css("display", "flex")
+                                   }
+
                                    $("#loader_check").css("display", "none")
-                                   // $('html, body').animate({scrollTop: $('#factor_bank').offset().top}, 'slow');
                                }, 2000)
                            } else {
                                $("#messageBook").html(response.result_message)

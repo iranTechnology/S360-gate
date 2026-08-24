@@ -366,6 +366,7 @@
   <PermittedCalculatedDailyBasis>The authorized mileage is calculated on a daily basis of 300 km. An example of a 5-day reservation is 1,500 km of distance and the extra mile is charged according to the price list.</PermittedCalculatedDailyBasis>
   <AddressStatedCustomerDeliveryReturnCarScope>If the address stated by the customer for the delivery and return of the car within the traffic plan is either paired or personal, the cost of the purchased plan is equal to 400,000 rials for the amount of the reservation.</AddressStatedCustomerDeliveryReturnCarScope>
   <MessageLowestPrice>Cheapest flights from @@origin@@ to @@destination@@ in the next 15 days</MessageLowestPrice>
+  <VisApplicationSuccess>Your visa application has been registered with invoice number @@factorNumber@@, our colleagues will contact you as soon as possible.</VisApplicationSuccess>
   <Ticketnumber>Ticket Number</Ticketnumber>
   <Ticketrules>Ticket Rules</Ticketrules>
   <Ticketswillisspaidbankagainsite>
