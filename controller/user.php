@@ -2108,6 +2108,212 @@ class user extends baseController
     }
 
 
+    public function getBookAllCip($param = '') {
+
+        $id = Session::getUserId();
+        $Model = Load::library('Model');
+        $obj_user = Load::controller('user');
+        $memberId = Session::getUserId();
+
+        $date = dateTimeSetting::jdate("Y-m-d", time());
+        $date_now_explode = explode('-', $date);
+
+        $conditions = '';
+        $factor_number = '';
+        $status = '';
+
+        // === فیلتر تاریخ ===
+        if (!empty($param['startDate']) && !empty($param['endDate'])) {
+            $date_of = explode('-', $param['startDate']);
+            $date_to = explode('-', $param['endDate']);
+            $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
+            $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
+            $conditions .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
+        }
+
+        // === فیلتر شماره فاکتور ===
+        if (isset($param['factorNumber']) && $param['factorNumber'] != '') {
+            $factor_number .= " AND (factor_number LIKE '%{$param['factorNumber']}%') ";
+        }
+
+        // === فیلتر وضعیت ===
+        if (isset($param['statusGroup']) && $param['statusGroup'] == 'cancel') {
+            $status .= " AND successfull = 'book' AND request_cancel = 'confirm' ";
+        } elseif (isset($param['statusGroup']) && $param['statusGroup'] != '') {
+            $status .= " AND (successfull LIKE '%{$param['statusGroup']}%') ";
+        }
+
+        // === فیلتر نام مسافر ===
+        if (isset($param['passengerName']) && $param['passengerName'] != '') {
+            $conditions .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%'))";
+        }
+
+        $tableNameCip = 'book_cip_tb';
+
+        $sql = "
+        SELECT
+              passenger_name,
+              passenger_family ,
+              total_price,
+              factor_number,
+              creation_date_int,
+              successfull,
+              request_cancel ,
+              cip_name,
+              airport_code,
+              airline_iata,
+              date_time,
+              airport_code_cip ,
+              trip_type ,
+              PassengerTitle,
+              flight_type
+        FROM
+            {$tableNameCip}
+        WHERE
+            member_id = '{$memberId}'
+            {$conditions} {$factor_number} {$status}
+        GROUP BY
+            factor_number
+        ORDER BY creation_date_int DESC
+    ";
+
+        $bookList = $Model->select($sql);
+
+        $result = [];
+        foreach ($bookList as $key => $item) {
+
+            $bookList[$key]['dataBtnPdf'] = '';
+            $bookList[$key]['ViewBill'] = '';
+            $bookList[$key]['reservationProofVersa'] = '';
+            $bookList[$key]['dataBtnCancel'] = '';
+            $bookList[$key]['ViewDetails'] = '';
+            $bookList[$key]['btnDetails'] = '';
+            $bookList[$key]['dataBtnPdfFreeLink'] = '';
+
+            $bookList[$key]['module_title'] = $item['moduleTitle'];
+
+            // === تاریخ و زمان ===
+            if ($item['creation_date_int'] != '') {
+                $bookList[$key]['creation_date_int'] = functions::printDateIntByLanguage('Y/m/d', $item['creation_date_int'], SOFTWARE_LANG);
+                $bookList[$key]['creation_time_int'] = functions::printDateIntByLanguage('H:i', $item['creation_date_int'], SOFTWARE_LANG);
+            } else {
+                $bookList[$key]['creation_date_int'] = '----';
+                $bookList[$key]['creation_time_int'] = '----';
+            }
+
+            // === قیمت نهایی ===
+            $bookList[$key]['price_final'] = number_format($item['total_price']);
+
+            // === تنظیم وضعیت ===
+            if ($item['successfull'] == 'book') {
+                if ($item['request_cancel'] == 'confirm') {
+                    $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString() . ' <span style="color: #fd6767; margin-right: 10px; ">(' . functions::Xmlinformation('Refunded')->__toString() . ')</span>';
+                } else {
+                    $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString();
+                }
+            } elseif ($item['successfull'] == 'bank') {
+                $bookList[$key]['view_status'] = functions::Xmlinformation('RedirectPayment')->__toString();
+            } elseif ($item['successfull'] == 'prereserve') {
+                $bookList[$key]['view_status'] = functions::Xmlinformation('Prereservation')->__toString();
+            } elseif ($item['successfull'] == 'cancel') {
+                $bookList[$key]['view_status'] = functions::Xmlinformation('Cancel')->__toString();
+            } else {
+                $bookList[$key]['view_status'] = functions::Xmlinformation('Unknow')->__toString();
+            }
+
+            // === تنظیم اطلاعات ===
+            if ($item['airline_name'] != '') {
+                $bookList[$key]['airline_name'] = $item['airline_name'];
+            } else {
+                $bookList[$key]['airline_name'] = '----';
+            }
+
+            // === تنظیم نوع پرواز ===
+            if ($item['flight_type'] == 'inbound') {
+                $bookList[$key]['flight_type_label'] = functions::Xmlinformation('flightInternalToAirport')->__toString();
+            } elseif ($item['flight_type'] == 'outbound') {
+                $bookList[$key]['flight_type_label'] = functions::Xmlinformation('flightInternationalToAirport')->__toString();
+            } else {
+                $bookList[$key]['flight_type_label'] = '----';
+            }
+            // === تنظیم نوع سفر ===
+            if ($item['trip_type'] == 'domestic') {
+
+                $bookList[$key]['trip_type_label'] =  functions::Xmlinformation('DomesticFlight')->__toString() ;
+            } elseif ($item['trip_type'] == 'international') {
+                $bookList[$key]['trip_type_label'] =  functions::Xmlinformation('flightInternatiol')->__toString();
+            } else {
+                $bookList[$key]['trip_type_label'] = '----';
+            }
+
+            // === تنظیم تاریخ و زمان ===
+            if ($item['date_time'] != '') {
+                $bookList[$key]['date_time_formatted'] = functions::printDateIntByLanguage('Y/m/d H:i', strtotime($item['date_time']), SOFTWARE_LANG);
+            } else {
+                $bookList[$key]['date_time_formatted'] = '----';
+            }
+
+            // === تنظیم نام CIP ===
+            if ($item['cip_name'] != '') {
+                $bookList[$key]['cip_name'] = $item['cip_name'];
+            } else {
+                $bookList[$key]['cip_name'] = '----';
+            }
+
+            // === نتیجه نهایی ===
+            $result[$key]['service'] = 'Cip';
+            $result[$key]['title'] = $item['cip_name'];
+            $result[$key]['passenger_name'] = $item['passenger_name'] . ' ' . $item['passenger_family'];
+            $result[$key]['date'] = $bookList[$key]['creation_date_int'];
+            $result[$key]['time'] = $bookList[$key]['creation_time_int'];
+            $result[$key]['status'] = [
+                'title' => $item['successfull'],
+                'value' => $bookList[$key]['view_status']
+            ];
+            $result[$key]['factor_number'] = $item['factor_number'];
+            $result[$key]['price'] = $bookList[$key]['price_final'];
+
+            // === لیست اطلاعات نمایشی ===
+            $result[$key]['info_list'] = [
+                [
+                    'title' => functions::Xmlinformation('Customername')->__toString(),
+                    'value' => $item['passenger_name'] . ' ' . $item['passenger_family']
+                ],
+                [
+                    'title' => functions::Xmlinformation('Airport')->__toString(),
+                    'value' => $item['airport_code']
+                ],
+                [
+                    'title' => functions::Xmlinformation('Typeflight')->__toString(),
+                    'value' => $bookList[$key]['flight_type_label'] . ' ' . $bookList[$key]['trip_type_label']
+                ],
+                [
+                    'title' => functions::Xmlinformation('Buydate')->__toString(),
+                    'value' => $bookList[$key]['date_time_formatted']
+                ],
+                [
+                    'title' => functions::Xmlinformation('Amount')->__toString(),
+                    'value' => $bookList[$key]['price_final'] . ' ' . functions::Xmlinformation('Rial')->__toString()
+                ],
+            ];
+
+            // === دکمه‌های عملیاتی ===
+            $result[$key]['button_list'] = [];
+
+            // دکمه دریافت بلیط برای رزروهای قطعی
+            if ($item['successfull'] == 'book') {
+                $result[$key]['button_list'][] = [
+                    'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                    'type' => 'link',
+                    'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookCip&id=' . $item['factor_number'],
+                ];
+            }
+        }
+
+        return $result;
+    }
+
+
     public function getBookAllBus($param = '') {
         $id = Session::getUserId();
         $sql = "SELECT   
@@ -3532,6 +3738,7 @@ class user extends baseController
         $tableNameEntertainment = 'book_entertainment_tb';
         $tableNameEuropcar = 'book_europcar_local_tb';
         $tableNameExclusiveTour = 'book_exclusive_tour_tb';
+        $tableNameCip= 'book_cip_tb';
 
         $sql = "
             SELECT
@@ -3605,7 +3812,14 @@ class user extends baseController
                   ''  AS WagonName,
                   direction  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber
+                  ''  AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameFlight}
             WHERE
@@ -3685,7 +3899,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber
+                  ''  AS TrainNumber,
+                   '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameBus} 
             WHERE
@@ -3765,7 +3986,14 @@ class user extends baseController
                   WagonName  AS WagonName,
                   ''  AS direction,
                   TicketNumber  AS TicketNumber,
-                  TrainNumber  AS TrainNumber
+                  TrainNumber  AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameTrain} 
             WHERE
@@ -3846,7 +4074,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  ''  AS TrainNumber
+                  ''  AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameGasht} 
             WHERE
@@ -3927,7 +4162,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameTour} 
             WHERE
@@ -4007,7 +4249,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameHotel} 
             WHERE
@@ -4087,7 +4336,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameInsurance} 
             WHERE
@@ -4168,7 +4424,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameVisa} 
             WHERE
@@ -4248,7 +4511,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameEntertainment} 
             WHERE
@@ -4329,7 +4599,14 @@ class user extends baseController
                   ''  AS WagonName,
                   ''  AS direction,
                   ''  AS TicketNumber,
-                  '' AS TrainNumber
+                  '' AS TrainNumber,
+                  '' AS cip_name,
+                  '' AS airport_code,
+                  '' AS airline_iata,
+                  '' AS date_time,
+                  '' AS airport_code_cip,
+                  '' AS trip_type,
+                  '' AS PassengerTitle
             FROM
                 {$tableNameEuropcar} 
             WHERE
@@ -4338,6 +4615,7 @@ class user extends baseController
             GROUP BY
                 factor_number 
             UNION
+            
         SELECT
              'exclusivetour' AS moduleTitle,
               passenger_name AS passenger_name,
@@ -4409,10 +4687,101 @@ class user extends baseController
               '' AS WagonName,
               '' AS direction,
               '' AS TicketNumber,
-              '' AS TrainNumber
+              '' AS TrainNumber,
+              '' AS cip_name,
+              '' AS airport_code,
+              '' AS airline_iata,
+              '' AS date_time,
+              '' AS airport_code_cip,
+              '' AS trip_type,
+              '' AS PassengerTitle
         FROM {$tableNameExclusiveTour}
         WHERE member_id = '{$memberId}' AND request_number > '0'
         GROUP BY request_number
+        UNION
+    SELECT
+     'cip' AS moduleTitle,
+      passenger_name AS passenger_name,
+      passenger_family AS passenger_family,
+      '' AS passenger_name_en,
+      '' AS passenger_family_en,
+      '' AS passenger_serviceRequestType,
+      '' AS passenger_serviceName,
+      '' AS passenger_serviceCityName,
+      '' AS passenger_number,
+      total_price AS total_price,
+      factor_number AS factor_number,
+      '' AS entertainment_data_json,
+      creation_date_int AS creation_date_int,
+      successfull AS statusBook,
+      request_cancel AS request_cancel,
+      '' AS discount_code_amount,
+      '' AS type_discount,
+      '' AS car_name,
+      '' AS car_name_en,
+      '' AS CountPeople,
+      '' AS EntertainmentId,
+      '' AS visa_request_status_id,
+      '' AS visa_destination,
+      '' AS visa_title,
+      '' AS visa_type,
+      '' AS documents_visa,
+      '' AS source_name_fa,
+      '' AS destination,
+      '' AS caption,
+      '' AS hotel_name,
+      '' AS start_date,
+      '' AS city_name,
+      '' AS passenger_leader_room_fullName,
+      '' AS number_night,
+      '' AS tour_type,
+      '' AS tour_night,
+      '' AS tour_day,
+      '' AS tour_id,
+      '' AS tour_start_date,
+      '' AS tour_origin_country_name,
+      '' AS tour_origin_city_name,
+      '' AS tour_origin_region_name,
+      '' AS tour_cities,
+      '' AS tour_name,
+      '' AS passengers_file_tour,
+      '' AS passenger_factor_num,
+      '' AS order_code,
+      request_number AS request_number,
+      airline_name AS airline_name,
+      '' AS time_flight,
+      flight_type AS flight_type,
+      '' AS date_flight,
+      '' AS IsInternal,
+      '' AS flight_number,
+      '' AS eticket_number,
+      '' AS DateMove,
+      '' AS TimeMove,
+      '' AS BaseCompany,
+      '' AS CarType,
+      '' AS chairs,
+      '' AS passenger_birthday_en,
+      '' AS passenger_birthday,
+      '' AS originCity,
+      '' AS destiCity,
+      '' AS ExitDate,
+      '' AS ExitTime,
+      '' AS CompanyName,
+      '' AS WagonName,
+      '' AS direction,
+      '' AS TicketNumber,
+      '' AS TrainNumber,
+      cip_name AS cip_name,
+      airport_code AS airport_code,
+      airline_iata AS airline_iata,
+      date_time AS date_time,
+      airport_code_cip AS airport_code_cip,
+      trip_type AS trip_type,
+      PassengerTitle AS PassengerTitle
+FROM {$tableNameCip}
+WHERE member_id = '{$memberId}'
+{$conditions} {$factor_number} {$successfull}
+GROUP BY factor_number
                 ";
         $sql .= " ORDER BY creation_date_int DESC ";
 //echo $sql;
@@ -5653,7 +6022,7 @@ class user extends baseController
                     $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('Viewbill')->__toString(),
                         'type' => 'link',
-                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
+                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
                     ];
 
                     $result[$key]['button_list'][] = [
@@ -5692,6 +6061,142 @@ class user extends baseController
                     }else {
                         $bookList[$key]['reservationProofVersa'] = '';
                     }
+                }
+            }
+            elseif ($item['moduleTitle'] == 'cip') {
+                // تنظیم قیمت نهایی
+                $bookList[$key]['price_final'] = number_format($item['total_price']);
+
+                if ($item['statusBook'] == 'book') {
+                    if ($item['request_cancel'] == 'confirm') {
+                        $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString() . ' <span style="color: #fd6767; margin-right: 10px; ">(' . functions::Xmlinformation('Refunded')->__toString() . ')</span>';
+                    } else {
+                        $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString();
+                    }
+                } elseif ($item['statusBook'] == 'bank') {
+                    $bookList[$key]['view_status'] = functions::Xmlinformation('RedirectPayment')->__toString();
+                } elseif ($item['statusBook'] == 'prereserve') {
+                    $bookList[$key]['view_status'] = functions::Xmlinformation('Prereservation')->__toString();
+                } elseif ($item['statusBook'] == 'cancel') {
+                    $bookList[$key]['view_status'] = functions::Xmlinformation('Cancel')->__toString();
+                } else {
+                    $bookList[$key]['view_status'] = functions::Xmlinformation('Unknow')->__toString();
+                }
+
+                // تنظیم اطلاعات
+                if ($item['airline_name'] != '') {
+                    $bookList[$key]['airline_name'] = $item['airline_name'];
+                } else {
+                    $bookList[$key]['airline_name'] = '----';
+                }
+                // تنظیم نوع پرواز
+                if ($item['flight_type'] == 'inbound') {
+                    $bookList[$key]['flight_type_label'] = functions::Xmlinformation('flightInternalToAirport')->__toString();
+                } elseif ($item['flight_type'] == 'outbound') {
+                    $bookList[$key]['flight_type_label'] = functions::Xmlinformation('flightInternationalToAirport')->__toString();
+                } else {
+                    $bookList[$key]['flight_type_label'] = '----';
+                }
+
+                // تنظیم نوع سفر
+                if ($item['trip_type'] == 'domestic') {
+                    $bookList[$key]['trip_type_label'] =  functions::Xmlinformation('DomesticFlight')->__toString() ;
+                } elseif ($item['trip_type'] == 'international') {
+                    $bookList[$key]['trip_type_label'] =  functions::Xmlinformation('flightInternatiol')->__toString();
+                } else {
+                    $bookList[$key]['trip_type_label'] = '----';
+                }
+
+
+
+                // تنظیم تاریخ و زمان
+                if ($item['date_time'] != '') {
+                    $bookList[$key]['date_time_formatted'] = functions::printDateIntByLanguage('Y/m/d H:i', strtotime($item['date_time']), SOFTWARE_LANG);
+                } else {
+                    $bookList[$key]['date_time_formatted'] = '----';
+                }
+
+                // تنظیم نام CIP
+                if ($item['cip_name'] != '') {
+                    $bookList[$key]['cip_name'] = $item['cip_name'];
+                } else {
+                    $bookList[$key]['cip_name'] = '----';
+                }
+
+                // نتیجه نهایی
+                $result[$key]['service'] = 'Cip';
+                $result[$key]['title'] =  $item['cip_name'] ;
+
+                $result[$key]['date'] = $bookList[$key]['creation_date_int'];
+                $result[$key]['time'] = $bookList[$key]['creation_time_int'];
+                $result[$key]['status'] = [
+                    'title' => $item['statusBook'],
+                    'value' => $bookList[$key]['view_status']
+                ];
+                $result[$key]['factor_number'] = $item['factor_number'];
+                $result[$key]['price'] = $bookList[$key]['price_final'];
+
+                $result[$key]['info_list'] = [
+                    [
+                        'title' => functions::Xmlinformation('Customername')->__toString(),
+                        'value' => $item['passenger_name'] . ' ' . $item['passenger_family']
+                    ],
+                    [
+                        'title' => functions::Xmlinformation('Airport')->__toString() ,
+                        'value' =>  $item['airport_code']
+                    ],
+                    [
+                        'title' => functions::Xmlinformation('Typeflight')->__toString(),
+                        'value' => $bookList[$key]['flight_type_label'] . ' ' . $bookList[$key]['trip_type_label']
+                    ],
+                    [
+                        'title' => functions::Xmlinformation('Buydate')->__toString(),
+                        'value' => $bookList[$key]['date_time_formatted']
+                    ],
+                    [
+                        'title' => functions::Xmlinformation('Amount')->__toString(),
+                        'value' => $bookList[$key]['price_final'] . ' ' . functions::Xmlinformation('Rial')->__toString()
+                    ],
+                ];
+
+                // دکمه‌های عملیاتی
+//                $result[$key]['button_list'] = [
+//                    [
+//                        'title' => functions::Xmlinformation('ShowReservation'),
+//                        'type' => 'button',
+//                        'function' => "modalCipDetails(event.currentTarget, " . $item['factor_number'] . ", 'cip')",
+//                    ]
+//                ];
+
+                // دکمه لغو برای رزروهای قطعی
+                if ($item['statusBook'] == 'book') {
+//                    if ($item['request_cancel'] == 'confirm') {
+//                        $result[$key]['button_list'][] = [
+//                            'title' => functions::Xmlinformation('OsafarRefund'),
+//                            'type' => 'link',
+//                            'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=cipBooking&id=' . $item['factor_number'] . '&cancelStatus=confirm',
+//                        ];
+//                    } else {
+//                        $result[$key]['button_list'][] = [
+//                            'title' => functions::Xmlinformation('OsafarRefund'),
+//                            'type' => 'button',
+//                            'function' => "ModalCancelItemProfile(event.currentTarget, 'cip', " . $item['factor_number'] . ")",
+//                        ];
+//                    }
+
+                    // دکمه مشاهده فاکتور
+//                    $result[$key]['button_list'][] = [
+//                        'title' => functions::Xmlinformation('Viewbill'),
+//                        'type' => 'link',
+//                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=cipBoxCheck&id=' . $item['factor_number'],
+//                    ];
+
+                    // دکمه مشاهده بلیط
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                        'type' => 'link',
+                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookCip&id=' . $item['factor_number'],
+                    ];
                 }
             }
         }

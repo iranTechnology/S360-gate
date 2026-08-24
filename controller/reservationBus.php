@@ -93,8 +93,6 @@ class reservationBus extends clientAuth
     }
     public function getData($params)
     {
-
-
         $base_company_bus = $this->getModel('baseCompanyBusModel');
         $station_model = $this->getModel('stationReservationBusModel');
         $reservation_bus_model = $this->getModel('reservationBusModel');
