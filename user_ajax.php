@@ -2512,10 +2512,10 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     }
     $totalPriceBank = $reserveInfo['hotel_payments_price'];
 
-
+    if ( $credit > $amount ) {
     if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle'] == 'PrivatePortalHotel' ) {
 
-        $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
+        $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " به شماره رزرو " . " " . $reserveInfo['factor_number'];
         $checkRepeat = 'yes';
         $total_price = 0;
         $comment .= " - اختصاصی";
@@ -2548,13 +2548,13 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
             } else {
                 echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
             }
-        } else {
+        }
+        else {
             echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
         }
 
     }
     else {
-        if ( $credit > $amount ) {
             $reserveInfo['payment_status'] = $_POST['paymentStatus'];
             $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
             if ( $typeApplication == 'api' || $typeApplication == 'externalApi' ) {
@@ -2571,11 +2571,13 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
 
                 $reason = 'buy_hotel';
 
-            } elseif ( $typeApplication == 'reservation' ) {
+            }
+            elseif ( $typeApplication == 'reservation' ) {
                 $checkRepeat = 'no';
                 $total_price = 0;
                 $reason      = 'buy_reservation_hotel';
-            } elseif ( $typeApplication == 'externalApi' ) {
+            }
+            elseif ( $typeApplication == 'externalApi' ) {
                 $roomCount = count( json_decode( $reserveInfo['search_rooms'] ) );
 
                 $comment     = " رزرو " . " " . $roomCount . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " در " . " " . $reserveInfo['hotel_name'] . " " . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
@@ -2622,9 +2624,10 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
                 echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
             }
 
-        } else {
-            echo 'error: ' . functions::Xmlinformation( 'EndCreditAgency' );
-        }
+
+    }
+    }    else {
+        echo 'error: ' . functions::Xmlinformation( 'notEnoughCredit' );
     }
 
 

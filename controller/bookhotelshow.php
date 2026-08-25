@@ -2693,7 +2693,11 @@ class bookhotelshow extends baseController
                 $finalPrice= $paymentPrice['AmountCurrency'] - ($paymentPrice['AmountCurrency']*$amountDiscountCode['AmountCurrency'] / 100);
             }
             else{
-                $finalPrice = $paymentPrice['AmountCurrency'] - $amountDiscountCode['AmountCurrency'];
+                if ($paymentPrice['AmountCurrency'] > $amountDiscountCode['AmountCurrency']) {
+                    $finalPrice = $paymentPrice['AmountCurrency'] - $amountDiscountCode['AmountCurrency'];
+                } else {
+                    $finalPrice = 0;
+                }
             }
 
 

@@ -5119,6 +5119,7 @@ class reservationTour extends clientAuth
                 $reservation_tour_route_table . '.airline_id',
                 $reservation_tour_route_table . '.airline_name',
                 $reservation_tour_route_table . '.destination_city_name',
+                $reservation_tour_route_table . '.destination_country_name',
                 $reservation_tour_route_table . '.type_vehicle_name',
                 $reservation_tour_route_table . '.type_vehicle_id'
 //                '(SELECT  count( * )

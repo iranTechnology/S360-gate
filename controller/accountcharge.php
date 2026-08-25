@@ -149,7 +149,7 @@ class accountcharge extends clientAuth
 
 //		$time = time() - (600);
         $date = new DateTime();
-        $date->modify('-1 days');
+        $date->modify('-15 minutes');
         $time = $date->getTimestamp();
 
 		$EndPostDate = $StartTimeNow = date("Y-m-d");

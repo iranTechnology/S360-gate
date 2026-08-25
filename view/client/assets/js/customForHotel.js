@@ -4223,15 +4223,17 @@ function addCommas(nStr) {
 function ReserveTemprory(factorNumber, typeApplication) {
 
     var element = document.querySelector('.price-after-discount-code');
-    var priceText = element.textContent.trim();
+    if(element) {
+        var priceText = element.textContent.trim();
 
-    var priceNumber = priceText.replace('ریال', '').trim();
+        var priceNumber = priceText.replace('ریال', '').trim();
 
-    var priceValue = parseInt(priceNumber.replace(/,/g, ''));
+        var priceValue = parseInt(priceNumber.replace(/,/g, ''));
 
 
-    if (priceValue == 0) {
-        createCreditPayButton('#creditpay', '.main-pay-content', useXmltag('PaymentWithADiscountCode'));
+        if (priceValue == 0) {
+            createCreditPayButton('#creditpay', '.main-pay-content', useXmltag('PaymentWithADiscountCode'));
+        }
     }
 
    if (!$('#RulsCheck').is(':checked')) {
