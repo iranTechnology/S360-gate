@@ -57,6 +57,7 @@ function AddNewError(keepForm = false) {
    let displayPassenger = document.getElementById('newDisplayPassenger').value;
    let sourceCode = document.getElementById('newSourceCode').value;
    let methodData = document.getElementById('methodData').value;
+   let typeLog = document.getElementById('typeLog').value;
 
    if (!providerError.trim()) {
       $.toast({
@@ -85,6 +86,7 @@ function AddNewError(keepForm = false) {
          displayPassenger: displayPassenger,
          sourceCode: sourceCode,
          methodData: methodData,
+         typeLog:typeLog
       }),
       type: 'POST',
       dataType: 'JSON',

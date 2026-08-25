@@ -334,7 +334,12 @@ class busApi extends clientAuth
                         /*if ($_SERVER['REMOTE_ADDR'] == '84.241.4.20') {
                             var_dump($itCommission);
                         }*/
-
+                        $priceWithCommision = 0;
+                        if($responseDataBusDetail['response']['data']['commision'] != 0){
+                            $priceWithCommision =  $price - (($price * $responseDataBusDetail['response']['data']['commision'] ) / 100);
+                        }else{
+                            $priceWithCommision =  $price ;
+                        }
 
                         $dataInsertBook['order_code']=$responseDataBusDetail['response']['requestNumber'];
                         $dataInsertBook['passenger_factor_num']=$factorNumber;
@@ -343,6 +348,8 @@ class busApi extends clientAuth
                          }elseif($responseDataBusDetail['response']['data']['availablePaymentMethods']=='Online'){
                              $dataInsertBook['status']='prereserve';
                          }*/
+
+
 
                         $dataInsertBook['status']='prereserve';
                         $dataInsertBook['payment_date']=Date('Y-m-d H:i:s');
@@ -366,6 +373,10 @@ class busApi extends clientAuth
                         $dataInsertBook['creation_date']=date('Y-m-d H:i:s');
                         $dataInsertBook['creation_date_int']=time();
                         $dataInsertBook['irantech_commission']=$itCommission;
+                        $dataInsertBook['agency_commission']=$priceWithCommision;
+                        $dataInsertBook['SourceCode']=$responseDataBusDetail['response']['data']['sourceCode'];
+                        $dataInsertBook['WebServiceType']=$responseDataBusDetail['response']['data']['webServiceType'];
+                        $dataInsertBook['SourceName']=$responseDataBusDetail['response']['data']['sourceName'];
                         $dataInsertBook['member_name']=$responseDataBusDetail['response']['data']['contact']['name'];
                         //                        $dataInsertBook['member_mobile']=$responseDataBusDetail['response']['data']['telephone']['phoneNumber'];
                         $dataInsertBook['member_mobile']='09123493154';

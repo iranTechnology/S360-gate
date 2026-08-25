@@ -9401,6 +9401,7 @@ function goToPage(nameFile, selectPage, count, origin, destination, adult, child
 function pricePay(factorNumber,type) {
     var checkDuplicate = 'no' ;
     if((typeof factorNumber !== 'undefined') && type == 'flight'){
+
         $.post(amadeusPath + 'user_ajax.php',
            {
                factorNumber: factorNumber,
