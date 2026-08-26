@@ -1286,7 +1286,7 @@ function internalHotelSearchDetails() {
 
 
                let value = data.Hotels
-                value = filterDuplicateHotelsByPattern(value);
+                // value = filterDuplicateHotelsByPattern(value);
                let request_number = data.requestNumber
                let advertises = data.Advertises
                let hotelType  = [];
@@ -7488,234 +7488,234 @@ $(document).ready(function () {
 // کد کامل فیلتر هتل‌های تکراری با تشخیص آدرس
 // ============================================
 
-function filterDuplicateHotelsByPattern(hotels) {
-    if (!hotels) {
-        console.warn('⚠️ hotels is null or undefined');
-        return [];
-    }
-
-    if (!Array.isArray(hotels)) {
-        console.warn('⚠️ hotels is not an array, converting to array');
-        hotels = Object.values(hotels);
-    }
-
-    if (hotels.length === 0) {
-        return [];
-    }
-
-    // ============================================
-    // 1️⃣ توابع کمکی (کاملاً داینامیک)
-    // ============================================
-
-    // نرمال‌سازی نام هتل (بدون حذف کلمات خاص)
-    function normalizeHotelName(name) {
-        if (!name) return '';
-        return name
-            .toString()
-            .replace(/ي/g, 'ی')
-            .replace(/ك/g, 'ک')
-            .replace(/[‌ـ]/g, ' ')
-            .replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .toLowerCase();
-    }
-
-    // نرمال‌سازی آدرس
-    function normalizeAddress(address) {
-        if (!address) return '';
-        return address
-            .toString()
-            .replace(/ي/g, 'ی')
-            .replace(/ك/g, 'ک')
-            .replace(/[۰-۹0-9]/g, '')
-            .replace(/[،,\.:؛;()\-_\/]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .toLowerCase();
-    }
-
-    // محاسبه شباهت دو رشته
-    function similarPercent(str1, str2) {
-        if (!str1 || !str2) return 0;
-
-        const s1 = String(str1).trim().replace(/\s+/g, ' ');
-        const s2 = String(str2).trim().replace(/\s+/g, ' ');
-
-        if (s1 === s2) return 100;
-        if (s1.length === 0 || s2.length === 0) return 0;
-
-        const distance = levenshteinDistance(s1, s2);
-        const maxLength = Math.max(s1.length, s2.length);
-
-        return ((maxLength - distance) / maxLength) * 100;
-    }
-
-    function levenshteinDistance(str1, str2) {
-        const m = str1.length;
-        const n = str2.length;
-        const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
-
-        for (let i = 0; i <= m; i++) dp[i][0] = i;
-        for (let j = 0; j <= n; j++) dp[0][j] = j;
-
-        for (let i = 1; i <= m; i++) {
-            for (let j = 1; j <= n; j++) {
-                const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
-                dp[i][j] = Math.min(
-                    dp[i - 1][j] + 1,
-                    dp[i][j - 1] + 1,
-                    dp[i - 1][j - 1] + cost
-                );
-            }
-        }
-        return dp[m][n];
-    }
-
-    // تشخیص شباهت آدرس
-    function areAddressesSimilar(addr1, addr2) {
-        if (!addr1 || !addr2) return false;
-
-        const norm1 = normalizeAddress(addr1);
-        const norm2 = normalizeAddress(addr2);
-
-        if (norm1 === norm2 && norm1.length > 5) return true;
-        if (norm1.includes(norm2) || norm2.includes(norm1)) return true;
-
-        const similarity = similarPercent(norm1, norm2);
-        return similarity >= 60;
-    }
-
-    // ============================================
-    // 2️⃣ جدا کردن API از Reservation
-    // ============================================
-
-    const apiHotels = [];
-    const reservationHotels = [];
-
-    hotels.forEach(hotel => {
-        if (hotel.type_application === 'api') {
-            apiHotels.push(hotel);
-        } else {
-            reservationHotels.push(hotel);
-        }
-    });
-
-    // console.log(`📊 API Hotels: ${apiHotels.length}, Reservation Hotels: ${reservationHotels.length}`);
-
-    if (apiHotels.length === 0) {
-        // console.log('ℹ️ No API hotels found, returning all hotels');
-        return hotels;
-    }
-
-    // ============================================
-    // 3️⃣ گروه‌بندی هتل‌های API
-    // ============================================
-
-    const groups = {};
-    const processed = new Set();
-
-    apiHotels.forEach((hotel, index) => {
-        if (processed.has(index)) return;
-
-        const hotelName = hotel.hotel_name || '';
-        const address = hotel.address || hotel.address_en || '';
-
-        let foundGroup = null;
-
-        for (const key of Object.keys(groups)) {
-            const groupInfo = groups[key];
-
-            for (const existingHotel of groupInfo.hotels) {
-                const existingName = existingHotel.hotel_name || '';
-                const existingAddress = existingHotel.address || existingHotel.address_en || '';
-
-                const normName1 = normalizeHotelName(hotelName);
-                const normName2 = normalizeHotelName(existingName);
-
-                let nameSimilarity = similarPercent(normName1, normName2);
-
-                // اگر یکی از نام‌ها داخل دیگری باشد (مثل لاله و لاله تهران)
-                if (normName1.includes(normName2) || normName2.includes(normName1)) {
-                    nameSimilarity = Math.max(nameSimilarity, 80);
-                }
-
-                const addressSimilar = areAddressesSimilar(address, existingAddress);
-
-                // if (nameSimilarity > 40) {
-                //     console.log(`🔍 مقایسه: "${hotelName}" با "${existingName}"`);
-                //     console.log(`   شباهت نام: ${Math.round(nameSimilarity)}% | آدرس: ${addressSimilar ? '✅' : '❌'}`);
-                // }
-
-                // شرط نهایی
-                if (nameSimilarity >= 55 && addressSimilar) {
-                    foundGroup = key;
-                    break;
-                }
-            }
-
-            if (foundGroup) break;
-        }
-
-        if (foundGroup) {
-            groups[foundGroup].hotels.push(hotel);
-            processed.add(index);
-        } else {
-            const newKey = `group_${index}`;
-            groups[newKey] = {
-                name: hotelName,
-                address: address,
-                hotels: [hotel]
-            };
-        }
-    });
-
-    // ============================================
-    // 4️⃣ انتخاب ارزان‌ترین هتل از هر گروه
-    // ============================================
-
-    const filteredApiHotels = [];
-
-    Object.keys(groups).forEach(key => {
-        const group = groups[key];
-        const hotelsInGroup = group.hotels;
-
-        if (hotelsInGroup.length === 1) {
-            filteredApiHotels.push(hotelsInGroup[0]);
-            return;
-        }
-
-        // console.log(`🔄 گروه "${group.name}" دارای ${hotelsInGroup.length} هتل تکراری:`);
-        // hotelsInGroup.forEach(h => {
-            // console.log(`   - ${h.hotel_name} (${h.min_room_price})`);
-        // });
-
-        let cheapest = hotelsInGroup[0];
-        let minPrice = parseFloat(cheapest.min_room_price) || Infinity;
-
-        hotelsInGroup.forEach(hotel => {
-            const price = parseFloat(hotel.min_room_price) || Infinity;
-            if (price < minPrice) {
-                minPrice = price;
-                cheapest = hotel;
-            }
-        });
-
-        // console.log(`   ✅ انتخاب: ${cheapest.hotel_name} (${cheapest.min_room_price})`);
-        // console.log('---');
-
-        filteredApiHotels.push(cheapest);
-    });
-
-    // ============================================
-    // 5️⃣ ترکیب با Reservation
-    // ============================================
-
-    const result = [...filteredApiHotels, ...reservationHotels];
-
-    // console.log(`📊 Result: ${result.length} hotels (${filteredApiHotels.length} API + ${reservationHotels.length} Reservation)`);
-
-    return result;
-}
+// function filterDuplicateHotelsByPattern(hotels) {
+//     if (!hotels) {
+//         console.warn('⚠️ hotels is null or undefined');
+//         return [];
+//     }
+//
+//     if (!Array.isArray(hotels)) {
+//         console.warn('⚠️ hotels is not an array, converting to array');
+//         hotels = Object.values(hotels);
+//     }
+//
+//     if (hotels.length === 0) {
+//         return [];
+//     }
+//
+//     // ============================================
+//     // 1️⃣ توابع کمکی (کاملاً داینامیک)
+//     // ============================================
+//
+//     // نرمال‌سازی نام هتل (بدون حذف کلمات خاص)
+//     function normalizeHotelName(name) {
+//         if (!name) return '';
+//         return name
+//             .toString()
+//             .replace(/ي/g, 'ی')
+//             .replace(/ك/g, 'ک')
+//             .replace(/[‌ـ]/g, ' ')
+//             .replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, ' ')
+//             .replace(/\s+/g, ' ')
+//             .trim()
+//             .toLowerCase();
+//     }
+//
+//     // نرمال‌سازی آدرس
+//     function normalizeAddress(address) {
+//         if (!address) return '';
+//         return address
+//             .toString()
+//             .replace(/ي/g, 'ی')
+//             .replace(/ك/g, 'ک')
+//             .replace(/[۰-۹0-9]/g, '')
+//             .replace(/[،,\.:؛;()\-_\/]/g, ' ')
+//             .replace(/\s+/g, ' ')
+//             .trim()
+//             .toLowerCase();
+//     }
+//
+//     // محاسبه شباهت دو رشته
+//     function similarPercent(str1, str2) {
+//         if (!str1 || !str2) return 0;
+//
+//         const s1 = String(str1).trim().replace(/\s+/g, ' ');
+//         const s2 = String(str2).trim().replace(/\s+/g, ' ');
+//
+//         if (s1 === s2) return 100;
+//         if (s1.length === 0 || s2.length === 0) return 0;
+//
+//         const distance = levenshteinDistance(s1, s2);
+//         const maxLength = Math.max(s1.length, s2.length);
+//
+//         return ((maxLength - distance) / maxLength) * 100;
+//     }
+//
+//     function levenshteinDistance(str1, str2) {
+//         const m = str1.length;
+//         const n = str2.length;
+//         const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+//
+//         for (let i = 0; i <= m; i++) dp[i][0] = i;
+//         for (let j = 0; j <= n; j++) dp[0][j] = j;
+//
+//         for (let i = 1; i <= m; i++) {
+//             for (let j = 1; j <= n; j++) {
+//                 const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+//                 dp[i][j] = Math.min(
+//                     dp[i - 1][j] + 1,
+//                     dp[i][j - 1] + 1,
+//                     dp[i - 1][j - 1] + cost
+//                 );
+//             }
+//         }
+//         return dp[m][n];
+//     }
+//
+//     // تشخیص شباهت آدرس
+//     function areAddressesSimilar(addr1, addr2) {
+//         if (!addr1 || !addr2) return false;
+//
+//         const norm1 = normalizeAddress(addr1);
+//         const norm2 = normalizeAddress(addr2);
+//
+//         if (norm1 === norm2 && norm1.length > 5) return true;
+//         if (norm1.includes(norm2) || norm2.includes(norm1)) return true;
+//
+//         const similarity = similarPercent(norm1, norm2);
+//         return similarity >= 60;
+//     }
+//
+//     // ============================================
+//     // 2️⃣ جدا کردن API از Reservation
+//     // ============================================
+//
+//     const apiHotels = [];
+//     const reservationHotels = [];
+//
+//     hotels.forEach(hotel => {
+//         if (hotel.type_application === 'api') {
+//             apiHotels.push(hotel);
+//         } else {
+//             reservationHotels.push(hotel);
+//         }
+//     });
+//
+//     // console.log(`📊 API Hotels: ${apiHotels.length}, Reservation Hotels: ${reservationHotels.length}`);
+//
+//     if (apiHotels.length === 0) {
+//         // console.log('ℹ️ No API hotels found, returning all hotels');
+//         return hotels;
+//     }
+//
+//     // ============================================
+//     // 3️⃣ گروه‌بندی هتل‌های API
+//     // ============================================
+//
+//     const groups = {};
+//     const processed = new Set();
+//
+//     apiHotels.forEach((hotel, index) => {
+//         if (processed.has(index)) return;
+//
+//         const hotelName = hotel.hotel_name || '';
+//         const address = hotel.address || hotel.address_en || '';
+//
+//         let foundGroup = null;
+//
+//         for (const key of Object.keys(groups)) {
+//             const groupInfo = groups[key];
+//
+//             for (const existingHotel of groupInfo.hotels) {
+//                 const existingName = existingHotel.hotel_name || '';
+//                 const existingAddress = existingHotel.address || existingHotel.address_en || '';
+//
+//                 const normName1 = normalizeHotelName(hotelName);
+//                 const normName2 = normalizeHotelName(existingName);
+//
+//                 let nameSimilarity = similarPercent(normName1, normName2);
+//
+//                 // اگر یکی از نام‌ها داخل دیگری باشد (مثل لاله و لاله تهران)
+//                 if (normName1.includes(normName2) || normName2.includes(normName1)) {
+//                     nameSimilarity = Math.max(nameSimilarity, 80);
+//                 }
+//
+//                 const addressSimilar = areAddressesSimilar(address, existingAddress);
+//
+//                 // if (nameSimilarity > 40) {
+//                 //     console.log(`🔍 مقایسه: "${hotelName}" با "${existingName}"`);
+//                 //     console.log(`   شباهت نام: ${Math.round(nameSimilarity)}% | آدرس: ${addressSimilar ? '✅' : '❌'}`);
+//                 // }
+//
+//                 // شرط نهایی
+//                 if (nameSimilarity >= 55 && addressSimilar) {
+//                     foundGroup = key;
+//                     break;
+//                 }
+//             }
+//
+//             if (foundGroup) break;
+//         }
+//
+//         if (foundGroup) {
+//             groups[foundGroup].hotels.push(hotel);
+//             processed.add(index);
+//         } else {
+//             const newKey = `group_${index}`;
+//             groups[newKey] = {
+//                 name: hotelName,
+//                 address: address,
+//                 hotels: [hotel]
+//             };
+//         }
+//     });
+//
+//     // ============================================
+//     // 4️⃣ انتخاب ارزان‌ترین هتل از هر گروه
+//     // ============================================
+//
+//     const filteredApiHotels = [];
+//
+//     Object.keys(groups).forEach(key => {
+//         const group = groups[key];
+//         const hotelsInGroup = group.hotels;
+//
+//         if (hotelsInGroup.length === 1) {
+//             filteredApiHotels.push(hotelsInGroup[0]);
+//             return;
+//         }
+//
+//         // console.log(`🔄 گروه "${group.name}" دارای ${hotelsInGroup.length} هتل تکراری:`);
+//         // hotelsInGroup.forEach(h => {
+//             // console.log(`   - ${h.hotel_name} (${h.min_room_price})`);
+//         // });
+//
+//         let cheapest = hotelsInGroup[0];
+//         let minPrice = parseFloat(cheapest.min_room_price) || Infinity;
+//
+//         hotelsInGroup.forEach(hotel => {
+//             const price = parseFloat(hotel.min_room_price) || Infinity;
+//             if (price < minPrice) {
+//                 minPrice = price;
+//                 cheapest = hotel;
+//             }
+//         });
+//
+//         // console.log(`   ✅ انتخاب: ${cheapest.hotel_name} (${cheapest.min_room_price})`);
+//         // console.log('---');
+//
+//         filteredApiHotels.push(cheapest);
+//     });
+//
+//     // ============================================
+//     // 5️⃣ ترکیب با Reservation
+//     // ============================================
+//
+//     const result = [...filteredApiHotels, ...reservationHotels];
+//
+//     // console.log(`📊 Result: ${result.length} hotels (${filteredApiHotels.length} API + ${reservationHotels.length} Reservation)`);
+//
+//     return result;
+// }
 
 
