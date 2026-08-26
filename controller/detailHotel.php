@@ -3,7 +3,7 @@
 
 class detailHotel extends ApiHotelCore
 {
-    public $hotelId, $Stars, $cityId, $startDate;
+    public $hotelId, $Stars, $cityId, $startDate , $sourceId;
 
     public $transactions;
 
@@ -258,6 +258,7 @@ class detailHotel extends ApiHotelCore
         $admin = Load::controller('admin');
         $currency_controller = Load::controller('currency');
         $apiHotel = json_decode(parent::Detail($param), true);
+        $this->sourceId=$apiHotel['Result']['SourceId'];
         functions::insertLog('$apiHotel: ' . json_encode($apiHotel) , '000shojaee');
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
@@ -540,7 +541,6 @@ class detailHotel extends ApiHotelCore
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
         }
-
         $this->hotelId = $param['hotelIndex'];
         $this->Stars = $apiHotel['Result']['Stars'];
         $cityName = $apiHotel['Result']['City'];
@@ -1944,6 +1944,22 @@ class detailHotel extends ApiHotelCore
 
                     $statusRequestWebService['book'] = "no";
                     $statusRequestWebService['factor_number'] = $factor_number;*/
+                    $MessageError = functions::ShowHotelError($HotelReserveRoom['Result']['Error']['Code']);
+                    $errorsController = $this->getController('errors');
+                    $errMsg = $errorsController->processError($HotelReserveRoom, 'hotel', 'reserve', $this->sourceId);
+                    $data['message'] = $HotelReserveRoom['Result']['Error']['Message'];
+                    $data['messageFa'] = $MessageError;
+                    $data['clientId'] = CLIENT_ID;
+                    $data['messageCode'] = $HotelReserveRoom['Result']['Error']['Code'];
+                    $data['request_number'] =$params['requestNumber'];
+                    $data['factor_number'] = $factor_number;
+                    $data['message_agency'] = $errMsg['displayAgency'];
+                    $data['message_passenger'] = $errMsg['displayPassenger'];
+                    $data['message_admin'] = $errMsg['displayAdmin'];
+                    $data['action'] = 'Reserve';
+                    $data['creation_date_int'] = time();
+                    $this->getController('logErrorsHotels')->insertLogErrorHotels($data);
+
 
                     if ($type_application == 'api' && $HotelReserveRoom['Result']['Error']['Code'] == 'BK-417') {
                         $statusRequestWebService = $this->setOnRequestHotel($factor_number , $counter_type_id ,  $HotelReserveRoom , $type_application);
@@ -1997,14 +2013,17 @@ class detailHotel extends ApiHotelCore
             $Model = Load::library('Model');
 
             $MessageError = functions::ShowHotelError($HotelReserveRoom['Result']['Error']['Code']);
-
+            $errorsController = $this->getController('errors');
+            $errMsg = $errorsController->processError($HotelReserveRoom, 'hotel', 'book', $this->sourceId);
             $data['message'] = $HotelReserveRoom['Result']['Error']['Message'];
             $data['messageFa'] = $MessageError;
             $data['clientId'] = CLIENT_ID;
             $data['messageCode'] = $HotelReserveRoom['Result']['Error']['Code'];
             $data['request_number'] = $requestArray['RequestNumber'];
             $data['factor_number'] = $factor_number;
-
+            $data['message_agency'] = $errMsg['displayAgency'];
+            $data['message_passenger'] = $errMsg['displayPassenger'];
+            $data['message_admin'] = $errMsg['displayAdmin'];
             $data['action'] = 'Book';
             $data['creation_date_int'] = time();
 
@@ -2148,14 +2167,17 @@ class detailHotel extends ApiHotelCore
             $Model = Load::library('Model');
 
             $MessageError = functions::ShowHotelError($Reserve['Result']['Error']['Code']);
-
+            $errorsController = $this->getController('errors');
+            $errMsg = $errorsController->processError($Reserve, 'hotel', 'reserve', $this->sourceId);
             $data['message'] = $Reserve['Result']['Error']['Message'];
             $data['messageFa'] = $MessageError;
             $data['clientId'] = CLIENT_ID;
             $data['messageCode'] = $Reserve['Result']['Error']['Code'];
-            $data['request_number'] = $requestNumber;
+            $data['request_number'] =$requestNumber;
             $data['factor_number'] = $hotel_details['factor_number'];
-
+            $data['message_agency'] = $errMsg['displayAgency'];
+            $data['message_passenger'] = $errMsg['displayPassenger'];
+            $data['message_admin'] = $errMsg['displayAdmin'];
             $data['action'] = 'Reserve';
             $data['creation_date_int'] = time();
 
