@@ -2060,6 +2060,7 @@ class apiLocal extends clientAuth
             $Reserve = $this->curlExecution($url, json_encode($dataReserve), 'yes');
 
 
+
             error_log('try show result method of url' . $url . ' And ticketed in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $RequestNumber . ' AND array Equal  =>' . json_encode($Reserve, true) . " \n", 3, LOGS_DIR . 'log_method_reserve.txt');
             if ($book['api_id'] == '10') {
                 $cellArray = array(
@@ -2150,7 +2151,8 @@ class apiLocal extends clientAuth
 
 
                 return $Reserve;
-            } else if (!empty($Reserve) && $Reserve['Result']['ProviderStatus'] != 'Success') {
+            }
+            else if (!empty($Reserve) && $Reserve['Result']['ProviderStatus'] != 'Success') {
 
                 if ($book['api_id'] == '14' || $book['api_id'] == '10' || $book['api_id'] == '18' || $book['api_id'] == '19') {
                     $cellArray = array(
