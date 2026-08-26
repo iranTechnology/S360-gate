@@ -135,7 +135,7 @@ class errors extends clientAuth
         $data_insert['displayAdmin'] = $data['displayAdmin'];
         $data_insert['providerError'] = $data['providerError'];
         $data_insert['sourceCode'] = $data['sourceCode'] ?? 'SYSTEM_ERROR';
-        $data_insert['type'] = $data['type'] ?? 'flight';
+        $data_insert['type'] = $data['typeLog'] ?? 'flight';
         $data_insert['method'] = $data['methodData'];
         $data_insert['creation_date_int'] = time();
 

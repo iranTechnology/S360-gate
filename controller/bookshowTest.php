@@ -1,5 +1,8 @@
 <?php
-
+//    error_reporting(1);
+//    error_reporting(E_ALL | E_STRICT);
+//    @ini_set('display_errors', 1);
+//    @ini_set('display_errors', 'on');
 class bookshowTest extends clientAuth {
 
     public $id = '';
@@ -34,7 +37,6 @@ class bookshowTest extends clientAuth {
     //Ardalani1404
     public function getTransactionsByDateRange($date_of,$to_date,$pnr,$factor_number,$request_number,$passenger_name) {
 
-
         if($pnr=='' && $factor_number=='' && $request_number=='' && $passenger_name==''){
             $ReturnDate=functions::ChangeDateForTransactions($date_of,$to_date);
         }
@@ -65,7 +67,21 @@ class bookshowTest extends clientAuth {
         return $priceByFactor;
     }
 
+    public function getTransactionWithDeductionTemporary($factor_number = null){
 
+        $transactions = $this->transactions->get(['Price', 'FactorNumber'])
+            ->where('BankTrackingCode','کسر موقت')
+            ->all();
+
+
+        $factorNumbers = [];
+        foreach ($transactions as $t) {
+            $factorNumbers[] = $t['FactorNumber'];
+        }
+        return $factorNumbers;
+
+
+    }
 
     public function createExcelFile( $param ) {
 
@@ -3393,6 +3409,13 @@ class bookshowTest extends clientAuth {
         }
 
         $transactions = $this->getTransactionsByDateRange($param['date_of'],$param['to_date'],$param['pnr'],$param['factor_number'],$param['request_number'],$param['passenger_name']);//list Transactions
+        $transactionsDeductionTemporary = [];
+        if (TYPE_ADMIN == '1') {
+            $result = $this->getTransactionWithDeductionTemporary();
+            $transactionsDeductionTemporary = is_array($result) ? $result : [];
+        }
+
+
         $adt_qty            = 0;
         $chd_qty            = 0;
         $inf_qty            = 0;
@@ -3413,6 +3436,8 @@ class bookshowTest extends clientAuth {
         $CountTicket        = '1';
         $RowCountTicket     = $this->CountTicket;
         foreach ( $ListBookLocal as $key => $flightBook ) {
+
+
             $transactionLink          = ROOT_ADDRESS_WITHOUT_LANG . '/itadmin/transactionUser&id=' . $flightBook['client_id'];
             $DataFlightInfoMember     = functions::infoMember( $flightBook['member_id'], $flightBook['client_id'] );
             $DataFlightInfoCommission = functions::CommissionFlightSystemPublic( $flightBook['request_number'] );
@@ -3611,6 +3636,7 @@ class bookshowTest extends clientAuth {
                 //Ardalani1404
                 if($TitleDetectDirection!='دوطرفه-برگشت') {
                     $BuyFromIt=$transactions[$flightBook['factor_number']];//خرید از سفر30
+
                     $DataFlightTotalFree = number_format($BuyFromIt);
                     if ($flightBook['request_cancel'] != 'confirm' && ($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve')) {
                         if ( TYPE_ADMIN == 1 && strpos($flightBook['serviceTitle'], 'Public') === 0) { //محاسبه اعتبار فعلی مشتری
@@ -3809,16 +3835,21 @@ class bookshowTest extends clientAuth {
                 $DataFlightitAgencyCommissionProvider = number_format(0);
             }
 
-
+            if (in_array($flightBook['factor_number'], $transactionsDeductionTemporary)) {
+                $deductionText = '<p style="background: #000;margin-top:4px;color:#fff;">کسر موقت<p/>';
+            } else {
+                $deductionText = null;
+            }
             if ( $flightBook['type_app'] == 'Web' || $flightBook['type_app'] == 'Application' || $flightBook['type_app'] == 'Api' ) {
                 if ( $flightBook['successfull'] == 'nothing' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;"
                                                class="btn btn-default cursor-default popoverBox  popover-default w-90" 
                                                data-toggle="popover" title="'.functions::Xmlinformation('CancelingPurchase').'" data-placement="right"
-                                               data-content="'.functions::Xmlinformation('FinalConfirmationStatus').'"> '.functions::Xmlinformation('CancelingPurchase').' </a>';
+                                               data-content="'.functions::Xmlinformation('FinalConfirmationStatus').'"> '.functions::Xmlinformation('CancelingPurchase'). $deductionText .' </a>';
                 } elseif ( $flightBook['successfull'] == 'error') {
-                    $DataFlightAgencyShare .= $this->btnErrorFlight($flightBook);
-                } elseif ( $flightBook['successfull'] == 'prereserve' ) {
+                    $DataFlightAgencyShare .= $this->btnErrorFlight($flightBook ,$deductionText)  ;
+                }
+                elseif ( $flightBook['successfull'] == 'prereserve' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-warning cursor-default w-90" >
                                                 '.functions::Xmlinformation('Prereservation').'
                                                <div style="display: none;" class="parent-ld">
@@ -3826,31 +3857,37 @@ class bookshowTest extends clientAuth {
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                  </a>';
-                } elseif ( $flightBook['successfull'] == 'bank' ) {
+
+                }
+                elseif ( $flightBook['successfull'] == 'bank' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;"
                                                class="btn btn-primary cursor-default popoverBox  popover-primary w-90"
                                                data-toggle="popover" title="'.functions::Xmlinformation('NavigateToPort').'" data-placement="right"
                                                data-content="'.functions::Xmlinformation('PaymentWaitingStatus').'">
-                                                '.functions::Xmlinformation('NavigateToPort').'
+                                                '.functions::Xmlinformation('NavigateToPort').$deductionText.'
                                                  <div style="display: none;" class="parent-ld">
     '.functions::Xmlinformation('pendingPrintFlight').'
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                  </a>';
-                } elseif ( $flightBook['successfull'] == 'credit' ) {
+                }
+                elseif ( $flightBook['successfull'] == 'credit' ) {
                     $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-default cursor-default w-90" >
-                                                '.functions::Xmlinformation('CreditPaymentSelection').'
+                                                '.functions::Xmlinformation('CreditPaymentSelection').$deductionText.'
                                                  <div style="display: none;" class="parent-ld">
     '.functions::Xmlinformation('pendingPrintFlight').'
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                  </a>';
-                } elseif ( $flightBook['successfull'] == 'processing' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-primary w-90" >'.functions::Xmlinformation('processingPrintFlight').'</a>';
-                }elseif ( $flightBook['successfull'] == 'pending' ) {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-print cursor-warning w-90 ">'.functions::Xmlinformation('pendingPrintFlight').'</a>';
-                } elseif ( $flightBook['successfull'] == 'private_reserve' && $flightBook['pid_private'] == '1') {
-                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-info cursor-default w-90">'.functions::Xmlinformation('ExclusiveBooking').'<p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a>';
+                }
+                elseif ( $flightBook['successfull'] == 'processing' ) {
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-primary w-90" >'.functions::Xmlinformation('processingPrintFlight'). $deductionText.'</a>';
+                }
+                elseif ( $flightBook['successfull'] == 'pending' ) {
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-print cursor-warning w-90 ">'.functions::Xmlinformation('pendingPrintFlight').$deductionText.'</a>';
+                }
+                elseif ( $flightBook['successfull'] == 'private_reserve' && $flightBook['pid_private'] == '1') {
+                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-info cursor-default w-90">'.functions::Xmlinformation('ExclusiveBooking').$deductionText.'<p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a>';
                 }
 //                elseif ( $flightBook['successfull'] == 'private_reserve' && $flightBook['private_m4'] == '1' && $flightBook['IsInternal'] == '0' && $flightBook['api_id'] == '10' ) {
 //                    $DataFlightAgencyShare .= '<a href="#" onclick="return false;" class="btn btn-primary cursor-default">رزرو
@@ -3905,9 +3942,9 @@ class bookshowTest extends clientAuth {
 //                }
                 elseif ( $flightBook['successfull'] == 'book' ) {
                     if ( $flightBook['request_cancel'] == 'confirm' ) {
-                        $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation('Canceled').'</a>';
+                        $DataFlightAgencyShare .= '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation('Canceled').$deductionText.'</a>';
                     } else {
-                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation('Definitivereservation').' <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
+                        $DataFlightAgencyShare .= '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation('Definitivereservation').$deductionText.' <p style="margin: 0; font-family: arial; cursor: text;user-select: text;"> ' . $flightBook['pnr'] . '</p></a> ';
                     }
                 }
                 if(TYPE_ADMIN !='1')
@@ -3923,6 +3960,7 @@ class bookshowTest extends clientAuth {
                 if ( $flightBook['private_m4'] == '1' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                     if ( $flightBook['pid_private'] == '1' && $flightBook['successfull'] == 'private_reserve' ) {
                         $DataFlightAgencyShare .= '<hr style="margin:3px">
+
                                                 <a id="Jump2Step' . $flightBook['request_number'] . '"
                                                    onclick="changeFlagBuyPrivate(' . $flightBook['request_number'] . ')"
                                                    href="' . ROOT_ADDRESS_WITHOUT_LANG . '/' . FOLDER_ADMIN . '/ticket/repeatStepSearch?ClientID=' . $flightBook['client_id'] . '&OriginIata=' . $flightBook['origin_airport_iata'] . '&DestinationIata=' . $flightBook['desti_airport_iata'] . '&DateFlight=' . functions::DateJalali( $flightBook['date_flight'] ) . '&RequestNumber=' . $flightBook['request_number'] . '&CabinType=' . $flightBook['cabin_type'] . '&FlightNumber=' . $flightBook['flight_number'] . '&AirLinIata=' . $flightBook['airline_iata'] . '"
@@ -4017,7 +4055,7 @@ class bookshowTest extends clientAuth {
                     }
                 } elseif ( $flightBook['successfull'] == 'prereserve' ) {
                     $DataFlightAgencyShare .= '<a class="btn btn-warning cursor-default w-90" onclick="return false;" >
-                                                '.functions::Xmlinformation('Prereservation').'
+                                                '.functions::Xmlinformation('Prereservation'). '
                                                 <div style="display: none;" class="parent-ld">
                                                     '.functions::Xmlinformation('pendingPrintFlight').'
                                                   <div class="ld ld-ring ld-spin"></div>
@@ -9503,7 +9541,6 @@ class bookshowTest extends clientAuth {
                     $res                     = $Model->update( $updateSeenAt, $Condition_bus_tb );
                 }
             }
-
             $infoClient = functions::infoClient( $bus['client_id'] );
             $infoMember = functions::infoMember( $bus['MemberId'], $bus['ClientId'] );
             if ( $bus['PaymentDate'] != '' ) {
@@ -10769,7 +10806,7 @@ class bookshowTest extends clientAuth {
         return $partner_controller->subClient(CLIENT_ID);
     }
 
-    private function btnErrorFlight($data_flight){
+    private function btnErrorFlight($data_flight , $tempDeduction = null){
         $status_admin = (TYPE_ADMIN=='1') ? true : false ;
         $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID ;
         $data_error = $this->getController('logErrorFlights')->getErrorMessage($data_flight['request_number'],$client_id);
@@ -10790,7 +10827,7 @@ class bookshowTest extends clientAuth {
                                                data-toggle="popover" title="'.$text_btn.'" data-placement="right"
                                                data-content="'. $content_btn .'">'. $text_btn .'
                                                <div style="display: none;" class="parent-ld">
-    '.functions::Xmlinformation('pendingPrintFlight').'
+    '.functions::Xmlinformation('pendingPrintFlight'). $tempDeduction .'
   <div class="ld ld-ring ld-spin"></div>
     </div>
                                                </a>';
