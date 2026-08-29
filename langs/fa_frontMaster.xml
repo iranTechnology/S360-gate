@@ -1700,7 +1700,7 @@
   <Blicens>بارگذاری مجوز بند ب</Blicens>
   <Paziresh>را می پذیرم</Paziresh>
   <withmeal>همراه با غذا</withmeal>
-  <Noflight>در این تاریخ پروازی موجود نمی باشد یا تمام پرواز ها پر شده است و یا پروایدر نتیجه ای ندارد.</Noflight>
+  <Noflight>در این تاریخ تمامی پرواز ها پر شده است یا پروازی وجود ندارد.</Noflight>
   <Changedate>لطفا تاریخ دیگری را جستجو نمائید</Changedate>
   <InfoCreditUserAgency>اعتبار آژانس شما در حال حاضر@@money@@ ریال میش باشد</InfoCreditUserAgency>
   <DoingReserve>شما در حال رزرو @@typeTicket@@ می باشید</DoingReserve>
@@ -2275,7 +2275,7 @@
     نمائید
   </ErrorSystemFlight>
   <ErrorSystemFlightGds>
-    ایرلاین تغییر نرخ یا ظرفیت داشته است.لطفا مجدد جستجو نمایید.
+مسافر محترم, ایرلاین تغییر نرخ یا ظرفیت داشته است. لطفا دقایقی دیگر مجدد جستجو نمایید.
   </ErrorSystemFlightGds>
   <RequestCancellationYourPurchaseScrutiny>در خواست کنسلی خرید شما با موفقیت ثبت شد</RequestCancellationYourPurchaseScrutiny>
   <YourPurchaseCancellationRequestSuccessfullySubmittedPlusDetail>در خواست کنسلی خرید شما با موفقیت ثبت شد،برای پیگیری نتیجه لطفا از منوی

@@ -11260,6 +11260,7 @@ public function ModalCancelAdmin($Param, $param2) {
         if (isset($param2) && $param2 == 'flight') {
             $Fee = functions::FeeCancelFlight($InfoCancelTicket[0]['airline_iata'], $InfoCancelTicket[0]['cabin_type']);
         }
+
         ?>
 
         <div class="modal_custom" onclick="closeModalParent(event)">
@@ -11313,7 +11314,7 @@ public function ModalCancelAdmin($Param, $param2) {
                                                 ?>
                                                 <tr>
                                                     <th class="d-flex justify-content-center"><input class="form-control SelectUser" style="width:31% !important" type="checkbox" name="SelectUser[]" id="SelectUser" value="<?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] . '-' . $info['passenger_age'] : $info['passportNumber'] . '-' . $info['passenger_age'] ?>" <?php echo (!empty($info['Status']) && !empty($NationalCodeUser) && ($info['Status'] != 'Nothing' && $info['Status'] != 'close')) ? 'disabled ="disabled"' : '';?>></th>
-                                                    <th><?php echo $info['passenger_name'] . ' ' . $info['passenger_family']; ?></th>
+                                                    <th><?php echo $info['passenger_name_en'] . ' ' . $info['passenger_family_en']; ?></th>
                                                     <th><?php echo $info['passenger_national_code']; ?></th>
                                                     <th><?php echo $info['passportNumber']; ?></th>
                                                     <?php if($param2 != 'flight'){ ?>

@@ -801,7 +801,6 @@ const store = new Vuex.Store({
                     //   // })
                     //   console.log(f)
                     // })
-
                     commit("setFlights", response.data.data.flights);
                     commit("getCount", response.data.data.count_flights);
                     commit("setTimeFilter", response.data.data.time_filter);

@@ -2695,7 +2695,7 @@ class apiLocal extends clientAuth
                 $date_start = isset($_POST['date_start']) ? 'date_start=' . $_POST['date_start'] : null;
             }
             if ($_POST['date_end']) {
-                $date_start = isset($_POST['date_end']) ? 'date_end=' . $_POST['date_end'] : null;
+                $date_end = isset($_POST['date_end']) ? 'date_end=' . $_POST['date_end'] : null;
 
             }
         }
@@ -2715,7 +2715,7 @@ class apiLocal extends clientAuth
                 'id' => $data['id'],
                 'code' => $data['code'],
                 'businessMethodName' => $data['businessMethodName'],
-                'ApiMethodName' => $data['ApiMethodName'],
+                'ApiMethodName' => $data['ApiMethodName'] ?  $data['ApiMethodName'] : $data['businessMethodName'],
                 'response' => htmlentities($data['response']),
                 'request' => htmlentities($data['request']),
                 'log_file_path' => $logFilePath,
