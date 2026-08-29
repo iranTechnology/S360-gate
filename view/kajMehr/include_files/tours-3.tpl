@@ -36,7 +36,7 @@
                                                     <img alt="{$item['tour_name']}" class="__image_class__" src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                                 </div>
                                                 <div class="parent-text-tour">
-                                                    <span class="city-tour">ایران</span>
+                                                    <span class="__city_class__ city-tour">{$item['destination_country_name']}</span>
                                                     <h4 class="__title_class__">{$item['tour_name']}</h4>
                                                     <div class="night-tour">
                                                         <i class="fa-sharp fa-solid fa-clock"></i>
@@ -44,20 +44,23 @@
 
                                                     </div>
                                                     <div class="price-tour">
-                                                        {*                                                        <div class="start-tour">*}
-                                                        {*                                                            <i class="fa-solid fa-star"></i>*}
-                                                        {*                                                            <span class="__degree_class__">{$item['StarCode']}</span>*}
-                                                        {*                                                            <span class="reviews">320 آرا</span>*}
-                                                        {*                                                        </div>*}
                                                         <div class="start-price">
                                                             <span>شروع قیمت</span>
-                                                            <span class="number-price"><span class="___price_class__">{$item['min_price']['discountedMinPriceR']|number_format}
-                                                            <span>
-                                                            {if $item['min_price']['is_toman'] == true}
-                                                                تومان
-                                                            {else}
-                                                                ریال
-                                                            {/if}
+                                                            <span class="number-price"><span class="___price_class__">
+                                        {if $item['min_price_r'] != 0}
+                                            {$item['min_price_r']|number_format}
+                                            {if $item['min_price']['is_toman'] == true}
+                                                تومان
+                                            {else}
+                                                ریال
+                                            {/if}
+                                        {/if}
+                                                                    {if  $item['min_price_r'] != 0 && $item['min_price_a'] != 0 &&  $item['min_price_a'] } + {/if}
+                                                                    {if $item['min_price_a'] && $item['min_price_a'] != 0}
+
+                                                                        {$item['min_price_a']|number_format} {$item['currency_type']}
+                                                                    {/if}
+                                                                    <span>
                                                             </span>
                                                         </div>
                                                     </div>

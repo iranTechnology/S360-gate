@@ -1,5 +1,5 @@
 {assign var=dateNow value=dateTimeSetting::jdate("Ymd", "", "", "", "en")}
-{assign var="tour_params_internal" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'internal','city' => null]}
+{assign var="tour_params_internal" value=['type'=>'','limit'=> '12','dateNow' => $dateNow, 'country' =>'internal','city' => null]}
 {assign var='tour_internal' value=$obj_main_page->getToursReservation($tour_params_internal)}
 {if $tour_internal}
     {assign var='check_tour' value=true}
@@ -7,7 +7,7 @@
 {assign var="min_internal" value=0}
 {assign var="max_internal" value=4}
 
-{assign var="tour_params_external" value=['type'=>'','limit'=> '4','dateNow' => $dateNow, 'country' =>'external','city' => null]}
+{assign var="tour_params_external" value=['type'=>'','limit'=> '12','dateNow' => $dateNow, 'country' =>'external','city' => null]}
 {assign var='tour_external' value=$obj_main_page->getToursReservation($tour_params_external)}
 {if $tour_external}
     {assign var='check_tour' value=true}
@@ -51,10 +51,11 @@
 
                                 {foreach $tour_internal as $item}
                                     {*                                    {var_dump($item)}*}
+                                    {if strpos($item.tour_type_id, '21') === false}
                                     {if $min_internal <= $max_internal}
 
                                         <div class="__i_modular_nc_item_class_0 item">
-                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
+                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                                 <div class="parent-img-tour">
                                                     <img alt="{$item['tour_name']}" class="__image_class__" src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                                 </div>
@@ -103,6 +104,7 @@
 
                                         {$min_internal = $min_internal + 1}
                                     {/if}
+                                    {/if}
                                 {/foreach}
 
 
@@ -116,16 +118,18 @@
                         <div class="tour-owl-parent">
                             <div class="owl-carousel owl-theme tour-owl">
 
+
                                 {foreach $tour_external as $item}
+                                    {if strpos($item.tour_type_id, '21') === false}
                                     {if $min_external <= $max_external}
 
                                         <div class="__i_modular_nc_item_class_0 item">
-                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id']}/{$item['tour_slug']}">
+                                            <a class="parent-link-tour" href="{$smarty.const.ROOT_ADDRESS}/detailTour/{$item['id_same']}/{$item['tour_slug']}">
                                                 <div class="parent-img-tour">
                                                     <img alt="{$item['tour_name']}" class="__image_class__" src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$item['tour_pic']}"/>
                                                 </div>
                                                 <div class="parent-text-tour">
-                                                    <span class="__city_class__ city-tour">{$item['destination_city_name']}</span>
+                                                    <span class="__city_class__ city-tour">{$item['destination_country_name']}</span>
                                                     <h4 class="__title_class__">{$item['tour_name']}</h4>
                                                     <div class="night-tour">
                                                         <i class="fa-sharp fa-solid fa-clock"></i>
@@ -149,17 +153,12 @@
                                                 ریال
                                             {/if}
                                         {/if}
-                                                                    {if  $item['min_price_r'] != 0 &&  $item['min_price_a'] } + {/if}
-                                                                    {if $item['min_price_a']}
+                                                                    {if  $item['min_price_r'] != 0 && $item['min_price_a'] != 0 &&  $item['min_price_a'] } + {/if}
+                                                                    {if $item['min_price_a'] && $item['min_price_a'] != 0}
 
                                                                         {$item['min_price_a']|number_format} {$item['currency_type']}
                                                                     {/if}
                                                                     <span>
-                                                            {if $item['min_price']['is_toman'] == true}
-                                                                تومان
-                                                            {else}
-                                                                ریال
-                                                            {/if}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -181,6 +180,7 @@
                                         </div>
 
                                         {$min_external = $min_external + 1}
+                                    {/if}
                                     {/if}
                                 {/foreach}
 

@@ -1,4 +1,4 @@
-{assign var="main_articles" value=$obj_main_page->getNewsArticles(null , null , null , null , false)}
+{assign var="main_articles" value=$obj_main_page->getNewsArticles(null , null , null , null , '')}
 {assign var="newsItemsLimited" value=$main_articles['data']|array_slice:0:6}
 {if $main_articles['data']|count > 0 }
     <section class="i_modular_blog blog-kharazmi">

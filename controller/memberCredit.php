@@ -333,11 +333,6 @@ class memberCredit extends clientAuth{
             return 'error : ' . functions::Xmlinformation("RequestedAmountIsMoreThanCredit");
 
         }
-
-
-
-
-
     }
 
 

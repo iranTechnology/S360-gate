@@ -1609,7 +1609,7 @@ class apiLocal extends clientAuth
         }
 
 
-        $url = $this->apiAddress . "Flight/Book/{$RequestNumber}";
+        $url = $this->apiAddress . "Flight/Book/{$RequestNumber}";\
         $info_json_passengers = json_encode($data);
 
         $book = $this->curlExecution($url, $info_json_passengers, 'yes');
