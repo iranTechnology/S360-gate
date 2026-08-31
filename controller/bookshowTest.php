@@ -1175,7 +1175,8 @@ class bookshowTest extends clientAuth {
         return isset( $split[1] ) ? $split[1] . ' ' . $date_now : $date_now;
     }
 
-    public function getInfoTicketReservation( $requestNumber ) {
+   /*
+   public function getInfoTicketReservation( $requestNumber ) {
         if ( TYPE_ADMIN == '1' ) {
 
             $ModelBase = Load::library( 'ModelBase' );
@@ -1214,6 +1215,72 @@ class bookshowTest extends clientAuth {
         }
 
         $result['infoTicket'] = $Book;
+
+        return $result;
+    }
+*/
+    public function getInfoTicketReservation( $requestNumber ) {
+        if ( TYPE_ADMIN == '1' ) {
+            $ModelBase = Load::library( 'ModelBase' );
+            $sql       = " SELECT *
+             FROM report_tb
+             WHERE request_number='{$requestNumber}'
+             ORDER BY passenger_age";
+            $Book      = $ModelBase->select( $sql );
+        } else {
+            $Model = Load::library( 'Model' );
+            $sql   = " SELECT *
+             FROM book_local_tb
+             WHERE request_number='{$requestNumber}'
+             ORDER BY passenger_age";
+            $Book  = $Model->select( $sql );
+        }
+
+        if ( empty( $Book ) ) {
+            return [
+                'has_discount'               => false,
+                'discount_amount'            => 0,
+                'percent_discount'           => 0,
+                'totalPriceWithoutDiscount' => 0,
+                'totalPrice'                => 0,
+                'infoTicket'                 => []
+            ];
+        }
+
+        $totalPrice                = 0;
+        $totalPriceWithoutDiscount = 0;
+
+        foreach ( $Book as $val ) {
+            $ageType           = strtolower( $val['passenger_age'] );
+            $namePrice         = $ageType . '_price';
+            $nameDiscountPrice = 'discount_' . $ageType . '_price';
+
+            $basePrice     = isset( $val[ $namePrice ] ) ? (float)$val[ $namePrice ] : 0;
+            $discountPrice = (!empty($val[ $nameDiscountPrice ]) && $val[ $nameDiscountPrice ] > 0)
+                ? (float)$val[ $nameDiscountPrice ]
+                : $basePrice;
+
+            $totalPriceWithoutDiscount += $basePrice;
+            $totalPrice                += $discountPrice;
+        }
+
+        // شرط وجود تخفیف: اختلاف قیمت تخفیف‌دار با قیمت اصلی یا وجود درصد تخفیف
+        $hasDiscount = ( $totalPriceWithoutDiscount > $totalPrice ) || ( isset( $Book[0]['percent_discount'] ) && $Book[0]['percent_discount'] > 0 );
+
+        if ( $hasDiscount ) {
+            $result['has_discount']               = true;
+            $result['discount_amount']            = $totalPriceWithoutDiscount - $totalPrice;
+            $result['totalPriceWithoutDiscount'] = $totalPriceWithoutDiscount;
+            $result['totalPrice']                = $totalPrice;
+        } else {
+            $result['has_discount']               = false;
+            $result['discount_amount']            = 0;
+            $result['totalPriceWithoutDiscount'] = 0; // دقیقاً مطابق رفتار کد اصلی شما
+            $result['totalPrice']                = $totalPriceWithoutDiscount;
+        }
+
+        $result['percent_discount'] = isset( $Book[0]['percent_discount'] ) ? $Book[0]['percent_discount'] : 0;
+        $result['infoTicket']       = $Book;
 
         return $result;
     }
@@ -3604,6 +3671,7 @@ class bookshowTest extends clientAuth {
             $BuyFromIt=0;
             $this->colorTrByStatusCreditBlak='';
             $this->colorTrByStatusCreditPurple='';
+            $NumberFlightProvider=0;
 
             if ( $flightBook['flight_type'] != 'charterPrivate' ) {
                 /*if ( TYPE_ADMIN == '1' ) {
@@ -3655,10 +3723,13 @@ class bookshowTest extends clientAuth {
             }
 
             if ( $flightBook['flight_type'] != 'charterPrivate' ) {
-                $DataFlightTotal = number_format($flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price']);
+                $NumberFlightTotal=$flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price'];
+
+                $DataFlightTotal = number_format($NumberFlightTotal);
                 $DataFlightFare = $flightBook['flight_type'] == 'system' ? number_format($flightBook['adt_fare_sum'] + $flightBook['chd_fare_sum'] + $flightBook['inf_fare_sum']) : '_';
             }
             else {
+                $NumberFlightTotal=0;
                 $DataFlightTotal = '_';
                 $DataFlightFare = '_';
             }
@@ -3668,9 +3739,11 @@ class bookshowTest extends clientAuth {
                 ($flightBook['flight_type'] == 'system' && $flightBook['IsInternal'] == '1') ||
                 ($flightBook['flight_type'] == 'system' && $flightBook['IsInternal'] == '0' && $flightBook['foreign_airline'] == '0')
             ) {
-                $DataFlightProvider = number_format(($flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price']) - ($flightBook['sum_system_flight_commission']));
+                $NumberFlightProvider=($flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price']) - ($flightBook['sum_system_flight_commission']);
+                $DataFlightProvider = number_format($NumberFlightProvider);
             } else {
-                $DataFlightProvider = number_format(($flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price']));
+                $NumberFlightProvider=($flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price']);
+                $DataFlightProvider = number_format($NumberFlightProvider);
             }
 
             $DataFlightitCom = 0;
@@ -3694,6 +3767,7 @@ class bookshowTest extends clientAuth {
             }
 
             $PassengerPayment=0;
+            $discountPrice=0;
             if ( $flightBook['flight_type'] != 'charterPrivate' ) {
                 if ( $flightBook['flight_type'] == 'charter' ||  $flightBook['api_id'] == '14' ) {
                     if ( $flightBook['percent_discount'] > 0 ) {
@@ -3701,8 +3775,7 @@ class bookshowTest extends clientAuth {
                         $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
                         if(TYPE_ADMIN != 1){
                             $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
-                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )
-                                . '</span>';
+                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )                                . '</span>';
                         }
 
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -3758,23 +3831,31 @@ class bookshowTest extends clientAuth {
             }
             else {
                 $InfoTicketReservation = $this->getInfoTicketReservation( $flightBook['request_number'] );
-                if (TYPE_ADMIN != 1 && $InfoTicketReservation['totalPriceWithoutDiscount'] != 0 ) {
+
+                // متغیرهای وضعیت و مبلغ تخفیف
+                $hasDiscount   = $InfoTicketReservation['has_discount'];    // بولین: true یا false
+                $discountPrice = $InfoTicketReservation['discount_amount']; // مبلغ کل تخفیف (عددی)
+
+                if ( TYPE_ADMIN != 1 && $InfoTicketReservation['totalPriceWithoutDiscount'] != 0 ) {
                     $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
                 }
-                $PassengerPayment=$InfoTicketReservation['totalPrice'];
+
+                $PassengerPayment            = $InfoTicketReservation['totalPrice'];
                 $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
-                $pricetotal                 = ( $InfoTicketReservation['totalPrice'] ) + $pricetotal;
+                $pricetotal                  = ( $InfoTicketReservation['totalPrice'] ) + $pricetotal;
             }
 
             if (
                 ($flightBook['flight_type'] == 'system' && $flightBook['IsInternal'] == '1') ||
                 ($flightBook['flight_type'] == 'system' && $flightBook['IsInternal'] == '0' && $flightBook['foreign_airline'] == '0')
             ) {
-                $DataFlightPassengerPayData1 = " _ ";
+                $NumberFlightPassengerPayData1=0;
+                $DataFlightPassengerPayData1 = "0";
             } else {
+                $NumberFlightPassengerPayData1=$flightBook['agency_commission'];
                 $DataFlightPassengerPayData1 = number_format($flightBook['agency_commission']);
             }
-
+            $NumberFlightPassengerPayData2=$flightBook['sum_amount_added'];
             $DataFlightPassengerPayData2 = number_format($flightBook['sum_amount_added']);
 
 
@@ -3790,11 +3871,11 @@ class bookshowTest extends clientAuth {
                     $DataFlightitAgencyCommission ='---';
                 }
                 else {
-
+                    /*1405_06_07 غیر فعال شد فرمول جدید داریم
                     if($TitleDetectDirection=='دوطرفه-رفت'){//تو ردیف رفت باید حساب برگشت رو هم کنیم
-                        $agencyShare = $flightBook['successfull'] == 'book' ? ($PassengerPayment+ $ArrInfoAgancyShare[$flightBook['factor_number']]['SellingReturnPassengerTickets'] + $flightBook['sum_amount_added'])- $BuyFromIt : 0;
+                        $agencyShare = $flightBook['successfull'] == 'book' ? ($PassengerPayment+ $ArrInfoAgancyShare[$flightBook['factor_number']]['SellingReturnPassengerTickets'] + $flightBook['sum_amount_added'])- $BuyFromIt : 0;//پرداخت مسافر - خرید از ما
                     }else{
-                        $agencyShare = $flightBook['successfull'] == 'book' ? ($PassengerPayment + $flightBook['sum_amount_added']) - $BuyFromIt : 0;
+                        $agencyShare = $flightBook['successfull'] == 'book' ? ($PassengerPayment + $flightBook['sum_amount_added']) - $BuyFromIt : 0;//پرداخت مسافر - خرید از ما
                     }
                     $ClssShare = 'text-inverse';
                     if($agencyShare > 0){
@@ -3803,6 +3884,7 @@ class bookshowTest extends clientAuth {
                     elseif($agencyShare < 0){
                         $ClssShare = 'text-danger';
                     }
+                    */
 
                     $ClssShare2 = 'text-inverse';
                     if($flightBook['sum_system_flight_commission'] > 0){
@@ -3811,16 +3893,20 @@ class bookshowTest extends clientAuth {
                     elseif($flightBook['sum_system_flight_commission'] < 0){
                         $ClssShare2 = 'text-danger';
                     }
-
-                    $DataFlightAgencyShare ='<span class="'.$ClssShare.' font-bold rounded-xl py-1 px-3 text-white d-inline-block" style="direction:ltr; margin:3px;">'.number_format($agencyShare).'</span> <br>';//پرداخت مسافر - خرید از ما
+                    $DataFlightAgencyShare='';
+                    /* 1405_06_07 غیر فعال شد فرمول جدید داریم
+                    $DataFlightAgencyShare ='<span class="'.$ClssShare.' font-bold rounded-xl py-1 px-3 text-white d-inline-block" style="direction:ltr; margin:3px;">'.number_format($agencyShare).'</span> <br>';
+                    */
                     if ($flightBook['flight_type'] == 'system' && $flightBook['successfull'] == 'private_reserve') {
-                        $DataFlightitAgencyCommission ='<span class="font-bold rounded-xl py-1 px-3 text-white d-inline-block" style="direction:ltr; margin:3px;">'.number_format(0).'</span> <br>';//پرداخت مسافر - خرید از ما
+                        $DataFlightitAgencyCommission ='<span class="font-bold rounded-xl py-1 px-3 text-white d-inline-block" style="direction:ltr; margin:3px;">BBB'.number_format(0).'</span> <br>';
                     } else {
                         $DataFlightitAgencyCommission ='<span class="'.$ClssShare2.' font-bold rounded-xl py-1 px-3 text-white d-inline-block" style="direction:ltr; margin:3px;">'.number_format($flightBook['sum_system_flight_commission']).'</span> <br>';//پرداخت مسافر - خرید از ما
                     }
+                    /* 1405_06_07 غیر فعال شد فرمول جدید داریم
                     if ($flightBook['request_cancel'] != 'confirm' && ($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve')) {
                         $priceAgency += $agencyShare;
                     }
+                    */
                 }
 
             }
@@ -4748,17 +4834,15 @@ class bookshowTest extends clientAuth {
                 $TitleMarkAgency='مارک آژ';
                 $TitleComAgency='کم آژانس';
                 $TitleComAgencyProvider='کم پرووایدر';
-                $TitleNameAgency='نام <br> آژانس';
             }
             else {
                 $TitleAgencyShare=functions::Xmlinformation('PA_BUY_Yourprofit').'<br>'.functions::Xmlinformation('Status').'<br> pnr';
                 $TitleBuyFromIt='<span>'.functions::Xmlinformation("PA_BUYFrom").' <br> '. functions::Xmlinformation("Safar360") .'</span>';
-                $TitlePayment=functions::Xmlinformation('Sale');
-                $TitleMarkCounter=functions::Xmlinformation('PA_BUY_MarkCOUNTER');
-                $TitleMarkAgency=functions::Xmlinformation('PA_BUY_MarkAgency');
-                $TitleComAgency=functions::Xmlinformation('PA_BUY_Commission');
-                $TitleComAgencyProvider=functions::Xmlinformation('PA_BUY_CommissionProvider');
-                $TitleNameAgency=functions::Xmlinformation('Action');
+                $TitlePayment=functions::Xmlinformation('PassengerSale').' ';
+                $TitleMarkCounter=functions::Xmlinformation('PA_BUY_MarkCOUNTER').' ';
+                $TitleMarkAgency=functions::Xmlinformation('PA_BUY_MarkAgency').' ';
+                $TitleComAgency=functions::Xmlinformation('PA_BUY_Commission').' ';
+                $TitleComAgencyProvider=functions::Xmlinformation('PA_BUY_CommissionProvider').' ';
             }
 
             $ColorTr='';
@@ -4790,6 +4874,24 @@ class bookshowTest extends clientAuth {
             $titleColumn4.=functions::Xmlinformation('Customername');
             $titleColumn5=functions::Xmlinformation('PA_BUY_Provider').' ';
 
+            //1405_06_07  formol taghir kard
+            //(total+مارک آژانس+مارک کانتر) - تخفیف
+            $NumberFlightPassengerPayData=($NumberFlightTotal+$NumberFlightPassengerPayData1+$NumberFlightPassengerPayData2)-$discountPrice;
+            $DataFlightPassengerPayData=number_format($NumberFlightPassengerPayData);
+            $DataFlightDiscountPrice=number_format($discountPrice);
+            //ستون سود آژانس : ستون قبلی - خرید از پرووایدر
+            $agencyShare=$NumberFlightPassengerPayData - $NumberFlightProvider;
+            $ClssShare = 'bg-inverse';
+            if($agencyShare > 0){
+                $ClssShare = 'bg-success';
+            }
+            elseif($agencyShare < 0){
+                $ClssShare = 'bg-danger';
+            }
+            $DataAgencyShare ='<span class="'.$ClssShare.' rounded-xl py-1 px-3 text-white d-inline-block" style="direction:ltr">'.number_format($agencyShare).'</span><br><br>';
+            if ($flightBook['request_cancel'] != 'confirm' && ($flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve')) {
+                $priceAgency += $agencyShare;
+            }
 
             $FlightData[ $FlightDataNewest ][ $key ]["رنگ"]                        = $ColorTr;
             $FlightData[ $FlightDataNewest ][ $key ][$titleColumn1]                = $CountTicket ++;
@@ -4806,9 +4908,9 @@ class bookshowTest extends clientAuth {
             ( TYPE_ADMIN == '1' ? $FlightData[ $FlightDataNewest ][ $key ]["سهم ما"]                        = $DataFlightIranTechCommission : "" );
             $FlightData[ $FlightDataNewest ][ $key ][$TitleMarkAgency]                                      = $DataFlightPassengerPayData1;
             $FlightData[ $FlightDataNewest ][ $key ][$TitleMarkCounter]                                     = $DataFlightPassengerPayData2 ;
+            $FlightData[ $FlightDataNewest ][ $key ]['Discount']                                            = $DataFlightDiscountPrice ;
             $FlightData[ $FlightDataNewest ][ $key ][$TitlePayment]                                         = $DataFlightPassengerPayData;
-            $FlightData[ $FlightDataNewest ][ $key ][$TitleAgencyShare]                                     = $DataFlightAgencyShare;
-
+            $FlightData[ $FlightDataNewest ][ $key ][$TitleAgencyShare]                                     = $DataAgencyShare.$DataFlightAgencyShare;
         }
 
         $FooterData0 = '<th colspan="2"></th>';
@@ -4834,7 +4936,7 @@ class bookshowTest extends clientAuth {
         }
         $FooterData1 .= '<th>'.$TitlePayment.'</th>';
         $FooterData1 .= '<th>'.$TitleAgencyShare.'</th>';
-        $FooterData1 .= '<th></th>';
+        $FooterData1 .= '<th ></th>';
         $FlightData['footer'][1] = $FooterData1;
 
 
