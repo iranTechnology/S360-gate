@@ -5,39 +5,39 @@
 {$objPartner->showedit($smarty.const.CLIENT_ID)}
 {$objbook->ticket_sell_in_time()}
 <div class="container-fluid" >
-<div class="row bg-title" style="margin-top:50px !important;">
+    <div class="row bg-title" style="margin-top:50px !important;">
 
         <!-- باکس هشدار سمت چپ (عریض تر) -->
 
-    <div class="d-flex gap-5 justify-content-center align-items-center">
+        <div class="d-flex gap-5 justify-content-center align-items-center">
 
-        <div class="">
-            <div class="border border-ccc p-3 rounded-md d-flex justify-content-center" style="border-radius: 14px;font-size:13px">
-                <span> میزان اعتبار حساب شما: </span>
-                <p class="text-center m-0 p-0">
-                    {assign var="total_credit" value=$objTransaction->getCredit()}
-                    {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}
+            <div class="">
+                <div class="border border-ccc p-3 rounded-md d-flex justify-content-center" style="border-radius: 14px;font-size:13px">
+                    <span> میزان اعتبار حساب شما: </span>
+                    <p class="text-center m-0 p-0">
+                        {assign var="total_credit" value=$objTransaction->getCredit()}
+                        {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}
 
-                </p>
+                    </p>
 
+                </div>
             </div>
-        </div>
-        <div class="">
-            <div class="border border-ccc p-3 rounded-md" style="border-radius: 14px;font-size:13px">
-                پیامک‌های اطلاع‌رسانی تغییرات رزرو به شماره
-                <a>{$objPartner->list['Mobile']}</a> ارسال می‌شود
+            <div class="">
+                <div class="border border-ccc p-3 rounded-md" style="border-radius: 14px;font-size:13px">
+                    پیامک‌های اطلاع‌رسانی تغییرات رزرو به شماره
+                    <a>{$objPartner->list['Mobile']}</a> ارسال می‌شود
+                </div>
             </div>
+
+
+
         </div>
-
-
-
-    </div>
         <!-- خانه سمت راست (کوچیک تر) -->
-{*        <div class="col-lg-6 col-md-5 col-sm-5 col-xs-12 pull-right">*}
-{*            <ol class="breadcrumb FloatRight">*}
-{*                <li><a href="http://192.168.1.100/gds/itadmin/admin">خانه</a></li>*}
-{*            </ol>*}
-{*        </div>*}
+        {*        <div class="col-lg-6 col-md-5 col-sm-5 col-xs-12 pull-right">*}
+        {*            <ol class="breadcrumb FloatRight">*}
+        {*                <li><a href="http://192.168.1.100/gds/itadmin/admin">خانه</a></li>*}
+        {*            </ol>*}
+        {*        </div>*}
 
     </div>
     {if $smarty.const.TYPE_ADMIN neq '1' && $smarty.const.CLIENT_ID neq '166'  && $smarty.const.memberIdCounterInAdmin eq ''}{*   domain safar360.com  تو پنل آآژنس و کانتر هم دیده نشود*}
@@ -62,7 +62,9 @@
     {/if}
     {if $smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en'}
         {include file="view/administrator/reports/user_module_reports.tpl"}
+        {include file="view/administrator/reports/servicesCommission.tpl"}
         {include file="view/administrator/reports/user_bookMarks_link.tpl"}
+
     {/if}
     {if $smarty.const.TYPE_ADMIN eq '1' && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
         {include file="view/administrator/reports/agency_exceed_limit_report.tpl"}
@@ -74,347 +76,347 @@
         {include file="view/administrator/reports/wholeSystemSalesInformation.tpl"}<!-- 1404/04/16 -->
     {/if}
     {if $smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en'}
-    <div class="row white-box mx-1 border border-ccc" style="padding-top: 30px;">
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            <div class="panel panel-danger">
-                <div class="panel-heading TitleSectionsDashboard" style=" border-radius:14px">
-                    <h6 style='font-weight: 500;font-size: 17px; color: #3c3939; '>
-                        <i class="fa fa-exclamation-triangle"></i>
-                        همکار گرامی به نکات زیر توجه فرمایید
-                        <div class="pull-right">
-                            <a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a>
+        <div class="row white-box mx-1 border border-ccc" style="padding-top: 30px;">
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading TitleSectionsDashboard" style=" border-radius:14px">
+                        <h6 style='font-weight: 500;font-size: 17px; color: #3c3939; '>
+                            <i class="fa fa-exclamation-triangle"></i>
+                            همکار گرامی به نکات زیر توجه فرمایید
+                            <div class="pull-right">
+                                <a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a>
+                            </div>
+                        </h6>
+                    </div>
+                    <div class="panel-wrapper collapse in" aria-expanded="true">
+                        <div class="panel-body panel-body-top modern-notice">
+                            <ul>
+                                <li>
+                                    نرم‌افزار سفر۳۶۰ هیچ ‌گونه فروش مستقیم خدمات گردشگری انجام نمی دهد و صرفاً بستر ارتباط اینترنتی میان شما و ارائه‌ دهندگان مختلف این خدمات را فراهم می‌سازد. بنابراین، هرگونه اختلال در قیمت، فرایند صدور، یا بازگشت مبلغ ناشی از کنسلی، بر عهده سرویس‌ دهنده مربوطه است. سفر۳۶۰ تنها پیگیری موضوع را از جانب شما انجام داده و هم ‌زمان اطلاعات کامل سرویس‌دهنده را در اختیار شما قرار می ‌دهد تا در صورت تمایل، شخصاً نیز امکان پیگیری داشته باشید.
+                                </li>
+                                {*                            <li>*}
+                                {*                                بعضا چارتر کنندگان اسم مسافر را در لیست مانیفست ایرلاین رد نمی کنند و یا با تاخیر این کار را انجام می دهند درصورتی که اسم مسافر شما در کانتر پرواز نبود سریعا با پشتیبانی ایران تکنولوژی تماس بگیرید.*}
+                                {*                            </li>*}
+
+                                <li>در زمانیکه سیستم شما به اندازه کافی شارژ ندارد، برای حفظ محرمانگی سیستم شما، ما به مشتری پیغام "متاسفانه سامانه در حال بروز رسانی می باشد لطفا کمی بعد مجددا تلاش نمائید" را نمایش می دهیم و این به آن معنا است که شما باید پنل خود را شارژ بفرمایید</li>
+
+                                <li>پیامک تایید رزرو فقط در صورتی که پنل پیامکی خریداری و شارژ نموده باشید، برای مسافر ارسال خواهد شد</li>
+                                {*                            <li>از آنجایی که تمام اطلاع رسانی های سیستم از طریق شماره موبایل ثبت شده در سیستم انجام میپذیرد، لطفا اطلاعات خود را از طریق لینک مشاهده پروفایل، اطلاعات خود را تکمیل نمائید </li>*}
+                                {*                            <li>در تنظیم مارک آپ و تخفیف خدمات خود دقت بفرمایید تا اختلاف قیمت فاحشی با رقبا نداشته باشید. در نظر داشته باشید سود شما برای پروازهای چارتری همان مارک آپی است که انجام داده اید و در پروازهای سیستمی داخلی 80% کمیسیون ایرلاین و در پروازهای خارجی مارک آپی است که انجام داده اید</li>*}
+                                <li>تامین کنندگان پرواز و هتل در ایران و دنیا بسیار زیاد میباشد و هرکدام قیمت و سیاست رزرو و کنسلی خود را دارند برای آگاهی از این سیاست ها
+                                    <a href="https://club.irantech.ir/knowledgebase/558/%DA%86%D8%B1%D8%A7-%D9%82%DB%8C%D9%85%D8%AA-%D8%A8%D8%B9%D8%B6%DB%8C-%D8%A7%D8%B2-%D9%87%D8%AA%D9%84-%D9%87%D8%A7-%D9%88-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%87%D8%A7%DB%8C-%D9%85%D9%86-%D8%A7%D8%B2-%D8%AC%D8%A7%D9%87%D8%A7%DB%8C-%D8%AF%DB%8C%DA%AF%D8%B1-%D8%A8%D8%A7%D9%84%D8%A7%D8%AA%D8%B1-%D8%A7%D8%B3%D8%AA-..html" target='_blank'>اینجا</a> را مطالعه کنید</li>
+
+                                <li>در ایران و جهان سرویس دهندگان بسیار زیادی برای خدمات گردشگری وجود دارند. هیچ سرویس دهنده ای نمی تواند ادعا کند بهترین قیمت های جهان را دارد پس لطفا جهت دیدن مرجع قیمت هایی که به شما ارائه می دهیم همواره به سایت
+                                    <a href="https://safar360.com" target="_blank">safar360.com</a>
+                                    مراجعه بفرمایید.</li>
+                            </ul>
                         </div>
-                    </h6>
-                </div>
-                <div class="panel-wrapper collapse in" aria-expanded="true">
-                    <div class="panel-body panel-body-top modern-notice">
-                        <ul>
-                            <li>
-                                نرم‌افزار سفر۳۶۰ هیچ ‌گونه فروش مستقیم خدمات گردشگری انجام نمی دهد و صرفاً بستر ارتباط اینترنتی میان شما و ارائه‌ دهندگان مختلف این خدمات را فراهم می‌سازد. بنابراین، هرگونه اختلال در قیمت، فرایند صدور، یا بازگشت مبلغ ناشی از کنسلی، بر عهده سرویس‌ دهنده مربوطه است. سفر۳۶۰ تنها پیگیری موضوع را از جانب شما انجام داده و هم ‌زمان اطلاعات کامل سرویس‌دهنده را در اختیار شما قرار می ‌دهد تا در صورت تمایل، شخصاً نیز امکان پیگیری داشته باشید.
-                            </li>
-                            <li>
-                                بعضا چارتر کنندگان اسم مسافر را در لیست مانیفست ایرلاین رد نمی کنند و یا با تاخیر این کار را انجام می دهند درصورتی که اسم مسافر شما در کانتر پرواز نبود سریعا با پشتیبانی ایران تکنولوژی تماس بگیرید.
-                            </li>
-
-                            <li>در زمانیکه سیستم شما به اندازه کافی شارژ ندارد، برای حفظ محرمانگی سیستم شما، ما به مشتری پیغام "متاسفانه سامانه در حال بروز رسانی می باشد لطفا کمی بعد مجددا تلاش نمائید" را نمایش می دهیم و این به آن معنا است که شما باید پنل خود را شارژ بفرمایید</li>
-
-                            <li>پیامک تایید رزرو فقط در صورتی که پنل پیامکی خریداری و شارژ نموده باشید، برای مسافر ارسال خواهد شد</li>
-                            <li>از آنجایی که تمام اطلاع رسانی های سیستم از طریق شماره موبایل ثبت شده در سیستم انجام میپذیرد، لطفا اطلاعات خود را از طریق لینک مشاهده پروفایل، اطلاعات خود را تکمیل نمائید </li>
-                            <li>در تنظیم مارک آپ و تخفیف خدمات خود دقت بفرمایید تا اختلاف قیمت فاحشی با رقبا نداشته باشید. در نظر داشته باشید سود شما برای پروازهای چارتری همان مارک آپی است که انجام داده اید و در پروازهای سیستمی داخلی 80% کمیسیون ایرلاین و در پروازهای خارجی مارک آپی است که انجام داده اید</li>
-                            <li>تامین کنندگان پرواز و هتل در ایران و دنیا بسیار زیاد میباشد و هرکدام قیمت و سیاست رزرو و کنسلی خود را دارند برای آگاهی از این سیاست ها
-                                <a href="https://www.iran-tech.com/whmcs/knowledgebase/409/-----------.html" target='_blank'>اینجا</a> را مطالعه کنید</li>
-
-                            <li>در ایران و جهان سرویس دهندگان بسیار زیادی برای خدمات گردشگری وجود دارند. هیچ سرویس دهنده ای نمی تواند ادعا کند بهترین قیمت های جهان را دارد پس لطفا جهت دیدن مرجع قیمت هایی که به شما ارائه می دهیم همواره به سایت
-                                <a href="https://safar360.com" target="_blank">safar360.com</a>
-                                مراجعه بفرمایید.</li>
-                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="panel panel-info ">
-{*                <div class="panel-heading TitleSectionsDashboard">*}
-{*                    <h6 style='font-weight: 50;font-size: 17px; color: #3c3939; line-height: 20px;'>*}
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="panel panel-info ">
+                    {*                <div class="panel-heading TitleSectionsDashboard">*}
+                    {*                    <h6 style='font-weight: 50;font-size: 17px; color: #3c3939; line-height: 20px;'>*}
 
-{*                        میزان اعتبار حساب شما*}
-{*                        <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a></div>*}
-{*                    </h6>*}
-{*                </div>*}
-                <div class="panel-wrapper collapse in panel-body-down" aria-expanded="true">
-{*                    <div class="panel-body ">*}
-{*                        <p class="OpacityZero">*}
-{*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
-{*                            {$total_credit|number_format} ریال -{if*}
-{*                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
+                    {*                        میزان اعتبار حساب شما*}
+                    {*                        <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a></div>*}
+                    {*                    </h6>*}
+                    {*                </div>*}
+                    <div class="panel-wrapper collapse in panel-body-down" aria-expanded="true">
+                        {*                    <div class="panel-body ">*}
+                        {*                        <p class="OpacityZero">*}
+                        {*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
+                        {*                            {$total_credit|number_format} ریال -{if*}
+                        {*                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
 
-{*                        </p>*}
-{*                        <p class="text-center FontSize26">*}
-{*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
-{*                            {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
+                        {*                        </p>*}
+                        {*                        <p class="text-center FontSize26">*}
+                        {*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
+                        {*                            {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
 
-{*                        </p>*}
-{*                        <p class="OpacityZero">*}
-{*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
-{*                            {$total_credit|number_format} ریال -{if*}
-{*                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
+                        {*                        </p>*}
+                        {*                        <p class="OpacityZero">*}
+                        {*                            {assign var="total_credit" value=$objTransaction->getCredit()}*}
+                        {*                            {$total_credit|number_format} ریال -{if*}
+                        {*                            $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}*}
 
-{*                        </p>*}
-{*                        <p></p>*}
-{*                    </div>*}
+                        {*                        </p>*}
+                        {*                        <p></p>*}
+                        {*                    </div>*}
 
-                    <style>
-                        .help-download {
-                            position: relative;
-                            margin: 25px 0;
-                            padding: 0;
-                            background: linear-gradient(135deg, #f03c52 0%, #d42a40 50%, #ff6b81 100%);
-                            border-radius: 16px;
-                            box-shadow:
-                                    0 10px 30px rgba(240, 60, 82, 0.25),
-                                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-                            color: white;
-                            text-align: center;
-                            cursor: pointer;
-                            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                            overflow: hidden;
-                            border: none;
-                            text-decoration: none;
-                            display: block;
-                        }
-
-                        .help-download::before {
-                            content: '';
-                            position: absolute;
-                            top: 0;
-                            left: -100%;
-                            width: 100%;
-                            height: 100%;
-                            background: linear-gradient(90deg,
-                            transparent,
-                            rgba(255, 255, 255, 0.3),
-                            transparent);
-                            transition: left 0.6s ease;
-                        }
-
-                        .help-download:hover::before {
-                            left: 100%;
-                        }
-
-                        .help-download:hover {
-                            transform: translateY(-8px) scale(1.02);
-                            box-shadow:
-                                    0 20px 40px rgba(240, 60, 82, 0.4),
-                                    0 0 0 1px rgba(255, 255, 255, 0.2);
-                        }
-
-                        .help-download:active {
-                            transform: translateY(-2px) scale(1);
-                        }
-
-                        .help-download-content {
-                            position: relative;
-                            z-index: 2;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            gap: 15px;
-                            padding: 30px 25px;
-                            background: rgba(0, 0, 0, 0.1);
-                            backdrop-filter: blur(10px);
-                        }
-
-                        .help-download-icon {
-                            width: 60px;
-                            height: 60px;
-                            background: rgba(255, 255, 255, 0.2);
-                            border-radius: 50%;
-                            padding: 12px;
-                            backdrop-filter: blur(20px);
-                            border: 1px solid rgba(255, 255, 255, 0.3);
-                            transition: all 0.3s ease;
-                        }
-
-                        .help-download:hover .help-download-icon {
-                            transform: scale(1.1) rotate(5deg);
-                            background: rgba(255, 255, 255, 0.3);
-                        }
-
-                        .help-download-text {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 8px;
-                        }
-
-                        .help-download h3 {
-                            margin: 0;
-                            font-size: 20px;
-                            font-weight: 700;
-                            letter-spacing: -0.5px;
-                            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-                            color: #fff;
-                            line-height: 1.3;
-                        }
-
-                        .help-download p {
-                            margin: 0;
-                            font-size: 15px;
-                            font-weight: 400;
-                            line-height: 1.5;
-                            color: rgba(255, 255, 255, 0.95);
-                            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-                        }
-
-                        .help-download-cta {
-                            display: flex;
-                            align-items: center;
-                            gap: 10px;
-                            padding: 12px 24px;
-                            background: rgba(255, 255, 255, 0.25);
-                            border-radius: 50px;
-                            border: 1px solid rgba(255, 255, 255, 0.4);
-                            transition: all 0.3s ease;
-                            margin-top: 5px;
-                            backdrop-filter: blur(10px);
-                        }
-
-                        .help-download:hover .help-download-cta {
-                            background: rgba(255, 255, 255, 0.35);
-                            transform: translateX(5px);
-                        }
-
-                        .help-download-cta-text {
-                            font-size: 14px;
-                            font-weight: 600;
-                            color: #fff;
-                            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-                        }
-
-                        .help-download-arrow {
-                            font-size: 18px;
-                            transition: transform 0.3s ease;
-                            font-weight: bold;
-                            color: #fff;
-                            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-                        }
-
-                        .help-download:hover .help-download-arrow {
-                            transform: translateX(8px);
-                        }
-
-                        /* افکت شیشه‌ای (Glassmorphism) */
-                        .help-download::after {
-                            content: '';
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
-                            background: linear-gradient(135deg,
-                            rgba(255, 255, 255, 0.15) 0%,
-                            rgba(255, 255, 255, 0.08) 100%);
-                            border-radius: 16px;
-                            pointer-events: none;
-                        }
-
-                        /* استایل برای حالت موبایل */
-                        @media (max-width: 768px) {
+                        <style>
                             .help-download {
-                                margin: 20px 0;
-                                border-radius: 14px;
+                                position: relative;
+                                margin: 25px 0;
+                                padding: 0;
+                                background: linear-gradient(135deg, #f03c52 0%, #d42a40 50%, #ff6b81 100%);
+                                border-radius: 16px;
+                                box-shadow:
+                                        0 10px 30px rgba(240, 60, 82, 0.25),
+                                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                                color: white;
+                                text-align: center;
+                                cursor: pointer;
+                                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                                overflow: hidden;
+                                border: none;
+                                text-decoration: none;
+                                display: block;
+                            }
+
+                            .help-download::before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: -100%;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(90deg,
+                                transparent,
+                                rgba(255, 255, 255, 0.3),
+                                transparent);
+                                transition: left 0.6s ease;
+                            }
+
+                            .help-download:hover::before {
+                                left: 100%;
+                            }
+
+                            .help-download:hover {
+                                transform: translateY(-8px) scale(1.02);
+                                box-shadow:
+                                        0 20px 40px rgba(240, 60, 82, 0.4),
+                                        0 0 0 1px rgba(255, 255, 255, 0.2);
+                            }
+
+                            .help-download:active {
+                                transform: translateY(-2px) scale(1);
                             }
 
                             .help-download-content {
-                                padding: 25px 20px;
-                                gap: 12px;
+                                position: relative;
+                                z-index: 2;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 15px;
+                                padding: 30px 25px;
+                                background: rgba(0, 0, 0, 0.1);
+                                backdrop-filter: blur(10px);
                             }
 
                             .help-download-icon {
-                                width: 50px;
-                                height: 50px;
-                                padding: 10px;
+                                width: 60px;
+                                height: 60px;
+                                background: rgba(255, 255, 255, 0.2);
+                                border-radius: 50%;
+                                padding: 12px;
+                                backdrop-filter: blur(20px);
+                                border: 1px solid rgba(255, 255, 255, 0.3);
+                                transition: all 0.3s ease;
+                            }
+
+                            .help-download:hover .help-download-icon {
+                                transform: scale(1.1) rotate(5deg);
+                                background: rgba(255, 255, 255, 0.3);
+                            }
+
+                            .help-download-text {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 8px;
                             }
 
                             .help-download h3 {
-                                font-size: 18px;
+                                margin: 0;
+                                font-size: 20px;
+                                font-weight: 700;
+                                letter-spacing: -0.5px;
+                                text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                                color: #fff;
+                                line-height: 1.3;
                             }
 
                             .help-download p {
-                                font-size: 14px;
+                                margin: 0;
+                                font-size: 15px;
+                                font-weight: 400;
+                                line-height: 1.5;
+                                color: rgba(255, 255, 255, 0.95);
+                                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
                             }
 
                             .help-download-cta {
-                                padding: 10px 20px;
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                padding: 12px 24px;
+                                background: rgba(255, 255, 255, 0.25);
+                                border-radius: 50px;
+                                border: 1px solid rgba(255, 255, 255, 0.4);
+                                transition: all 0.3s ease;
+                                margin-top: 5px;
+                                backdrop-filter: blur(10px);
                             }
-                        }
 
-                        /* انیمیشن ورود */
-                        @keyframes fadeInUp {
-                            from {
-                                opacity: 0;
-                                transform: translateY(30px);
+                            .help-download:hover .help-download-cta {
+                                background: rgba(255, 255, 255, 0.35);
+                                transform: translateX(5px);
                             }
-                            to {
-                                opacity: 1;
-                                transform: translateY(0);
+
+                            .help-download-cta-text {
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: #fff;
+                                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
                             }
-                        }
 
-                        .help-download {
-                            animation: fadeInUp 0.6s ease-out;
-                        }
+                            .help-download-arrow {
+                                font-size: 18px;
+                                transition: transform 0.3s ease;
+                                font-weight: bold;
+                                color: #fff;
+                                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                            }
 
-                        /* بهبود خوانایی متن */
-                        .help-download * {
-                            text-rendering: optimizeLegibility;
-                            -webkit-font-smoothing: antialiased;
-                            -moz-osx-font-smoothing: grayscale;
-                        }
-                        
-                        .custom-alert {
-                            font-size: 12px;
-                            color: #2c3e50;
-                            background: linear-gradient(135deg, #ffefba, #ffffff); /* گرادیان ملایم */
-                            padding: 12px 8px;
-                            border-radius: 16px;
-                            border: 1px solid #f1c40f;
-                            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                            overflow: hidden;
-                            line-height: 1.5;
-                            transition: transform 0.3s ease, box-shadow 0.3s ease;
-                        }
-                        .bg-title {
-                            background: #fff;
-                            overflow: hidden;
-                            padding: 8px !important;
-                            margin-bottom: 24px;
-                            margin-left: -25.5px;
-                            margin-right: -25.5px;
-                        }
+                            .help-download:hover .help-download-arrow {
+                                transform: translateX(8px);
+                            }
 
-                        .custom-alert:hover {
-                            transform: translateY(-2px);
-                            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-                        }
+                            /* افکت شیشه‌ای (Glassmorphism) */
+                            .help-download::after {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background: linear-gradient(135deg,
+                                rgba(255, 255, 255, 0.15) 0%,
+                                rgba(255, 255, 255, 0.08) 100%);
+                                border-radius: 16px;
+                                pointer-events: none;
+                            }
 
-                        .phone-number {
-                            color: #e67e22;
-                            font-weight: 600;
-                            text-decoration: none;
-                        }
+                            /* استایل برای حالت موبایل */
+                            @media (max-width: 768px) {
+                                .help-download {
+                                    margin: 20px 0;
+                                    border-radius: 14px;
+                                }
 
-                        .phone-number:hover {
-                            text-decoration: underline;
-                        }
-                    </style>
+                                .help-download-content {
+                                    padding: 25px 20px;
+                                    gap: 12px;
+                                }
 
-{*                    <a href="https://admin.chartertech.ir/gds/pic/panelHelp/panelHelp.html" target="_blank" class="help-download">*}
-                    <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/panelHelp/panel_help" target="_blank" class="help-download">
-                        <div class="help-download-content">
-                            <svg class="help-download-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 16L12 8M12 16L9 13M12 16L15 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8 12H6C4.89543 12 4 11.1046 4 10V6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V10C20 11.1046 19.1046 12 18 12H16" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M16 12V14C16 15.1046 16.8954 16 18 16C19.1046 16 20 15.1046 20 14V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
+                                .help-download-icon {
+                                    width: 50px;
+                                    height: 50px;
+                                    padding: 10px;
+                                }
 
-                            <div class="help-download-text">
-                                <h3>📚 راهنمای استفاده از صفحات مدیریت</h3>
-                                <p>لینک ها و دسترسی های مهم را پیدا کنید</p>
+                                .help-download h3 {
+                                    font-size: 18px;
+                                }
+
+                                .help-download p {
+                                    font-size: 14px;
+                                }
+
+                                .help-download-cta {
+                                    padding: 10px 20px;
+                                }
+                            }
+
+                            /* انیمیشن ورود */
+                            @keyframes fadeInUp {
+                                from {
+                                    opacity: 0;
+                                    transform: translateY(30px);
+                                }
+                                to {
+                                    opacity: 1;
+                                    transform: translateY(0);
+                                }
+                            }
+
+                            .help-download {
+                                animation: fadeInUp 0.6s ease-out;
+                            }
+
+                            /* بهبود خوانایی متن */
+                            .help-download * {
+                                text-rendering: optimizeLegibility;
+                                -webkit-font-smoothing: antialiased;
+                                -moz-osx-font-smoothing: grayscale;
+                            }
+
+                            .custom-alert {
+                                font-size: 12px;
+                                color: #2c3e50;
+                                background: linear-gradient(135deg, #ffefba, #ffffff); /* گرادیان ملایم */
+                                padding: 12px 8px;
+                                border-radius: 16px;
+                                border: 1px solid #f1c40f;
+                                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                                overflow: hidden;
+                                line-height: 1.5;
+                                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                            }
+                            .bg-title {
+                                background: #fff;
+                                overflow: hidden;
+                                padding: 8px !important;
+                                margin-bottom: 24px;
+                                margin-left: -25.5px;
+                                margin-right: -25.5px;
+                            }
+
+                            .custom-alert:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+                            }
+
+                            .phone-number {
+                                color: #e67e22;
+                                font-weight: 600;
+                                text-decoration: none;
+                            }
+
+                            .phone-number:hover {
+                                text-decoration: underline;
+                            }
+                        </style>
+
+                        {*                    <a href="https://admin.chartertech.ir/gds/pic/panelHelp/panelHelp.html" target="_blank" class="help-download">*}
+                        <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/panelHelp/panel_help" target="_blank" class="help-download">
+                            <div class="help-download-content">
+                                <svg class="help-download-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 16L12 8M12 16L9 13M12 16L15 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H6C4.89543 12 4 11.1046 4 10V6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V10C20 11.1046 19.1046 12 18 12H16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M16 12V14C16 15.1046 16.8954 16 18 16C19.1046 16 20 15.1046 20 14V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+
+                                <div class="help-download-text">
+                                    <h3>📚 راهنمای استفاده از صفحات مدیریت</h3>
+                                    <p>لینک ها و دسترسی های مهم را پیدا کنید</p>
+                                </div>
+
+                                <div class="help-download-cta">
+                                    <span class="help-download-cta-text">مشاهده راهنما</span>
+                                    <div class="help-download-arrow">⟶</div>
+                                </div>
                             </div>
+                        </a>
+                    </div>
 
-                            <div class="help-download-cta">
-                                <span class="help-download-cta-text">مشاهده راهنما</span>
-                                <div class="help-download-arrow">⟶</div>
-                            </div>
-                        </div>
-                    </a>
                 </div>
-
             </div>
-        </div>
 
-    </div>
+        </div>
     {/if}
     <!-- .row -->
 
@@ -533,7 +535,7 @@
 
     </div>-->
     <!-- /.row -->
-{*    {include file="view/administrator/reports/user_module_reports.tpl"}*}
+    {*    {include file="view/administrator/reports/user_module_reports.tpl"}*}
 
 
 
@@ -659,172 +661,172 @@
 <script src="assets/JsFiles/admin.js"></script>
 <script src="assets/JsFiles/demoMovie.js"></script>
 <script type="text/javascript">
-   $(document).ready(function () {
+    $(document).ready(function () {
 //        //ct-visits
-      new Chartist.Line('#ct-visits', {
-         labels: [
+        new Chartist.Line('#ct-visits', {
+            labels: [
 
-             {foreach $objFunctions->dateArray() as $i}
-            '{$i}',
-             {/foreach}
-
-         ],
-         series: [
-            [
-                {foreach $objLog->showLog() as $j}
-                {$j['CountView']},
+                {foreach $objFunctions->dateArray() as $i}
+                '{$i}',
                 {/foreach}
+
             ],
-            [
-                {foreach $objbook->ShowLogBuyTicket() as $k}
+            series: [
+                [
+                    {foreach $objLog->showLog() as $j}
+                    {$j['CountView']},
+                    {/foreach}
+                ],
+                [
+                    {foreach $objbook->ShowLogBuyTicket() as $k}
 
-                {if $smarty.const.TYPE_ADMIN eq '1'}{$k['reqNumber']*10}{else} {$k['reqNumber']}{/if},
-                {/foreach}
+                    {if $smarty.const.TYPE_ADMIN eq '1'}{$k['reqNumber']*10}{else} {$k['reqNumber']}{/if},
+                    {/foreach}
+                ]
+
             ]
 
-         ]
+        }, {
+            top: 0,
 
-      }, {
-         top: 0,
+            low: 1,
+            showPoint: true,
 
-         low: 1,
-         showPoint: true,
-
-         fullWidth: true,
-         plugins: [
-            Chartist.plugins.tooltip()
-         ],
-         axisY: {
-            labelInterpolationFnc: function (value) {
-               return value;
-            }
-         },
-         showArea: true
-      });
-
-      new Chartist.Line('#CountTicketType', {
-         labels: [
-
-             {foreach $objFunctions->dateArray() as $i}
-            '{$i}',
-             {/foreach}
-
-         ],
-         series: [
-            [
-                {foreach $objbook->CountTypeTicketCharter() as $j}
-                {$j['CountCharter']*10},
-                {/foreach}
+            fullWidth: true,
+            plugins: [
+                Chartist.plugins.tooltip()
             ],
-            [
-                {foreach $objbook->CountTypeTicketSystemPublic() as $k}
-                {$k['CountPublicSystem']*10},
+            axisY: {
+                labelInterpolationFnc: function (value) {
+                    return value;
+                }
+            },
+            showArea: true
+        });
+
+        new Chartist.Line('#CountTicketType', {
+            labels: [
+
+                {foreach $objFunctions->dateArray() as $i}
+                '{$i}',
                 {/foreach}
+
             ],
-            [
-                {foreach $objbook->CountTypeTicketSystemPrivate() as $M}
-                {$M['CountPrivateSystem']*10},
-                {/foreach}
+            series: [
+                [
+                    {foreach $objbook->CountTypeTicketCharter() as $j}
+                    {$j['CountCharter']*10},
+                    {/foreach}
+                ],
+                [
+                    {foreach $objbook->CountTypeTicketSystemPublic() as $k}
+                    {$k['CountPublicSystem']*10},
+                    {/foreach}
+                ],
+                [
+                    {foreach $objbook->CountTypeTicketSystemPrivate() as $M}
+                    {$M['CountPrivateSystem']*10},
+                    {/foreach}
+                ]
+
             ]
 
-         ]
+        }, {
+            top: 1,
 
-      }, {
-         top: 1,
+            low: 0,
+            showPoint: true,
 
-         low: 0,
-         showPoint: true,
-
-         fullWidth: true,
-         plugins: [
-            Chartist.plugins.tooltip()
-         ],
-         axisY: {
-            labelInterpolationFnc: function (value) {
-               return value;
-            }
-         },
-         showArea: true
-      });
-   });
+            fullWidth: true,
+            plugins: [
+                Chartist.plugins.tooltip()
+            ],
+            axisY: {
+                labelInterpolationFnc: function (value) {
+                    return value;
+                }
+            },
+            showArea: true
+        });
+    });
 </script>
 <style src="assets/css/Dashboar.css"></style>
 {if $smarty.const.TYPE_ADMIN neq '1' && $smarty.const.CLIENT_ID neq '166'  && $smarty.const.memberIdCounterInAdmin eq ''}{* domain safar360.com  تو پنل آآژنس و کانتر هم دیده نشود*}
 {literal}
     <script>
-       $(document).ready(function(){
-          function isFilled(val) {
-             return typeof val === "string" && $.trim(val) !== "";
-          }
+        $(document).ready(function(){
+            function isFilled(val) {
+                return typeof val === "string" && $.trim(val) !== "";
+            }
 
-          function hideAllSections() {
-             $("#page-wrapper").remove();
-             $(".sidebar-nav").remove();
-             $(".slimScrollDiv").remove();
-          }
+            function hideAllSections() {
+                $("#page-wrapper").remove();
+                $(".sidebar-nav").remove();
+                $(".slimScrollDiv").remove();
+            }
 
-          $.ajax({
-             url: libraryPath + "CallCurllFactorIrantech.php",
-             type: "GET",
-             dataType: "json",
-             success: function(response) {
-                 console.log("AJAX Response:", response);
-                if (isFilled(response.error)) {
-                   $("#DivResultCurll").css('display', 'block');
-                   $("#ErrorCurllIrantech").html(response.error).show();
-                   hideAllSections();
-                   return;
-                } else {
-                   $("#ErrorCurllIrantech").hide();
-                }
+            $.ajax({
+                url: libraryPath + "CallCurllFactorIrantech.php",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    console.log("AJAX Response:", response);
+                    if (isFilled(response.error)) {
+                        $("#DivResultCurll").css('display', 'block');
+                        $("#ErrorCurllIrantech").html(response.error).show();
+                        hideAllSections();
+                        return;
+                    } else {
+                        $("#ErrorCurllIrantech").hide();
+                    }
 
-                let html = "";
-                if (isFilled(response.dore1)) {
-                   html += '<div class="BoxResultCurlAsli ' + response.ClassBoxDore1 + '">دوره 1: ' + response.dore1 + '</div>';
-                }
-                if (isFilled(response.dore2)) {
-                   html += '<div class="BoxResultCurlAsli ' + response.ClassBoxDore2 + '">دوره 2: ' + response.dore2 + '</div>';
-                }
-                if (isFilled(response.dore3)) {
-                   html += '<div class="BoxResultCurlAsli ' + response.ClassBoxDore3 + '">دوره 3: ' + response.dore3 + '</div>';
-                }
+                    let html = "";
+                    if (isFilled(response.dore1)) {
+                        html += '<div class="BoxResultCurlAsli ' + response.ClassBoxDore1 + '">دوره 1: ' + response.dore1 + '</div>';
+                    }
+                    if (isFilled(response.dore2)) {
+                        html += '<div class="BoxResultCurlAsli ' + response.ClassBoxDore2 + '">دوره 2: ' + response.dore2 + '</div>';
+                    }
+                    if (isFilled(response.dore3)) {
+                        html += '<div class="BoxResultCurlAsli ' + response.ClassBoxDore3 + '">دوره 3: ' + response.dore3 + '</div>';
+                    }
 
-                if (html !== "") {
-                   $("#DivResultCurll").html(html).show();
-                } else {
-                   $("#DivResultCurll").hide();
-                   $(".bg-title").attr("style", "margin-top:5px !important;");
-                }
+                    if (html !== "") {
+                        $("#DivResultCurll").html(html).show();
+                    } else {
+                        $("#DivResultCurll").hide();
+                        $(".bg-title").attr("style", "margin-top:5px !important;");
+                    }
 
-                $("#ShowDivFactorIrantech").show();
+                    $("#ShowDivFactorIrantech").show();
 
-                // اگر هیچ دوره‌ای پر نشده بود، margin-top بده
-                if (!isFilled(response.dore1) && !isFilled(response.dore2) && !isFilled(response.dore3)) {
-                   $("#page-wrapper").css('margin-top', '55px'); // مقدار دلخواه خودت
-                } else {
-                   $("#page-wrapper").css('margin-top', '0'); // یا مقدار اولیه
-                }
+                    // اگر هیچ دوره‌ای پر نشده بود، margin-top بده
+                    if (!isFilled(response.dore1) && !isFilled(response.dore2) && !isFilled(response.dore3)) {
+                        $("#page-wrapper").css('margin-top', '55px'); // مقدار دلخواه خودت
+                    } else {
+                        $("#page-wrapper").css('margin-top', '0'); // یا مقدار اولیه
+                    }
 
-                if (response.stop_execution) {
-                   hideAllSections();
-                   return;
+                    if (response.stop_execution) {
+                        hideAllSections();
+                        return;
+                    }
+                },
+                error: function() {
+                    $("#DivResultCurll").css('display', 'block');
+                    $(".BoxResultCurlAsli").hide();
+                    $("#ErrorCurllIrantech").html('آیدی تیکت شما در بخش تمدید دامنه نیاز به تنظیم مجدد دارد. لطفا با شرکت تماس حاصل فرمائید').show();
+                    hideAllSections();
+                    return;
                 }
-             },
-             error: function() {
-                $("#DivResultCurll").css('display', 'block');
-                $(".BoxResultCurlAsli").hide();
-                $("#ErrorCurllIrantech").html('آیدی تیکت شما در بخش تمدید دامنه نیاز به تنظیم مجدد دارد. لطفا با شرکت تماس حاصل فرمائید').show();
-                hideAllSections();
-                return;
-             }
-          });
-       });
+            });
+        });
     </script>
 {/literal}
 {else}
     <script>
-       $(document).ready(function(){
-          $(".report-accordion").attr("style", "margin-top:20px !important;");
-       });
+        $(document).ready(function(){
+            $(".report-accordion").attr("style", "margin-top:20px !important;");
+        });
     </script>
 {/if}
