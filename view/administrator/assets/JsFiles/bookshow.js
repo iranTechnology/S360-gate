@@ -1850,7 +1850,7 @@ function renderBookingCardsSimple(bookings) {
         const serviceClass = getCardServiceClass(serviceType);
         const serviceIcon = getCardServiceIcon(serviceType);
         const statusClass = getCardStatusClass(Object.values(booking['status'])[0]);
-        const errorData = booking['errorData'] ? booking['errorData'] : ''
+        const errorData = booking['errorData'] ? booking['errorData']['message_admin'] + ' ' + booking['errorData']['message_admin'] : ''
         const factorNumber = serviceType === 'اتوبوس' ? booking['request_number'] + ' - ' + booking['factor_number'] : booking['request_number']
         html += `
             <div class="booking-card">
@@ -1860,7 +1860,7 @@ function renderBookingCardsSimple(bookings) {
                         <span class="service-name">${serviceType}</span>
                     </div>
                      <div class="">
-                        <div class="info-value"  data-status="${Object.values(booking['status'])[0]}" data-error-message="${errorData.message_admin}"  onmouseover="showErrorMessage(this)">
+                        <div class="info-value"  data-status="${Object.values(booking['status'])[0]}" data-error-message="${errorData}"  onmouseover="showErrorMessage(this)">
                             <span class="status-badge ${statusClass}">${escapeCardHtml(booking['status'][0] || 'نامشخص')}</span>
                         </div>
                     </div>

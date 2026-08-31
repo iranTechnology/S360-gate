@@ -357,6 +357,12 @@
                             <button type="button" class="btn-filter-date " onclick="filterByDays(3 , event)">
                                سه روز قبل (<span id="threeDaysAgoDate"></span>)
                             </button>
+
+                            <button class="btn-filter-date " >
+                                <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/ticket/mainTicketHistory"  target="_blank" class="text-white">
+                                    همه
+                                </a>
+                            </button>
                         </div>
                     </div>
 

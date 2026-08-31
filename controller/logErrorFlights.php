@@ -18,8 +18,8 @@ class logErrorFlights extends clientAuth{
         $result_error = $result_error[0];
 //        $result_error['text_message'] = (TYPE_ADMIN=='1') ? functions::persianMessageFlightError($result_error['messageCode']).'---'.$result_error['message'] : $result_error['message_fa'];
         if (TYPE_ADMIN == '1') {
-            $result_error['text_message'] = (!empty($result_error['message_admin']))
-                ? $result_error['message_admin']
+            $result_error['text_message'] = (!empty($result_error['message_admin']) || !empty($result_error['messageAgency']))
+                ? array( 'messageAdmin' =>  $result_error['message_admin'] , 'messageAgency' =>  $result_error['message_agency'])
                 : 'به این خطای تامین کننده در سفر360 کدی تخصیص داده نشده ، لطفا در بخش لیست ارور های ادمین به تمامی ارور ها پیغام اختصاص دهید';
         } else {
             $result_error['text_message'] = $result_error['message_agency'];
