@@ -251,24 +251,24 @@
 
 
             let statement_pending_no_login = `
-<div class="error-flight-payment-box">
-    <div class="problem-icon">
-        <div class="icon-circle bg-warning">
-            <i class="fa-regular fa-arrows-rotate"></i>
-        </div>
-    </div>
-    <h2 class="problem-title">${useXmltag('pendingFlight')}</h2>
-    <p class="problem-subtitle">${useXmltag('moreTimeProcessFlight')}</p>
-    <div class="transaction-details-problem">
-        ${translateXmlByParams('messageProcessingFlight',{'paramProcess':'با ورود به حساب کاربری'})}
-    </div>
-    <div class="action-buttons">
-        <a href="${link_tracking}" class="btn-click btn-receipt">
-            <i class="fa-regular fa-house btn-icon"></i>
-            ${useXmltag('TrackOrder')}
-        </a>
-    </div>
-</div>
+                <div class="error-flight-payment-box">
+                    <div class="problem-icon">
+                        <div class="icon-circle bg-warning">
+                            <i class="fa-regular fa-arrows-rotate"></i>
+                        </div>
+                    </div>
+                    <h2 class="problem-title">${useXmltag('pendingFlight')}</h2>
+                    <p class="problem-subtitle">${useXmltag('moreTimeProcessFlight')}</p>
+                    <div class="transaction-details-problem">
+                        ${translateXmlByParams('messageProcessingFlight',{'paramProcess':'با ورود به حساب کاربری'})}
+                    </div>
+                    <div class="action-buttons">
+                        <a href="${link_tracking}" class="btn-click btn-receipt">
+                            <i class="fa-regular fa-house btn-icon"></i>
+                            ${useXmltag('TrackOrder')}
+                        </a>
+                    </div>
+                </div>
 `;
 
             let final_statement = (is_login) ? statement_pending_login : statement_pending_no_login ;

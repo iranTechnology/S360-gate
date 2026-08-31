@@ -1,10 +1,10 @@
 <?php
 
 //if($_SERVER['REMOTE_ADDR'] == '93.118.161.174') {
-//    error_reporting(1);
-//    error_reporting(E_ALL | E_STRICT);
-//    @ini_set('display_errors', 1);
-//    @ini_set('display_errors', 'on');
+    error_reporting(1);
+    error_reporting(E_ALL | E_STRICT);
+    @ini_set('display_errors', 1);
+    @ini_set('display_errors', 'on');
 //}
 
 class Admin extends baseController
