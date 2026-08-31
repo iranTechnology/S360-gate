@@ -27,7 +27,7 @@
                 </a>
             </div>
             <div class="item">
-                <a class="link-parent" href="javascript:">
+                <a class="link-parent" href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=157&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">
                     <div class="img-hotel">
                         <img alt="img-hotel" src="project_files/images/hotel-box-3.webp" />
                     </div>
