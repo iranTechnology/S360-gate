@@ -484,6 +484,7 @@ class articles extends positions
                 'categories' => json_encode($params['selected_category'], 256),
                 'updated_at' => date('Y-m-d H:i:s', time()),
                 'lead' => $params['lead'],
+                'selected' => 0,
             ];
 
             if ($params['section'] == 'mag') {
