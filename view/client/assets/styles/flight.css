@@ -2163,6 +2163,12 @@ div.SHR .logo-airline-ico {
     background-position: -482px -60px;
 }
 
+div.LMB .logo-airline-ico {
+    background-position: -481px 0;
+}
+
+
+
 .international-available-airlines-log-info > span {
     font-size: 14px;
     color: #666666;
@@ -5473,6 +5479,9 @@ div.VRH .logo-airline-ico-foreign {
 
 div.foreign.CPN .logo-airline-ico-foreign {
     background-position: 181px 120px;
+}
+div.CPN .logo-airline-ico {
+    background-position:-178px -118px;
 }
 
 div.foreign.ET .logo-airline-ico-foreign {

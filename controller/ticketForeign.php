@@ -336,11 +336,11 @@ class ticketForeign extends apiLocal
                                         </td>
                                         <td style="padding: 5px;" width="20%">
                                             <?php
-                                            echo 'FlightNumber/Aircraft:' . ' ' . $detail['FlightNumber'] . '/' . $detail['AircraftName'];
+                                            echo 'FlightNumber/Aircraft:' . ' ' . $detail['FlightNumber'] . (!empty($detail['AircraftName']) ? '/' . $detail['AircraftName'] : '');
                                             ?>
                                         </td>
 
-                                        <td style="padding: 5px;" width="25%" align="left">
+                                        <td style="padding: 5px;" width="20%" align="left">
                                             <?php
                                             echo 'Airline:' . ' ' . $this->InfoAirline($detail['Airline_IATA']) . '-' . $detail['Airline_IATA'] ;
                                             ?>
@@ -486,11 +486,13 @@ class ticketForeign extends apiLocal
 
 
                 </table>
-                <?php if(CLIENT_ID == 408){ ?>
-                    <table width="100%" align="center" style="margin: 10px 100px;"
+                <?php if (CLIENT_ID == 408) { ?>
+                    <table width="100%" align="center" style="margin: 10px 100px ;border:1px solid #6c6c6c  "
                            cellpadding="0" cellspacing="0" class="page">
-                        <tr style="">
+
+                        <tr style=" ">
                             <td style="padding: 5px;" align="right">
+
                                 <p>1- جریمه استرداد تا 30 دقيقه بعد از رزرو (فقط تا 16 ساعت قبل از پرواز) 0 درصد مي باشد.</p>
                                 <br/>
                                 <p>2- جریمه استرداد از زمان صدور بليت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</p>
@@ -507,10 +509,10 @@ class ticketForeign extends apiLocal
                                 <br/>
                                 <p>برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</p>
                                 <p>https://apstick.ir/api/DeepLink/Refund/V1?language=fa</p>
-
-
                             </td>
                         </tr>
+
+
                     </table>
                 <?php } ?>
 
@@ -537,7 +539,41 @@ class ticketForeign extends apiLocal
 
 
                 </table>
+                <?php if (CLIENT_ID != 408) { ?>
+                    <table width="100%" align="center" style="margin: 10px 100px ;border:1px solid #6c6c6c  "
+                           cellpadding="0" cellspacing="0" class="page">
 
+                        <tr style=" ">
+                            <td style="padding: 5px;" align="right">
+
+                                <p>حضور مسافر حداقل ۳ ساعت قبل از پرواز در فرودگاه الزامی است</p>
+                                <br/>
+                                <p> همراه داشتن مدرک شناسایی معتبر برای سوار شدن به هواپیما اجباری می باشد. </p>
+                                <br/>
+                                <p> اطلاع‌رسانی تأخیر، تعجیل یا کنسلی پرواز از طریق تماس یا پیامک با شماره همراه مسافر انجام می‌گردد. </p>
+                                <br/>
+                                <p> در صورت ابطال، تأخیر و تعجیل بیش از ۲ ساعت، ارائه اصل بلیط مهر شده از فرودگاه لازم است. </p>
+                                <br/>
+                                <p> برای خرید بلیط دو پرواز پیاپی، حداقل ۳ ساعت فاصله بین پرواز اول و دوم ضروری است. </p>
+                                <br/>
+                                <p> در صورت لغو پرواز رفت یا انصراف مسافر به دلیل تأخیر بیش از ۲ ساعت، پرواز برگشت ممکن است مشمول جریمه کنسلی شود. </p>
+                                <br/>
+                                <p> صدور بلیط عتبات عالیات برای اتباع افغانستان، هند، بنگلادش و پاکستان مجاز نیست و مسئولیت با کاربر است. </p>
+                                <br/>
+                                <p> مسئولیت بررسی ویزای مقصد و ترانزیت بر عهده مسافر است. </p>
+                                <br/>
+                                <p> پیش از خرید بلیط استانبول، از فرودگاه مبدأ پرواز (فرودگاه جدید استانبول یا صبیحه گوکچن) اطمینان حاصل فرمایید. </p>
+                                <br/>
+                                <p> جریمه کنسلی پروازهای سیستمی تابع قوانین ایرلاین و پروازهای چارتری تابع ضوابط چارترکننده است. </p>
+                                <br/>
+                                <p> جدول جریمه به شکل زیر است، اما امکان دارد در مواقعی خاص و بر اساس سیاست تامین کننده، تغییراتی داشته باشد. </p>
+                                <br/>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                <?php } ?>
                 <div style="margin: 10px 800px 0px 300px ; width: 90%">
                     <?php if($StampAgency != ROOT_ADDRESS_WITHOUT_LANG.'/pic/'){ ?>
                         <img src="<?php echo $StampAgency ?>" height="100" style="max-width: 230px;">
