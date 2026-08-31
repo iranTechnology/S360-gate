@@ -244,7 +244,7 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
 
             const reserveBtn = isReservation
                 ? `<a onclick="hotelDetail('${item.typeApp}','${item.HotelIndex}','${item.nameEnUrl}','${item.RequestNumber}','${nights}')" class="bookbtn mt1">${t.showReservation} ${svgArrow}</a>`
-                : `<a target="_blank" href="${single_detail_link}" class="bookbtn mt1"> ${t.showReservation} ${svgArrow}</a>`;
+                : `<a href="${single_detail_link}" class="bookbtn mt1"> ${t.showReservation} ${svgArrow}</a>`;
 
             const imgClick = `<a><img src="${item.pictureUrl}" alt="${item.HotelName}"></a>`;
 

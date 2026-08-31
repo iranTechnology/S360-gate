@@ -343,7 +343,12 @@
 					</h4>
 					<div class="mbb-detail">
 						<p class="clearfix txtCenter">
-							{if $objBookingNew->errorMessage neq ''}
+							{if isset($objBookingNew->hotelInfo['source_id']) && $objBookingNew->hotelInfo['source_id'] eq '46'}
+								<span class="txtCenter text-danger">
+									مسافر محترم، قیمت یا ظرفیت هتل تغییر کرده است. لطفا دقایق دیگر رزرو را دوباره انجام دهید
+								</span>
+
+							{elseif $objBookingNew->errorMessage neq ''}
 								<span class="txtCenter">{$objBookingNew->errorMessage}</span>
 							{else}
 								<span class="txtCenter">##Incasehotelreservationpleasecontactcompanyrefund##</span>
