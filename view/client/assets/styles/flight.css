@@ -10724,3 +10724,111 @@ process Flight cdd
 
     position: static !important;
 }
+
+
+.navigation-days {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    margin: 16px 0 40px 0;
+    flex-wrap: wrap;
+}
+
+.nav-day-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--mainColor, #007bff);
+    border: 1px solid var(--mainColor, #007bff);
+    border-radius: 50px;
+    color: #fff !important;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.nav-day-btn:hover:not(.disabled) {
+    background: var(--mainColor, #007bff);
+    border-color: var(--mainColor, #007bff);
+    color: #fff !important;
+    text-decoration: none;
+    transform: translateY(-1px);
+    opacity: 0.85;
+}
+
+.nav-day-btn:active:not(.disabled) {
+    transform: translateY(0);
+}
+
+.nav-day-btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #fff !important;
+}
+
+.nav-day-btn i {
+    font-size: 18px;
+    line-height: 1;
+    color: #fff;
+}
+
+.nav-day-prev i {
+    margin-left: -2px;
+}
+
+.nav-day-next i {
+    margin-right: -2px;
+}
+
+.nav-day-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 0 12px;
+    min-width: 120px;
+}
+
+.nav-day-date {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .navigation-days {
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .nav-day-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .nav-day-btn i {
+        font-size: 16px;
+    }
+
+    .nav-day-info {
+        min-width: 80px;
+        padding: 0 6px;
+    }
+
+    .nav-day-date {
+        font-size: 12px;
+    }
+}

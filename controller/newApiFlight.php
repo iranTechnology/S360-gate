@@ -153,6 +153,7 @@ class newApiFlight extends clientAuth
         $initialInformation['dataSearch']['DateFlightWithName'] = SOFTWARE_LANG == 'fa' ? functions::DateWithName($this->InfoSearch['departureDate']) : functions::DateWithName($this->InfoSearch['departure_date_en']);
         $initialInformation['dataSearch']['DateFlightReturnWithName'] = ($this->InfoSearch['MultiWay']=='TwoWay') ?SOFTWARE_LANG == 'fa' ? functions::DateWithName($this->InfoSearch['arrivalDate']) : functions::DateWithName($this->InfoSearch['arrival_date_en']) : null;
         $initialInformation['MultiWay'] = $this->InfoSearch['MultiWay'];
+        $initialInformation['classFlight'] = $this->InfoSearch['classFlight'];
         $initialInformation['Advertises'] = (array)functions::getConfigContentByTitle($this->isInternal ? 'local_flight_search_advertise' : 'external_flight_search_advertise');
         $initialInformation['next'] = functions::DateNext($this->InfoSearch['departureDate']);
         $initialInformation['prev'] = functions::DatePrev($this->InfoSearch['departureDate']);

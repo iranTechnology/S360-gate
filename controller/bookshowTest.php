@@ -10913,28 +10913,34 @@ class bookshowTest extends clientAuth {
         $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID ;
         $data_error = $this->getController('logErrorFlights')->getErrorMessage($data_flight['request_number'],$client_id);
 
-
         $classes =  in_array($data_error['messageCode'],$this->getCodeSpecialError()) ? 'colorSpecialError' : '';
         $text_btn = $this->titleBtnError($data_error,$data_flight);
 
-
         if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_flight['pid_private'] =='0'){
             $content_btn = functions::Xmlinformation('providerError');
-        }else{
+        }
+        else if($status_admin){
+            $content_btn = '<p><strong>ادمین</strong> : ' . $data_error['text_message']['messageAdmin'] . '</p>';
+            $content_btn .= '<p><strong>آژانس</strong> : ' . $data_error['text_message']['messageAgency'] . '</p>';
+        }
+        else{
             $content_btn = $data_error['text_message'];
         }
 
+        // اضافه کردن data-html="true" و escape کردن با addslashes
+        $content_btn_escaped = addslashes($content_btn);
 
-        return  '<a href="#"  onclick="return false;" class="btn btn-danger '. $classes .' cursor-default popoverBox w-90  popover-danger"
-                                               data-toggle="popover" title="'.$text_btn.'" data-placement="right"
-                                               data-content="'. $content_btn .'">'. $text_btn .'
-                                               <div style="display: none;" class="parent-ld">
-    '.functions::Xmlinformation('pendingPrintFlight'). $tempDeduction .'
+        return '<a href="#" onclick="return false;" class="btn btn-danger ' . $classes . ' cursor-default popoverBox w-90 popover-danger"
+           data-toggle="popover" 
+           data-html="true"
+           title="' . $text_btn . '" 
+           data-placement="right"
+           data-content="' . $content_btn_escaped . '">' . $text_btn . '
+           <div style="display: none;" class="parent-ld">
+' . functions::Xmlinformation('pendingPrintFlight') . $tempDeduction . '
   <div class="ld ld-ring ld-spin"></div>
-    </div>
-                                               </a>';
-
-
+</div>
+</a>';
     }
 
     private function btnErrorBus($data_bus){
