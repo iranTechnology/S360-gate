@@ -15,8 +15,7 @@
                                 <ul class="nav-dropdown nav-submenu">
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=65&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های مشهد مقدس</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/resultExternalHotel/iraq/Karbala/{$objDate->daysAfterToday('1')}/{$objDate->daysAfterToday('2')}/1/R:2-0-0">اقامتگاه های عراق</a></li>
-                                    <li><a href="javascript:">اقامتگاه های گیلان</a></li>
-                                    <li><a href="javascript:">اقامتگاه های مازندران</a></li>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=157&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های شمال</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=163&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های سازمانی</a></li>
                                 </ul>
                             </li>

@@ -1103,8 +1103,8 @@ $(document).ready(function () {
 
     $("#EditHotel").validate({
         rules: {
-            hotel_name: "required",
-            hotel_name_en: "required"
+            name: "required",
+            name_en: "required"
         },
         messages: {
 

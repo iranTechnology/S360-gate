@@ -119,7 +119,7 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                 text: 'تایید',
                 btnClass: 'btn-green',
                 action: async function () {
-                    let parentLoader = el.closest('td');
+                    let parentLoader = el.closest('td');parent-ld
                     let loader = parentLoader.querySelector('.parent-ld');
                     let loaderLd = parentLoader.querySelector('.ld');
                     loader.style.display = 'block';
