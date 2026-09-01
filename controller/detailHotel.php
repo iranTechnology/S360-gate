@@ -1755,7 +1755,7 @@ class detailHotel extends ApiHotelCore
                 $price_session_id = $book_hotel[0]['price_session_id'];
 
                 $roomsArray = $passengersArray = $buyerArray = [];
-
+                $seenRooms = [];
                 foreach ($book_hotel as $rk => $room) {
                     if ($type_application == 'externalApi' /*||( $book_hotel[0]['is_internal'] == '1' && substr($book_hotel[0]['hotel_id'],0,2) == '17') */) {
                         $roomsArray = [
@@ -1794,6 +1794,7 @@ class detailHotel extends ApiHotelCore
                     }else{
                         $birthday = ($room['passenger_birthday_en']) ? $room['passenger_birthday_en'] : dateTimeSetting::jalali_to_gregorian(explode('-', $room['passenger_birthday'])[0], explode('-', $room['passenger_birthday'])[1], explode('-', $room['passenger_birthday'])[2], '-');
                     }
+
                     $passengersArray[] = [
                         'Gender' => $room['passenger_gender'],
                         'FirstName' => $room['passenger_name'],
@@ -2007,6 +2008,24 @@ class detailHotel extends ApiHotelCore
         functions::insertLog(PHP_EOL . 'response with factor number ' . $factor_number . ' => ' . json_encode($HotelReserveRoom, 256 | 64), 'log_hotel_preReserve');
 
         if (!isset($HotelReserveRoom['Result'])) {
+
+            $MessageError = functions::ShowHotelError($HotelReserveRoom['Result']['Error']['Code']);
+            $errorsController = $this->getController('errors');
+            $errMsg = $errorsController->processError($HotelReserveRoom, 'hotel', 'book', $this->sourceId);
+            $data['message'] = $HotelReserveRoom['Result']['Error']['Message'] ?? $HotelReserveRoom['ErrorMessage'] ?? 'خطای نامشخص';
+            $data['messageFa'] = $MessageError;
+            $data['clientId'] = CLIENT_ID;
+            $data['messageCode'] = $HotelReserveRoom['Result']['Error']['Code'] ?? $HotelReserveRoom['ExceptionType'];
+            $data['request_number'] = $requestArray['RequestNumber'];
+            $data['factor_number'] = $factor_number;
+            $data['message_agency'] = $errMsg['displayAgency'];
+            $data['message_passenger'] = $errMsg['displayPassenger'];
+            $data['message_admin'] = $errMsg['displayAdmin'];
+            $data['action'] = 'Book';
+            $data['creation_date_int'] = time();
+
+            $this->getController('logErrorsHotels')->insertLogErrorHotels($data);
+
             return $this->showError('خطا در رزرو هتل. ', 400, $HotelReserveRoom);
         }
         if (isset($HotelReserveRoom['Result']['Error']) && !empty($HotelReserveRoom['Result']['Error'] ) && $HotelReserveRoom['Result']['Error']['Code'] != 'BK-417') {
@@ -2160,6 +2179,22 @@ class detailHotel extends ApiHotelCore
         $Reserve = json_decode(parent::Reserve($reserve_params), true);
 
         if (!isset($Reserve['Result'])) {
+            $MessageError = functions::ShowHotelError($Reserve['Result']['Error']['Code']);
+            $errorsController = $this->getController('errors');
+            $errMsg = $errorsController->processError($Reserve, 'hotel', 'reserve', $this->sourceId);
+            $data['message'] = $Reserve['Result']['Error']['Message'];
+            $data['messageFa'] = $MessageError;
+            $data['clientId'] = CLIENT_ID;
+            $data['messageCode'] = $Reserve['Result']['Error']['Code'];
+            $data['request_number'] =$requestNumber;
+            $data['factor_number'] = $hotel_details['factor_number'];
+            $data['message_agency'] = $errMsg['displayAgency'];
+            $data['message_passenger'] = $errMsg['displayPassenger'];
+            $data['message_admin'] = $errMsg['displayAdmin'];
+            $data['action'] = 'Reserve';
+            $data['creation_date_int'] = time();
+
+            $this->getController('logErrorsHotels')->insertLogErrorHotels($data);
             return $this->showError('خطا در رزرو اتاق. ', 400, $Reserve);
         }
 

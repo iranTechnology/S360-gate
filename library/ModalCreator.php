@@ -6534,9 +6534,10 @@ public function ModalShowBook($Param, $type) {
 
                             <?php foreach ($Tickets as $ticket) { ?>
                                 <div class="form-group col-md-4 col-lg-4 col-sm-12 col-xs-12 ">
-
-                                    <?php echo $ticket['passenger_name'] . ' ' . $ticket['passenger_family'] ?>
-
+                                    <input type="text" class="form-control"
+                                           value="<?php echo $ticket['passenger_name_en'] . ' ' . $ticket['passenger_family_en'] ?>"
+                                           name="passengerFullName"
+                                           id="passengerFullName" readonly="readonly"/>
                                 </div>
                                 <div class="form-group col-md-4 col-lg-4 col-sm-12 col-xs-12 ">
 
