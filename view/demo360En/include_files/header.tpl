@@ -4,11 +4,13 @@
 {load_presentation_object filename="functions" assign="objFunctions"}
 {load_presentation_object filename="frontMaster" assign="obj"}
 {load_presentation_object filename="dateTimeSetting" assign="objDate"}
+{load_presentation_object filename="partner" assign="objPartner"}
 {assign var="objFunctions" value=$objFunctions scope=parent}
 {assign var="obj" value=$obj scope=parent}
 {assign var="objDate" value=$objDate scope=parent}
 {assign var="obj_main_page" value=$obj_main_page scope=parent}
 {assign var="info_access_client_to_service" value=$obj_main_page->getInfoAuthClient() scope=parent}
+{assign var="favicon" value=$objPartner->getFavicon() scope=parent}
 
 {assign var='StyleSheetMain' value="StyleSheet" }
 
@@ -39,8 +41,9 @@
     {/if}
 
     <base href="{$smarty.const.CLIENT_DOMAIN}"/>
-<link href="project_files/images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
 
+    <link href="{$favicon}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="assets/plugins/camera/camera.css" rel="stylesheet"/>
 
     {* todo: this use in all page and all of them are necessary*}
 
@@ -51,14 +54,19 @@
 
 
     {* todo: this use only in main-page*}
-    <script src="project_files/js/jquery-3.4.1.min.js"></script>
+    <script src="project_files/js/jquery-3.4.1.min.js" type="text/javascript"></script>
     {*    <script crossorigin="anonymous" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>*}
+    <link href="assets/main-asset/css/main.css" rel="stylesheet"/>
 
     {if $smarty.const.GDS_SWITCH eq 'mainPage' || $smarty.const.GDS_SWITCH eq 'page'}
-        <link href="assets/main-asset/css/main.css" rel="stylesheet"/>
 <link rel="stylesheet" href="assets/all-css/owl.carousel.min.css">
 <link href="assets/css/jquery-confirm.min.css" rel="stylesheet">
-<link href="assets/datepicker/jquery-ui.min.css" rel="stylesheet" type="text/css">
+        {*    {if $smarty.const.GDS_SWITCH eq 'mainPage'}*}
+        <link type="text/css" rel="stylesheet" href="assets/datepicker-new/jquery-ui.min.css"/>
+        <link type="text/css" rel="stylesheet" href="assets/datepicker-new/price_calender.css"/>
+        {*    {else}*}
+        {*    <link type="text/css" rel="stylesheet" href="assets/datepicker/jquery-ui.min.css"/>*}
+        {*    {/if}*}
 <link href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
           var rootMainPath = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}';
@@ -74,21 +82,32 @@
           var query_param_get = JSON.parse('{$smarty.get|json_encode}');
         </script>
 <script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
-<!-- datepicker calendar -->
-<script type="text/javascript" src="assets/datepicker/jalali.js"></script>
-<script src="assets/datepicker/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="assets/datepicker/jquery.ui.core.js" type="text/javascript"></script>
-<script src="assets/datepicker/jquery.ui.datepicker-cc.js" type="text/javascript"></script>
-<script src="assets/datepicker/datepicker-scripts.js" type="text/javascript"></script>
-<script src="assets/datepicker/datepicker-declarations.js" type="text/javascript"></script>
 
+        {if $smarty.const.GDS_SWITCH eq 'mainPage' || $smarty.const.GDS_SWITCH eq 'page'}
+            {*        <script type="text/javascript" src="assets/datepicker-new/getRnagePrice.js"></script>*}
+            {*        <script type="text/javascript" src="assets/datepicker-new/jquery.cookie.min.js"></script>*}
+            {*        <script type="text/javascript" src="assets/datepicker-new/jquery.ui.core.js"></script>*}
+            {*        <script type="text/javascript" src="assets/datepicker-new/jquery.ui.datepicker-cc.js"></script>*}
+            {*        <script type="text/javascript" src="assets/datepicker-new/datepicker-scripts.js"></script>*}
+            {*        <script type="text/javascript" src="assets/datepicker-new/datepicker-declarations.js"></script>*}
+        {else}
 
-    {if $smarty.const.GDS_SWITCH eq 'mainPage'}
-    <link type="text/css" rel="stylesheet" href="assets/datepicker-new/jquery-ui.min.css"/>
-    <link type="text/css" rel="stylesheet" href="assets/datepicker-new/price_calender.css"/>
-    {else}
-    <link type="text/css" rel="stylesheet" href="assets/datepicker/jquery-ui.min.css"/>
+        {/if}
+        <script type="text/javascript" src="assets/datepicker/jalali.js"></script>
     {/if}
+
+        <!-- datepicker calendar -->
+
+        <script type="text/javascript" src="assets/datepicker/jquery.cookie.min.js"></script>
+        <script type="text/javascript" src="assets/datepicker/jquery.ui.core.js"></script>
+        <script type="text/javascript" src="assets/datepicker/jquery.ui.datepicker-cc.js"></script>
+        <script type="text/javascript" src="assets/datepicker/datepicker-scripts.js"></script>
+        <script type="text/javascript" src="assets/datepicker/datepicker-declarations.js"></script>
+
+
+
+
+
         <link rel="stylesheet" type="text/css" href="{$smarty.const.ROOT_LIBRARY}/{$StyleSheetMain}.php" media="screen"/>
         <script type="text/javascript">
           var rootMainPath = '{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}';
@@ -106,29 +125,12 @@
 
         <script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
 
-        <!-- datepicker calendar -->
-    {if $smarty.const.GDS_SWITCH eq 'mainPage'}
-        <script type="text/javascript" src="assets/datepicker-new/getRnagePrice.js"></script>
-        <script type="text/javascript" src="assets/datepicker-new/jquery.cookie.min.js"></script>
-        <script type="text/javascript" src="assets/datepicker-new/jquery.ui.core.js"></script>
-        <script type="text/javascript" src="assets/datepicker-new/jquery.ui.datepicker-cc.js"></script>
-        <script type="text/javascript" src="assets/datepicker-new/datepicker-scripts.js"></script>
-        <script type="text/javascript" src="assets/datepicker-new/datepicker-declarations.js"></script>
-    {else}
-        <script type="text/javascript" src="assets/datepicker/jquery.cookie.min.js"></script>
-        <script type="text/javascript" src="assets/datepicker/jquery.ui.core.js"></script>
-        <script type="text/javascript" src="assets/datepicker/jquery.ui.datepicker-cc.js"></script>
-        <script type="text/javascript" src="assets/datepicker/datepicker-scripts.js"></script>
-        <script type="text/javascript" src="assets/datepicker/datepicker-declarations.js"></script>
-    {/if}
 
-    {/if}
-    
 
 
 
     {if $smarty.const.GDS_SWITCH neq 'mainPage' }
-        
+
 <link href="project_files/css/{$StyleSheetHeader}" rel="stylesheet"/>
         {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentHead.tpl"}
     {/if}

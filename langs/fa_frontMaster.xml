@@ -3929,4 +3929,8 @@
   <flightInternatiol>پرواز بین المللی</flightInternatiol>
   <flightInternalToAirport>پرواز ورودی به فرودگاه</flightInternalToAirport>
   <flightInternationalToAirport>پرواز خروجی از فرودگاه</flightInternationalToAirport>
+  <BasePriceFlight>قیمت پایه</BasePriceFlight>
+  <TaxesAndLevies>مالیات و عوارض</TaxesAndLevies>
+  <AgencyCommission>کمیسیون آژانس</AgencyCommission>
+  <ForAPeriodOf>بمدت</ForAPeriodOf>
 </Main>

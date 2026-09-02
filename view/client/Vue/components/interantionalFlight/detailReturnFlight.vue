@@ -85,7 +85,7 @@
                            {{ detail_flight.arrival.arrival_city}}({{ detail_flight.arrival.arrival_airport}})
                         </span>
                       </span>
-              <span>بمدت</span>
+              <span>{{useXmltag('ForAPeriodOf')}}</span>
               <span class="open  lh25 displayib fltl">
                  {{ formatTimeHM(detail_flight.transit) }}
                     </span>

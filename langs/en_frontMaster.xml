@@ -3449,4 +3449,8 @@
   <flightInternatiol>flightInternatiol</flightInternatiol>
   <flightInternalToAirport>flight Internal To Airport</flightInternalToAirport>
   <flightInternationalToAirport>flight International To Airport</flightInternationalToAirport>
+  <BasePriceFlight>Base Price</BasePriceFlight>
+  <TaxesAndLevies>Taxes and Levies</TaxesAndLevies>
+  <AgencyCommission>Agency commission</AgencyCommission>
+  <ForAPeriodOf>For a period of</ForAPeriodOf>
 </Main>

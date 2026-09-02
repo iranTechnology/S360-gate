@@ -1400,7 +1400,7 @@ function internalHotelSearchDetails() {
                      }
                      if (item.type_application == 'reservation') {
                         if (hotelPrice > 0) {
-                           single_detail_link = `${amadeusPathByLang}roomHotelLocal/reservation/${hotelIndex}/${item.hotel_name_en}${rooms_query_param}`
+                           single_detail_link = `${amadeusPathByLang}roomHotelLocal/reservation/${hotelIndex}/${item.hotel_name_en}/${rooms_query_param}`
                            onClickAttr = `hotelDetail('reservation', '${hotelIndex}', '${item.hotel_name_en}','','',$(this))`
 
                         } else {

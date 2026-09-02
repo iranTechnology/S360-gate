@@ -114,7 +114,7 @@ class factorHotelNew extends detailHotel {
                 do {
                     $finally_room_people = $room_count_number . $i;
                     functions::insertLog('finally_room_people = ' . $finally_room_people,'room_count_number');
-                    if ( $typeApplication == 'externalApi' ||($typeApplication=='api' && ($sourceId=='17' || $sourceId=='29') ) ) {
+                    if ( $typeApplication == 'externalApi' ||($typeApplication=='api' && ($sourceId=='17' || $sourceId=='29' || $sourceId=='46') ) ) {
 
                        if($sourceId!='46'){
                            $Id_Select_Room=$_POST[ 'Id_Select_Room' . $room_count_number ];

@@ -192,7 +192,7 @@
                                 </div>
 
                                 <div class="s-u-result-item-div s-u-result-content-item-div-change d-flex gap-2 justify-content-center">
-                                    <span>{$objDetail->AirlineName[$direction]} ({$objDetail->FlightNo[$direction]})</span>
+                                    <span>{$objDetail->Airline_IATA[$direction]} ({$objDetail->FlightNo[$direction]})</span>
 
                                 </div>
                             </div>
