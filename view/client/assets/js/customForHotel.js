@@ -1514,11 +1514,24 @@ function internalHotelSearchDetails() {
                                       ${number_format(parseInt(hotelStricke))}
                                       </span> ${rabonfinal}
                                       </div>` : ''}
+                                                              
+`
+
+                         mainItem += `
                                 <div class="price_main">
                                  <span class='CurrencyText'>${item.price_currency.TypeCurrency}</span>
                                   ${mainPrice}
                                 </div>
 `
+
+                         if (item.maxDiscount !== null && item.maxDiscount !== undefined && item.maxDiscount > 0) {
+                             mainItem += `
+        <span class="discount-percentage mb-md-2 mr-md-0 mr-2">
+تخفیف تا 
+${item.maxDiscount} درصد</span>
+    `;
+                         }
+
                      }
                      var mainButton = ''
                      if (item.type_application == 'reservation') {
