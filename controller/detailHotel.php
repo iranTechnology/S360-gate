@@ -1724,8 +1724,11 @@ class detailHotel extends ApiHotelCore
             $book_hotel = $book_model->get()->where('factor_number', $factor_number);
             $hotel_source = $book_hotel->find();
 
-            if($hotel_source['source_id'] != '17' &&  $hotel_source['source_id'] != '29') {
-                if ($type_application == 'api' && (substr($params['hotel_id'], 0, 2) != '17') || (substr($params['hotel_id'], 0, 2) != '29') || $type_application == 'api_app') {
+            if($hotel_source['source_id'] != '46' &&  $hotel_source['source_id'] != '17' &&  $hotel_source['source_id'] != '29') {
+                if ($type_application == 'api' &&
+                    (substr($params['hotel_id'], 0, 2) != '17') ||
+                    (substr($params['hotel_id'], 0, 2) != '29') ||
+                    $type_application == 'api_app') {
                     $book_hotel = $book_hotel->groupBy('room_id');
                 }
             }
@@ -1796,10 +1799,10 @@ class detailHotel extends ApiHotelCore
                     }
                     $passengersArray[] = [
                         'Gender' => $room['passenger_gender'],
-                        'FirstName' => $room['passenger_name'],
-                        'FirstNameEn' => $room['passenger_name_en'],
-                        'LastName' => $room['passenger_family'],
-                        'LastNameEn' => $room['passenger_family_en'],
+                        'FirstName'    => $room['passenger_name'],
+                        'FirstNameEn'  => !empty($room['passenger_name_en']) ? $room['passenger_name_en'] : (!empty($room['passenger_name']) ? $room['passenger_name'] : $room['passenger_gender']),
+                        'LastName'     => $room['passenger_family'],
+                        'LastNameEn'   => !empty($room['passenger_family_en']) ? $room['passenger_family_en'] : (!empty($room['passenger_family']) ? $room['passenger_family'] : 'Passenger'),
                         'Birthday' => $room['passenger_birthday'],
                         'RoomIndex' => ($room['room_index'] + 1),
                         'NationalCode' => $room['passenger_national_code'],
@@ -2002,9 +2005,12 @@ class detailHotel extends ApiHotelCore
         $factor_number = $requestArray['FactorNumber'];
         //		unset( $requestArray['FactorNumber'] );
         functions::insertLog(PHP_EOL . 'request with factor number ' . $factor_number . ' AND data ' . json_encode($requestArray, 256 | 64) . ' => ', 'log_hotel_preReserve');
+        functions::insertLog( 'request with factor number==>'.$factor_number.print_r($requestArray, true)." \n", '0ardalani' );
+
         $HotelReserveRoom = json_decode(parent::Book($requestArray), true);
 
         functions::insertLog(PHP_EOL . 'response with factor number ' . $factor_number . ' => ' . json_encode($HotelReserveRoom, 256 | 64), 'log_hotel_preReserve');
+        functions::insertLog( 'response with factor number==>'.$factor_number.print_r($HotelReserveRoom, true)." \n", '0ardalani' );
 
         if (!isset($HotelReserveRoom['Result'])) {
             return $this->showError('خطا در رزرو هتل. ', 400, $HotelReserveRoom);

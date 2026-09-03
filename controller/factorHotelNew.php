@@ -86,14 +86,18 @@ class factorHotelNew extends detailHotel {
 
 
         $sourceId = $objClientAuth->sourceId;
-        $temporaryRoomId = isset($_POST['Temporary_Room_Id']) ?  $_POST['Temporary_Room_Id'] : 0;
-        if ($temporaryRoomId != '0'){
-            $sourceId ='46';
-            if($temporaryRoomId==0) {
-                  $this->error = true;
-                  $this->errorMessage = 'اطلاعات اتاق برای رزرو هتل خارجی معتبر نیست.';
-                  return;
-            }
+        $temporaryRoomId = isset($_POST['Temporary_Room_Id'])
+            ? $_POST['Temporary_Room_Id']
+            : 0;
+
+        if (!empty($temporaryRoomId) && $temporaryRoomId != '0') {
+            $sourceId = '46';
+        }
+
+        if ($sourceId == '46' && empty($temporaryRoomId)) {
+            $this->error = true;
+            $this->errorMessage = 'اطلاعات اتاق برای رزرو هتل خارجی معتبر نیست.';
+            return;
         }
 
 
@@ -116,31 +120,31 @@ class factorHotelNew extends detailHotel {
                     functions::insertLog('finally_room_people = ' . $finally_room_people,'room_count_number');
                     if ( $typeApplication == 'externalApi' ||($typeApplication=='api' && ($sourceId=='17' || $sourceId=='29' || $sourceId=='46') ) ) {
 
-                       if($sourceId!='46'){
-                           $Id_Select_Room=$_POST[ 'Id_Select_Room' . $room_count_number ];
-                           $price_rooms = $this->temporaryHotelLocalModel()->get( [
-                               'id',
-                               'room_index',
-                               'is_internal',
-                               'type_of_price_change',
-                               'agency_commission_price_type',
-                               'SUM(agency_commission) AS agency_commission_sum',
-                               'agency_commission',
-                               'SUM(price_online_current) AS price_online_current_sum',
-                               'price_online_current',
-                               'SUM(price_board_current) AS price_board_current_sum',
-                               'price_board_current',
-                               'SUM(price_current) AS price_current_sum',
-                               'price_current',
-                               'SUM(price_foreign_current) AS price_foreign_current_sum',
-                               'price_foreign_current',
-                           ] )
-                               ->where( 'factor_number', $factorNumber )
-                               ->where( 'room_id', $Id_Select_Room )
-                               ->groupBy( 'room_index' )
-                               ->all();
+                        if($sourceId!='46'){
+                            $Id_Select_Room=$_POST[ 'Id_Select_Room' . $room_count_number ];
+                            $price_rooms = $this->temporaryHotelLocalModel()->get( [
+                                'id',
+                                'room_index',
+                                'is_internal',
+                                'type_of_price_change',
+                                'agency_commission_price_type',
+                                'SUM(agency_commission) AS agency_commission_sum',
+                                'agency_commission',
+                                'SUM(price_online_current) AS price_online_current_sum',
+                                'price_online_current',
+                                'SUM(price_board_current) AS price_board_current_sum',
+                                'price_board_current',
+                                'SUM(price_current) AS price_current_sum',
+                                'price_current',
+                                'SUM(price_foreign_current) AS price_foreign_current_sum',
+                                'price_foreign_current',
+                            ] )
+                                ->where( 'factor_number', $factorNumber )
+                                ->where( 'room_id', $Id_Select_Room )
+                                ->groupBy( 'room_index' )
+                                ->all();
 
-                       }
+                        }
                         else{
                             $Id_Select_Room=$temporaryRoomId;
                             $price_rooms = $this->temporaryHotelLocalModel()->get( [
@@ -198,10 +202,10 @@ class factorHotelNew extends detailHotel {
                                 $adult[ $i ]['Id_Select_Room']                 = $Id_Select_Room;
                                 $adult[ $i ]['passenger_age']                  = 'Adt';
 
-                                if ( isset( $_POST[ "timeEnteringRoom" . $finally_room_people ] ) ) {
-                                    $adult[ $i ]['time_entering_room'] = $_POST[ "timeEnteringRoom" . $i ];
+                                if (isset($_POST["timeEnteringRoom" . $finally_room_people])) {
+                                    $adult[$i]['time_entering_room'] =
+                                        $_POST["timeEnteringRoom" . $finally_room_people];
                                 }
-
                                 $adult[ $i ]['room_price']        = $price_room['price_current'];
                                 $adult[ $i ]['room_bord_price']   = $price_room['price_board_current'];
                                 $adult[ $i ]['room_online_price'] = $price_room['price_online_current'];
@@ -300,8 +304,10 @@ class factorHotelNew extends detailHotel {
                             $adult_arr['passenger_leader_room_fullName'] = $_POST["passenger_leader_room_fullName"];
                             $adult_arr['BedType']                        = $_POST[ "BedType" .$room_count_number.$i ];
                             $adult_arr['Id_Select_Room']                 = $_POST[ "Id_Select_Room" . $room_count_number.$i ];
-                            if ( isset( $_POST[ "timeEnteringRoom" . $room_count_number.$i ] ) ) {
-                                $adult_arr['time_entering_room'] = $_POST[ "timeEnteringRoom" . $room_count_number.$i ];
+
+                            if (isset($_POST["timeEnteringRoom" . $room_count_number . $c])) {
+                                $child_insert[$c]['time_entering_room'] =
+                                    $_POST["timeEnteringRoom" . $room_count_number . $c];
                             }
 
                             $adult_arr['room_price']        = $price_room['price_current_sum'];
@@ -367,20 +373,56 @@ class factorHotelNew extends detailHotel {
 
                 do {
 
-                    if ( $typeApplication == 'externalApi' ) {
-                        $price_rooms = $this->temporaryHotelLocalModel()->get( [
-                            'id',
-                            'room_index',
-                            'is_internal',
-                            'type_of_price_change',
-                            'agency_commission_price_type',
-                            'agency_commission AS agency_commission_sum',
-                            'price_online_current  AS price_online_current_sum',
-                            'price_board_current AS price_board_current_sum',
-                            'price_current AS price_current_sum',
-                            'price_foreign_current AS price_foreign_current_sum'
-                        ] )->where( 'factor_number', $factorNumber )->where( 'room_id', $_POST[ 'Id_Select_Room' . $room_count_number ] )->groupBy( 'room_index' )->all()
-                        ;
+                    if (
+                        $typeApplication == 'externalApi'
+                        || (
+                            $typeApplication == 'api'
+                            && ($sourceId == '46')
+                        )
+                    ) {
+                        if ($sourceId == '46') {
+                            $Id_Select_Room_Child = $temporaryRoomId;
+
+                            $price_rooms = $this->temporaryHotelLocalModel()->get([
+                                'id',
+                                'room_index',
+                                'is_internal',
+                                'type_of_price_change',
+                                'agency_commission_price_type',
+                                'agency_commission AS agency_commission_sum',
+                                'price_online_current AS price_online_current_sum',
+                                'price_board_current AS price_board_current_sum',
+                                'price_current AS price_current_sum',
+                                'price_foreign_current AS price_foreign_current_sum'
+                            ])
+                                ->where('factor_number', $factorNumber)
+                                ->where('room_id', $temporaryRoomId)
+                                ->where('source_id', '46')
+                                ->groupBy('room_index')
+                                ->all();
+                        } else {
+                            $Id_Select_Room_Child = $_POST[
+                            'Id_Select_Room' . $room_count_number
+                            ];
+
+                            $price_rooms = $this->temporaryHotelLocalModel()->get([
+                                'id',
+                                'room_index',
+                                'is_internal',
+                                'type_of_price_change',
+                                'agency_commission_price_type',
+                                'agency_commission AS agency_commission_sum',
+                                'price_online_current AS price_online_current_sum',
+                                'price_board_current AS price_board_current_sum',
+                                'price_current AS price_current_sum',
+                                'price_foreign_current AS price_foreign_current_sum'
+                            ])
+                                ->where('factor_number', $factorNumber)
+                                ->where('room_id', $Id_Select_Room_Child)
+                                ->groupBy('room_index')
+                                ->all();
+                        }
+
 
                         foreach ( $price_rooms as $price_room ) {
                             if ( ! empty( $price_room ) && $price_room['price_current_sum'] > 0 ) {
@@ -406,7 +448,7 @@ class factorHotelNew extends detailHotel {
                                 $child_insert[ $c ]['passenger_leader_room']          = $_POST["passenger_leader_room"];
                                 $child_insert[ $c ]['passenger_leader_room_fullName'] = $_POST["passenger_leader_room_fullName"];
                                 $child_insert[ $c ]['BedType']                        = $_POST[ "BedType" . $room_count_number . $c ];
-                                $child_insert[ $c ]['Id_Select_Room']                 = $_POST[ "Id_Select_Room" . $room_count_number ];
+                                $child_insert[ $c ]['Id_Select_Room']                 = $Id_Select_Room_Child;
                                 $child_insert[ $c ]['passenger_age']                  = 'Chd';
 
                                 if ( isset( $_POST[ "timeEnteringRoom" . $c ] ) ) {
