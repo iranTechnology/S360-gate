@@ -1725,10 +1725,11 @@ class detailHotel extends ApiHotelCore
             $hotel_source = $book_hotel->find();
 
             if($hotel_source['source_id'] != '46' &&  $hotel_source['source_id'] != '17' &&  $hotel_source['source_id'] != '29') {
-                if ($type_application == 'api' &&
-                    (substr($params['hotel_id'], 0, 2) != '17') ||
+                if (
+                    ($type_application == 'api' && substr($params['hotel_id'], 0, 2) != '17') ||
                     (substr($params['hotel_id'], 0, 2) != '29') ||
-                    $type_application == 'api_app') {
+                    $type_application == 'api_app'
+                ) {
                     $book_hotel = $book_hotel->groupBy('room_id');
                 }
             }
