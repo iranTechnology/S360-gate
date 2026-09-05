@@ -21,6 +21,10 @@
     /* border-radius: 50%; */ /* برای گرد کردن دستگیره */
 }
 
+ul {
+    padding-right: 0;
+}
+
 .vue-slider-dot-tooltip {
     display: none;
 }
@@ -937,7 +941,7 @@ input {
 
 .s-u-jalali-change i {
     position: absolute;
-    left: 5px;
+    right: 5px;
     pointer-events: none;
     font-size: 20px;
     cursor: pointer;
@@ -2316,6 +2320,7 @@ div.LMB .logo-airline-ico {
     width: 25px;
     fill: currentColor;
     color: #c4c4c4;
+    transform: rotate(180deg);
 }
 
 .loc-icon-destination {
@@ -2425,17 +2430,21 @@ h5.raft-ticket::before, h5.bargasht-ticket::before {
     text-align:center
 }
 .international-available-airlines-info span.flight-type {
-    position: absolute;
-    top: 0;
-    border: 1px solid #ccc;
-    color: #aaa;
-    border-top: none;
+    /*position: absolute;*/
+
+    border: none !important;
+    color: #333;
     z-index: 1;
-    left: calc(50% - 40px);
-    width: 80px;
-    border-radius: 0 0 3px 3px;
-    padding: 0;
-    font-size: 10px;
+    /*left: calc(50% - 40px);*/
+    border-radius: 50px;
+    font-size: 12px;
+    /*transform: translateX(-50%);*/
+    margin-left: -10px;
+    background: #f2f2f2;
+    min-width: 70px;
+    padding: 2px 6px;
+    left: -42%;
+
 }
 
 .flight-type-div {
@@ -2691,6 +2700,9 @@ ul.tabs.tabs-1 li.tab-link.current {
     position: relative;
     text-align: left;
     padding: 4px 0;
+}
+.international-available-airlines-detail-tittle span > svg {
+    transform: rotate(180deg);
 }
 .international-available-airlines-info-detail.my-info-detail > span em,
 .international-available-airlines-info-detail.side-logo-detail > span em{
@@ -3804,7 +3816,6 @@ margin-right: 5px;
     font-size: 14px;
     transition: all ease .3s;
     background: #f9f9f9;
-    direction: inherit;
 }
 
 .noneIranian .select2-container .select2-selection--single .select2-selection__rendered {
@@ -3900,7 +3911,7 @@ margin-right: 5px;
 .btn_research__ {
     position: absolute;
     top: 10px;
-    left: 10px;
+    right: 10px;
     z-index: 10;
 }
 
@@ -4764,6 +4775,7 @@ margin-right: 5px;
 .foreign .date-time {
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 .foreign .date-time .date-flight {
     font-weight: 500;
@@ -8967,10 +8979,11 @@ process Flight cdd
     width: 14px;
     transition: all ease .3s;
     fill: #fff;
+    transform: rotate(180deg);
 }
 
 .price-btn--new:hover svg {
-    transform: translateX(-5px);
+    transform: translateX(5px) rotate(180deg);
 }
 
 .svg-arrow--btn {
@@ -9217,8 +9230,8 @@ process Flight cdd
 
 /* RTL support */
 [dir="rtl"] .clear-input {
-    right: auto;
-    left: 12px;
+    left: auto;
+    right: 12px;
 }
 
 /* Tabs header – شبیه تب‌های کارت */
@@ -9525,6 +9538,7 @@ process Flight cdd
 }
 
 .flight-date-mildai {
+    display: none;
     font-size: 15px;
     color: #333 !important;
     font-family: inherit;
@@ -9600,7 +9614,7 @@ process Flight cdd
 .sidebar-panel {
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
     width: 100%;
     max-width: 560px;
     height: 100%;
@@ -9616,7 +9630,7 @@ process Flight cdd
 
 /* حالت باز */
 .sidebar-panel.open {
-    left: 0;
+    right: 0;
     transform: translateX(0) !important;
 }
 
@@ -9636,12 +9650,16 @@ process Flight cdd
     align-items: center;
     padding: 15px;
     border-bottom: 1px solid #eee;
-
+    flex-direction: row-reverse;
 }
 
 .sidebar-header-title {
     font-family: inherit;
     font-size: 19px
+}
+
+.sidebar-header-title .sidebar-close-btn {
+    display: none;
 }
 
 .sidebar-close-btn {

@@ -1609,10 +1609,11 @@ class apiLocal extends clientAuth
         }
 
 
-        $url = $this->apiAddress . "Flight/Book/{$RequestNumber}";\
+        $url = $this->apiAddress . "Flight/Book/{$RequestNumber}";
         $info_json_passengers = json_encode($data);
 
         $book = $this->curlExecution($url, $info_json_passengers, 'yes');
+
 
         error_log('try show result Request Client In Book in : ' . date('Y/m/d H:i:s') . '   Request equal in With SourceId=>' . $sourceId . 'AND  RequestNumber : => ' . $RequestNumber . ': ' . $info_json_passengers . " \n" . "Response equal in With RequestNumber=>" . $RequestNumber . ":" . " " . json_encode($book, true) . " \n", 3, LOGS_DIR . 'log_Request_Response_Book.txt');
 
@@ -2117,7 +2118,7 @@ class apiLocal extends clientAuth
 
 
             if (!empty($Reserve) && $Reserve['Result']['ProviderStatus'] == 'Success' && $Reserve['Result']['Request']['Status'] == 'Ticketed') {
-                error_log('success Reserve===>' . date('Y/m/d H:i:s') . '=>' . $RequestNumber, 3, LOGS_DIR . 'log_method_reserve.txt');
+                error_log('success Reserve===>' . date('Y/m/d H:i:s') . '=>' . $RequestNumber . " \n", 3, LOGS_DIR . 'log_method_reserve.txt');
 
 
                 $email_buyer = $book['email_buyer'];

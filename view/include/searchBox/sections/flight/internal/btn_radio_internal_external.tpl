@@ -19,7 +19,7 @@
                id="raft">
         <label for="raft"
                class="switch-label switch-label-off">
-            ##Internal##
+            ##Iran##
         </label>
         <span class="switch-selection"></span>
     </div>

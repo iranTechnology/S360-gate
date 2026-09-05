@@ -157,11 +157,11 @@
 
              const [h, m] = time.split(':').map(Number);
 
-             if (h === 0) {
-                return `${m} دقیقه`;
-             }
+            if (h === 0) {
+              return `${m} ${useXmltag('Minute')}`;
+            }
 
-             return `${h} ساعت و ${m} دقیقه`;
+            return `${h} ${useXmltag('timeand')} ${m} ${useXmltag('Minute')}`;
           }
         }
 

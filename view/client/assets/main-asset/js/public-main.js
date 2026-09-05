@@ -296,7 +296,7 @@ function templateFake(content_modal_fake,header) {
                 ${content_modal_fake}
               </div>
             </div>
-          <div class="modal-footer"><button type="button" aria-hidden="true" class="btn btn-primary site-bg-main-color site-bg-color-dock-border" data-dismiss="modal" aria-label="Close">بستن</button></div>
+          <div class="modal-footer"><button type="button" aria-hidden="true" class="btn btn-primary site-bg-main-color site-bg-color-dock-border" data-dismiss="modal" aria-label="Close">${useXmltag("Close")}</button></div>
         
 `
   return modal_fake

@@ -73,7 +73,7 @@
             <span class="timeout-modal__title site-main-text-color">##Endofsearchtime##!</span>
 
             <p class="timeout-modal__flight">
-                به منظور بروزرسانی قیمت ها و پرواز ها، لطفا جستجوی خود را از ابتدا انجام دهید.
+                ##searchContentLoader##
             </p>
             <button onclick="BackToHome('{$objDetail->reSearchAddress}'); return false" type="button"
                     class="loading_on_click btn btn-research site-bg-main-color">
@@ -1358,8 +1358,8 @@
                                                     </p>
                                                                         {/if}
 
-                                                    <p class="speratopr-foraign"> / </p>
-												<p class="foreign-date float-right">( {$objFunctions->dateFormatSpecialMiladi($detailTicketForeign['oneTrip'][1]['ArrivalDate'],'jM')} )</p>
+{*                                                    <p class="speratopr-foraign"> / </p>*}
+												<p class="foreign-date float-right"> {$objFunctions->dateFormatSpecialMiladi($detailTicketForeign['oneTrip'][1]['ArrivalDate'],'jM')} </p>
 												</span>
                                                             {/if}
                                                             <span class="time-flight">{$detailTicketForeign['oneTrip'][($objDetail->countRoute[$direction] - 1)]['ArrivalTime']|substr:0:5}</span>

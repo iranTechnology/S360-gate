@@ -64,7 +64,7 @@
 {*                    <a class="button_header d-none d-lg-flex" href="{$smarty.const.ROOT_ADDRESS}/UserTracking"><span>Purchase tracking</span></a>*}
                     <a class="__login_register_class__ button_header logIn
 {if $obj_main_page->isLogin()}show-box-login-js main-navigation__button2{else}main-navigation__button1{/if}"
-                       href="{if $obj_main_page->isLogin()}javascript:{else}{$smarty.const.ROOT_ADDRESS}/authenticate{/if}"
+                       href="{if $obj_main_page->isLogin()}javascript:{else}{$smarty.const.ROOT_ADDRESS}/loginUser{/if}"
                     >
                         <i>
                             <svg viewbox="0 0 448 512">

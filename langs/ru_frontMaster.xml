@@ -525,6 +525,7 @@
   <Typepassenger>Тип пассажирского</Typepassenger>
   <Membershipnumber>Номер членства</Membershipnumber>
   <Identificationnumber>Идентификационный номер</Identificationnumber>
+  <DepartureDate>Дата отъезда</DepartureDate>
   <Returndate>Дата возвращения</Returndate>
   <Exitdate>Дата выхода</Exitdate>
   <Typeidentitydocument>Тип файла идентификации</Typeidentitydocument>
@@ -805,7 +806,7 @@
   <Depositamount>Сумма депозита</Depositamount>
   <Lunch>обед</Lunch>
   <Timemorning>Утро</Timemorning>
-  <Timedawn>Утро</Timedawn>
+  <Timedawn>Рассвет</Timedawn>
   <Timenight>Ночь</Timenight>
   <EachTimenight>каждую ночь</EachTimenight>
   <Timeevening>Вечер</Timeevening>
@@ -3133,5 +3134,10 @@
   <TaxesAndLevies>Налоги и сборы</TaxesAndLevies>
   <AgencyCommission>Агентская комиссия</AgencyCommission>
   <ForAPeriodOf>В течение</ForAPeriodOf>
+  <InformationSalerInfo>Контактная информация покупателя</InformationSalerInfo>
+  <AdultInfo>Информация о взрослом пассажире</AdultInfo>
+  <ChildInfo>Информация о перевозке детей</ChildInfo>
+  <BabyInfo>Информация о пассажире-младенце</BabyInfo>
+  <SearchForPurchase>Поиск покупок</SearchForPurchase>
 </Main>
 

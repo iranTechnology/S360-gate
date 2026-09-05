@@ -61,18 +61,7 @@
                     <div class="box-item-footer text-right">
                         <h3>Services</h3>
                         <ul>
-                            <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/InternalFlight">
-                                    <i class="fal fa-angle-left"></i>
-                                    Local Flight
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/ExternalFlight">
-                                    <i class="fal fa-angle-left"></i>
-                                    International Flight
-                                </a>
-                            </li>
+
                             <li>
                                 <a href="{$smarty.const.ROOT_ADDRESS}/page/Flight">
                                     <i class="fal fa-angle-left"></i>

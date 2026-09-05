@@ -715,11 +715,13 @@ class newApiFlight extends clientAuth
     //region [getDataPackage]
 
     public function dataTranslate() {
+
         $data['business_type'] = functions::Xmlinformation("BusinessType")->__toString();
         $data['economics_type'] = functions::Xmlinformation("EconomicsType")->__toString();
         $data['premium_economy_type'] = functions::Xmlinformation("premiumEconomy")->__toString();
         $data['system_flight'] = functions::Xmlinformation("SystemType")->__toString();
         $data['charter_flight'] = functions::Xmlinformation("CharterType")->__toString();
+        $data['Timedawn'] = functions::Xmlinformation("Timedawn")->__toString();
         $data['morning'] = functions::Xmlinformation("Morning")->__toString();
         $data['day'] = functions::Xmlinformation("Day")->__toString();
         $data['evening'] = functions::Xmlinformation("Evening")->__toString();
@@ -1610,7 +1612,7 @@ class newApiFlight extends clientAuth
             $hours += $interval->days * 24;
         }
 
-        return $hours . ' ساعت ' . $minutes . ' دقیقه';
+        return $hours . ' ' . functions::Xmlinformation( "Hour" ) . ' ' . $minutes . ' ' . functions::Xmlinformation( "Minutes" );
     }
 
     private function extractBaggageInfo($baggage) {
@@ -1629,8 +1631,8 @@ class newApiFlight extends clientAuth
         $type = isset($baggageItem['Type']) ? $baggageItem['Type'] : '';
         $code = isset($baggageItem['Code']) ? $baggageItem['Code'] : '';
         $weightType = strtoupper(trim(substr(strrchr($baggageItem['Charge'], ' '), 1)));
-        $weightUnit = ($weightType == 'PC') ? ' چمدان ' : ' کیلوگرم ';
-        $weightDisplay = $weight > 0 ? $weight . $weightUnit  : 'بدون بار';
+        $weightUnit = ($weightType == 'PC') ? ' ' . functions::Xmlinformation( "Suitcase" ) . ' ' : ' ' . functions::Xmlinformation( "Kilograms" ) . ' ';
+        $weightDisplay = $weight > 0 ? $weight . $weightUnit  : functions::Xmlinformation( "NoBaggage" )->__toString();
         if(CLIENT_ID == 408){
             $weightDisplay = $weight > 0 ? $weight . $weightUnit  : ' 25 کیلوگرم';
         }
@@ -2608,16 +2610,18 @@ class newApiFlight extends clientAuth
      */
     private function filterInternationalFlight($translateVariable, $options = null)
     {
-        return array('request_number' => $this->UniqueCode, 'count_flight' => $this->count, 'name_departure' => $this->originName, 'name_arrival' => $this->destinationName, 'interrupt' => array('no_interrupt' => array('name_fa' => $translateVariable['no_interrupt'], 'name_en' => 'no_interrupt',), 'one_interrupt' => array('name_fa' => $translateVariable['one_interrupt'], 'name_en' => 'one_interrupt',), 'two_interrupt' => array('name_fa' => $translateVariable['two_interrupt'], 'name_en' => 'two_interrupt',),), 'time_filter' => array('morning' => array('name_fa' => $translateVariable['morning'], 'time' => 'early', 'value' => '(00:00 - 04:59)',), 'day' => array('name_fa' => $translateVariable['Time_morning'], 'time' => 'morning', 'value' => '(05:00 - 11:59)',), 'evening' => array('name_fa' => $translateVariable['evening'], 'time' => 'afternoon', 'value' => '(12:00 - 17:59)',), 'night' => array('name_fa' => $translateVariable['night'], 'time' => 'night', 'value' => '(18:00 - 23:59)',),), 'transit_duration' => array(
+
+        return array('request_number' => $this->UniqueCode, 'count_flight' => $this->count, 'name_departure' => $this->originName, 'name_arrival' => $this->destinationName, 'interrupt' => array('no_interrupt' => array('name_fa' => $translateVariable['no_interrupt'], 'name_en' => 'no_interrupt',), 'one_interrupt' => array('name_fa' => $translateVariable['one_interrupt'], 'name_en' => 'one_interrupt',), 'two_interrupt' => array('name_fa' => $translateVariable['two_interrupt'], 'name_en' => 'two_interrupt',),), 'time_filter' => array('morning' => array('name_fa' => $translateVariable['Timedawn'], 'time' => 'early', 'value' => '(00:00 - 04:59)',), 'day' => array('name_fa' => $translateVariable['Time_morning'], 'time' => 'morning', 'value' => '(05:00 - 11:59)',), 'evening' => array('name_fa' => $translateVariable['evening'], 'time' => 'afternoon', 'value' => '(12:00 - 17:59)',), 'night' => array('name_fa' => $translateVariable['night'], 'time' => 'night', 'value' => '(18:00 - 23:59)',),), 'transit_duration' => array(
             'min' => 0,
             'max' => 24,
             'step' => 1,
             'default_min' => 0,
             'default_max' => 24,
             'label' => 'مدت توقف (ساعت)',
-        ),'arrival_time_filter' => array(
+        ),
+            'arrival_time_filter' => array(
             'arrival_morning' => array(
-                'name_fa' => $translateVariable['morning'],
+                'name_fa' => $translateVariable['Timedawn'],
                 'time' => 'arrival_early',
                 'value' => '(00:00 - 04:59)',
             ),

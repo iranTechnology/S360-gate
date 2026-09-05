@@ -14,7 +14,7 @@
 {/if}
 <div class="after__all"></div>
 
-<script src="https://unpkg.com/follow-js/dist/follow.min.js" data-follow-auto></script>
+{*<script src="https://unpkg.com/follow-js/dist/follow.min.js" data-follow-auto></script>*}
 <script src="project_files/js/select2.min.js"></script>
 <script src="project_files/js/script.js"></script>
 

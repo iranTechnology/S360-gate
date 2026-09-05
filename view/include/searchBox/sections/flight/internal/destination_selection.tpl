@@ -7,7 +7,7 @@
                id="route_destination_internal"
                name="route_destination_internal"
                class="inputSearchForeign form-control route_destination_internal-js"
-               placeholder="##SelectDestinationCity##">
+               placeholder="##To##">
         </span>
         <input id="route_destination_internal"
                class="destination-internal-js"
