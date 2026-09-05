@@ -5,35 +5,21 @@
 
     {assign var="i" value=0}
     {assign var="rooms_count" value=0}
-    {assign var="totalAdultCount" value=0}
-    {assign var="totalChildCount" value=0}
     <input type="hidden" name="ZoneFlight" id="ZoneFlight" value="external">
 
-    {* --- بخش هوشمند و ایمن پرووایدر 46 (تک اتاق) در صورت از بین رفتن داده‌های لاگین --- *}
-    {if empty($temproryHotelLocal)}
-        {assign var="adt_count" value=1}
-        {assign var="chd_count" value=0}
-        {assign var="raw_searchRooms" value=$smarty.post.searchRooms|default:$hotelDetail.search_rooms|default:'R:1-0-0'}
+    {* --- بخش هوشمند برای رفع باگ نمایش داده نشدن فرم --- *}
+    {if empty($temproryHotelLocal) && $source_id eq 46}
+        {* پارسینگ دستی از روی R:1-0-0 *}
+        {assign var="sr" value=$smarty.post.searchRooms}
+        {assign var="srParts" value=":"|explode:$sr}
+        {assign var="roomSpecs" value="-"|explode:$srParts[1]}
 
-        {if !empty($raw_searchRooms) && $raw_searchRooms neq 'undefined'}
-            {assign var="srParts" value=":"|explode:$raw_searchRooms}
-            {if isset($srParts[1])}
-                {assign var="roomSpecs" value="-"|explode:$srParts[1]}
-                {if isset($roomSpecs[0]) && $roomSpecs[0]|intval gt 0}
-                    {assign var="adt_count" value=$roomSpecs[0]|intval}
-                {/if}
-                {if isset($roomSpecs[1])}
-                    {assign var="chd_count" value=$roomSpecs[1]|intval}
-                {/if}
-            {/if}
-        {/if}
-
-        {* ساخت ساختار استاندارد تک اتاق *}
+        {* ساخت یک آرایه مجازی مشابه خروجی دیتابیس *}
         {assign var="virtualRoom" value=[
         'room_id' => '999',
         'room_name' => 'Room 1',
-        'AdultsCount' => $adt_count,
-        'ChildCount' => $chd_count,
+        'AdultsCount' => $roomSpecs[0],
+        'ChildCount' => $roomSpecs[1],
         'RoomIndex' => 1
         ]}
         {assign var="temproryHotelLocal" value=[$virtualRoom]}
@@ -41,23 +27,19 @@
     {* --- پایان بخش هوشمند --- *}
 
     {foreach $temproryHotelLocal as $keyRooms => $room}
-        {assign var="roomNumber" value=$keyRooms+1}
-        {assign var="childCount" value=$room['ChildCount']|default:0}
-        {assign var="adultCount" value=$room['AdultsCount']|default:1}
+        {$keyRooms = $keyRooms + 1}
+        {$childCount = $room['ChildCount']}
+        {$adultCount = $room['AdultsCount']}
+        {assign var='room_name' value="{$room['room_name']}"}
 
-        {if $adultCount lt 1}
-            {assign var="adultCount" value=1}
+        {if ($temproryHotelLocal|count) gt 1}
+            {$room_name="{$objFunctions->ConvertNthNumber($keyRooms)} {$room['room_name']}"}
         {/if}
 
-        {assign var="totalAdultCount" value=$totalAdultCount+$adultCount}
-        {assign var="totalChildCount" value=$totalChildCount+$childCount}
+        <input type="hidden" name="adultCount{$keyRooms}" id="adultCount{$keyRooms}" value="{$room['AdultsCount']}">
 
-        {assign var="room_name" value=$room['room_name']|default:'Room 1'}
-
-        <input type="hidden" name="adultCount{$roomNumber}" id="adultCount{$roomNumber}" value="{$adultCount}">
-
-        {for $adultNumber = 1 to $adultCount}
-            <input type="hidden" name="roomIndex{$roomNumber}" value="{$room['RoomIndex']|default:1}">
+        {for $adultNumber = 1 to $room['AdultsCount']}
+            <input type="hidden" name="roomIndex{$keyRooms}" value="{$room['RoomIndex']}">
 
             <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first pb-2">
                 <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color direcR">
@@ -65,7 +47,7 @@
                 </span>
 
                 <input type="hidden" name="RoomCount_Reserve{$room['room_id']}" id="RoomCount_Reserve{$room['room_id']}" value="1">
-                <input type="hidden" name="Id_Select_Room{$roomNumber}" id="Id_Select_Room{$roomNumber}" value="{$room['room_id']}">
+                <input type="hidden" name="Id_Select_Room{$keyRooms}" id="Id_Select_Room{$keyRooms}" value="{$room['room_id']}">
 
                 <div class="panel-default-change site-border-main-color pb-2">
                     <div class="panel-heading-change">
@@ -75,8 +57,8 @@
                             <label class="control--checkbox">
                                 <span>##Iranian##</span>
                                 <input type="radio"
-                                       name="passengerNationalityA{$roomNumber}{$adultNumber}"
-                                       id="passengerNationalityA{$roomNumber}{$adultNumber}"
+                                       name="passengerNationalityA{$keyRooms}{$adultNumber}"
+                                       id="passengerNationalityA{$keyRooms}{$adultNumber}"
                                        value="0"
                                        class="nationalityChange"
                                        checked="checked">
@@ -93,8 +75,8 @@
                             <label class="control--checkbox">
                                 <span>##Another##</span>
                                 <input type="radio"
-                                       name="passengerNationalityA{$roomNumber}{$adultNumber}"
-                                       id="passengerNationalityA{$roomNumber}{$adultNumber}_1"
+                                       name="passengerNationalityA{$keyRooms}{$adultNumber}"
+                                       id="passengerNationalityA{$keyRooms}{$adultNumber}_1"
                                        value="1"
                                        class="nationalityChange">
                                 <div class="checkbox">
@@ -108,7 +90,7 @@
 
                         {if $objSession->IsLogin()}
                             <span class="s-u-last-passenger-btn s-u-last-passenger-btn-change"
-                                  onclick="setHidenFildnumberRow('A{$roomNumber}{$adultNumber}')">
+                                  onclick="setHidenFildnumberRow('A{$keyRooms}{$adultNumber}')">
                                 <i class="zmdi zmdi-pin-account zmdi-hc-fw"></i> ##Passengerbook##
                             </span>
                         {/if}
@@ -118,7 +100,7 @@
 
                     <div class="panel-body-change">
                         <div class="s-u-passenger-item s-u-passenger-item-change">
-                            <select id="genderA{$roomNumber}{$adultNumber}" name="genderA{$roomNumber}{$adultNumber}" required aria-required="true">
+                            <select id="genderA{$keyRooms}{$adultNumber}" name="genderA{$keyRooms}{$adultNumber}" required aria-required="true">
                                 <option value="" disabled="disabled" selected="selected">##Sex##</option>
                                 <option value="Male">##Sir##</option>
                                 <option value="Female">##Lady##</option>
@@ -126,71 +108,71 @@
                         </div>
 
                         <div class="{if $typeApplication eq 'externalApi'}s-u-passenger-item {/if}s-u-passenger-item-hotel s-u-passenger-item-change">
-                            <input id="nameEnA{$roomNumber}{$adultNumber}"
+                            <input id="nameEnA{$keyRooms}{$adultNumber}"
                                    type="text"
                                    placeholder="##Nameenglish##"
-                                   name="nameEnA{$roomNumber}{$adultNumber}"
-                                   oninput="return validateEnglishInput('nameEnA{$roomNumber}{$adultNumber}')">
+                                   name="nameEnA{$keyRooms}{$adultNumber}"
+                                   oninput="return validateEnglishInput('nameEnA{$keyRooms}{$adultNumber}')">
                         </div>
 
                         <div class="{if $typeApplication eq 'externalApi'}s-u-passenger-item {/if}s-u-passenger-item-hotel s-u-passenger-item-change">
-                            <input id="familyEnA{$roomNumber}{$adultNumber}"
+                            <input id="familyEnA{$keyRooms}{$adultNumber}"
                                    type="text"
                                    placeholder="##Familyenglish##"
-                                   name="familyEnA{$roomNumber}{$adultNumber}"
-                                   oninput="return validateEnglishInput('familyEnA{$roomNumber}{$adultNumber}')">
+                                   name="familyEnA{$keyRooms}{$adultNumber}"
+                                   oninput="return validateEnglishInput('familyEnA{$keyRooms}{$adultNumber}')">
                         </div>
 
                         <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
-                            <input id="birthdayEnA{$roomNumber}{$adultNumber}"
+                            <input id="birthdayEnA{$keyRooms}{$adultNumber}"
                                    type="text"
                                    placeholder="##miladihappybirthday##"
-                                   name="birthdayEnA{$roomNumber}{$adultNumber}"
+                                   name="birthdayEnA{$keyRooms}{$adultNumber}"
                                    class="gregorianAdultBirthdayCalendar"
                                    readonly="readonly">
                         </div>
 
                         {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                             <div class="s-u-passenger-item s-u-passenger-item-change">
-                                <input id="nameFaA{$roomNumber}{$adultNumber}"
+                                <input id="nameFaA{$keyRooms}{$adultNumber}"
                                        type="text"
                                        placeholder="##Namepersion##"
-                                       name="nameFaA{$roomNumber}{$adultNumber}"
-                                       oninput="return validatePersianInput('nameFaA{$roomNumber}{$adultNumber}')"
+                                       name="nameFaA{$keyRooms}{$adultNumber}"
+                                       oninput="return validatePersianInput('nameFaA{$keyRooms}{$adultNumber}')"
                                        class="justpersian">
                             </div>
 
                             <div class="s-u-passenger-item s-u-passenger-item-change">
-                                <input id="familyFaA{$roomNumber}{$adultNumber}"
+                                <input id="familyFaA{$keyRooms}{$adultNumber}"
                                        type="text"
                                        placeholder="##Familypersion##"
-                                       name="familyFaA{$roomNumber}{$adultNumber}"
-                                       oninput="return validatePersianInput('familyFaA{$roomNumber}{$adultNumber}')"
+                                       name="familyFaA{$keyRooms}{$adultNumber}"
+                                       oninput="return validatePersianInput('familyFaA{$keyRooms}{$adultNumber}')"
                                        class="justpersian">
                             </div>
                         {/if}
 
                         <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
-                            <input id="birthdayA{$roomNumber}{$adultNumber}"
+                            <input id="birthdayA{$keyRooms}{$adultNumber}"
                                    type="text"
                                    placeholder="##shamsihappybirthday##"
-                                   name="birthdayA{$roomNumber}{$adultNumber}"
+                                   name="birthdayA{$keyRooms}{$adultNumber}"
                                    class="shamsiAdultBirthdayCalendar"
                                    readonly="readonly">
                         </div>
 
                         <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
-                            <input id="NationalCodeA{$roomNumber}{$adultNumber}"
+                            <input id="NationalCodeA{$keyRooms}{$adultNumber}"
                                    type="text"
                                    placeholder="##Nationalnumber##"
-                                   name="NationalCodeA{$roomNumber}{$adultNumber}"
+                                   name="NationalCodeA{$keyRooms}{$adultNumber}"
                                    maxlength="10"
                                    class="UniqNationalCode">
                         </div>
 
                         <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
-                            <select name="passportCountryA{$roomNumber}{$adultNumber}"
-                                    id="passportCountryA{$roomNumber}{$adultNumber}"
+                            <select name="passportCountryA{$keyRooms}{$adultNumber}"
+                                    id="passportCountryA{$keyRooms}{$adultNumber}"
                                     class="select2">
                                 <option value="">##Countryissuingpassport##</option>
                                 {foreach $objFunctions->CountryCodes() as $Country}
@@ -206,15 +188,15 @@
                         </div>
 
                         <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
-                            <input id="passportNumberA{$roomNumber}{$adultNumber}"
+                            <input id="passportNumberA{$keyRooms}{$adultNumber}"
                                    type="text"
                                    placeholder="##Numpassport##"
-                                   name="passportNumberA{$roomNumber}{$adultNumber}"
+                                   name="passportNumberA{$keyRooms}{$adultNumber}"
                                    class="UniqPassportNumber">
                         </div>
 
-                        <input type="hidden" id="BedType{$roomNumber}{$adultNumber}" name="BedType{$roomNumber}{$adultNumber}" value="Twin">
-                        <div class="alert_msg" id="messageA{$roomNumber}{$adultNumber}"></div>
+                        <input type="hidden" id="BedType{$keyRooms}{$adultNumber}" name="BedType{$keyRooms}{$adultNumber}" value="Twin">
+                        <div class="alert_msg" id="messageA{$keyRooms}{$adultNumber}"></div>
                     </div>
                 </div>
 
@@ -222,11 +204,11 @@
             </div>
         {/for}
 
-        {if $childCount gt 0}
-            <input type="hidden" name="childCount{$roomNumber}" id="childCount{$roomNumber}" value="{$childCount}">
+        {if $room['ChildCount'] gt 0}
+            <input type="hidden" name="childCount{$keyRooms}" id="childCount{$keyRooms}" value="{$room['ChildCount']}">
 
-            {for $childNumber = 1 to $childCount}
-                <input type="hidden" name="roomIndex{$roomNumber}" value="{$room['RoomIndex']|default:1}">
+            {for $childNumber = 1 to $room['ChildCount']}
+                <input type="hidden" name="roomIndex{$keyRooms}" value="{$room['RoomIndex']}">
 
                 <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first pb-2">
                     <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color direcR">
@@ -234,7 +216,7 @@
                     </span>
 
                     <input type="hidden" name="RoomCount_Reserve{$room['room_id']}" id="RoomCount_ReserveChild{$room['room_id']}" value="1">
-                    <input type="hidden" name="Id_Select_Room{$roomNumber}" id="Id_Select_RoomChild{$roomNumber}" value="{$room['room_id']}">
+                    <input type="hidden" name="Id_Select_Room{$keyRooms}" id="Id_Select_RoomChild{$keyRooms}" value="{$room['room_id']}">
 
                     <div class="panel-default-change site-border-main-color">
                         <div class="panel-heading-change">
@@ -244,8 +226,8 @@
                                 <label class="control--checkbox">
                                     <span>##Iranian##</span>
                                     <input type="radio"
-                                           name="passengerNationalityC{$roomNumber}{$childNumber}"
-                                           id="passengerNationalityC{$roomNumber}{$childNumber}"
+                                           name="passengerNationalityC{$keyRooms}{$childNumber}"
+                                           id="passengerNationalityC{$keyRooms}{$childNumber}"
                                            value="0"
                                            class="nationalityChange"
                                            checked="checked">
@@ -262,8 +244,8 @@
                                 <label class="control--checkbox">
                                     <span>##Another##</span>
                                     <input type="radio"
-                                           name="passengerNationalityC{$roomNumber}{$childNumber}"
-                                           id="passengerNationalityC{$roomNumber}{$childNumber}_1"
+                                           name="passengerNationalityC{$keyRooms}{$childNumber}"
+                                           id="passengerNationalityC{$keyRooms}{$childNumber}_1"
                                            value="1"
                                            class="nationalityChange">
                                     <div class="checkbox">
@@ -277,7 +259,7 @@
 
                             {if $objSession->IsLogin()}
                                 <span class="s-u-last-passenger-btn s-u-last-passenger-btn-change"
-                                      onclick="setHidenFildnumberRow('C{$roomNumber}{$childNumber}')">
+                                      onclick="setHidenFildnumberRow('C{$keyRooms}{$childNumber}')">
                                     <i class="zmdi zmdi-pin-account zmdi-hc-fw"></i> ##Passengerbook##
                                 </span>
                             {/if}
@@ -287,7 +269,7 @@
 
                         <div class="panel-body-change">
                             <div class="s-u-passenger-item s-u-passenger-item-change">
-                                <select id="genderC{$roomNumber}{$childNumber}" name="genderC{$roomNumber}{$childNumber}">
+                                <select id="genderC{$keyRooms}{$childNumber}" name="genderC{$keyRooms}{$childNumber}">
                                     <option value="" disabled="disabled" selected="selected">##Sex##</option>
                                     <option value="Male">##Sir##</option>
                                     <option value="Female">##Lady##</option>
@@ -295,71 +277,71 @@
                             </div>
 
                             <div class="{if $typeApplication eq 'externalApi'}s-u-passenger-item {/if}s-u-passenger-item-hotel s-u-passenger-item-change">
-                                <input id="nameEnC{$roomNumber}{$childNumber}"
+                                <input id="nameEnC{$keyRooms}{$childNumber}"
                                        type="text"
                                        placeholder="##Nameenglish##"
-                                       name="nameEnC{$roomNumber}{$childNumber}"
-                                       oninput="return validateEnglishInput('nameEnC{$roomNumber}{$childNumber}')">
+                                       name="nameEnC{$keyRooms}{$childNumber}"
+                                       oninput="return validateEnglishInput('nameEnC{$keyRooms}{$childNumber}')">
                             </div>
 
                             <div class="{if $typeApplication eq 'externalApi'}s-u-passenger-item {/if}s-u-passenger-item-hotel s-u-passenger-item-change">
-                                <input id="familyEnC{$roomNumber}{$childNumber}"
+                                <input id="familyEnC{$keyRooms}{$childNumber}"
                                        type="text"
                                        placeholder="##Familyenglish##"
-                                       name="familyEnC{$roomNumber}{$childNumber}"
-                                       oninput="return validateEnglishInput('familyEnC{$roomNumber}{$childNumber}')">
+                                       name="familyEnC{$keyRooms}{$childNumber}"
+                                       oninput="return validateEnglishInput('familyEnC{$keyRooms}{$childNumber}')">
                             </div>
 
                             <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
-                                <input id="birthdayEnC{$roomNumber}{$childNumber}"
+                                <input id="birthdayEnC{$keyRooms}{$childNumber}"
                                        type="text"
                                        placeholder="##miladihappybirthday##"
-                                       name="birthdayEnC{$roomNumber}{$childNumber}"
+                                       name="birthdayEnC{$keyRooms}{$childNumber}"
                                        class="gregorianChildBirthdayCalendar"
                                        readonly="readonly">
                             </div>
 
                             {if $smarty.const.SOFTWARE_LANG eq 'fa'}
                                 <div class="s-u-passenger-item s-u-passenger-item-change">
-                                    <input id="nameFaC{$roomNumber}{$childNumber}"
+                                    <input id="nameFaC{$keyRooms}{$childNumber}"
                                            type="text"
                                            placeholder="##Namepersion##"
-                                           name="nameFaC{$roomNumber}{$childNumber}"
-                                           oninput="return validatePersianInput('nameFaC{$roomNumber}{$childNumber}')"
+                                           name="nameFaC{$keyRooms}{$childNumber}"
+                                           oninput="return validatePersianInput('nameFaC{$keyRooms}{$childNumber}')"
                                            class="justpersian">
                                 </div>
 
                                 <div class="s-u-passenger-item s-u-passenger-item-change">
-                                    <input id="familyFaC{$roomNumber}{$childNumber}"
+                                    <input id="familyFaC{$keyRooms}{$childNumber}"
                                            type="text"
                                            placeholder="##Familypersion##"
-                                           name="familyFaC{$roomNumber}{$childNumber}"
-                                           oninput="return validatePersianInput('familyFaC{$roomNumber}{$childNumber}')"
+                                           name="familyFaC{$keyRooms}{$childNumber}"
+                                           oninput="return validatePersianInput('familyFaC{$keyRooms}{$childNumber}')"
                                            class="justpersian">
                                 </div>
                             {/if}
 
                             <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
-                                <input id="birthdayC{$roomNumber}{$childNumber}"
+                                <input id="birthdayC{$keyRooms}{$childNumber}"
                                        type="text"
                                        placeholder="##shamsihappybirthday##"
-                                       name="birthdayC{$roomNumber}{$childNumber}"
+                                       name="birthdayC{$keyRooms}{$childNumber}"
                                        class="shamsiChildBirthdayCalendar"
                                        readonly="readonly">
                             </div>
 
                             <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
-                                <input id="NationalCodeC{$roomNumber}{$childNumber}"
+                                <input id="NationalCodeC{$keyRooms}{$childNumber}"
                                        type="text"
                                        placeholder="##Nationalnumber##"
-                                       name="NationalCodeC{$roomNumber}{$childNumber}"
+                                       name="NationalCodeC{$keyRooms}{$childNumber}"
                                        maxlength="10"
                                        class="UniqNationalCode">
                             </div>
 
                             <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
-                                <select name="passportCountryC{$roomNumber}{$childNumber}"
-                                        id="passportCountryC{$roomNumber}{$childNumber}"
+                                <select name="passportCountryC{$keyRooms}{$childNumber}"
+                                        id="passportCountryC{$keyRooms}{$childNumber}"
                                         class="select2">
                                     <option value="">##Countryissuingpassport##</option>
                                     {foreach $objFunctions->CountryCodes() as $Country}
@@ -375,15 +357,15 @@
                             </div>
 
                             <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
-                                <input id="passportNumberC{$roomNumber}{$childNumber}"
+                                <input id="passportNumberC{$keyRooms}{$childNumber}"
                                        type="text"
                                        placeholder="##Numpassport##"
-                                       name="passportNumberC{$roomNumber}{$childNumber}"
+                                       name="passportNumberC{$keyRooms}{$childNumber}"
                                        class="UniqPassportNumber">
                             </div>
 
-                            <input type="hidden" id="BedType{$roomNumber}{$childNumber}" name="BedType{$roomNumber}{$childNumber}" value="Twin">
-                            <div class="alert_msg" id="messageC{$roomNumber}{$childNumber}"></div>
+                            <input type="hidden" id="BedType{$keyRooms}{$childNumber}" name="BedType{$keyRooms}{$childNumber}" value="Twin">
+                            <div class="alert_msg" id="messageC{$keyRooms}{$childNumber}"></div>
                         </div>
                     </div>
 
@@ -448,19 +430,17 @@
     <input type="hidden" id="Nights_Reserve" name="Nights_Reserve" value="{$smarty.post.nights_reserve}">
     <input type="hidden" id="time_remmaining" value="" name="time_remmaining">
     <input type="hidden" id="factorNumber" name="factorNumber" value="{$smarty.post.factorNumber}">
-    <input type="hidden" id="searchRooms" name="searchRooms" value="{$smarty.post.searchRooms|default:$hotelDetail.search_rooms|default:'R:1-0-0'}">
     <input type="hidden" id="typeApplication" name="typeApplication" value="{$typeApplication}">
     <input type="hidden" id="source_id" name="source_id" value="{$smarty.post.source_id}">
     <input type="hidden" id="is_internal" name="is_internal" value="{$IsInternal}">
     <input type="hidden" id="CurrencyCode" name="CurrencyCode" value="{$smarty.post.CurrencyCode}">
     <input type="hidden" value="" name="idMember" id="idMember">
     <input type="hidden" name="Temporary_Room_Id" id="Temporary_Room_Id" value="{$temproryRooms[0].room_id}">
-
     <div class="btns_factors_n">
         <div class="next_hotel__">
             <a href="" onclick="return false" class="f-loader-check loaderpassengers" id="loader_check" style="display:none"></a>
             <button type="button"
-                    onclick="checkHotelNew('{$smarty.now}','{$totalAdultCount}','{$totalChildCount}','{$requestNumber}')"
+                    onclick="checkHotelNew('{$smarty.now}','{$adultCount}','{$childCount}','{$requestNumber}')"
                     class="s-u-submit-passenger s-u-select-flight-change s-u-submit-passenger-Buyer site-bg-main-color"
                     id="send_data">
                 ##NextStepInvoice##&nbsp;
