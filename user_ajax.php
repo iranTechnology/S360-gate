@@ -689,7 +689,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_countre_type' ) {
     $data['Comment']      = $_POST['Comment'];
     $data['Reason']       = $_POST['Reason'];
 
-    if ( $data['Reason'] == "charge" || $data['Reason'] == "increase" || $data['Reason'] == "diff_price" ) {
+    if ( $data['Reason'] == "charge" || $data['Reason'] == "increase" || $data['Reason'] == "return" || $data['Reason'] == "diff_price" ) {
         $data['Status'] = '1';
     } else if ( $data['Reason'] == "decrease" || $data['Reason'] == "indemnity_edit_ticket" ) {
         $data['Status'] = '2';

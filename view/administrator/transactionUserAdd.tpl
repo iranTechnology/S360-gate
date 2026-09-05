@@ -47,6 +47,7 @@
                             <option value="">انتخاب کنید....</option>
                             <option value="decrease">کسر از حساب</option>
                             <option value="increase">واریز به حساب</option>
+                            <option value="return">برگشت به حساب</option>
                             <option value="indemnity_edit_ticket">جریمه اصلاح بلیط</option>
                             <option value="diff_price">واریز تغییر قیمت شناسه نرخی</option>
                         </select>

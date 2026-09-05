@@ -1097,109 +1097,109 @@ public function ModalShowBook($Param, $type) {
                         <hr style="margin: 5px 0;"/>
                     <?php } ?>
 
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-12 text-center text-bold " style="color: #fb002a;">
-                                    <span>مشخصات ارائه دهنده بلیط <?php
+<!--                    <div class="row margin-both-vertical-20">-->
+<!--                        <div class="col-md-12 text-center text-bold " style="color: #fb002a;">-->
+<!--                                    <span>مشخصات ارائه دهنده بلیط --><?php
+//
+//                                        if (count($ticketsInfo) > 1) {
+//                                            if ($typeFlight) {
+//                                                echo($view['direction'] == 'dept' ? 'رفت' : 'برگشت');
+//                                            } else if($type == 'bus') {
+//                                                echo($view['Route_Type'] == '1' ? 'رفت' : 'برگشت');
+//                                            }
+//                                        }
+//
+//
+//                                        ?><!--</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                                        if (count($ticketsInfo) > 1) {
-                                            if ($typeFlight) {
-                                                echo($view['direction'] == 'dept' ? 'رفت' : 'برگشت');
-                                            } else if($type == 'bus') {
-                                                echo($view['Route_Type'] == '1' ? 'رفت' : 'برگشت');
-                                            }
-                                        }
-
-
-                                        ?></span>
-                        </div>
-                    </div>
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-4 ">
-                            <span>نام آژانس  : </span>
-                            <span>
-								<?php
-                                if($type != 'flight'){
-
-                                    if(TYPE_ADMIN == '1' ) {
-                                        $agencyInfo = $Client = functions::infoClient($ticketsInfo[0]['client_id']);
-                                    }else{
-                                        $agencyInfo = $Client = functions::infoClient(CLIENT_ID);
-                                    }
-
-                                    echo $agencyInfo['AgencyName'];
-                                }else{
-
-
-                                    if ($view['pid_private'] == '1' && $typeFlight && isset($view['client_id'])) {
-                                        $Client = functions::infoClient($view['client_id']);
-                                    }
-
-
-                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['AgencyName'] : ($view['flight_type'] == 'system' ? 'ایران تکنولوژی' : $view['supplier_name']);
-                                }
-                                ?>
-								</span>
-                        </div>
-                        <div class="col-md-4 ">
-                            <span> نام مدیر آژانس: </span>
-                            <span>
-
-								<?php
-
-                                if($type != 'flight'){
-                                    echo $agencyInfo['Manager'];
-                                }else{
-                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Manager'] : ($view['flight_type'] == 'system' ? 'اباذر افشار' : $view['supplier_manager']);
-                                }
-
-                                ?>
-								</span>
-                        </div>
-                        <div class="col-md-4 ">
-                            <span class=""> شماره تلفن   </span>
-                            <span class="yn">
-								<?php
-
-                                if($type != 'flight'){
-                                    echo $agencyInfo['Phone'];
-                                }else{
-                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Phone'] : ($view['flight_type'] == 'system' ? '021-88866609' : $view['supplier_phone1'] . ',' . $view['supplier_phone2']);
-                                }
-
-                                ?>
-
-								</span>
-                        </div>
-                        <div class="col-md-4 ">
-                            <span>وب سایت :</span>
-                            <span>
-									<?php
-
-                                    if($type != 'flight'){
-                                        echo $agencyInfo['MainDomain'];
-                                    }else{
-                                        echo ($typeFlight && $view['pid_private'] == '1') ? $Client['MainDomain'] : ($view['flight_type'] == 'system' ? 'iran-tech.com' : $view['supplier_website']);
-                                    }
-
-                                    ?>
-								</span>
-                        </div>
-                        <div class="col-md-8 ">
-                            <span>آدرس:</span>
-                            <span><?php
-
-                                if($type != 'flight'){
-                                    echo $agencyInfo['Address'];
-                                }else{
-                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Address'] : ($view['flight_type'] == 'system' ? 'مطهری-بعد از مفتح -شماره180 واحد 1' : $view['supplier_address']);
-                                }
-
-                                ?>
-
-                        </div>
-                    </div>
-                    <hr style="margin: 5px 0;"/>
+<!--                    <div class="row margin-both-vertical-20">-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <span>نام آژانس  : </span>-->
+<!--                            <span>-->
+<!--								--><?php
+//                                if($type != 'flight'){
+//
+//                                    if(TYPE_ADMIN == '1' ) {
+//                                        $agencyInfo = $Client = functions::infoClient($ticketsInfo[0]['client_id']);
+//                                    }else{
+//                                        $agencyInfo = $Client = functions::infoClient(CLIENT_ID);
+//                                    }
+//
+//                                    echo $agencyInfo['AgencyName'];
+//                                }else{
+//
+//
+//                                    if ($view['pid_private'] == '1' && $typeFlight && isset($view['client_id'])) {
+//                                        $Client = functions::infoClient($view['client_id']);
+//                                    }
+//
+//
+//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['AgencyName'] : ($view['flight_type'] == 'system' ? 'ایران تکنولوژی' : $view['supplier_name']);
+//                                }
+//                                ?>
+<!--								</span>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <span> نام مدیر آژانس: </span>-->
+<!--                            <span>-->
+<!---->
+<!--								--><?php
+//
+//                                if($type != 'flight'){
+//                                    echo $agencyInfo['Manager'];
+//                                }else{
+//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Manager'] : ($view['flight_type'] == 'system' ? 'اباذر افشار' : $view['supplier_manager']);
+//                                }
+//
+//                                ?>
+<!--								</span>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <span class=""> شماره تلفن   </span>-->
+<!--                            <span class="yn">-->
+<!--								--><?php
+//
+//                                if($type != 'flight'){
+//                                    echo $agencyInfo['Phone'];
+//                                }else{
+//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Phone'] : ($view['flight_type'] == 'system' ? '021-88866609' : $view['supplier_phone1'] . ',' . $view['supplier_phone2']);
+//                                }
+//
+//                                ?>
+<!---->
+<!--								</span>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <span>وب سایت :</span>-->
+<!--                            <span>-->
+<!--									--><?php
+//
+//                                    if($type != 'flight'){
+//                                        echo $agencyInfo['MainDomain'];
+//                                    }else{
+//                                        echo ($typeFlight && $view['pid_private'] == '1') ? $Client['MainDomain'] : ($view['flight_type'] == 'system' ? 'iran-tech.com' : $view['supplier_website']);
+//                                    }
+//
+//                                    ?>
+<!--								</span>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-8 ">-->
+<!--                            <span>آدرس:</span>-->
+<!--                            <span>--><?php
+//
+//                                if($type != 'flight'){
+//                                    echo $agencyInfo['Address'];
+//                                }else{
+//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Address'] : ($view['flight_type'] == 'system' ? 'مطهری-بعد از مفتح -شماره180 واحد 1' : $view['supplier_address']);
+//                                }
+//
+//                                ?>
+<!---->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <hr style="margin: 5px 0;"/>-->
 
 
                     <div class="row margin-both-vertical-20">
