@@ -1724,7 +1724,7 @@ class detailHotel extends ApiHotelCore
             $book_hotel = $book_model->get()->where('factor_number', $factor_number);
             $hotel_source = $book_hotel->find();
 
-            if($hotel_source['source_id'] != '46' &&  $hotel_source['source_id'] != '17' &&  $hotel_source['source_id'] != '29') {
+            if($hotel_source['source_id'] != '46' &&  $hotel_source['source_id'] != '17' &&  $hotel_source['source_id'] != '29' &&  $hotel_source['source_id'] != '42') {
                 if (
                     ($type_application == 'api' && substr($params['hotel_id'], 0, 2) != '17') ||
                     (substr($params['hotel_id'], 0, 2) != '29') ||
@@ -1759,7 +1759,7 @@ class detailHotel extends ApiHotelCore
                 $price_session_id = $book_hotel[0]['price_session_id'];
 
                 $roomsArray = $passengersArray = $buyerArray = [];
-
+                $roomIndex = 0;
                 foreach ($book_hotel as $rk => $room) {
                     if ($type_application == 'externalApi' /*||( $book_hotel[0]['is_internal'] == '1' && substr($book_hotel[0]['hotel_id'],0,2) == '17') */) {
                         $roomsArray = [
@@ -1798,19 +1798,38 @@ class detailHotel extends ApiHotelCore
                     }else{
                         $birthday = ($room['passenger_birthday_en']) ? $room['passenger_birthday_en'] : dateTimeSetting::jalali_to_gregorian(explode('-', $room['passenger_birthday'])[0], explode('-', $room['passenger_birthday'])[1], explode('-', $room['passenger_birthday'])[2], '-');
                     }
-                    $passengersArray[] = [
-                        'Gender' => $room['passenger_gender'],
-                        'FirstName'    => $room['passenger_name'],
-                        'FirstNameEn'  => !empty($room['passenger_name_en']) ? $room['passenger_name_en'] : (!empty($room['passenger_name']) ? $room['passenger_name'] : $room['passenger_gender']),
-                        'LastName'     => $room['passenger_family'],
-                        'LastNameEn'   => !empty($room['passenger_family_en']) ? $room['passenger_family_en'] : (!empty($room['passenger_family']) ? $room['passenger_family'] : 'Passenger'),
-                        'Birthday' => $room['passenger_birthday'],
-                        'RoomIndex' => ($room['room_index'] + 1),
-                        'NationalCode' => $room['passenger_national_code'],
-                        'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
-                        'BirthdayEn' => $birthday,
-                    ];
+                    if($room['source_id'] == '42'){
+                        $numberOfPassengers = (int)($room['room_count'] ?? 1);
+                        for ($i = 0; $i < $numberOfPassengers; $i++) {
+                            $passengersArray[] = [
+                                'Gender' => $room['passenger_gender'],
+                                'FirstName' => $room['passenger_name'],
+                                'FirstNameEn' => $room['passenger_name_en'],
+                                'LastName' => $room['passenger_family'],
+                                'LastNameEn' => $room['passenger_family_en'],
+                                'Birthday' => $room['passenger_birthday'],
+                                'RoomIndex' => $roomIndex,
+                                'NationalCode' => $room['passenger_national_code'],
+                                'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
+                                'BirthdayEn' => $birthday,
+                            ];
+                        }
 
+                    }else{
+                        $passengersArray[] = [
+                            'Gender' => $room['passenger_gender'],
+                            'FirstName'    => $room['passenger_name'],
+                            'FirstNameEn'  => !empty($room['passenger_name_en']) ? $room['passenger_name_en'] : (!empty($room['passenger_name']) ? $room['passenger_name'] : $room['passenger_gender']),
+                            'LastName'     => $room['passenger_family'],
+                            'LastNameEn'   => !empty($room['passenger_family_en']) ? $room['passenger_family_en'] : (!empty($room['passenger_family']) ? $room['passenger_family'] : 'Passenger'),
+                            'Birthday' => $room['passenger_birthday'],
+                            'RoomIndex' => ($room['room_index'] + 1),
+                            'NationalCode' => $room['passenger_national_code'],
+                            'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
+                            'BirthdayEn' => $birthday,
+                        ];
+                    }
+                    $roomIndex++;
                     //					$buyerArray = [
                     //						'FirstName' => $room['member_name'],
                     //						'LastName'  => $room['member_name'],
