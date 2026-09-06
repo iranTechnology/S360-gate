@@ -255,6 +255,9 @@ elseif (GDS_SWITCH == 'refreshFlightLimitRateCronjob') {
 }elseif (GDS_SWITCH == 'safarBankDeductConsumption') {
     require CRONJOBS_DIR . 'safarBankDeductConsumption.php';
 }
+elseif (GDS_SWITCH == 'safarbankReport') {
+    require CRONJOBS_DIR . 'safarbankReport.php';
+}
 elseif (GDS_SWITCH == 'apiLogin') {
     require LIBRARY_DIR . 'ApiSource/Sso/loginApi.php';
 }

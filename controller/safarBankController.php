@@ -1,5 +1,8 @@
 <?php
-
+//    error_reporting(1);
+//    error_reporting(E_ALL | E_STRICT);
+//    @ini_set('display_errors', 1);
+//    @ini_set('display_errors', 'on');
 class safarBankController extends clientAuth
 {
     private $safarBankProviders;
@@ -97,6 +100,18 @@ class safarBankController extends clientAuth
         });
 
         return $result;
+    }
+
+    public function getAgency($client_id)
+    {
+        $ModelBase = new ModelBase();
+        $sql = "SELECT MIN(id) as id, AgencyName, Domain, MainDomain, Email, Phone, Mobile, DbName
+            FROM clients_tb 
+            WHERE archived_at IS NULL
+            AND id = '{$client_id}'
+            GROUP BY DbName";
+
+        return $ModelBase->select($sql);
     }
     /**
      * گرفتن لیست آژانس‌ها
@@ -979,6 +994,1065 @@ class safarBankController extends clientAuth
 
         // اگه تاریخ میلادی بود (۲۰۲۶)
         return $date;
+    }
+
+    public function getAgencyEventStats($providerId, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // ======== تنظیم تاریخ‌های پیش‌فرض ========
+            // اگر تاریخ ارسال نشده، یک ماه قبل را در نظر بگیر
+            if (empty($dateFrom)) {
+                // امروز را بگیر
+                $today = date('Y-m-d');
+                // ۳۰ روز قبل را محاسبه کن
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            // تبدیل تاریخ شمسی به میلادی اگر نیاز باشد
+            $dateFrom = $this->toGregorian($dateFrom);
+            $dateTo = $this->toGregorian($dateTo);
+
+            // اگر تاریخ‌ها معکوس بود، آنها را اصلاح کن
+            if ($dateFrom > $dateTo) {
+                $temp = $dateFrom;
+                $dateFrom = $dateTo;
+                $dateTo = $temp;
+            }
+
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+
+            // کوئری اصلی با شرط provider_id
+            $sql = "SELECT 
+                    event_type,
+                    COUNT(*) as total_count,
+                    COUNT(DISTINCT session_id) as unique_sessions,
+                    COUNT(DISTINCT ip_address) as unique_ips
+                FROM safarbank_reporting
+                WHERE provider_id = {$providerId}
+                    AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                GROUP BY event_type";
+
+            $results = $ModelBase->select($sql);
+
+            // لاگ برای دیباگ (اختیاری)
+            functions::insertLog('$results: ' . json_encode($results), '000shojaee');
+
+            // آرایه نهایی با مقادیر پیش‌فرض
+            $stats = [
+                'impression' => 0,
+                'detail_view' => 0,
+                'refer_tour' => 0,
+                'refer_site' => 0,
+                'total_events' => 0,
+                'unique_sessions' => 0,
+                'unique_ips' => 0
+            ];
+
+            // نگاشت event_type به کلیدهای خروجی
+            $eventMap = [
+                'search_impression' => 'impression',
+                'detail_view' => 'detail_view',
+                'agency_tour_click' => 'refer_tour',
+                'agency_website_click' => 'refer_site'
+            ];
+
+            foreach ($results as $row) {
+                $eventType = $row['event_type'];
+                if (isset($eventMap[$eventType])) {
+                    $key = $eventMap[$eventType];
+                    $stats[$key] = (int)$row['total_count'];
+                    $stats['total_events'] += (int)$row['total_count'];
+                }
+            }
+
+            // محاسبه مجموع یکتاها
+            $uniqueSql = "SELECT 
+                        COUNT(DISTINCT session_id) as total_unique_sessions,
+                        COUNT(DISTINCT ip_address) as total_unique_ips
+                    FROM safarbank_reporting
+                    WHERE provider_id = {$providerId}
+                        AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'";
+
+            $uniqueResult = $ModelBase->load($uniqueSql);
+            if ($uniqueResult) {
+                $stats['unique_sessions'] = (int)($uniqueResult['total_unique_sessions'] ?? 0);
+                $stats['unique_ips'] = (int)($uniqueResult['total_unique_ips'] ?? 0);
+            }
+
+            return [
+                'success' => true,
+                'data' => $stats,
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ]
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * آماده‌سازی داده‌ها برای نمایش در قالب
+     */
+    public function getAgencyReportData($agencyId, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // ======== تنظیم تاریخ‌های پیش‌فرض ========
+            // اگر تاریخ ارسال نشده، یک ماه قبل را در نظر بگیر
+            if (empty($dateFrom)) {
+                $today = date('Y-m-d');
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            // ۱. گرفتن اطلاعات آژانس
+            $agency = $this->getAgency($agencyId);
+
+            // ۲. گرفتن آمار رویدادها از جدول safarbank_reporting
+            $eventStats = $this->getAgencyEventStats($agencyId, $dateFrom, $dateTo);
+
+            // ۳. گرفتن آمار تورهای فعال
+            $tourCount = $this->activeSafarBankTour($agencyId);
+
+            // ۴. ساختار داده‌های نهایی
+            $result = [
+                'success' => true,
+                'agency' => !empty($agency) ? $agency[0] : [],
+                'stats' => $eventStats['success'] ? $eventStats['data'] : [],
+                'tour_count' => [
+                    'active' => $tourCount['Active_cn'] ?? 0,
+                    'total' => $tourCount['Total_cn'] ?? 0
+                ],
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ]
+            ];
+
+            return $result;
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getAgencyDestinationStats($providerId, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // تنظیم تاریخ‌های پیش‌فرض (یک ماه اخیر)
+            if (empty($dateFrom)) {
+                $today = date('Y-m-d');
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            // تبدیل تاریخ شمسی به میلادی اگر نیاز باشد
+            $dateFrom = $this->toGregorian($dateFrom);
+            $dateTo = $this->toGregorian($dateTo);
+
+            // اصلاح تاریخ‌های معکوس
+            if ($dateFrom > $dateTo) {
+                $temp = $dateFrom;
+                $dateFrom = $dateTo;
+                $dateTo = $temp;
+            }
+
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+
+            // کوئری اصلی برای دریافت آمار بر اساس مقصد و رویداد
+            $sql = "SELECT 
+                    destination_country_name as destination,
+                    event_type,
+                    COUNT(*) as total_count,
+                    COUNT(DISTINCT session_id) as unique_sessions,
+                    COUNT(DISTINCT ip_address) as unique_ips
+                FROM safarbank_reporting
+                WHERE provider_id = {$providerId}
+                    AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                    AND destination_country_name IS NOT NULL
+                    AND destination_country_name != ''
+                GROUP BY destination_country_name, event_type
+                ORDER BY destination_country_name ASC";
+
+            $results = $ModelBase->select($sql);
+
+            // ساختاردهی داده‌ها بر اساس مقصد
+            $destinations = [];
+            $totalStats = [
+                'impression' => 0,
+                'detail_view' => 0,
+                'refer_tour' => 0,
+                'refer_site' => 0,
+                'total_events' => 0
+            ];
+
+            // نگاشت event_type به کلیدهای خروجی
+            $eventMap = [
+                'search_impression' => 'impression',
+                'detail_view' => 'detail_view',
+                'agency_tour_click' => 'refer_tour',
+                'agency_website_click' => 'refer_site'
+            ];
+
+            foreach ($results as $row) {
+                $destination = $row['destination'];
+                $eventType = $row['event_type'];
+                $count = (int)$row['total_count'];
+
+                // اگر مقصد در آرایه نباشد، ایجاد کن
+                if (!isset($destinations[$destination])) {
+                    $destinations[$destination] = [
+                        'destination' => $destination,
+                        'impression' => 0,
+                        'detail_view' => 0,
+                        'refer_tour' => 0,
+                        'refer_site' => 0,
+                        'total_events' => 0
+                    ];
+                }
+
+                // اضافه کردن به آمار مقصد
+                if (isset($eventMap[$eventType])) {
+                    $key = $eventMap[$eventType];
+                    $destinations[$destination][$key] += $count;
+                    $destinations[$destination]['total_events'] += $count;
+
+                    // اضافه کردن به مجموع کل
+                    $totalStats[$key] += $count;
+                    $totalStats['total_events'] += $count;
+                }
+            }
+
+            // تبدیل به آرایه برای مرتب‌سازی
+            $result = array_values($destinations);
+
+            // مرتب‌سازی بر اساس تعداد کل رویدادها (نزولی)
+            usort($result, function($a, $b) {
+                return $b['total_events'] - $a['total_events'];
+            });
+
+            // گرفتن اطلاعات آژانس
+            $agency = $this->getAgency($providerId);
+            $agencyName = !empty($agency) ? $agency[0]['AgencyName'] ?? 'آژانس' : 'آژانس';
+
+            return [
+                'success' => true,
+                'data' => $result,
+                'total' => $totalStats,
+                'agency' => [
+                    'id' => $providerId,
+                    'name' => $agencyName
+                ],
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ],
+                'count' => count($result)
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function showDestinationStats()
+    {
+        try {
+            // دریافت پارامترها
+            $providerId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+            $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : null;
+            $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : null;
+
+            if (!$providerId) {
+                return [
+                    'success' => false,
+                    'message' => 'شناسه آژانس معتبر نیست'
+                ];
+            }
+
+            // دریافت آمار
+            $stats = $this->getAgencyDestinationStats($providerId, $dateFrom, $dateTo);
+
+            return $stats;
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * گرفتن آمار تفکیکی بر اساس شهر برای یک آژانس و کشور خاص
+     */
+    public function getAgencyCityStats($providerId, $country, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // تنظیم تاریخ‌های پیش‌فرض (یک ماه اخیر)
+            if (empty($dateFrom)) {
+                $today = date('Y-m-d');
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            // تبدیل تاریخ شمسی به میلادی اگر نیاز باشد
+            $dateFrom = $this->toGregorian($dateFrom);
+            $dateTo = $this->toGregorian($dateTo);
+
+            // اصلاح تاریخ‌های معکوس
+            if ($dateFrom > $dateTo) {
+                $temp = $dateFrom;
+                $dateFrom = $dateTo;
+                $dateTo = $temp;
+            }
+
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+
+            // کوئری اصلی برای دریافت آمار بر اساس شهر و رویداد
+            $sql = "SELECT 
+                    destination_city_name as city,
+                    destination_country_name as country,
+                    event_type,
+                    COUNT(*) as total_count,
+                    COUNT(DISTINCT session_id) as unique_sessions,
+                    COUNT(DISTINCT ip_address) as unique_ips
+                FROM safarbank_reporting
+                WHERE provider_id = {$providerId}
+                    AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                    AND destination_country_name = '{$country}'
+                    AND destination_city_name IS NOT NULL
+                    AND destination_city_name != ''
+                GROUP BY destination_city_name, destination_country_name, event_type
+                ORDER BY destination_city_name ASC";
+
+            $results = $ModelBase->select($sql);
+
+            // ساختاردهی داده‌ها بر اساس شهر
+            $cities = [];
+            $totalStats = [
+                'impression' => 0,
+                'detail_view' => 0,
+                'refer_tour' => 0,
+                'refer_site' => 0,
+                'total_events' => 0
+            ];
+
+            // نگاشت event_type به کلیدهای خروجی
+            $eventMap = [
+                'search_impression' => 'impression',
+                'detail_view' => 'detail_view',
+                'agency_tour_click' => 'refer_tour',
+                'agency_website_click' => 'refer_site'
+            ];
+
+            foreach ($results as $row) {
+                $city = $row['city'];
+                $eventType = $row['event_type'];
+                $count = (int)$row['total_count'];
+
+                // اگر شهر در آرایه نباشد، ایجاد کن
+                if (!isset($cities[$city])) {
+                    $cities[$city] = [
+                        'city' => $city,
+                        'country' => $row['country'],
+                        'impression' => 0,
+                        'detail_view' => 0,
+                        'refer_tour' => 0,
+                        'refer_site' => 0,
+                        'total_events' => 0
+                    ];
+                }
+
+                // اضافه کردن به آمار شهر
+                if (isset($eventMap[$eventType])) {
+                    $key = $eventMap[$eventType];
+                    $cities[$city][$key] += $count;
+                    $cities[$city]['total_events'] += $count;
+
+                    // اضافه کردن به مجموع کل
+                    $totalStats[$key] += $count;
+                    $totalStats['total_events'] += $count;
+                }
+            }
+
+            // تبدیل به آرایه برای مرتب‌سازی
+            $result = array_values($cities);
+
+            // مرتب‌سازی بر اساس تعداد کل رویدادها (نزولی)
+            usort($result, function($a, $b) {
+                return $b['total_events'] - $a['total_events'];
+            });
+
+            // گرفتن اطلاعات آژانس
+            $agency = $this->getAgency($providerId);
+            $agencyName = !empty($agency) ? $agency[0]['AgencyName'] ?? 'آژانس' : 'آژانس';
+
+            return [
+                'success' => true,
+                'data' => $result,
+                'total' => $totalStats,
+                'agency' => [
+                    'id' => $providerId,
+                    'name' => $agencyName
+                ],
+                'country' => $country,
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ],
+                'count' => count($result)
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * نمایش صفحه آمار تفکیکی شهرها
+     */
+    public function showCityStats()
+    {
+        try {
+            // دریافت پارامترها
+            $providerId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+            $country = isset($_GET['country']) ? $_GET['country'] : '';
+            $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : null;
+            $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : null;
+
+            if (!$providerId) {
+                return [
+                    'success' => false,
+                    'message' => 'شناسه آژانس معتبر نیست'
+                ];
+            }
+
+            if (empty($country)) {
+                return [
+                    'success' => false,
+                    'message' => 'نام کشور معتبر نیست'
+                ];
+            }
+
+            // دریافت آمار
+            $stats = $this->getAgencyCityStats($providerId, $country, $dateFrom, $dateTo);
+
+            return $stats;
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+
+    public function getAgencyTourStats($providerId, $city, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // تنظیم تاریخ‌های پیش‌فرض (یک ماه اخیر)
+            if (empty($dateFrom)) {
+                $today = date('Y-m-d');
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            // تبدیل تاریخ شمسی به میلادی اگر نیاز باشد
+            $dateFrom = $this->toGregorian($dateFrom);
+            $dateTo = $this->toGregorian($dateTo);
+
+            // اصلاح تاریخ‌های معکوس
+            if ($dateFrom > $dateTo) {
+                $temp = $dateFrom;
+                $dateFrom = $dateTo;
+                $dateTo = $temp;
+            }
+
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+
+            // کوئری اصلی برای دریافت آمار بر اساس تور و رویداد
+            $sql = "SELECT 
+                    tour_name,
+                    start_date,
+                    event_type,
+                    COUNT(*) as total_count,
+                    COUNT(DISTINCT session_id) as unique_sessions,
+                    COUNT(DISTINCT ip_address) as unique_ips
+                FROM safarbank_reporting
+                WHERE provider_id = {$providerId}
+                    AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                    AND destination_city_name = '{$city}'
+                    AND tour_name IS NOT NULL
+                    AND tour_name != ''
+                GROUP BY tour_name, start_date, event_type
+                ORDER BY tour_name ASC";
+
+            $results = $ModelBase->select($sql);
+
+            // ساختاردهی داده‌ها بر اساس تور
+            $tours = [];
+            $totalStats = [
+                'impression' => 0,
+                'detail_view' => 0,
+                'refer_tour' => 0,
+                'refer_site' => 0,
+                'total_events' => 0
+            ];
+
+            // نگاشت event_type به کلیدهای خروجی
+            $eventMap = [
+                'search_impression' => 'impression',
+                'detail_view' => 'detail_view',
+                'agency_tour_click' => 'refer_tour',
+                'agency_website_click' => 'refer_site'
+            ];
+
+            foreach ($results as $row) {
+                $tourName = $row['tour_name'];
+                $startDate = $row['start_date'];
+                $eventType = $row['event_type'];
+                $count = (int)$row['total_count'];
+
+                // کلید یکتا برای هر تور
+                $tourKey = $tourName . '|' . $startDate;
+
+                // اگر تور در آرایه نباشد، ایجاد کن
+                if (!isset($tours[$tourKey])) {
+                    $tours[$tourKey] = [
+                        'tour_name' => $tourName,
+                        'start_date' => $startDate,
+                        'impression' => 0,
+                        'detail_view' => 0,
+                        'refer_tour' => 0,
+                        'refer_site' => 0,
+                        'total_events' => 0
+                    ];
+                }
+
+                // اضافه کردن به آمار تور
+                if (isset($eventMap[$eventType])) {
+                    $key = $eventMap[$eventType];
+                    $tours[$tourKey][$key] += $count;
+                    $tours[$tourKey]['total_events'] += $count;
+
+                    // اضافه کردن به مجموع کل
+                    $totalStats[$key] += $count;
+                    $totalStats['total_events'] += $count;
+                }
+            }
+
+            // تبدیل به آرایه برای مرتب‌سازی
+            $result = array_values($tours);
+
+            // مرتب‌سازی بر اساس تعداد کل رویدادها (نزولی)
+            usort($result, function($a, $b) {
+                return $b['total_events'] - $a['total_events'];
+            });
+
+            // گرفتن اطلاعات آژانس
+            $agency = $this->getAgency($providerId);
+            $agencyName = !empty($agency) ? $agency[0]['AgencyName'] ?? 'آژانس' : 'آژانس';
+
+            return [
+                'success' => true,
+                'data' => $result,
+                'total' => $totalStats,
+                'agency' => [
+                    'id' => $providerId,
+                    'name' => $agencyName
+                ],
+                'city' => $city,
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ],
+                'count' => count($result)
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * نمایش صفحه آمار تفکیکی تورها
+     */
+    public function showTourStats()
+    {
+        try {
+            // دریافت پارامترها
+            $providerId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+            $city = isset($_GET['city']) ? $_GET['city'] : '';
+            $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : null;
+            $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : null;
+
+            if (!$providerId) {
+                return [
+                    'success' => false,
+                    'message' => 'شناسه آژانس معتبر نیست'
+                ];
+            }
+
+            if (empty($city)) {
+                return [
+                    'success' => false,
+                    'message' => 'نام شهر معتبر نیست'
+                ];
+            }
+
+            // دریافت آمار
+            $stats = $this->getAgencyTourStats($providerId, $city, $dateFrom, $dateTo);
+
+            return $stats;
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getTourDailyStats($providerId, $tourName, $city, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // تنظیم تاریخ‌های پیش‌فرض (یک ماه اخیر)
+            if (empty($dateFrom)) {
+                $today = date('Y-m-d');
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            // تبدیل تاریخ شمسی به میلادی اگر نیاز باشد
+            $dateFrom = $this->toGregorian($dateFrom);
+            $dateTo = $this->toGregorian($dateTo);
+
+            // اصلاح تاریخ‌های معکوس
+            if ($dateFrom > $dateTo) {
+                $temp = $dateFrom;
+                $dateFrom = $dateTo;
+                $dateTo = $temp;
+            }
+
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+
+            // کوئری برای دریافت آمار روزانه تور
+            $sql = "SELECT 
+                    DATE(created_at) as visit_date,
+                    COUNT(*) as total_count,
+                    COUNT(DISTINCT session_id) as unique_sessions,
+                    COUNT(DISTINCT ip_address) as unique_ips,
+                    MIN(created_at) as first_visit,
+                    MAX(created_at) as last_visit
+                FROM safarbank_reporting
+                WHERE provider_id = {$providerId}
+                    AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                    AND destination_city_name = '{$city}'
+                    AND tour_name = '{$tourName}'
+                    AND event_type = 'search_impression'
+                GROUP BY DATE(created_at)
+                ORDER BY visit_date DESC";
+
+            $results = $ModelBase->select($sql);
+
+            // ساختاردهی داده‌ها
+            $dailyStats = [];
+            $totalVisits = 0;
+            $totalUniqueSessions = 0;
+            $totalUniqueIps = 0;
+
+            foreach ($results as $row) {
+                $dailyStats[] = [
+                    'visit_date' => $row['visit_date'],
+                    'total_count' => (int)$row['total_count'],
+                    'unique_sessions' => (int)$row['unique_sessions'],
+                    'unique_ips' => (int)$row['unique_ips'],
+                    'first_visit' => $row['first_visit'],
+                    'last_visit' => $row['last_visit']
+                ];
+
+                $totalVisits += (int)$row['total_count'];
+                $totalUniqueSessions += (int)$row['unique_sessions'];
+                $totalUniqueIps += (int)$row['unique_ips'];
+            }
+
+            // گرفتن اطلاعات آژانس
+            $agency = $this->getAgency($providerId);
+            $agencyName = !empty($agency) ? $agency[0]['AgencyName'] ?? 'آژانس' : 'آژانس';
+
+            return [
+                'success' => true,
+                'data' => $dailyStats,
+                'total' => [
+                    'total_visits' => $totalVisits,
+                    'unique_sessions' => $totalUniqueSessions,
+                    'unique_ips' => $totalUniqueIps,
+                    'days_count' => count($dailyStats)
+                ],
+                'agency' => [
+                    'id' => $providerId,
+                    'name' => $agencyName
+                ],
+                'tour' => [
+                    'name' => $tourName,
+                    'city' => $city
+                ],
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ]
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * نمایش صفحه آمار روزانه تور
+     */
+    public function showTourDailyStats()
+    {
+        try {
+            // دریافت پارامترها
+            $providerId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+            $tourName = isset($_GET['tour_name']) ? $_GET['tour_name'] : '';
+            $city = isset($_GET['city']) ? $_GET['city'] : '';
+            $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : null;
+            $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : null;
+
+            if (!$providerId) {
+                return [
+                    'success' => false,
+                    'message' => 'شناسه آژانس معتبر نیست'
+                ];
+            }
+
+            if (empty($tourName)) {
+                return [
+                    'success' => false,
+                    'message' => 'نام تور معتبر نیست'
+                ];
+            }
+
+            if (empty($city)) {
+                return [
+                    'success' => false,
+                    'message' => 'نام شهر معتبر نیست'
+                ];
+            }
+
+            // دریافت آمار
+            $stats = $this->getTourDailyStats($providerId, $tourName, $city, $dateFrom, $dateTo);
+
+            return $stats;
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+    /**
+     * گرفتن لیست تورهایی که کاربر روی آنها کلیک کرده (detail_view)
+     */
+    public function getDetailViewTours($providerId, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // تنظیم تاریخ‌های پیش‌فرض (یک ماه اخیر)
+            if (empty($dateFrom)) {
+                $today = date('Y-m-d');
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            $dateFrom = $this->toGregorian($dateFrom);
+            $dateTo = $this->toGregorian($dateTo);
+
+            if ($dateFrom > $dateTo) {
+                $temp = $dateFrom;
+                $dateFrom = $dateTo;
+                $dateTo = $temp;
+            }
+
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+
+            // ======== کوئری detail_view ========
+            $sqlDetail = "SELECT 
+                        tour_name,
+                        start_date,
+                        COUNT(*) as detail_count
+                    FROM safarbank_reporting
+                    WHERE provider_id = {$providerId}
+                        AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                        AND event_type = 'detail_view'
+                        AND tour_name IS NOT NULL
+                        AND tour_name != ''
+                    GROUP BY tour_name, start_date";
+
+            $detailResults = $ModelBase->select($sqlDetail);
+
+            // ======== کوئری refer_tour ========
+            $sqlRefer = "SELECT 
+                        tour_name,
+                        start_date,
+                        COUNT(*) as refer_count
+                    FROM safarbank_reporting
+                    WHERE provider_id = {$providerId}
+                        AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                        AND event_type = 'agency_tour_click'
+                        AND tour_name IS NOT NULL
+                        AND tour_name != ''
+                    GROUP BY tour_name, start_date";
+
+            $referResults = $ModelBase->select($sqlRefer);
+
+            // ======== ترکیب ========
+            $tours = [];
+            $totalDetail = 0;
+            $totalRefer = 0;
+
+            // اضافه کردن detail_view
+            foreach ($detailResults as $row) {
+                $key = $row['tour_name'] . '|' . $row['start_date'];
+                $tours[$key] = [
+                    'tour_name' => $row['tour_name'],
+                    'start_date' => $row['start_date'],
+                    'detail_count' => (int)$row['detail_count'],
+                    'refer_count' => 0
+                ];
+                $totalDetail += (int)$row['detail_count'];
+            }
+
+            // اضافه کردن refer_tour
+            foreach ($referResults as $row) {
+                $key = $row['tour_name'] . '|' . $row['start_date'];
+                if (isset($tours[$key])) {
+                    $tours[$key]['refer_count'] = (int)$row['refer_count'];
+                } else {
+                    $tours[$key] = [
+                        'tour_name' => $row['tour_name'],
+                        'start_date' => $row['start_date'],
+                        'detail_count' => 0,
+                        'refer_count' => (int)$row['refer_count']
+                    ];
+                }
+                $totalRefer += (int)$row['refer_count'];
+            }
+
+            // مرتب‌سازی بر اساس detail_count
+            $tours = array_values($tours);
+            usort($tours, function($a, $b) {
+                return $b['detail_count'] - $a['detail_count'];
+            });
+
+            $agency = $this->getAgency($providerId);
+            $agencyName = !empty($agency) ? $agency[0]['AgencyName'] ?? 'آژانس' : 'آژانس';
+
+            return [
+                'success' => true,
+                'data' => $tours,
+                'total' => [
+                    'total_detail' => $totalDetail,
+                    'total_refer' => $totalRefer,
+                    'tours_count' => count($tours)
+                ],
+                'agency' => [
+                    'id' => $providerId,
+                    'name' => $agencyName
+                ],
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ]
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function showDetailViewTours()
+    {
+        try {
+            $providerId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+            $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : null;
+            $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : null;
+
+            if (!$providerId) {
+                return [
+                    'success' => false,
+                    'message' => 'شناسه آژانس معتبر نیست'
+                ];
+            }
+
+            return $this->getDetailViewTours($providerId, $dateFrom, $dateTo);
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * گرفتن لیست refer site (کلیک روی سایت آژانس)
+     */
+    public function getReferSiteStats($providerId, $dateFrom = null, $dateTo = null)
+    {
+        try {
+            // تنظیم تاریخ‌های پیش‌فرض (یک ماه اخیر)
+            if (empty($dateFrom)) {
+                $today = date('Y-m-d');
+                $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+            }
+            if (empty($dateTo)) {
+                $dateTo = date('Y-m-d');
+            }
+
+            // تبدیل تاریخ شمسی به میلادی اگر نیاز باشد
+            $dateFrom = $this->toGregorian($dateFrom);
+            $dateTo = $this->toGregorian($dateTo);
+
+            if ($dateFrom > $dateTo) {
+                $temp = $dateFrom;
+                $dateFrom = $dateTo;
+                $dateTo = $temp;
+            }
+
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+
+            // کوئری برای دریافت refer site ها
+            $sql = "SELECT 
+                    DATE(created_at) as visit_date,
+                    COUNT(*) as total_count,
+                    COUNT(DISTINCT session_id) as unique_sessions,
+                    COUNT(DISTINCT ip_address) as unique_ips
+                FROM safarbank_reporting
+                WHERE provider_id = {$providerId}
+                    AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                    AND event_type = 'agency_website_click'
+                GROUP BY DATE(created_at)
+                ORDER BY visit_date DESC";
+
+            $results = $ModelBase->select($sql);
+
+            $data = [];
+            $totalVisits = 0;
+
+            foreach ($results as $row) {
+                $data[] = [
+                    'visit_date' => $row['visit_date'],
+                    'total_count' => (int)$row['total_count'],
+                    'unique_sessions' => (int)$row['unique_sessions'],
+                    'unique_ips' => (int)$row['unique_ips']
+                ];
+                $totalVisits += (int)$row['total_count'];
+            }
+
+            // گرفتن اطلاعات آژانس
+            $agency = $this->getAgency($providerId);
+            $agencyName = !empty($agency) ? $agency[0]['AgencyName'] ?? 'آژانس' : 'آژانس';
+
+            return [
+                'success' => true,
+                'data' => $data,
+                'total' => [
+                    'total_visits' => $totalVisits,
+                    'days_count' => count($data)
+                ],
+                'agency' => [
+                    'id' => $providerId,
+                    'name' => $agencyName
+                ],
+                'date_range' => [
+                    'from' => $dateFrom,
+                    'to' => $dateTo
+                ]
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * نمایش صفحه refer site
+     */
+    public function showReferSiteStats()
+    {
+        try {
+            $providerId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+            $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : null;
+            $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : null;
+
+            if (!$providerId) {
+                return [
+                    'success' => false,
+                    'message' => 'شناسه آژانس معتبر نیست'
+                ];
+            }
+
+            return $this->getReferSiteStats($providerId, $dateFrom, $dateTo);
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
     }
 
 }

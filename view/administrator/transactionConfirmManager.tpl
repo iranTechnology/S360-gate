@@ -65,6 +65,8 @@
                                         جریمه کنسلی
                                     {elseif $item.Reason eq  'increase'}
                                         واریز به حساب شما
+                                    {elseif $item.Reason eq  'return'}
+                                        برگشت به حساب
                                     {elseif $item.Reason eq  'decrease'}
                                         کسر از حساب شما
                                     {else }
