@@ -883,7 +883,7 @@ class accountcharge extends clientAuth
 
             if ($each['id'] > '1') {
 
-                $sql = "SELECT * FROM transaction_tb WHERE (Reason='increase' OR Reason='decrease') AND PaymentStatus='pending'  ORDER BY id DESC ";
+                $sql = "SELECT * FROM transaction_tb WHERE (Reason='increase' OR Reason='decrease' OR Reason='return') AND PaymentStatus='pending'  ORDER BY id DESC ";
 
                 $clientTransaction = $admin->ConectDbClient($sql, $each['id'], "SelectAll", "", "", "");
 
