@@ -676,17 +676,102 @@ function internalHotelSearchDetails() {
 
             let firstRoom = result[0]
 
+            //Ardalani 1505_06_13
+            const currentProviderId = String(
+                hotelValue?.Result?.ProviderId ??
+                hotelValue?.Result?.SourceId ??
+                hotelValue?.ProviderId ??
+                ''
+            );
+
+            const isProvider46 = currentProviderId === '46';
+
+            // رفتار اصلی و قدیمی برای تمام پرووایدرها
+            let finalSearchRooms = JSON.stringify(hotelValue?.History?.Rooms);
+
+            // فقط Provider 46 اجازه استفاده از fallback را دارد
+            if (
+                isProvider46 &&
+                (!finalSearchRooms ||
+                    finalSearchRooms === 'undefined' ||
+                    finalSearchRooms === 'null' ||
+                    finalSearchRooms === '[]')
+            ) {
+                const urlParams = new URLSearchParams(window.location.search);
+
+                // مقدار URL معمولاً مطمئن‌ترین قالب مورد انتظار سرور است
+                finalSearchRooms = urlParams.get('searchRooms') || '';
+
+                // اگر در URL هم نبود، از PaxRooms ساخته شود
+                if (
+                    !finalSearchRooms &&
+                    Array.isArray(hotelValue?.History?.PaxRooms) &&
+                    hotelValue.History.PaxRooms.length
+                ) {
+                    finalSearchRooms = hotelValue.History.PaxRooms
+                        .map(function (room) {
+                            const adults = Number(room.Adults || 1);
+
+                            const childrenAges = Array.isArray(room.ChildrenAges)
+                                ? room.ChildrenAges
+                                : [];
+
+                            const children = Array.isArray(room.Children)
+                                ? room.Children.length
+                                : Number(room.Children || childrenAges.length || 0);
+
+                            let roomValue = 'R:' + adults + '-' + children;
+
+                            if (childrenAges.length) {
+                                roomValue += '-' + childrenAges.join('-');
+                            } else if (children > 0) {
+                                roomValue += '-' + Array(children).fill('0').join('-');
+                            }
+
+                            return roomValue;
+                        })
+                        .join(',');
+                }
+            }
+
+
+            const urlParamsForDates = new URLSearchParams(window.location.search);
+
+            // مقادیر اصلی برای تمام پرووایدرها
+            let finalStartDate = hotelValue?.History?.StartDate || '';
+            let finalEndDate = hotelValue?.History?.EndDate || '';
+
+            // fallback تاریخ فقط برای Provider 46
+            if (isProvider46) {
+                finalStartDate =
+                    finalStartDate ||
+                    hotelValue?.History?.CheckIn ||
+                    urlParamsForDates.get('startDate') ||
+                    '';
+
+                finalEndDate =
+                    finalEndDate ||
+                    hotelValue?.History?.CheckOut ||
+                    urlParamsForDates.get('endDate') ||
+                    '';
+            }
+
+
             let html = `<form target='_self' action='' method='post' id='formHotelReserve' style='width: 100%;'>
         <input id='idHotel_reserve' name='idHotel_reserve' type='hidden' value='${hotelValue.Result.HotelIndex}'>
         <input id='nights_reserve' name='nights_reserve' type='hidden' value='${firstRoom.Rates[0].Prices.length}'>
-        <input id='startDate_reserve' name='startDate_reserve' type='hidden' value='${hotelValue.History.StartDate}'>
-        <input id='endDate_reserve' name='endDate_reserve' type='hidden' value='${hotelValue.History.EndDate}'>
+        
+        <input id='startDate_reserve' name='startDate_reserve' type='hidden' value='${finalStartDate}'>
+        <input id='endDate_reserve' name='endDate_reserve' type='hidden' value='${finalEndDate}'>
+        
         <input id='IdCity_Reserve' name='IdCity_Reserve' type='hidden' value='${hotelValue.Result.CityId}'>
         <input id='factorNumber' name='factorNumber' type='hidden' value=''>
         <input id='CurrencyCode' name='CurrencyCode' type='hidden' value=''>
         <input id='IsInternal' name='IsInternal' type='hidden' value='${hotelValue.Result.IsInternal}'>
         <input id='source_id' name='source_id' type='hidden' value='${hotelValue.Result.SourceId}'>
-        <input type='hidden' value='${JSON.stringify(hotelValue.History.Rooms)}' name='searchRooms' id='searchRooms'>
+        
+        <input type='hidden' value='${finalSearchRooms}' name='searchRooms' id='searchRooms'>
+        
         <input id='requestNumber' name='requestNumber' type='hidden' value='${RequestNumber}'>
         <input id='href' name='href' type='hidden' value='newPassengersDetail'>
 `
@@ -1920,7 +2005,7 @@ function CalculateNewRoomPrice(idRoom, isInternal = true, addChild = false) {
 //     return n;
 // };
 
-function BuyHotelWithoutInputsApiNew(RoomId) {
+function BuyHotelWithoutInputsApiNew_NoActive_ardalani1405_6_13(RoomId) {
     const resetReserveButton = function() {
         let reserveBtn = document.getElementById('reserve_input' + RoomId)
         if (reserveBtn) {
@@ -2138,6 +2223,360 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
         resetReserveButton()
 
         console.error('BuyHotelWithoutInputsApiNew => exception:', e)
+
+        $.alert({
+            title: useXmltag('Reservationhotel'),
+            icon: 'fa fa-trash',
+            content: useXmltag('PleaseAgainBookingHotel'),
+            rtl: true,
+            type: 'red',
+        })
+    }
+}
+
+function BuyHotelWithoutInputsApiNew(RoomId) {
+    const resetReserveButton = function() {
+        let reserveBtn = document.getElementById('reserve_input' + RoomId)
+
+        if (reserveBtn) {
+            reserveBtn.style.opacity = '1'
+            reserveBtn.style.cursor = 'pointer'
+            reserveBtn.style.pointerEvents = 'auto'
+            reserveBtn.innerHTML = 'رزرو'
+        }
+    }
+
+    const getUrlParams = function() {
+        try {
+            return new URLSearchParams(window.location.search)
+        } catch (e) {
+            return null
+        }
+    }
+
+    const normalizeValue = function(val) {
+        if (
+            val === undefined ||
+            val === null ||
+            val === '' ||
+            val === 'undefined' ||
+            val === 'null'
+        ) {
+            return ''
+        }
+
+        return val
+    }
+
+    try {
+        let webServiceType = $('#webServiceType').val()
+        webServiceType = 'public'
+
+        let requestNumber = $('#requestNumber').val()
+
+        let thisPricesResult = $('#ThisPricesResult').val()
+        let pricesDetail = JSON.parse(thisPricesResult)
+
+        let hotelDetail = $('#ThisHotelResult').val()
+        let hotelParse = JSON.parse(hotelDetail)
+
+        let urlParams = getUrlParams()
+
+        let IdCity = hotelParse.Result.CityId
+        let IdHotel = $('#idHotel_reserve').val()
+
+        /*
+         * تشخیص Provider
+         *
+         * اول مسیرهای احتمالی داخل پاسخ هتل بررسی می‌شوند.
+         * مقدار نهایی به صورت String مقایسه می‌شود تا عدد 46
+         * و رشته "46" هر دو شناسایی شوند.
+         */
+        let providerId = String(
+            hotelParse?.Result?.ProviderId ??
+            hotelParse?.Result?.providerId ??
+            hotelParse?.Result?.SourceId ??
+            hotelParse?.Result?.source_id ??
+            hotelParse?.ProviderId ??
+            hotelParse?.providerId ??
+            hotelParse?.SourceId ??
+            hotelParse?.source_id ??
+            $('#providerId').val() ??
+            $('#ProviderId').val() ??
+            $('#source_id').val() ??
+            $('#SourceId').val() ??
+            ''
+        )
+
+        let isProvider46 = providerId === '46'
+
+        console.log('Hotel provider check:', {
+            providerId: providerId,
+            isProvider46: isProvider46
+        })
+
+        /*
+         * مقادیر اولیه:
+         * برای همه Providerها از همان hidden inputهای فعلی خوانده می‌شوند.
+         */
+        let SDate = $('#startDate_reserve').val()
+        let EDate = $('#endDate_reserve').val()
+        let Nights = $('#nights_reserve').val()
+        let searchRooms = $('#searchRooms').val()
+
+        /*
+         * اصلاح مشکل فقط برای Provider 46
+         */
+        if (isProvider46) {
+            SDate = normalizeValue(SDate)
+            EDate = normalizeValue(EDate)
+            Nights = normalizeValue(Nights)
+            searchRooms = normalizeValue(searchRooms)
+
+            /*
+             * مرحله اول: دریافت از HotelSearchMeta
+             */
+            if (
+                !SDate &&
+                typeof hotelSearchMeta !== 'undefined' &&
+                hotelSearchMeta.startDate
+            ) {
+                SDate = hotelSearchMeta.startDate
+            }
+
+            if (
+                !EDate &&
+                typeof hotelSearchMeta !== 'undefined' &&
+                hotelSearchMeta.endDate
+            ) {
+                EDate = hotelSearchMeta.endDate
+            }
+
+            if (
+                !Nights &&
+                typeof hotelSearchMeta !== 'undefined' &&
+                hotelSearchMeta.nights
+            ) {
+                Nights = hotelSearchMeta.nights
+            }
+
+            if (
+                !searchRooms &&
+                typeof hotelSearchMeta !== 'undefined' &&
+                hotelSearchMeta.searchRooms
+            ) {
+                searchRooms = hotelSearchMeta.searchRooms
+            }
+
+            /*
+             * مرحله دوم: دریافت از History
+             */
+            if (!SDate && hotelParse?.History?.CheckIn) {
+                SDate = hotelParse.History.CheckIn
+            }
+
+            if (!EDate && hotelParse?.History?.CheckOut) {
+                EDate = hotelParse.History.CheckOut
+            }
+
+            if (
+                !searchRooms &&
+                hotelParse?.History?.PaxRooms?.length
+            ) {
+                let room = hotelParse.History.PaxRooms[0]
+
+                let adults = room.Adults || 1
+                let children = room.Children || 0
+
+                searchRooms = 'R:' + adults + '-' + children + '-0'
+            }
+
+            /*
+             * مرحله سوم: دریافت از URL
+             */
+            if (urlParams) {
+                if (!SDate) {
+                    SDate = normalizeValue(urlParams.get('startDate'))
+                }
+
+                if (!EDate) {
+                    EDate = normalizeValue(urlParams.get('endDate'))
+                }
+
+                if (!Nights) {
+                    Nights = normalizeValue(urlParams.get('nights'))
+                }
+
+                if (!searchRooms) {
+                    searchRooms = normalizeValue(urlParams.get('searchRooms'))
+                }
+            }
+
+            /*
+             * همگام‌سازی hidden inputها فقط برای Provider 46
+             */
+            $('#startDate_reserve').val(SDate)
+            $('#endDate_reserve').val(EDate)
+            $('#nights_reserve').val(Nights)
+            $('#searchRooms').val(searchRooms)
+
+            /*
+             * اعتبارسنجی جدید فقط برای Provider 46
+             */
+            if (!SDate || !EDate || !searchRooms) {
+                resetReserveButton()
+
+                $.alert({
+                    title: useXmltag('Reservationhotel'),
+                    icon: 'fa fa-trash',
+                    content: 'اطلاعات تاریخ یا تعداد مسافر کامل نیست. صفحه را یک بار رفرش و دوباره تلاش کنید.',
+                    rtl: true,
+                    type: 'red',
+                })
+
+                return
+            }
+        }
+
+        let TotalNumberRoom_Reserve = RoomId + '-1'
+
+        $('#TotalNumberRoom_Reserve').val(TotalNumberRoom_Reserve)
+
+        let TotalNumberExtraBed_Reserve = 0
+        let IsInternal = $('#IsInternal').val()
+        let typeApplication = 'externalApi'
+        let factorNumber = $('#factorNumber').val()
+
+        let ajaxData = {
+            searchRooms: searchRooms,
+            IsInternal: IsInternal,
+            IdCity: IdCity,
+            IdHotel: IdHotel,
+            SDate: SDate,
+            EDate: EDate,
+            Nights: Nights,
+            Prices: JSON.stringify(pricesDetail.Result),
+            PriceSessionId: pricesDetail.PriceSessionId,
+            HotelDetail: hotelDetail,
+            TotalNumberRoom_Reserve: TotalNumberRoom_Reserve,
+            TotalNumberExtraBed_Reserve: TotalNumberExtraBed_Reserve,
+            TypeApplication: typeApplication,
+            factorNumber: factorNumber,
+            requestNumber: requestNumber,
+            webServiceType: webServiceType,
+            flag: 'nextStepReserveApiHotelNew'
+        }
+
+        console.log({
+            RoomId: RoomId,
+            providerId: providerId,
+            isProvider46: isProvider46,
+            SDate: SDate,
+            EDate: EDate,
+            Nights: Nights,
+            searchRooms: searchRooms,
+            IdCity: IdCity,
+            IdHotel: IdHotel,
+            IsInternal: IsInternal,
+            PriceSessionId: pricesDetail.PriceSessionId,
+            PricesLength: pricesDetail?.Result?.length,
+            HotelDetail: hotelDetail
+        })
+
+        $.ajax({
+            url: amadeusPath + 'hotel_ajax.php',
+            data: ajaxData,
+            type: 'POST',
+            dataType: 'text',
+
+            success: function(data) {
+                console.log(
+                    'BuyHotelWithoutInputsApiNew => response:',
+                    data
+                )
+
+                if (
+                    typeof data === 'string' &&
+                    data.indexOf('success_NextStepReserveHotel') > -1
+                ) {
+                    let result = data.split(':')
+
+                    $('#factorNumber').val(result[1])
+                    $('#IsInternal').val(IsInternal)
+
+                    /*
+                     * برای Provider 46 قبلاً مقدار اصلاح‌شده استفاده شده است.
+                     * برای سایر Providerها نیز همان مقدار قبلی حفظ می‌شود.
+                     */
+                    $('#searchRooms').val(searchRooms)
+
+                    let href = $('#href').val()
+
+                    $('#formHotelReserve')
+                        .attr('action', amadeusPathByLang + href)
+                        .submit()
+                } else if (
+                    typeof data === 'string' &&
+                    data.indexOf('error_NextStepReserveHotel') > -1
+                ) {
+                    resetReserveButton()
+
+                    $.alert({
+                        title: useXmltag('Reservationhotel'),
+                        icon: 'fa fa-trash',
+                        content: useXmltag('PleaseAgainBookingHotel'),
+                        rtl: true,
+                        type: 'red',
+                    })
+                } else {
+                    resetReserveButton()
+
+                    console.warn(
+                        'BuyHotelWithoutInputsApiNew => unexpected response:',
+                        data
+                    )
+
+                    $.alert({
+                        title: useXmltag('Reservationhotel'),
+                        icon: 'fa fa-trash',
+                        content: useXmltag('PleaseAgainBookingHotel'),
+                        rtl: true,
+                        type: 'red',
+                    })
+                }
+            },
+
+            error: function(xhr, status, error) {
+                resetReserveButton()
+
+                console.error(
+                    'BuyHotelWithoutInputsApiNew => ajax error:',
+                    {
+                        status: status,
+                        error: error,
+                        responseText:
+                            xhr && xhr.responseText
+                                ? xhr.responseText
+                                : null
+                    }
+                )
+
+                $.alert({
+                    title: useXmltag('Reservationhotel'),
+                    icon: 'fa fa-trash',
+                    content: useXmltag('PleaseAgainBookingHotel'),
+                    rtl: true,
+                    type: 'red',
+                })
+            }
+        })
+    } catch (e) {
+        resetReserveButton()
+
+        console.error(
+            'BuyHotelWithoutInputsApiNew => exception:',
+            e
+        )
 
         $.alert({
             title: useXmltag('Reservationhotel'),
