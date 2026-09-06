@@ -1759,7 +1759,7 @@ class detailHotel extends ApiHotelCore
                 $price_session_id = $book_hotel[0]['price_session_id'];
 
                 $roomsArray = $passengersArray = $buyerArray = [];
-                $roomIndex = 0;
+
                 foreach ($book_hotel as $rk => $room) {
                     if ($type_application == 'externalApi' /*||( $book_hotel[0]['is_internal'] == '1' && substr($book_hotel[0]['hotel_id'],0,2) == '17') */) {
                         $roomsArray = [
@@ -1830,6 +1830,308 @@ class detailHotel extends ApiHotelCore
                     ];
                     }
                     $roomIndex++;
+                    //					$buyerArray = [
+                    //						'FirstName' => $room['member_name'],
+                    //						'LastName'  => $room['member_name'],
+                    //						'Mobile'    => $room['member_mobile'],
+                    //						'Email'     => $room['member_email'],
+                    //					];
+                    $buyerArray = [
+                        'FirstName' => 'Abazar',
+                        'LastName' => 'Afshar',
+                        'Mobile' => '09057078341',
+                        'Email' => 'info@iran-tech.com',
+                    ];
+                }
+
+                if($hotel_source['source_id'] == '29'){
+                    foreach ($book_room_hotel as $rk => $room) {
+                        $roomsArray = [
+                            [
+                                'RoomCode' => $room['room_id'],
+                                'RoomCount' => $room['room_count'],
+                                'ExtraBed' => $room['extra_bed_count']
+                            ]
+                        ];
+                    }
+                }
+
+                $requestArray = [
+                    'FactorNumber' => $factor_number,
+                    'RequestNumber' => $params['requestNumber'],
+                    'PriceSessionId' => $price_session_id,
+                    'Rooms' => $roomsArray,
+                    'Passengers' => $passengersArray,
+                    'Buyer' => $buyerArray,
+                ];
+
+                $HotelReserveRoom = json_decode($this->Book($requestArray), true);
+
+                if (isset($HotelReserveRoom['Success']) &&  $HotelReserveRoom['Success'] == true) {
+                    if ($HotelReserveRoom['Success']) {
+
+                        if(isset($HotelReserveRoom['Result']['Status']) && $HotelReserveRoom['Result']['Status'] == 'pending'){
+                            $statusRequestWebService = $this->setOnRequestHotel($factor_number ,$counter_type_id ,  $HotelReserveRoom , $type_application);
+                        }
+                        else {
+                            if($hotel_source['source_id'] == '29'){
+                                if(isset($HotelReserveRoom['Result']['change_price']) && $HotelReserveRoom['Result']['change_price'] == true) {
+                                    if(isset($HotelReserveRoom['Result']['change_price_detail']) && !empty($HotelReserveRoom['Result']['change_price_detail']) ){
+                                        $old_price = $HotelReserveRoom['Result']['change_price_detail']['OldHoteRoomInfo'];
+                                        $new_price = $HotelReserveRoom['Result']['change_price_detail']['NewHoteRoomInfo'];
+
+                                        if($old_price[0]['TotalFare'] != $new_price[0]['TotalFare']) {
+                                            $total_new_price = 0 ;
+                                            $total_old_price = 0 ;
+                                            foreach ($old_price as $price) {
+                                                $total_old_price += $price['TotalFare'];
+                                            }
+                                            foreach ($new_price as $price) {
+                                                $total_new_price += $price['TotalFare'];
+                                            }
+                                            $insert_price_change_array = array(
+                                                'factor_number'=>$book_hotel[0]['factor_number'],
+                                                'old_price'=> $total_old_price,
+                                                'new_price'=> $total_new_price,
+                                                'change_type'=>'change_price',
+                                                'client_id'=>CLIENT_ID,
+                                                'created_at'=>date('Y-m-d H:i:s'),
+                                            );
+
+                                            /** @var webhookPriceChangesModel $price_change */
+                                            $price_change = Load::getModel('webhookPriceChangesModel');
+                                            $admin     = Load::controller( 'admin' );
+
+                                            $price_change_insert = $price_change->insertWithBind($insert_price_change_array);
+                                            unset($insert_price_change_array['client_id']);
+                                            $res2 = $admin->ConectDbClient( '', CLIENT_ID, 'Insert', $insert_price_change_array, 'webhook_price_changes_tb', $condition );
+                                        }
+                                    }
+                                }
+                            }
+                            foreach ($HotelReserveRoom['Result']['ReservationDetails'] as $key => $room) {
+                                $d['remarks'] = $room['Remarks'];
+                            }
+                            $d['request_number'] = $params['requestNumber'];
+                            //						$d['pnr']               = $HotelReserveRoom['RequestPNR'];
+                            $d['status'] = "PreReserve";
+
+                            $d['creation_date_int'] = time();
+                            $d['payment_date'] = date('Y-m-d H:i:s');
+
+                            $Condition = "factor_number='{$factor_number}' ";
+                            $Model->setTable("book_hotel_local_tb");
+                            functions::insertLog('first book_hotel_local update ' . json_encode($d, 256 | 64), 'hotel_report');
+                            $res = $book_model->updateWithBind($d, $Condition);
+
+                            $res_report = $report_model->updateWithBind($d, $Condition);
+
+//						$ModelBase->setTable( "report_hotel_tb" );
+//						$res_report = $ModelBase->update( $d, $Condition );
+
+                            if ($res && $res_report) {
+
+                                $statusRequestWebService['type_application'] = $type_application;
+                                $statusRequestWebService['book'] = "yes";
+                                $statusRequestWebService['factor_number'] = $factor_number;
+                                $statusRequestWebService['total_price'] = $total_price;
+                                $statusRequestWebService['RequestNumber'] = $params['requestNumber'];
+                                $statusRequestWebService['StatusCode'] = $HotelReserveRoom['StatusCode'];
+
+                            }
+
+                        }
+
+
+                    }
+                    else {
+
+                        $statusRequestWebService['book'] = "NoReserve";
+                        $statusRequestWebService['factor_number'] = $factor_number;
+                    }
+
+                }
+                else {
+
+                    /*$d['request_number'] = '';
+                    $d['pnr'] = '';
+                    $d['status'] = 'NoReserve';
+                    $d['creation_date_int'] = time();
+
+                    $Condition = "factor_number='{$factor_number}' ";
+                    $Model->setTable("book_hotel_local_tb");
+                    $res = $Model->update($d, $Condition);
+
+                    $ModelBase->setTable("report_hotel_tb");
+                    $res_report = $ModelBase->update($d, $Condition);
+
+                    $statusRequestWebService['book'] = "no";
+                    $statusRequestWebService['factor_number'] = $factor_number;*/
+                    $MessageError = functions::ShowHotelError($HotelReserveRoom['Result']['Error']['Code']);
+                    $errorsController = $this->getController('errors');
+                    $errMsg = $errorsController->processError($HotelReserveRoom, 'hotel', 'reserve', $this->sourceId);
+                    $data['message'] = $HotelReserveRoom['Result']['Error']['Message'];
+                    $data['messageFa'] = $MessageError;
+                    $data['clientId'] = CLIENT_ID;
+                    $data['messageCode'] = $HotelReserveRoom['Result']['Error']['Code'];
+                    $data['request_number'] =$params['requestNumber'];
+                    $data['factor_number'] = $factor_number;
+                    $data['message_agency'] = $errMsg['displayAgency'];
+                    $data['message_passenger'] = $errMsg['displayPassenger'];
+                    $data['message_admin'] = $errMsg['displayAdmin'];
+                    $data['action'] = 'Reserve';
+                    $data['creation_date_int'] = time();
+                    $this->getController('logErrorsHotels')->insertLogErrorHotels($data);
+
+
+                    if ($type_application == 'api' && $HotelReserveRoom['Result']['Error']['Code'] == 'BK-417') {
+                        $statusRequestWebService = $this->setOnRequestHotel($factor_number , $counter_type_id ,  $HotelReserveRoom , $type_application);
+                    } else {
+
+                        $d['status'] = 'NoReserve';
+                        $d['creation_date_int'] = time();
+
+                        $Condition = "factor_number='{$factor_number}' ";
+                        functions::insertLog('first book_hotel_local externalApi update 2 ' . json_encode($d, 256 | 64), 'hotel_report');
+                        $res = $book_model->updateWithBind($d, $Condition);
+                        $res_report = $report_model->updateWithBind($d, $Condition);
+//						$Model->setTable( "book_hotel_local_tb" );
+//						$res = $Model->update( $d, $Condition );
+//						$ModelBase->setTable( "report_hotel_tb" );
+//						$res_report = $ModelBase->update( $d, $Condition );
+
+                        $statusRequestWebService['book'] = "no";
+                        $statusRequestWebService['factor_number'] = $factor_number;
+                        $statusRequestWebService['StatusCode'] = $HotelReserveRoom['StatusCode'];
+                    }
+                }
+            }
+            else {
+
+                $statusRequestWebService['book'] = "no";
+                $statusRequestWebService['factor_number'] = $factor_number;
+                $statusRequestWebService['StatusCode'] = "400";
+            }
+        }
+
+        return $this->returnJson($statusRequestWebService, $statusRequestWebService['StatusCode']);
+    }
+
+    public function HotelReserveNew_asli($params)
+    {
+
+        $factor_number = trim($params['factorNumber']);
+        $type_application = trim($params['typeApplication']);
+
+        /** @var Model $Model */
+        /** @var ModelBase $ModelBase */
+        /** @var smsServices $smsController */
+        $Model = Load::library('Model');
+        $ModelBase = Load::library('ModelBase');
+        $smsController = Load::controller('smsServices');
+        $statusRequestWebService = array();
+
+        $checkLogin = Session::IsLogin();
+        if ($checkLogin) {
+            $counter_type_id = functions::getCounterTypeId($_SESSION['userId']);
+        } else {
+            $counter_type_id = '5';
+        }
+
+
+        // api or reservation
+        if ($type_application == 'api' || $type_application == 'externalApi' || $type_application == 'api_app') {
+
+            /** @var bookHotelLocalModel $book_model */
+            $book_model = $this->getModel('bookHotelLocalModel');
+            /** @var reportHotelModel $report_model */
+            $report_model = $this->getModel('reportHotelModel');
+            $book_hotel = $book_model->get()->where('factor_number', $factor_number);
+            $hotel_source = $book_hotel->find();
+
+            if($hotel_source['source_id'] != '17' &&  $hotel_source['source_id'] != '29') {
+                if ($type_application == 'api' && (substr($params['hotel_id'], 0, 2) != '17') || (substr($params['hotel_id'], 0, 2) != '29') || $type_application == 'api_app') {
+                    $book_hotel = $book_hotel->groupBy('room_id');
+                }
+            }
+
+            $book_hotel = $book_hotel->all();
+
+            if($hotel_source['source_id'] == '29'){
+                $book_room_hotel = $book_model->get()->where('factor_number', $factor_number)->groupBy('room_id')->all();
+            }
+
+//			echo json_encode($book_hotel,256|64); die();
+
+
+            //			$sql        = " SELECT * FROM book_hotel_local_tb WHERE factor_number='{$factor_number}' GROUP BY room_id";
+            //			if ( $type_application == 'externalApi' ) {
+            //				$sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number='{$factor_number}'";
+            //			}
+            //			$book_hotel = $Model->select( $sql );
+
+            if (!empty($book_hotel)) {
+
+                $hotel_id = $book_hotel[0]['hotel_id'];
+                $nights = $book_hotel[0]['number_night'];
+                $start_date = $book_hotel[0]['start_date'];
+                $total_price = $book_hotel[0]['total_price'];
+                $total_price_api = $book_hotel[0]['total_price_api'];
+                $price_session_id = $book_hotel[0]['price_session_id'];
+
+                $roomsArray = $passengersArray = $buyerArray = [];
+
+                foreach ($book_hotel as $rk => $room) {
+                    if ($type_application == 'externalApi' /*||( $book_hotel[0]['is_internal'] == '1' && substr($book_hotel[0]['hotel_id'],0,2) == '17') */) {
+                        $roomsArray = [
+                            [
+                                'RoomCode' => $room['room_id'],
+                                'RoomCount' => $room['room_count'],
+                                'ExtraBed' => $room['extra_bed_count']
+                            ]
+                        ];
+                    }
+                    else {
+
+
+                        $thisRoomArray = [
+                            'RoomCode' => $room['room_id'],
+                            'RoomCount' => $room['room_count'],
+                            'ExtraBed' => $room['extra_bed_count'],
+                        ];
+
+                        //						echo $room['child_array'];
+
+                        $child_array = json_decode($room['child_array'], true);
+                        //						echo Load::plog($child_array);die();
+                        if (isset($child_array[$room['room_index']])) {
+                            $thisRoomArray['ChildrenAges'] = $child_array[$rk];
+                        }
+                        $roomsArray[] = $thisRoomArray;
+                    }
+                    if($room['source_id'] == '29') {
+                        if($room['passenger_age'] == 'Adt') {
+                            $birthday = $this->generateBirthdayDate();
+                        }else{
+                            $birthday = $this->generateYoungerBirthdayDate();
+                        }
+
+                    }else{
+                        $birthday = ($room['passenger_birthday_en']) ? $room['passenger_birthday_en'] : dateTimeSetting::jalali_to_gregorian(explode('-', $room['passenger_birthday'])[0], explode('-', $room['passenger_birthday'])[1], explode('-', $room['passenger_birthday'])[2], '-');
+                    }
+                    $passengersArray[] = [
+                        'Gender' => $room['passenger_gender'],
+                        'FirstName' => $room['passenger_name'],
+                        'FirstNameEn' => $room['passenger_name_en'],
+                        'LastName' => $room['passenger_family'],
+                        'LastNameEn' => $room['passenger_family_en'],
+                        'Birthday' => $room['passenger_birthday'],
+                        'RoomIndex' => ($room['room_index'] + 1),
+                        'NationalCode' => $room['passenger_national_code'],
+                        'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
+                        'BirthdayEn' => $birthday,
+                    ];
+
                     //					$buyerArray = [
                     //						'FirstName' => $room['member_name'],
                     //						'LastName'  => $room['member_name'],
