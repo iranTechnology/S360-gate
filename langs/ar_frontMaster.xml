@@ -3373,4 +3373,7 @@
   <ChildInfo>معلومات حول الطفل الراكب</ChildInfo>
   <BabyInfo>معلومات الرضيع المسافر</BabyInfo>
   <SearchForPurchase>البحث عن عملية شراء</SearchForPurchase>
+  <FromFlightSearchBox>أصل</FromFlightSearchBox>
+  <ToFlightSearchBox>وجهة</ToFlightSearchBox>
+  <InternalFlightSearchBox>إيران</InternalFlightSearchBox>
 </Main>

@@ -3935,4 +3935,7 @@
   <AgencyCommission>کمیسیون آژانس</AgencyCommission>
   <ForAPeriodOf>بمدت</ForAPeriodOf>
   <SearchForPurchase>جست و جو برای خرید</SearchForPurchase>
+  <FromFlightSearchBox>مبدا</FromFlightSearchBox>
+  <ToFlightSearchBox>مقصد</ToFlightSearchBox>
+  <InternalFlightSearchBox>داخلی</InternalFlightSearchBox>
 </Main>

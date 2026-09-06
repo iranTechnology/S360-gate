@@ -3139,5 +3139,8 @@
   <ChildInfo>Информация о перевозке детей</ChildInfo>
   <BabyInfo>Информация о пассажире-младенце</BabyInfo>
   <SearchForPurchase>Поиск покупок</SearchForPurchase>
+  <FromFlightSearchBox>Источник</FromFlightSearchBox>
+  <ToFlightSearchBox>Место назначения</ToFlightSearchBox>
+  <InternalFlightSearchBox>Иран</InternalFlightSearchBox>
 </Main>
 

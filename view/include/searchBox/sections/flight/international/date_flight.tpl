@@ -7,7 +7,7 @@
     </div>
     <div class="form-group">
         <input readonly="" disabled="" type="text" name="arrival_date_international" id="arrival_date_international"
-               class="{if $smarty.const.SOFTWARE_LANG neq 'fa'} returnCalendar-en {else} returnCalendar {/if} form-control return_input2  returnCalendar international-arrival-date-js"
+               class="{if $smarty.const.SOFTWARE_LANG neq 'fa'} returnCalendar-en {else} returnCalendar {/if} form-control return_input2 international-arrival-date-js"
                placeholder="##Returndate##">
         <i class="fal fa-calendar-alt"></i>
     </div>

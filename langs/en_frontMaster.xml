@@ -3457,4 +3457,7 @@
   <ChildInfo>Child Passenger Information</ChildInfo>
   <BabyInfo>Infant Passenger Information</BabyInfo>
   <SearchForPurchase>Search for purchase</SearchForPurchase>
+  <FromFlightSearchBox>From</FromFlightSearchBox>
+  <ToFlightSearchBox>To</ToFlightSearchBox>
+  <InternalFlightSearchBox>Iran</InternalFlightSearchBox>
 </Main>
