@@ -629,6 +629,7 @@
   <Typepassenger>نوع مسافر</Typepassenger>
   <Membershipnumber>شماره عضویت</Membershipnumber>
   <Identificationnumber>شماره شناسایی</Identificationnumber>
+  <DepartureDate>تاریخ رفت</DepartureDate>
   <Returndate>تاریخ برگشت</Returndate>
   <Exitdate>تاریخ خروج</Exitdate>
   <Typeidentitydocument>نوع فایل مدرک هویتی</Typeidentitydocument>
@@ -3929,4 +3930,9 @@
   <flightInternatiol>پرواز بین المللی</flightInternatiol>
   <flightInternalToAirport>پرواز ورودی به فرودگاه</flightInternalToAirport>
   <flightInternationalToAirport>پرواز خروجی از فرودگاه</flightInternationalToAirport>
+  <BasePriceFlight>قیمت پایه</BasePriceFlight>
+  <TaxesAndLevies>مالیات و عوارض</TaxesAndLevies>
+  <AgencyCommission>کمیسیون آژانس</AgencyCommission>
+  <ForAPeriodOf>بمدت</ForAPeriodOf>
+  <SearchForPurchase>جست و جو برای خرید</SearchForPurchase>
 </Main>

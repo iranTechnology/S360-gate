@@ -5,7 +5,7 @@
       <transition name="sidebar-slide">
         <div class="sidebar-panel" :class="{ open: showSidebarInternal }">
           <div class="sidebar-header">
-            <h3 class="sidebar-header-title d-flex align-items-center gap-2">  <button class="sidebar-close-btn" @click="closeSidebar"><i  class="fa fa-arrow-right mt-1"></i></button> جزئیات پرواز</h3>
+            <h3 class="sidebar-header-title d-flex align-items-center gap-2">  <button class="sidebar-close-btn" @click="closeSidebar"><i  class="fa fa-arrow-right mt-1"></i></button>{{useXmltag('SelectionAndDetailflight')}}</h3>
             <button class="sidebar-close-btn sidebar-close-btn-times" @click="closeSidebar"><i class="fa fa-times"></i></button>
           </div>
           <div class="sidebar-content">
@@ -143,12 +143,12 @@
                     class="price-card-mobile"
                 >
                   <div class="price-row">
-                    <span>قیمت پایه</span>
+                    <span>{{useXmltag('BasePriceFlight')}}</span>
                     <strong>{{ row.fareDisplay }}</strong>
                   </div>
 
                   <div class="price-row">
-                    <span>مالیات و عوارض</span>
+                    <span>{{useXmltag('TaxesAndLevies')}}</span>
                     <strong>{{ row.taxDisplay }}</strong>
                   </div>
 
@@ -156,18 +156,18 @@
                       class="price-row"
                       v-if="$store.state.isCounter && flight.flight_type_li == 'system'"
                   >
-                    <span>کمیسیون آژانس</span>
+                    <span>{{useXmltag('AgencyCommission')}}</span>
                     <strong>{{ row.markupDisplay }}</strong>
                   </div>
 
                   <div class="price-row">
-                    <span>تخفیف</span>
+                    <span>{{useXmltag('Discount')}}</span>
                     <strong>{{ row.discountDisplay }}</strong>
                   </div>
 
                   <div class="price-row price-total">
-                    <span>قیمت نهایی</span>
-                    <strong>{{ row.finalDisplay }} ریال</strong>
+                    <span>{{useXmltag('Finalprice')}}</span>
+                    <strong>{{ row.finalDisplay }} {{useXmltag('Rial')}}</strong>
                   </div>
                 </div>
               </div>
@@ -902,9 +902,9 @@ export default {
       const isSafar360 = this.$store.state.isSafar360;
       const priceData = (this.flight && this.flight.price) ? this.flight.price : {};
       const typeMap = {
-        adult: 'بزرگسال',
-        child: 'کودک',
-        infant: 'نوزاد'
+        adult: useXmltag('Adult'),
+        child: useXmltag('Child'),
+        infant: useXmltag('Infant')
       };
 
       const rows = [];

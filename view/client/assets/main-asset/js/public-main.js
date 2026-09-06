@@ -296,7 +296,7 @@ function templateFake(content_modal_fake,header) {
                 ${content_modal_fake}
               </div>
             </div>
-          <div class="modal-footer"><button type="button" aria-hidden="true" class="btn btn-primary site-bg-main-color site-bg-color-dock-border" data-dismiss="modal" aria-label="Close">بستن</button></div>
+          <div class="modal-footer"><button type="button" aria-hidden="true" class="btn btn-primary site-bg-main-color site-bg-color-dock-border" data-dismiss="modal" aria-label="Close">${useXmltag("Close")}</button></div>
         
 `
   return modal_fake
@@ -317,7 +317,7 @@ function item_template(data_calender) {
   data_calender.forEach(function(value, index) {
     console.table(value)
     let div_price = (value.price_final != "") ? ` <span class=" flitght-price-price-info"> ${useXmltag("Startprice")} </span><div class="flitght-price-date flitght-price-price-info">${value.price_final}</div> ` :
-        `<div class="flitght-price-date flitght-price-price-info">جستجو کنید</div>`;
+        `<div class="flitght-price-date flitght-price-price-info">${useXmltag("Search")}</div>`;
     content_modal_main += `
            <div class="flight-modal-items">
               <a href="${value.link}" class="flight-price-item flight-price-item-tag-a">

@@ -42,6 +42,7 @@
 <!-- login and register popup -->
 
 
+
 <div class="" id="hotelDetailContainer">
 
     <div class="parent-hotel-details--new w-100">

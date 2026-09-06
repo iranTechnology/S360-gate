@@ -164,7 +164,9 @@ class searchHotel extends ApiHotelCore {
                     }
 
 
-                    $minPrice = $this->getMinPriceHotelRoom($param['city_id'], $Hotel['hotel_id'], $start_date_reservation, $end_date_reservation);
+                    $getMinPriceHotelRoom = $this->getMinPriceHotelRoom($param['city_id'], $Hotel['hotel_id'], $start_date_reservation, $end_date_reservation);
+                    $minPrice = $getMinPriceHotelRoom['minPrice'];
+                    $maxDiscount = $getMinPriceHotelRoom['maxDiscount'];
 
 
                     if ($minPrice > 0) {
@@ -220,6 +222,8 @@ class searchHotel extends ApiHotelCore {
                             $this->Hotel[$Hotel['hotel_id'] . $index]['min_room_price'] = $minPrice;
                             $this->Hotel[$Hotel['hotel_id'] . $index]['min_room_price_without_discount'] = 0;
                         }
+
+                        $this->Hotel[$Hotel['hotel_id'] . $index]['maxDiscount'] = $maxDiscount;
 
 
 
@@ -312,8 +316,6 @@ class searchHotel extends ApiHotelCore {
                         $final_result_search = $this->excludeWebserviceHotel($resultHotelApi['Result']);
 
                         foreach ($final_result_search as $Hotel) {
-
-                            functions::insertLog(json_encode($Hotel) , '000shojaee');
 
 
 
@@ -581,49 +583,74 @@ class searchHotel extends ApiHotelCore {
 
         $Model = Load::library('Model');
         $sql = "
-        SELECT
-            HR.online_price,
-            HR.currency_price,
-            HR.currency_type,
-            HR.date,
-            (
-        SELECT
-            MIN( HHR.online_price + HHR.currency_price )
-        FROM
-            reservation_hotel_tb HH
-            INNER JOIN reservation_hotel_room_prices_tb HHR ON HH.id = HHR.id_hotel
-        WHERE
-            HHR.user_type = '{$this->counterId}'
-            AND HH.city = '{$idCity}'
-            AND HH.id = '{$idHotel}'
-            AND HHR.date = HR.date
-            AND HHR.flat_type = 'DBL'
-            AND HHR.is_del = 'no'
-            AND HHR.online_price > 0
-            ) AS minPrice
-        FROM
-            reservation_hotel_tb H
-            INNER JOIN reservation_hotel_room_prices_tb HR ON H.id = HR.id_hotel
-        WHERE
-            HR.user_type = '{$this->counterId}'
-            AND H.city = '{$idCity}'
-            AND H.id = '{$idHotel}'
-            AND ( HR.date >= '{$startDate}' AND HR.date < '{$endDate}' )
-            AND HR.flat_type = 'DBL'
-            AND HR.is_del = 'no'
-            AND HR.remaining_capacity > 0 
-        GROUP BY
-            HR.date;
-        ";
+    SELECT
+        HR.online_price,
+        HR.currency_price,
+        HR.currency_type,
+        HR.date,
+
+        (
+            SELECT
+                MIN(HHR.online_price + HHR.currency_price)
+            FROM
+                reservation_hotel_tb HH
+                INNER JOIN reservation_hotel_room_prices_tb HHR
+                    ON HH.id = HHR.id_hotel
+            WHERE
+                HHR.user_type = '{$this->counterId}'
+                AND HH.city = '{$idCity}'
+                AND HH.id = '{$idHotel}'
+                AND HHR.date = HR.date
+                AND HHR.flat_type = 'DBL'
+                AND HHR.is_del = 'no'
+                AND HHR.online_price > 0
+        ) AS minPrice,
+
+        (
+            SELECT
+                MAX(HHR.discount)
+            FROM
+                reservation_hotel_tb HH
+                INNER JOIN reservation_hotel_room_prices_tb HHR
+                    ON HH.id = HHR.id_hotel
+            WHERE
+                HHR.user_type = '{$this->counterId}'
+                AND HH.city = '{$idCity}'
+                AND HH.id = '{$idHotel}'
+                AND HHR.date = HR.date
+                AND HHR.flat_type = 'DBL'
+                AND HHR.is_del = 'no'
+                AND HHR.online_price > 0
+        ) AS maxDiscount
+
+    FROM
+        reservation_hotel_tb H
+        INNER JOIN reservation_hotel_room_prices_tb HR
+            ON H.id = HR.id_hotel
+
+    WHERE
+        HR.user_type = '{$this->counterId}'
+        AND H.city = '{$idCity}'
+        AND H.id = '{$idHotel}'
+        AND (HR.date >= '{$startDate}' AND HR.date < '{$endDate}')
+        AND HR.flat_type = 'DBL'
+        AND HR.is_del = 'no'
+        AND HR.remaining_capacity > 0
+
+    GROUP BY
+        HR.date;
+";
 
         $minPrice = 0;
+        $return['minPrice'] = 0;
+        $return['maxDiscount'] = 0;
 //        functions::insertLog('getMinPriceHotelRoom=>'.$sql,'sql_reservation');
         $prices = $Model->select($sql);
 
         $night = $endDate  - $startDate ;
 
         if($night != count($prices)) {
-            return $minPrice;
+            return $return;
         }
 
         if(isset($prices[0]['minPrice'])){
@@ -633,18 +660,22 @@ class searchHotel extends ApiHotelCore {
                     'currency_type' => $prices[0]['currency_type']
                 ] );
 
-                $minPrice = $prices[0]['online_price'] + $currency_amount['AmountCurrency'];
+                $return['minPrice'] = $prices[0]['online_price'] + $currency_amount['AmountCurrency'];
 
             }else {
-                $minPrice = $prices[0]['minPrice'];
+                $return['minPrice'] = $prices[0]['minPrice'];
             }
 
+        }
+
+        if (isset($prices[0]['maxDiscount'])) {
+            $return['maxDiscount'] = $prices[0]['maxDiscount'];
         }
 //		foreach ($prices as $price){
 //			$minPrice += $price['minPrice'];
 //		}
 
-        return $minPrice;
+        return $return;
     }
 
     public function hotelFacilities($hotelId)
@@ -836,8 +867,7 @@ WHERE
     }
     public function excludeWebserviceHotel($hotel_list) {
         $webserviceHotelController = $this->getController('webserviceHotel') ;
-        $webserviceHotel = $webserviceHotelController->getNotIncludeWebservice('13');
-
+        $webserviceHotel = $webserviceHotelController->getNotIncludeWebservice('40');
         $result = [] ; 
         foreach ($hotel_list as $hotel) {
             if(!in_array( $hotel['index'] , $webserviceHotel )){

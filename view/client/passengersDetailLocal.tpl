@@ -130,7 +130,7 @@
             <!-- <a href="" onclick="return false" class="f-loader-check loaderpassengers"  style="display:none"></a> -->
             <button type="button" class="cancel-passenger"  data-url="{$objDetail->reSearchAddress}"
                     style="height: 45px;width: 122px;"
-                    onclick="BackToHome('{$objDetail->reSearchAddress}'); return false">##ChangeSearch## <i
+                    onclick="BackToHome('{$objDetail->reSearchAddress}'); return false">##ChangeSearchType## <i
                         class="loading_on_click fa fa-refresh"></i>
             </button>
         </div>
@@ -192,7 +192,7 @@
                                 </div>
 
                                 <div class="s-u-result-item-div s-u-result-content-item-div-change d-flex gap-2 justify-content-center">
-                                    <span>{$objDetail->AirlineName[$direction]} ({$objDetail->FlightNo[$direction]})</span>
+                                    <span>{$objDetail->Airline_IATA[$direction]} ({$objDetail->FlightNo[$direction]})</span>
 
                                 </div>
                             </div>
@@ -1321,10 +1321,10 @@
                         <span class="iranb lh18 displayib">##Stopat##</span>
                         <span class="open displayib">
                             {assign var="Airport" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['DestiAirportIata']))}
-                            {$item['DestiCity']} ({$Airport[$AirportLangName]})
+                            {$Airport[$AirportLangName]}
                         </span>
                     </span>
-                                                                                            <span>بمدت</span>
+                                                                                            <span>##ForAPeriodOf##</span>
                                                                                             <span class="open lh25 displayib fltl">
 
                                                                                             {assign var="TotalTransitTime" value=":"|explode:$item['Transit']}
@@ -1424,10 +1424,10 @@
                         <span class="iranb lh18 displayib">##Stopat##</span>
                         <span class="open displayib">
                             {assign var="Airport" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['DestiAirportIata']))}
-                            {$item['DestiCity']} ({$Airport[$AirportLangName]})
+                            {$Airport[$AirportLangName]}
                         </span>
                     </span>
-                                                                                            <span>بمدت</span>
+                                                                                            <span>##ForAPeriodOf##</span>
                                                                                             <span class="open lh25 displayib fltl">
 
                                                                                             {assign var="TotalTransitTime" value=":"|explode:$item['Transit']}
@@ -1666,10 +1666,10 @@
                         <span class="iranb lh18 displayib">##Stopat##</span>
                         <span class="open displayib">
                             {assign var="Airport" value=$objFunctions->NameCityForeign($objFunctions->mapIataCode($item['DestiAirportIata']))}
-                            {$item['DestiCity']} ({$Airport[$AirportLangName]})
+                            {$Airport[$AirportLangName]}
                         </span>
                     </span>
-                                                                                    <span>بمدت</span>
+                                                                                    <span>##ForAPeriodOf##</span>
                                                                                     <span class="open lh25 displayib fltl">
 
                                                                                             {assign var="TotalTransitTime" value=":"|explode:$item['Transit']}
@@ -2635,7 +2635,7 @@
                        style="display:none"></a>
                     <input type="button"
                            onclick="checkfildLocal('{$objDetail->flightMKTime}', '{$objDetail->Adt_qty}', '{$objDetail->Chd_qty}', '{$objDetail->Inf_qty}', '{$objDetail->temporary}')"
-                           value="##NextStepInvoice##"
+                           value="##Nextstep##"
                            class="s-u-submit-passenger s-u-select-flight-change site-bg-main-color s-u-submit-passenger-Buyer"
                            id="send_data">
                 </div>

@@ -2,13 +2,13 @@
     <div class="form-group">
         <input readonly="" type="text"
                class="{if $smarty.const.SOFTWARE_LANG neq 'fa'} deptCalendar-en {else} deptCalendar {/if} form-control went  departure-date-international-js" name="departure_date_international" id="departure_date_international"
-               placeholder="##CheckInDate##">
+               placeholder="##DepartureDate##">
         <i class="fal fa-calendar-alt"></i>
     </div>
     <div class="form-group">
         <input readonly="" disabled="" type="text" name="arrival_date_international" id="arrival_date_international"
                class="{if $smarty.const.SOFTWARE_LANG neq 'fa'} returnCalendar-en {else} returnCalendar {/if} form-control return_input2  returnCalendar international-arrival-date-js"
-               placeholder="##CheckOutDate##">
+               placeholder="##Returndate##">
         <i class="fal fa-calendar-alt"></i>
     </div>
 </div>

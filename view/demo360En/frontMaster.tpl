@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html dir="rtl" lang="fa">
+<html dir="rtl" lang="en">
 {include file="include_files/header.tpl"}
 <body>
 {include file="include_files/menu.tpl"}

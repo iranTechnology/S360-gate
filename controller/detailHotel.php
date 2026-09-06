@@ -1816,18 +1816,18 @@ class detailHotel extends ApiHotelCore
                         }
 
                     }else{
-                        $passengersArray[] = [
-                            'Gender' => $room['passenger_gender'],
-                            'FirstName'    => $room['passenger_name'],
-                            'FirstNameEn'  => !empty($room['passenger_name_en']) ? $room['passenger_name_en'] : (!empty($room['passenger_name']) ? $room['passenger_name'] : $room['passenger_gender']),
-                            'LastName'     => $room['passenger_family'],
-                            'LastNameEn'   => !empty($room['passenger_family_en']) ? $room['passenger_family_en'] : (!empty($room['passenger_family']) ? $room['passenger_family'] : 'Passenger'),
-                            'Birthday' => $room['passenger_birthday'],
-                            'RoomIndex' => ($room['room_index'] + 1),
-                            'NationalCode' => $room['passenger_national_code'],
-                            'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
-                            'BirthdayEn' => $birthday,
-                        ];
+                    $passengersArray[] = [
+                        'Gender' => $room['passenger_gender'],
+                        'FirstName'    => $room['passenger_name'],
+                        'FirstNameEn'  => !empty($room['passenger_name_en']) ? $room['passenger_name_en'] : (!empty($room['passenger_name']) ? $room['passenger_name'] : $room['passenger_gender']),
+                        'LastName'     => $room['passenger_family'],
+                        'LastNameEn'   => !empty($room['passenger_family_en']) ? $room['passenger_family_en'] : (!empty($room['passenger_family']) ? $room['passenger_family'] : 'Passenger'),
+                        'Birthday' => $room['passenger_birthday'],
+                        'RoomIndex' => ($room['room_index'] + 1),
+                        'NationalCode' => $room['passenger_national_code'],
+                        'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
+                        'BirthdayEn' => $birthday,
+                    ];
                     }
                     $roomIndex++;
                     //					$buyerArray = [
@@ -2318,6 +2318,7 @@ class detailHotel extends ApiHotelCore
 
         return $this->returnJson($statusRequestWebService, $statusRequestWebService['StatusCode']);
     }
+
 
     public function Book($requestArray = null)
     {

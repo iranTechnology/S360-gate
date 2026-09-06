@@ -1481,12 +1481,12 @@ function internalHotelSearchDetails() {
                                 //     onClickAttr = `return false`;
                                 // }
 
-                                // $(itemAppend).find('.bookbtn').attr('onclick', onClickAttr);
-                            }
-                            if (item.type_application == 'reservation') {
-                                if (hotelPrice > 0) {
-                                    single_detail_link = `${amadeusPathByLang}roomHotelLocal/reservation/${hotelIndex}/${item.hotel_name_en}/${rooms_query_param}`
-                                    onClickAttr = `hotelDetail('reservation', '${hotelIndex}', '${item.hotel_name_en}','','',$(this))`
+                        // $(itemAppend).find('.bookbtn').attr('onclick', onClickAttr);
+                     }
+                     if (item.type_application == 'reservation') {
+                        if (hotelPrice > 0) {
+                           single_detail_link = `${amadeusPathByLang}roomHotelLocal/reservation/${hotelIndex}/${item.hotel_name_en}/${rooms_query_param}`
+                           onClickAttr = `hotelDetail('reservation', '${hotelIndex}', '${item.hotel_name_en}','','',$(this))`
 
                                 } else {
                                     single_detail_link = '#'
@@ -1609,24 +1609,24 @@ function internalHotelSearchDetails() {
                                 </div>
 `
 
-                                if (item.maxDiscount !== null && item.maxDiscount !== undefined && item.maxDiscount > 0) {
-                                    mainItem += `
+                         if (item.maxDiscount !== null && item.maxDiscount !== undefined && item.maxDiscount > 0) {
+                             mainItem += `
         <span class="discount-percentage mb-md-2 mr-md-0 mr-2">
 تخفیف تا 
 ${item.maxDiscount} درصد</span>
     `;
-                                }
+                         }
 
-                            }
-                            var mainButton = ''
-                            if (item.type_application == 'reservation') {
-                                mainButton = `<a  class='bookbtn  mt1 site-bg-main-color' ${style} onclick="${onClickAttr}"> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
-                            } else {
-                                mainButton = `<a target='_blank' href='${single_detail_link}' class='bookbtn mt1 site-bg-main-color' ${style}> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
-                            }
-                            var pricePerNight = ''
-                            if(nights > 1 ) {
-                                pricePerNight = ` <div class='d-flex align-items-center pricePerNight'>
+                     }
+                     var mainButton = ''
+                     if (item.type_application == 'reservation') {
+                        mainButton = `<a  class='bookbtn  mt1 site-bg-main-color' ${style} onclick="${onClickAttr}"> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
+                     } else {
+                        mainButton = `<a target='_blank' href='${single_detail_link}' class='bookbtn mt1 site-bg-main-color' ${style}> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
+                     }
+                     var pricePerNight = ''
+                     if(nights > 1 ) {
+                        pricePerNight = ` <div class='d-flex align-items-center pricePerNight'>
                                       <h2 class='CurrencyCal' data-amount='${item.price_currency.AmountCurrency}'>${number_format(parseInt(item.price_currency.AmountCurrency))}</h2>
                                       <span>${translateXmlByParams('PriceForEachNight', {'Price': ''})}</span>
                                    </div>`

@@ -166,12 +166,12 @@
   <postagedate>postage date</postagedate>
   <Sir>Mr</Sir>
   <Boy>Boy</Boy>
-  <Baby>inf</Baby>
-  <Child>Child</Child>
+  <Baby>Inf</Baby>
   <Lady>Ms</Lady>
   <Girl>Girl</Girl>
-  <Adult>Adult</Adult>
-  <Infant>Infant</Infant>
+  <Adult>Adl</Adult>
+  <Child>Chd</Child>
+  <Infant>Inf</Infant>
   <Saturday>Saturday</Saturday>
   <Sunday>Sunday</Sunday>
   <Monday>Monday</Monday>
@@ -635,11 +635,11 @@
   <Delaymorethantwohours>Delay more than 2 hours</Delaymorethantwohours>
   <specialoffer>Special Offer</specialoffer>
   <specialoffer2>Offer</specialoffer2>
-
   <TravelerGuard>Traveler Guard</TravelerGuard>
   <Typepassenger>Passenger Type</Typepassenger>
   <Membershipnumber>Membership Number</Membershipnumber>
   <Identificationnumber>Identification number</Identificationnumber>
+  <DepartureDate>Departure date</DepartureDate>
   <Returndate>Return Date</Returndate>
   <Exitdate>Exit date</Exitdate>
   <Typeidentitydocument>Identity file type</Typeidentitydocument>
@@ -668,6 +668,7 @@
   <Passportexpirydate>Passport expiration date</Passportexpirydate>
   <Requireddocuments>Required Documents</Requireddocuments>
   <InformationSaler>Information</InformationSaler>
+  <InformationSalerInfo>Buyer's contact information</InformationSalerInfo>
   <Tracknumber>Tracking Number</Tracknumber>
   <Title>Title</Title>
   <TitleEnglish>English Title</TitleEnglish>
@@ -922,7 +923,7 @@
   <Depositamount>Deposit amount</Depositamount>
   <Lunch>lunch</Lunch>
   <Timemorning>Morning</Timemorning>
-  <Timedawn>Morning</Timedawn>
+  <Timedawn>Dawn</Timedawn>
   <Timenight>Night</Timenight>
   <EachTimenight>every night</EachTimenight>
   <Timeevening>Evening</Timeevening>
@@ -1097,7 +1098,6 @@
   <Postalcode>Postal Code</Postalcode>
   <Datetravelwent>Date Expired</Datetravelwent>
   <Datewentback>Return Date</Datewentback>
-  <DepartureDate>Departure date</DepartureDate>
   <Tobeplaced>Layout Layouts.</Tobeplaced>
   <Preinstall>Pre-payment</Preinstall>
   <Installmentterms>Payment terms</Installmentterms>
@@ -3449,4 +3449,12 @@
   <flightInternatiol>flightInternatiol</flightInternatiol>
   <flightInternalToAirport>flight Internal To Airport</flightInternalToAirport>
   <flightInternationalToAirport>flight International To Airport</flightInternationalToAirport>
+  <BasePriceFlight>Base Price</BasePriceFlight>
+  <TaxesAndLevies>Taxes and Levies</TaxesAndLevies>
+  <AgencyCommission>Agency commission</AgencyCommission>
+  <ForAPeriodOf>For a period of</ForAPeriodOf>
+  <AdultInfo>Adult Passenger Information</AdultInfo>
+  <ChildInfo>Child Passenger Information</ChildInfo>
+  <BabyInfo>Infant Passenger Information</BabyInfo>
+  <SearchForPurchase>Search for purchase</SearchForPurchase>
 </Main>

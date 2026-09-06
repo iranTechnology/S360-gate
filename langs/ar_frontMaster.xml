@@ -536,6 +536,7 @@
   <Typepassenger>نوع الركاب </Typepassenger>
   <Membershipnumber>رقم العضوية </Membershipnumber>
   <Identificationnumber>رقم التعريف  </Identificationnumber>
+  <DepartureDate>تاريخ المغادرة</DepartureDate>
   <Returndate>تاریخ العودة</Returndate>
   <Exitdate>تاريخ المغادرة</Exitdate>
   <Typeidentitydocument>نوع وثيقة الهوية   </Typeidentitydocument>
@@ -817,7 +818,7 @@
   <Depositamount>مبلغ الايداع </Depositamount>
   <Lunch>غداء</Lunch>
   <Timemorning> صباح</Timemorning>
-  <Timedawn>صباح</Timedawn>
+  <Timedawn>فَجر</Timedawn>
   <Timenight>ليل</Timenight>
   <EachTimenight>كل ليلة</EachTimenight>
   <Timeevening>مساء</Timeevening>
@@ -3363,6 +3364,13 @@
   <PhoneNumberBuyer>رقم الهاتف المحمول الذي استخدمته لإجراء عملية الشراء.</PhoneNumberBuyer>
   <PaymentWithADiscountCode>الدفع باستخدام رمز خصم</PaymentWithADiscountCode>
   <AsADiscountCodeHasBeenApplied>نظراً لتطبيق رمز الخصم وتسوية مبلغ الفاتورة، لا يلزم سداد أي مبالغ إضافية. ولإتمام العملية، يرجى اختيار زر "الدفع باستخدام رمز الخصم".</AsADiscountCodeHasBeenApplied>
-
-
+  <BasePriceFlight>السعر الأساسي</BasePriceFlight>
+  <TaxesAndLevies>الضرائب والرسوم</TaxesAndLevies>
+  <AgencyCommission>عمولة الوكالة</AgencyCommission>
+  <ForAPeriodOf>لمدة</ForAPeriodOf>
+  <InformationSalerInfo>معلومات الاتصال الخاصة بالمشتري</InformationSalerInfo>
+  <AdultInfo>معلومات الركاب البالغين</AdultInfo>
+  <ChildInfo>معلومات حول الطفل الراكب</ChildInfo>
+  <BabyInfo>معلومات الرضيع المسافر</BabyInfo>
+  <SearchForPurchase>البحث عن عملية شراء</SearchForPurchase>
 </Main>

@@ -1,40 +1,393 @@
 /****************
     sidebar Styles
 *****************/
+
+
+/*calender*/
+
+
+/*#qty3,#qty2,#qty1,#dept_date_local{*/
+/*    font-feature-settings: "ss02";*/
+
+/*}*/
+.vue-slider-dot {
+    /* موقعیت دهی: اگر بخواهید کاملا وسط باشند، ممکن است نیاز به تنظیم دقیق تر یا استفاده از flexbox در parent داشته باشید */
+    /* shadow برای دستگیره */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* مثال سایه */
+    /* اندازه و رنگ دلخواه */
+    /* width: 20px; */
+    /* height: 20px; */
+    /* background-color: #4CAF50; */ /* رنگ دلخواه */
+    /* border-radius: 50%; */ /* برای گرد کردن دستگیره */
+}
+
+ul {
+    padding-right: 0;
+}
+
+.vue-slider-dot-tooltip {
+    display: none;
+}
+
+/* بازه انتخاب شده (Process) */
+.vue-slider-process {
+    /* shadow برای بازه */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* مثال سایه */
+    /* رنگ دلخواه برای بازه */
+    background-color: var(--mainColor) !important;
+}
+
+/* اگر بخواهید خود اسلایدر (track) هم سایه داشته باشد */
+.vue-slider-rail {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* برای اطمینان از اینکه دستگیره ها کاملا وسط هستند، شاید نیاز به تنظیمات بیشتری روی parent ها باشد */
+/* .slider_range_parent .vue-slider { */
+/* display: flex; */
+/* align-items: center; */
+/* } */
+.dir-ltr {
+    direction: ltr !important;
+}
+
+#dept_date_local, #dept_date_local_return, #dept_date_foreign0, #dept_date_foreign_return {
+    border: 0 !important;
+}
+
+.date-picker-internal-flight, .date-picker-international-flight, .date-picker-foreign-flight {
+    border: 1px solid #ccc;
+    border-radius: 3px
+}
+
+input {
+    font-feature-settings: "ss02" !important;
+
+}
+
+
+.pdp {
+    width: 100% !important;
+}
+
+.pdp .pdp-group .pdp-input {
+    padding-right: 2.5rem !important;
+    height: 35px !important;
+    border: 1px solid #ccc !important;
+    color: #333 !important;
+    font-size: 15px !important;
+    border-radius: 3px !important;
+    font-weight: 600;
+}
+
+/*calender*/
+/*blog*/
+.parent_owl {
+    background: #fff;
+    border-radius: 3px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    box-shadow: 0 3px 6px rgba(146, 146, 146, .2);
+}
+
+.calendar-input-wrapper {
+    width: 100% !important;
+}
+
+.titel_owl_blog {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.titel_owl_blog h4 {
+    font-size: 24px;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+
+}
+
+.titel_owl_blog h4 i {
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.titel_owl_blog a {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0;
+    transition: all ease .3s;
+    border-radius: 8px;
+    padding: 5px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.titel_owl_blog i {
+    margin-right: 5px;
+}
+
+.titel_owl_blog a:hover {
+    color: #fff;
+    background: var(--mainColor);
+    text-decoration: none;
+}
+
+.box_three {
+    padding: 0 5px 40px 5px;
+}
+
+.btn-form2 {
+    background: green;
+    color: #fff;
+    transition: all ease .4s;
+    padding: 0 30px;
+    border-radius: 8px;
+    line-height: 37px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    width: fit-content;
+    margin-left: 0 !important;
+}
+
+.boxerFactorLogo {
+    width: auto !important;
+    margin: 0 !important;
+    border: 2px solid green;
+    border-radius: 8px;
+    padding: 13px;
+}
+
+.boxerFactorLogo img {
+    width: auto !important;
+    height: 67px !important;
+}
+
+.main-pay-content .s-u-p-factor-bank:nth-child(2) .s-u-select-bank {
+    gap: 20px;
+}
+
+.div_up {
+    background: #fff;
+    padding: .5rem;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    width: 100%;
+    min-height: 377px;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    transition: all ease .3s;
+}
+
+.owl_blog .item {
+    padding: 1px;
+}
+
+.div_up:hover {
+    text-decoration: none;
+}
+
+.div_up:hover .text_card h3 {
+    color: var(--mainColor);
+}
+
+.div_up img {
+    width: 100%;
+    height: 170px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.text_card {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.text_card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #212529;
+    padding: 8px 3px;
+    line-height: 1.4;
+    text-align: right;
+    margin-bottom: 0;
+    min-height: 37px;
+    transition: all ease .3s;
+}
+
+.created-at-box {
+    border-top: 1px solid #dedcdc;
+    margin-top: auto;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.calender {
+    color: #5a6268;
+    font-size: 14px;
+}
+
+.star {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5a6268;
+}
+
+.star span i {
+    color: #ffbf00;
+}
+
+.star span {
+    margin-left: 5px;
+}
+
+.owl_blog .owl-nav .owl-prev {
+    right: -18px;
+}
+
+.owl_blog .owl-nav .owl-next {
+    left: -18px;
+}
+
+.owl_blog .owl-nav button {
+    width: 40px;
+    height: 40px;
+    background: #fff !important;
+    border: 1px solid #888 !important;
+    border-radius: 1rem;
+    position: absolute;
+    top: 30%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all ease .3s;
+}
+
+.owl_blog .owl-nav button {
+    width: 40px;
+    height: 40px;
+    background: #fff !important;
+    border: 1px solid #888 !important;
+    border-radius: 1rem !important;;
+    position: absolute;
+    top: 30%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all ease .3s;
+}
+
+.owl-theme .owl-nav [class*="owl-"]:hover {
+    color: #333 !important;
+}
+
+.owl_blog .owl-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.owl_blog .owl-dots {
+    padding: 0 !important;
+}
+
+.owl_blog .owl-dots .owl-dot span {
+    width: 12px;
+    height: 12px;
+}
+
+.owl_blog .owl-dots .owl-dot.active span, .owl_special_tours .owl-dots .owl-dot:hover span {
+    background: var(--secondColor);
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background: var(--secondColor) !important;
+}
+
+.text_card p {
+    color: #5a6268;
+    font-size: 12px;
+    text-align: justify;
+    -webkit-line-clamp: 2;
+    margin: 5px 0 auto;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    line-height: 24px;
+    margin-bottom: 7px;
+}
+
+.calender i {
+    margin-left: 3px;
+}
+
+
+@media (max-width: 991px) {
+    .titel_owl_blog h4 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 567px ) {
+    .detail-flight-internal span {
+        font-size: 12px !important;
+    }
+
+    .owl_blog .owl-dots .owl-dot span {
+        width: 10px;
+        height: 10px;
+    }
+
+    .bg-is-private {
+        left: calc(55% - 30px) !important;
+    }
+
+    .international-available-airlines-info span.flight-type {
+        margin-left: 0px !important;
+    }
+}
+
+@media (max-width: 467px ) {
+
+    .bg-is-private {
+        left: calc(58% - 30px) !important;
+    }
+}
+
+/*blog*/
+
+
 .currency-gds {
     background: white;
     cursor: pointer;
     position: relative;
     font-family: inherit !important;
     transition: all linear 0.2s;
-    z-index: 3;
+    z-index: 5;
     padding: 8px;
 }
-#vueApp{
-width:100%
+
+.calender-overflow-inherit {
+    overflow: inherit !important;
 }
-.inner-avlbl-itm svg{
-    display: none;
-}
-.pdp.rtl .pdp-group :first-child {
-    padding-left: 1.5rem;
-}
-.blit-mob-charter {
-    position: absolute;
-    left: -22px;
-    top: 15px;
-    font-size: 10px;
-    border-radius: 6px 6px 0 0;
-    z-index: 1;
-    font-weight: 600;
-    background: #5eb75e;
-    color: White;
-    font-family: inherit;
-    transform: rotate(90deg);
-    line-height: 15px;
-    padding: 0 11px 4px 11px;
-    display: none;
-}
+
 .currency-gds .currency-inner {
     display: flex;
     align-items: center;
@@ -108,10 +461,11 @@ width:100%
 
 
 .parent_sidebar {
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+    border: 1px solid #eee;
+    border-radius: 8px;
     margin-bottom: 10px;
-
+    /*overflow: hidden;*/
 }
 
 .filtertip {
@@ -126,21 +480,6 @@ width:100%
     box-sizing: border-box;
 }
 
-.swap-flight-search-box-new{
-    background-color: #fff;
-    width: 28px;
-    height: 28px;
-    position: relative;
-    border-radius: 0 3px 3px 0;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.swap-flight-search-box-new i {
-    font-size: 15px;
-    transform: rotate(90deg);
-}
 
 .chooseiconDay.icons.tooltipWeighDay.right {
     right: 8px;
@@ -194,10 +533,17 @@ width:100%
     border-color: #777;
 }
 
+.Dash-ContentL-B-Table table {
+    display: table;
+}
+
+.Dash-ContentL-B-Table table td {
+    padding: 8px 5px !important;
+}
 
 .icons.tooltipWeighDay .tooltiptextWeightDay {
     margin-left: 0;
-    width: 90px;
+    width: 70px;
     visibility: hidden;
     background-color: #fff;
     border-radius: 4px;
@@ -208,7 +554,7 @@ width:100%
     opacity: 0;
     transition: opacity 1s;
     color: #333;
-    font-size: 13px;
+    font-size: 14px;
     top: -100%;
     min-height: 15px;
     margin-top: -15px;
@@ -234,8 +580,12 @@ width:100%
 .tip-content p {
     font-family: inherit;
     font-size: 13px;
-    line-height: 35px;
+    /*line-height: 35px;*/
     margin-bottom: 0;
+}
+
+.tip-content p:nth-child(3) {
+    display: none;
 }
 
 .tip-content p span {
@@ -254,9 +604,12 @@ width:100%
     position: relative;
     overflow: hidden;
     height: 29px;
-    margin-top:5px;
     text-align: center;
     line-height: 20px;
+}
+
+.s_price::after {
+    content: " ";
 }
 
 .filtertip::after {
@@ -293,15 +646,15 @@ width:100%
 }
 
 .tab-content.current ul li {
-    font-size: 12px;
+    font-size: 13px;
     text-align: justify;
     font-family: inherit !important;
-    line-height: 2.5;
+    line-height: 1.75;
     color: #444;
 }
 
 .search-wrapper {
-    padding: 10px;
+    padding: 15px;
 }
 
 .search-wrapper .displayib.padr20.padl20 {
@@ -319,7 +672,7 @@ width:100%
 
 .tzCBPart {
     background: #bdbfbe;
-    width: 95px;
+    width: 50px;
     height: 23px;
     overflow: hidden;
     border-radius: 3px;
@@ -360,7 +713,6 @@ width:100%
     position: relative;
     display: block;
     width: 50%;
-    margin-bottom: 15px;
 
 }
 
@@ -370,7 +722,7 @@ width:100%
     border-radius: 3px;
     padding: 5px;
     border: 1px solid #ccc;
-    margin-bottom: 0;
+    margin-bottom: 15px;
     cursor: pointer;
     text-align: right;
     font-size: 12px;
@@ -436,6 +788,102 @@ width:100%
 }
 
 
+.click_ways {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 15px;
+    color: #444;
+    height: 45px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.click_ways > span {
+    width: auto !important;
+    margin-left: 14px;
+}
+
+.click_ways > i {
+    font-size: 18px;
+    transition: all .3s;
+}
+
+.box_ways {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    overflow: hidden;
+    transition: all .3s;
+}
+
+.box_ways > div {
+    padding: 12px 17px;
+    font-size: 14px;
+    color: #444;
+    position: relative;
+    transition: all .3s;
+    cursor: pointer;
+    text-align: right;
+}
+
+.box_ways > div::after {
+    /*content: "";*/
+    position: absolute;
+    bottom: 0;
+    width: 80%;
+    height: 1px;
+    background: #ddd;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.box_ways > div:last-child::after {
+    display: none
+}
+
+.is_active_box_ways {
+    background: #F2F9FF;
+    color: #0077DB !important;
+}
+
+.box_ways > div:hover {
+    background: #F2F9FF;
+}
+
+.active_h_boxWays {
+    height: auto !important;
+    opacity: 1 !important;
+    margin-top: 5px;
+    border: 1px solid #cccc;
+}
+
+.flash_multi {
+}
+
+.flash_multi span {
+    border-right: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: unset !important;
+    height: 100% !important;
+    font-size: 14px !important;
+}
+
+.active_i_click_ways {
+    transform: rotate(-180deg);
+}
+
+.font_size_12_p {
+    font-size: 12px;
+    font-family: sans-serif;
+}
+
+
 .s-u-num-inp {
     width: 25%;
     box-sizing: border-box;
@@ -453,7 +901,7 @@ width:100%
     cursor: pointer;
     display: table;
     z-index: 1;
-    top: 30px;
+    top: 29px;
 }
 .search-box-swap-flight-box-foreign {
     top: 45px !important;
@@ -486,13 +934,14 @@ width:100%
 
 .s-u-jalali-change {
     position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
 }
 
 .s-u-jalali-change i {
     position: absolute;
-    left: 5px;
+    right: 5px;
     pointer-events: none;
     font-size: 20px;
     cursor: pointer;
@@ -532,7 +981,7 @@ width:100%
     padding: 5px 0;
     border: 1px solid #ccc;
     border-radius: 3px;
-
+    margin-bottom: 15px;
 }
 
 .number_passengers .s-u-num-inp-change {
@@ -570,7 +1019,7 @@ width:100%
     display: flex;
     align-items: center;
     padding: 5px 0;
-    font-size: 14px;
+    font-size: 12px;
     justify-content: center;
     color: #444
 }
@@ -589,23 +1038,136 @@ width:100%
 
 }
 
+/*.passengersDetailLocal_next{*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
 .number_passengers .s-u-number-input-change i:hover {
-    opacity: .9;
+    opacity: .6;
+}
+
+.airlines-info-inner .sit-class {
+    color: #888;
 }
 
 .s-u-num-inp-search-change {
     width: 100%;
     padding: 0;
     text-align: center;
-    margin: 5px auto 0;
+    /*  margin: 15px auto 0;  */
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.s-u-num-inp-search-change button {
+.button_plus_multi button {
     padding: 8px 20px;
     font-size: 14px;
     text-decoration: none;
-    height: 35px;
+    cursor: pointer;
+    border-radius: 3px;
+    color: #444 !important;
+    border-width: 1px;
+    border-style: dashed;
+    background: none !important;
+    transition: all ease .4s;
+    display: flex;
+    justify-content: center;
+    height: 45px;
+    align-items: center;
+}
+
+.button_plus_multi button i {
+    color: #58bb58;
+    transition: all ease .4s;
+}
+
+.button_plus_multi button:hover {
+    color: #fff !important;
+    border-style: solid !important;
+}
+
+.button_plus_multi button:hover i {
+    color: #fff !important;
+}
+
+.multi_accordion_link {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.multi_accordion_link a {
+    color: #444;
+    overflow: hidden;
+    border-radius: 3px;
+    height: 45px;
+    background: #fff;
+}
+
+.multi_accordion_link a div {
+    height: 100%;
+}
+
+.multi_accordion_link a button {
+    padding: 0 9px;
+    background: #fff;
+    font-size: 20px;
+    border: none;
+    border-left: 1px solid #ccc;
+    border-radius: 0 3px 3px 0;
+    position: relative;
+    color: red !important;
+    height: 100%;
+}
+
+.multi_accordion_link a span {
+    border-right: 1px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 100%;
+}
+
+.multi_accordion_link a h5 {
+    font-size: 12px;
+    margin-right: 10px !important;
+}
+
+.multi_accordion_link a[aria-expanded="true"] {
+    border-bottom: 1px solid #cccc !important;
+}
+
+.multi_accordion_link a {
+    border-bottom: 1px solid transparent !important;
+}
+
+.multi_accordion_link a .my-auto > i {
+    margin: auto;
+    display: flex;
+    font-size: 17px;
+    transform: rotate(0);
+    transition: all .3s;
+}
+
+.multi_accordion_link a.collapsed .my-auto > i {
+    transform: rotate(180deg);
+    transition: all .3s;
+}
+
+.multi_accordion_link a:hover {
+    color: #444;
+}
+
+.card-body .s-u-num-inp-change {
+    margin-bottom: 0 !important;
+}
+
+.s-u-num-inp-search-change button {
+    padding: 12px 20px;
+    font-size: 14px;
+    text-decoration: none;
     width: 100%;
     cursor: pointer;
     border-radius: 3px;
@@ -615,7 +1177,7 @@ width:100%
 }
 
 .s-u-num-inp-search-change button:hover {
-    opacity: .9;
+    opacity: .6;
 }
 
 #s-u-filter-wrapper-ul {
@@ -626,7 +1188,7 @@ width:100%
     margin: 0;
     text-align: right;
     direction: rtl;
-    padding: 0;
+    padding: 15px !important;
     background: #fff;
     border-top: 1px solid #ccc;
 }
@@ -634,7 +1196,7 @@ width:100%
 .s-u-filter-title {
     position: relative;
     display: flex;
-    padding: 10px;
+    padding: 3px 0px !important;
     color: #444;
     font-family: inherit;
     font-size: 16px;
@@ -659,95 +1221,6 @@ width:100%
     left: 20px;
     right: 20px;
 }
-
-
-.click_ways{
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    padding: 10px;
-    font-size: 15px;
-    color: #444;
-    height: 45px;
-    cursor: pointer;
-    user-select:none;
-}
-.click_ways > span{
-    width:auto !important;
-    margin-right:14px;
-}
-.click_ways > i{
-    font-size: 18px;
-    transition: all .3s;
-    margin-right: unset!important;
-    margin-left: auto!important;
-}
-
-.box_ways{
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    border-radius: 3px;
-    overflow: hidden;
-    transition: all .3s;
-}
-
-.box_ways > div{
-    padding: 12px 17px;
-    font-size: 14px;
-    color: #444;
-    position: relative;
-    transition: all .3s;
-    cursor: pointer;
-    text-align: left;
-}
-.box_ways > div::after{
-    /*content: "";*/
-    position: absolute;
-    bottom:0;
-    width: 80%;
-    height:1px;
-    background:#ddd;
-    right: 50%;
-    transform: translateX(50%);
-}
-.box_ways > div:last-child::after {
-    display:none
-}
-.is_active_box_ways{
-    background:#F2F9FF;
-    color:#0077DB !important;
-}
-.box_ways > div:hover{
-    background:#F2F9FF;
-}
-.active_h_boxWays{
-    height: auto !important;
-    opacity:1 !important;
-    margin-top: 5px;
-    border: 1px solid #cccc;
-}
-.flash_multi .multi_accordion_link a span{
-    border: none;
-}
-.flash_multi span{
-    border-right: none !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: unset !important;
-    height: 100% !important;
-    font-size: 14px !important;
-}
-.active_i_click_ways{
-    transform: rotate(-180deg);
-}
-.font_size_12_p{
-    font-size: 12px;
-    font-family: sans-serif;
-}
-
 
 .s-u-filter-title i {
     margin-right: 5px;
@@ -818,10 +1291,10 @@ width:100%
 
 .s-u-filter-item-time label {
     font-family: inherit;
-    width: calc(100% - 78px);
+    width: calc(100% - 50px);
     display: inline-flex;
     vertical-align: middle;
-    font-size: 11px;
+    font-size: 13px;
     line-height: 21px;
     color: #686868;
     padding-left: 10px;
@@ -840,7 +1313,7 @@ width:100%
 }
 
 .slider_range_parent {
-    padding: 15px;
+    padding: 15px 6px;
 }
 
 .site-bg-filter-color.checked {
@@ -856,7 +1329,7 @@ width:100%
     font-size: 11px;
 
     color: #fff;
-
+    line-height: 24px;
 }
 
 .check-switch {
@@ -889,137 +1362,91 @@ width:100%
 /****************
     Content Styles
 *****************/
-.progress-container {
-    width: 100%;
-    height: 4px;
-    background: #eee;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 99999999;
-    opacity: 0;
-    transition: all ease .4s;
-}
-
-
-.button_plus_multi button{
-    padding: 8px 20px;
-    font-size: 14px;
-    text-decoration: none;
-    cursor: pointer;
-    border-radius: 3px;
-    color:#444 !important;
-    border-width: 1px;
-    border-style: dashed;
-    background:none !important;
-    transition: all ease .4s;
-    display:flex;
-    justify-content: center;
-    height: 45px;
-    align-items: center;
-}
-.button_plus_multi button i{
-    color: #58bb58;
-    transition: all ease .4s;
-}
-.button_plus_multi button:hover{
-    color:#fff !important;
-    border-style: solid !important;
-}
-.button_plus_multi button:hover i{
-    color:#fff !important;
-}
-.multi_accordion_link{
-    box-shadow:none !important;
-    border:none !important;
-}
-.multi_accordion_link a{
-    color:#444;
-    overflow: hidden;
-    border-radius: 3px;
-    height: 45px;
-    background:#fff;
-}
-.multi_accordion_link a div {
-    height: 100%;
-}
-.multi_accordion_link a button{
-    padding: 0 9px;
-    background: #fff ;
-    font-size:20px;
-    border:none;
-    border-right:1px solid #ccc;
-    border-radius: 0 3px 3px 0;
-    position: relative;
-    color: red !important;
-    height: 100%;
-}
-.multi_accordion_link a span{
-    border-left: 1px dashed #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 35px;
-    height: 100%;
-}
-.multi_accordion_link a h5{
-    font-size:12px;
-    margin-right: 10px !important;
-}
-.multi_accordion_link a[aria-expanded="true"]{
-    border-bottom: 1px solid #cccc !important;
-}
-.multi_accordion_link a{
-    border-bottom: 1px solid transparent !important;
-}
-
-.multi_accordion_link a .my-auto > i{
-    margin:auto;
-    display: flex;
-    font-size:17px;
-    transform: rotate(0);
-    transition: all .3s;
-}
-.multi_accordion_link a.collapsed  .my-auto > i{
-    transform: rotate(180deg);
-    transition: all .3s;
-}
-.multi_accordion_link a:hover{
-    color:#444;
-}
-
-.progress-bar {
-    height: 4px;
-    background: #04AA6D;
-    width: 0;
-    transition: all ease .4s;
-}
 .lazy_loader_flight{
 
     display:none;
     align-items:center
 }
 .modal-content-flight{
-    width: 600px;
+    width: 420px;
+    max-width: 420px;
     margin: 0 auto;
 }
 .modal-body-flight
 {
     text-align:center;
     background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    border-radius: 16px;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     outline: 0;
-    padding: 15px 15px 0;
+    padding: 40px 30px 30px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container {
+    margin-bottom: 24px;
+}
+
+.clock-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    position: relative;
+    background-color: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clock-face {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #64748b;
+    border-radius: 50%;
     position: relative;
 }
+
+.clock-hand {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 18px;
+    background-color: #64748b;
+    transform-origin: bottom;
+    transform: translate(-50%, -100%) rotate(90deg);
+}
+
+.clock-hand-short {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 12px;
+    background-color: #64748b;
+    transform-origin: bottom;
+    transform: translate(-50%, -100%) rotate(30deg);
+}
+
+.clock-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: #64748b;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .timeout-modal__flight{
-    font-weight: 100;
-    font-size:14px;
-    padding:3px 10px 10px;
+    color: #64748b !important;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 32px;
 }
 .timeout-modal__image {
     display: block;
@@ -1041,10 +1468,14 @@ width:100%
     height:100%
 }
 .timeout-modal__title{
-    display:block;
-    width: 100%;
+    color: #1e293b !important;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    line-height: 1.3;
+    display: flex;
     text-align: center;
-    padding:10px 0;
+    justify-content: center;
 }
 .timeout-modal__leading-text {
     font-weight: 900;
@@ -1055,19 +1486,51 @@ width:100%
     font-size: .875em;
 }
 .btn-research{
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    padding: 9px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
     width:100%;
-    padding:10px;
-    transition: all ease .4s;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .btn-research:hover{
-    opacity:.8;
+    opacity: .6;
 }
 .btn_back_home{
-    padding:10px 0;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    width: 100%;
+    height: 45px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    border: 1px solid #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.btn_back_home{
-    font-size:14px
+
+.btn_back_home:hover {
+    /*color: #1e293b;*/
+    background-color: #f1f5f9;
 }
+
+.parent-modal-final-search {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
 [v-cloak]{
     display: none;
 }
@@ -1078,11 +1541,12 @@ width:100%
 }
 
 .sorting2 {
-    border-radius: 3px;
+    border-radius: 8px;
     display: flex;
     margin: 5px 0;
-    border: 1px solid #ccc;
-    background: #fff
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+    border: 1px solid #eee;
+    background: #fff;
 
 }
 
@@ -1116,6 +1580,15 @@ width:100%
 
 .sorting2 .svg svg {
     width: 19px;
+    top: -1px;
+    position: relative;
+    color: #d2d2d2;
+    fill: currentColor;
+    transition: all ease 0.3s;
+}
+
+.svg-medal svg {
+    width: 21px !important;
     top: -1px;
     position: relative;
     color: #d2d2d2;
@@ -1163,15 +1636,31 @@ width:100%
 .price-data-title span::before {
     width: 10px;
     height: 10px;
-    background: #00b42d;
+    background: #5eb75e;
     position: absolute;
-    top: 1px;
+    top: 4px;
     bottom: 0;
-    margin: auto;
     content: "";
     left: 5px;
     border-radius: 50%;
     animation: test linear 2.5s infinite;
+}
+
+.blit-mob-charter {
+    position: absolute;
+    left: -22px;
+    top: 15px;
+    font-size: 10px;
+    border-radius: 6px 6px 0 0;
+    z-index: 1;
+    font-weight: 600;
+    background: #5eb75e;
+    color: White;
+    font-family: inherit;
+    transform: rotate(90deg);
+    line-height: 15px;
+    padding: 0 11px 4px 11px;
+    display: none;
 }
 
 #showDataFlight {
@@ -1200,11 +1689,11 @@ width:100%
 }
 
 .col_t_price.active_col_today span {
-    color: #00b42d;
+    color: #5eb75e;
 }
 
 .col_t_price.active_col_today span {
-    color: #00b42d;
+    color: #5eb75e;
 }
 
 .lowest-date span {
@@ -1321,8 +1810,8 @@ width:100%
 
 
 .international-available-panel-min {
-    height: 0;
-    overflow: hidden;
+    /*height: 0;*/
+    /*overflow: hidden;*/
     padding: 0;
     transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
 }
@@ -1330,14 +1819,14 @@ width:100%
 .international-available-panel-max {
     padding: 15px 0 0;
     height: auto;
-    background: #f9fafe;
+    background: #fff;
 }
 
 .item_flight .showListSort > div {
-    transition: all ease .4s;
-    border-radius: 3px;
+    border-radius: 8px;
     overflow: hidden;
-    border: 1px solid #ccc;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+    border: 1px solid #eee;
     margin: 10px 0;
     background: #fff;
     transition: all ease .4s;
@@ -1345,6 +1834,11 @@ width:100%
 .item_flight .showListSort > div:hover{
    box-shadow: 0 0 5px #ccc;
 }
+
+.item_flight .showListSort > div > div {
+    width: 100%;
+}
+
 .international-available-item {
     position: relative;
     width: 100%;
@@ -1361,6 +1855,15 @@ width:100%
     width: 100%;
     flex-wrap: wrap;
     align-items: center;
+}
+
+.required_star::before {
+    content: "*" !important;
+    position: absolute !important;
+    left: 22px !important;
+    top: 14px !important;
+    color: red !important;
+    font-size: 20px !important;
 }
 
 .international-available-item-right-Cell {
@@ -1381,7 +1884,7 @@ width:100%
 }
 
 .international-available-item-left-Cell {
-    width: 20%;
+    width: 22%;
     display: inline-block;
     text-align: center;
     vertical-align: top;
@@ -1392,38 +1895,44 @@ width:100%
 
 .international-available-info .international-available-details {
     width: 100%;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #eee;
+    background: #f7f7f7;
 }
 
-.international-available-item-right-Cell::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    width: 0;
-    height: 0;
-    border: 12px solid transparent;
-    border-top-color: #ddd;
-    right: -12px;
-}
+/*.international-available-item-right-Cell::before {*/
+/*    content: "";*/
+/*    display: block;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    width: 0;*/
+/*    height: 0;*/
+/*    border: 12px solid transparent;*/
+/*    border-top-color: transparent;*/
+/*    border-bottom-color: transparent;*/
+/*    border-top-color: transparent;*/
+/*    border-bottom-color: transparent;*/
+/*    border-bottom-color: transparent;*/
+/*    border-top-color: #eee;*/
+/*    left: -12px;*/
+/*}*/
 
-.international-available-item-right-Cell::after {
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border: 12px solid transparent;
-    border-bottom-color: #ddd;
-    right: -12px;
-}
+/*.international-available-item-right-Cell::after {*/
+/*    content: "";*/
+/*    display: block;*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    width: 0;*/
+/*    height: 0;*/
+/*    border: 12px solid transparent;*/
+/*    border-bottom-color: #eee;*/
+/*    left: -12px;*/
+/*}*/
 
-.right_busin_div {
-    width: 30px;
-    height: 100%;
-    display: flex;
-}
+/*.right_busin_div {*/
+/*    width: 30px;*/
+/*    height: 100%;*/
+/*    display: flex;*/
+/*}*/
 
 .right_busin_div > div {
     position: absolute;
@@ -1449,9 +1958,13 @@ width:100%
     justify-content: center;
 }
 
+.international-available-airlines-detail-tittle span i {
+    font-size: 12px;
+}
 
 .international-available-airlines {
     width: 18%;
+    justify-content: center;
     text-align: center;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -1460,10 +1973,17 @@ width:100%
     flex-wrap:wrap;
     align-items: center;
 }
+
+.international-available-airlines-log-info {
+    width: 100%;
+    padding: 0 !important;
+}
+
 .international-available-airlines-logo {
     width: 60px;
     height: 60px;
     margin: 0 auto;
+    border-radius: 50%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -1477,14 +1997,20 @@ width:100%
     width: 60px;
     height: 60px;
     display: block;
-    background-image: url(../../images/airline-dakheli.jpg);
+    background-image: url(../../images/airline-dakheli.png);
 }
 
 div.IV .logo-airline-ico {
     background-position: 120px 120px;
 }
 
-div.PYA .logo-airline-ico {
+div.PR .logo-airline-ico {
+    background-position: 120px 60px;
+}
+
+div.PYA .logo-airline-ico,
+div.PY .logo-airline-ico,
+div.PP .logo-airline-ico {
     background-position: 0 0;
 }
 
@@ -1496,8 +2022,35 @@ div.Y9 .logo-airline-ico {
     background-position: -120px 0;
 }
 
-div.VR .logo-airline-ico, div.Varesh .logo-airline-ico {
+div.AXV .logo-airline-ico,
+div.X0 .logo-airline-ico {
+    background-position: -356px -53px;
+}
+
+div.VR .logo-airline-ico, div.Varesh .logo-airline-ico, div._VR .logo-airline-ico, div.VRH .logo-airline-ico {
     background-position: -180px 0;
+}
+
+div.RI, div.IRU .logo-airline-ico,
+div.C9 .logo-airline-ico {
+    background-position: -300px -60px;
+}
+
+div.RI .logo-airline-ico {
+    background-position: 115px -60px;
+}
+
+div.MEH .logo-airline-ico,
+div.E8 .logo-airline-ico {
+    background-position: -419px 0;
+}
+
+div.AVAAIR .logo-airline-ico {
+    background-position: 59px -60px;
+}
+
+div.AXV .logo-airline-ico-foreign {
+    background-position: 122px -2px;
 }
 
 div.TF .logo-airline-ico {
@@ -1524,12 +2077,17 @@ div.B9 .logo-airline-ico {
     background-position: -240px -60px;
 }
 
-div.JI .logo-airline-ico {
+div.A1 .logo-airline-ico {
+    background-position: 398px 236px;
+}
+
+div.JI .logo-airline-ico, div.J1 .logo-airline-ico {
     background-position: 0 -60px;
 }
 
 div.flypersia .logo-airline-ico,
-div.FP .logo-airline-ico{
+div.FP .logo-airline-ico,
+div.FP0 .logo-airline-ico {
     background-position: -180px -180px;
 }
 
@@ -1544,32 +2102,86 @@ div.QB .logo-airline-ico {
 div.HH .logo-airline-ico {
     background-position: -120px -120px;
 }
-div.parsair .logo-airline-ico {
-    background-position: -240px -180px;
-}
+
+
 div.IV .logo-airline-ico {
     background-position: -180px -120px;
 }
 
-div.IRZ .logo-airline-ico, div.saha .logo-airline-ico {
+div.IRZ .logo-airline-ico,
+div.saha .logo-airline-ico,
+div.SA .logo-airline-ico,
+div.sa .logo-airline-ico,
+div._007 .logo-airline-ico,
+div.SHI .logo-airline-ico,
+div.S1 .logo-airline-ico {
     background-position: -240px -120px;
+}
+
+div.ATS .logo-airline-ico,
+div.L0 .logo-airline-ico {
+    background-position: -356px -118px;
 }
 
 div.I3 .logo-airline-ico {
     background-position: 0 -180px;
 }
 
+div.TKN .logo-airline-ico,
+div.K0 .logo-airline-ico {
+    background-position: -359px -180px;
+}
+
+div.J3 .logo-airline-ico {
+    background-position: -411px -183px;
+}
+
+div.DZD .logo-airline-ico {
+    background-position: -356px 406px;
+}
+
+div.Y0 .logo-airline-ico {
+    background-position: -356px 406px;
+}
+
 div.W5 .logo-airline-ico {
     background-position: -60px -180px;
 }
 
-div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
+div.SR .logo-airline-ico, div.sepehran .logo-airline-ico, div.IS .logo-airline-ico, div._008 .logo-airline-ico {
     background-position: -120px -180px;
 }
 
+div.YAZDAIR .logo-airline-ico {
+    background-position: 58px 242px;
+}
+
+div.E0 .logo-airline-ico,
+div.IRT .logo-airline-ico {
+    background-position: -416px -58px;
+}
+
+div.R0 .logo-airline-ico {
+    background-position: -416px -122px;
+}
+
+div.L4 .logo-airline-ico {
+    background-position: -484px 0px;
+}
+
+div.SHR .logo-airline-ico {
+    background-position: -482px -60px;
+}
+
+div.LMB .logo-airline-ico {
+    background-position: -481px 0;
+}
+
+
+
 .international-available-airlines-log-info > span {
     font-size: 14px;
-    color: #000;
+    color: #666666;
     padding: 10px 0 0;
     direction: rtl;
     display: block;
@@ -1582,9 +2194,9 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
     font-style:normal;
 }
 .sandali-span2 {
-    color: #000 !important;
+    color: #e63200;
     font-size: 12px;
-    padding: 0;
+    display: block;
 }
 
 .sandali-span2 i {
@@ -1608,7 +2220,6 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
 
 .international-available-airlines-info .airlines-info:nth-child(1), .international-available-airlines-info .airlines-info:nth-child(3) {
     width: 25%;
-    color: #000;
 }
 
 .international-available-airlines-info .airlines-info:nth-child(2) {
@@ -1621,12 +2232,7 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
 
 .airlines-info.destination span:first-child {
     text-align: center;
-    font-size: 1rem;
-}
-.parent-new-price{
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    font-size: 18px;
 }
 
 .international-available-info .airlines-info.destination span:last-of-type {
@@ -1639,9 +2245,10 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
 }
 
 .airlines-info-inner span:first-child {
-    color: #000;
+
+    color: #888;
     font-family: inherit;
-    font-weight: 100;
+    font-weight: normal;
     font-size: 12px
 }
 
@@ -1676,8 +2283,8 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
     top: 4px;
 }
 .flat_circle{
-    width:12px;
-    height:12px;
+    width: 8px;
+    height: 8px;
     border-radius:50%;
     background:#ccc;
     display:inline-block;
@@ -1693,7 +2300,17 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
     display: inline-block;
     width: 25px;
     height: 25px;
-    transform: rotate(45deg);
+    position: relative;
+    top: 2px;
+    right: -16px;
+}
+
+.position-top--new {
+    position: relative;
+    top: 10px;
+}
+
+.position-bottom--new {
     position: relative;
     top: 4px;
     left: -8px;
@@ -1703,6 +2320,7 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
     width: 25px;
     fill: currentColor;
     color: #c4c4c4;
+    transform: rotate(180deg);
 }
 
 .loc-icon-destination {
@@ -1717,8 +2335,9 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
 
 .loc-icon-destination svg {
     display: inline-block;
-    width: 21px;
+    width: 18px;
     fill: currentColor;
+    transform: translateY(-10px);
 }
 
 .source {
@@ -1748,7 +2367,7 @@ div.SR .logo-airline-ico, div.sepehran .logo-airline-ico {
 }
 
 h5.raft-ticket, h5.bargasht-ticket {
-    font-size: 20px;
+    font-size: 16px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -1792,32 +2411,58 @@ h5.raft-ticket::before, h5.bargasht-ticket::before {
     cursor: pointer;
 }
 
+.old-price {
+    display: block;
+    width: 100%
+}
+
 .international-available-airlines-info span {
-    color: #000;
-    padding: 4px 0 0;
+    color: #333;
+    padding: 5px 0;
+    direction: rtl;
     display: block;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     position: relative;
     line-height: 20px;
-    font-size: 18px;
+    font-size: 14px;
     text-align:center
 }
 .international-available-airlines-info span.flight-type {
-    position: absolute;
-    top: 0;
-    border: 1px solid #ccc;
-    color:#aaa;
-    border-top:none;
+    /*position: absolute;*/
+
+    border: none !important;
+    color: #333;
     z-index: 1;
-    left: calc(50% - 40px);
-    width: 80px;
-    border-radius: 0 0 3px 3px;
-    padding:0;
-    font-size:10px;
+    /*left: calc(50% - 40px);*/
+    border-radius: 50px;
+    font-size: 12px;
+    /*transform: translateX(-50%);*/
+    margin-left: -10px;
+    background: #f2f2f2;
+    min-width: 70px;
+    padding: 2px 6px;
+    left: -42%;
 
 }
+
+.flight-type-div {
+    top: 10% !important;
+    gap: 15px !important;
+    display: flex !important;
+    position: absolute !important;
+    justify-content: center !important;
+}
+
+.flight-type-external {
+    left: 46% !important;
+    top: 5% !important;
+}
+
+/*.sandali-span2-margin-right{*/
+/*    margin-right:40px !important;*/
+/*}*/
 .twowayWarning {
     margin-top: 10px;
     padding: 10px 20px;
@@ -1836,32 +2481,27 @@ h5.raft-ticket::before, h5.bargasht-ticket::before {
 }
 
 .priceSortAdt, .priceSortAdt_visa {
-    color: #a8a8a8;
+    color: #000;
     font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    flex-direction: column;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .priceSortAdt i {
-    font-size: 20px;
-    font-weight: bold;
-    color: #4B5259;
-    display: flex;
-    line-height: 1.4;
-    justify-content: center;
-    gap: 5px;
+    font-size: 19px;
+    color: #000 !important;
+    font-style: normal;
 }
-.priceSortAdt i > span{
-    font-size: 14px;
-    font-weight: 400;
-}
+
 .priceSortAdt i.text-decoration-line{
     color: #000;
-    text-decoration: line-through;
     font-size: 12px;
+    color: #000;
+    font-size: 11px;
+    width: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 .international-available-airlines-detail-tittle span i {
     margin-right: 5px;
@@ -1873,10 +2513,25 @@ h5.raft-ticket::before, h5.bargasht-ticket::before {
     padding: 0;
     margin: 0;
     text-align: center;
-    background: #f9fafe;
+    background: #fff;
     position: relative;
     cursor: pointer;
     align-items: center;
+    justify-content: center;
+}
+
+.international-available-detail-btn-new, .btn-available-d-n {
+    display: block;
+    height: 30px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    /*background: #fff;*/
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
 }
 
 .text_div_morei {
@@ -1898,7 +2553,8 @@ h5.raft-ticket::before, h5.bargasht-ticket::before {
 }
 
 .my-more-info {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     z-index: 1;
     margin:0 45px 0 auto;
     padding: 5px 8px 5px 7px;
@@ -1921,6 +2577,7 @@ h5.raft-ticket::before, h5.bargasht-ticket::before {
 ul.tabs {
     display: flex;
     justify-content: center;
+    border-bottom: 1px solid #dedfdf;
 }
 
 ul.tabs li {
@@ -1946,23 +2603,38 @@ ul.tabs li.current {
     border-radius: 3px 3px 0 0;
     height: 40px;
     position: relative;
+    line-height: 20px !important;
 }
 
 .tab-content {
     display: none;
-    padding: 10px;
+    padding: 15px;
     margin: 0;
     font-size: 13px;
     color: #2a2a2a;
     line-height: 26px;
-    background-color: white;
+    /*background-color: white;*/
     text-align: justify;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    /*border-top: 1px solid #ccc;*/
+    /*border-bottom: 1px solid #ccc;*/
+}
+
+ul.tabs.tabs-1 li.tab-link.current {
+    background: #eee;
+    border-radius: 20px;
+    border: 0;
+    line-height: 1.75 !important;
+}
+
+.tab-content-style {
+    border: 2px solid #BDBFBE5E;
+    background-color: #fbfbfb;
 }
 
 .tab-content.current {
-    display: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .foreign-result-search{
     width: 100%;
@@ -1970,14 +2642,18 @@ ul.tabs li.current {
 }
 .international-available-airlines-detail-tittle {
     position: relative;
-    padding-top: 8px;
+    /*padding-top: 8px;*/
     margin-top: 8px;
+    margin-top: 8px;
+    background: #fbfbfb;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #eee;
 }
 
 .international-available-airlines-detail {
     width: 100%;
     display: flex;
-    align-items: center;
     text-align: center;
     padding-top: 8px;
     padding-left: 8px;
@@ -1989,21 +2665,9 @@ ul.tabs li.current {
     box-sizing: border-box;
 }
 
-.international-available-airlines-detail.airlines-stops-time{
-    border: none !important;
-    border-radius: 7px !important;
-    background: #e1e1e1 !important;
-    width: auto;
-    margin: 10px 10px 30px 10px !important;
-    display: block !important;
-    padding: 10px 20px !important;
-    text-align: center;
-}
-
 .international-available-airlines-logo-detail {
     width: 60px;
     height: 60px;
-    margin: 0 auto;
     background-color: #fff;
     display: inline-block;
     font-size: 5px;
@@ -2037,12 +2701,20 @@ ul.tabs li.current {
     text-align: left;
     padding: 4px 0;
 }
+.international-available-airlines-detail-tittle span > svg {
+    transform: rotate(180deg);
+}
 .international-available-airlines-info-detail.my-info-detail > span em,
 .international-available-airlines-info-detail.side-logo-detail > span em{
     margin-left: 5px;
 }
+
+.international-available-airlines-detail-tittle span i {
+    margin-left: 5px
+}
+
 .international-available-airlines-info-detail.side-logo-detail > span{
-    padding:5px 8px;
+    padding: 5px 2px;
 
 }
 .international-available-airlines-info-detail.my-info-detail > span{
@@ -2052,34 +2724,34 @@ ul.tabs li.current {
 
 .international-available-airlines-detail .airlines-detail-box {
     display: inline-block;
-    width: 32%;
+    width: 100%;
     box-sizing: border-box;
-    padding: 0;
-    height: 100%;
+    padding: 0 10px;
 }
 
 
 .international-available-airlines-detail .airlines-detail-box span i {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 
 .pop-up-h {
     display: block;
-    background: #069;
-    background-color: rgb(0, 102, 153);
+    /*background: #069;*/
+    /*background-color: rgb(0, 102, 153);*/
     position: relative;
-    top: 0;
+    /*top: 0;*/
     overflow: hidden;
     font-family: inherit;
     border-radius: 0;
-    height: 40px;
-    padding: 10px;
+    /*height: 40px;*/
+    /*padding: 10px;*/
     box-sizing: border-box;
-    color: #fff;
+    color: #444;
     text-align: center;
 }
-.inner-avlbl-itm div > a {
+
+.inner-avlbl-itm div > a:not(.f-loader-check) {
     width: 100%;
     display: block;
     padding: 8px 0;
@@ -2088,24 +2760,54 @@ ul.tabs li.current {
     cursor:pointer;
     border-radius: 3px;
     border: 0 none;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
 }
+
+.inner-avlbl-itm div.SelectTicket {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
 .inner-avlbl-itm div > a:hover{
-    opacity:.9;
+    opacity: .6;
 }
 .price-Box .price-Content, .price-Box-Tab .price-Content {
     overflow: hidden;
     direction: rtl;
     padding: 10px;
     box-sizing: border-box;
-    border-right: 1px solid #5D7596;
-    border-left: 1px solid #5D7596;
-    border-bottom: 1px solid #5D7596;
-    border-style: solid;
-    border-width: 1px;
+    /*border-right: 1px solid #5D7596;*/
+    /*border-left: 1px solid #5D7596;*/
+    /*border-bottom: 1px solid #5D7596;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
     border-radius: 0;
     text-align: center;
+}
+
+.parent-grid-ticket-details {
+    padding: 0;
+    /*background: #f7f7f7;*/
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+}
+
+.parent-price-ticket-details {
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 2px dashed #ccc;
+    overflow: hidden;
+    justify-content: center;
+    gap: 3px;
+    align-items: center;
+    background: #fff;
 }
 
 .tblprice {
@@ -2117,71 +2819,144 @@ ul.tabs li.current {
 }
 
 .tdpricelabel {
-    text-align: right;
-    direction:ltr;
-
-    font-family: inherit, inherit;
-    font-size: 12px;
-    color: #4d4d4d;
-    padding-bottom: 13px;
-    width: 15%;
-    float: left;
-    line-height: 25px;
-    padding-right: 5px;
+    text-align: left;
+    /*width: 20%;*/
+    /*font-family: inherit, inherit;*/
+    font-size: 13px;
+    color: #f00;
+    /*padding-bottom: 13px;*/
+    /*width: 15%;*/
+    /*float: right;*/
+    /*line-height: 25px;*/
+    /*padding-left: 5px;*/
 }
 
 .tdprice {
-    padding-right: 15px;
-    text-align: left;
+    /*padding-right: 15px;*/
+    text-align: right;
     font-family: inherit;
-    font-size: 12px;
-    float: left;
+    font-size: 16px;
+    float: right;
 }
 
+.parent-counter-ticket-details {
+    border: 2px solid #BDBFBE5E;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.parent-counter-ticket-details table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.parent-counter-ticket-details th, td {
+    padding: 6px 0;
+    text-align: center;
+}
+
+.parent-counter-ticket-details thead {
+    background-color: #BDBFBE5E;
+}
+
+.parent-counter-ticket-details tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.parent-counter-ticket-details th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.parent-counter-ticket-details th:last-child {
+    border-top-right-radius: 12px;
+}
+
+.parent-counter-ticket-details tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.parent-counter-ticket-details tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+/* استایل اصلی کامپوننت */
 .cancel-policy {
-    margin-top: 30px;
-    font-family: inherit !important;
-    padding-top: 20px;
     display: block;
-    border-top: 1px solid #e4e4e4;
+    color: #1f2937;
 }
 
+.cancel-policy > span {
+    width: 100%;
+    display: block;
+    padding: 10px 0;
+    border-radius: 10px;
+    text-align: center;
+    background: #f9fafb;
+    color: #1f2937;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+}
+
+/* باکس‌ها و چیدمان */
 .cancel-policy-inner {
     display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
+    margin-top: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .cancel-policy-inner .cancel-policy-item {
-    flex: 0 0 19%;
-    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
+    flex: 0 0 31%;
     display: flex;
-    flex-wrap: wrap;
-    background: white;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 16px;
+    border: solid 1px var(--mainColor);
+    padding: 14px 10px;
+    color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    cursor: default;
+    overflow: hidden;
 }
 
+
+/* متن داخلی باکس */
 .cancel-policy-inner .cancel-policy-item .cancel-policy-item-text {
-    display: block;
-    padding: 10px;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 20px;
-    margin-bottom: 10px;
-    color: #4e4e4e;
-    font-family: inherit !important;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 14px;
 }
 
+/* بخش جریمه */
 .cancel-policy-inner .cancel-policy-item .cancel-policy-item-pnalty {
-    display: block;
-    padding: 7px 0 10px;
-    flex: 0 0 100%;
-    margin-top: auto;
-    font-weight: bold;
-    color: white;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
+    padding: 12px 0;
+    font-weight: 700;
     text-align: center;
-    background: #fff5f5;
+    border-radius: 16px 16px 16px 16px;
+    box-shadow: inset 0 -2px 6px rgba(0, 0, 0, 0.08);
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+
+/* نسخه چارتر و پیام متنی ساده */
+.cancel-policy-charter,
+.cancel-policy-charter1 {
+    background: #fffbf0;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 15px;
+}
+
+.cancel-policy-charter span,
+.cancel-policy-charter1 span {
+    color: #b45309;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    display: block;
 }
 
 .lazy-loader-parent{
@@ -2256,6 +3031,9 @@ ul.tabs li.current {
     color:#fff;
     width: 100%;
     display:block;
+}
+#flight_loader span:last-child {
+    display: none;
 }
 #flight_loader .locstart, #flight_loader .locend {
     height: 30px;
@@ -2344,22 +3122,26 @@ ul.tabs li.current {
 
 .f-loader-check{
     position: absolute;
-    display: flex;
-    justify-content: center;
-    z-index: 999;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #fff;
+    width: 30px;
+    height: 30px;
+    border-style: solid;
+    border-color: black;
+    border-top-color: transparent;
+    border-width: 3px;
     border-radius: 50%;
-    border-top-color: #818181;
-    animation: spin 1s linear infinite;
-    top: 11px;
-    right: 7px;
+    -webkit-animation: spin .8s linear infinite;
+    animation: spin .8s linear infinite;
 }
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+
+#vueApp {
+    width: 100%
 }
+
+#lowest .f-loader-check {
+    top: calc(50% - 15px);
+    left: calc(50% - 15px);
+}
+
 .filter-contrast {
     filter: contrast(5);
     background-color: rgba(255,255,255,1);
@@ -2439,26 +3221,41 @@ ul.tabs li.current {
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    padding: 10px ;
+    padding: 10px 10px 0;
     color: #fff;
     font-family: inherit;
     font-size: 16px;
     font-weight: 700;
     text-align: right;
-    border-bottom: 1px solid #ccc;
+    /*border-bottom: 1px solid #eee;*/
     position: relative;
+}
+
+.s-u-last-p-bozorgsal-change.color-alert {
+    color: #000
+}
+
+.factorl_nn .s-u-result-item-change {
+    color: #000
+}
+
+.s-u-passenger-wrapper-change_n .s-u-last-p-bozorgsal-change {
+    border-color: #fff;
+    color: #fff
+
 }
 
 #steps {
     width: 100%;
     margin: 15px auto;
     background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+    border: 1px solid #eee;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 15px;
+    border-radius: 8px;
 }
 
 .steps_items {
@@ -2507,6 +3304,10 @@ ul.tabs li.current {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+.bg-golden {
+    background-color: #EFBF04 !important;
 }
 
 .step h3 {
@@ -2592,19 +3393,24 @@ ul.tabs li.current {
     margin-left: auto;
     margin-right: 10px;
     padding: 5px 10px;
-    border-radius: 3px;
+    border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
-    transition: all ease .4s;
+    transition: all ease .3s;
     display:flex;
     align-items:center;
-
+    background: #e1e1e1;
 }
+
 .s-u-last-passenger-btn i{
-    color:#000;
+    color: #555;
 }
 .s-u-last-passenger-btn:hover {
     background-color: #eee;
+}
+
+.pdp .pdp-picker {
+    z-index: 9999 !important;
 }
 
 .counter.counter-analog {
@@ -2644,6 +3450,8 @@ ul.tabs li.current {
     position: relative;
     box-sizing: border-box;
     border-bottom: 1px solid #ccc;
+    color: #6c6c6c;
+    font-size: 14px;
 }
 
 .s-u-result-item-change:last-child {
@@ -2714,9 +3522,10 @@ ul.tabs li.current {
 
 .displayib-change {
     font-family: inherit;
-    font-size: 11px;
+    font-size: 14px;
     line-height: 30px;
     word-spacing: 3px;
+    color: #6c6c6c
 }
 
 
@@ -2762,7 +3571,8 @@ ul.tabs li.current {
 
 .shenase-nerkhi {
     display: inline-block;
-    font-size: 11px;
+    font-size: 14px;
+    color: #6c6c6c
 }
 
 .s-u-bozorg.price i {
@@ -2772,58 +3582,53 @@ ul.tabs li.current {
 
 
 }
-#passengers .price i {
-    color: #333;
-}
-.last-price-factor-local {
-    font-weight: 900;
-    font-size: 15px;
-    color: #000;
-}
+
 .s-u-result-item-wrapper .s-u-result-item-div {
     width: 33.33%;
     border-right: 1px solid #ccc;
-
+    min-height: 81px;
 }
 
 .s-u-result-items-div-change span {
     font-family: inherit;
-    font-size: 14px;
+    font-size: 12px;
     color: #6c6c6c;
     font-weight: normal;
-    padding: 5px 0 1px;
+    padding: 0;
     min-height: 27px;
     direction: rtl;
     position: relative;
     display: block;
-    width: 100%;
 }
 
-.s-u-result-items-div-change span:first-child {
-    font-weight: 900;
-    font-size: 16px;
+.Dash-ContentL-B-Title p i {
+    font-size: 14px !important;
+    font-family: inherit;
+    font-style: normal;
 }
 
 .main-pay-content {
-    background: #fff;
-    padding: 23px 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-bottom: 10px;
     display: none;
-    flex-wrap:wrap;
-
+    background: #fff;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 25px;
 }
 
 .s-u-passenger-wrapper {
     position: relative;
-    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+    border: 1px solid #eee;
     background: #fff;
-    border-radius: 3px;
     width: 100%;
     padding: 0;
     box-sizing: border-box;
-    margin: 15px auto 0;
+    margin: 10px auto 0;
 }
 .s-u-select-bank span.author {
     position: relative;
@@ -2861,7 +3666,7 @@ ul.tabs li.current {
     color: #000;
     text-align: right;
     overflow: auto;
-    border-bottom: 1px dashed #c3c3c3;
+    /*border-bottom: 1px dashed #c3c3c3;*/
 }
 
 .control--checkbox {
@@ -2909,6 +3714,10 @@ ul.tabs li.current {
     transition-delay: 0s;
 }
 
+.Dash-ContentL-B-Table {
+    border-radius: 3px;
+}
+
 .filler {
     position: relative;
     width: 16px;
@@ -2924,17 +3733,20 @@ ul.tabs li.current {
 
 .checkbox svg {
     position: absolute;
+    width: 0;
+    height: 0;
+    transition: all ease .4s;
 }
 
-.control--checkbox input:checked ~ .checkbox polyline {
-    stroke-dashoffset: 0;
-    transition-delay: .2s;
+.control--checkbox input:checked ~ .checkbox svg {
+    width: 100%;
+    height: 100%
 }
 
 polyline {
     position: absolute;
     fill: none;
-    stroke: #FFF;
+    stroke: #000;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 18px;
@@ -2961,7 +3773,7 @@ margin-right: 5px;
 .member-price i{
     font-style: normal;
     font-size:20px;
-    color:#5eb75e
+    color: #000
 }
 .panel-body-change {
     padding: 10px;
@@ -2971,6 +3783,17 @@ margin-right: 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+#passengers .price i {
+    color: #333
+
+}
+
+.last-price-factor-local {
+    font-weight: 900;
+    font-size: 15px;
+    color: #000
 }
 
 .s-u-passenger-item {
@@ -2985,16 +3808,31 @@ margin-right: 5px;
 
 .s-u-passenger-item input, .s-u-passenger-item select, .s-u-passenger-item-hotel input, .s-u-passenger-item-hotel select {
     width: 100%;
-    height: 35px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    height: 45px;
+    border: 1px solid #eee;
+    border-radius: 12px;
     box-sizing: border-box;
-    padding: 0 5px;
-    font-size: 13px;
-    transition: all ease .4s;
-    background: #fff;
-    color: #555;
+    padding: 0 15px;
+    font-size: 14px;
+    transition: all ease .3s;
+    background: #f9f9f9;
 }
+
+.noneIranian .select2-container .select2-selection--single .select2-selection__rendered {
+    background: #f9f9f9 !important;
+    height: 45px !important;
+    border: 1px solid #eee !important;
+    border-radius: 12px !important;
+    padding: 0 15px !important;
+    line-height: 42px !important;
+}
+    .noneIranian .select2-container--default .select2-selection--single {
+        height: 45px !important;
+        border: none !important;
+    }
+    .noneIranian .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 45px !important;
+    }
 .dataTables_wrapper .dataTables_filter input{
     margin-left: .5em;
 }
@@ -3015,48 +3853,11 @@ margin-right: 5px;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-.resultFlight_international {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-top-color: rgb(204, 204, 204);
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-radius: 3px;
-    border-top: none;
-    z-index: 10;
-    position: absolute;
-    box-shadow: 0 0 5px #ccc;
-    top: 100%;
-    width: 100%;
-    max-height: 300px;
-    overflow: auto;
-}
-.resultFlight_international li {
-    border-bottom: 1px solid #ccc;
-    font-size: 12px;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
-    padding: 10px;
-    cursor: pointer;
-    transition: all ease .4s;
-    color: #666;
-    display: flex;
-    line-height: 1.8;
-}
-.resultFlight_international li i {
-    margin-right: 4px;
-    font-size: 18px;
-}
+
 .panel-default-change-Buyer .s-u-passenger-item-change {
     flex-grow: 1;
 }
 
-.airlines-detail-box-foreign{
-    padding: 0 7px;
-}
-.international-available-airlines-log-info{
-    width:100%
-}
 .s-u-passenger-item-change {
     margin: 5px 0;
     padding: 0 5px;
@@ -3065,25 +3866,27 @@ margin-right: 5px;
 
 .panel-default-change-Buyer .s-u-passenger-item-change input {
     width: 100%;
-    height: 35px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    height: 45px;
+    border: 1px solid #eee;
+    border-radius: 12px;
     box-sizing: border-box;
-    padding: 0 5px;
+    padding: 0 15px;
     font-size: 14px;
+    direction: inherit;
+    background: #f9f9f9;
 }
 
 
 .btns_factors_n {
-    padding: 15px 0;
     display: flex;
     align-items: center;
+    margin: 15px 0;
     direction: rtl;
 }
 
 .s-u-submit-passenger-Buyer {
-    height: 42px;
-    border-radius: 3px;
+    height: 45px;
+    border-radius: 8px;
     border: none;
     font-size: 14px;
     margin-left: 0;
@@ -3094,25 +3897,29 @@ margin-right: 5px;
 }
 
 .s-u-submit-passenger-Buyer:hover {
-    opacity: .8;
+    opacity: .6;
 }
 
 .btns_factors_n .passengersDetailLocal_next {
     margin-left: auto;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn_research__ {
-    position: relative;
-    display: inline-block;
-    order:1
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
 }
 
 .cancel-passenger {
-    display: none;
+    display: inline-block;
     position: relative;
     padding: 10px 5px;
-    border-radius: 3px;
+    border-radius: 8px;
     font-size: 14px;
     background: #888;
     color: #fff;
@@ -3121,12 +3928,6 @@ margin-right: 5px;
 
 }
 
-.alert_msg {
-    width: 100%;
-    text-align: left;
-    color: #fc3434;
-
-}
 
 .div-captcha {
     padding: 10px;
@@ -3184,6 +3985,10 @@ margin-right: 5px;
 .Dash-ContentL-B-Title p i {
     font-size: 11px;
     font-family: inherit;
+}
+
+.s-u-result-item-RulsCheck {
+    padding: 5px 0;
 }
 
 .Dash-ContentL-B-Table table {
@@ -3253,8 +4058,8 @@ margin-right: 5px;
     color: #686868;
     margin-bottom: 0;
     display: flex;
+    font-size: 14px;
     align-items:center;
-    font-size: 14px
 }
 
 .FilterHoteltypeName a {
@@ -3265,8 +4070,8 @@ margin-right: 5px;
 .FilterHoteltype[type="checkbox"]:not(:checked) + label::before, .FilterHoteltype[type="checkbox"]:checked + label::before {
     content: '';
     position: relative;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     border: 2px solid #ccc;
     background: #fff;
     margin-right: 10px;
@@ -3274,15 +4079,15 @@ margin-right: 5px;
 }
 
 .FilterHoteltype[type="checkbox"]:not(:checked) + label::after, .FilterHoteltype[type="checkbox"]:checked + label::after {
-    content: '\f00c';
+    content: '✔';
     position: absolute;
-    top: 5px;
+    top: 2px;
     left: 2px;
     font-size: 21px;
     line-height: 0.8;
     color: #fc3434;
     transition: all .2s;
-    font-family: 'FontAwesome';
+    font-family: inherit;
 }
 
 .FilterHoteltype[type="checkbox"]:checked + label::after {
@@ -3297,25 +4102,24 @@ margin-right: 5px;
 
 .wayticket_passengers {
     position: absolute;
-    top: 0;
+    top: -14px;
     left: calc(50% - 50px);
     background: #ccc;
     padding: 1px 10px;
-    border-radius: 0 0 3px 3px;
+    border-radius: 8px;
     color: #fff;
-    font-size: 12px;
-    width: 100px
-
+    font-size: 14px;
+    width: 100px;
+    cursor: context-menu;
 }
 
-.parent-discount {
-    padding: 15px 15px 0;
+.discount-code-error {
+    position: absolute;
+    bottom: -22px;
 }
 
 .separate-part-discount {
-    padding-bottom: 20px;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-bottom: 30px;
     margin-right: -15px;
     margin-left: -15px;
     border-bottom: 1px solid #e1e1e1;
@@ -3323,25 +4127,26 @@ margin-right: 5px;
 
 .parent-discount label {
     margin: 0;
-    font-size: 12.6px;
-    display: inline-block;
+    font-size: 14px;
     color: #686868;
-    width: 100px;
+    width: fit-content;
+    margin-bottom: 6px;
 }
 
-input#discount-code {
-    display: inline-block;
-    width: calc(100% - 120px);
-    border-radius: 3px;
+.s-u-result-item-RulsCheck-item .parent-discount .separate-part-discount .input-group-btn:has(.discount-code-btn) {
+    margin-top: auto;
 }
 
 .parent-discount .input-group-btn .discount-code-btn {
-
-    padding: 5px 10px;
+    padding: 0 10px;
     border: none;
     border-radius: 3px;
     transition: all ease .4s;
+    height: 34px;
+}
 
+.parent-discount .input-group-btn .discount-code-btn:hover {
+    opacity: .6;
 }
 
 .a-takhfif-box {
@@ -3367,7 +4172,6 @@ input#discount-code {
     font-family: inherit;
     border-bottom: 1px solid #e8e8e8;
     box-sizing: border-box !important;
-    gap: 5px;
 }
 
 .a-takhfif-box > .a-takhfif-box-inner > div span:last-child {
@@ -3397,80 +4201,117 @@ input#discount-code {
 }
 
 .factorLocal-btn {
-    padding: 0 30px !important;
-    border-radius: 3px;
+    padding: 0 10px !important;
+    border-radius: 8px;
     line-height: 37px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 143px;
+    margin-right: auto;
+    gap: 8px;
 }
 
 .s-u-p-factor-bank {
-    border-radius: 3px;
-    box-shadow: 0 0 7px -3px rgba(0, 0, 0, 0.1);
-    min-height: 305px;
-}
-
-.s-u-p-factor-bank-change > h4 {
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-    position: relative;
-    padding: 10px;
-}
-
-.s-u-p-factor-bank-change > h4::after {
-    content: " ";
-    bottom: 0;
-    top: 100%;
-    right: calc(50% - 6px);
-    height: 0;
-    width: 0;
-    border: 12px solid transparent;
-    position: absolute;
-}
-
-.s-u-p-factor-bank {
-    margin: 10px auto;
-    border: 1px solid #ddd;
-    padding-bottom: 20px;
-    width: 49%;
+    width: 100%;
     height: auto;
     position: relative;
     text-align: center;
     background-color: #fff;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.s-u-p-factor-bank-change > h4 {
+    position: relative;
+    padding: 10px;
+    margin-bottom: 0;
+    color: #333 !important;
+    font-size: 16px;
+    text-align: right;
+    background: #eee !important;
+    border-radius: 8px;
+}
+
+.s-u-p-factor-bank .mart30 {
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.normal-user-payment label {
+    padding: 5px 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    margin: 0;
+    transition: all ease .4s;
+    cursor: pointer;
+}
+
+.normal-user-payment label:has(input:checked) {
+    border-color: var(--mainColor);
+    color: #fff;
+    background: var(--mainColor);
+}
+
+.normal-user-payment input {
+    display: none;
+}
+
+.s-u-select-update-wrapper {
+    margin-top: auto;
+}
+
+.bank-logo input {
+    display: none;
+}
+
+#onlinemessages {
+    color: #664d03;
+    background: #fff3cd;
+    padding: 1px 14px;
+    border-radius: 20px;
+}
+
+#accordion-button-1 {
+    width: 100%;
+    border: none;
+    background: none;
 }
 
 .s-u-select-bank {
     position: relative;
     display: flex;
-    background: #eee;
-    padding: 15px 15px 15px 15px;
-    border-radius: 2px;
     font-family: inherit;
     color: #333;
-    font-weight: 700;
     transition-duration: .3s;
     width: 100%;
     box-sizing: border-box;
-    margin-top: 3%;
-    min-height:220px;
-    justify-content: center;
-    flex-wrap:wrap
-
-}
-
-.s-u-select-bank form {
-    width: 100%
-}
-
-.credit-check {
-    width: 45%;
-    margin: 0 auto;
-    background: #fff;
-    border: 1px solid #999;
-    padding: 15px 5px;
-    border-radius: 3px;
-    font-size: 12px;
     align-items: center;
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px;
+}
+
+.main-pay-content .s-u-p-factor-bank:first-child .s-u-select-bank form {
+    width: 100%;
+}
+
+.main-pay-content .paymentCredit {
     display: flex;
-    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+    align-items: start;
+}
+
+.main-pay-content .paymentCredit span {
+    color: #5eb75e;
 }
 
 .credit-check input {
@@ -3481,37 +4322,61 @@ input#discount-code {
 
 .main-banks-logo {
     width: 100%;
-    display: block;
     margin: 0 auto;
-    text-align: center;
-    padding-bottom: 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }
 
 .bank-logo {
     transition: all ease .4s;
     position: relative;
-    width: 25%;
-    display: inline-block;
-    margin: 5px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    padding: 13px;
+    border-radius: 8px;
+    border: 2px solid #eee;
+}
+
+.bank-logo:has(input:checked) {
+    border-color: green;
+}
+
+.bank-logo label {
+    margin: 0;
     cursor: pointer;
-    background: #fff;
-    border: 1px solid #999;
-    padding: 5px;
-    border-radius: 5px;
 }
 
 .s-u-bank-logo-bank {
     display: inline;
-    height: auto;
+    height: 67px !important;
     vertical-align: middle;
-    width: 40px;
+    width: 67px !important;
+}
+
+.btn-form2:hover {
+    text-decoration: none;
+    color: #fff;
+    background: #00b000;
 }
 
 .creditText {
-    text-align: center;
     width: 100%;
-    padding: 5px;
+    margin-top: 20px;
+    text-align: center;
+    border-radius: 8px;
+    padding: 12px;
+}
 
+.creditText.none_credit {
+    color: #664d03;
+    background-color: #fff3cd;
+}
+
+.creditText.full_credit {
+    color: #155724;
+    background-color: #d4edda;
 }
 
 .s-u-select-update-change {
@@ -3527,10 +4392,12 @@ input#discount-code {
     border-radius: 3px;
     transition: all ease .4s;
 }
-.flight-false {
-    background-color: #e74c3c;
+
+.inner-avlbl-itm div > a.flight-false {
+    background-color: #ccc;
     color: #fff !important;
     cursor: no-drop;
+    user-select: none;
 }
 .slider_range_parent .ui-widget-content .ui-state-default{
     box-shadow: 0 0 5px #ccc;
@@ -3589,9 +4456,25 @@ input#discount-code {
 
 }
 .s-u-passenger-wrapper-change_nn{
-    background: #fff;
-    border:1px solid #ccc;
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #856404;
     border-radius: 3px;
+    padding-right: 100px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+
+.s-u-passenger-wrapper-change_nn::before {
+    content: '';
+    position: absolute;
+    right: 10px;
+    width: 80px;
+    height: 80px;
+    background: no-repeat center/contain url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAADdgAAA3YBfdWCzAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAABK7SURBVHic7Z17dBRVnse/t7o77/cD8iBACCS8kvB+BeSZAkoeDkoxTCGKriuK4GpaGQtxVj2yPoLrODvqvHbdPeuocc+65+wOR+Ocmd2d2dV1nXFnVHAgQEAiBAKEEEhIuu7dP5IggdSt7kpXdVWnP+dwDp3763t/UL/cuvWte38/whhDjKGLEGkHYkSWWAAMcbyRdiASSIpKABQAKAl0X6kEyH8D+LS+rpZG2DXbIUNhDSApajKAjQDWAigBUAwgAQCudLRftSNEuEIIaSVEeB+EPFJfV3s6Ev7aSVQHgKSoUwDcC0ABkDqQzbUB0B/CBI9wgBDhqfq6vW9b5WOkicoAkBQ1E8DrANYY2eoHwDcIgucUETzz6utqjw7eO2cRdYtASVFnAvgUQVz8YKFUy6Na90FRrrkjXH06hagKAElRtwH4LYBR4e6bMebVAt2vi+sfjqrbQdQEgKSoOwH8DYA4K8fRtIBcvf7hfVaOYSdREQCSolYD2GPXeFQLrBTlmp12jWclrl8ESopaDOATAFnB2JfkX8Ss8WeQl9mB4ZkdGMPacKHTi9OX4vGLPw7Hr/fnBDcwIczj8S2qr6v9T/PeRx5XB4CkqIkAPgRQaWS7oPwU1lUdQ9mIC/0bjvT/2EE82PflMLzyy2LD8QkROgSPd0R9Xe25ENx2FG5XAh+GwcVPjA9g+5oDWFR5MqgOE5mGW8tOoqr4HHa8WY6z7fpLCsZoImP0bQDVoTjtJFw7A0iKmgugAUCank16chdq7/kYhTmX9Ts6ot8UEAjueXMKjrckcjwhzOP1Tayvq/3S0GkH4uZF4G5wLr4gMDy24Y/8i2+AlzL8QP4MXg/vFQEjjNG3TA8SYVwZAJKilgDYyrPZvKwBFWMGf2tOIQH89cYvuDZUC1SKsn/xoAeLAK4MAPQ88vn0GguyL+PW+Y1hG2xixkVML77AtWFU+/uwDWgjrguAXql3Pc9mi3gIHiGMaxsGPCoe4ppQqhW5USp2XQAAeB4A0WscX3QBVZOawz5ojrcL0hR+v5RqL4V9YItxVQBIinozgEU8m7uWH7Rs/K1Vjdx2RmmGKNf8pWUOWIBrAkBSVAHAszybOePPYPLo85b5kAwNdy08zrWhmrZTlP2u0VdcEwAA7gQwWa9REBi2WPjb34dc0cR9LGSMJoCxH1vuSJhwRQD0Sr5P8WzEaU0oyr1kuS8+yuBfeZhrQ2lgsyj7g3o3EWlcEQAAHgRQqNcY79OgLOVflHCytLgFaUkB3XbGmIcx+nPbHBoEjg8ASVGzAXyXZ/OtqmPITr1ik0eAQBkeX82/3VCqiaLsH2eTS6ZxfAAAeBxAul5jenIXblvQaJ83vUzLbcXInA59A8ZI74siR+PoAOh9138/z2bj4iNIitefjq2CMODxVQazgBaYKsr+m2xyyRSODgAAz4CzxSs/6zKkmV/Z6E5/SlIuYcooQ4n4H2xyxxSODQBJUacD+DbP5o7qBng9EXydzYCdyxu4JpRqo0S5ZpNNHoWMYwMABpJvaeEFLJh8ykZ3BmaY7wrEcv4BIkq1l21yJ2QcGQCSoq4AsIRnc9eKQyC64WEv225q5LYzSjNFueZxe7wJDccFQK/k+xzPZmZpCyqKnbMNLwUBbJ7PX4tQTdvlRInYcQEA4HYAFXqNhDBLX/iYZePUJgic/81eifhV+zwKDkftCZQUNQHAQQBFejbV05rw0Dr+Dh0jGr5Ou/rn/75IQumwdkwvPI+lpYN7jfze0WF4Yd9Y3XZCiCZ4fDn1dbWtgxoojDhtStoBzsWP81Hcvsy85NvSFo/vvzsJvzv0zd7/Kx3tONqShff3Z+HV/yrGM6u+QFnuRVP9iyVn8FriaFzsGPi/tVcifgPAzaYGsADH3AIkRc0C8BjP5pa5x5CT1mmq/08bsnHfy1X9Lv71nL8sYNs7FXj7U90Y5CJQhl1G4hDVVoqyv8TUABbgmAAAsAtAhl5jWlI31t9k7nR222UfXvinclzqNJ7wGGP46UdFaGrjbQXXZ0ZeKwqzOEHqMInYEQEgKeooANt4NhsWHUFygjnJ97V/m4BWzgGP66EU2Pmv5abGIhTYbfSiSAtMF2X/PFMDhBlHBAB6JN94vcbhmR1YPduc5NvZ5cF/fDY85O+dbPWitcPcQeNxqe0oL+KvIxjV3jDVeZiJeABIijoVwHd4NncsazA4nKHP4ZOpYMycYvSbI0EeFL0eBnx3heFaYLQo12w0N0D4iHgAoEf00b1CYwvasLAiuHN9A9Hwte7hIUN+36S7JDEkL+4Klk5q4dpQSn9geoAwEdEAkBRVhMHByi3LByf5tnfonh8x5GKn+e8CwPaFnIOHABjVskW5hvvkYzURC4DeXH1cyXf6uLOYWnLWJo/CTyoJQJl3gmtDNW23KPsjdh0iOQNsAjBFr5EQe3b5Ws2maSeMJOJEMPaKfR71JyIBIClqPICneTaLK09iTJ45Rc5JxDGKB6v5twJKA3eLst/8YmUQRGoGeACcTF4+L8Udy/gbLdzEytJm7rY1xpiXMfqPNrp0FdsDoDeJ4y6ezZo5x5GbYU7ydSIeyrBrteHh0lWi7DfOSxNmIjEDPAYgU68xJbEbGxZGXUJOzM4/j3xeULPIJJqwNQAkRR0JYDvPZsPCo0hJ7LbJI/sIUiKeJcr+OTa5BMD+GeBp9GbpHojcjE6smcM/fOlmytLbMXGEoURs61rAtgCQFLUSPY9+umxe2gCfN4pT9jPgsRWGa4ESUa7hJsAIJ3bOAM/xxhuTdxFLppiXfN1CQXwnFk7gS8SMUtt0AVsCQFLUpQCW82y2LD8IQpyzPc1KHlxspAtoOaJc47fDF8sDoFfyfZ5nM6XkHKaPc6/kGyrpJIANs7/m2lBNe9IOidiOGWAjgGl6jYRYm9bFqdwx8zgEzksuxmgSwCw/UGJpAEiKGoeezR66LKw4ibEFbVa64UjiGcUD1Xy9g2qBe0XZn2KlH1bPANsAjNZr9HooNkeR5Bsqq8pOIcHHSzfDvLBYIrYsACRFTYeB5Lt69lfIy+ScsY9yeiRi/u1Po9oaUfab26YcBFbOAI8ByNZrTE4IYMMi/mp4KDC38Bxy07r0DXok4jqrxrckACRFHYGevD66rL/pKNKSok/yDRVCgSfW/IlrQ7XAHFH2z7RifKtmAK7km5PWiVvmHrNoaPcxMeMiyvL55esY1SxJOhX2AJAUtRzAZp7N7csOI46z+BlyMGCXZLiLeKwo16wL99BWzADP8vodNbwdy6byRZChSGFCJ+aX8o+8M0pfC/e4YQ0ASVEXA5B4NlvEQ0NG8g2VhwxyHVKq5YpyzUPhHDNsARCM5FtRfA6zys6Ea8ioI0Poxq0zDSRiqj0dTok4nDPABgAz9BoJ6UnrEoPPXbMNJGJKkwEWtrT0YQmAYCTf+ZNPobSQn1ItBpDAKLYuNZSIt4ZLIg7XDLAVwBi9Rq+H4c7qoSv5hsraCYYSsQ+MhqVEzaADQFLUNPRU8NK3mfkV8rPMV+8aangpw86bDXcO3SLKft0E2sESjhlgJwDdY7SJ8QFsNNgAEeNGFhSdRXaKvkTMGBPCIREPKgAkRS0EwH0sWb+gEenJHK07xoAQCjyx1nAX8TxR9k8fzDiDnQGeBKCbSyUr9Qq+VRWTfM0yObMNY4fzi2AwNjiJ2HQASIo6CT1lXHTZtPQw4n2a2SFiMGDXzUazgFYqyjVrzQ4xmBngWQAevcai3EsQpzUNovsYADAysQNzxvELYTFKf2S2f1MBICnqQgCreDZblh+EEM7ijUOYGmOJeLgo1+ww07fZGYAr+U4a1Yo542OSb7jI8nRhzTR+ZnRKtT1m+g45ACRFXQ9gFs/m7hX8DQ4xQufP5/EX04zSZFGueTHUfkMKAElRfegp3KxL1aRmjC+KSb7hJpFpuHdJI9eGaoEHRNmfFEq/oc4A9wLQzYbsERjurHbWC5/EePNPIUlxznqCWTfpJOI4Zyd7JeLXQ+kz6ACQFDUVwBM8mxUzTqAwx1mS79h882cOphQ4Jqk3gB6J+FHJsETNraLszw+2z1BmgEcB5Oo1JsZpUJbYV7wxWEoK2kynmVswxnkL2YWjWpAZRok4qACQFDUfwMM8m3XzG5HBcSxSJCcEMLM09AuZlawhN8W+YpTBIgSXaGK+KPt1M7D16y/IcZ8EoLu4yEjpwrr5jUF2ZT/b1x4IKdE0IQR7Vh2w0KPBUZndhuJc/q2WMe3NYPoyDABJUScAuItns2nJYSQ6bMF0Ldlpndixdn9wyScIcNuUZozLcfB5RQbsNixaqY0X5RrDwhTBzAB/BY7kW5hzGctn8LNhOoEF5afw8v0fcg+iJsYxPC39CVvnOX/zyqjky5gxhr9IZZT+1Kgfbs0gSVHnA/gNr4Nd3/kDqiYOrtaOnWiU4HeHcnCwKQ2HTqRjf4MPI7M6UFnQhm9POc59zHIaLYE4bPiR7jZMAIDH69tWX7dXN+OIUQmNF3iNE0a2uuriAz1axayyM9/sTnbxXpUcbxduntqMX3yqXw+BUu05ALoBoHsLkBT1VgDclGV3D8HEDk5j67xGbjujNEWUa3R/kQcMAElRvTCQfOdMOI2Jo5wllAxFkqDh7kX81HpU03aIsn/As5p6M8A9AEr1OhQEhi2isyTfocz68iZuRRXGaBwY/buB2m4IAElRUwB8jzfg8ulNKMrlb1WKYR8+yvDISsM9A7Io+29YLAw0A/gB6K4q4n3OlHyHOkuKW5CWxM1ILgxUrq5fAEiKmoeeANBlXdUxZKU6TyId6giUYfdqw0QTC0XZ368u8/WPgd8DkKzXQXpyF25b0GjWR8dgVe3gSDM19wJG5nTgeIt+0cteiXhS3+erQpCkqGUAPgdHG7hv1ZdY7eJkznq1g/vITKKDqh3sBI5cSsY9r1dybTzeuJX1dbXvAf1vAY+Ac/ELsi9j5UxzxRudgB21g53AmJRLmDaavyOLMe37fX8XgKtVPPjFG6sPwetx5y5fO2sHRxwGPLrc4FyhppX2VSfpmwG2gHPCp2zEBSyY7N77o521g51ArrcLKypOc20Yoy8BgNCb2eN+nrGbc/lGonawE7hvAT/HAOspYy8IABYD0K1nXzbiAsqL+SdTnExEagc7gBRoWFmpP2szxnwAe0gAp3gjAKyd695VPxC52sFOYNMs/j4NxthNAjjbvFMSuzF/Mv9EitNJTQx+K9j1ZCa4O5NpXvwVfqUyoIQbAEW5l1y78u+jdIT5Qypzi/l5+xwPA6YX6//7GWN5AoBxegYF2c7a42+GwuxLpnISE0IwvdD9VUxKh3NS0DKaLgDI02uPBs2fEODuFaE/xayceIZb9Nkt5KZyzxB4BQC6mQnPtunme3YV1dOaMLOUX6nrWrKSNdQscu+j77U0t8XrthFCugUAjXoGp867VA0bgEflz7C40rgsXX5GN3542x9s8MgejpzRfbcHENLuBaB77vj46WQENIG728QtJCd045H1n6FqUjPe+vcxaDyVigDt0QcIgIQ4hlsqmvFns128S/R6CPC/R9I5zaTFC84M0N7hw2+/GIZFFe5+FLyWeRNPY97E0+gOCDjanIJjnyWiavRZJMWZf1x0Ks1d8TjZyrmNE3JCAPAxr5N9H7v3zRgPn5eitLAN1aXNUXnxAeCd3xdw2wkhvxIA1APQFY4/b8zERweGhdm1GFZzTovDu5/onxInhAQA8qyw7409FAA3y9SL/zwJzVG0IIx2NIFgx1uTuTZE8HxQX1cb6HvS/RkA3Yf+9g4fnnmzEm2XfWF0M4YVMAF4/tdj+fd+AIQIfwH07gfY98aeFgDv8L7Q8HUatr8yF4eazL9ciWEtnUTAjnfL8cvPdfN4AAAEwXO0vq72IHDjljDuro8zrQnw/2QW/vb9Upw6F7slOAVNIPif5kys/8kM7D+RyrUlhFAieG65+vna08GSoi4B8AGCODZOCDC15CwmjGxFftZl5Gd1IN7BOQL0GNHhvgMuGiNo7fLhdHscPjmWgbc+HAEa5Ds7j9fnr6/bu7fv8w3HwyVF3Q3gqXA67GSu3RUc7Qge768+eOfFpf1+NoDdMwDes8elGHYhCJ4WQoTlN/z8+h/0PhauBedMeQx3IXi8nxPBU1xfV3uD4mWUIUQB8GNwEkS5nWi/BXi8vlfr6/bqbvrlBgAASIo6GcDPAbh3nzSHaA0AQoROwePZWF+391+4dkYB0IekqMsAbAOwGpykUW4j2gJAEDwniSC8VF+3l5vRvY+gA6APSVFHoidn8Dz0lIobAeuqkFuO2wOAEBIAIe2ECPsJEWrq62o/Cun7oQbA9fQWjRwFoBguXCsEuq/MjrQPJmgDyCcAPqyvqx1UBA86AGK4G9dO3THCQywAhjj/D7V8ML/9m5K0AAAAAElFTkSuQmCC');
 }
 
 .factorl_nn {
@@ -3609,14 +4492,13 @@ input#discount-code {
     display:flex;
     flex-wrap:wrap;
     padding:10px;
+    width: 100%;
 }
 .next-date.disabled , .prev-date.disabled{
     cursor:not-allowed;
 
 }
-.justpersian_name::before{
-    display:none
-}
+
 /****************
     End internal Pages
 ****************/
@@ -3684,7 +4566,7 @@ input#discount-code {
     right: 0;
     margin: 0 auto;
     font: normal normal normal 45px/1 'Material-Design-Iconic-Font';
-    color: #5b6260;
+    color: #78b5a4;
     -webkit-transform: rotate(-18deg);
     -ms-transform: rotate(-18deg);
     transform: rotate(-18deg);
@@ -3693,6 +4575,11 @@ input#discount-code {
     top: 30%;
     bottom: 0;
 }
+
+.mbb-preload-time::after {
+    content: '\f336';
+}
+
 .main-bank-box .mbb-bank-title {
     font-size: 1.2rem;
     color: #5b6260;
@@ -3888,30 +4775,36 @@ input#discount-code {
 .foreign .date-time {
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 .foreign .date-time .date-flight {
     font-weight: 500;
     font-size: 14px;
     border-radius: 4px;
     text-align: right;
-    margin-right: 2.5%;
-    color: #000;
+    margin-right: 1.5%;
+    color: #9e9e9e;
     display: flex;
     justify-content: center;
 }
-/*.foreign .date-time > .date-flight {*/
-/*    flex: 0 0 65%;*/
-/*}*/
+
+.foreign .date-time > .date-flight {
+    flex: 0 0 100%;
+    padding: 0
+}
+
 .foreign .date-time > .time-flight {
-    /*flex: 0 0 35%;*/
-    padding: 3px 0 4px 0;
+    flex: 0 0 100%;
+    padding: 5px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    min-height: 30px;
 }
 .foreign .international-available-airlines-info{
-    padding:10px 0
+    padding: 10px 0;
+    /*margin-bottom:20px;*/
 }
-.foreign .international-available-item-right-Cell{
-    width: calc(100% - 20%);
-}
+
 .foreign .flight-type, .foreign .sit-class {
     font-size: 12px;
     padding-right: 8px ;
@@ -3922,16 +4815,23 @@ input#discount-code {
 .foreign .tavaghof {
     display: inline-block !important;
     font-size: 12px;
+    font-weight: normal;
+    color: #888;
+}
+
+.number-chairs--new {
+    margin-top: 5px;
 }
 
 .foreign .international-available-airlines-detail-tittle > span{
     font-size: 18px;
+    color: #111;
 }
 
 .inputSearchForeign {
     border: 1px solid #ccc;
     border-radius: 3px;
-    height: 35px !important;
+    height: 45px;
     color: #aaa;
     box-sizing: border-box;
     width: 100%;
@@ -3957,6 +4857,7 @@ input#discount-code {
     cursor: pointer;
     overflow: auto;
     max-height: 151px;
+    padding: 0;
     top: 100%;
 }
 .resultUlInputSearch li {
@@ -3977,6 +4878,49 @@ input#discount-code {
     font-size: 12px;
 }
 
+.resultFlight_international {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    border-top: none;
+    z-index: 10;
+    position: absolute;
+    box-shadow: 0 0 5px #ccc;
+    top: 100%;
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    padding: 0;
+}
+
+.resultFlight_international li {
+    border-bottom: 1px solid #ccc;
+    font-size: 12px;
+    border-bottom: 1px solid #ccc;
+    text-align: right;
+    padding: 10px;
+    cursor: pointer;
+    transition: all ease .4s;
+    color: #666;
+    display: flex;
+    line-height: 1.8;
+
+}
+
+.resultFlight_international li:hover {
+    background: #eee;
+}
+
+.resultFlight_international li i {
+    margin-left: 4px;
+    font-size: 18px
+}
+
+.resultFlight_international li:last-child {
+    border: none;
+}
+
+
 .inputSearchForeign-box {
     margin-bottom: 15px;
     position: relative;
@@ -3992,8 +4936,22 @@ input#discount-code {
     width: 60px;
     height: 60px;
     display: block;
-    background-image: url(../../images/airline_pattern_foreign.jpg);
+    background-image: url(../../images/new-foreign-airline.jpg);
     background-position: 360px 120px;
+}
+
+
+.\32 j .logo-airline-ico-foreign {
+    background-position: -300px 0;
+}
+
+/*Airline Flight IR  */
+div.EP .logo-airline-ico-foreign {
+    background-position: 0 60px
+}
+
+div.AJ .logo-airline-ico-foreign {
+    background-position: 60px 60px;
 }
 
 div.IV .logo-airline-ico-foreign {
@@ -4003,20 +4961,32 @@ div.TI .logo-airline-ico-foreign {
     background-position: -180px 180px;
 }
 
-div.AJ .logo-airline-ico-foreign {
-    background-position: 60px 60px;
-}
-
 div.ZV .logo-airline-ico-foreign {
     background-position: 180px 60px;
 }
 
+div.A7 .logo-airline-ico {
+    background-position: -300px -113px;
+}
+
+div.J0 .logo-airline-ico {
+    background-position: -300px -113px;
+}
+
 div.Y9 .logo-airline-ico-foreign {
-    background-position: -60px 60px
+    background-position: -60px 60px;
 }
 
 div.IR .logo-airline-ico-foreign {
-    background-position: -300px 60px
+    background-position: -300px 60px;
+}
+
+div.foreign.VF .logo-airline-ico-foreign {
+    background-position: 300px 66px;
+}
+
+div.DZ .logo-airline-ico-foreign {
+    background-position: 722px 0;
 }
 
 div.NV .logo-airline-ico-foreign {
@@ -4028,37 +4998,66 @@ div.B9 .logo-airline-ico-foreign {
     background-position: -240px -540px;
 }
 
-div.JI .logo-airline-ico-foreign, div.JR .logo-airline-ico-foreign {
+div.DZD .logo-airline-ico-foreign, div.yazdair .logo-airline-ico-foreign {
+    background-position: -716px 181px;
+}
+
+div.Y0 .logo-airline-ico-foreign, div.yazdair .logo-airline-ico-foreign {
+    background-position: -716px 181px;
+}
+
+div.JI .logo-airline-ico-foreign,
+div.J1 .logo-airline-ico-foreign,
+div.JR .logo-airline-ico-foreign {
     background-position: -360px 60px
 }
 
-div.EP .logo-airline-ico-foreign {
-    background-position: 0 60px
+div.parsair .logo-airline-ico,
+div.PA .logo-airline-ico,
+div._PA .logo-airline-ico,
+div.P7 .logo-airline-ico {
+    background-position: -240px -180px;
+}
+
+div.PA .logo-airline-ico-foreign,
+div.parsair .logo-airline-ico-foreign {
+    background-position: 599px 0;
 }
 
 div.QB .logo-airline-ico-foreign {
     background-position: -180px -540px
 }
 
-div.AXV .logo-airline-ico-foreign {
-    background-position: 121px 0;
+div.J9 .logo-airline-ico-foreign {
+    background-position: 900px 306px;
 }
 
+div.AX .logo-airline-ico-foreign {
+    background-position: -420px -417px;
+}
 
-div.yazdair .logo-airline-ico-foreign {
-    background-position: 64px 178px;
+div.RI .logo-airline-ico-foreign {
+    background-position: -235px 0;
 }
 
 div.IS .logo-airline-ico-foreign {
-    background-position: 541px 242px;
+    background-position: -240px -359px;
 }
 
 div.HH .logo-airline-ico-foreign {
     background-position: -120px 60px;
 }
 
-div.IRZ .logo-airline-ico-foreign, div.saha .logo-airline-ico-foreign {
-    background-position: -240px -120px;
+div.IF .logo-airline-ico-foreign {
+    background-position: -600px -360px;
+}
+
+div.IRZ .logo-airline-ico-foreign,
+div.saha .logo-airline-ico-foreign,
+div.SA .logo-airline-ico-foreign,
+div._007 .logo-airline-ico-foreign,
+div.SHI .logo-airline-ico-foreign {
+    background-position: -540px -480px;
 }
 
 div.I3 .logo-airline-ico-foreign {
@@ -4069,14 +5068,11 @@ div.W5 .logo-airline-ico-foreign {
     background-position:  -480px -480px;
 }
 
-div.foreign.TK .logo-airline-ico-foreign {
+/*Airline Flight IR  */
 
-    background-position: -240px -120px;
-}
-div.foreign.flypersia .logo-airline-ico-foreign,
-div.foreign.FP .logo-airline-ico-foreign {
-    background-position: -240px 120px;
-}
+
+/*Airline Flight Foreign  */
+
 div.foreign.PS .logo-airline-ico-foreign {
     background-position: -60px -120px;
 
@@ -4103,7 +5099,8 @@ div.foreign.QR .logo-airline-ico-foreign {
     background-position: -360px -120px;
 }
 
-div.foreign.WY .logo-airline-ico-foreign {
+div.foreign.WY .logo-airline-ico-foreign,
+div.foreign.omanair .logo-airline-ico-foreign {
     background-position: -360px -60px;
 }
 
@@ -4111,8 +5108,15 @@ div.foreign.EK .logo-airline-ico-foreign {
     background-position: -180px -120px;
 }
 
-div.foreign.TK .logo-airline-ico-foreign {
+div.foreign.TK .logo-airline-ico-foreign,
+div.foreign.AJTK .logo-airline-ico-foreign {
     background-position: -240px -120px;
+}
+
+div.foreign.flypersia .logo-airline-ico-foreign,
+div.foreign.FP .logo-airline-ico-foreign,
+div.foreign.FP0 .logo-airline-ico-foreign {
+    background-position: -240px 120px;
 }
 
 div.foreign.EY .logo-airline-ico-foreign {
@@ -4192,8 +5196,16 @@ div.foreign.U2 .logo-airline-ico-foreign {
     background-position: 0 -180px;
 }
 
+div.foreign.TKN .logo-airline-ico-foreign {
+    background-position: -359px 242px;
+}
+
 div.foreign.FZ .logo-airline-ico-foreign {
     background-position: -120px 0;
+}
+
+div.foreign.PD .logo-airline-ico-foreign {
+    background-position: 720px 300px;
 }
 
 div.foreign.IB .logo-airline-ico-foreign {
@@ -4251,11 +5263,6 @@ div.foreign.AB .logo-airline-ico-foreign {
 
 div.foreign.XC .logo-airline-ico-foreign {
     background-position: 60px 0
-}
-
-.\32 j .logo-airline-ico-foreign {
-
-    background-position: -300px 0;
 }
 
 div.foreign.CA .logo-airline-ico-foreign {
@@ -4391,15 +5398,22 @@ div.foreign.WS .logo-airline-ico-foreign {
     background-position: 120px -240px
 }
 
-div.foreign.PYA .logo-airline-ico-foreign,
-div.foreign.PY .logo-airline-ico-foreign {
-
+div.foreign.PYA .logo-airline-ico-foreign {
     background-position: 120px 60px;
 }
 
-div.foreign.VR .logo-airline-ico-foreign {
-
+div.foreign.VR .logo-airline-ico-foreign,
+div.Varesh .logo-airline-ico-foreign,
+div._VR .logo-airline-ico-foreign,
+div.VRH .logo-airline-ico-foreign {
     background-position: 120px 120px
+}
+
+div.foreign.CPN .logo-airline-ico-foreign {
+    background-position: 181px 120px;
+}
+div.CPN .logo-airline-ico {
+    background-position:-178px -118px;
 }
 
 div.foreign.ET .logo-airline-ico-foreign {
@@ -4422,15 +5436,24 @@ div.foreign.RJ .logo-airline-ico-foreign {
     background-position: 240px -240px
 }
 
-div.foreign.sepehran .logo-airline-ico-foreign {
+div.foreign.sepehran .logo-airline-ico-foreign,
+div.foreign._008 .logo-airline-ico-foreign {
     background-position: 240px -240px
 }
+
+/*Airline Flight Foreign  */
+
 
 .mob-parvaz-kh {
     display: none;
 }
-.ui-datepicker.ui-datepicker-multi{
-    z-index:9 !important;
+
+.ui-datepicker {
+    z-index: 10 !important;
+}
+
+.jconfirm.jconfirm-white .jconfirm-box, .jconfirm.jconfirm-light .jconfirm-box {
+    text-align: center;
 }
 
 .ribbon {
@@ -4444,7 +5467,7 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     top: -1px;
 }
 .ribbon span {
-    font-size: 7px;
+    font-size: 10px;
     color: #fff !important;
     text-transform: uppercase;
     line-height: 20px;
@@ -4469,27 +5492,2409 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     direction:ltr
 }
 
-.cancel-policy > span {
-    width: 100%;
-    display: block;
-    padding: 5px;
+
+.noCharge {
     border-radius: 3px;
+    background: #fff;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+}
+
+.noCharge .s-u-result-item-change {
+    padding: 18px;
+    text-align: center;
+
+}
+
+.foreign .international-available-airlines-detail.airlines-stops-time {
+    border: none !important;
+    border-radius: 7px !important;
+    background: #f1f1f1 !important;
+    width: auto;
+    margin-bottom: 12px !important;
+    display: flex !important;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px !important;
+}
+
+.airlines-stops-time > span:nth-child(1), .airlines-stops-time > span:nth-child(2) {
+    /*margin: 0 auto !important;*/
+    float: none !important;
+    display: inline-block !important;
     text-align: center;
 }
 
-.flight-international-factor-detail:after ,
-.flight-international-factor-detail:before {
+.foreign-date {
+    font-size: 12px;
+    margin-right: 5px
+}
+
+
+/***************
+process Flight cdd
+**************/
+
+
+.object {
+    opacity: .3 !important;
+    position: absolute;
+}
+
+.object svg {
+    width: 100%;
+    height: 100%;
+    fill: red;
+}
+
+
+.circle:nth-child(1),
+.square:nth-child(1),
+.diamond:nth-child(1) {
+    height: 26px;
+    left: 50%;
+    width: 26px;
+}
+
+.object:nth-child(1) {
+    -webkit-animation-duration: 1950ms;
+    animation-duration: 1950ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--1;
+    animation-name: flyUp--1;
+    opacity: 0.08;
+}
+
+@-webkit-keyframes flyUp--1 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--1 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(2),
+.square:nth-child(2),
+.diamond:nth-child(2) {
+    height: 5px;
+    left: 26%;
+    width: 5px;
+}
+
+.object:nth-child(2) {
+    -webkit-animation-duration: 1900ms;
+    animation-duration: 1900ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--2;
+    animation-name: flyUp--2;
+    opacity: 0.16;
+}
+
+@-webkit-keyframes flyUp--2 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--2 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(3),
+.square:nth-child(3),
+.diamond:nth-child(3) {
+    height: 27px;
+    left: 84%;
+    width: 27px;
+}
+
+.object:nth-child(3) {
+    -webkit-animation-duration: 1850ms;
+    animation-duration: 1850ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--3;
+    animation-name: flyUp--3;
+    opacity: 0.24;
+}
+
+@-webkit-keyframes flyUp--3 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--3 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(4),
+.square:nth-child(4),
+.diamond:nth-child(4) {
+    height: 26px;
+    left: 1%;
+    width: 26px;
+}
+
+.object:nth-child(4) {
+    -webkit-animation-duration: 1800ms;
+    animation-duration: 1800ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--4;
+    animation-name: flyUp--4;
+    opacity: 0.32;
+}
+
+@-webkit-keyframes flyUp--4 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--4 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(5),
+.square:nth-child(5),
+.diamond:nth-child(5) {
+    height: 71px;
+    left: 40%;
+    width: 71px;
+}
+
+.object:nth-child(5) {
+    -webkit-animation-duration: 1750ms;
+    animation-duration: 1750ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--5;
+    animation-name: flyUp--5;
+    opacity: 0.4;
+}
+
+@-webkit-keyframes flyUp--5 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--5 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(6),
+.square:nth-child(6),
+.diamond:nth-child(6) {
+    height: 97px;
+    left: 77%;
+    width: 97px;
+}
+
+.object:nth-child(6) {
+    -webkit-animation-duration: 1700ms;
+    animation-duration: 1700ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--6;
+    animation-name: flyUp--6;
+    opacity: 0.48;
+}
+
+@-webkit-keyframes flyUp--6 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--6 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(7),
+.square:nth-child(7),
+.diamond:nth-child(7) {
+    height: 15px;
+    left: 80%;
+    width: 15px;
+}
+
+.object:nth-child(7) {
+    -webkit-animation-duration: 1650ms;
+    animation-duration: 1650ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--7;
+    animation-name: flyUp--7;
+    opacity: 0.56;
+}
+
+@-webkit-keyframes flyUp--7 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--7 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(8),
+.square:nth-child(8),
+.diamond:nth-child(8) {
+    height: 2px;
+    left: 10%;
+    width: 2px;
+}
+
+.object:nth-child(8) {
+    -webkit-animation-duration: 1600ms;
+    animation-duration: 1600ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--8;
+    animation-name: flyUp--8;
+    opacity: 0.64;
+}
+
+@-webkit-keyframes flyUp--8 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--8 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(9),
+.square:nth-child(9),
+.diamond:nth-child(9) {
+    height: 44px;
+    left: 57%;
+    width: 44px;
+}
+
+.object:nth-child(9) {
+    -webkit-animation-duration: 1550ms;
+    animation-duration: 1550ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--9;
+    animation-name: flyUp--9;
+    opacity: 0.72;
+}
+
+@-webkit-keyframes flyUp--9 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--9 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(10),
+.square:nth-child(10),
+.diamond:nth-child(10) {
+    height: 35px;
+    left: 48%;
+    width: 35px;
+}
+
+.object:nth-child(10) {
+    -webkit-animation-duration: 1500ms;
+    animation-duration: 1500ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--10;
+    animation-name: flyUp--10;
+    opacity: 0.8;
+}
+
+@-webkit-keyframes flyUp--10 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--10 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(11),
+.square:nth-child(11),
+.diamond:nth-child(11) {
+    height: 92px;
+    left: 85%;
+    width: 92px;
+}
+
+.object:nth-child(11) {
+    -webkit-animation-duration: 1450ms;
+    animation-duration: 1450ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--11;
+    animation-name: flyUp--11;
+    opacity: 0.88;
+}
+
+@-webkit-keyframes flyUp--11 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--11 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(12),
+.square:nth-child(12),
+.diamond:nth-child(12) {
+    height: 21px;
+    left: 64%;
+    width: 21px;
+}
+
+.object:nth-child(12) {
+    -webkit-animation-duration: 1400ms;
+    animation-duration: 1400ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--12;
+    animation-name: flyUp--12;
+    opacity: 0.96;
+}
+
+@-webkit-keyframes flyUp--12 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--12 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(13),
+.square:nth-child(13),
+.diamond:nth-child(13) {
+    height: 36px;
+    left: 52%;
+    width: 36px;
+}
+
+.object:nth-child(13) {
+    -webkit-animation-duration: 1350ms;
+    animation-duration: 1350ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--13;
+    animation-name: flyUp--13;
+    opacity: 1.04;
+}
+
+@-webkit-keyframes flyUp--13 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--13 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(14),
+.square:nth-child(14),
+.diamond:nth-child(14) {
+    height: 42px;
+    left: 32%;
+    width: 42px;
+}
+
+.object:nth-child(14) {
+    -webkit-animation-duration: 1300ms;
+    animation-duration: 1300ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--14;
+    animation-name: flyUp--14;
+    opacity: 1.12;
+}
+
+@-webkit-keyframes flyUp--14 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--14 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+.circle:nth-child(15),
+.square:nth-child(15),
+.diamond:nth-child(15) {
+    height: 17px;
+    left: 55%;
+    width: 17px;
+}
+
+.object:nth-child(15) {
+    -webkit-animation-duration: 1250ms;
+    animation-duration: 1250ms;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: 6;
+    animation-iteration-count: 6;
+    -webkit-animation-name: flyUp--15;
+    animation-name: flyUp--15;
+    opacity: 1.2;
+}
+
+@-webkit-keyframes flyUp--15 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+@keyframes flyUp--15 {
+    0% {
+        bottom: -10%;
+    }
+    100% {
+        bottom: 120%;
+    }
+}
+
+/*
+ * ~~ 3
+ * Water & Wobble
+ * start: 4sec, dur: 2sec
+ */
+.water {
+    -webkit-animation: rising 1.5s 2s both;
+    animation: rising 1.5s 2s both;
+    background-color: #ee3c51;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+@-webkit-keyframes rising {
+    0% {
+        bottom: -200%;
+    }
+    100% {
+        bottom: -80%;
+    }
+}
+
+@keyframes rising {
+    0% {
+        bottom: -200%;
+    }
+    100% {
+        bottom: -80%;
+    }
+}
+
+/*
+ * ~~ 3
+ * Plonge
+ * start: 4sec, dur: 2sec
+ */
+.plonge--0 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--0;
+    animation-name: plonge--0;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--0 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -16px;
+        padding: 19px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--0 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -16px;
+        padding: 19px;
+        top: 150vh;
+    }
+}
+
+.plonge--1 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.9s;
+    animation-duration: 0.9s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--1;
+    animation-name: plonge--1;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--1 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -18px;
+        padding: 9px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--1 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -18px;
+        padding: 9px;
+        top: 150vh;
+    }
+}
+
+.plonge--2 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.8s;
+    animation-duration: 0.8s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--2;
+    animation-name: plonge--2;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--2 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -11px;
+        padding: 9px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--2 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -11px;
+        padding: 9px;
+        top: 150vh;
+    }
+}
+
+.plonge--3 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.7s;
+    animation-duration: 0.7s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--3;
+    animation-name: plonge--3;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--3 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -13px;
+        padding: 2px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--3 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -13px;
+        padding: 2px;
+        top: 150vh;
+    }
+}
+
+.plonge--4 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.6s;
+    animation-duration: 0.6s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--4;
+    animation-name: plonge--4;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--4 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -16px;
+        padding: 8px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--4 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -16px;
+        padding: 8px;
+        top: 150vh;
+    }
+}
+
+.plonge--5 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--5;
+    animation-name: plonge--5;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--5 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -8px;
+        padding: 18px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--5 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -8px;
+        padding: 18px;
+        top: 150vh;
+    }
+}
+
+.plonge--6 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.4s;
+    animation-duration: 0.4s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--6;
+    animation-name: plonge--6;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--6 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -2px;
+        padding: 11px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--6 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -2px;
+        padding: 11px;
+        top: 150vh;
+    }
+}
+
+.plonge--7 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--7;
+    animation-name: plonge--7;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--7 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -14px;
+        padding: 6px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--7 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -14px;
+        padding: 6px;
+        top: 150vh;
+    }
+}
+
+.plonge--8 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--8;
+    animation-name: plonge--8;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--8 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -14px;
+        padding: 8px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--8 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -14px;
+        padding: 8px;
+        top: 150vh;
+    }
+}
+
+.plonge--9 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0.1s;
+    animation-duration: 0.1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--9;
+    animation-name: plonge--9;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--9 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -10px;
+        padding: 2px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--9 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -10px;
+        padding: 2px;
+        top: 150vh;
+    }
+}
+
+.plonge--10 {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    -webkit-animation-duration: 0s;
+    animation-duration: 0s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: plonge--10;
+    animation-name: plonge--10;
+    position: relative;
+}
+
+@-webkit-keyframes plonge--10 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -11px;
+        padding: 14px;
+        top: 150vh;
+    }
+}
+
+@keyframes plonge--10 {
+    0% {
+        top: 0;
+    }
+    100% {
+        margin: -11px;
+        padding: 14px;
+        top: 150vh;
+    }
+}
+
+/*
+ * ~~ 4
+ * Splash & Wobble/Trampoline
+ * start: 5.3sec, dur: ~1sec
+ */
+.splash {
+    background-color: #ee3c51;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.wobble {
+    margin-top: -40px;
+    position: absolute;
+    width: 100vw;
+    margin-bottom: 0;
+}
+
+
+.splash--1 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 1.4333333333s;
+    animation-duration: 1.4333333333s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--1;
+    animation-name: splash--1;
+    height: 5px;
+    left: 44%;
+    width: 5px;
+}
+
+@-webkit-keyframes splash--1 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 10px;
+        top: 0;
+    }
+    100% {
+        margin: 20px;
+        opacity: 0;
+        padding: -19px;
+        top: -113px;
+    }
+}
+
+@keyframes splash--1 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 10px;
+        top: 0;
+    }
+    100% {
+        margin: 20px;
+        opacity: 0;
+        padding: -19px;
+        top: -113px;
+    }
+}
+
+.splash--2 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 1.3666666667s;
+    animation-duration: 1.3666666667s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--2;
+    animation-name: splash--2;
+    height: 18px;
+    left: 47%;
+    width: 18px;
+}
+
+@-webkit-keyframes splash--2 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 1px;
+        top: 0;
+    }
+    100% {
+        margin: 8px;
+        opacity: 0;
+        padding: -17px;
+        top: -96px;
+    }
+}
+
+@keyframes splash--2 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 1px;
+        top: 0;
+    }
+    100% {
+        margin: 8px;
+        opacity: 0;
+        padding: -17px;
+        top: -96px;
+    }
+}
+
+.splash--3 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 1.3s;
+    animation-duration: 1.3s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--3;
+    animation-name: splash--3;
+    height: 19px;
+    left: 45%;
+    width: 19px;
+}
+
+@-webkit-keyframes splash--3 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 10px;
+        top: 0;
+    }
+    100% {
+        margin: 20px;
+        opacity: 0;
+        padding: -4px;
+        top: -56px;
+    }
+}
+
+@keyframes splash--3 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 10px;
+        top: 0;
+    }
+    100% {
+        margin: 20px;
+        opacity: 0;
+        padding: -4px;
+        top: -56px;
+    }
+}
+
+.splash--4 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 1.2333333333s;
+    animation-duration: 1.2333333333s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--4;
+    animation-name: splash--4;
+    height: 6px;
+    left: 45%;
+    width: 6px;
+}
+
+@-webkit-keyframes splash--4 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 7px;
+        top: 0;
+    }
+    100% {
+        margin: 2px;
+        opacity: 0;
+        padding: -3px;
+        top: -55px;
+    }
+}
+
+@keyframes splash--4 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 7px;
+        top: 0;
+    }
+    100% {
+        margin: 2px;
+        opacity: 0;
+        padding: -3px;
+        top: -55px;
+    }
+}
+
+.splash--5 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 1.1666666667s;
+    animation-duration: 1.1666666667s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--5;
+    animation-name: splash--5;
+    height: 15px;
+    left: 46%;
+    width: 15px;
+}
+
+@-webkit-keyframes splash--5 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 9px;
+        top: 0;
+    }
+    100% {
+        margin: 3px;
+        opacity: 0;
+        padding: -24px;
+        top: -95px;
+    }
+}
+
+@keyframes splash--5 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 9px;
+        top: 0;
+    }
+    100% {
+        margin: 3px;
+        opacity: 0;
+        padding: -24px;
+        top: -95px;
+    }
+}
+
+.splash--6 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 1.1s;
+    animation-duration: 1.1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--6;
+    animation-name: splash--6;
+    height: 15px;
+    left: 47%;
+    width: 15px;
+}
+
+@-webkit-keyframes splash--6 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 4px;
+        top: 0;
+    }
+    100% {
+        margin: 16px;
+        opacity: 0;
+        padding: -22px;
+        top: -75px;
+    }
+}
+
+@keyframes splash--6 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 4px;
+        top: 0;
+    }
+    100% {
+        margin: 16px;
+        opacity: 0;
+        padding: -22px;
+        top: -75px;
+    }
+}
+
+.splash--7 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 1.0333333333s;
+    animation-duration: 1.0333333333s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--7;
+    animation-name: splash--7;
+    height: 13px;
+    left: 44%;
+    width: 13px;
+}
+
+@-webkit-keyframes splash--7 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 4px;
+        top: 0;
+    }
+    100% {
+        margin: 14px;
+        opacity: 0;
+        padding: -14px;
+        top: -80px;
+    }
+}
+
+@keyframes splash--7 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 4px;
+        top: 0;
+    }
+    100% {
+        margin: 14px;
+        opacity: 0;
+        padding: -14px;
+        top: -80px;
+    }
+}
+
+.splash--8 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 0.9666666667s;
+    animation-duration: 0.9666666667s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--8;
+    animation-name: splash--8;
+    height: 13px;
+    left: 46%;
+    width: 13px;
+}
+
+@-webkit-keyframes splash--8 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 23px;
+        top: 0;
+    }
+    100% {
+        margin: 16px;
+        opacity: 0;
+        padding: -5px;
+        top: -91px;
+    }
+}
+
+@keyframes splash--8 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 23px;
+        top: 0;
+    }
+    100% {
+        margin: 16px;
+        opacity: 0;
+        padding: -5px;
+        top: -91px;
+    }
+}
+
+.splash--9 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 0.9s;
+    animation-duration: 0.9s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--9;
+    animation-name: splash--9;
+    height: 5px;
+    left: 44%;
+    width: 5px;
+}
+
+@-webkit-keyframes splash--9 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 24px;
+        top: 0;
+    }
+    100% {
+        margin: 5px;
+        opacity: 0;
+        padding: -7px;
+        top: -110px;
+    }
+}
+
+@keyframes splash--9 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 24px;
+        top: 0;
+    }
+    100% {
+        margin: 5px;
+        opacity: 0;
+        padding: -7px;
+        top: -110px;
+    }
+}
+
+.splash--10 {
+    -webkit-animation-delay: 3.3s;
+    animation-delay: 3.3s;
+    -webkit-animation-duration: 0.8333333333s;
+    animation-duration: 0.8333333333s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: splash--10;
+    animation-name: splash--10;
+    height: 5px;
+    left: 43%;
+    width: 5px;
+}
+
+@-webkit-keyframes splash--10 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 8px;
+        top: 0;
+    }
+    100% {
+        margin: 7px;
+        opacity: 0;
+        padding: -19px;
+        top: -114px;
+    }
+}
+
+@keyframes splash--10 {
+    0% {
+        margin: 0;
+        opacity: 1;
+        padding: 8px;
+        top: 0;
+    }
+    100% {
+        margin: 7px;
+        opacity: 0;
+        padding: -19px;
+        top: -114px;
+    }
+}
+
+/*
+ * ~~ 5
+ * Water Fullrise
+ * start: 6.5sec, dur: 1sec
+ */
+.full-water {
+    -webkit-animation: fullRising 1s 4.5s both;
+    animation: fullRising 1s 4.5s both;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+@-webkit-keyframes fullRising {
+    0% {
+        bottom: 0;
+    }
+    100% {
+        bottom: 80%;
+    }
+}
+
+@keyframes fullRising {
+    0% {
+        bottom: 0;
+    }
+    100% {
+        bottom: 80%;
+    }
+}
+
+/*
+ * Finishing up
+ */
+#replay {
+    font-family: Aviny;
+    -webkit-animation: appear 1s 6s both;
+    animation: appear 1s 6s both;
+    bottom: 10px;
+    left: 45%;
+    position: absolute;
+    top: 48%;
+    z-index: 999;
+}
+
+@-webkit-keyframes appear {
+    0% {
+        opacity: 0;
+        height: 0;
+    }
+    100% {
+        opacity: 1;
+        height: 10px;
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        height: 0;
+    }
+    100% {
+        opacity: 1;
+        height: 10px;
+    }
+}
+
+
+#replay .container_process {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: -webkit-radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2) 35%, rgba(0, 0, 0, 0.5));
+    background: -moz-radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2) 35%, rgba(0, 0, 0, 0.5));
+    background: -ms-radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2) 35%, rgba(0, 0, 0, 0.5));
+    background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2) 35%, rgba(0, 0, 0, 0.5));
+    background-color: #ee384e;
+}
+
+.content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+.container_process h2 {
+    position: absolute;
+    font-size: 60px;
+    width: 100%;
+    text-align: center;
+    color: transparent;
+    animation: blurFadeInOut 2s ease-in backwards;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    direction: rtl;
+    justify-content: center;
+    margin: 0;
+}
+
+.container_process h2.frame-1 {
+    animation-delay: 7s;
+}
+
+.container_process h2.frame-2 {
+    animation-delay: 10s;
+}
+
+.container_process h2.frame-3 {
+    animation-delay: 13s;
+}
+
+.container_process h2.frame-4 {
+    animation-delay: 15s;
+}
+
+.container_process h2.frame-5 {
+    animation: none;
+    color: transparent;
+    text-shadow: 0 0 1px #fff;
+}
+
+.container_process h2.frame-5 > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.container_process h2.frame-5 span {
+    animation: blurFadeIn 1s ease-in 17s backwards;
+    color: transparent;
+    text-shadow: 0 0 1px #fff;
+}
+
+.container_process h2.frame-5 span:nth-child(2) {
+    animation-delay: 19s;
+}
+
+.container_process h2.frame-5 span:nth-child(3) {
+    animation-delay: 21s;
+    display: block;
+    direction: rtl;
+    width: 100%;
+    text-align: center;
+    line-height: 1;
+}
+
+@keyframes blurFadeInOut {
+    0% {
+        opacity: 0;
+        text-shadow: 0 0 40px #fff;
+        transform: scale(0.9);
+    }
+    20%, 75% {
+        opacity: 1;
+        text-shadow: 0 0 1px #fff;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        text-shadow: 0 0 50px #fff;
+        transform: scale(0);
+    }
+}
+
+@keyframes blurFadeIn {
+    0% {
+        opacity: 0;
+        text-shadow: 0 0 40px #fff;
+        transform: scale(1.3);
+    }
+    50% {
+        opacity: 0.5;
+        text-shadow: 0 0 10px #fff;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 1px #fff;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInBack {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(2);
+    }
+    100% {
+        opacity: 0.2;
+        transform: scale(5);
+    }
+}
+
+
+.texts {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.loading {
+    position: relative;
+    top: 10px;
+    /*! left: 50%; */
+    width: 20px;
+    height: 180px;
+    /*! transform: translate(-50%, -50%); */
+    animation: blurFadeIn 3s ease-in 17s backwards;
+    margin-bottom: 50px;
+    direction: ltr;
+    margin: 0;
+}
+
+.loading .dot {
+    position: absolute;
+    border-radius: 50%;
+    left: 1px;
+    top: 1px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    animation: spin1 2.5s 0s infinite both;
+}
+
+.loading .dot2 {
+    position: absolute;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background: white;
+    animation: spin2 2.5s 0s infinite both;
+}
+
+@keyframes spin1 {
+    0%, 100% {
+        box-shadow: 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white;
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    25%, 75% {
+        box-shadow: 28px 0 0 white, -28px 0 0 white, 0 28px 0 white, 0 -28px 0 white, 20px -20px 0 white, 20px 20px 0 white, -20px -20px 0 white, -20px 20px 0 white;
+    }
+    100% {
+        transform: rotate(360deg);
+        box-shadow: 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white;
+    }
+}
+
+@keyframes spin2 {
+    0%, 100% {
+        box-shadow: 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white;
+    }
+    50% {
+        transform: rotate(-180deg);
+    }
+    25%, 75% {
+        box-shadow: 52px 0 0 white, -52px 0 0 white, 0 52px 0 white, 0 -52px 0 white, 38px -38px 0 white, 38px 38px 0 white, -38px -38px 0 white, -38px 38px 0 white;
+        background: transparent;
+    }
+    100% {
+        transform: rotate(-360deg);
+        box-shadow: 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white, 0 0 0 white;
+    }
+}
+
+
+.return-bank-inner {
+    background: White;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px 0;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+}
+
+.return-bank-box {
+    width: 100%;
+}
+
+.success-icon {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.success-text {
+    text-align: center;
+    margin-top: 30px;
+    display: block;
+}
+
+.success-text .success-text-title {
+    font-family: inherit !important;
+    font-size: 17px;
+    color: #646464;
+    font-weight: bold;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    line-height: 1.5;
+}
+
+.success-text .success-text-info {
+    font-size: 13px;
+    margin-top: 30px;
+    font-family: inherit;
+    font-weight: 300;
+    text-align: justify;
+}
+
+.success-text .success-text-info p {
+    line-height: 27px;
+}
+
+.faktor-btns {
+    padding: 25px 10px 15px;
+    position: relative;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    margin-top: 15px;
+    text-align: center;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+}
+
+.faktor-btns span {
+    position: absolute;
+    font-size: 11px;
+    top: -10px;
+    line-height: 20px;
+    background: white;
+    padding: 0 12px;
+    font-family: inherit;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.faktor-btns a {
+    background: #5eb75e;
+    font-family: inherit;
+    padding: 7px 5px;
+    font-size: 14px;
+    color: white;
+    border-radius: 5px;
+    margin-right: 3px;
+    margin-left: 3px;
+    transition: all linear 0.4s;
+    cursor: pointer;
+}
+
+.faktor-btns a:hover {
+    opacity: .6;
+    color: #fff;
+}
+
+#ModalSendEmail.modal {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#ModalSendEmail .modal-content {
+    margin: 150px auto;
+}
+
+#ModalSendEmail .modal-header {
+    display: flex;
+    align-items: center;
+
+}
+
+#ModalSendEmail .modal-header h6 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+#ModalSendEmail span {
+    position: absolute;
+    left: 10px;
+    font-size: 2rem;
+    padding: 0;
+    cursor: pointer;
+
+}
+
+#ModalSendEmail .close.btn {
+    color: #fff;
+    text-shadow: none;
+    font-size: 16px;
+    width: 100px;
+    height: 40px;
+    opacity: 1;
+}
+
+#ModalSendEmail .modal-footer .col-md-12 {
+    display: flex;
+    align-items: center;
+    direction: ltr;
+
+}
+
+#SendForOthers {
+    height: 45px;
+}
+
+#SendEmailForOther {
+    width: 100px;
+    height: 40px;
+    margin-right: auto;
+
+}
+
+.panel-return {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}
+
+.panel-return .panel-return-head {
+    flex: 0 0 100%;
+    background: #efefef;
+    padding: 10px;
+    text-align: right;
+}
+
+.panel-return .panel-return-head span {
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.panel-return .panel-return-content {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.panel-return .panel-return-content div {
+    padding: 10px 0;
+    flex: 0 0 100%;
+    border-bottom: 1px solid #efefef;
+    display: flex;
+}
+
+.panel-return .panel-return-content div span {
+    font-family: inherit !important;
+    font-size: 13px;
+}
+
+.panel-return .panel-return-content div span:last-child {
+    margin-right: auto;
+    font-weight: 300;
+}
+
+
+.return-bank-inner .change-price .change-price-titile {
+    margin: 10px 0 20px;
+    font-size: 16px;
+    font-family: inherit;
+    color: #f15249;
+    padding-right: 30px;
+    position: relative;
+}
+
+
+.return-bank-inner .change-price .change-price-info p {
+    display: initial;
+    font-family: inherit;
+    line-height: 25px;
+    font-weight: 300;
+    font-size: 13px;
+    margin-bottom: 15px;
+
+}
+
+#flight_factorLocal .left-Cell-change .price {
     display: none;
 }
 
-.select2-container--default[dir="rtl"] .select2-selection--single .select2-selection__arrow {
-    right: 1px !important;
-    left: auto !important;
+.change-price-input {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
 }
+
+.change-price-input input {
+    border: 1px solid #e6e6e6;
+    padding: 6px 12px;
+    font-size: 13px;
+    min-width: 250px;
+    color: #494949;
+}
+
+.change-price-input button {
+    border: 1px solid var(--mainColor);
+    border-right-color: rgb(50, 186, 124);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right: none;
+    font-size: 13px;
+    padding: 0 15px;
+    background: var(--mainColor);
+    color: white;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.return-bank-inner.return-error > .row > div {
+    margin: auto;
+}
+
+.return-bank-inner .change-price .change-price-titile::before {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    content: "";
+    background-size: contain;
+    margin: auto;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMzM0Ljg3NyAzMzQuODc3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAzMzQuODc3IDMzNC44Nzc7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgY2xhc3M9IiI+PGc+PGc+Cgk8cGF0aCBkPSJNMzMzLjE5NiwxNTUuOTk5aC0xNi4wNjdWODIuMDljMC0xNy43MTktMTQuNDE1LTMyLjEzNC0zMi4xMzQtMzIuMTM0aC0yMS43NjFMMjQwLjk2NSw5LjkxNyAgIEMyMzcuNTcxLDMuNzk4LDIzMS4xMTIsMCwyMjQuMTA3LDBjLTMuMjY1LDAtNi41MDQsMC44NDItOS4zNjQsMi40MjlsLTg1LjQ2NCw0Ny41MjZIMzMuODE1ICAgYy0xNy43MTksMC0zMi4xMzQsMTQuNDE1LTMyLjEzNCwzMi4xMzR2MjIwLjY1M2MwLDE3LjcxOSwxNC40MTUsMzIuMTM0LDMyLjEzNCwzMi4xMzRoMjUxLjE4ICAgYzE3LjcxOSwwLDMyLjEzNC0xNC40MTUsMzIuMTM0LTMyLjEzNHYtNjQuODAyaDE2LjA2N1YxNTUuOTk5eiBNMjg0Ljk5NSw2Mi44MDljOS44OTcsMCwxNy45ODIsNy41MTksMTkuMDY4LDE3LjE0aC0yNC4xNTIgICBsLTkuNTI1LTE3LjE0SDI4NC45OTV6IE0yMjAuOTk2LDEzLjY2M2MzLjAxNC0xLjY5LDcuMDctMC41MDgsOC43MzQsMi40OTRsMzUuNDc2LDYzLjc4NkgxMDEuNzk4TDIyMC45OTYsMTMuNjYzeiAgICBNMzA0LjI3NSwzMDIuNzQyYzAsMTAuNjMtOC42NTEsMTkuMjgxLTE5LjI4MSwxOS4yODFIMzMuODE1Yy0xMC42MywwLTE5LjI4MS04LjY1MS0xOS4yODEtMTkuMjgxVjgyLjA5ICAgYzAtMTAuNjMsOC42NTEtMTkuMjgxLDE5LjI4MS0xOS4yODFoNzIuMzUzTDc1LjM0NSw3OS45NUgzNy44MzJjLTMuNTU0LDAtNi40MjcsMi44NzktNi40MjcsNi40MjdzMi44NzMsNi40MjcsNi40MjcsNi40MjdoMTQuMzk2ICAgaDIzNC44M2gxNy4yMTd2NjMuMjAxaC00Ni45OTljLTIxLjgyNiwwLTM5LjU4OSwxNy43NjQtMzkuNTg5LDM5LjU4OXYyLjc2NGMwLDIxLjgyNiwxNy43NjQsMzkuNTg5LDM5LjU4OSwzOS41ODloNDYuOTk5VjMwMi43NDJ6ICAgIE0zMjAuMzQyLDIyNS4wODdoLTMuMjEzaC01OS44NTNjLTE0Ljc0MywwLTI2LjczNi0xMS45OTItMjYuNzM2LTI2LjczNnYtMi43NjRjMC0xNC43NDMsMTEuOTkyLTI2LjczNiwyNi43MzYtMjYuNzM2aDU5Ljg1MyAgIGgzLjIxM1YyMjUuMDg3eiBNMjc2Ljk2MSwxOTcuNDk3YzAsNy44NDEtNi4zNSwxNC4xOS0xNC4xOSwxNC4xOWMtNy44NDEsMC0xNC4xOS02LjM1LTE0LjE5LTE0LjE5czYuMzUtMTQuMTksMTQuMTktMTQuMTkgICBDMjcwLjYxMiwxODMuMzA2LDI3Ni45NjEsMTg5LjY2MiwyNzYuOTYxLDE5Ny40OTd6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIHN0eWxlPSJmaWxsOiNGMTUyNDkiIGRhdGEtb2xkX2NvbG9yPSIjMDAwMDAwIj48L3BhdGg+CjwvZz48L2c+IDwvc3ZnPg==);
+}
+
+@-webkit-keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.fadeOut {
+    opacity: 0;
+    -moz-animation: fadeout 1s linear;
+    -webkit-animation: fadeout 1s linear;
+    animation: fadeout 1s linear;
+}
+.filter-baggage-label{
+    direction:rtl !important;
+}
+
+.selectOneFlightVue {
+    width: 100%;
+    height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+    color: #444;
+    background: #fff;
+}
+
+.esterdad-blit .sandali-span2 {
+    margin-top: 5px;
+}
+
+.successful-flight-booking-box {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, .25);
+    width: 100%;
+    max-width: 480px;
+    padding: 30px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    animation: modalSlideIn .4s ease-out;
+    margin-top: 20px;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
+}
+
+.successful-flight-booking-box .success-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 25px;
+    position: relative
+}
+
+.successful-flight-booking-box .icon-circle {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative
+}
+
+.successful-flight-booking-box .icon-circle::before {
+    content: "";
+    position: absolute;
+    width: 85%;
+    height: 85%;
+    border: 2px solid hsla(0, 0%, 100%, .3);
+    border-radius: 50%;
+    animation: pulse 2s infinite
+}
+
+.successful-flight-booking-box .icon-circle i {
+    font-size: 50px;
+    color: #fff
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: .7
+    }
+}
+
+.successful-flight-booking-box .success-title {
+    color: #10b981;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 15px
+}
+
+.successful-flight-booking-box .success-subtitle {
+    color: #6b7280;
+    font-size: 16px;
+    margin-bottom: 35px;
+    line-height: 1.5
+}
+
+.successful-flight-booking-box .transaction-details {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 10px 25px;
+    margin-bottom: 30px;
+    border: 1px solid #e5e7eb
+}
+
+.successful-flight-booking-box .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e5e7eb
+}
+
+.successful-flight-booking-box .detail-row:last-child {
+    border-bottom: none
+}
+
+.successful-flight-booking-box .detail-label {
+    color: #6b7280;
+    font-size: 16px
+}
+
+.successful-flight-booking-box .detail-value {
+    color: #333;
+    font-size: 16px
+}
+
+.successful-flight-booking-box .detail-value.status-success {
+    color: #10b981;
+    font-weight: 500
+}
+
+.successful-flight-booking-box .action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap
+}
+
+.successful-flight-booking-box .btn-click {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .3s ease;
+    border: none;
+    min-width: 140px;
+    color: #fff
+}
+
+.successful-flight-booking-box .btn-click:hover {
+    color: #fff;
+    transform: translateY(-2px)
+}
+
+.successful-flight-booking-box .btn-pdf {
+    background: linear-gradient(135deg, #1c9a4a 0%, #15803d 100%);
+    color: #fff
+}
+
+.successful-flight-booking-box .btn-pdf:hover {
+    box-shadow: 0 6px 20px rgba(21, 128, 61, 0.5)
+}
+
+.successful-flight-booking-box .btn-receipt {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    color: #fff
+}
+
+.successful-flight-booking-box .btn-receipt:hover {
+    box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4)
+}
+
+.successful-flight-booking-box .btn-english {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    color: #fff
+}
+
+.successful-flight-booking-box .btn-english:hover {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4)
+}
+
+.successful-flight-booking-box .btn-email {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #fff
+}
+
+.successful-flight-booking-box .btn-email:hover {
+    box-shadow: 0 6px 20px rgba(245, 158, 11, .4)
+}
+
+.successful-flight-booking-box .btn-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0
+}
+
+.successful-flight-booking-box .alert-message {
+    padding: 15px 20px;
+    background: #fef2f2;
+    color: #dc2626;
+    border-radius: 10px;
+    text-align: center;
+    margin: 15px 0;
+    border: 1px solid #fecaca;
+    font-size: 14px;
+    animation: slideUp .3s ease-out
+}
+
+.successful-flight-booking-box .alert-message svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-left: 8px
+}
+
+.successful-flight-booking-box .text-code-takhfif {
+    margin-top: 25px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 12px;
+    border: 1px solid #bae6fd;
+    color: #0369a1;
+    font-size: 15px;
+    font-weight: 500;
+    animation: slideUp .5s ease-out .8s both
+}
+
+.successful-flight-booking-box .text-code-takhfif .discount-code {
+    display: inline-block;
+    background: #fff;
+    padding: 5px 12px;
+    border-radius: 6px;
+    margin: 0 8px;
+    font-family: monospace;
+    font-size: 14px;
+    border: 1px dashed #0284c7;
+    color: #0284c7
+}
+
+.successful-flight-booking-box .flight-info-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    color: #4338ca;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    border: 1px solid #a5b4fc
+}
+
+@media (max-width: 480px) {
+    .successful-flight-booking-box {
+        margin: 10px;
+        padding: 30px 20px
+    }
+
+    .successful-flight-booking-box .success-title {
+        font-size: 28px
+    }
+
+    .successful-flight-booking-box .action-buttons {
+        flex-direction: column
+    }
+
+    .successful-flight-booking-box .action-buttons .btn-click {
+        width: 100%
+    }
+
+    .successful-flight-booking-box .transaction-details {
+        padding: 10px 15px
+}
+
+    .successful-flight-booking-box .detail-label, .successful-flight-booking-box .detail-value {
+        font-size: 14px
+    }
+}
+
+.successful-flight-booking-box .success-icon {
+    animation: iconBounce .6s ease-out .2s both
+}
+
+@keyframes iconBounce {
+    0% {
+        opacity: 0;
+        transform: scale(0.3)
+    }
+    50% {
+        transform: scale(1.1)
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1)
+    }
+}
+
+.successful-flight-booking-box .transaction-details {
+    animation: slideUp .5s ease-out .4s both
+}
+
+.successful-flight-booking-box .action-buttons {
+    animation: slideUp .5s ease-out .6s both
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0)
+}
+}
+
+/*# sourceMappingURL=header.css.map */
+
 
 /****************
     Responsive
 ***************/
+
+@media (max-width: 1200px) {
+    .faktor-btns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 @media(min-width: 990px){
     .sorting2#sortFlightInternal .filter_search_mobile_res{
@@ -4503,16 +7908,26 @@ div.foreign.sepehran .logo-airline-ico-foreign {
         width:20px;
         height:20px
     }
+
+    .flight-type-div {
+        gap: 9px !important;
+    }
+
     .loader-page{
         width: 100%;
-        margin-top: 80px !important;
+        margin-top: 0 !important;
+        position: absolute;
+        box-shadow: 0 15px 35px 0 rgb(0 0 0 / 50%);
+        top: 50%;
+        transform: translate(50%, -50%);
+        right: 50%;
     }
     #s-u-filter-wrapper-ul {
         position: fixed;
         left: -500px;
         top: 0;
         z-index: 9999999;
-        width: 300px;
+        width: 100%;
         height: 100%;
         overflow-y: auto;
         background: #fff;
@@ -4571,15 +7986,7 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     }
     .sorting2 .text-price-sort, .sorting2 .text-time-sort{
         padding-right: 0;
-        font-size: 12px;
-        padding-left:0
-    }
-    .sorting2 > div{
-        padding:5px 0
-    }
-    #appFlight .col-padding-5 {
-        padding-right: 0;
-        padding-left: 0;
+        font-size: 10px;
     }
 
 
@@ -4594,6 +8001,39 @@ div.foreign.sepehran .logo-airline-ico-foreign {
 }
 
 @media (max-width: 767px) {
+    .flight-type-external {
+        left: 0 !important;
+        right: 0 !important;
+    }
+
+    .container_process h2 {
+        font-size: 25px;
+    }
+
+    .flight-type-seat-class {
+        left: calc(44% - 40px) !important;
+    }
+
+    .cancel-policy-inner {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 16px;
+        grid-row-gap: 16px;
+    }
+
+    /*.international-available-airlines-log-info{*/
+    /*    display: none;*/
+    /*}*/
+    .international-available-airlines-info span.flight-type {
+        left: 0 !important;
+        margin-left: 1px !important;
+    }
+
+    .wobble {
+        margin-top: -20px;
+    }
+
     .blit-mob-charter {
         display: block !important;
     }
@@ -4601,6 +8041,25 @@ div.foreign.sepehran .logo-airline-ico-foreign {
         margin-left: auto;
         margin-right:0
     }
+
+    .international-available-item-left-Cell {
+        width: 100%;
+        padding: 0 10px
+    }
+
+    .special-p {
+        margin-right: auto;
+    }
+
+    .cancel-passenger {
+        font-size: 12px;
+        height: 45px;
+    }
+
+    .s-u-submit-passenger-Buyer {
+        font-size: 12px;
+    }
+
     .chooseiconDay.icons.tooltipWeighDay{
         display:none;
     }
@@ -4611,7 +8070,7 @@ div.foreign.sepehran .logo-airline-ico-foreign {
         padding: 15px !important;
     }
     #flight_loader span{
-        font-size: 12px;
+        font-size: 14px;
     }
     .loader-distinc{
         font-size:12px
@@ -4628,6 +8087,10 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     }
     .tip-content p{
         line-height: normal;
+    }
+
+    .filtertip-searchbox {
+        display: none !important;
     }
 
     .parvaz-sidebar .open-sidebar-parvaz::before {
@@ -4678,7 +8141,8 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     .international-available-airlines-log-info .esterdad-blit {
         font-size:12px
     }
-    .international-available-item-left-Cell{
+
+    .international-available-info .international-available-item-left-Cell {
         width:100%;
         padding: 0 10px;
         border-top: 1px dashed #ccc;
@@ -4687,17 +8151,28 @@ div.foreign.sepehran .logo-airline-ico-foreign {
         display:flex;
         align-items:center;
         padding:5px 0;
+        flex-wrap: wrap;
     }
+
+    .inner-avlbl-itm .international-available-airlines-log-info {
+        text-align: left;
+    }
+
     .SelectTicket{
         margin-left:auto;
     }
     .inner-avlbl-itm div > a{
         padding: 5px 20px;
-        font-size:12px
+        font-size: 14px
     }
     .international-available-info .airlines-info.destination span{
-        font-size:12px !important;
+        font-size: 16px !important;
     }
+
+    .silence_span {
+        margin-top: 8px;
+    }
+
     .blit-mob-charter {
         position: absolute;
         left: -22px;
@@ -4748,11 +8223,16 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     }
 
     .s-u-result-raft.first-row-change{
-        padding-top:15px;
+        padding-top: 10px;
     }
+
+    .s-u-passenger-item input, .s-u-passenger-item select, .s-u-passenger-item-hotel input, .s-u-passenger-item-hotel select {
+        font-size: 13px;
+    }
+
     .mob-parvaz-kh {
         width: 100%;
-        display: flex;
+        display: none;
         align-items: center;
         justify-content: right;
         margin-top: 8px;
@@ -4773,50 +8253,171 @@ div.foreign.sepehran .logo-airline-ico-foreign {
         margin-left: 5px;
         font-weight: 300;
     }
-    .international-available-airlines-detail{
-        flex-wrap:wrap;
-    }
-    .international-available-airlines-detail-tittle span.airline_s, .international-available-airlines-detail-tittle span.flighttime_s {
-        display: none;
-    }
-    .international-available-airlines-detail .airlines-detail-box,
-    .airlines-detail-box-2{
-        display:flex;
-        flex-wrap:wrap;
-        padding: 5px 0;
-    }
-    .international-available-airlines-detail .airlines-detail-box{
-        width:100%
-    }
-}
-@media (max-width: 576px) {
 
-    .parent-discount .input-group-btn .discount-code-btn {
-        margin-top: 10px;
     }
-    .captcha_flight_ .col_captcha {
-        padding-right: 0 !important;
-        padding-left: 0 !important;
+
+@media (max-width: 576px) {
+    .s-u-last-p-bozorgsal-change {
+        font-size: 12px !important;
     }
-    .sorting_1, .sorting_asc {
-        display: none;
+
+    .FilterHoteltype[type="checkbox"]:not(:checked) + label::after, .FilterHoteltype[type="checkbox"]:checked + label::after {
+        top: 0px;
+        right: 1px;
     }
+
+    .s-u-result-item-RulsCheck-item .parent-discount .separate-part-discount .input-group-btn:has(.discount-code-btn) {
+        width: 100%;
+    }
+
+    .s-u-result-item-RulsCheck-item .parent-discount .separate-part-discount .input-group-btn:has(.discount-code-btn) button {
+        width: 100%;
+    }
+
+    .faktor-btns {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .change-price-input input {
+        min-width: 230px;
+    }
+
+    .ui-datepicker {
+        margin: 0 1rem;
+    }
+
+    .inner-avlbl-itm .sandali-span2 {
+        /*text-align: right;*/
+        font-size: 12px;
+        width: 100%;
+        text-align: left;
+        margin-left: 55px !important;
+        margin-top: 7px !important;
+    }
+
+    .international-available-airlines-log-info {
+        padding-top: 0 !important;
+    }
+
+    .flightnumber_s {
+        font-size: 12px !important;
+        padding-top: 0 !important;
+    }
+
+    .priceSortAdt {
+        margin-bottom: 0;
+    }
+
+    .sandali-span2 {
+        margin-top: 0 !important;
+        font-size: 12px;
+    }
+
+    .s-u-passenger-item {
+        flex: 0 0 100% !important;
+        width: 50%;
+    }
+
+    .wayticket_passengers {
+        top: 9px;
+        left: 9px;
+    }
+
+    .cancel-policy-inner {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+    }
+
+    .VueCarousel-slide > .col_t_price {
+        width: 90px !important;
+    }
+
     .left-Cell-change .s-u-bozorg.s-u-bozorg-change {
         display: flex;
         align-items: center;
-        width: 100%;
+        width: 100%
     }
     .s-u-bozorg.price {
-
+        order: 2;
         margin-right: auto;
+
     }
-    .s-u-result-items-div-change span {
-        padding-left: 5px;
-        text-align: left;
+
+    .shenase-nerkhi,
+    .displayib-change {
+        font-size: 13px;
+        color: #333;
     }
+
+    .airline-name-detail.a {
+        display: none
+
+    }
+
+    .foreign .tavaghof {
+        font-size: 10px;
+        color: #444;
+    }
+
+    .airlines-info-inner span:first-child {
+        color: #444;
+    }
+
+    .foreign .flight-type, .foreign .sit-class {
+        font-size: 10px;
+        padding-left: 3px;
+        margin-left: 0;
+    }
+
+    .airlines-detail-box-foreign {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap
+    }
+
+    .airlines-detail-box-foreign span {
+        padding: 0 2px;
+        font-size: 12px;
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    .airlines-detail-box-foreign span i {
+        display: none;
+    }
+
+    .international-available-airlines-info-detail.side-logo-detail > span {
+        padding: 5px 2px
+    }
+
+    .international-available-airlines-info span {
+        font-size: 12px
+    }
+
+    #scroll-top {
+        display: none !important;
+    }
+
+    .s-u-result-item-RulsCheck-item {
+
+        padding: 15px 10px;
+    }
+
+    .FilterHoteltypeName {
+        font-size: 12px;
+    }
+
+    .s-u-result-item-wrapper .s-u-result-item-div {
+        min-height: auto;
+    }
+
     .s-u-result-item-div-change{
         display:flex;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
     }
     .s-u-result-item-div-logo{
         margin:0
@@ -4831,8 +8432,21 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     .s-u-result-item-wrapper .s-u-result-item-div-last{
         display:flex;
         align-items:center;
-        width:100%
+        width: 100%;
+        justify-content: space-between;
+        margin: 10px 0;
     }
+
+    .s-u-bozorg.price i {
+        font-size: 18px;
+    }
+
+    .left-Cell-change {
+        padding-right: 0;
+        padding-left: 0;
+        padding-bottom: 0;
+    }
+
     .s-u-bozorg.s-u-bozorg-change{
         display:flex;
     }
@@ -4842,28 +8456,46 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     }
     .my-info-detail span i,
     .side-logo-detail span i{
-        display:none
+        /*display:none*/
     }
     .capacity_s em{
         display:none
 
     }
-    .my-info-detail span i, .side-logo-detail span i {
-        display: none;
+
+    .international-available-airlines-detail .airlines-detail-box,
+    .airlines-detail-box-2 {
+        display: flex;
+        width: 100%;
+        padding: 5px 0;
+        flex-wrap: wrap;
     }
+
+    .airlines-detail-box span {
+        width: 100%;
+    }
+
+    .airlines-detail-box-2 span {
+        width: 100%;
+    }
+
+    .inner-avlbl-itm div > a.international-available-btn {
+        padding: 5px 20px;
+        font-size: 13px
+    }
+
     .sorting2 .dateprice::after{
         display:none
     }
     .advertises{
         display:none;
     }
-    .capacity_s em{
+
+    .right_busin_div {
         display:none
 
     }
-    .price-data-title span{
-        font-size:12px
-    }
+
     .tip-content p span,
     .tip-content p,
     .dateprice .text-dateprice,
@@ -4878,9 +8510,13 @@ div.foreign.sepehran .logo-airline-ico-foreign {
         height: 15px;
     }
     .sorting2 .filter_search_mobile_res svg{
-        width: 15px;
-        height:15px;
-        margin-right: 5px;
+        width: 20px;
+        height: 20px;
+        margin-right: 7px;
+    }
+
+    .tip-content p span, .tip-content p, .dateprice .text-dateprice, .sorting2 > div span {
+        font-size: 12px !important;
     }
 
     .sorting2 .date-change.sorting-inner a span{
@@ -4897,45 +8533,71 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     .international-available-airlines{
         width:25%
     }
-    .international-available-airlines-info{
-        border-left:1px dashed #ccc;
+
+    /*.international-available-airlines-info{*/
+    /*    border-right:1px dashed #ccc;*/
+    /*}*/
+    .international-available-info .international-available-item-left-Cell {
+        border-top: none;
+        margin-top: 30px;
     }
 
+    .priceSortAdt i {
+        font-size: 20px;
+    }
 
-    .international-available-airlines-detail .airlines-detail-box,
-    .airlines-detail-box-2{
-        display:flex;
+    .price-btn--new svg {
+        width: 12px !important;
+    }
+
+    .plane-icon {
+        top: 1px;
+    }
+
+    .plane-icon svg {
+        width: 22px;
+    }
+
+    .international-available-item-right-Cell {
+        padding: 12px 0 0;
+    }
+
+    .price-btn--new {
+        height: 36px !important;
+        font-size: 14px;
+    }
+
+    .international-available-airlines-info span.flight-type {
+        padding: 0 6px;
+        min-width: unset;
+        font-size: 10px;
+    }
+
+    .international-available-airlines-detail {
         flex-wrap:wrap;
-        padding: 5px 0;
     }
-    .airlines-detail-box span{
-        width:33.3333%;
+
+    .international-available-airlines-detail .airlines-detail-box {
+        width: 100% !important;
     }
-    .airlines-detail-box-2 span{
-        width: 100%;
-    }
-    .international-available-airlines-logo-detail{
-        margin-right:0
-    }
+
     .international-available-airlines-detail-tittle > span{
-        font-size:14px;
+        font-size: 16px;
         color:#000
     }
     .tdpricelabel{
         text-align: left;
-        width: 50%;
+        /*width: 50%;*/
         padding:0
     }
     .tdprice{
-        width: 50%;
-        padding:0
+        /*width: 50%;*/
+        padding: 0;
+        font-size: 13px;
     }
     ul.tabs li{
-        width:33.333%
-    }
-    ul.tabs li{
-        font-size:12px;
-        padding: 8px 0 0;
+        width: 33.333%;
+        font-size: 11px
     }
 
     /*Internal*/
@@ -4946,27 +8608,64 @@ div.foreign.sepehran .logo-airline-ico-foreign {
         display:none
     }
     .s-u-result-item-change{
-        flex-wrap:wrap
+        flex-wrap: wrap;
+        padding: 8px;
+        padding-bottom: 20px;
     }
     .s-u-result-item-div-change,
     .s-u-result-item-wrapper-change{
-        width:100%
+        width: 100%;
+        padding: 0;
     }
+
+    .Dash-ContentL-B-Table table {
+        display: unset;
+    }
+
+    .s-u-result-items-div-change span {
+        text-align: right
+    }
+
     .s-u-result-items-div-change span:first-child,
-    .s-u-result-items-div-change span,
-    .s-u-result-content-item-div-change{
-        font-size:12px
+    .s-u-result-items-div-change span {
+        font-size: 13px;
+        color: #333;
     }
+
+    .Flighttime {
+
+    }
+
+    .flight-class--new {
+        background: #f2f2f2;
+        min-width: 60px;
+        border-radius: 50px;
+        color: #333 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+    }
+
+    .s-u-result-content-item-div-change{
+        font-size: 14px
+    }
+
+    .sorting_1, .sorting_asc {
+        display: none
+
+    }
+
     .s-u-result-item-div-change{
         padding-top: 15px;
     }
 
     .control--checkbox{
-        padding: 5px 0 5px 10px;
-        font-size:small;
+        padding: 5px 10px 5px 0;
+        font-size: 11px;
     }
     .control--checkbox span{
-        font-size:small;
+        font-size: 11px;
     }
     .s-u-last-passenger-btn{
         margin-left: auto;
@@ -4986,12 +8685,14 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     .a-takhfif-box > .a-takhfif-box-inner{
         width: 100%;
     }
-    .s-u-p-factor-bank{
-        width:100%
+
+    .main-banks-logo {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .foreign .international-available-airlines {
         width: 60px;
+        padding-right: 3px;
     }
     .foreign .international-available-airlines-info {
         width: calc(100% - 60px);
@@ -5063,7 +8764,7 @@ div.foreign.sepehran .logo-airline-ico-foreign {
 }
 .search-box-resultFlight>span{
     display: flex;
-    padding: 5px 0 5px 10px;
+    padding: 5px 10px;
     font-size: 12px;
     color:#848585;
     background-color: #f8fafb;
@@ -5081,8 +8782,8 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     margin-right: 10px !important;
     transition: all ease .3s;
     padding: 1rem;
-
 }
+
 .search-box-resultFlight>li{
     align-items: center;
     transition: all ease .3s !important;
@@ -5094,7 +8795,7 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     background: #f6f6f6;
 }
 .search-box-resultFlight li:hover .my-icon-loction{
-    background: var(--mainColor) !important;
+    background: #f9af01 !important;
 }
 .search-box-inputSearchForeign{
     height: 35px !important;
@@ -5111,8 +8812,8 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     transform: rotate(90deg) !important;
 }
 .swap-flight-search-box-new{
-    width: 30px!important;
-    height: 30px!important;
+    width: 28px !important;
+    height: 28px !important;
     border-radius: 50% !important;
     transition: all ease .3s !important;
     display: flex;
@@ -5141,6 +8842,1856 @@ div.foreign.sepehran .logo-airline-ico-foreign {
     transition: all .3s;
 }
 .search-box-swap-flight-box-foreign{
-    top: 35px !important;
+    top: 45px !important;
     left: 5px !important;
+}
+
+
+.vm-btn-close:focus,
+.vm-btn-close {
+    outline: none;
+}
+
+.vm-btn-close {
+    float: left !important;
+}
+
+.modal-info {
+    color: #333;
+}
+
+.modal-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.modal-xl {
+    max-width: 540px !important;
+    overflow: hidden !important;
+}
+
+.modal-wrapper .vm {
+    top: auto;
+    border-radius: 10px;
+}
+
+.vm-titlebar {
+    background-color: #38ae61 !important;
+    color: #fff !important;
+}
+
+.modal_style_parent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.modal_style_parent input:focus {
+    out-line: none;
+    box-shadow: none;
+    border: 1px solid #444;
+}
+
+.modal_style {
+    direction: ltr;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 5px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    align-items: center;
+    height: 30px;
+    width: max-content;
+}
+
+.no-before-after::after {
+    display: none !important;
+}
+
+.no-before-after::before {
+    display: none !important;
+}
+
+.s-u-result-raft.first-row-change .custom-width-100 {
+    width: 100% !important
+}
+
+.modal_style-new {
+    direction: rtl !important;
+    flex-direction: row !important;
+    gap: 0 !important;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    align-items: center;
+    height: 30px;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: 1fr !important;
+    grid-column-gap: 20px !important;
+    grid-row-gap: 0 !important;
+}
+
+.modal_style-new span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swal2-container.swal2-bottom-end > .swal2-popup {
+    width: 500px !important;
+    margin-bottom: 25px;
+    padding: 6px 10px;
+    background: #2b2f33 !important;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+    font-size: 16px !important;
+    line-height: 26px;
+    font-weight: normal;
+}
+
+.swal2-toast-shown .swal2-container.swal2-bottom-end {
+    right: -75px !important;
+}
+
+.flightnumber_s {
+    font-size: 12px;
+    padding: 0 !important;
+}
+
+.price-btn--new {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    height: 42px;
+    transition: all ease .3s;
+}
+
+.price-btn--new svg {
+    width: 14px;
+    transition: all ease .3s;
+    fill: #fff;
+    transform: rotate(180deg);
+}
+
+.price-btn--new:hover svg {
+    transform: translateX(5px) rotate(180deg);
+}
+
+.svg-arrow--btn {
+    width: 16px;
+    transition: all ease .3s;
+    fill: #fff;
+}
+
+.discount-code-new {
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.discount-code-new .title-discount-code {
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+
+.discount-code-new .title-discount-code svg {
+    width: 18px;
+    fill: #444
+}
+
+.discount-code-new .title-discount-code h2 {
+    margin-bottom: 0;
+    color: #333;
+    font-size: 16px
+}
+
+.discount-code-new .discount-code-data {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.discount-code-new .discount-code-data h3 {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #444;
+    text-align: right;
+}
+
+.discount-code-new .discount-code-data .form-discount-code {
+    width: 400px;
+    position: relative
+}
+
+.discount-code-new .discount-code-data .form-discount-code input {
+    background: #f2f2f2;
+    border-radius: 12px;
+    padding: 0 15px;
+    color: #333;
+    font-size: 15px;
+    height: 48px;
+    width: 100%;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid #dcdcdc
+}
+
+.discount-code-new .discount-code-data .form-discount-code button {
+    position: absolute;
+    left: 6px;
+    background: #ee384e;
+    border-radius: 99999px;
+    font-size: 13px;
+    padding: 5px 20px;
+    border: none;
+    transition: all ease .5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    top: 50%;
+    transform: translateY(-50%)
+}
+
+.hidden-data {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+@media (max-width: 991px) {
+    .swal2-toast-shown .swal2-container.swal2-bottom-end {
+        padding-bottom: 0 !important;
+    }
+
+    .main-pay-content {
+        flex-direction: column;
+    }
+
+    .price-hotel-details-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sorting2 > div {
+        width: 20% !important;
+    }
+
+    .sorting2 .dateprice, .sorting2 .filter_search_mobile_res {
+        width: 100% !important;
+    }
+
+    .text-offer-btn {
+        font-size: 10px !important;
+    }
+
+
+}
+
+@media (max-width: 576px) {
+    .swal2-toast-shown .swal2-container.swal2-bottom-end {
+        right: 0 !important;
+    }
+
+    .parent_sidebar {
+        overflow: unset;
+    }
+
+    .discount-code-new {
+        gap: 9px;
+        margin-bottom: 0;
+    }
+
+    .discount-code-new .title-discount-code svg {
+        width: 15px;
+    }
+
+    .discount-code-new .title-discount-code h2 {
+        font-size: 14px;
+    }
+
+    .discount-code-new .discount-code-data {
+        gap: 10px;
+    }
+
+    .discount-code-new .discount-code-data h3 {
+        font-size: 10px;
+    }
+
+    .discount-code-new .discount-code-data .form-discount-code {
+        width: 100%;
+    }
+
+    .discount-code-new .discount-code-data .form-discount-code input {
+        font-size: 14px;
+        height: 40px;
+    }
+
+    .discount-code-new .discount-code-data .form-discount-code button {
+        font-size: 12px;
+        padding: 2px 20px;
+    }
+
+    .modal-body-flight {
+        padding: 40px 15px 30px;
+        gap: 7px;
+    }
+
+    .btn-research {
+        padding: 9px;
+        font-size: 14px;
+    }
+
+    .btn_back_home {
+        padding: 9px;
+        font-size: 14px;
+    }
+
+    .tab-content {
+        padding: 10px;
+    }
+
+    .price-Box-Tab .price-Content {
+        padding: 0;
+    }
+
+    .parent-price-ticket-details {
+        flex-direction: row;
+        padding: 5px;
+    }
+
+    .parent-grid-ticket-details {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 7px;
+        grid-row-gap: 7px;
+    }
+}
+
+
+.border-is-private {
+    border: 2px solid var(--mainColor) !important;
+    border-radius: 8px !important;
+    padding: 2px !important;
+    /*background:red !important;*/
+}
+
+
+.bg-is-private {
+    background-color: var(--mainColor) !important;
+    color: #fff !important;
+}
+
+.icon-best-start-time svg {
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+}
+
+.icon-best-start-time-s svg {
+    transform: rotate(0);
+    transition: transform 0.3s;
+}
+
+.clear-input {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #555;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s ease;
+    z-index: 5;
+}
+
+.clear-input:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+/* RTL support */
+[dir="rtl"] .clear-input {
+    left: auto;
+    right: 12px;
+}
+
+/* Tabs header – شبیه تب‌های کارت */
+.price-tabs-header {
+    display: flex;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+.price-tabs-header li {
+    flex: 1;
+    text-align: center !important;
+    padding: 6px 4px;
+    font-size: 12px;
+    background: #f3f3f3;
+    border-radius: 10px;
+    color: #555;
+    cursor: pointer;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 34px !important;
+    line-height: 1;
+    z-index: 1;
+}
+
+.price-tabs-header li.active {
+    background: #fff;
+    border: 1.5px solid #d32f2f; /* رنگ برند */
+    color: #d32f2f;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Card body – هم‌خانواده با کارت پرواز */
+.price-card-mobile {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+/* rows */
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 13px;
+    color: #444;
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+.price-row span {
+    color: #777;
+}
+
+.price-row strong {
+    font-weight: 600;
+    color: #222;
+}
+
+/* Final price emphasis */
+.price-row.price-total {
+    border-bottom: none;
+    margin-top: 6px;
+    padding-top: 10px;
+}
+
+.price-row.price-total strong {
+    font-size: 15px;
+    color: #d32f2f;
+}
+
+#ui-datepicker-div {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 320px;
+    font-family: inherit;
+}
+
+.ui-datepicker-header {
+    padding: 10px 0;
+    margin-bottom: 15px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ui-datepicker-prev,
+.ui-datepicker-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.ui-datepicker-prev:hover,
+.ui-datepicker-next:hover {
+    background: #e8e8e8;
+    border-color: #ccc;
+}
+
+.ui-datepicker-prev {
+    left: 0;
+}
+
+.ui-datepicker-next {
+    right: 0;
+}
+
+/* فلش‌های زیبا */
+.ui-icon.ui-icon-circle-triangle-w,
+.ui-icon.ui-icon-circle-triangle-e {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: relative;
+}
+
+.ui-icon.ui-icon-circle-triangle-w {
+    border-width: 6px 8px 6px 0;
+    border-color: transparent #666 transparent transparent;
+    margin-left: -2px;
+}
+
+.ui-icon.ui-icon-circle-triangle-e {
+    border-width: 6px 0 6px 8px;
+    border-color: transparent transparent transparent #666;
+    margin-right: -2px;
+}
+
+.ui-datepicker-prev:hover .ui-icon-circle-triangle-w,
+.ui-datepicker-next:hover .ui-icon-circle-triangle-e {
+    border-color: transparent #333 transparent transparent;
+}
+
+.ui-datepicker-next:hover .ui-icon-circle-triangle-e {
+    border-color: transparent transparent transparent #333;
+}
+
+.ui-datepicker-title {
+    text-align: center;
+    margin: 0 45px;
+}
+
+.ui-datepicker-title select {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 10px;
+    background: white;
+    color: #333;
+    margin: 0 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border 0.2s ease;
+}
+
+.ui-datepicker-title select:hover {
+    border-color: #aaa;
+}
+
+.ui-datepicker-title select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.ui-datepicker-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.ui-datepicker-calendar th {
+    padding: 10px 0;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+}
+
+.ui-datepicker-calendar td {
+    text-align: center;
+    padding: 3px;
+}
+
+.ui-datepicker-calendar td a,
+.ui-datepicker-calendar td span {
+    display: block;
+    padding: 8px 0;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.ui-datepicker-calendar td a {
+    background: #f8f9fa;
+}
+
+.ui-datepicker-calendar td a:hover {
+    background: var(--mainColor);
+    transform: translateY(-1px);
+}
+
+
+.ui-datepicker-calendar td.ui-datepicker-unselectable span {
+    color: #bbb;
+    background: #f9f9f9;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-other-month span {
+    color: #ddd;
+    background: transparent;
+}
+
+.ui-datepicker-buttonpane {
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    text-align: center;
+}
+
+.ui-datepicker-buttonpane button {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.ui-datepicker-buttonpane button:hover {
+    background: #5a6268;
+}
+
+/* استایل RTL برای فلش‌ها */
+.ui-datepicker-rtl .ui-datepicker-prev .ui-icon-circle-triangle-w {
+    border-width: 6px 0 6px 8px;
+    border-color: transparent transparent transparent #666;
+    margin-right: -2px;
+    margin-left: 0;
+}
+
+.ui-datepicker-rtl .ui-datepicker-next .ui-icon-circle-triangle-e {
+    border-width: 6px 8px 6px 0;
+    border-color: transparent #666 transparent transparent;
+    margin-left: -2px;
+    margin-right: 0;
+}
+
+.ui-datepicker-rtl .ui-datepicker-prev {
+    right: 0px;
+    left: auto;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.ui-datepicker-rtl .ui-datepicker-next {
+    left: 0;
+    right: auto;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+    display: block !important;
+    position: absolute !important;
+    left: 70% !important;
+    margin-left: -8px !important;
+    top: 60% !important;
+    margin-top: -8px !important;
+}
+
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
+    opacity: .35;
+    filter: Alpha(Opacity=35);
+    background-image: none;
+    padding: 10px;
+    color: #000 !important;
+    margin-top: 5px;
+}
+
+.ui-datepicker-prev:hover, .ui-datepicker-next:hover {
+    background: #e8e8e8;
+    border-color: #ccc;
+}
+
+.flight-date-mildai {
+    display: none;
+    font-size: 15px;
+    color: #333 !important;
+    font-family: inherit;
+    font-weight: 400;
+    width: 100%;
+    text-align: end
+}
+
+/*@media (min-width: 768px) {*/
+/*.flight-detail-style{*/
+/*    position: fixed;*/
+/*    left:-25%;*/
+/*    top: 0;*/
+/*    z-index: 99999;*/
+/*    height: 100vh;*/
+/*    width: 25%;*/
+/*    background: white;*/
+/*    padding-top: 20px;*/
+/*    !*display:none;*!*/
+/*    transition:all 0.3s ;*/
+/*}*/
+/*    .left-0{*/
+/*        left:0%;*/
+/*    }*/
+/*.btn-tab-flight{*/
+/*    border:1px solid #ccc;*/
+/*    border-radius:10px*/
+
+/*}*/
+/*.tabs-detail-flight{*/
+/*    border:none !important;*/
+/*    gap:10px;*/
+/*}*/
+
+/*    ul.tabs li.current{*/
+/*        border:1px solid #ccc;*/
+/*        border-radius:10px*/
+/*    }*/
+
+/*    .position-fixed-flight{*/
+/*        position:fixed;*/
+/*    }*/
+/*    .my-more-info-btn-sidebar{*/
+/*        display: inline-flex;*/
+/*        align-items: center;*/
+/*        z-index: 1;*/
+/*        margin: 0 auto 0 45px;*/
+/*        padding: 5px 8px 5px 7px;*/
+/*        border-radius: 5px;*/
+/*        position: relative;*/
+/*        font-size: 12px;*/
+/*        font-family: inherit;*/
+/*        color: #777777;*/
+/*        transition: all ease 0.3s;*/
+/*        cursor: pointer;*/
+/*    }*/
+/*}*/
+
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    /* برای جلوگیری از اسکرول محتوا پشت سایدبار (اختیاری) */
+    overflow: hidden;
+}
+
+/* پنل سایدبار */
+.sidebar-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 560px;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    transition: transform 0.4s ease; /* انیمیشن روان */
+    overflow-y: auto;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%); /* مخفی در چپ */
+    display: flex;
+    flex-direction: column;
+}
+
+/* حالت باز */
+.sidebar-panel.open {
+    right: 0;
+    transform: translateX(0) !important;
+}
+
+.sidebar-slide-enter-active,
+.sidebar-slide-leave-active {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-slide-enter-from,
+.sidebar-slide-leave-to {
+    transform: translateX(0) !important;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    flex-direction: row-reverse;
+}
+
+.sidebar-header-title {
+    font-family: inherit;
+    font-size: 19px
+}
+
+.sidebar-header-title .sidebar-close-btn {
+    display: none;
+}
+
+.sidebar-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000;
+}
+
+.sidebar-close-btn-times {
+    color: var(--mainColor) !important
+}
+
+.sidebar-content {
+    padding: 15px;
+}
+
+
+/*  detail return flight and detail dept flight    */
+
+
+.international-available-airlines-detail-tittle {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.2s ease;
+}
+
+/* Header "رفت پرواز" */
+.international-available-airlines-detail-tittle > span:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--mainColor);
+    border-right: 3px solid var(--mainColor);
+    padding-right: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.international-available-airlines-detail-tittle i.fa-circle {
+    font-size: 0.6rem;
+    color: var(--mainColor);
+}
+
+/* هر بخش پرواز (کارت) */
+.international-available-airlines-details {
+    background: #fefefe;
+    border-radius: 1rem;
+    border: 1px solid #eef2f6;
+}
+
+.international-available-airlines-detail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    border-right: 0 !important;
+    margin-right: 0 !important;
+    border-top: 1px solid #eef2f6;
+}
+
+
+/*
+
+
+/* اطلاعات خط هوایی (شرکت، شماره پرواز، کلاس) */
+.international-available-airlines-info-detail {
+    /*flex: 2;*/
+    display: flex;
+    /*flex-wrap: wrap;*/
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+}
+
+.international-available-airlines-info-detail span {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    font-size: 12px;
+    /*color: #334155;*/
+}
+
+.international-available-airlines-info-detail i {
+    font-style: normal;
+    /*color: #64748b;*/
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.international-available-airlines-info-detail em {
+    color: #cbd5e1;
+    margin: 0 0.25rem;
+}
+
+.flightnumber_s, .seatClass_s {
+    font-weight: 500;
+}
+
+.seatClass_s {
+    background: #fff;
+    /*padding: 0.2rem 0.6rem;*/
+    /*border-radius: 1rem;*/
+    font-size: 0.75rem;
+
+}
+
+/* جعبه‌های مبدا، مقصد و جزئیات بار/کلاس */
+.airlines-detail-box-foreign {
+    flex: 1;
+    min-width: 140px;
+    margin: 0.5rem 0;
+    padding: 0 0.75rem;
+}
+
+.airlines-detail-box-foreign:first-child {
+    border-right: none;
+}
+
+.airlines-detail-box-foreign span {
+    display: block;
+    line-height: 1.4;
+    margin: 0.25rem 0;
+}
+
+.airlines-detail-box-foreign .open {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.airlines-detail-box-foreign .openB {
+    font-weight: 700;
+    color: var(--mainColor);
+    direction: ltr;
+    display: inline-block;
+}
+
+/* جزییات (بار مجاز، کلاس نرخی) */
+.details-detail-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    border-right: 1px dashed #e2e8f0;
+}
+
+.details-detail-box span {
+    display: flex;
+    align-items: baseline;
+
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+}
+
+.capacity_s {
+    font-weight: 600;
+    color: #2d6a4f;
+    background: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.btn-baggage-search {
+    background: none;
+    border: none;
+    color: #2563eb;
+    cursor: pointer;
+    font-size: 0.75rem;
+    text-decoration: underline;
+    padding: 0;
+    margin-right: 0.25rem;
+}
+
+.btn-baggage-search:hover {
+    color: #1e40af;
+}
+
+/* بخش توقف (ترانزیت) */
+.airlines-stops-time {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: #fffbeb;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    margin-top: 0.75rem;
+    width: 100%;
+    font-size: 0.85rem;
+    border-right: 2px solid #f59e0b;
+}
+
+.airlines-stops-time-svg {
+    color: var(--mainColor);
+    width: 18px;
+    height: 18px;
+}
+
+.airlines-stops-time span {
+    line-height: 1.3;
+}
+
+.airlines-stops-time .open {
+    font-weight: 600;
+    /*color: #b45309;*/
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    /*.international-available-airlines-detail {*/
+    /*    flex-direction: column;*/
+    /*}*/
+    .international-available-airlines-logo-detail {
+
+        justify-content: flex-start;
+        margin-bottom: 0.75rem;
+    }
+
+    .airlines-detail-box-foreign {
+        padding: 0.5rem 0;
+        margin: 0;
+    }
+
+    .airlines-detail-box-foreign:last-child {
+        border-bottom: none;
+    }
+
+    .details-detail-box {
+        border-right: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+}
+
+
+.price-btn-new-sidebar {
+    height: 70px;
+    border-radius: 10px
+}
+
+@media (max-width: 640px) {
+
+    .international-available-airlines-detail-tittle {
+        padding: 0.75rem;
+    }
+
+    .international-available-airlines-info-detail {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        gap: 0.3rem;
+    }
+
+    .airlines-detail-box-foreign .openB {
+        font-size: 0.9rem;
+        text-align: center;
+        margin-top: 14px !important;
+    }
+
+    .airlines-stops-time {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        font-size: 0.75rem;
+    }
+
+    .price-btn-new-sidebar {
+        height: 50px !important;
+    }
+}
+
+/* بهبود نمایش زمان و تاریخ */
+.origin-detail-box .open, .destination-detail-box .open {
+    text-align: center;
+}
+
+.origin-detail-box .openB,
+.destination-detail-box .openB {
+    letter-spacing: 0.5px;
+}
+
+/* Accessible focus */
+.btn-baggage-search:focus-visible,
+.international-available-airlines-detail:focus-within {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+    border-radius: 1rem;
+}
+
+/* آیکون‌های تقویم/ساعت (در صورت نیاز) */
+.airlines-detail-box-foreign .openB::before {
+    content: "🕘 ";
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-left: 0.2rem;
+}
+
+
+.sidebar-footer {
+    margin-top: auto;
+    width: 100%;
+}
+
+.SelectTicketDetail {
+    padding: 10px;
+    width: 94%;
+    margin: 0 auto;
+}
+
+
+/* اسکرول شخصی‌سازی شده برای مرورگرهای مدرن */
+.overflow-custom-scroll {
+    height: 700px !important;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mainColor) #e0e0e0;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.overflow-custom-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.overflow-custom-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.overflow-custom-scroll::-webkit-scrollbar-thumb {
+    background: var(--mainColor);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.overflow-custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+    cursor: pointer;
+}
+
+/* Firefox */
+.overflow-custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--mainColor) #f1f1f1;
+}
+
+
+.site-main-button-color-hover:hover {
+    cursor: pointer;
+}
+
+
+/* detail flight */
+
+.international-available-item-left-Cell-detail-flight {
+    width: 15% !important;
+}
+
+.international-available-item-right-Cell-detail-flight {
+    width: calc(100% - 15%) !important;
+}
+
+.flight-type-detail {
+    color: #888 !important;
+    font-size: 12px !important;
+    font-weight: normal !important;
+}
+
+.wayticket_passengers-type-class {
+    position: absolute;
+    top: -20px;
+    left: calc(50% - 50px);
+    background: #ccc;
+    background-color: rgb(204, 204, 204);
+    padding: 1px 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    width: 100px;
+    cursor: context-menu;
+}
+
+.international-available-airlines-info-one {
+    /*border: 1px solid #eee;*/
+    width: fit-content;
+    margin: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.flight-type-went-and-return {
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.div-wrapper-flight {
+    border: 1px solid var(--mainColor);
+    border-radius: 10px;
+    width: 85%;
+    margin: 0 auto !important;
+}
+
+.hidden-flight-detail {
+    display: none;
+}
+
+.hidden-transit {
+    display: none !important;
+}
+
+.btn-show-details-dept,
+.btn-show-details-return {
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -39px;
+    left: 0;
+    transform: translateX(-50%);
+    color: var(--mainColor) !important;
+    width: calc(100% - 44%) !important;
+    background: transparent;
+    text-align: center;
+    right: 0;
+    cursor: pointer;
+}
+
+.btn-show-details-return-close {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 13%;
+    color: var(--mainColor) !important;
+    background: transparent;
+    text-align: center;
+    right: 0;
+    cursor: pointer;
+}
+
+.btn-show-details {
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -13px;
+    left: 0;
+    color: var(--mainColor) !important;
+    width: 100%;
+    background: transparent;
+    text-align: center;
+    right: 0;
+    cursor: pointer;
+}
+
+.btn-show-details-return-factor {
+    width: 100% !important;
+    transform: unset !important
+}
+
+.btn-show-details-return-close-oneway {
+    top: 24%;
+    width: 100%;
+
+}
+
+.btn-show-details:hover, .btn-show-details-dept:hover,
+.btn-show-details-return:hover {
+    opacity: 0.8;
+    /*transform: scale(1.02);*/
+}
+
+.line-flight-brack {
+    border-top: 1px dashed #eee;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 175px;
+    width: 100%;
+}
+
+.line-flight-brack-one {
+    border-top: 1px dashed #eee;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+    width: 100%;
+}
+
+#moreDeptItems, #moreReturnItems {
+    border: 1px solid var(--mainColor);
+    border-radius: 10px;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.btn-show-details-factor {
+    bottom: -21px
+}
+.pdp .pdp-picker.pdp-right{
+    right: 0 !important;
+}
+.pdp .pdp-picker {
+    width: 206% !important;
+    transform: translateX(-139px) !important;
+}
+
+
+@media (max-width: 786px) {
+    .information-saler-info {
+        width: 100% !important;
+        margin-top: 13px !important;
+        justify-content: center;
+    }
+
+    .international-available-item-left-Cell-detail-flight {
+        width: 100% !important;
+        padding-top: 10px !important;
+        border-top: 1px dashed #ccc !important;
+    }
+
+    .international-available-item-right-Cell-detail-flight {
+        width: 100% !important;
+        margin-top: 50px;
+
+    }
+
+    .international-available-airlines-info-detail {
+        width: 100% !important;
+
+    }
+
+    .international-available-airlines-detail-new {
+        width: 100% !important;
+        /*border-top: 1px dashed #ccc  !important;*/
+        /*padding-top: 16px !important;*/
+        margin-top: 45px;
+    }
+
+    .international-available-airlines-info-detail-new {
+        width: 100% !important;
+
+    }
+
+    .wayticket_passengers-type-class {
+        z-index: 999;
+        top: 28px !important;
+        left: 2.7% !important;
+        width: 120px !important;
+    }
+
+    .airline-line::before {
+        display: none !important;
+    }
+
+    .plane-icon {
+        width: 100%;
+        right: unset !important;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .loc-icon, .loc-icon-destination {
+        display: none !important;
+    }
+
+    .airlines-info-inner span:first-child {
+        color: #888 !important;
+    }
+
+    .foreign .date-time > .date-flight {
+        display: flex !important;
+        font-size: 10px;
+    }
+
+    .international-available-airlines-info-one {
+        display: unset;
+    }
+
+    .foreign .international-available-airlines-info .airlines-info:nth-child(3) {
+        width: 35% !important;
+    }
+
+    .foreign .international-available-airlines-info .airlines-info:nth-child(2) {
+        width: 30% !important;
+    }
+
+    .foreign .international-available-airlines-info .airlines-info:nth-child(1) {
+        width: 35% !important;
+    }
+
+    .foreign-date {
+        font-size: unset !important;
+    }
+
+    /*.foreign .international-available-airlines-detail.airlines-stops-time{*/
+    /*    border-radius:0 !important;*/
+    /*}*/
+    .line-flight-brack {
+        top: 312px;
+    }
+
+    .btn-show-details-dept,
+    .btn-show-details-return {
+        width: 100% !important;
+        transform: unset !important;
+        bottom: -39px;
+    }
+
+    .btn-show-details {
+        bottom: -32px
+    }
+
+    .btn-show-details-return-close {
+        top: 27%;
+        width: 100% !important;
+        transform: unset !important;
+    }
+
+    #moreDeptItems, #moreReturnItems {
+
+        width: 100%;
+
+    }
+
+    .btn-show-details-factor {
+        bottom: -32px !important
+    }
+
+    .btn-show-details-return-close-factor {
+        top: 24% !important;
+    }
+
+    .btn-show-details-return-factor {
+        width: 100% !important;
+        transform: unset !important
+    }
+
+    .div-wrapper-flight {
+        width: 100%;
+    }
+
+    .btn-show-details-return-close-oneway {
+        top: 40%;
+    }
+    .pdp .pdp-picker{
+        width: 182% !important;
+        transform: translateX(-15px) !important;
+    }
+}
+
+
+/* کلاس‌های یونیک برای فیلتر زمان رسیدن */
+.arrival-time-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    list-style: none;
+    direction: ltr;
+}
+
+/* گزینه "همه" */
+.arrival-time-all-item {
+    display: none !important;
+
+}
+
+.arrival-time-all-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
+}
+
+.arrival-time-all-text {
+    font-size: 14px;
+}
+
+.arrival-time-all-item .tzCBPart {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.arrival-time-all-item .tzCBPart.checked {
+    background: #2196F3;
+    border-color: #2196F3;
+}
+
+.arrival-time-all-item .tzCBPart.checked::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+}
+
+.arrival-time-all-item .check-switch {
+    display: none;
+}
+
+/* گزینه‌های زمان - به صورت مربع */
+.arrival-time-grid-item {
+    flex: 0 0 calc(50% - 4px);
+    min-width: 120px;
+    border: 1px solid #ccc !important;
+    border-radius: 10px;
+    padding: 12px 5px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.arrival-time-grid-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100% !important;
+    margin: 0;
+    cursor: pointer;
+    padding-right: 0 !important;
+}
+
+.arrival-time-grid-icon {
+    font-size: 28px;
+    font-style: normal;
+    display: block;
+    margin:unset  !important;
+    line-height: 1.2;
+    color: #555;
+}
+
+.arrival-time-grid-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.arrival-time-grid-range {
+    font-size: 12px;
+    font-weight: 400;
+    color: #888;
+    direction: ltr;
+}
+
+.arrival-time-grid-item .tzCBPart {
+    display: none;
+}
+
+.arrival-time-grid-item .check-switch {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.arrival-time-grid-item:hover {
+    border-color: #b0b0b0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.arrival-time-grid-item-selected {
+    border-color: var(--mainColor) !important;
+}
+
+.arrival-time-grid-item-selected .arrival-time-grid-icon svg path {
+    stroke: var(--mainColor) !important;
+}
+
+.arrival-time-grid-item-selected .arrival-time-grid-name {
+    color: var(--mainColor);
+}
+/* کلاس‌های یونیک برای فیلتر زمان رفت (departure time) */
+.departure-time-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    margin: 0;
+    list-style: none;
+    direction: ltr;
+}
+
+/* گزینه "همه" */
+.departure-time-all-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+}
+
+.departure-time-all-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
+}
+
+.departure-time-all-text {
+    font-size: 14px;
+}
+
+.departure-time-all-item .tzCBPart {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.departure-time-all-item .check-switch {
+    display: none;
+}
+
+/* گزینه‌های زمان - به صورت مربع */
+.departure-time-grid-item {
+    flex: 0 0 calc(50% - 4px);
+    min-width: 120px;
+    border: 1px solid #ccc !important;
+    border-radius: 10px;
+    padding: 12px 5px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.departure-time-grid-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100% !important;
+    margin: 0;
+    cursor: pointer;
+    padding-right:0 !important;
+}
+.departure-time-grid-icon{
+    font-size: 28px;
+    font-style: normal;
+    display: block;
+    margin:unset  !important;
+    line-height: 1.2;
+    color: #555;
+}
+
+
+.departure-time-grid-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.departure-time-grid-range {
+    font-size: 12px;
+    font-weight: 400;
+    color: #888;
+    direction: ltr;
+}
+
+.departure-time-grid-item .tzCBPart {
+    display: none;
+}
+
+.departure-time-grid-item .check-switch {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.departure-time-grid-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.departure-time-grid-item-selected {
+    border-color:  var(--mainColor) !important;
+}
+
+.departure-time-grid-item-selected .departure-time-grid-icon svg path {
+    stroke: var(--mainColor) !important;
+}
+
+.departure-time-grid-item-selected .departure-time-grid-name {
+    color:  var(--mainColor) !important;
+}
+
+
+
+.sidebar-footer.static-footer {
+
+    position: static !important;
+}
+
+
+.navigation-days {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    margin: 16px 0 40px 0;
+    flex-wrap: wrap;
+}
+
+.nav-day-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--mainColor, #007bff);
+    border: 1px solid var(--mainColor, #007bff);
+    border-radius: 50px;
+    color: #fff !important;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.nav-day-btn:hover:not(.disabled) {
+    background: var(--mainColor, #007bff);
+    border-color: var(--mainColor, #007bff);
+    color: #fff !important;
+    text-decoration: none;
+    transform: translateY(-1px);
+    opacity: 0.85;
+}
+
+.nav-day-btn:active:not(.disabled) {
+    transform: translateY(0);
+}
+
+.nav-day-btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #fff !important;
+}
+
+.nav-day-btn i {
+    font-size: 18px;
+    line-height: 1;
+    color: #fff;
+}
+
+.nav-day-prev i {
+    margin-left: -2px;
+}
+
+.nav-day-next i {
+    margin-right: -2px;
+}
+
+.nav-day-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 0 12px;
+    min-width: 120px;
+}
+
+.nav-day-date {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .navigation-days {
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .nav-day-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .nav-day-btn i {
+        font-size: 16px;
+    }
+
+    .nav-day-info {
+        min-width: 80px;
+        padding: 0 6px;
+    }
+
+    .nav-day-date {
+        font-size: 12px;
+    }
 }
