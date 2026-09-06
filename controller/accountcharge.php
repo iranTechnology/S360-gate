@@ -449,6 +449,9 @@ class accountcharge extends clientAuth
                 case 'increase':
                     $ReasonFa = 'واریز به حساب شما';
                     break;
+                case 'return':
+                    $ReasonFa = 'برگشت به حساب شما';
+                    break;
                 case 'decrease':
                     $ReasonFa = 'کسر از حساب شما';
                     break;
@@ -594,11 +597,11 @@ class accountcharge extends clientAuth
     //region [insert]
     public function insert($info, $clientID = null){
 
-        $increaseReasonArray = array("charge", "increase", "Reason");// This array includes reasons for increasing client credit
+        $increaseReasonArray = array("charge", "increase", "Reason","return");// This array includes reasons for increasing client credit
 
         $decreaseReasonArray = array("decrease", "indemnity_edit_ticket",);// This array includes reasons for decreasing client credit
 
-        $pendingStatusArray = array('increase', 'decrease', 'indemnity_edit_ticket', 'diff_price');// This array includes reasons for pending status client credit
+        $pendingStatusArray = array('increase',"return", 'decrease', 'indemnity_edit_ticket', 'diff_price');// This array includes reasons for pending status client credit
 
         $data_insert_transaction['Price'] = $info['Price'];
         $data_insert_transaction['Comment'] = $info['Comment'];
@@ -1049,6 +1052,9 @@ class accountcharge extends clientAuth
                     case 'increase':
                         $ReasonFa = 'واریز به حساب شما';
                         break;
+                    case 'return':
+                        $ReasonFa = 'برگشت به حساب شما';
+                        break;
                     case 'decrease':
                         $ReasonFa = 'کسر از حساب شما';
                         break;
@@ -1115,11 +1121,11 @@ class accountcharge extends clientAuth
     }
 
     public function addTransactionToPartnerWhiteLabel($info) {
-        $increaseReasonArray = array("charge", "increase", "Reason");// This array includes reasons for increasing client credit
+        $increaseReasonArray = array("charge", "increase","return", "Reason");// This array includes reasons for increasing client credit
 
         $decreaseReasonArray = array("decrease", "indemnity_edit_ticket");// This array includes reasons for decreasing client credit
 
-        $pendingStatusArray = array('increase', 'decrease', 'indemnity_edit_ticket', 'diff_price');// This array includes reasons for pending status client credit
+        $pendingStatusArray = array('increase',"return", 'decrease', 'indemnity_edit_ticket', 'diff_price');// This array includes reasons for pending status client credit
 
         $data_insert_transaction['Price'] = $info['Price'];
         $data_insert_transaction['Comment'] = $info['Comment'];
@@ -1368,6 +1374,9 @@ class accountcharge extends clientAuth
                     case 'increase':
                         $ReasonFa = 'واریز به حساب شما';
                         break;
+                    case 'return':
+                        $ReasonFa = 'برگشت به حساب شما';
+                        break;
                     case 'decrease':
                         $ReasonFa = 'کسر از حساب شما';
                         break;
@@ -1587,6 +1596,9 @@ class accountcharge extends clientAuth
                         break;
                     case 'increase':
                         $ReasonFa = 'واریز به حساب شما';
+                        break;
+                    case 'return':
+                        $ReasonFa = 'برگشت به حساب شما';
                         break;
                     case 'decrease':
                         $ReasonFa = 'کسر از حساب شما';
