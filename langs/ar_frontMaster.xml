@@ -3380,4 +3380,10 @@
   <SearchForDestinationCity>البحث عن مدينة الوجهة</SearchForDestinationCity>
   <SelectDepartureDate>اختر تاريخ المغادرة</SelectDepartureDate>
   <SelectReturnDate>اختر تاريخ العودة</SelectReturnDate>
+  <MoveNumber>رقم الحركة</MoveNumber>
+  <CarrierCompany>شركة نقل</CarrierCompany>
+  <TrainNumber>رقم القطار</TrainNumber>
+  <TransferDetails>تفاصيل التحويل</TransferDetails>
+  <TransferEnter>خدمة النقل عند الوصول</TransferEnter>
+  <TransferExit>خدمة النقل عند المغادرة</TransferExit>
 </Main>

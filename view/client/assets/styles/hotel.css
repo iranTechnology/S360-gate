@@ -7064,6 +7064,129 @@ a.f-loader-check{
     }
 }
 
+/* استایل‌های اختصاصی ترانسفر */
+.transfer-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
 
+.transfer-box-header {
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
+.transfer-arrival-header {
+    background: #f9f9f9;
+    color: var(--mainColor);
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.transfer-departure-header {
+    background: #f9f9f9;
+    color: var(--mainColor);
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.transfer-box-body {
+    padding: 16px;
+}
+
+.transfer-box-body .s-u-passenger-items {
+    margin-bottom: 12px;
+}
+
+.transfer-box-body .s-u-passenger-items:last-child {
+    margin-bottom: 0;
+}
+/* ===== استایل‌های ترانسفر ===== */
+
+/* کانتینر اصلی */
+.transfer-wrapper {
+    margin-top: 20px;
+}
+
+.transfer-wrapper .transfer-inner {
+    border: 1px solid #e2e2e2;
+    border-radius: 0 0 5px 5px;
+    background: #ffffff;
+    padding: 8px 4px;
+}
+
+/* باکس‌های ترانسفر */
+.transfer-box {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background: #fafbfc;
+}
+
+.transfer-box-header {
+    background: #f5f5f5;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+}
+
+.transfer-box-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.transfer-box-header .icon-exit {
+    color: #c92a2a;
+    margin-left: 5px;
+}
+
+.transfer-box-header .icon-enter {
+    color: #2b8a3e;
+    margin-left: 5px;
+}
+
+.transfer-box-body {
+    padding: 12px 15px;
+}
+
+/* جدول ترانسفر */
+.transfer-table {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.transfer-table th {
+    width: 40%;
+    background: #f8f9fa;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: #495057;
+    border-right: 1px solid #e9ecef;
+}
+
+.transfer-table td {
+    padding: 7px 12px;
+}
+
+/* بج‌های نوع وسیله */
+.vehicle-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.vehicle-badge.flight { background: #3b7ddd; }
+.vehicle-badge.bus { background: #2b8a3e; }
+.vehicle-badge.train { background: #e67700; }
+.vehicle-badge.other { background: #868e96; }
 
