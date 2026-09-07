@@ -63,7 +63,7 @@
                         <ul>
 
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/Flight">
+                                <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">
                                     <i class="fal fa-angle-left"></i>
                                     Flight
                                 </a>

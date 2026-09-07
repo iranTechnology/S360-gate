@@ -10170,10 +10170,6 @@ process Flight cdd
 .pdp .pdp-picker.pdp-right{
     right: 0 !important;
 }
-.pdp .pdp-picker {
-    width: 206% !important;
-    transform: translateX(-139px) !important;
-}
 
 
 @media (max-width: 786px) {

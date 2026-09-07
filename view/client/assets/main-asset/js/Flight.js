@@ -679,6 +679,7 @@ function renderMobilePopularInternationalCities(type) {
         let city = value.DepartureCityFa;
         if (lang !== 'fa' && value.DepartureCityEn) city = value.DepartureCityEn;
 
+
         const json_value = JSON.stringify({
           DepartureCode: value.DepartureCode,
           DepartureCityFa: value.DepartureCityFa,
@@ -688,6 +689,30 @@ function renderMobilePopularInternationalCities(type) {
           type: type,
         });
 
+        let display_value;
+
+        if (lang == 'fa') {
+          display_value = {
+            DepartureCode: value.DepartureCode,
+            DepartureCityFa: value.DepartureCityFa,
+            AirportFa: value.AirportFa,
+            CountryFa: value.CountryFa,
+            DepartureCityEn: city,
+            type: type,
+          };
+        } else {
+          display_value = {
+            DepartureCode: value.DepartureCode,
+            DepartureCityFa: value.DepartureCityEn,
+            AirportFa: value.AirportEn,
+            CountryFa: value.CountryEn,
+            DepartureCityEn: city,
+            type: type,
+          };
+        }
+
+
+
         // آیتم اصلی
         popularListHTML += `
   <li onclick='selectAirportItem(${json_value}, event, $(this));'>
@@ -695,10 +720,10 @@ function renderMobilePopularInternationalCities(type) {
        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" class="mobile-drawer-svg-map shrink-0"><path d="M11.28 1.534c4.437-.419 8.22 3.11 8.22 7.59 0 4.053-1.89 7.941-6.398 12.888-.593.65-1.62.651-2.212 0-4.219-4.628-6.14-8.33-6.374-12.09-.263-4.237 2.701-8.005 6.765-8.388ZM18 9.124c0-3.604-3.031-6.432-6.579-6.097C8.192 3.332 5.8 6.374 6.013 9.83c.21 3.37 1.977 6.775 5.982 11.17l.531-.59c3.803-4.306 5.402-7.66 5.471-11.054L18 9.124ZM12 5.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" fill-rule="evenodd"></path></svg>
       <div class="city-text">
       <div>
-      <span>${value.AirportFa} - </span><span>${value.CountryFa}</span>
+      <span>${display_value.AirportFa} - </span><span>${display_value.CountryFa}</span>
       </div>
       <div style="font-size:12px !important">
-       <span>${city} - </span><span>(${value.DepartureCode})</span>
+       <span>${city} - </span><span>(${display_value.DepartureCode})</span>
        </div>
        </div>
     </div>
@@ -916,8 +941,8 @@ function setupMobileDrawerElements(type, search_type) {
   const drawer = document.getElementById('mobileDrawerFlight');  // تغییر: اضافه کردن Flight
   const overlay = document.getElementById('drawerOverlayFlight');  // تغییر: اضافه کردن Flight
 
-  const typesText = type === 'origin' ? 'انتخاب مبدا' : 'انتخاب مقصد';
-  const placeholderText = type === 'origin' ? 'جستجوی شهر مبدا' : 'جستجوی شهر مقصد';
+  const typesText = type === 'origin' ? useXmltag("Selectsource") : useXmltag("Selectdestination");
+  const placeholderText = type === 'origin' ? useXmltag("SearchForCityOfOrigin") : useXmltag("SearchForDestinationCity");
 
   // اگر قبلاً ساخته شده
   if (drawer && overlay) {
@@ -983,7 +1008,7 @@ function setupMobileDrawerElementsDatePicker(type) {
   let drawer = document.getElementById(drawerId);
   let overlay = document.getElementById(overlayId);
 
-  const typesText = type === 'dept' ? 'انتخاب تاریخ رفت' : 'انتخاب تاریخ برگشت';
+  const typesText = type === 'dept' ? useXmltag("SelectDepartureDate") : useXmltag("SelectReturnDate");
 
   // --- اگر عناصر از قبل موجود بودند ---
   if (drawer && overlay) {

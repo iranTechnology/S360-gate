@@ -541,6 +541,8 @@ export default {
     });
     this.$store.dispatch('isSafar360').then(response => {
     });
+    this.$store.dispatch('SOFTWARE_LANG').then(response => {
+    });
   },
   computed: {
     transitAirports() {

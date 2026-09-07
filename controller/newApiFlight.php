@@ -2817,12 +2817,12 @@ class newApiFlight extends clientAuth
     {
         // اگر 0 بود، "بدون بار"
         if ($number == 0) {
-            return 'بدون بار';
+            return functions::Xmlinformation( "NoBaggage" )->__toString();
         }
 
         // بقیه اعداد: "عدد کیلوگرم"
-        $kilogramLabel = isset($translateVariable['kg']) ? $translateVariable['kg'] : 'کیلوگرم';
-        $unitTitle = $unit == 'PC' ? 'چمدان ' : $kilogramLabel  . ' کیلوگرم ';
+        $kilogramLabel = isset($translateVariable['kg']) ? $translateVariable['kg'] : functions::Xmlinformation( "Kilograms" );
+        $unitTitle = $unit == 'PC' ? ' ' . functions::Xmlinformation( "Suitcase" ) : $kilogramLabel;
         return $number . ' ' . $unitTitle;
     }
 

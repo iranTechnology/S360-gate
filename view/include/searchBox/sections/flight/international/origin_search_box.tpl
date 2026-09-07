@@ -6,7 +6,7 @@
                id="iata_origin_international"
                autocomplete='off'
                class="form-control inputSearchForeign iata-origin-international-js"
-               placeholder="##From##">
+               placeholder="##FromFlightSearchBox##">
         <input id="origin_international"
                class="origin-international-js"
                type="hidden" value=""
