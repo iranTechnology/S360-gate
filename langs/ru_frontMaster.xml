@@ -16,7 +16,7 @@
   <FlightRepetition>Устранить дублирующие рейсы</FlightRepetition>
   <FlightRepetitionCount>Дубликат рейса добавлен в результаты поиска</FlightRepetitionCount>
   <TelescopeMarket>Рыночный телескоп</TelescopeMarket>
-<PleaseselectthedesiredpassengerCancel>Пожалуйста, выберите пассажира, чью покупку вы хотите отменить.</PleaseselectthedesiredpassengerCancel>
+  <PleaseselectthedesiredpassengerCancel>Пожалуйста, выберите пассажира, чью покупку вы хотите отменить.</PleaseselectthedesiredpassengerCancel>
   <PhonenumberTraveler>номер мобильного телефона путешественника </PhonenumberTraveler>
   <Telephonhome>домашный  телефон</Telephonhome>
   <Telephonwork>рабочий телефон</Telephonwork>
@@ -3139,5 +3139,19 @@
   <ChildInfo>Информация о перевозке детей</ChildInfo>
   <BabyInfo>Информация о пассажире-младенце</BabyInfo>
   <SearchForPurchase>Поиск покупок</SearchForPurchase>
+  <FromFlightSearchBox>Источник</FromFlightSearchBox>
+  <ToFlightSearchBox>Место назначения</ToFlightSearchBox>
+  <InternalFlightSearchBox>Иран</InternalFlightSearchBox>
+  <SearchForCityOfOrigin>Поиск города происхождения</SearchForCityOfOrigin>
+  <SearchForDestinationCity>Поиск города назначения</SearchForDestinationCity>
+  <SelectDepartureDate>Выберите дату отправления</SelectDepartureDate>
+  <SelectReturnDate>Выберите дату возвращения</SelectReturnDate>
+  <MoveNumber>Номер транзакции</MoveNumber>
+  <CarrierCompany>Транспортная компания</CarrierCompany>
+  <TrainNumber>Номер поезда</TrainNumber>
+  <TransferDetails>Детали перевода</TransferDetails>
+  <TransferEnter>Перенос (ввод)</TransferEnter>
+  <TransferExit>Выход для пересадки</TransferExit>
+
 </Main>
 

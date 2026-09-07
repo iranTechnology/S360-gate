@@ -2,7 +2,6 @@
 {load_presentation_object filename="detailHotel" assign="objHotel"}
 <link href="assets/css/jquery.counter-analog.css" rel="stylesheet" type="text/css"/>
 {assign var="InfoMember" value=$objFunctions->infoMember($objSession->getUserId())}
-
 {assign var="requestNumber" value=$smarty.post.requestNumber}
 {*{$objHotel->getInfoHotelRoom($smarty.post.idHotel_reserve)}*}
 {*{$objHotel->getPassengersDetailHotel($smarty.post.factorNumber, $smarty.post.startDate_reserve, $smarty.post.nights_reserve, $smarty.post.TotalNumberRoom_Reserve) assign="temproryHotel"}*}
@@ -478,7 +477,6 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
                                                name="familyEnA{$keyRooms}{$i}"
                                                oninput="return validateEnglishInput('familyEnA{$keyRooms}{$i}')" class="">
                                     </div>
-
                                     <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                                         <input id="birthdayEnA{$keyRooms}{$i}" type="text" placeholder="##miladihappybirthday##"
                                                name="birthdayEnA{$keyRooms}{$i}" class="gregorianAdultBirthdayCalendar"
@@ -900,13 +898,13 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
             <div class="clear"></div>
             <div class="panel-default-change-Buyer">
 
-                <div class="s-u-passenger-items s-u-passenger-item-change">
+                <div class="s-u-passenger-item s-u-passenger-item-change">
                     <input id="passenger_leader_room_fullName" type="text" placeholder="##Namefamily##"
                             {if (is_array($InfoMember) && ($InfoMember.name neq '' || $InfoMember.family neq ''))} value="{$InfoMember.name} {$InfoMember.family}" {/if}
                            name="passenger_leader_room_fullName" class="dir-ltr">
                 </div>
 
-                <div class="s-u-passenger-items s-u-passenger-item-change">
+                <div class="s-u-passenger-item s-u-passenger-item-change">
                     <input id="passenger_leader_room" type="text" placeholder="##Phonenumber##" name="passenger_leader_room"
                             {if (is_array($InfoMember) && $InfoMember.name neq '' )} value="{$InfoMember.mobile}" {/if}
                            class="dir-ltr">
@@ -914,14 +912,14 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
 
                 {if $objFunctions->checkClientConfigurationAccess("more_information_passenger_hotel")}
                     <input type="hidden" id="require_extra_fields" value="true">
-                    <div class="s-u-passenger-items s-u-passenger-item-change">
+                    <div class="s-u-passenger-item s-u-passenger-item-change">
                         <input id="passenger_leader_room_email" type="text" placeholder="##Email##" name="passenger_leader_room_email" class="dir-ltr">
                     </div>
 
-                    <div class="s-u-passenger-items s-u-passenger-item-change">
+                    <div class="s-u-passenger-item s-u-passenger-item-change">
                         <input id="passenger_leader_room_postalcode" type="text" placeholder="##Postalcode##" name="passenger_leader_room_postalcode" class="dir-ltr">
                     </div>
-                    <div class="s-u-passenger-items s-u-passenger-item-change s-u-passenger-item-change full-width">
+                    <div class="s-u-passenger-item s-u-passenger-item-change s-u-passenger-item-change full-width">
                         <input id="passenger_leader_room_address" type="text" placeholder="##Address##" name="passenger_leader_room_address" class="dir-ltr">
                     </div>
                 {else}
@@ -933,7 +931,86 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
             <div class="clear"></div>
         </div>
 
+        {if $hotelDetail['is_transfer'] eq 1}
+            <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer first ">
+    <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change passenger_leader site-main-text-color">
+    ##TransferDetails##
+    </span>
+                <div class="clear"></div>
 
+                <!-- ======== ترانسفر ورود ======== -->
+                <div class="transfer-box transfer-arrival my-2 mx-4">
+                    <div class="transfer-box-header transfer-arrival-header">
+                        <span>##TransferEnter##</span>
+                    </div>
+                    <div class="transfer-box-body">
+
+                        <div class="row">
+                            <!-- انتخاب نوع وسیله -->
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-3">
+                                <select id="transfer_arrival_type" name="type_vehicle" class="form-control" onchange="updateArrivalFields(this.value)">
+                                    <option value="flight" selected>##Flight##</option>
+                                    <option value="train">##Train##</option>
+                                    <option value="bus">##Bus##</option>
+                                    <option value="other">##Another##</option>
+                                </select>
+                            </div>
+
+                            <!-- فیلدهای مشترک و متغیر -->
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-2" id="number-bus">
+                                <input id="transfer_arrival_number" type="text" name="number_vehicle" class="dir-ltr form-control" placeholder="##FlightNumber##">
+                            </div>
+
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-2">
+                                <input id="transfer_arrival_time" type="text" name="time_vehicle" class="dir-ltr form-control" placeholder="##FlightExactTime##">
+                            </div>
+
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-2" id="arrival_company_wrapper">
+                                <input id="transfer_arrival_company" type="text" name="carrier_company" class="dir-ltr form-control" placeholder="##AirlineCompany##">
+                            </div>
+
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-3">
+                                <input id="transfer_arrival_origin" type="text" name="origin_city" class="dir-ltr form-control" placeholder="##Origincity##">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- ======== ترانسفر خروج ======== -->
+                <div class="transfer-box transfer-departure mt-2 mb-4 mx-4">
+                    <div class="transfer-box-header transfer-departure-header">
+                        <span>##TransferExit##</span>
+                    </div>
+                    <div class="transfer-box-body">
+                        <div class="row">
+
+                            <!-- انتخاب نوع وسیله -->
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-4">
+                                <select id="transfer_departure_type" name="type_vehicle_arrival" class="form-control" onchange="updateDepartureFields(this.value)">
+                                    <option value="flight" selected>##Flight##</option>
+                                    <option value="train">##Train##</option>
+                                    <option value="bus">##Bus##</option>
+                                    <option value="other">##Another##</option>
+                                </select>
+                            </div>
+
+                            <!-- فیلدهای متغیر -->
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-4" id="departure_number_wrapper">
+                                <input id="transfer_departure_number" type="text" name="number_vehicle_arrival" class="dir-ltr form-control" placeholder="##FlightNumber##">
+                            </div>
+
+                            <div class="s-u-passenger-item s-u-passenger-item-change col-4">
+                                <input id="transfer_departure_time" type="text" name="time_vehicle_arrival" class="dir-ltr form-control" placeholder="##FlightExactTime##">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        {/if}
 
         <input type="hidden" id="TotalNumberRoom_Reserve" name="TotalNumberRoom_Reserve" value="{$TotalNumberRoom}">
         <input type="hidden" id="TotalPrice_Reserve" name="TotalPrice_Reserve" value="{$TotalPrice}">
@@ -951,6 +1028,8 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
         <input type="hidden" id="is_internal" name="is_internal" value="{$IsInternal}">
         <input type="hidden" id="CurrencyCode" name="CurrencyCode" value="{$smarty.post.CurrencyCode}">
         <input type="hidden" value="" name="idMember" id="idMember">
+        <input type="hidden" value="{$hotelDetail['is_transfer']}" name="is_transfer" id="is_transfer">
+        <input type="hidden" value="{$hotelDetail['hotel_id']}" name="hotel_id" id="hotel_id">
 
         <div class="btns_factors_n">
             <div class="next_hotel__">
@@ -974,72 +1053,147 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
     <script src="assets/js/jdate.js" type="text/javascript"></script>
     <script src="assets/js/jquery.counter.js" type="text/javascript"></script>
     <script type="text/javascript">
-       $('.counter').counter({});
-       $('.counter').on('counterStop', function () {
-          $('.lazy_loader_flight').slideDown({
-             start: function () {
-                $(this).css({
-                   display: "flex"
-                })
-             }
-          });
+        $('.counter').counter({});
+        $('.counter').on('counterStop', function () {
+            $('.lazy_loader_flight').slideDown({
+                start: function () {
+                    $(this).css({
+                        display: "flex"
+                    })
+                }
+            });
 
-       });
+        });
     </script>
 
     <script type="text/javascript">
-       $(document).ready(function () {
-          $('.plus_price_room i').click(function () {
-             $(this).parents('.hotel_room_row').find('.box_pricees').toggle();
-             $(this).toggleClass('fa fa-times')
-             $(this).toggleClass('far fa-list-alt')
-          });
-          $('.table-responsive').bind('click', function (e) {
-             e.stopPropagation();
-          });
-          $('body').click(function () {
-             $('.box_pricees').hide();
-             $('.plus_price_room i').removeClass('fa fa-times')
-             $('.plus_price_room i').addClass('far fa-list-alt')
-          });
-          $(this).find(".closeBtn").click(function () {
-             $(".price-Box").removeClass("displayBlock");
-             $("#lightboxContainer").removeClass("displayBlock");
-          });
-          $("div#lightboxContainer").click(function () {
+        function updateArrivalFields(type) {
+            const numberInput  = document.getElementById('transfer_arrival_number');
+            const numberBusInput  = document.getElementById('number-bus');
+            const timeInput    = document.getElementById('transfer_arrival_time');
+            const companyInput = document.getElementById('transfer_arrival_company');
+            const companyWrap  = document.getElementById('arrival_company_wrapper');
 
-             $(".price-Box").removeClass("displayBlock");
-             $("#lightboxContainer").removeClass("displayBlock");
-          });
+            numberInput.style.display = 'block';
+            companyWrap.style.display = 'block';
 
-          $("div#lightboxContainer").click(function () {
+            if (type === 'flight') {
+                numberBusInput.style.display = 'block';
+                numberInput.placeholder  = useXmltag('FlightNumber');
+                timeInput.placeholder    = useXmltag('FlightExactTime');
+                companyInput.placeholder = useXmltag('AirlineCompany');
+            }
+            else if (type === 'train') {
+                numberBusInput.style.display = 'block';
+                numberInput.placeholder  = useXmltag('TrainNumber');
+                timeInput.placeholder    =useXmltag('Starttime');
+                companyInput.placeholder = useXmltag('CarrierCompany');
+            }
+            else if (type === 'bus') {
+                numberBusInput.style.display = 'none';
+                numberInput.style.display = 'none';
+                timeInput.placeholder     = useXmltag('Starttime');
+                companyInput.placeholder  = useXmltag('CarrierCompany');
+            }
+            else if (type === 'other') {
+                numberBusInput.style.display = 'block';
+                numberInput.placeholder  = useXmltag('MoveNumber');
+                timeInput.placeholder    = useXmltag('Starttime');
+                companyInput.placeholder = useXmltag('CarrierCompany');
+            }
+            else {
+                numberInput.placeholder  = '';
+                timeInput.placeholder    = '';
+                companyInput.placeholder = '';
+            }
+        }
 
-             $(".Cancellation-Box").removeClass("displayBlock");
-             $("#lightboxContainer").removeClass("displayBlock");
-          });
+        function updateDepartureFields(type) {
+            const numberInput = document.getElementById('transfer_departure_number');
+            const timeInput   = document.getElementById('transfer_departure_time');
+            const numberWrap  = document.getElementById('departure_number_wrapper');
 
-          $("div#lightboxContainer").click(function () {
-             $(".last-p-popup").css("display", "none");
-          });
+            numberWrap.style.display = 'block';
 
-       });
+            if (type === 'flight') {
+                numberInput.placeholder =  useXmltag('FlightNumber');
+                timeInput.placeholder   =  useXmltag('FlightExactTime');
+            }
+            else if (type === 'train') {
+                numberInput.placeholder =useXmltag('TrainNumber');
+                timeInput.placeholder   = useXmltag('MoveNumber');
+            }
+            else if (type === 'bus') {
+                numberWrap.style.display = 'none';
+                timeInput.placeholder    =useXmltag('Starttime');
+            }
+            else if (type === 'other') {
+                numberInput.placeholder =useXmltag('MoveNumber');
+                timeInput.placeholder   =useXmltag('Starttime');
+            }
+            else {
+                numberInput.placeholder = '';
+                timeInput.placeholder   = '';
+            }
+        }
+
+        // اجرای اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            updateArrivalFields(document.getElementById('transfer_arrival_type').value);
+            updateDepartureFields(document.getElementById('transfer_departure_type').value);
+        });
+        $(document).ready(function () {
+            $('.plus_price_room i').click(function () {
+                $(this).parents('.hotel_room_row').find('.box_pricees').toggle();
+                $(this).toggleClass('fa fa-times')
+                $(this).toggleClass('far fa-list-alt')
+            });
+            $('.table-responsive').bind('click', function (e) {
+                e.stopPropagation();
+            });
+            $('body').click(function () {
+                $('.box_pricees').hide();
+                $('.plus_price_room i').removeClass('fa fa-times')
+                $('.plus_price_room i').addClass('far fa-list-alt')
+            });
+            $(this).find(".closeBtn").click(function () {
+                $(".price-Box").removeClass("displayBlock");
+                $("#lightboxContainer").removeClass("displayBlock");
+            });
+            $("div#lightboxContainer").click(function () {
+
+                $(".price-Box").removeClass("displayBlock");
+                $("#lightboxContainer").removeClass("displayBlock");
+            });
+
+            $("div#lightboxContainer").click(function () {
+
+                $(".Cancellation-Box").removeClass("displayBlock");
+                $("#lightboxContainer").removeClass("displayBlock");
+            });
+
+            $("div#lightboxContainer").click(function () {
+                $(".last-p-popup").css("display", "none");
+            });
+
+        });
 
 
-       $(document).ready(function () {
-          var table = $('#passengers').DataTable();
+        $(document).ready(function () {
+            var table = $('#passengers').DataTable();
 
-          $('#passengers tbody').on('click', 'tr', function () {
-             if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-             } else {
-                table.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-             }
-          });
+            $('#passengers tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
 
-          $('#button').click(function () {
-             table.row('.selected').remove().draw(false);
-          });
-       });
+            $('#button').click(function () {
+                table.row('.selected').remove().draw(false);
+            });
+        });
     </script>
 {/literal}

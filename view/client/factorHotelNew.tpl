@@ -8,7 +8,7 @@
 
 {$objFactor->registerPassengersHotel()}
 {assign var="hotelDetail" value=$objHotel->getTemporaryHotelDetails($smarty.post.factorNumber)}
-
+{assign var="hotelDetailBook" value=$objHotel->getHotelDetailsFromBookHotelLocal($smarty.post.factorNumber)}
 {assign var="temproryRooms" value=$objHotel->getTemporaryRooms($smarty.post.factorNumber)}
 <link href="assets/css/jquery.counter-analog.css" rel="stylesheet" type="text/css"/>
 <script src="assets/js/jquery.counter.js" type="text/javascript"></script>
@@ -112,6 +112,106 @@
             </div>
         </div>
         <div class="clear"></div>
+        {* ======== نمایش اطلاعات ترانسفر ======== *}
+        {if $hotelDetailBook.transfer_hotel}
+            {assign var="transferData" value=$hotelDetailBook.transfer_hotel|json_decode:true}
+            {if $transferData}
+                <div class="hotel-booking-room transfer-wrapper">
+                    <h4 class="tableOrderHeadTitle site-bg-main-color">
+                        <span><i class="fa fa-exchange ms-4"></i> ##TransferDetails##</span>
+                    </h4>
+                    <div class="row w-100 m-0 py-2 px-1 transfer-inner">
+
+                        {* ===== ترانسفر خروج ===== *}
+                        <div class="col-md-6 h-100">
+                            <div class="transfer-box">
+                                <div class="transfer-box-header">
+                                    <h4>
+                                        ##TransferEnter##
+                                    </h4>
+                                </div>
+                                <div class="transfer-box-body">
+                                    <table class="table table-bordered table-striped transfer-table">
+                                        <tr>
+                                            <th>##Vehicletype##</th>
+                                            <td>
+                                                {if $transferData.type_vehicle eq 'flight'}
+                                                    <span class="vehicle-badge flight">##Flight##</span>
+                                                {elseif $transferData.type_vehicle eq 'bus'}
+                                                    <span class="vehicle-badge bus">##Bus##</span>
+                                                {elseif $transferData.type_vehicle eq 'train'}
+                                                    <span class="vehicle-badge train">##Train##</span>
+                                                {elseif $transferData.type_vehicle eq 'other'}
+                                                    <span class="vehicle-badge other">##Another##</span>
+                                                {else}
+                                                    {$transferData.type_vehicle|default:'-'}
+                                                {/if}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>##Vehiclenumber##</th>
+                                            <td>{$transferData.number_vehicle|default:'-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>##Starttime##</th>
+                                            <td>{$transferData.time_vehicle|default:'-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>##CarrierCompany##</th>
+                                            <td>{$transferData.carrier_company|default:'-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>##Origincity##</th>
+                                            <td>{$transferData.origin_city|default:'-'}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        {* ===== ترانسفر ورود ===== *}
+                        <div class="col-md-6 h-100">
+                            <div class="transfer-box">
+                                <div class="transfer-box-header">
+                                    <h4>
+                                        ##TransferExit##
+                                    </h4>
+                                </div>
+                                <div class="transfer-box-body">
+                                    <table class="table table-bordered table-striped transfer-table">
+                                        <tr>
+                                            <th>##Vehicletype##</th>
+                                            <td>
+                                                {if $transferData.type_vehicle_arrival eq 'flight'}
+                                                    <span class="vehicle-badge flight">##Flight##</span>
+                                                {elseif $transferData.type_vehicle_arrival eq 'bus'}
+                                                    <span class="vehicle-badge bus">##Bus##</span>
+                                                {elseif $transferData.type_vehicle_arrival eq 'train'}
+                                                    <span class="vehicle-badge train">##Train##</span>
+                                                {elseif $transferData.type_vehicle_arrival eq 'other'}
+                                                    <span class="vehicle-badge other">##Another##</span>
+                                                {else}
+                                                    {$transferData.type_vehicle_arrival|default:'-'}
+                                                {/if}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>##Vehiclenumber##</th>
+                                            <td>{$transferData.number_vehicle_arrival|default:'-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>##Starttime##</th>
+                                            <td>{$transferData.time_vehicle_arrival|default:'-'}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {/if}
+        {/if}
         <div class="hotel-booking-room">
             <h4 class="tableOrderHeadTitle site-bg-main-color">
                 <span>##Listroom##</span>
@@ -299,6 +399,7 @@
         </div>
 
         <div class='clear'></div>
+
 
         {*                {$objFactor->getPassengersHotel()}*}
         {*                <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title l-p-p-header l-p-p-header-change site-bg-main-color">*}
