@@ -188,6 +188,11 @@ $(document).ready(function () {
         minDate: 'Y/M/D',
         showButtonPanel: !0,
         onSelect: function(dateText){
+            if(window.innerWidth <= 576){
+                setTimeout(()=>{
+                    closeMobileDrawerDatePicker();
+                }, 100);
+            }
             $(".returnCalendar").datepicker('option', 'minDate', dateText);
             let disabled_arrival_date_internal = $("#arrival_date_internal").is(":disabled")
             let disabled_arrival_date_international = $("#arrival_date_international").is(":disabled")

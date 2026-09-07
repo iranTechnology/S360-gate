@@ -195,6 +195,7 @@ const store = new Vuex.Store({
         cipList : '',
         isCounter : null,
         isSafar360 : null,
+        SOFTWARE_LANG : null,
     },
     getters: {
         getters_pwa_panel_data: (state) => state.panel_data,
@@ -774,6 +775,9 @@ const store = new Vuex.Store({
         },
         isSafar360(state,data){
             state.isSafar360 = data ;
+        },
+        SOFTWARE_LANG(state,data){
+            state.SOFTWARE_LANG = data ;
         }
     },
     actions: {
@@ -1191,9 +1195,23 @@ const store = new Vuex.Store({
                 {
                     'Content-Type': 'application/json'
                 }).then(function (response) {
-                console.log('isSafar360: ')
-                console.log(response.data)
                 commit("isSafar360", response.data);
+            }).catch(function (error) {
+            });
+
+        },
+
+        async SOFTWARE_LANG({ commit }){
+
+            axios.post(amadeusPath + "ajax",
+                {
+                    className: "clients",
+                    method: "SOFTWARE_LANG",         },
+                {
+                    'Content-Type': 'application/json'
+                }).then(function (response) {
+                    console.log('SOFTWARE_LANG(): ' , response.data)
+                commit("SOFTWARE_LANG", response.data);
             }).catch(function (error) {
             });
 

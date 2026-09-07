@@ -173,6 +173,7 @@
   <Freetransferfromhotel>ترانسفر رایگان از جانب هتل</Freetransferfromhotel>
   <Searchnamehotel>نام / آدرس هتل</Searchnamehotel>
   <Namehotel>نام هتل</Namehotel>
+  <TransferDetails>مشخصات ترانسفر</TransferDetails>
   <Hotelgrade>درجه هتل</Hotelgrade>
   <Allhotelincity>هتل های شهر</Allhotelincity>
   <Starhotel>ستاره هتل</Starhotel>
@@ -3938,4 +3939,8 @@
   <FromFlightSearchBox>مبدا</FromFlightSearchBox>
   <ToFlightSearchBox>مقصد</ToFlightSearchBox>
   <InternalFlightSearchBox>داخلی</InternalFlightSearchBox>
+  <SearchForCityOfOrigin>جستجوی شهر مبدا</SearchForCityOfOrigin>
+  <SearchForDestinationCity>جستجوی شهر مقصد</SearchForDestinationCity>
+  <SelectDepartureDate>انتخاب تاریخ رفت</SelectDepartureDate>
+  <SelectReturnDate>انتخاب تاریخ برگشت</SelectReturnDate>
 </Main>

@@ -3376,4 +3376,8 @@
   <FromFlightSearchBox>أصل</FromFlightSearchBox>
   <ToFlightSearchBox>وجهة</ToFlightSearchBox>
   <InternalFlightSearchBox>إيران</InternalFlightSearchBox>
+  <SearchForCityOfOrigin>البحث عن مدينة المنشأ</SearchForCityOfOrigin>
+  <SearchForDestinationCity>البحث عن مدينة الوجهة</SearchForDestinationCity>
+  <SelectDepartureDate>اختر تاريخ المغادرة</SelectDepartureDate>
+  <SelectReturnDate>اختر تاريخ العودة</SelectReturnDate>
 </Main>

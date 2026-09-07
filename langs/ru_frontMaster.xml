@@ -3142,5 +3142,9 @@
   <FromFlightSearchBox>Источник</FromFlightSearchBox>
   <ToFlightSearchBox>Место назначения</ToFlightSearchBox>
   <InternalFlightSearchBox>Иран</InternalFlightSearchBox>
+  <SearchForCityOfOrigin>Поиск города происхождения</SearchForCityOfOrigin>
+  <SearchForDestinationCity>Поиск города назначения</SearchForDestinationCity>
+  <SelectDepartureDate>Выберите дату отправления</SelectDepartureDate>
+  <SelectReturnDate>Выберите дату возвращения</SelectReturnDate>
 </Main>
 

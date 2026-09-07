@@ -18,7 +18,7 @@
                 </div>
                 <div class="nav-menus-wrapper">
                     <ul class="nav-menu">
-                        <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">Flight</a></li>
+                        <li><a href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">Flight</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">Rules regulations</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">about us</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/contactUs">Contact us</a></li>
