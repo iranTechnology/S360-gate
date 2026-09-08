@@ -1,6 +1,8 @@
 {load_presentation_object filename="safarBankController" assign="objReport"}
 {assign var="agencies" value=$objReport->getReportData()}
-
+{if empty($dateFrom)}
+    {assign var="dateFrom" value=dateTimeSetting::jdate('Y-m-d', strtotime('-30 days'), '', '', 'en')}
+{/if}
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
@@ -29,7 +31,7 @@
                         <div class="col-md-6">
                             <label>تاریخ از</label>
                             <input type="text" class="form-control datepicker" name="date_of"
-                                   value="{$smarty.post.date_of|default:$objFunctions->timeNow()}"
+                                   value="{$dateFrom}"
                                    placeholder="تاریخ شروع">
                         </div>
                         <div class="col-md-6">
@@ -91,17 +93,15 @@
                     <table id="agenciesTable" class="table table-striped table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th width="50" class="text-center">ردیف</th>
-                            <th class="text-right">نام آژانس</th>
+                            <th width="20" class="text-center">ردیف</th>
+                            <th class="text-right" width="50">نام آژانس</th>
                             <th width="100" class="text-center">وضعیت</th>
-                            <th width="110" class="text-center">کل بازدید</th>
-                            <th width="110" class="text-center">بازدید یکتا</th>
-                            <th width="100" class="text-center">کل کلیک</th>
-                            <th width="110" class="text-center">کلیک یکتا</th>
-                            <th width="100" class="text-center">تعداد تور دیده شده</th>
+                            <th width="110" class="text-center">ایپمرشن</th>
+                            <th width="110" class="text-center">کلیک</th>
+                            <th width="100" class="text-center">refer site</th>
+                            <th width="110" class="text-center">refer tour</th>
                             <th width="100" class="text-center">تعداد تور فعال</th>
                             <th width="100" class="text-center">تعداد کل تور</th>
-                            <th width="100" class="text-center">نرخ تبدیل</th>
                             <th width="100" class="text-center">عملیات</th>
                         </tr>
                         </thead>
@@ -123,27 +123,16 @@
                                         {/if}
                                     </td>
                                     <td class="text-center">
-                                        <span class="badge badge-info">{$item.total_visits|number_format}</span>
+                                        <span class="badge badge-info">{$item.impression|number_format}</span>
                                     </td>
-                                    <td class="text-center">{$item.unique_visits|number_format}</td>
+                                    <td class="text-center">  <span class="badge badge-warning">{$item.detail_view|number_format}</span></td>
                                     <td class="text-center">
-                                        <span class="badge badge-warning">{$item.total_clicks|number_format}</span>
+                                        <span class="badge badge-danger">{$item.refer_site|number_format}</span>
                                     </td>
-                                    <td class="text-center">{$item.unique_clicks|number_format}</td>
-                                    <td class="text-center">{$item.tours_count|number_format}</td>
+                                    <td class="text-center"> <span class="badge badge-success">{$item.refer_tour|number_format}</span></td>
                                     <td class="text-center">{$item.total_safarBank_tour_count|number_format}</td>
                                     <td class="text-center">{$item.total_tour_count|number_format}</td>
-                                    <td class="text-center">
-                                        {if $item.conversion_rate > 10}
-                                            <span class="label label-success">{$item.conversion_rate}%</span>
-                                        {elseif $item.conversion_rate > 5}
-                                            <span class="label label-warning">{$item.conversion_rate}%</span>
-                                        {elseif $item.conversion_rate > 0}
-                                            <span class="label label-danger">{$item.conversion_rate}%</span>
-                                        {else}
-                                            <span class="label label-default">0%</span>
-                                        {/if}
-                                    </td>
+
                                     <td class="text-center">
                                         <a href="javascript:void(0);"
                                            onclick="showWalletDetails({$item.id}, '{$item.name|escape:'javascript'}')"
@@ -153,8 +142,13 @@
                                         </a>
                                         <a href="javascript:void(0);"
                                            onclick="showAgencyDetails({$item.id}, '{$item.name|escape:'javascript'}')"
-                                           class="btn btn-primary btn-sm waves-effect waves-light"
+                                           class="btn btn-warning btn-sm waves-effect waves-light"
                                            data-toggle="tooltip" title="مشاهده جزئیات تورها">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="safarBankReport&id={$item.id}"
+                                           class="btn btn-primary btn-sm waves-effect waves-light"
+                                           data-toggle="tooltip" title="جزییات نرخ بازدید">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                     </td>
@@ -171,11 +165,11 @@
                         <tfoot>
                         <tr class="active">
                             <th colspan="3" class="text-left">مجموع کل</th>
-                            <th id="footerTotalVisits" class="text-center">0</th>
-                            <th id="footerUniqueVisits" class="text-center">0</th>
-                            <th id="footerTotalClicks" class="text-center">0</th>
-                            <th id="footerUniqueClicks" class="text-center">0</th>
-                            <th id="footerToursCount" class="text-center">0</th>
+                            {*                            <th id="footerTotalVisits" class="text-center">0</th>*}
+                            {*                            <th id="footerUniqueVisits" class="text-center">0</th>*}
+                            {*                            <th id="footerTotalClicks" class="text-center">0</th>*}
+                            {*                            <th id="footerUniqueClicks" class="text-center">0</th>*}
+                            {*                            <th id="footerToursCount" class="text-center">0</th>*}
                             <th id="footerSafarBankToursCount" class="text-center">0</th>
                             <th id="footerTotalToursCount" class="text-center">0</th>
                             <th id="footerAvgConversion" class="text-center">0%</th>
@@ -556,7 +550,19 @@
         background-color: #ffc107;
         padding: 5px 10px;
         border-radius: 4px;
-        color: #212529;
+        color: white;
+        font-size: 12px;
+    }
+    .badge-success {
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: white;
+        font-size: 12px;
+    }
+    .badge-danger {
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: white;
         font-size: 12px;
     }
     .label-success {

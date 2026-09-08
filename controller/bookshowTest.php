@@ -10829,7 +10829,7 @@ class bookshowTest extends clientAuth {
             'credit' => functions::Xmlinformation("CreditSelection"),
             'pending' => functions::Xmlinformation("pendingPrintFlight"),
             'OnRequest' => functions::Xmlinformation("InquiryHotel"),
-            'NoReserve' => functions::Xmlinformation("NoReservation"),
+            'NoReserve' => functions::Xmlinformation("reserveError"),
             '' => functions::Xmlinformation("Unknown")
         ];
 

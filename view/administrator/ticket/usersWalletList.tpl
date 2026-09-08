@@ -13,8 +13,8 @@
 
             <ol class="breadcrumb FloatRight">
                 <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/admin">خانه</a></li>
-                    <li><a href="mainUserList">لیست کاربران</a></li>
-                    <li>جزئیات اعتبار</li>
+                <li><a href="mainUserList">لیست کاربران</a></li>
+                <li>جزئیات اعتبار</li>
                 <li class="active">{$objCounter->list['name']} {$objCounter->list['family']}</li>
             </ol>
         </div>
@@ -40,43 +40,46 @@
                         <thead>
                         <tr>
                             <th>ردیف</th>
-{*                            <th>id</th>*}
-{*                            <th>state</th>*}
-{*                            <th>status</th>*}
-{*                            <th>type_admin</th>*}
-{*                            <th>adminID</th>*}
-{*                            <th>typeAgency</th>*}
+                            <td>توضیحات</td>
+                            <th>تاریخ ثبت</th>
+                            {*                            <th>id</th>*}
+                            {*                            <th>state</th>*}
+                            {*                            <th>status</th>*}
+                            {*                            <th>type_admin</th>*}
+                            {*                            <th>adminID</th>*}
+                            {*                            <th>typeAgency</th>*}
                             <th>نام ادمین</th>
                             <th>افزایش</th>
                             <th>خرید</th>
                             <th>در حال بررسی</th>
                             <th>ناموفق</th>
                             <th>باقی مانده</th>
-                            <th>شماره فاکتور</th>
                             <th>علت تراکنش</th>
                             <th>وضعیت تراکنش</th>
-                            <th>تاریخ ثبت</th>
-                            <td>توضیحات</td>
+
+
 
                         </tr>
                         </thead>
                         <tbody>
-{*                        {$objCreditDetailUser->list|var_dump}*}
+                        {*                        {$objCreditDetailUser->list|var_dump}*}
                         {assign var="number" value="0"}
                         {assign var="remain" value=$objCreditDetailUser->total_transaction}
-{*                        {assign var="remainder" value=$objCreditDetailUser->total_all}*}
+                        {*                        {assign var="remainder" value=$objCreditDetailUser->total_all}*}
                         {assign var="remainder" value=0}
-{*                            {$remain|var_dump}*}
+                        {*                            {$remain|var_dump}*}
                         {foreach key=key item=item from=$objCreditDetailUser->list}
                             {$number=$number+1}
                             <tr    {if $item.state eq 'charge' && $item.status neq 'success'} style='background-color: #ffbebe;' {elseif $item.state eq 'buy'  && $item.status eq 'rejectAdmin' } style='background-color: #fdd0d0;' {elseif $item.state eq 'buy'} style='background-color: #fffae0;' {/if}>
                                 <td>{$number}</td>
-{*                                <td>{$item.id}</td>*}
-{*                                <td>{$item.state}</td>*}
-{*                                <td>{$item.status}</td>*}
-{*                                <td>{$item.type_admin}</td>*}
-{*                                <td>{$item.adminId}</td>*}
-{*                                <td>{$item.typeAgency}</td>*}
+                                <td>{$item.comment} <span> - شماره فاکتور  {$item.factorNumber}</span></td>
+                                <td >{$objCreditDetailUser->timeToDateJalali($item.creationDateInt)}</td>
+                                {*                                <td>{$item.id}</td>*}
+                                {*                                <td>{$item.state}</td>*}
+                                {*                                <td>{$item.status}</td>*}
+                                {*                                <td>{$item.type_admin}</td>*}
+                                {*                                <td>{$item.adminId}</td>*}
+                                {*                                <td>{$item.typeAgency}</td>*}
                                 <td>{$objCreditDetailUser->infoAdmin($item.type_admin , $item.adminId ,$item.typeAgency)}</td>
 
                                 <td>
@@ -118,8 +121,8 @@
 
 
                                 </td>
-                                <td>{$item.factorNumber}</td>
-                                    <td>
+
+                                <td>
                                     {if $item.reason eq 'charge'}
                                         ##ChargeAccount##
                                     {elseif $item.reason eq 'buy'}
@@ -135,7 +138,7 @@
                                     {elseif $item.reason eq 'credit_deduction'}
                                         ##DecreaseMoneyOfCreditByMember##
                                     {/if}
-                                    </td>
+                                </td>
                                 <td>
                                     {if $item.status eq 'success'}
                                         <span class='success-bg-text-with-padding-and-radius text-center'>##Successpayment##  </span>
@@ -149,8 +152,8 @@
                                         <span class='error-bg-text-with-padding-and-radius text-center'>##rejectByAdmin##  </span>
                                     {/if}
                                 </td>
-                                <td >{$objCreditDetailUser->timeToDateJalali($item.creationDateInt)}</td>
-                                <td>{$item.comment}</td>
+
+
 
                             </tr>
                         {/foreach}
@@ -158,9 +161,9 @@
                         <tfoot>
                         <tr>
                             <th colspan="1">جمع کل</th>
-{*                            <th colspan="1"></th>*}
-{*                            <th colspan="1"></th>*}
-{*                            <th colspan="1"></th>*}
+                            {*                            <th colspan="1"></th>*}
+                            {*                            <th colspan="1"></th>*}
+                            {*                            <th colspan="1"></th>*}
                             <th colspan="">{$objCreditDetailUser->total_charge|number_format:$format_desimal}</th>
                             <th colspan="">{$objCreditDetailUser->total_buy|number_format:$format_desimal}</th>
                             <th colspan="">{$objCreditDetailUser->total_pending|number_format:$format_desimal}</th>

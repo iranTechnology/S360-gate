@@ -2789,7 +2789,8 @@ footer h6 {
     color: #fff;
     transition: all ease .3s;
     bottom: 40px;
-    position: fixed
+    position: fixed;
+    right: 0;
 }
 
 .logo-caption h1 {

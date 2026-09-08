@@ -10,6 +10,7 @@
 {assign var="searchRooms" value=$smarty.request.searchRooms}
 
 
+
 {if $searchRooms eq null AND $smarty.request.countRoom gt 0}
     {$searchRooms = ''}
     {for $i = 1; $i <= $smarty.request.countRoom;$i++}

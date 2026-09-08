@@ -14,7 +14,6 @@
     .about_text{
         margin-bottom: 1rem;
         text-align:justify;
-        text-align-last:right;
         font-size:15px
     }
     .main_img_about{

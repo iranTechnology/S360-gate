@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
     $('.js-switch').each(function() {
         new Switchery($(this)[0], $(this).data());
@@ -1026,8 +1028,14 @@ $(document).ready(function () {
     ////////////////////////////////////////////////
     $("#FormHotelAdd").validate({
         rules: {
-            name: "required",
-            name_en: "required"
+            name: {
+                required: true,
+                noSpace: true
+            },
+            name_en: {
+                required: true,
+                noSpace: true
+            }
         },
         messages: {
 
@@ -1101,10 +1109,18 @@ $(document).ready(function () {
 
     });
 
+
+
     $("#EditHotel").validate({
         rules: {
-            name: "required",
-            name_en: "required"
+            name: {
+                required: true,
+                noSpace: true
+            },
+            name_en: {
+                required: true,
+                noSpace: true
+            }
         },
         messages: {
 

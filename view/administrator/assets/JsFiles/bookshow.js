@@ -1850,7 +1850,8 @@ function renderBookingCardsSimple(bookings) {
         const serviceClass = getCardServiceClass(serviceType);
         const serviceIcon = getCardServiceIcon(serviceType);
         const statusClass = getCardStatusClass(Object.values(booking['status'])[0]);
-        const errorData = booking['errorData'] ? booking['errorData']['message_admin'] + ' ' + booking['errorData']['message_admin'] : ''
+        const errorData = booking['errorData'] ? booking['errorData'] : ''
+        console.log(errorData)
         const factorNumber = serviceType === 'اتوبوس' ? booking['request_number'] + ' - ' + booking['factor_number'] : booking['request_number']
         html += `
             <div class="booking-card">
@@ -1860,7 +1861,7 @@ function renderBookingCardsSimple(bookings) {
                         <span class="service-name">${serviceType}</span>
                     </div>
                      <div class="">
-                        <div class="info-value"  data-status="${Object.values(booking['status'])[0]}" data-error-message="${errorData}"  onmouseover="showErrorMessage(this)">
+                        <div class="info-value"  data-status="${Object.values(booking['status'])[0]}" data-error-message="${errorData.message_admin}"  data-error-message-agency="${errorData.message_agency}" onmouseover="showErrorMessage(this)">
                             <span class="status-badge ${statusClass}">${escapeCardHtml(booking['status'][0] || 'نامشخص')}</span>
                         </div>
                     </div>
@@ -1897,6 +1898,7 @@ function renderBookingCardsSimple(bookings) {
 function showErrorMessage(element) {
     const status = element.getAttribute('data-status');
     let errorMessage = element.getAttribute('data-error-message');
+    let errorMessageAgency = element.getAttribute('data-error-message-agency');
     if (status.includes('خطای مشخص')) {
         // حذف tooltip قبلی اگر وجود داشت
         const existingTooltip = document.querySelector('.custom-tooltip');
@@ -1907,7 +1909,9 @@ function showErrorMessage(element) {
         tooltip.innerHTML = `
             <div style="display: flex; align-items: center; gap: 8px;">
                 <span style="font-size: 16px;">⚠️</span>
-                <span>${errorMessage}</span>
+                <p><strong>ادمین :</strong>${errorMessage} </p> <br/><br/>
+                <p><strong>آژانس :</strong>${errorMessageAgency} </p>
+                
             </div>
             <div style="
                 position: absolute;
@@ -2018,7 +2022,8 @@ function getCardServiceIcon(serviceType) {
 function getCardStatusClass(status) {
 
     if (!status) return 'status-secondary';
-    if (status.includes('قطعی') || status.includes('موفق') || status.includes('اختصاصی')) return 'status-success';
+    if (status.includes('قطعی') || status.includes('موفق')) return 'status-success';
+    if(status.includes('اختصاصی')) return 'status-blue';
     if (status.includes('پیش') || status.includes('در حال')) return 'status-warning';
     if (status.includes('کنسل')) return 'status-secondary';
     if (status.includes('درگاه')) return 'status-info';

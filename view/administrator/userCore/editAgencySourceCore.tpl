@@ -83,10 +83,16 @@
                         </select>
                     </div>
                     <div class="form-group col-sm-12">
-                        <label for="apiLinkRequest" class="control-label">لینک api (اختصاصی برای این مشتری)</label>
+                        <label for="apiLinkRequest" class="control-label">لینک api  (اختصاصی برای cip)</label>
                         <input type="text" class="form-control" id="apiLinkRequest" name="apiLinkRequest"
                                value="{$infoSourceAgency['apiLinkRequest']}"
                                placeholder="اگر خالی باشد به لینک اصلی میزند">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="apiLinkRequest" class="control-label">لینک api  (اختصاصی برای سپهر)</label>
+                        <input type="text" class="form-control" id="apiLinkRequestSepher" name="apiLinkRequestSepher"
+                               value="{$infoSourceAgency['url']}"
+                               placeholder="لینک اختصاصی سپر را وارد نمایید">
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

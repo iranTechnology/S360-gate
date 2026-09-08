@@ -5,6 +5,10 @@
 
 $(document).ready(function () {
 
+    $.validator.addMethod("noSpace", function(value, element) {
+        return $.trim(value).length > 0;
+    }, "این فیلد نمی‌تواند فقط فاصله باشد");
+
 
     $(".popoverBox").popover({trigger: "hover"});
     "use strict";

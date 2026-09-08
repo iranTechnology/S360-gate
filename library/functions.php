@@ -11728,14 +11728,18 @@ class functions {
             ,'387' , '388' , '389' , '390', '392'  ,'395' , '405','406','407','408','409','410','411','412','413','415','416','417','418','419','420','421','422','423','517','519' , '217'];
 
         $dbIds = self::getClientIds();
+        $dbEnIds = self::getEnClientIds();
 
-        // ادغام + حذف تکراری‌ها
-        return array_values(
-            array_unique(
-                array_merge($staticIds, $dbIds)
-            )
+        $oldLogin = $dbEnIds; // مشتری هایی که نباید newLogin باشن
+
+
+        $merged = array_values(
+                array_unique(
+                        array_merge($staticIds, $dbIds)
+                )
         );
 
+        return array_values(array_diff($merged, $oldLogin));
     }
 
     public static function hasAgencyLogin() {
@@ -12205,6 +12209,19 @@ class functions {
         $ModelBase = new ModelBase();
 
         $sql = " SELECT id FROM clients_tb WHERE  id > 517 ORDER BY id DESC";
+
+        $clientIds = $ModelBase->select( $sql );
+
+
+        return array_column($clientIds, 'id');
+    }
+
+    public static function getEnClientIds(){
+
+        Load::autoload( 'ModelBase' );
+        $ModelBase = new ModelBase();
+
+        $sql = " SELECT id FROM clients_tb WHERE  id > 517 AND default_language = 'en' ORDER BY id DESC";
 
         $clientIds = $ModelBase->select( $sql );
 

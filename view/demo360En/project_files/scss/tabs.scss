@@ -2,6 +2,21 @@
 @import "components/mixin";
 @import "components/fonts";
 
+@media (max-width: 576px) {
+    #ui-datepicker-div {
+        top: 69px !important;
+        left: 0 !important;
+        z-index: 10000 !important;
+        height: auto;
+        box-shadow: none;
+        width: 100%;
+    }
+
+    .mobile-drawer .close-drawer-btn {
+        left: auto;
+        right: 15px;
+    }
+}
 
 .switch_routs {
     position: absolute;

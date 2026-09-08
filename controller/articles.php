@@ -1115,9 +1115,6 @@ class articles extends positions
 
         $articles = $articles->all(false);
 
-        functions::insertLog('$articles: ' . json_encode($articles) , '0abbasi');
-
-
 
         $result['data'] = $this->addArticleIndexes($articles);
 

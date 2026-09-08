@@ -17,15 +17,15 @@ class BookingHotelLocal extends clientAuth
     public $transactions;
     public function __construct()
     {
-    
+
 
         $this->transactions = $this->getModel('transactionsModel');
     }
 
     public function setPortBankForHotel($bankDir, $factorNumber , $paymentStatus)
     {
-    
- 
+
+
         $initialValues = array(
             'bank_dir' => $bankDir,
             'serviceTitle' => $_POST['serviceType']
@@ -52,7 +52,7 @@ class BookingHotelLocal extends clientAuth
 
     public function sendUserToBankForHotel($factorNumber)
     {
-    
+
         $data = array(
             'status' => "bank"
         );
@@ -259,9 +259,26 @@ class BookingHotelLocal extends clientAuth
 
                 $this->errorMessage = 'اشکالی در فرآیند رزرو هتل پیش آمده است، لطفا برای پیگیری رزرو هتل و یا برگرداندن اعتبار  خود با پشتیبانی تماس حاصل نمائید';
 
-                $data['status'] = 'credit';
+                $data['status'] = 'NoReserve';
                 $data['payment_type'] = 'credit';
                 $data['creation_date_int'] = time();
+
+                $MessageError = functions::ShowHotelError($ReserveHotel['Message']);
+                $errorsController = $this->getController('errors');
+                $errMsg = $errorsController->processError($ReserveHotel, 'hotel', 'reserve', $Hotel['source_id']);
+                $dataError['message'] = $ReserveHotel['Result']['Message'];
+                $dataError['messageFa'] = $MessageError;
+                $dataError['clientId'] = CLIENT_ID;
+                $dataError['messageCode'] = $ReserveHotel['StatusCode'];
+                $dataError['request_number'] =$Hotel['request_number'];
+                $dataError['factor_number'] = $this->factor_number;
+                $dataError['message_agency'] = $errMsg['displayAgency'];
+                $dataError['message_passenger'] = $errMsg['displayPassenger'];
+                $dataError['message_admin'] = $errMsg['displayAdmin'];
+                $dataError['action'] = 'Reserve';
+                $dataError['creation_date_int'] = time();
+
+                $this->getController('logErrorsHotels')->insertLogErrorHotels($dataError);
 
                 $condition = " factor_number='{$factorNumber}' AND request_number = '{$request_number}' ";
                 $Model->setTable('book_hotel_local_tb');
@@ -457,24 +474,24 @@ class BookingHotelLocal extends clientAuth
         $objTransaction = Load::controller('transaction');
         $apiHotelLocal = Load::library('apiHotelLocal');
         $smsController = Load::controller('smsServices');
-	$reservationHotelController = Load::controller('reservationHotel');
+        $reservationHotelController = Load::controller('reservationHotel');
         $userRoleController = Load::controller('userRole');
 
         $factorNumber = trim($factorNumber);
         $this->factor_number = $factorNumber;
-	    /** @var bookHotelLocalModel $bookHotelLocalModel */
-	    $bookHotelLocalModel = Load::getModel('bookHotelLocalModel');
+        /** @var bookHotelLocalModel $bookHotelLocalModel */
+        $bookHotelLocalModel = Load::getModel('bookHotelLocalModel');
 
-	    $Hotel = $bookHotelLocalModel->get()
-	                                 ->where('factor_number',$factorNumber)
-	                                 ->where('status','bank')
-	                                 ->where('tracking_code_bank','','!=')
-	                                 ->groupBy('factor_number')->find();
-	    //         $sql = "SELECT * FROM book_hotel_local_tb
-	    //            WHERE factor_number='{$factorNumber}' AND status = 'bank' AND tracking_code_bank !=''
-	    //            GROUP BY factor_number";
-	    //
-	    //        $Hotel = $Model->load($sql);
+        $Hotel = $bookHotelLocalModel->get()
+            ->where('factor_number',$factorNumber)
+            ->where('status','bank')
+            ->where('tracking_code_bank','','!=')
+            ->groupBy('factor_number')->find();
+        //         $sql = "SELECT * FROM book_hotel_local_tb
+        //            WHERE factor_number='{$factorNumber}' AND status = 'bank' AND tracking_code_bank !=''
+        //            GROUP BY factor_number";
+        //
+        //        $Hotel = $Model->load($sql);
 
         $this->hotelId = $Hotel['hotel_id'];
         $this->type_application = $Hotel['type_application'];
@@ -784,7 +801,23 @@ class BookingHotelLocal extends clientAuth
 
             $this->errorMessage = 'اشکالی در فرآیند رزرو هتل پیش آمده است، لطفا برای پیگیری رزرو هتل و یا برگرداندن اعتبار  خود با پشتیبانی تماس حاصل نمائید';
 
-            $data['status'] = 'credit';
+            $MessageError = functions::ShowHotelError($resultHotel['Message']);
+            $errorsController = $this->getController('errors');
+            $errMsg = $errorsController->processError($resultHotel, 'hotel', 'reserve', $this->hotelInfo['source_id']);
+            $dataError['message'] = $resultHotel['Result']['Message'];
+            $dataError['messageFa'] = $MessageError;
+            $dataError['clientId'] = CLIENT_ID;
+            $dataError['messageCode'] = $resultHotel['StatusCode'];
+            $dataError['request_number'] =$this->hotelInfo['request_number'];
+            $dataError['factor_number'] = $this->factor_number;
+            $dataError['message_agency'] = $errMsg['displayAgency'];
+            $dataError['message_passenger'] = $errMsg['displayPassenger'];
+            $dataError['message_admin'] = $errMsg['displayAdmin'];
+            $dataError['action'] = 'Reserve';
+            $dataError['creation_date_int'] = time();
+
+            $this->getController('logErrorsHotels')->insertLogErrorHotels($dataError);
+            $data['status'] = 'NoReserve';
             $data['payment_type'] = $paymentType;
             $data['creation_date_int'] = time();
 
@@ -1001,19 +1034,19 @@ class BookingHotelLocal extends clientAuth
 
     public function createPdfContent($factorNumber, $cash, $cancelStatus)
     {
-    	
-    	$left = (SOFTWARE_LANG == 'en') ? 'right' : 'left';
-    	$right = (SOFTWARE_LANG == 'en') ? 'left' : 'right';
-	    $dir = (SOFTWARE_LANG == 'en') ? 'ltr' : 'rtl';
-    	$styles = '';
-    	if(SOFTWARE_LANG == 'en'){
-    		$styles.= '
+
+        $left = (SOFTWARE_LANG == 'en') ? 'right' : 'left';
+        $right = (SOFTWARE_LANG == 'en') ? 'left' : 'right';
+        $dir = (SOFTWARE_LANG == 'en') ? 'ltr' : 'rtl';
+        $styles = '';
+        if(SOFTWARE_LANG == 'en'){
+            $styles.= '
     		body{
     		direction: ltr;
     		text-align: left;
     		}
     		';
-	    }
+        }
         $StampAgency = ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_STAMP;
         $printBoxCheck = '';
         $printBoxCheck .= ' <!DOCTYPE html>
@@ -1033,12 +1066,12 @@ class BookingHotelLocal extends clientAuth
             $Model = Load::library('Model');
             $tableName = 'book_hotel_local_tb';
         }
-        
+
         $sql = "SELECT * FROM $tableName  WHERE factor_number='{$factorNumber}' ";
         if (isset($cancelStatus) && $cancelStatus != '') {
             $sql .= " AND status = 'cancelled' ";
         }
-        
+
         $info_hotel = $Model->select($sql);
 
         if (!empty($info_hotel)) {
@@ -1054,9 +1087,9 @@ class BookingHotelLocal extends clientAuth
             } else {
                 $printBoxCheck = $info_hotel['hotel_name'];
             }
-	        $LogoAgency = ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO;
-	
-	        $printBoxCheck .= '
+            $LogoAgency = ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO;
+
+            $printBoxCheck .= '
                         </div>
                         <div style="margin: 20px 0 0 0;width: 45%;display: inline-block;text-align: center;height: 67px;float: '.$left.';">
                             <img src="' . $LogoAgency. '" style="max-height: 80px;">
@@ -1075,7 +1108,7 @@ class BookingHotelLocal extends clientAuth
 
                     $printBoxCheck .= '
                             <div style="border: 1px solid #2E3231;margin: 5px 40px 5px 40px;">';
-	                
+
                     $printBoxCheck .= '
                             <div class="row" style="padding: 8px;font-weight: bold;background-color: #2E3231;margin: 0;color: #fff;">
         
@@ -1119,7 +1152,7 @@ class BookingHotelLocal extends clientAuth
 
                     $startDate = (SOFTWARE_LANG == 'fa') ? $info['start_date'] : functions::ConvertToMiladi($info['start_date']);
                     $endDate = (SOFTWARE_LANG == 'fa') ? $info['end_date'] : functions::ConvertToMiladi($info['end_date']);
-                    
+
                     $printBoxCheck .= '
                     <div class="row" style="padding: 8px;margin: 0;">
                         <div style="width: 30%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;der-box;">
@@ -1184,10 +1217,10 @@ class BookingHotelLocal extends clientAuth
 
                     $printBoxCheck .= '
                             </div>';
-	                
+
                     $title = functions::Xmlinformation('Informationguest');
                     if($info['type_application'] == 'api'){
-                    	$title .= '('.functions::Xmlinformation('FirstRoomPassenger').')';
+                        $title .= '('.functions::Xmlinformation('FirstRoomPassenger').')';
                     }
                     $printBoxCheck .= '
                             <div style="border: 1px solid #2E3231;margin: 5px 40px 5px 40px;">
@@ -1199,7 +1232,7 @@ class BookingHotelLocal extends clientAuth
                               </div> ';
 
                 }
-	            
+
                 if ($info['type_application'] == 'reservation') {
 
                     if ($info['flat_type'] == 'DBL') {
@@ -1228,7 +1261,7 @@ class BookingHotelLocal extends clientAuth
                     } elseif (!empty($info['passenger_name_en'])) {
                         $printBoxCheck .= $info['passenger_name_en'] . ' ' . $info['passenger_family_en'];
                     }
-                    
+
                     $printBoxCheck .= '</span>
                             </div>
                             <div style="width: 16.666667%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;">';
@@ -1257,21 +1290,21 @@ class BookingHotelLocal extends clientAuth
                         </div>';
 
                 } elseif($info['type_application'] == 'externalApi'){
-	
-	
-	                $printBoxCheck .= '
+
+
+                    $printBoxCheck .= '
                        <div class="row" style="padding: 8px;margin: 0;">
                             <div style="width: 40%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">';
-	                $printBoxCheck .= functions::StrReplaceInXml(['@@index@@'=>($info['room_index']+1)],'IndexOfRoom');
-	                $printBoxCheck .= ' : </span><span>';
-	                $printBoxCheck .= $info['room_name'];
-	               
-	                $printBoxCheck .= '</span>
+                    $printBoxCheck .= functions::StrReplaceInXml(['@@index@@'=>($info['room_index']+1)],'IndexOfRoom');
+                    $printBoxCheck .= ' : </span><span>';
+                    $printBoxCheck .= $info['room_name'];
+
+                    $printBoxCheck .= '</span>
                             </div>
                             <div style="width: 40%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">'.functions::Xmlinformation('Namefamily').' :</span><span>';
-	                $printBoxCheck .= $info['passenger_name_en'] . ' ' . $info['passenger_family_en'];
-	                
-	                $printBoxCheck .= '</span>
+                    $printBoxCheck .= $info['passenger_name_en'] . ' ' . $info['passenger_family_en'];
+
+                    $printBoxCheck .= '</span>
                             </div>';
 //	                $printBoxCheck .= '<div style="width: 22%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;">';
 //	                if ($info['passenger_national_code'] != "") {
@@ -1283,7 +1316,7 @@ class BookingHotelLocal extends clientAuth
 //		                $printBoxCheck .= $info['passportNumber'];
 //		                $printBoxCheck .= '</span>';
 //	                }
-	                $printBoxCheck .= '<!--</div>-->
+                    $printBoxCheck .= '<!--</div>-->
                            <!--<div style="width: 22%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;">
                            <span style="font-weight: bold;">'.functions::Xmlinformation('DateOfBirth').': </span>
                            <span>-->';
@@ -1294,40 +1327,40 @@ class BookingHotelLocal extends clientAuth
 //		                $printBoxCheck .= $info['passenger_birthday_en'];
 //	                }
 //
-	                $printBoxCheck .= '<!--</span>
+                    $printBoxCheck .= '<!--</span>
                            </div>-->
                         </div>';
                 }else{
-	                $printBoxCheck .= '
+                    $printBoxCheck .= '
                        <div class="row" style="padding: 8px;margin: 0;">
                             <div style="width: 22%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">'.functions::Xmlinformation('Room').': </span><span>';
-	                $printBoxCheck .= $info['room_name'];
-	                $printBoxCheck .= '</span>
+                    $printBoxCheck .= $info['room_name'];
+                    $printBoxCheck .= '</span>
                             </div>
                             <div style="width: 22%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">'.functions::Xmlinformation('Namefamily').': :</span><span>';
-	                $printBoxCheck .= $info['passenger_name'] . ' ' . $info['passenger_family'];
-	                $printBoxCheck .= '</span>
+                    $printBoxCheck .= $info['passenger_name'] . ' ' . $info['passenger_family'];
+                    $printBoxCheck .= '</span>
                             </div>';
-	                $printBoxCheck .= '<div style="width: 22%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;">';
-	                if ($info['passenger_national_code'] != "") {
-		                $printBoxCheck .= '<span style="font-weight: bold;">'.functions::Xmlinformation('NationalCode').':</span><span>';
-		                $printBoxCheck .= $info['passenger_national_code'];
-		                $printBoxCheck .= '</span>';
-	                } else {
-		                $printBoxCheck .= '<span style="font-weight: bold;">'.functions::Xmlinformation('Numpassport').':</span><span>';
-		                $printBoxCheck .= $info['passportNumber'];
-		                $printBoxCheck .= '</span>';
-	                }
-	                $printBoxCheck .= '</div>
+                    $printBoxCheck .= '<div style="width: 22%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;">';
+                    if ($info['passenger_national_code'] != "") {
+                        $printBoxCheck .= '<span style="font-weight: bold;">'.functions::Xmlinformation('NationalCode').':</span><span>';
+                        $printBoxCheck .= $info['passenger_national_code'];
+                        $printBoxCheck .= '</span>';
+                    } else {
+                        $printBoxCheck .= '<span style="font-weight: bold;">'.functions::Xmlinformation('Numpassport').':</span><span>';
+                        $printBoxCheck .= $info['passportNumber'];
+                        $printBoxCheck .= '</span>';
+                    }
+                    $printBoxCheck .= '</div>
                             <div style="width: 22%;float: '.$right.';position: relative;min-height: 1px;padding-'.$right.': .9375rem;padding-'.$left.': .9375rem;box-sizing: border-box;"><span style="font-weight: bold;">'.functions::Xmlinformation('DateOfBirth').': </span><span>';
-	
-	                if ($info['passenger_birthday'] != "") {
-		                $printBoxCheck .= $info['passenger_birthday'];
-	                } else {
-		                $printBoxCheck .= $info['passenger_birthday_en'];
-	                }
-	
-	                $printBoxCheck .= '</span>
+
+                    if ($info['passenger_birthday'] != "") {
+                        $printBoxCheck .= $info['passenger_birthday'];
+                    } else {
+                        $printBoxCheck .= $info['passenger_birthday_en'];
+                    }
+
+                    $printBoxCheck .= '</span>
                             </div>
                         </div>';
                 }
@@ -1480,32 +1513,32 @@ class BookingHotelLocal extends clientAuth
                  <br/>';
 
             } else {
-            	if($info_hotel[0]['type_application'] == 'externalApi' && SOFTWARE_LANG == 'en'){
-		            $hotelLocation = json_decode($info_hotel[0]['hotel_location'],true);
-		            $location = '';
-		            $location = implode(',',$hotelLocation);
-		            
-		            $printBoxCheck .= "<div style=\"width: 93%;margin: 5px 40px 5px 40px;\">";
-		            $printBoxCheck .= "<strong style='float:{$right}; width: 25%'>Location</strong>";
-		            $printBoxCheck .= "<div style='float:{$right}; width: 73%'><a style='text-decoration: none' target='_blank' href='http://maps.google.com/maps?q={$location}&ll={$location}z=19'>{$location}</a></div>";
-		            $printBoxCheck .= "</div>";
-		            
-		            $printBoxCheck .= "<div style=\"width: 93%;margin: 5px 40px 5px 40px;\">";
-		            $printBoxCheck .= "<strong style='float:{$right}; width: 25%'>Min Age</strong>";
-		            $printBoxCheck .= "<div style='float:{$right}; width: 73%'>18</div>";
-		            $printBoxCheck .= "</div>";
-            		$extraHotelDetails = json_decode($info_hotel[0]['extra_hotel_details'],true);
-            		
+                if($info_hotel[0]['type_application'] == 'externalApi' && SOFTWARE_LANG == 'en'){
+                    $hotelLocation = json_decode($info_hotel[0]['hotel_location'],true);
+                    $location = '';
+                    $location = implode(',',$hotelLocation);
+
+                    $printBoxCheck .= "<div style=\"width: 93%;margin: 5px 40px 5px 40px;\">";
+                    $printBoxCheck .= "<strong style='float:{$right}; width: 25%'>Location</strong>";
+                    $printBoxCheck .= "<div style='float:{$right}; width: 73%'><a style='text-decoration: none' target='_blank' href='http://maps.google.com/maps?q={$location}&ll={$location}z=19'>{$location}</a></div>";
+                    $printBoxCheck .= "</div>";
+
+                    $printBoxCheck .= "<div style=\"width: 93%;margin: 5px 40px 5px 40px;\">";
+                    $printBoxCheck .= "<strong style='float:{$right}; width: 25%'>Min Age</strong>";
+                    $printBoxCheck .= "<div style='float:{$right}; width: 73%'>18</div>";
+                    $printBoxCheck .= "</div>";
+                    $extraHotelDetails = json_decode($info_hotel[0]['extra_hotel_details'],true);
+
 //            		$printBoxCheck .= $extraHotelDetails;
-		            foreach ($extraHotelDetails as $key=>$detail) {
-		            	$detailTitle = functions::Xmlinformation($key);
-	                    $printBoxCheck .= "<h2 style=\"font-size: 14px;display: block;text-align: '.$right.';margin: 10px 40px 0px 40px;font-weight:bold\">
+                    foreach ($extraHotelDetails as $key=>$detail) {
+                        $detailTitle = functions::Xmlinformation($key);
+                        $printBoxCheck .= "<h2 style=\"font-size: 14px;display: block;text-align: '.$right.';margin: 10px 40px 0px 40px;font-weight:bold\">
 	                        <span>{$key}</span>
 	                    </h2>";
-	                    $printBoxCheck .= "<div style=\"width: 93%;margin: 5px 40px 5px 40px;\">{$detail}</div>";
-	                    
-	                }
-	            }
+                        $printBoxCheck .= "<div style=\"width: 93%;margin: 5px 40px 5px 40px;\">{$detail}</div>";
+
+                    }
+                }
 
                 $printBoxCheck .= '
                      </div>
@@ -1522,8 +1555,8 @@ class BookingHotelLocal extends clientAuth
 //                        <p style="padding-'.$right.': 8px;">'.functions::Xmlinformation('DepartureBasedPassengerRequest').'</p>
 //                        <p style="padding-'.$right.': 8px;">'.functions::Xmlinformation('CancellationHotelReservationAmountNoRefundable').'</p>
 //                    </div>';
-            
-                      $printBoxCheck .= '<div class="clear-both">';
+
+                $printBoxCheck .= '<div class="clear-both">';
 
 
             }

@@ -131,5 +131,9 @@ class clients extends clientAuth {
         return json_encode(functions::isSafar360());
     }
 
+    public function SOFTWARE_LANG() {
+        return json_encode(SOFTWARE_LANG);
+    }
+
 
 }

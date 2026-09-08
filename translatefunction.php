@@ -2,7 +2,7 @@
 function translateFromDb( $lang = 'fa', $filename = 'frontMaster' ) {
     if(strpos($_SERVER['HTTP_HOST'],'192.168.')===false && strpos($_SERVER['HTTP_HOST'],'localhost')===false){//internet
         require('/home/commin_config/password.php');
-        $mysqli = new mysqli( "localhost", "safar360", $PasswordAllSystem, "safar360_gds" );
+        $mysqli = new mysqli( "localhost", "safar360", 'GW@!pvGOZ$h9Mk[JdoU', "safar360_gds" );
     }
     else {
         $mysqli = new mysqli("localhost", "root", '', "amadeus_db");
@@ -69,7 +69,7 @@ function xmlToDbFromFile( $lang = 'fa' ) {
 function insertToDb( $dataArray, $lang = 'fa' ) {
     if(strpos($_SERVER['HTTP_HOST'],'192.168.')===false && strpos($_SERVER['HTTP_HOST'],'localhost')===false){//internet
         require('/home/commin_config/password.php');
-        $mysqli = new mysqli( "localhost", "safar360", $PasswordAllSystem, "safar360_gds" );
+        $mysqli = new mysqli( "localhost", "safar360", 'GW@!pvGOZ$h9Mk[JdoU', "safar360_gds" );
     }
     else {
         $mysqli = new mysqli("localhost", "root", '', "amadeus_db");

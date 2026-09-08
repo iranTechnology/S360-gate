@@ -1,7 +1,6 @@
 {load_presentation_object filename="settingCore" assign="objsettingCore"}
 {assign var="infoSourceAgency" value=$objsettingCore->infoSourceAgency($smarty.get.agencyId,$smarty.get.sourceId)}
 {assign var="Agency" value=$objsettingCore->listAgencyById($smarty.get.agencyId)}
-
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">

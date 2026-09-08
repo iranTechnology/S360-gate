@@ -712,16 +712,25 @@ class resultHotelLocal extends apiHotelLocal
 
         if ($typeApplication == 'reservation') {
 
+            $resultHotelFormatted = str_replace(' ', '-', $resultHotel['NameEn']);
 
-            if (!empty($resultHotel)) {
-                $this->SearchHotel = $resultHotel;
-                $this->typeApplication = $typeApplication;
-                foreach ($resultHotel['HotelFacility'] as $val) {
-                    $this->HotelFacilityList[$val['Title']] = $val['IconClass'];
+            if (trim( strtolower( $resultHotelFormatted ) ) == trim( strtolower( HOTEL_NAME_EN ) )) {
+                if (!empty($resultHotel)) {
+                    $this->SearchHotel = $resultHotel;
+                    $this->typeApplication = $typeApplication;
+                    foreach ($resultHotel['HotelFacility'] as $val) {
+                        $this->HotelFacilityList[$val['Title']] = $val['IconClass'];
+                    }
                 }
+            } else {
+                header('location: ' . ROOT_ADDRESS_WITHOUT_LANG . '/404.shtml');
             }
 
-        } elseif ($typeApplication == 'api') {
+
+
+
+        }
+        elseif ($typeApplication == 'api') {
 
             $resultHotel = parent::Hotel($idHotel);
 

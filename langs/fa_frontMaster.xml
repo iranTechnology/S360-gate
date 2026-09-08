@@ -171,6 +171,9 @@
   <Yourhotelreservationdeadlineexpiredrestart>مهلت رزرو هتل شما به اتمام رسید لطفا مجددا اقدام نمایید.</Yourhotelreservationdeadlineexpiredrestart>
   <PackageHotels>پکیج هتل ها</PackageHotels>
   <Freetransferfromhotel>ترانسفر رایگان از جانب هتل</Freetransferfromhotel>
+  <TransferDetails>مشخصات ترانسفر</TransferDetails>
+  <TransferEnter>ترانسفر ورود</TransferEnter>
+  <TransferExit>ترانسفر خروج</TransferExit>
   <Searchnamehotel>نام / آدرس هتل</Searchnamehotel>
   <Namehotel>نام هتل</Namehotel>
   <Hotelgrade>درجه هتل</Hotelgrade>
@@ -629,6 +632,7 @@
   <Typepassenger>نوع مسافر</Typepassenger>
   <Membershipnumber>شماره عضویت</Membershipnumber>
   <Identificationnumber>شماره شناسایی</Identificationnumber>
+  <DepartureDate>تاریخ رفت</DepartureDate>
   <Returndate>تاریخ برگشت</Returndate>
   <Exitdate>تاریخ خروج</Exitdate>
   <Typeidentitydocument>نوع فایل مدرک هویتی</Typeidentitydocument>
@@ -3929,4 +3933,12 @@
   <flightInternatiol>پرواز بین المللی</flightInternatiol>
   <flightInternalToAirport>پرواز ورودی به فرودگاه</flightInternalToAirport>
   <flightInternationalToAirport>پرواز خروجی از فرودگاه</flightInternationalToAirport>
+  <BasePriceFlight>قیمت پایه</BasePriceFlight>
+  <TaxesAndLevies>مالیات و عوارض</TaxesAndLevies>
+  <AgencyCommission>کمیسیون آژانس</AgencyCommission>
+  <ForAPeriodOf>بمدت</ForAPeriodOf>
+  <SearchForPurchase>جست و جو برای خرید</SearchForPurchase>
+  <MoveNumber>شماره حرکت</MoveNumber>
+  <CarrierCompany>شرکت حمل کننده</CarrierCompany>
+  <TrainNumber>شماره قطار</TrainNumber>
 </Main>

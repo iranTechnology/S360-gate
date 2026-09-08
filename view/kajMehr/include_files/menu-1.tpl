@@ -14,11 +14,11 @@
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/flight">پرواز</a></li>
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">هتل</a></li>
                         <li>
-                            <a href="{$smarty.const.ROOT_ADDRESS}/tours/تورها">تور</a>
+                            <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/all-all/all-all/all/all">تور</a>
                             {if $objResult->ReservationTourCities('=1', 'return') || $objResult->ReservationTourCountries('yes')}
                                 <ul class="nav-dropdown">
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/tour"> داخلی</a>
+                                        <a href="javascript:"> داخلی</a>
                                         {if $objResult->ReservationTourCities('=1', 'return')}
                                             <ul class="nav-dropdown nav-menu_ul">
                                                 {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCities('=1', 'return')}
@@ -33,7 +33,7 @@
                                         {/if}
                                     </li>
                                     <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/tour"> خارجی</a>
+                                        <a href="javascript:"> خارجی</a>
                                         {if $objResult->ReservationTourCountries('yes')}
                                             <ul class="nav-dropdown nav-menu_ul">
                                                 {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries('yes')}

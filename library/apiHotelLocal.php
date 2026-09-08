@@ -744,7 +744,7 @@ class apiHotelLocal extends clientAuth
                 $data['SalesExpertFullName'] = "تست ایران تکنولوژی";
                 $data['SalesExpertMobile'] = $book['member_mobile'];
                 $data['LeaderPhoneNumber'] = $book['passenger_leader_room'];
-
+                $data['IranianNationalId'] = $book['passenger_national_code'];
             }
 
         } else {
@@ -757,7 +757,7 @@ class apiHotelLocal extends clientAuth
                 $data['SalesExpertFullName'] = " " . $book['passenger_leader_room_fullName'] . " ";
                 $data['SalesExpertMobile'] = $book['member_mobile'];
                 $data['LeaderPhoneNumber'] = $book['passenger_leader_room'];
-
+                $data['IranianNationalId'] = $book['passenger_national_code'];
             }
         }
 

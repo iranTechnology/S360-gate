@@ -29,7 +29,7 @@ class detailHotel extends ApiHotelCore
         }
         /** @var temporaryHotelLocalModel $temp_model */
         $temp_model = Load::getModel('temporaryHotelLocalModel');
-        $hotel_detail = $temp_model->get(['webservice_type', 'is_internal', 'city_id', 'city_name', 'hotel_id', 'hotel_name', 'hotel_address', 'hotel_telNumber', 'hotel_starCode', 'hotel_entryHour', 'hotel_leaveHour', 'hotel_pictures', 'start_date', 'end_date', 'number_night', 'hotel_location', 'extra_hotel_details', 'extra_bed_price', 'child_price', 'room_count', 'extra_bed_count', 'child_count', 'price_current', 'source_id'])
+        $hotel_detail = $temp_model->get(['webservice_type', 'is_internal', 'city_id', 'city_name', 'hotel_id', 'hotel_name', 'hotel_address', 'hotel_telNumber', 'hotel_starCode', 'hotel_entryHour', 'hotel_leaveHour', 'hotel_pictures', 'start_date', 'end_date', 'number_night', 'hotel_location', 'extra_hotel_details', 'extra_bed_price', 'child_price', 'room_count', 'extra_bed_count', 'child_count', 'price_current', 'source_id','is_transfer'])
             ->where('factor_number', $factor_number)
             ->groupBy('hotel_id')->find();
 
@@ -49,7 +49,21 @@ class detailHotel extends ApiHotelCore
 
         return $hotel_detail;
     }
+    public function getHotelDetailsFromBookHotelLocal($factor_number = null)
+    {
 
+        if (isset($factor_number) && !$factor_number) {
+            return false;
+        }
+        /** @var temporaryHotelLocalModel $temp_model */
+        $temp_model = Load::getModel('bookHotelLocalModel');
+        $hotel_detail = $temp_model->get(['transfer_hotel'])
+            ->where('factor_number', $factor_number)
+            ->groupBy('hotel_id')->find();
+
+
+        return $hotel_detail;
+    }
     public function getEachDayHotelPrices($factor_number = null, $room_id = null)
     {
 
@@ -259,7 +273,6 @@ class detailHotel extends ApiHotelCore
         $currency_controller = Load::controller('currency');
         $apiHotel = json_decode(parent::Detail($param), true);
         $this->sourceId=$apiHotel['Result']['SourceId'];
-        functions::insertLog('$apiHotel: ' . json_encode($apiHotel) , '000shojaee');
         if (!isset($apiHotel['Result'])) {
             return $this->showError($apiHotel, $apiHotel['StatusCode']);
         }
@@ -326,7 +339,7 @@ class detailHotel extends ApiHotelCore
             // -----------------------
             // کوئری اول: اطلاعات هتل (Rules, Cancellation, Child, id)
             // -----------------------
-            $sqlHotel = "SELECT id, rules, cancellation_conditions,
+            $sqlHotel = "SELECT id, is_transfer, rules, cancellation_conditions,
        child_conditions , comment , longitude ,
        latitude , address , tel_number , tel_number,
        entry_hour, leave_hour
@@ -336,6 +349,7 @@ class detailHotel extends ApiHotelCore
             $localHotelResult = $this->model->select($sqlHotel);
             $localHotel = isset($localHotelResult[0]) ? $localHotelResult[0] : array();
 
+            $apiHotel['is_transfer'] = $localHotel['is_transfer'];
 
             // -----------------------
             // Generals
@@ -759,6 +773,7 @@ class detailHotel extends ApiHotelCore
 
     public function insertTemporaryHotel($param)
     {
+
         $allPrices =json_decode($param['Prices'],true);
         $hotelDetail = json_decode($param['HotelDetail'], true);
 
@@ -1143,6 +1158,7 @@ class detailHotel extends ApiHotelCore
             $d['city_id'] = $CityId;// $City['Code'];
             $d['city_name'] = $CityName;//'';//$City['Name'];
             $d['hotel_id'] = $param['IdHotel'];
+            $d['is_transfer'] = $param['HotelDetail']['is_transfer'];
 //            $d['hotel_name'] = str_replace("'", "", $hotelDetail['Result']['Name']);//'';//$Hotel['Name'];
             $d['hotel_name'] = $this->sanitizeUnicode($hotelDetail['Result']['Name']);
 //            $d['hotel_name_en'] = isset($hotelDetail['Result']['NameEn']) ? $hotelDetail['Result']['NameEn'] : '';//$Hotel['NameEn'];
@@ -1628,11 +1644,19 @@ class detailHotel extends ApiHotelCore
         functions::insertLog('first book_hotel_local insert ' . json_encode($d, 256 | 64), 'hotel_report');
 
         if (empty($book_check)) {
+            if($param['is_transfer'] == 1){
+                $d['transfer_hotel'] = json_encode($param['transfer_hotel'], JSON_UNESCAPED_UNICODE);
+            } else {
+                $d['transfer_hotel'] = null;
+            }
             $Model->setTable('book_hotel_local_tb');
+
             $resultBook = $Model->insertWithBind($d);
 
             $ModelBase->setTable('report_hotel_tb');
             $d['client_id'] = CLIENT_ID;
+
+
 
             return $resultReport = $ModelBase->insertWithBind($d);
         }
@@ -1836,12 +1860,21 @@ class detailHotel extends ApiHotelCore
                     //						'Mobile'    => $room['member_mobile'],
                     //						'Email'     => $room['member_email'],
                     //					];
-                    $buyerArray = [
-                        'FirstName' => 'Abazar',
-                        'LastName' => 'Afshar',
-                        'Mobile' => '09057078341',
-                        'Email' => 'info@iran-tech.com',
-                    ];
+                    if ($room['source_id'] == '42') {
+                        $buyerArray = [
+                            'FirstName' => $room['member_name'],
+                            'LastName' => $room['member_name'],
+                            'Mobile' => $room['member_mobile'],
+                            'Email' => $room['member_email'],
+                        ];
+                    } else {
+                        $buyerArray = [
+                            'FirstName' => 'Abazar',
+                            'LastName' => 'Afshar',
+                            'Mobile' => '09057078341',
+                            'Email' => 'info@iran-tech.com',
+                        ];
+                    }
                 }
 
                 if($hotel_source['source_id'] == '29'){
@@ -2016,6 +2049,7 @@ class detailHotel extends ApiHotelCore
 
         return $this->returnJson($statusRequestWebService, $statusRequestWebService['StatusCode']);
     }
+
 
     public function Book($requestArray = null)
     {
