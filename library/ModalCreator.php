@@ -906,67 +906,51 @@ class ModalCreator extends clientAuth {
      * @param $Param
      * @param $type
      */
-public function ModalShowBook($Param, $type) {
+    public function ModalShowBook($Param, $type) {
 
-    $typeFlight = ($type == 'flight' || $type == '');
-    $objDiscountCode = Load::controller('discountCodes');
-    if ($typeFlight) {
-        /** @var bookshow $objbook */
-        $objbook = Load::controller($this->Controller);
-        $ticketsInfo = functions::info_flight_directions($Param);
-    } elseif ($type == 'train') {
-        $ticketsInfo = functions::info_train_directions($Param, 'yes');
-    } elseif ($type == 'bus') {
-        $objbook = Load::controller($this->Controller);
-        $ticketsInfo = functions::info_bus_directions($Param);
-    }
-    elseif ($type == 'insurance') {
-        $objbook = Load::controller($this->Controller);
-        $ticketsInfo = functions::info_insurance_directions($Param);
-    }
-    elseif ($type == 'hotel') {
-        $objbook = Load::controller($this->Controller);
-        $ticketsInfo = functions::info_hotel_directions($Param);
-    }
-
-    $info_cancel_ticket = $ticketsInfo['info_detail_cancel'] ;
-    unset($ticketsInfo['info_detail_cancel']);
-
-    $array_national = [];
-    if(!empty($info_cancel_ticket)){
-        foreach($info_cancel_ticket as $item){
-            $array_national[] = $item['NationalCode'];
+        $typeFlight = ($type == 'flight' || $type == '');
+        $objDiscountCode = Load::controller('discountCodes');
+        if ($typeFlight) {
+            /** @var bookshow $objbook */
+            $objbook = Load::controller($this->Controller);
+            $ticketsInfo = functions::info_flight_directions($Param);
+        } elseif ($type == 'train') {
+            $ticketsInfo = functions::info_train_directions($Param, 'yes');
+        } elseif ($type == 'bus') {
+            $objbook = Load::controller($this->Controller);
+            $ticketsInfo = functions::info_bus_directions($Param);
         }
-    }
-    ?>
+        elseif ($type == 'insurance') {
+            $objbook = Load::controller($this->Controller);
+            $ticketsInfo = functions::info_insurance_directions($Param);
+        }
+        elseif ($type == 'hotel') {
+            $objbook = Load::controller($this->Controller);
+            $ticketsInfo = functions::info_hotel_directions($Param);
+        }
 
-    <div class="modal-dialog modal-lg">
+        $info_cancel_ticket = $ticketsInfo['info_detail_cancel'] ;
+        unset($ticketsInfo['info_detail_cancel']);
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header site-bg-main-color">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">مشاهده مشخصات بلیط
-                    &nbsp; <?php echo !empty($ticketsInfo[0]['member_name']) ? 'کاربر اصلی ' : 'کاربرمهمان' ?></h4>
-            </div>
-            <div class="modal-body">
-                <?php
-                $agency = Load::model("agency");
-                foreach ($ticketsInfo as $key => $view) {
-
-
-
+        $array_national = [];
+        if(!empty($info_cancel_ticket)){
+            foreach($info_cancel_ticket as $item){
+                $array_national[] = $item['NationalCode'];
+            }
+        }
+        ?>
+        <div class="modal-dialog modal-lg modal-dialog-centered travel-modal">
+            <?php
+            $agency = Load::model("agency");
+            foreach ($ticketsInfo as $key => $view) {
 
                 if($type == 'bus' || $type == 'hotel'){
                     $view['mobile_buyer'] = $view['member_mobile'];
                     $view['email_buyer'] = $view['member_email'];
-
-
                 }
                 if($type != 'flight') {
                     $agencyInfo = $Client = functions::infoClient($view['client_id']);
                 }
-
 
                 if(isset($typeFlight) && $typeFlight){
                     $requestNumber = $view['request_number'];
@@ -980,968 +964,648 @@ public function ModalShowBook($Param, $type) {
                     $requestNumber = $view['order_code'];
                 }
                 else{
-                    $requestNumber =$view['requestNumber'];
+                    $requestNumber = $view['requestNumber'];
                 }
                 ?>
-
-                <?php
-                if($key==0 && !empty($info_cancel_ticket) && TYPE_ADMIN ==1){
-                ?>
-                <div class="row margin-both-vertical-20">
-                    <div class="col-md-12 text-center text-bold" style="color: #fb002a;">
-                        <span>اطلاعات کنسلی</span>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header travel-modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">مشاهده مشخصات بلیط <?php echo $requestNumber ?><?php echo !empty($ticketsInfo[0]['member_name']) ? ' کاربر اصلی ' : ' کاربرمهمان ' ?></h4>
                     </div>
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-4 ">
+                    <div class="modal-body travel-modal-body">
 
-                            <span>اهمیت درصد کنسلی  : </span><span><?php echo ($info_cancel_ticket[0]['PercentNoMatter'] == 'No' ? 'مهم نیست' : 'مهم هست') ?></span>
-
-                        </div>
-
-
-                        <div class="col-md-4 ">
-
-                            <span>توضیحات مشتری : </span><span><?php echo ($info_cancel_ticket[0]['DescriptionClient']) ?></span>
-
-                        </div>
-
-
-                        <div class="col-md-4 ">
-
-                            <span>یادداشت </span><span><?php echo ($info_cancel_ticket[0]['note_admin']) ?></span>
-
-                        </div>
-                    </div>
-
-                    <?php
-                    }
-                    ?>
-
-                    <?php if ($key == 0) { ?>
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-12 text-center text-bold" style="color: #fb002a;">
-                                <span>مشخصات کاربر</span></div>
-                        </div>
-
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-4 ">
-                                <span>نام و نام خانوادگی  : </span><span><?php echo $view['member_name'] ?></span>
-                            </div>
-                            <div class="col-md-4 ">
-                                <span class=""> شماره تلفن موبایل: </span><span
-                                        class="yn"><?php echo $view['member_mobile'] ?></span>
-                            </div>
-                            <div class="col-md-4 ">
-                                <span>ایمیل :</span><span><?php echo $view['member_email'] ?></span>
-                            </div>
-                        </div>
-
-
-                        <hr style="margin: 5px 0;"/>
-
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-12 text-center text-bold" style="color: #fb002a;"><span>اطلاعات خریدار </span>
-                            </div>
-                        </div>
-
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-6 ">
-                                <span>شماره تماس  : </span><span><?php echo $view['mobile_buyer'] ?></span>
-                            </div>
-                            <div class="col-md-6 ">
-                                <span class=""> ایمیل: </span><span
-                                        class="yn"><?php echo $view['email_buyer'] ?></span>
-                            </div>
-                        </div>
-                        <hr style="margin: 5px 0;"/>
-
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-12 text-center text-bold " style="color: #fb002a;"><span>مشخصات پرداخت</span>
-                            </div>
-                        </div>
-
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-4">
-                                <span class=" pull-left">تاریخ پرداخت : </span>
-                                <span class="yn"><?php echo($view['payment_date'] != '' ? functions::set_date_payment($view['payment_date']) : 'پرداخت نشده'); ?></span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>نوع پرداخت: </span>
-                                <span><?php
-                                    if ($view['payment_type'] == 'cash') {
-                                        echo 'نقدی';
-                                    } else if ($view['payment_type'] == 'credit' || $view['payment_type'] == 'member_credit') {
-                                        echo 'اعتباری';
-                                    }
-                                    ?></span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>کد پیگیری بانک: </span>
-                                <span class="yn"><?php echo !empty($view['tracking_code_bank']) ? $view['tracking_code_bank'] : 'ندارد' ?></span>
-                            </div>
-                            <?php if (TYPE_ADMIN == '1' && $view['payment_type'] == 'cash') { ?>
-                                <div class="col-md-4">
-                                    <span>نام بانک: </span>
-                                    <span><?php echo $objbook->namebank($view['name_bank_port'], $view['client_id']) ?></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="">شماره درگاه: </span>
-                                    <span class="yn"><?php echo $objbook->numberPortBnak($view['name_bank_port'], $view['client_id']) ?></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>صاحب امتیاز درگاه: </span>
-                                    <span><?php echo $objbook->numberPortBnak($view['name_bank_port'], $view['client_id']) == '379918' ? 'ایران تکنولوژی' : $objbook->nameAgency($view['client_id']) ?></span>
-                                </div>
-                            <?php } ?>
-                        </div>
-                        <hr style="margin: 5px 0;"/>
-                    <?php } ?>
-
-<!--                    <div class="row margin-both-vertical-20">-->
-<!--                        <div class="col-md-12 text-center text-bold " style="color: #fb002a;">-->
-<!--                                    <span>مشخصات ارائه دهنده بلیط --><?php
-//
-//                                        if (count($ticketsInfo) > 1) {
-//                                            if ($typeFlight) {
-//                                                echo($view['direction'] == 'dept' ? 'رفت' : 'برگشت');
-//                                            } else if($type == 'bus') {
-//                                                echo($view['Route_Type'] == '1' ? 'رفت' : 'برگشت');
-//                                            }
-//                                        }
-//
-//
-//                                        ?><!--</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    <div class="row margin-both-vertical-20">-->
-<!--                        <div class="col-md-4 ">-->
-<!--                            <span>نام آژانس  : </span>-->
-<!--                            <span>-->
-<!--								--><?php
-//                                if($type != 'flight'){
-//
-//                                    if(TYPE_ADMIN == '1' ) {
-//                                        $agencyInfo = $Client = functions::infoClient($ticketsInfo[0]['client_id']);
-//                                    }else{
-//                                        $agencyInfo = $Client = functions::infoClient(CLIENT_ID);
-//                                    }
-//
-//                                    echo $agencyInfo['AgencyName'];
-//                                }else{
-//
-//
-//                                    if ($view['pid_private'] == '1' && $typeFlight && isset($view['client_id'])) {
-//                                        $Client = functions::infoClient($view['client_id']);
-//                                    }
-//
-//
-//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['AgencyName'] : ($view['flight_type'] == 'system' ? 'ایران تکنولوژی' : $view['supplier_name']);
-//                                }
-//                                ?>
-<!--								</span>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-4 ">-->
-<!--                            <span> نام مدیر آژانس: </span>-->
-<!--                            <span>-->
-<!---->
-<!--								--><?php
-//
-//                                if($type != 'flight'){
-//                                    echo $agencyInfo['Manager'];
-//                                }else{
-//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Manager'] : ($view['flight_type'] == 'system' ? 'اباذر افشار' : $view['supplier_manager']);
-//                                }
-//
-//                                ?>
-<!--								</span>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-4 ">-->
-<!--                            <span class=""> شماره تلفن   </span>-->
-<!--                            <span class="yn">-->
-<!--								--><?php
-//
-//                                if($type != 'flight'){
-//                                    echo $agencyInfo['Phone'];
-//                                }else{
-//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Phone'] : ($view['flight_type'] == 'system' ? '021-88866609' : $view['supplier_phone1'] . ',' . $view['supplier_phone2']);
-//                                }
-//
-//                                ?>
-<!---->
-<!--								</span>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-4 ">-->
-<!--                            <span>وب سایت :</span>-->
-<!--                            <span>-->
-<!--									--><?php
-//
-//                                    if($type != 'flight'){
-//                                        echo $agencyInfo['MainDomain'];
-//                                    }else{
-//                                        echo ($typeFlight && $view['pid_private'] == '1') ? $Client['MainDomain'] : ($view['flight_type'] == 'system' ? 'iran-tech.com' : $view['supplier_website']);
-//                                    }
-//
-//                                    ?>
-<!--								</span>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-8 ">-->
-<!--                            <span>آدرس:</span>-->
-<!--                            <span>--><?php
-//
-//                                if($type != 'flight'){
-//                                    echo $agencyInfo['Address'];
-//                                }else{
-//                                    echo ($typeFlight && $view['pid_private'] == '1') ? $Client['Address'] : ($view['flight_type'] == 'system' ? 'مطهری-بعد از مفتح -شماره180 واحد 1' : $view['supplier_address']);
-//                                }
-//
-//                                ?>
-<!---->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <hr style="margin: 5px 0;"/>-->
-
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-12 text-center text-bold " style="color: #fb002a;">
-                                <span>مشخصات <?php
-
-                                    if ($typeFlight) {
-                                        if (count($ticketsInfo) > 1) {
-                                            echo($view['direction'] == 'dept' ? 'رفت' : 'برگشت');
-                                        } elseif ($view['direction'] == 'TwoWay') {
-                                            echo 'دو طرفه';
-                                        }
-                                    }
-
-
-                                    ?></span>
-                        </div>
-                    </div>
-
-
-                    <?php if ($type == 'bus' && $view['direction'] == 'TwoWay') {
-                        ?>
-                        <div class="row margin-both-vertical-20">
-
-                            <div class="col-md-8">
-                                <span class=" pull-left">تاریخ رزرو بلیط : </span>
-                                <span class="yn" dir="ltr"><?php echo dateTimeSetting::jdate('Y-m-d (H:i:s)', $view['creation_date_int']) ?></span>
-                            </div>
-
-                        </div>
                         <?php
-
-                        $detail_routes = $this->getController('BookRoutes')->getDetailFlightOfReportRoute($view['request_number']);
-
-                        foreach ($detail_routes as $key_routes=>$item_routes) {
+                        if($key==0 && !empty($info_cancel_ticket) && TYPE_ADMIN ==1){
                             ?>
-                            <div class="row margin-both-vertical-20">
-                                <div class='col-md-12'>
-                                    <span class=" pull-left"> اطلاعات <?php  echo  ($key_routes == 'dept') ? 'رفت' : 'برگشت' ; ?> : </span>
+                            <div class="travel-info-card border-cancel">
+                                <div class="travel-card-header">
+                                    <div class="card-icon icon-cancel"><i class="fa fa-ban"></i></div>
+                                    <h5 class="card-title">اطلاعات کنسلی</h5>
                                 </div>
-                            </div>
-                            <?php
-                            foreach ($item_routes as $item_route) {
-                                ?>
-                                <div class="row margin-both-vertical-20">
-                                    <div class="col-md-4 ">
-                                        <span>مبدا /مقصد: </span>
-                                        <span>
-                                      <?php
-                                      echo $item_route['OriginCity'].'/'.$item_route['DestinationCity'] ;
-                                      ?>
-                                  </span>
+                                <div class="travel-card-grid">
+                                    <div class="grid-item">
+                                        <span class="label">اهمیت درصد کنسلی :</span>
+                                        <span class="value"><?php echo ($info_cancel_ticket[0]['PercentNoMatter'] == 'No' ? 'مهم نیست' : 'مهم هست') ?></span>
                                     </div>
-                                    <div class="col-md-4 ">
-                                        <span >ساعت و تاریخ حرکت:</span>
-                                        <span class="yn"><?php
-                                            echo functions::format_hour($item_route['DepartureTime']) . ' ' . functions::DateJalali($item_route['DepartureDate']); ?>
-                                  </span>
+                                    <div class="grid-item">
+                                        <span class="label">توضیحات مشتری :</span>
+                                        <span class="value"><?php echo ($info_cancel_ticket[0]['DescriptionClient']) ?></span>
                                     </div>
-                                    <div class="col-md-4 ">
-                                        <span class=>ساعت و تاریخ رسیدن:</span>
-                                        <span class="yn"><?php
-                                            echo functions::format_hour($item_route['ArrivalTime']) . ' ' . functions::DateJalali($item_route['ArrivalDate']); ?>
-                                  </span>
+                                    <div class="grid-item">
+                                        <span class="label">یادداشت :</span>
+                                        <span class="value"><?php echo ($info_cancel_ticket[0]['note_admin']) ?></span>
                                     </div>
                                 </div>
-                                <div class="row margin-both-vertical-20">
-                                    <div class="col-md-4 ">
-                                        <span>شناسه نرخی: </span>
-                                        <span>
-                                      <?php
-                                      echo $item_route['CabinType'] ;
-                                      ?>
-                                  </span>
-                                    </div>
-                                    <div class="col-md-4 ">
-                                        <span class=" pull-left22">شماره پرواز:</span>
-                                        <span class="yn"><?php
-                                            echo $item_route['FlightNumber']; ?>
-                                  </span>
-                                    </div>
-
-                                    <div class="col-md-4 ">
-                                        <span class="">نام ایرلاین:</span>
-                                        <span><?php
-                                            $airline_info = $this->getController('airline')->getByAbb($item_route['Airline_IATA']);
-                                            echo  $airline_info['name_fa']?>
-                                  </span>
-                                    </div>
-                                </div>
-                                <?php
-                            }
-                        }
-                    }else{
-                        ?>
-                        <div class="row margin-both-vertical-20">
-
-                            <div class="col-md-4">
-                                <span class=" ">تاریخ رزرو بلیط : </span>
-                                <span class="yn"
-                                      dir="ltr"><?php echo dateTimeSetting::jdate('Y-m-d (H:i:s)', $view['creation_date_int']) ?></span>
-                            </div>
-                            <?php
-
-
-                            if($type != 'bus' && $type != 'hotel' && $type != 'insurance'){ ?>
-
-                                <div class="col-md-4 ">
-                                    <span class="">شماره پرواز:</span>
-                                    <span class="yn"><?php echo $view['flight_number'] ?> </span>
-                                </div>
-                            <?php } ?>
-                            <?php  if($type == 'insurance'){ ?>
-
-                                <div class="col-md-4 ">
-                                    <span class="">شماره بیمه:</span>
-                                    <span class="yn"><?php echo $view['pnr'] ?> </span>
-                                </div>
-                            <?php } ?>
-                            <?php  if($type == 'hotel' ){ ?>
-
-                                <div class="col-md-4 ">
-                                    <span class="">کد پیگیری:</span>
-                                    <span class="yn"><?php echo $view['pnr'] ?> </span>
-                                </div>
-                            <?php } ?>
-                            <?php  if($type != 'bus'){ ?>
-                                <div class="col-md-4">
-
-                                    <span>شماره واچر :</span>
-                                    <span class="yn"><?php echo $requestNumber ?></span>
-                                </div>
-                            <?php } ?>
-                        </div>
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-4 ">
-                                <span>مبدا /مقصد: </span>
-                                <span><?php
-
-
-                                    if($type == 'bus'){
-                                        echo $view['OriginName']. '/' . $view['DestinationName'];
-                                    }
-                                    else if($type == 'insurance'){
-                                        echo $view['destination'];
-                                    }else if($type == 'hotel'){
-                                        echo $view['city_name'] . '/ هتل ' . $view['hotel_name'];
-                                    }else{
-                                        if ($typeFlight) {
-                                            echo $view['origin_city'] . '/' . $view['desti_city'];
-                                        } else {
-                                            echo $view['Departure_City'] . '/' . $view['Arrival_City'];
-                                        }
-
-
-                                    }
-
-
-
-                                    ?>
-									</span>
-                            </div>
-                            <div class="col-md-4 ">
-                                <span>تعداد :</span>
-                                <span><?php echo $view['CountTicket']; ?></span>
-                            </div>
-                            <?php if($type != 'hotel' && $type != 'insurance'){ ?>
-                                <div class="col-md-4 ">
-                                    <span class="">ساعت و تاریخ حرکت:</span>
-                                    <span class="yn"><?php
-
-
-                                        if($type == 'bus'){
-                                            echo $view['TimeMove']. '<span class="border-left border mx-2"></span>' . $view['DateMove'];
-                                        }else{
-
-
-                                            if ($typeFlight) {
-                                                echo functions::format_hour($view['time_flight']) . ' ' . functions::DateJalali($view['date_flight']);
-                                            } else {
-                                                echo functions::format_hour($view['ExitTime']) . ' ' . functions::DateJalali($view['ExitDate']);
-                                            }
-
-
-                                        }
-
-
-
-
-
-                                        ?> </span>
-
-                                </div>
-                            <?php  } ?>
-                        </div>
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-4 ">
-                                <?php
-                                if ($typeFlight) {
-                                    ?>
-                                    <span>نام ایرلاین/شناسه نرخی :</span>
-                                    <span><?php echo $view['airline_name'] ?>/<?php echo $view['cabin_type']; ?></span>
-
-                                    <?php
-                                } else {
-                                    if($type == 'bus'){?>
-                                        <span>نام شرکت مسافربری :</span>
-                                        <span>
-                                        <?php echo $view['CompanyName'] ?>
-									</span>
-
-                                        <?php
-                                    }
-                                    ?>
-
-
-                                    <?php
-                                }
-                                ?>
-                            </div>
-                            <?php
-                            if ($typeFlight) { ?>
-                                <div class="col-md-4 ">
-                                    <span class="">کلاس پرواز: </span>
-                                    <span><?php echo ($view['seat_class'] == 'C' || $view['seat_class'] == 'B') ? 'بیزینس' : 'اکونومی' ?></span>
-                                </div>
-
-
-                                <div class="col-md-4 ">
-                                    <span>نوع پروازی: </span>
-                                    <span> <?php
-                                        if ($view['flight_type'] == 'system') {
-                                            if ($view['pid_private'] == '1') {
-                                                echo 'سیستمی اختصاصی';
-                                            } else {
-
-                                                echo 'سیستمی اشتراکی';
-                                            }
-                                        } else if ($view['flight_type'] == 'charter') {
-                                            echo 'چارتری';
-                                        } else if ($view['flight_type'] == 'charterPrivate') {
-                                            echo 'چارتری اختصاصی';
-                                        }
-                                        ?> </span>
-                                </div>
-                                <?php
-                            }
-                            ?>
-                        </div>
-                        <?php
-                    }?>
-
-                    <div class="row margin-both-vertical-20">
-                        <?php
-                        if ($typeFlight) {
-                            if ($view['type_app'] != 'Reservation') { ?>
-
-
-                                <div class="col-md-4 ">
-                                    <span class="">شماره pnr :</span>
-                                    <span class="yn"><?php echo $view['pnr'] ?></span>
-                                </div>
-
-                            <?php }
-                        } else {
-
-
-                            if($type == 'bus'){
-                                ?>
-                                <span class="">شماره پی ان آر :</span>
-                                <span>
-                                        <?php echo $view['pnr'] ?>
-									</span>
-
-                                <?php
-                            }
-                            ?>
-
-
-
-                            <?php
-                        } ?>
-
-                        <div class="col-md-4 ">
-                            <span>مبلغ :</span>
-                            <span class="yn">
-                                <?php
-
-                                if ($typeFlight) {
-                                    $Tickets = functions::info_flight_client($requestNumber);
-
-                                    $totalPriceWithDiscount = 0;
-                                    if ($view['type_app'] != 'Reservation') {
-                                        list($totalPrice,$fare) = $objbook->total_price($view['request_number']);
-                                        if ($view['flight_type'] != 'system') {
-                                            $countTicket = $view['CountTicket'];
-                                            $totalPrice +=($countTicket * $view['irantech_commission']);
-                                        }
-                                        $totalPriceWithDiscount = functions::CalculateDiscount($view['request_number']);
-                                    } else {
-                                        if($type == 'bus') {
-
-                                            $totalPrice = $view['total_price'];
-                                        }else if ($type == 'insurance'){
-                                            $totalPrice = $view['base_price'];
-                                        }else if ($type == 'hotel'){
-                                            $totalPrice = $view['total_price'];
-                                        }
-
-                                        $totalPriceWithDiscount = 0;
-                                    }
-
-                                    if ($totalPriceWithDiscount > 0) {
-                                        echo '<span style="text-decoration: line-through;">' . number_format($totalPrice) . '</span>, ';
-                                        echo ' <span>' . number_format($totalPriceWithDiscount) . '</span>';
-                                    } else {
-                                        echo '<span>' . number_format($totalPrice) . '</span>';
-                                    }
-                                } else {
-
-
-
-                                    if($type == 'bus'){
-                                        $Tickets = $ticketsInfo;
-                                        echo number_format($view['total_price']);
-
-                                    }else if($type == 'insurance'){
-                                        echo number_format($view['base_price']);
-                                    }else if($type == 'hotel'){
-                                        echo number_format($view['total_price']);
-                                    }
-                                    else if($type == 'train'){
-                                        $Tickets = functions::info_train_directions($requestNumber);
-                                        $train = Load::controller('bookingTrain');
-                                        echo number_format($train->TotalPriceByFactorNumber($view['factor_number']));
-                                    }
-
-
-
-                                }
-                                ?></span> <span>ریال</span>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <?php if ($typeFlight && !empty($view['amount_added']) && $view['amount_added'] > 0) { ?>
-                            <div class="col-md-4">
-                                <span>مبلغ افزایش یافته توسط کانتر در بلیط :</span>
-                                <span><?php echo number_format($view['amount_added']); ?> ریال</span>
                             </div>
                         <?php } ?>
-                    </div>
 
-
-                    <?php
-                    if(!empty($view['special_discount_type']) && $view['special_discount_amount'] > 0){?>
-                        <div class="row">
-                            <div class="col-md-12 ">
-                                <span>کد تخفیف ویژه:</span>
-                                <span class="yn"><?php echo $view['special_discount_amount'] .($view['special_discount_type']=='cash' ? 'ریال' : 'درصد'); ?></span>
-                            </div>
-
-                        </div>
-                    <?php }
-                    if($type != 'bus'){
-                        $discountCodeInfo = $objDiscountCode->getDiscountCodeByFactor($view['factor_number']);
-                        if (!empty($discountCodeInfo) ) {
-                            ?>
-                            <div class="row">
-                                <div class="col-md-4 ">
-                                    <span>کد تخفیف:</span>
-                                    <span class="yn"><?php echo $discountCodeInfo['discountCode']; ?></span>
+                        <?php if ($key == 0) { ?>
+                            <!-- ===== CARD: مشخصات کاربر ===== -->
+                            <div class="travel-info-card border-user">
+                                <div class="travel-card-header">
+                                    <div class="card-icon icon-user"><i class="fa fa-user"></i></div>
+                                    <h5 class="card-title">مشخصات کاربر</h5>
                                 </div>
-                                <div class="col-md-4 ">
-                                    <span>قیمت پس از اعمال کد تخفیف</span>
-                                    <span class="yn"><?php echo number_format(($totalPriceWithDiscount > 0 ? $totalPriceWithDiscount : $totalPrice) - $discountCodeInfo['amount']); ?></span>
-                                    <span>ریال</span>
-                                </div>
-                            </div>
-                        <?php }
-                    } ?>
-
-                    <hr style="margin: 5px 0;"/>
-
-
-                    <?php }
-                    if($type != 'train'){ ?>
-
-                        <div class="row margin-top-10 margin-both-vertical-20">
-                            <div class="col-md-12 text-center text-bold " style="color: #fb002a;">
-                                <span>مشخصات مسافرین</span></div>
-                        </div>
-
-                        <?php
-
-                        if($type == 'hotel' ){
-                            $Tickets = $ticketsInfo;
-                        }
-
-
-                        foreach ($Tickets as $view) {
-
-                            ?>
-                            <div class="row modal-padding-bottom-15 margin-both-vertical-20" >
-                                <div class="col-md-4 ">
-                                    <span>نام فارسی:</span>
-                                    <span><?php echo $view['passenger_name'] . ' ' . $view['passenger_family'] . ' (' . $view['passportCountry'] . ') '; ?> </span>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <span class=" ">تولد شمسی:</span>
-                                    <span class="yn"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : '----' ?></span>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <span>شماره پاسپورت:</span>
-                                    <span class="yn"><?php echo !empty($view['passportNumber']) ? $view['passportNumber'] : '----' ?></span>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <span class=" ">شماره بلیط:</span>
-                                    <span class="yn"><?php echo !empty($view['eticket_number']) ? $view['eticket_number'] : '----' ?></span>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <span>نام انگلیسی:</span>
-                                    <span><?php echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en'] . ' (' . $view['passportCountry'] . ') '; ?> </span>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <span class=" ">تولد میلادی:</span>
-                                    <span class="yn"><?php echo !empty($view['passenger_birthday_en']) ? $view['passenger_birthday_en'] : '----' ?></span>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <span class="">انقضای پاسپورت:</span>
-                                    <span class="yn"><?php echo !empty($view['passportExpire']) ? $view['passportExpire'] : '----' ?></span>
-                                </div>
-                                <?php if ($typeFlight) {
-                                    ?>
-                                    <div class="col-md-4 ">
-
-                                        <span>هزینه بلیط:</span>
-                                        <?php
-
-                                        if ($view['percent_discount'] > 0) {
-                                            echo '<span class="yn"><span>' . number_format(functions::CalculatePriceTicketOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes')) . ' </span> </span> <span>ریال</span>';
-//                                  . number_format(functions::CalculateDiscountOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes'))
-                                        } else {
-                                            echo '<span class="yn">' . number_format(functions::CalculatePriceTicketOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes')) . '</span> <span>ریال</span>';
-                                        }
-
-
-                                        if ($view['request_cancel'] == 'confirm') {
-                                            echo '(<span style="color : red ;">کنسل شده</span>)';
-                                        }
-                                        ?>
+                                <div class="travel-card-grid">
+                                    <div class="grid-item">
+                                        <span class="label">نام و نام خانوادگی</span>
+                                        <span class="value"><?php echo $view['member_name'] ?></span>
                                     </div>
-                                    <?php
-                                } ?>
-                                <div class="col-md-4 ">
-                                    <span>شماره ملی:</span>
-                                    <span class="yn"><?php echo $view['passenger_national_code'] != '0000000000' ? $view['passenger_national_code'] : '----' ?><?php echo (!empty($array_national) && (in_array($view['passenger_national_code'],$array_national) || in_array($view['passportNumber'],$array_national))) ? '(<span style="color:red">کنسل شده</span>)' : '' ?> </span>
+                                    <div class="grid-item">
+                                        <span class="label">شماره تلفن موبایل</span>
+                                        <span class="value"><?php echo $view['member_mobile'] ?></span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="label">ایمیل</span>
+                                        <span class="value"><?php echo $view['member_email'] ?></span>
+                                    </div>
                                 </div>
-                                <!--							<div class="col-md-4 ">-->
-                                <!--								--><?php //if (TYPE_ADMIN == '1') {
-                                //									if ($view['flight_type'] == 'system') {
-                                //										?>
-                                <!--										<span>fare:</span>-->
-                                <!--										--><?php //if ($view['adt_price'] > 0) { ?>
-                                <!--											<span class="yn">--><?php //echo number_format($view['adt_fare']) ?><!--</span>-->
-                                <!--										--><?php //} elseif ($view['chd_price'] > 0) { ?>
-                                <!--											<span class="yn">--><?php //echo number_format($view['chd_fare'])  ?><!--</span>-->
-                                <!--										--><?php //} elseif ($view['inf_price'] > 0) { ?>
-                                <!--											<span class="yn">--><?php //echo number_format($view['inf_fare']) ?><!--</span>-->
-                                <!--										--><?php //}
-                                //									}
-                                //								} else {
-                                //									if ($view['flight_type'] == 'system' ) {
-                                //										?>
-                                <!---->
-                                <!--										<span>fare:</span>-->
-                                <!--										--><?php //if ($view['adt_price'] > 0) {
-                                //											if ($view['adt_fare'] > 0) {
-                                //												?>
-                                <!--												<span class="yn">--><?php //echo number_format($view['adt_fare']) ?><!--</span>-->
-                                <!--												--><?php
-                                //											} else {
-                                //												?>
-                                <!--												<span class="yn">--><?php //echo number_format(functions::calculateFareForOnePersonCustomer($view['adt_price'])) ?><!--</span>-->
-                                <!--												--><?php
-                                //											}
-                                //										} elseif ($view['chd_price'] > 0) {
-                                //											if ($view['chd_fare'] > 0) {
-                                //												?>
-                                <!--												<span class="yn">--><?php //echo number_format($view['chd_fare']) ?><!--</span>-->
-                                <!--												--><?php
-                                //											} else {
-                                //												?>
-                                <!--												<span class="yn">--><?php //echo number_format(functions::calculateFareForOnePersonCustomer($view['chd_price'])) ?><!--</span>-->
-                                <!--												--><?php
-                                //											}
-                                //										} elseif ($view['inf_price'] > 0) {
-                                //											if ($view['inf_fare'] > 0) {
-                                //												?>
-                                <!--												<span class="yn">--><?php //echo number_format($view['inf_fare']) ?><!--</span>-->
-                                <!--												--><?php
-                                //											} else {
-                                //												?>
-                                <!--												<span class="yn">--><?php //echo number_format(functions::calculateFareForOnePersonCustomer($view['inf_price'])) ?><!--</span>-->
-                                <!--												--><?php
-                                //											}
-                                //										}
-                                //									}
-                                //                           else { ?>
-                                <!--										<span>fare:</span>-->
-                                <!--                                        <span class="yn">--><?php //echo number_format($totalPrice) ?><!--</span>-->
-                                <!---->
-                                <!--                                    --><?php //	}
-                                //								} ?>
-                                <!--							</div>-->
                             </div>
 
+                            <!-- ===== CARD: اطلاعات خریدار ===== -->
+                            <div class="travel-info-card border-buyer">
+                                <div class="travel-card-header">
+                                    <div class="card-icon icon-buyer"><i class="fa fa-shopping-cart"></i></div>
+                                    <h5 class="card-title">اطلاعات خریدار</h5>
+                                </div>
+                                <div class="travel-card-grid">
+                                    <div class="grid-item">
+                                        <span class="label">شماره تماس</span>
+                                        <span class="value"><?php echo $view['mobile_buyer'] ?></span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="label">ایمیل</span>
+                                        <span class="value"><?php echo $view['email_buyer'] ?></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== CARD: مشخصات پرداخت ===== -->
+                            <div class="travel-info-card border-payment">
+                                <div class="travel-card-header">
+                                    <div class="card-icon icon-payment"><i class="fa fa-credit-card"></i></div>
+                                    <h5 class="card-title">مشخصات پرداخت</h5>
+                                </div>
+                                <div class="travel-card-grid">
+                                    <div class="grid-item">
+                                        <span class="label">تاریخ پرداخت</span>
+                                        <span class="value" dir="ltr"><?php echo($view['payment_date'] != '' ? functions::set_date_payment($view['payment_date']) : 'پرداخت نشده'); ?></span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="label">نوع پرداخت</span>
+                                        <span class="value"><?php echo ($view['payment_type'] == 'cash') ? 'نقدی' : 'اعتباری'; ?></span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="label">کد پیگیری بانک</span>
+                                        <span class="value"><?php echo !empty($view['tracking_code_bank']) ? $view['tracking_code_bank'] : 'ندارد' ?></span>
+                                    </div>
+                                    <?php if (TYPE_ADMIN == '1' && $view['payment_type'] == 'cash') { ?>
+                                        <div class="grid-item">
+                                            <span class="label">نام بانک</span>
+                                            <span class="value"><?php echo $objbook->namebank($view['name_bank_port'], $view['client_id']) ?></span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <span class="label">شماره درگاه</span>
+                                            <span class="value"><?php echo $objbook->numberPortBnak($view['name_bank_port'], $view['client_id']) ?></span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <span class="label">صاحب امتیاز درگاه</span>
+                                            <span class="value"><?php echo $objbook->numberPortBnak($view['name_bank_port'], $view['client_id']) == '379918' ? 'ایران تکنولوژی' : $objbook->nameAgency($view['client_id']) ?></span>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        <?php } ?>
+
+                        <!-- ===== CARD: مشخصات سفر ===== -->
+                        <div class="travel-info-card border-travel">
+                            <div class="travel-card-header">
+                                <div class="card-icon icon-travel"><i class="fa fa-map-marker"></i></div>
+                                <h5 class="card-title">مشخصات سفر</h5>
+                            </div>
+
+                            <?php if ($type == 'bus' && $view['direction'] == 'TwoWay') { ?>
+                                <div class="travel-card-grid">
+                                    <div class="grid-item full-width">
+                                        <span class="label">تاریخ رزرو بلیط</span>
+                                        <span class="value" dir="ltr"><?php echo dateTimeSetting::jdate('Y-m-d (H:i:s)', $view['creation_date_int']) ?></span>
+                                    </div>
+                                </div>
+                                <?php
+                                $detail_routes = $this->getController('BookRoutes')->getDetailFlightOfReportRoute($view['request_number']);
+                                foreach ($detail_routes as $key_routes=>$item_routes) { ?>
+                                    <div class="travel-sub-card">
+                                        <h6 class="travel-sub-title"><?php echo ($key_routes == 'dept') ? 'رفت' : 'برگشت'; ?></h6>
+                                        <?php foreach ($item_routes as $item_route) { ?>
+                                            <div class="travel-sub-grid">
+                                                <div class="sub-item">
+                                                    <span class="label">مبدا / مقصد</span>
+                                                    <span class="value"><?php echo $item_route['OriginCity'].'/'.$item_route['DestinationCity']; ?></span>
+                                                </div>
+                                                <div class="sub-item">
+                                                    <span class="label">ساعت و تاریخ حرکت</span>
+                                                    <span class="value" dir="ltr"><?php echo functions::format_hour($item_route['DepartureTime']) . ' ' . functions::DateJalali($item_route['DepartureDate']); ?></span>
+                                                </div>
+                                                <div class="sub-item">
+                                                    <span class="label">ساعت و تاریخ رسیدن</span>
+                                                    <span class="value" dir="ltr"><?php echo functions::format_hour($item_route['ArrivalTime']) . ' ' . functions::DateJalali($item_route['ArrivalDate']); ?></span>
+                                                </div>
+                                                <div class="sub-item">
+                                                    <span class="label">شناسه نرخی</span>
+                                                    <span class="value"><?php echo $item_route['CabinType']; ?></span>
+                                                </div>
+                                                <div class="sub-item">
+                                                    <span class="label">شماره پرواز</span>
+                                                    <span class="value"><?php echo $item_route['FlightNumber']; ?></span>
+                                                </div>
+                                                <div class="sub-item">
+                                                    <span class="label">نام ایرلاین</span>
+                                                    <span class="value"><?php $airline_info = $this->getController('airline')->getByAbb($item_route['Airline_IATA']); echo $airline_info['name_fa']; ?></span>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                <?php }
+                            } else { ?>
+                                <div class="travel-card-grid">
+                                    <div class="grid-item">
+                                        <span class="label">تاریخ رزرو بلیط</span>
+                                        <span class="value" dir="ltr"><?php echo dateTimeSetting::jdate('Y-m-d (H:i:s)', $view['creation_date_int']) ?></span>
+                                    </div>
+                                    <?php if($type != 'bus' && $type != 'hotel' && $type != 'insurance'){ ?>
+                                        <div class="grid-item">
+                                            <span class="label">شماره پرواز</span>
+                                            <span class="value"><?php echo $view['flight_number'] ?></span>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if($type == 'insurance'){ ?>
+                                        <div class="grid-item">
+                                            <span class="label">شماره بیمه</span>
+                                            <span class="value"><?php echo $view['pnr'] ?></span>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if($type == 'hotel'){ ?>
+                                        <div class="grid-item">
+                                            <span class="label">کد پیگیری</span>
+                                            <span class="value"><?php echo $view['pnr'] ?></span>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if($type != 'bus'){ ?>
+                                        <div class="grid-item">
+                                            <span class="label">شماره واچر</span>
+                                            <span class="value"><?php echo $requestNumber ?></span>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="grid-item">
+                                        <span class="label">مبدا / مقصد</span>
+                                        <span class="value"><?php
+                                            if($type == 'bus'){
+                                                echo $view['OriginName']. '/' . $view['DestinationName'];
+                                            } else if($type == 'insurance'){
+                                                echo $view['destination'];
+                                            } else if($type == 'hotel'){
+                                                echo $view['city_name'] . '/ هتل ' . $view['hotel_name'];
+                                            } else {
+                                                if ($typeFlight) {
+                                                    echo $view['origin_city'] . '/' . $view['desti_city'];
+                                                } else {
+                                                    echo $view['Departure_City'] . '/' . $view['Arrival_City'];
+                                                }
+                                            }
+                                            ?></span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="label">تعداد</span>
+                                        <span class="value"><?php echo $view['CountTicket']; ?></span>
+                                    </div>
+                                    <?php if($type != 'hotel' && $type != 'insurance'){ ?>
+                                        <div class="grid-item">
+                                            <span class="label">ساعت و تاریخ حرکت</span>
+                                            <span class="value" dir="ltr"><?php
+                                                if($type == 'bus'){
+                                                    echo $view['TimeMove']. ' ' . $view['DateMove'];
+                                                } else {
+                                                    if ($typeFlight) {
+                                                        echo functions::format_hour($view['time_flight']) . ' ' . functions::DateJalali($view['date_flight']);
+                                                    } else {
+                                                        echo functions::format_hour($view['ExitTime']) . ' ' . functions::DateJalali($view['ExitDate']);
+                                                    }
+                                                }
+                                                ?></span>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if ($typeFlight) { ?>
+                                        <div class="grid-item">
+                                            <span class="label">نام ایرلاین / شناسه نرخی</span>
+                                            <span class="value"><?php echo $view['airline_name'] . '/' . $view['cabin_type']; ?></span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <span class="label">کلاس پرواز</span>
+                                            <span class="value"><?php echo ($view['seat_class'] == 'C' || $view['seat_class'] == 'B') ? 'بیزینس' : 'اکونومی' ?></span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <span class="label">نوع پروازی</span>
+                                            <span class="value"><?php
+                                                if ($view['flight_type'] == 'system') {
+                                                    echo ($view['pid_private'] == '1') ? 'سیستمی اختصاصی' : 'سیستمی اشتراکی';
+                                                } else if ($view['flight_type'] == 'charter') {
+                                                    echo 'چارتری';
+                                                } else if ($view['flight_type'] == 'charterPrivate') {
+                                                    echo 'چارتری اختصاصی';
+                                                }
+                                                ?></span>
+                                        </div>
+                                        <?php if ($view['type_app'] != 'Reservation') { ?>
+                                            <div class="grid-item">
+                                                <span class="label">شماره رفرنس</span>
+                                                <span class="value"><?php echo $view['pnr'] ?></span>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <?php if($type == 'bus'){ ?>
+                                            <div class="grid-item">
+                                                <span class="label">شماره رفرنس</span>
+                                                <span class="value"><?php echo $view['pnr'] ?></span>
+                                            </div>
+                                            <div class="grid-item">
+                                                <span class="label">نام شرکت مسافربری</span>
+                                                <span class="value"><?php echo $view['CompanyName'] ?></span>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+
+                            <!-- ===== بخش قیمت ===== -->
+                            <?php if($type != 'train'){ ?>
+                                <div class="travel-price-section">
+                                    <div class="travel-price-item">
+                                        <span class="label">مبلغ</span>
+                                        <span class="value price">
+                                        <?php
+                                        if ($typeFlight) {
+                                            $Tickets = functions::info_flight_client($requestNumber);
+                                            $totalPriceWithDiscount = 0;
+                                            if ($view['type_app'] != 'Reservation') {
+                                                list($totalPrice,$fare) = $objbook->total_price($view['request_number']);
+                                                if ($view['flight_type'] != 'system') {
+                                                    $countTicket = $view['CountTicket'];
+                                                    $totalPrice += ($countTicket * $view['irantech_commission']);
+                                                }
+                                                $totalPriceWithDiscount = functions::CalculateDiscount($view['request_number']);
+                                            } else {
+                                                if($type == 'bus') {
+                                                    $totalPrice = $view['total_price'];
+                                                } else if ($type == 'insurance'){
+                                                    $totalPrice = $view['base_price'];
+                                                } else if ($type == 'hotel'){
+                                                    $totalPrice = $view['total_price'];
+                                                }
+                                                $totalPriceWithDiscount = 0;
+                                            }
+                                            if ($totalPriceWithDiscount > 0) {
+                                                echo '<span class="old-price">' . number_format($totalPrice) . '</span> <span class="new-price">' . number_format($totalPriceWithDiscount) . '</span>';
+                                            } else {
+                                                echo '<span>' . number_format($totalPrice) . '</span>';
+                                            }
+                                        } else {
+                                            if($type == 'bus'){
+                                                echo number_format($view['total_price']);
+                                            } else if($type == 'insurance'){
+                                                echo number_format($view['base_price']);
+                                            } else if($type == 'hotel'){
+                                                echo number_format($view['total_price']);
+                                            } else if($type == 'train'){
+                                                $train = Load::controller('bookingTrain');
+                                                echo number_format($train->TotalPriceByFactorNumber($view['factor_number']));
+                                            }
+                                        }
+                                        ?> ریال
+                                    </span>
+                                    </div>
+                                    <?php if ($typeFlight && !empty($view['amount_added']) && $view['amount_added'] > 0) { ?>
+                                        <div class="travel-price-item">
+                                            <span class="label">مبلغ افزایش یافته توسط کانتر</span>
+                                            <span class="value"><?php echo number_format($view['amount_added']); ?> ریال</span>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if(!empty($view['special_discount_type']) && $view['special_discount_amount'] > 0){ ?>
+                                        <div class="travel-price-item">
+                                            <span class="label">کد تخفیف ویژه</span>
+                                            <span class="value"><?php echo $view['special_discount_amount'] . ($view['special_discount_type']=='cash' ? ' ریال' : ' درصد'); ?></span>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if($type != 'bus'){
+                                        $discountCodeInfo = $objDiscountCode->getDiscountCodeByFactor($view['factor_number']);
+                                        if (!empty($discountCodeInfo)) { ?>
+                                            <div class="travel-price-item">
+                                                <span class="label">کد تخفیف</span>
+                                                <span class="value"><?php echo $discountCodeInfo['discountCode']; ?></span>
+                                            </div>
+                                            <div class="travel-price-item">
+                                                <span class="label">قیمت پس از اعمال کد تخفیف</span>
+                                                <span class="value"><?php echo number_format(($totalPriceWithDiscount > 0 ? $totalPriceWithDiscount : $totalPrice) - $discountCodeInfo['amount']); ?> ریال</span>
+                                            </div>
+                                        <?php }
+                                    } ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+
+                        <?php if($type != 'train'){ ?>
+                            <!-- ===== CARD: مشخصات مسافرین ===== -->
+                            <div class="travel-info-card border-passenger">
+                                <div class="travel-card-header">
+                                    <div class="card-icon icon-passenger"><i class="fa fa-users"></i></div>
+                                    <h5 class="card-title">مشخصات مسافرین</h5>
+                                </div>
+                                <?php
+                                if($type == 'hotel'){
+                                    $Tickets = $ticketsInfo;
+                                }
+                                foreach ($Tickets as $view) { ?>
+                                    <div class="passenger-item">
+                                        <div class="travel-card-grid">
+                                            <div class="grid-item">
+                                                <span class="label">نام فارسی</span>
+                                                <span class="value"><?php echo $view['passenger_name'] . ' ' . $view['passenger_family'] . '----'; ?></span>
+                                            </div>
+                                            <div class="grid-item">
+                                                <span class="label">تولد شمسی</span>
+                                                <span class="value" dir="ltr"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : '----' ?></span>
+                                            </div>
+                                            <div class="grid-item">
+                                                <span class="label">شماره پاسپورت</span>
+                                                <span class="value"><?php echo !empty($view['passportNumber']) ? $view['passportNumber'] : '----' ?></span>
+                                            </div>
+                                            <div class="grid-item">
+                                                <span class="label">شماره بلیط</span>
+                                                <span class="value"><?php echo !empty($view['eticket_number']) ? $view['eticket_number'] : '----' ?></span>
+                                            </div>
+                                            <div class="grid-item">
+                                                <span class="label">نام انگلیسی</span>
+                                                <span class="value"><?php echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en'] . ' (' . $view['passportCountry'] . ')'; ?></span>
+                                            </div>
+                                            <div class="grid-item">
+                                                <span class="label">تولد میلادی</span>
+                                                <span class="value" dir="ltr"><?php echo !empty($view['passenger_birthday_en']) ? $view['passenger_birthday_en'] : '----' ?></span>
+                                            </div>
+                                            <div class="grid-item">
+                                                <span class="label">انقضای پاسپورت</span>
+                                                <span class="value" dir="ltr"><?php echo !empty($view['passportExpire']) ? $view['passportExpire'] : '----' ?></span>
+                                            </div>
+                                            <?php if ($typeFlight) { ?>
+                                                <div class="grid-item">
+                                                    <span class="label">هزینه بلیط</span>
+                                                    <span class="value">
+                                                    <?php
+                                                    if ($view['percent_discount'] > 0) {
+                                                        echo number_format(functions::CalculatePriceTicketOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes'));
+                                                    } else {
+                                                        echo number_format(functions::CalculatePriceTicketOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes'));
+                                                    }
+                                                    if ($view['request_cancel'] == 'confirm') {
+                                                        echo ' <span class="cancel-badge">(کنسل شده)</span>';
+                                                    }
+                                                    ?> ریال
+                                                </span>
+                                                </div>
+                                            <?php } ?>
+                                            <div class="grid-item">
+                                                <span class="label">شماره ملی</span>
+                                                <span class="value"><?php echo $view['passenger_national_code'] != '0000000000' ? $view['passenger_national_code'] : '----' ?>
+                                                    <?php echo (!empty($array_national) && (in_array($view['passenger_national_code'],$array_national) || in_array($view['passportNumber'],$array_national))) ? ' <span class="cancel-badge">(کنسل شده)</span>' : '' ?>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
                         <?php } ?>
 
                         <div class="modal-footer site-bg-main-color"></div>
-                    <?php } ?>
-                </div>
-            </div>
 
-        </div>
-
-        <?php
-        }
-
-
-        public function ModalAddNote($RequestNumber, $ClientID) {
-            $objbook = Load::controller($this->Controller);
-            $noteList = $objbook->getAgencyNote($RequestNumber);
-            ?>
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <!-- سرفصل -->
-                    <div class="modal-header site-bg-main-color">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">یادداشت‌ها – درخواست <?php echo $RequestNumber; ?></h4>
                     </div>
+                </div>
 
-                    <!-- بدنه -->
-                    <div class="modal-body">
+            <?php } ?>
+        </div>
+        <?php
+    }
 
-                        <!-- فرم افزودن یادداشت جدید -->
-                        <form id="noteForm">
-                            <input type="hidden" name="request_number" value="<?php echo $RequestNumber; ?>">
-                            <input type="hidden" name="client_id" value="<?php echo $ClientID; ?>">
-                            <input type="hidden" name="flag" value="addAgencyNote">
 
-                            <div class="row margin-both-vertical-15">
-                                <div class="col-md-12">
-                                    <textarea name="new_note" class="form-control" rows="3" placeholder="متن یادداشت جدید را اینجا بنویسید..."></textarea>
-                                </div>
-                            </div>
+    public function ModalAddNote($RequestNumber, $ClientID) {
+        $objbook = Load::controller($this->Controller);
+        $noteList = $objbook->getAgencyNote($RequestNumber);
+        ?>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
 
-                            <div class="row margin-both-vertical-10">
-                                <div class="col-md-12 text-right mt-3 mb-3">
-                                    <button type="button" id="saveNote" class="btn btn-success">
-                                        <i class="fa fa-plus"></i> افزودن یادداشت
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                <!-- سرفصل -->
+                <div class="modal-header site-bg-main-color">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">یادداشت‌ها – درخواست <?php echo $RequestNumber; ?></h4>
+                </div>
 
-                        <!-- جدول نمایش یادداشت‌ها -->
-                        <div class="row margin-top-20">
+                <!-- بدنه -->
+                <div class="modal-body">
+
+                    <!-- فرم افزودن یادداشت جدید -->
+                    <form id="noteForm">
+                        <input type="hidden" name="request_number" value="<?php echo $RequestNumber; ?>">
+                        <input type="hidden" name="client_id" value="<?php echo $ClientID; ?>">
+                        <input type="hidden" name="flag" value="addAgencyNote">
+
+                        <div class="row margin-both-vertical-15">
                             <div class="col-md-12">
-                                <table class="table table-striped table-bordered" id="noteTable">
-                                    <thead>
-                                    <tr class="site-bg-main-color" style="color:#fff;">
-                                        <th style="width:20%;">تاریخ / ساعت</th>
-                                        <th>متن یادداشت</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php if (!empty($noteList)): ?>
-                                        <?php foreach ($noteList as $note): ?>
-                                            <tr>
-                                                <td><?php echo $note['created_at']; ?></td>
-                                                <td><?php echo $note['note']?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="2" class="text-center">یادداشتی موجود نیست.</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                    </tbody>
-                                </table>
+                                <textarea name="new_note" class="form-control" rows="3" placeholder="متن یادداشت جدید را اینجا بنویسید..."></textarea>
                             </div>
                         </div>
 
-                    </div>
+                        <div class="row margin-both-vertical-10">
+                            <div class="col-md-12 text-right mt-3 mb-3">
+                                <button type="button" id="saveNote" class="btn btn-success">
+                                    <i class="fa fa-plus"></i> افزودن یادداشت
+                                </button>
+                            </div>
+                        </div>
+                    </form>
 
-                    <!-- زیرنویس -->
-                    <div class="modal-footer site-bg-main-color">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                    <!-- جدول نمایش یادداشت‌ها -->
+                    <div class="row margin-top-20">
+                        <div class="col-md-12">
+                            <table class="table table-striped table-bordered" id="noteTable">
+                                <thead>
+                                <tr class="site-bg-main-color" style="color:#fff;">
+                                    <th style="width:20%;">تاریخ / ساعت</th>
+                                    <th>متن یادداشت</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php if (!empty($noteList)): ?>
+                                    <?php foreach ($noteList as $note): ?>
+                                        <tr>
+                                            <td><?php echo $note['created_at']; ?></td>
+                                            <td><?php echo $note['note']?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="2" class="text-center">یادداشتی موجود نیست.</td>
+                                    </tr>
+                                <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>
+
+                <!-- زیرنویس -->
+                <div class="modal-footer site-bg-main-color">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                </div>
+
             </div>
-            <script>
-                $(document).ready(function () {
-                    $('#saveNote').click(function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: amadeusPath + 'user_ajax.php',
-                            data: $('#noteForm').serialize(),
-                            success: function (response) {
-                                $.toast({
-                                    heading: 'یادداشت اضافه شد',
-                                    position: 'top-right',
-                                    loaderBg: '#fff',
-                                    icon: 'success',
-                                    hideAfter: 3500,
-                                    textAlign: 'right',
-                                    stack: 6
-                                });
-                                setTimeout(function () {
-                                    try {
-                                        // اگر response رشته باشه، parse کن
-                                        var notes = typeof response === 'string' ? JSON.parse(response) : response;
-                                        var rows = '';
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#saveNote').click(function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: amadeusPath + 'user_ajax.php',
+                        data: $('#noteForm').serialize(),
+                        success: function (response) {
+                            $.toast({
+                                heading: 'یادداشت اضافه شد',
+                                position: 'top-right',
+                                loaderBg: '#fff',
+                                icon: 'success',
+                                hideAfter: 3500,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                            setTimeout(function () {
+                                try {
+                                    // اگر response رشته باشه، parse کن
+                                    var notes = typeof response === 'string' ? JSON.parse(response) : response;
+                                    var rows = '';
 
-                                        if (notes.length > 0) {
-                                            $.each(notes, function (index, note) {
-                                                rows += '<tr>';
-                                                rows += '<td>' + note.created_at + '</td>';
-                                                rows += '<td>' + note.note + '</td>';
-                                                rows += '</tr>';
-                                            });
-                                        } else {
-                                            rows = '<tr><td colspan="2" class="text-center">یادداشتی موجود نیست.</td></tr>';
-                                        }
-
-                                        // ⬅️ آپدیت مستقیم tbody
-                                        $('#noteTable tbody').html(rows);
-
-                                        // پاک کردن تکست‌آریا
-                                        $('#noteForm textarea[name="new_note"]').val('');
-
-                                    } catch (e) {
-                                        console.error('خطا در پردازش داده:', e);
-                                        alert('خطایی در نمایش یادداشت‌ها رخ داد.');
+                                    if (notes.length > 0) {
+                                        $.each(notes, function (index, note) {
+                                            rows += '<tr>';
+                                            rows += '<td>' + note.created_at + '</td>';
+                                            rows += '<td>' + note.note + '</td>';
+                                            rows += '</tr>';
+                                        });
+                                    } else {
+                                        rows = '<tr><td colspan="2" class="text-center">یادداشتی موجود نیست.</td></tr>';
                                     }
-                                }, 1000);
-                            },
-                            error: function () {
-                                alert('خطا در ارسال یادداشت.');
-                            }
-                        });
+
+                                    // ⬅️ آپدیت مستقیم tbody
+                                    $('#noteTable tbody').html(rows);
+
+                                    // پاک کردن تکست‌آریا
+                                    $('#noteForm textarea[name="new_note"]').val('');
+
+                                } catch (e) {
+                                    console.error('خطا در پردازش داده:', e);
+                                    alert('خطایی در نمایش یادداشت‌ها رخ داد.');
+                                }
+                            }, 1000);
+                        },
+                        error: function () {
+                            alert('خطا در ارسال یادداشت.');
+                        }
                     });
-                })
-            </script>
+                });
+            })
+        </script>
 
 
-            <?php
-        }
-        public function ModalChat($params, $Type) {
+        <?php
+    }
+    public function ModalChat($params, $Type) {
 
-            $RequestNumber = $params['RequestNumber'];
-            $clientId = $params['clientId'];
+        $RequestNumber = $params['RequestNumber'];
+        $clientId = $params['clientId'];
 
-            // دریافت پیام‌ها
-            $objbook = Load::controller($this->Controller);
-            $messages = $objbook->getChatMessages($RequestNumber,$Type,true);
-            $isChatClosed = $objbook->getChatStatus($RequestNumber);
+        // دریافت پیام‌ها
+        $objbook = Load::controller($this->Controller);
+        $messages = $objbook->getChatMessages($RequestNumber,$Type,true);
+        $isChatClosed = $objbook->getChatStatus($RequestNumber);
 
 
-            $currentRole = TYPE_ADMIN == 1 ? 'admin_site' : 'admin_agency'; // admin_site | admin_agency
-            ?>
+        $currentRole = TYPE_ADMIN == 1 ? 'admin_site' : 'admin_agency'; // admin_site | admin_agency
+        ?>
 
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
 
-                    <!-- Header -->
-                    <div class="modal-header site-bg-main-color">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">چت – درخواست <?php echo $RequestNumber; ?></h4>
-                        <?php if ($currentRole == 'admin_site'): ?>
-                            <button id="toggleChatStatus" class="chat-lock-floating-btn"
-                                    title="<?php echo $isChatClosed ? 'باز کردن چت' : 'بستن چت'; ?>">
-                                <i class="fas fa-lock<?php echo $isChatClosed ? '-open' : ''; ?>"></i>
-                            </button>
-                        <?php endif; ?>
+                <!-- Header -->
+                <div class="modal-header site-bg-main-color">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">چت – درخواست <?php echo $RequestNumber; ?></h4>
+                    <?php if ($currentRole == 'admin_site'): ?>
+                        <button id="toggleChatStatus" class="chat-lock-floating-btn"
+                                title="<?php echo $isChatClosed ? 'باز کردن چت' : 'بستن چت'; ?>">
+                            <i class="fas fa-lock<?php echo $isChatClosed ? '-open' : ''; ?>"></i>
+                        </button>
+                    <?php endif; ?>
 
-                    </div>
+                </div>
 
-                    <!-- Body -->
-                    <div class="modal-body" style="height:550px; overflow-y:auto; background:#f5f5f5;" id="chatBox">
+                <!-- Body -->
+                <div class="modal-body" style="height:550px; overflow-y:auto; background:#f5f5f5;" id="chatBox">
 
-                        <!-- لیست پیام‌ها -->
-                        <div id="chatMessages">
-                            <?php if (!empty($messages)): ?>
-                                <?php foreach ($messages as $msg): ?>
+                    <!-- لیست پیام‌ها -->
+                    <div id="chatMessages">
+                        <?php if (!empty($messages)): ?>
+                            <?php foreach ($messages as $msg): ?>
 
-                                    <?php
-                                    $isNotMine = ($msg['sender_role'] != $currentRole);
-                                    $side = $isNotMine ? "right" : "left";
-                                    $bubbleColor = $msg['sender_role'] == 'admin_site' ? '#f03c52' : "#ffffff";
-                                    $align = $isNotMine ? "text-right" : "text-left";
+                                <?php
+                                $isNotMine = ($msg['sender_role'] != $currentRole);
+                                $side = $isNotMine ? "right" : "left";
+                                $bubbleColor = $msg['sender_role'] == 'admin_site' ? '#f03c52' : "#ffffff";
+                                $align = $isNotMine ? "text-right" : "text-left";
 
-                                    // وضعیت تیک
-                                    $tick = "";
-                                    if (!$isNotMine) {
-                                        if ($msg['is_seen'] == 1) {
-                                            $tick = '<i class="fa fa-check-double" style="color:#0b87ff;"></i>';
-                                        } else {
-                                            $tick = '<i class="fa fa-check"></i>';
-                                        }
+                                // وضعیت تیک
+                                $tick = "";
+                                if (!$isNotMine) {
+                                    if ($msg['is_seen'] == 1) {
+                                        $tick = '<i class="fa fa-check-double" style="color:#0b87ff;"></i>';
+                                    } else {
+                                        $tick = '<i class="fa fa-check"></i>';
                                     }
-                                    ?>
+                                }
+                                ?>
 
-                                    <div class="row margin-10">
-                                        <div class="col-md-12 <?php echo $align; ?>">
+                                <div class="row margin-10">
+                                    <div class="col-md-12 <?php echo $align; ?>">
 
-                                            <div class="chat-bubble-container">
+                                        <div class="chat-bubble-container">
 
-                                                <?php if (!$isNotMine): ?>
-                                                    <div class="delete-message-btn" data-message-id="<?php echo $msg['id']; ?>">×</div>
-                                                <?php endif; ?>
+                                            <?php if (!$isNotMine): ?>
+                                                <div class="delete-message-btn" data-message-id="<?php echo $msg['id']; ?>">×</div>
+                                            <?php endif; ?>
 
-                                                <div class="reply-message-btn"
-                                                     data-message-id="<?php echo $msg['id']; ?>"
-                                                     data-message-text="<?php echo htmlspecialchars(mb_substr($msg['message'],0,50)); ?>">
-                                                    ↩
-                                                </div>
+                                            <div class="reply-message-btn"
+                                                 data-message-id="<?php echo $msg['id']; ?>"
+                                                 data-message-text="<?php echo htmlspecialchars(mb_substr($msg['message'],0,50)); ?>">
+                                                ↩
+                                            </div>
 
-                                                <div class="chat-bubble <?php echo ($msg['sender_role']=='admin_site'?'admin-site':''); ?>"
-                                                     style="background:<?php echo $bubbleColor ?>;">
+                                            <div class="chat-bubble <?php echo ($msg['sender_role']=='admin_site'?'admin-site':''); ?>"
+                                                 style="background:<?php echo $bubbleColor ?>;">
 
 
-                                                    <?php if (!empty($msg['parent_id'])): ?>
-                                                        <?php
-                                                        $parent = $objbook->getMessageById($msg['parent_id']);
-                                                        if ($parent):
-                                                            ?>
-                                                            <div class="reply-box" style="
+                                                <?php if (!empty($msg['parent_id'])): ?>
+                                                    <?php
+                                                    $parent = $objbook->getMessageById($msg['parent_id']);
+                                                    if ($parent):
+                                                        ?>
+                                                        <div class="reply-box" style="
                                                                     background:#ffd6dc;
                                                                     border-right:3px solid #ff8fa0;
                                                                     padding: 6px 10px;
@@ -1950,1212 +1614,1212 @@ public function ModalShowBook($Param, $type) {
                                                                     border-radius: 6px;
                                                                     color:#b03d52;
                                                                 ">
-                                                                <?php echo htmlspecialchars(mb_substr($parent['message'], 0, 70)); ?>...
-                                                            </div>
+                                                            <?php echo htmlspecialchars(mb_substr($parent['message'], 0, 70)); ?>...
+                                                        </div>
 
-                                                        <?php endif; ?>
                                                     <?php endif; ?>
+                                                <?php endif; ?>
 
-                                                    <!-- متن اصلی پیام -->
-                                                    <div><?php echo nl2br($msg['message']); ?></div>
+                                                <!-- متن اصلی پیام -->
+                                                <div><?php echo nl2br($msg['message']); ?></div>
 
-                                                    <div class="meta">
-                                                        <?php echo $msg['created_at']; ?>
-                                                        &nbsp;&nbsp;<?php echo $tick; ?>
-                                                    </div>
-
+                                                <div class="meta">
+                                                    <?php echo $msg['created_at']; ?>
+                                                    &nbsp;&nbsp;<?php echo $tick; ?>
                                                 </div>
 
                                             </div>
+
                                         </div>
                                     </div>
-
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </div>
-
-
-                    </div>
-
-                    <!-- Footer (send box) -->
-                    <div class="modal-footer" style="direction:rtl; background:#fff;">
-
-                        <?php if (!$isChatClosed || $currentRole == 'admin_site'): // اگر چت بسته نیست، فرم ارسال را نمایش بده ?>
-                            <form id="chatForm" style="width:100%;">
-                                <input type="hidden" name="request_number" value="<?php echo $RequestNumber; ?>">
-                                <input type="hidden" name="type" value="<?php echo $Type; ?>">
-                                <input type="hidden" name="client_id" value="<?php echo $clientId; ?>">
-                                <input type="hidden" name="flag" value="sendChatMessage">
-                                <div id="replyPreview"
-                                     style="display:none; padding:6px 10px; background:#eef7ff; border-right:3px solid #0b87ff; margin-bottom:8px; border-radius:5px;">
-                                    <span id="replyText"></span>
-                                    <span id="cancelReply" style="float:left; cursor:pointer; color:red; font-weight:bold;">×</span>
-                                    <input type="hidden" name="parent_id" id="parent_id" value="">
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-10">
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+
+
+                </div>
+
+                <!-- Footer (send box) -->
+                <div class="modal-footer" style="direction:rtl; background:#fff;">
+
+                    <?php if (!$isChatClosed || $currentRole == 'admin_site'): // اگر چت بسته نیست، فرم ارسال را نمایش بده ?>
+                        <form id="chatForm" style="width:100%;">
+                            <input type="hidden" name="request_number" value="<?php echo $RequestNumber; ?>">
+                            <input type="hidden" name="type" value="<?php echo $Type; ?>">
+                            <input type="hidden" name="client_id" value="<?php echo $clientId; ?>">
+                            <input type="hidden" name="flag" value="sendChatMessage">
+                            <div id="replyPreview"
+                                 style="display:none; padding:6px 10px; background:#eef7ff; border-right:3px solid #0b87ff; margin-bottom:8px; border-radius:5px;">
+                                <span id="replyText"></span>
+                                <span id="cancelReply" style="float:left; cursor:pointer; color:red; font-weight:bold;">×</span>
+                                <input type="hidden" name="parent_id" id="parent_id" value="">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
                                     <textarea name="message" class="form-control custom-textarea" rows="1"
                                               placeholder="پیام خود را بنویسید..." style="resize:none;"></textarea>
-                                    </div>
+                                </div>
 
-                                    <button id="sendMessage" class="custom-send-button" type="button">
+                                <button id="sendMessage" class="custom-send-button" type="button">
                                                             <span class="send-content">
                                                                 <i class="fas fa-paper-plane icon"></i>
                                                                 ارسال
                                                             </span>
-                                        <span class="send-loading"></span>
-                                    </button>
+                                    <span class="send-loading"></span>
+                                </button>
 
-                                </div>
-                            </form>
-                        <?php else: // اگر چت بسته است، پیام و دکمه بستن را نمایش بده ?>
-                            <div class="row w-100">
-                                <div class="col-md-12 text-center">
-                                    <p>چت توسط ادمین سایت بسته شده است.</p>
-                                </div>
                             </div>
-                        <?php endif; ?>
-
-                    </div>
+                        </form>
+                    <?php else: // اگر چت بسته است، پیام و دکمه بستن را نمایش بده ?>
+                        <div class="row w-100">
+                            <div class="col-md-12 text-center">
+                                <p>چت توسط ادمین سایت بسته شده است.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
                 </div>
+
             </div>
-            <style>
-                #sendMessage {
-                    position: relative;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 6px;
+        </div>
+        <style>
+            #sendMessage {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+            }
+
+            /* محتوای اصلی دکمه */
+            #sendMessage .send-content {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            /* لودینگ */
+            #sendMessage .send-loading {
+                display: none;
+                width: 18px;
+                height: 18px;
+                border: 3px solid #fff;
+                border-top: 3px solid #ff4f6d;
+                border-radius: 50%;
+                animation: spin 0.6s linear infinite;
+            }
+
+            @keyframes spin {
+                100% {
+                    transform: rotate(360deg);
                 }
+            }
 
-                /* محتوای اصلی دکمه */
-                #sendMessage .send-content {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 6px;
-                }
+            /* پیام‌های ادمین سایت */
+            .chat-bubble.admin-site {
+                background: #ffb3bd !important; /* قرمز ملایم */
+                border-right: 4px solid #ff4f6d;
+                position: relative;
+                padding-right: 40px !important;
+            }
 
-                /* لودینگ */
-                #sendMessage .send-loading {
-                    display: none;
-                    width: 18px;
-                    height: 18px;
-                    border: 3px solid #fff;
-                    border-top: 3px solid #ff4f6d;
-                    border-radius: 50%;
-                    animation: spin 0.6s linear infinite;
-                }
+            /* آیکن ادمین کنار پیام */
+            .chat-bubble.admin-site::before {
+                content: "∞";
+                position: absolute;
+                right: 0px;
+                top: -15px;
+                font-size: 50px;
+                font-weight: bold;
+                color: #ffffff;
+            }
 
-                @keyframes spin {
-                    100% {
-                        transform: rotate(360deg);
-                    }
-                }
+            .reply-message-btn {
+                position:absolute;
+                bottom:-5px;
+                right:-5px;
+                background:#007bff;
+                z-index: 3;
+                color:white;
+                width:18px;
+                height:18px;
+                border-radius:50%;
+                font-size:12px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                cursor:pointer;
+                opacity:0;
+                transition:.2s;
+            }
+            .chat-bubble-container:hover .reply-message-btn {
+                opacity:1;
+            }
 
-                /* پیام‌های ادمین سایت */
-                .chat-bubble.admin-site {
-                    background: #ffb3bd !important; /* قرمز ملایم */
-                    border-right: 4px solid #ff4f6d;
-                    position: relative;
-                    padding-right: 40px !important;
-                }
+            /* دکمه شناور مخصوص ادمین */
+            .chat-lock-floating-btn {
+                position: absolute;
+                bottom: -15px;
+                right: 20px;
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: none;
+                background: #ffffff;
+                color: #444;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+                cursor: pointer;
+                transition: all .25s ease;
+                z-index: 10;
+            }
 
-                /* آیکن ادمین کنار پیام */
-                .chat-bubble.admin-site::before {
-                    content: "∞";
-                    position: absolute;
-                    right: 0px;
-                    top: -15px;
-                    font-size: 50px;
-                    font-weight: bold;
-                    color: #ffffff;
-                }
+            /* افکت هاور */
+            .chat-lock-floating-btn:hover {
+                background: #f1f1f1;
+                transform: translateY(-2px);
+            }
 
-                .reply-message-btn {
-                    position:absolute;
-                    bottom:-5px;
-                    right:-5px;
-                    background:#007bff;
-                    z-index: 3;
-                    color:white;
-                    width:18px;
-                    height:18px;
-                    border-radius:50%;
-                    font-size:12px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    cursor:pointer;
-                    opacity:0;
-                    transition:.2s;
-                }
-                .chat-bubble-container:hover .reply-message-btn {
-                    opacity:1;
-                }
+            /* هدر برای قرارگیری بهتر دکمه */
+            .modal-header {
+                position: relative;
+                padding-bottom: 25px;
+            }
 
-                /* دکمه شناور مخصوص ادمین */
-                .chat-lock-floating-btn {
-                    position: absolute;
-                    bottom: -15px;
-                    right: 20px;
-                    width: 34px;
-                    height: 34px;
-                    border-radius: 50%;
-                    border: none;
-                    background: #ffffff;
-                    color: #444;
-                    font-size: 16px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-                    cursor: pointer;
-                    transition: all .25s ease;
-                    z-index: 10;
-                }
+            /* کانتینر کلی پیام */
+            .chat-bubble-container {
+                position: relative;
+                display: inline-block;
+                max-width: 70%;
+            }
 
-                /* افکت هاور */
-                .chat-lock-floating-btn:hover {
-                    background: #f1f1f1;
-                    transform: translateY(-2px);
-                }
+            /* خود حباب چت */
+            .chat-bubble {
+                padding: 10px 14px;
+                border-radius: 12px;
+                box-shadow: 0 0 4px rgba(0,0,0,0.1);
+                word-wrap: break-word;
+                text-align: right;
+            }
 
-                /* هدر برای قرارگیری بهتر دکمه */
-                .modal-header {
-                    position: relative;
-                    padding-bottom: 25px;
-                }
+            /* اطلاعات پایین پیام */
+            .chat-bubble .meta {
+                margin-top: 6px;
+                font-size: 11px;
+                color: #888;
+            }
 
-                /* کانتینر کلی پیام */
-                .chat-bubble-container {
-                    position: relative;
-                    display: inline-block;
-                    max-width: 70%;
-                }
+            /* دکمه × حذف */
+            .delete-message-btn {
+                position: absolute;
 
-                /* خود حباب چت */
-                .chat-bubble {
-                    padding: 10px 14px;
-                    border-radius: 12px;
-                    box-shadow: 0 0 4px rgba(0,0,0,0.1);
-                    word-wrap: break-word;
-                    text-align: right;
-                }
+                /* اگر پیام سمت راست است (user)، این را RIGHT کنید */
+                left: -7px;
 
-                /* اطلاعات پایین پیام */
-                .chat-bubble .meta {
-                    margin-top: 6px;
-                    font-size: 11px;
-                    color: #888;
-                }
+                top: -7px;
+                width: 18px;
+                height: 18px;
 
-                /* دکمه × حذف */
-                .delete-message-btn {
-                    position: absolute;
+                background: #ff4d4d;
+                color: white;
 
-                    /* اگر پیام سمت راست است (user)، این را RIGHT کنید */
-                    left: -7px;
+                border-radius: 50%;
+                font-size: 12px;
+                font-weight: bold;
 
-                    top: -7px;
-                    width: 18px;
-                    height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3;
+                opacity: 0;
+                visibility: hidden;
+                cursor: pointer;
 
-                    background: #ff4d4d;
-                    color: white;
+                transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+            }
 
-                    border-radius: 50%;
-                    font-size: 12px;
-                    font-weight: bold;
-
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 3;
-                    opacity: 0;
-                    visibility: hidden;
-                    cursor: pointer;
-
-                    transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
-                }
-
-                /* نمایش × هنگام هاور */
-                .chat-bubble-container:hover .delete-message-btn {
-                    opacity: 1;
-                    visibility: visible;
-                }
+            /* نمایش × هنگام هاور */
+            .chat-bubble-container:hover .delete-message-btn {
+                opacity: 1;
+                visibility: visible;
+            }
 
 
-                /* محدود کردن ارتفاع کلی مدال */
-                #chatModal .modal-dialog {
-                    max-height: 102vh; /* ارتفاع مدال نسبت به صفحه */
-                    margin: auto;     /* centering */
-                    display: flex;
-                    flex-direction: column;
-                }
+            /* محدود کردن ارتفاع کلی مدال */
+            #chatModal .modal-dialog {
+                max-height: 102vh; /* ارتفاع مدال نسبت به صفحه */
+                margin: auto;     /* centering */
+                display: flex;
+                flex-direction: column;
+            }
 
-                /* تنظیم داخلی مدال */
-                #chatModal .modal-content {
-                    max-height: 102vh;
-                    display: flex;
-                    flex-direction: column;
-                }
+            /* تنظیم داخلی مدال */
+            #chatModal .modal-content {
+                max-height: 102vh;
+                display: flex;
+                flex-direction: column;
+            }
 
-                /* محدود کردن بخش بدنه برای جلوگیری از اسکرول کل مدال */
-                #chatModal .modal-body {
-                    overflow-y: auto;
-                    max-height: calc(102vh - 130px);
-                }
+            /* محدود کردن بخش بدنه برای جلوگیری از اسکرول کل مدال */
+            #chatModal .modal-body {
+                overflow-y: auto;
+                max-height: calc(102vh - 130px);
+            }
 
-                /* باکس چت محدود و اسکرول دار */
-                #chatBox {
-                    max-height: 70vh;
-                    overflow-y: auto;
-                }
+            /* باکس چت محدود و اسکرول دار */
+            #chatBox {
+                max-height: 70vh;
+                overflow-y: auto;
+            }
 
-                /* استایل برای textarea */
-                textarea.custom-textarea {
-                    width: 100%;
-                    /* height: 60px; /* این خط را حذف می‌کنیم یا کامنت می‌کنیم */
-                    padding: 8px 15px; /* padding بالا و پایین را کمی کمتر تنظیم می‌کنیم */
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    font-size: 14px;
-                    color: #333;
-                    background-color: #f8f8f8;
-                    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-                    resize: none;
-                    outline: none;
-                    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-                    /* display: flex; /* این را برمی‌داریم */
-                    /* align-items: center; /* این را هم برمی‌داریم */
-                    /* min-height: 45px; /* یا این را هم حذف می‌کنیم و به padding تکیه می‌کنیم */
-                    min-height: 45px; /* فعلا نگهش می‌داریم، اما padding تعیین کننده اصلی خواهد بود */
-                    box-sizing: border-box;
-                    line-height: 1.5; /* ارتفاع خط را تنظیم می‌کنیم تا روی ارتفاع کلی تأثیر بگذارد */
-                    height: 45px; /* یک ارتفاع ثابت تعیین می‌کنیم که با padding هماهنگ باشد */
-                }
+            /* استایل برای textarea */
+            textarea.custom-textarea {
+                width: 100%;
+                /* height: 60px; /* این خط را حذف می‌کنیم یا کامنت می‌کنیم */
+                padding: 8px 15px; /* padding بالا و پایین را کمی کمتر تنظیم می‌کنیم */
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+                color: #333;
+                background-color: #f8f8f8;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+                resize: none;
+                outline: none;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                /* display: flex; /* این را برمی‌داریم */
+                /* align-items: center; /* این را هم برمی‌داریم */
+                /* min-height: 45px; /* یا این را هم حذف می‌کنیم و به padding تکیه می‌کنیم */
+                min-height: 45px; /* فعلا نگهش می‌داریم، اما padding تعیین کننده اصلی خواهد بود */
+                box-sizing: border-box;
+                line-height: 1.5; /* ارتفاع خط را تنظیم می‌کنیم تا روی ارتفاع کلی تأثیر بگذارد */
+                height: 45px; /* یک ارتفاع ثابت تعیین می‌کنیم که با padding هماهنگ باشد */
+            }
 
-                /* استایل برای دکمه ارسال */
-                button.custom-send-button {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 0 20px; /* padding افقی را نگه می‌داریم */
-                    /* padding: 12px 20px; /* padding قبلی */
-                    border: none;
-                    border-radius: 8px;
-                    background-color: #ff8095;
-                    color: white;
-                    font-size: 14px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
-                    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-                    text-decoration: none;
-                    height: 45px; /* ارتفاع دکمه را برابر textarea قرار می‌دهیم */
-                    box-sizing: border-box;
-                    margin-left: 10px !important;
-                }
+            /* استایل برای دکمه ارسال */
+            button.custom-send-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 20px; /* padding افقی را نگه می‌داریم */
+                /* padding: 12px 20px; /* padding قبلی */
+                border: none;
+                border-radius: 8px;
+                background-color: #ff8095;
+                color: white;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+                transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                text-decoration: none;
+                height: 45px; /* ارتفاع دکمه را برابر textarea قرار می‌دهیم */
+                box-sizing: border-box;
+                margin-left: 10px !important;
+            }
 
-                /* اگر از <a> استفاده می‌کنید */
-                a.custom-send-button {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 0 20px; /* padding افقی */
-                    /* padding: 12px 20px; */ /* padding قبلی */
-                    border-radius: 8px;
-                    background-color: #ff8095;
-                    color: white;
-                    font-size: 14px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-                    text-decoration: none;
-                    height: 45px; /* ارتفاع برابر textarea */
-                    box-sizing: border-box;
-                }
+            /* اگر از <a> استفاده می‌کنید */
+            a.custom-send-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 20px; /* padding افقی */
+                /* padding: 12px 20px; */ /* padding قبلی */
+                border-radius: 8px;
+                background-color: #ff8095;
+                color: white;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                text-decoration: none;
+                height: 45px; /* ارتفاع برابر textarea */
+                box-sizing: border-box;
+            }
 
 
 
-                /* برای اطمینان از اینکه کل ردیف (row) از Flexbox استفاده می‌کند */
-                .row {
-                    display: flex;
-                    align-items: stretch; /* این مورد ارتفاع را همسان می‌کند */
-                }
+            /* برای اطمینان از اینکه کل ردیف (row) از Flexbox استفاده می‌کند */
+            .row {
+                display: flex;
+                align-items: stretch; /* این مورد ارتفاع را همسان می‌کند */
+            }
 
-                /* تنظیم padding برای placeholder textarea */
-                textarea.custom-textarea::placeholder {
-                    color: #aaa;
-                    font-style: italic;
-                }
+            /* تنظیم padding برای placeholder textarea */
+            textarea.custom-textarea::placeholder {
+                color: #aaa;
+                font-style: italic;
+            }
 
-                /* استایل های هاور و اکتیو برای دکمه (مانند قبل) */
-                button.custom-send-button:hover,
-                a.custom-send-button:hover {
-                    background-color: #ff8095;
-                    transform: translateY(-2px);
-                }
+            /* استایل های هاور و اکتیو برای دکمه (مانند قبل) */
+            button.custom-send-button:hover,
+            a.custom-send-button:hover {
+                background-color: #ff8095;
+                transform: translateY(-2px);
+            }
 
-                button.custom-send-button:active,
-                a.custom-send-button:active {
-                    background-color: #ff8095;
-                    transform: translateY(0);
-                }
+            button.custom-send-button:active,
+            a.custom-send-button:active {
+                background-color: #ff8095;
+                transform: translateY(0);
+            }
 
-                .icon {
-                    margin-right: 8px;
-                    font-size: 1.1em;
-                }
+            .icon {
+                margin-right: 8px;
+                font-size: 1.1em;
+            }
 
-            </style>
+        </style>
 
-            <script>
-                function showLoadingBtn() {
-                    document.querySelector("#sendMessage .send-content").style.display = "none";
-                    document.querySelector("#sendMessage .send-loading").style.display = "inline-block";
-                    document.getElementById("sendMessage").disabled = true;
-                }
+        <script>
+            function showLoadingBtn() {
+                document.querySelector("#sendMessage .send-content").style.display = "none";
+                document.querySelector("#sendMessage .send-loading").style.display = "inline-block";
+                document.getElementById("sendMessage").disabled = true;
+            }
 
-                function hideLoadingBtn() {
-                    document.querySelector("#sendMessage .send-content").style.display = "inline-flex";
-                    document.querySelector("#sendMessage .send-loading").style.display = "none";
-                    document.getElementById("sendMessage").disabled = false;
-                }
+            function hideLoadingBtn() {
+                document.querySelector("#sendMessage .send-content").style.display = "inline-flex";
+                document.querySelector("#sendMessage .send-loading").style.display = "none";
+                document.getElementById("sendMessage").disabled = false;
+            }
 
-                // کلیک روی دکمه ریپلای
-                $(".reply-message-btn").on("click", function() {
+            // کلیک روی دکمه ریپلای
+            $(".reply-message-btn").on("click", function() {
 
-                    var msgId = $(this).data("message-id");
-                    var msgText = $(this).data("message-text");
+                var msgId = $(this).data("message-id");
+                var msgText = $(this).data("message-text");
 
-                    $("#parent_id").val(msgId);
-                    $("#replyText").text("پاسخ به: " + msgText + "...");
-                    $("#replyPreview").show();
+                $("#parent_id").val(msgId);
+                $("#replyText").text("پاسخ به: " + msgText + "...");
+                $("#replyPreview").show();
 
-                });
+            });
 
-                // لغو ریپلای
-                $("#cancelReply").on("click", function() {
-                    $("#parent_id").val("");
-                    $("#replyPreview").hide();
-                });
-                $(".reply-message-btn").off("click").on("click", function() {
-                    var msgId = $(this).data("message-id");
-                    var msgText = $(this).data("message-text");
+            // لغو ریپلای
+            $("#cancelReply").on("click", function() {
+                $("#parent_id").val("");
+                $("#replyPreview").hide();
+            });
+            $(".reply-message-btn").off("click").on("click", function() {
+                var msgId = $(this).data("message-id");
+                var msgText = $(this).data("message-text");
 
-                    $("#parent_id").val(msgId);
-                    $("#replyText").text("پاسخ به: " + msgText + "...");
-                    $("#replyPreview").show();
-                });
+                $("#parent_id").val(msgId);
+                $("#replyText").text("پاسخ به: " + msgText + "...");
+                $("#replyPreview").show();
+            });
 
 
-                $("#toggleChatStatus").on("click", function() {
+            $("#toggleChatStatus").on("click", function() {
 
-                    var btn = $(this);
-                    var icon = btn.find("i");
+                var btn = $(this);
+                var icon = btn.find("i");
 
-                    var requestNumber = "<?php echo $RequestNumber; ?>";
-                    var type = "<?php echo $Type; ?>";
+                var requestNumber = "<?php echo $RequestNumber; ?>";
+                var type = "<?php echo $Type; ?>";
 
-                    // تشخیص وضعیت فعلی از روی آیکون
-                    var isClosed = icon.hasClass("fa-lock");
-                    var newStatus = isClosed ? "closed" : "open";
+                // تشخیص وضعیت فعلی از روی آیکون
+                var isClosed = icon.hasClass("fa-lock");
+                var newStatus = isClosed ? "closed" : "open";
 
-                    $.ajax({
-                        type: "POST",
-                        url: amadeusPath + "user_ajax.php",
-                        data: {
-                            flag: "toggleChatStatus",
-                            request_number: requestNumber,
-                            new_status: newStatus
-                        },
-                        success: function(response) {
-                            if (response) {
+                $.ajax({
+                    type: "POST",
+                    url: amadeusPath + "user_ajax.php",
+                    data: {
+                        flag: "toggleChatStatus",
+                        request_number: requestNumber,
+                        new_status: newStatus
+                    },
+                    success: function(response) {
+                        if (response) {
 
-                                // تغییر آیکون بدون رفرش صفحه
-                                if (newStatus === "open") {
-                                    icon.removeClass("fa-lock-open").addClass("fa-lock");
-                                    btn.attr("title", "باز کردن چت");
-                                } else {
-                                    icon.removeClass("fa-lock").addClass("fa-lock-open");
-                                    btn.attr("title", "بستن چت");
-                                }
-
+                            // تغییر آیکون بدون رفرش صفحه
+                            if (newStatus === "open") {
+                                icon.removeClass("fa-lock-open").addClass("fa-lock");
+                                btn.attr("title", "باز کردن چت");
                             } else {
-                                alert("خطا در تغییر وضعیت چت");
+                                icon.removeClass("fa-lock").addClass("fa-lock-open");
+                                btn.attr("title", "بستن چت");
                             }
-                        }
-                    });
 
+                        } else {
+                            alert("خطا در تغییر وضعیت چت");
+                        }
+                    }
                 });
 
+            });
 
 
 
-                $("#closeChatButton").on("click", function() {
-                    var requestNumber = $(this).data("request-number");
-                    var type = $(this).data("type");
 
+            $("#closeChatButton").on("click", function() {
+                var requestNumber = $(this).data("request-number");
+                var type = $(this).data("type");
+
+                $.ajax({
+                    type: "POST",
+                    url: amadeusPath + "user_ajax.php", // URL مربوط به بستن چت
+                    data: {
+                        flag: "toggleChatStatus", // فلگ جدید برای بستن/باز کردن چت
+                        request_number: requestNumber,
+                        type: type,
+                        new_status: "open" // یا هر مقداری که وضعیت باز را نشان دهد
+                    },
+                    success: function(response) {
+                        if (response.success) { // فرض موفقیت آمیز بودن عملیات
+                            alert("چت با موفقیت باز شد. صفحه خود را تازه کنید.");
+                            // می‌توانید صفحه را رفرش کنید یا مودال را ببندید و دوباره باز کنید
+                            location.reload();
+                        } else {
+                            alert("خطا در باز کردن چت: " + (response.message || "خطای ناشناخته"));
+                        }
+                    },
+                    error: function() {
+                        alert("خطا در اتصال به سرور برای باز کردن چت.");
+                    }
+                });
+            });
+            // --- بخش JavaScript جدید ---
+
+            // تابع حذف پیام
+            $(".delete-message-btn").on("click", function() {
+                var messageId = $(this).data("message-id");
+                var confirmDelete = confirm("آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟");
+
+                if (confirmDelete) {
                     $.ajax({
                         type: "POST",
-                        url: amadeusPath + "user_ajax.php", // URL مربوط به بستن چت
+                        url: amadeusPath + "user_ajax.php", // یا URL مربوط به حذف پیام
                         data: {
-                            flag: "toggleChatStatus", // فلگ جدید برای بستن/باز کردن چت
-                            request_number: requestNumber,
-                            type: type,
-                            new_status: "open" // یا هر مقداری که وضعیت باز را نشان دهد
+                            flag: "deleteChatMessage",
+                            message_id: messageId
                         },
                         success: function(response) {
-                            if (response.success) { // فرض موفقیت آمیز بودن عملیات
-                                alert("چت با موفقیت باز شد. صفحه خود را تازه کنید.");
-                                // می‌توانید صفحه را رفرش کنید یا مودال را ببندید و دوباره باز کنید
-                                location.reload();
-                            } else {
-                                alert("خطا در باز کردن چت: " + (response.message || "خطای ناشناخته"));
+
+
+                            if (response) {
+                                $('div.delete-message-btn[data-message-id="' + messageId + '"]').closest('.row.margin-10').remove();
                             }
                         },
                         error: function() {
-                            alert("خطا در اتصال به سرور برای باز کردن چت.");
+                            alert("خطا در اتصال به سرور برای حذف پیام.");
                         }
                     });
-                });
-                // --- بخش JavaScript جدید ---
-
-                // تابع حذف پیام
-                $(".delete-message-btn").on("click", function() {
-                    var messageId = $(this).data("message-id");
-                    var confirmDelete = confirm("آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟");
-
-                    if (confirmDelete) {
-                        $.ajax({
-                            type: "POST",
-                            url: amadeusPath + "user_ajax.php", // یا URL مربوط به حذف پیام
-                            data: {
-                                flag: "deleteChatMessage",
-                                message_id: messageId
-                            },
-                            success: function(response) {
-
-
-                                if (response) {
-                                    $('div.delete-message-btn[data-message-id="' + messageId + '"]').closest('.row.margin-10').remove();
-                                }
-                            },
-                            error: function() {
-                                alert("خطا در اتصال به سرور برای حذف پیام.");
-                            }
-                        });
-                    }
-                });
-
-                // --- پایان بخش JavaScript جدید ---
-
-
-                // اسکرول به پایین هنگام باز شدن
-                function scrollChatBottom() {
-                    $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
                 }
-                scrollChatBottom();
+            });
 
-                // ارسال پیام
-                $("#sendMessage").click(function () {
-                    showLoadingBtn();
+            // --- پایان بخش JavaScript جدید ---
+
+
+            // اسکرول به پایین هنگام باز شدن
+            function scrollChatBottom() {
+                $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
+            }
+            scrollChatBottom();
+
+            // ارسال پیام
+            $("#sendMessage").click(function () {
+                showLoadingBtn();
+                $.ajax({
+                    type: "POST",
+                    url: amadeusPath + "user_ajax.php",
+                    data: $("#chatForm").serialize(),
+                    success: function (response) {
+                        hideLoadingBtn();
+                        $("#replyPreview").hide();
+                        var msgs = (typeof response === "string") ? JSON.parse(response) : response;
+
+                        var html = "";
+                        $.each(msgs, function (index, msg) {
+
+                            var isNotMine = (msg.sender_role !== "<?php echo $currentRole; ?>");
+                            var align = isNotMine ? "text-right" : "text-left";
+
+                            // رنگ پس‌زمینه بر اساس نقش
+                            var bubbleClass = "";
+                            var bubbleColor = "#ffffff"; // پیش‌فرض
+
+                            if (msg.sender_role === "admin_site") {
+                                bubbleClass = "admin-site"; // برای استایل قرمز و آیکن
+                                bubbleColor = "#ffe5e8";
+                            } else if (msg.sender_role === "admin_agency") {
+                                bubbleColor = "#ffffff";
+                            }
+
+                            // وضعیت تیک‌ها
+                            var tick = "";
+                            if (!isNotMine) {
+                                tick = msg.seen == 1
+                                    ? '<i class="fa fa-check-double" style="color:#0b87ff;"></i>'
+                                    : '<i class="fa fa-check"></i>';
+                            }
+
+                            // دکمه حذف
+                            var deleteBtn = "";
+                            if (!isNotMine) {
+                                deleteBtn = '<div class="delete-message-btn" data-message-id="' + msg.id + '">×</div>';
+                            }
+
+                            // دکمه ریپلای
+                            var replyBtn =
+                                '<div class="reply-message-btn" ' +
+                                'data-message-id="' + msg.id + '" ' +
+                                'data-message-text="' + msg.message.replace(/"/g, '&quot;') + '">' +
+                                '↩</div>';
+
+                            // ریپلای باکس
+                            var replyBox = "";
+                            if (msg.parent_id && msg.parent_text) {
+                                replyBox =
+                                    '<div class="reply-box" style="\
+                                         background:#ffd6dc;\
+                                        border-right:3px solid #ff8fa0;\
+                                        padding:6px 10px;\
+                                        margin-bottom:6px;\
+                                        font-size:12px;\
+                                        border-radius:5px;\
+                                        color:#b03d52;">'
+                                    + msg.parent_text +
+                                    '</div>';
+                            }
+
+                            // تولید HTML پیام
+                            html +=
+                                '<div class="row margin-10">' +
+                                '<div class="col-md-12 ' + align + '">' +
+                                '<div class="chat-bubble-container">' +
+                                deleteBtn +
+                                replyBtn +
+                                '<div class="chat-bubble ' + bubbleClass + '" style="background:' + bubbleColor + ';">' +
+                                replyBox +
+                                '<div>' + msg.message + '</div>' +
+                                '<div class="meta">' + msg.created_at + '&nbsp;&nbsp;' + tick + '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                        });
+
+                        $("#chatMessages").html(html);
+                        $("#chatForm textarea[name='message']").val("");
+                        scrollChatBottom();
+
+                        bindDeleteButtons();
+                        bindReplyButtons();
+                    }
+
+
+                });
+            });
+
+            function bindReplyButtons() {
+                $(".reply-message-btn").off("click").on("click", function () {
+
+                    // اطلاعات پیام والد
+                    let parentId = $(this).data("message-id");
+                    let parentAuthor = $(this).data("author") || "کاربر";
+                    let parentText = $(this).data("text") || "";
+
+                    // کوتاه‌سازی متن (اختیاری، فقط برای نمایش)
+                    if (parentText.length > 80) {
+                        parentText = parentText.substring(0, 80) + "...";
+                    }
+
+                    // ست‌کردن parent_id در فرم
+                    $("#parent_id").val(parentId);
+
+                    // نمایش باکس ریپلای بالا
+                    $("#replyPreview").show();
+                    $("#replyPreviewText").html(
+                        "<strong>" + parentAuthor + ":</strong> " + parentText
+                    );
+
+                    // اسکرول
+                    scrollChatBottom();
+                });
+
+                // لغو ریپلای
+                $("#cancelReply").off("click").on("click", function () {
+                    $("#parent_id").val("");       // حذف parent_id
+                    $("#replyPreview").hide();     // بستن باکس نمایش
+                    $("#replyPreviewText").html("");
+                });
+            }
+
+
+
+            function bindDeleteButtons() {
+                $(".delete-message-btn").off("click").on("click", function () {
+                    var messageId = $(this).data("message-id");
+
+                    if (!confirm("آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟")) return;
+
                     $.ajax({
                         type: "POST",
                         url: amadeusPath + "user_ajax.php",
-                        data: $("#chatForm").serialize(),
+                        data: {
+                            flag: "deleteChatMessage",
+                            message_id: messageId
+                        },
                         success: function (response) {
-                            hideLoadingBtn();
-                            $("#replyPreview").hide();
-                            var msgs = (typeof response === "string") ? JSON.parse(response) : response;
+                            if (response) {
+                                $('div.delete-message-btn[data-message-id="' + messageId + '"]').closest('.row.margin-10').remove();
 
-                            var html = "";
-                            $.each(msgs, function (index, msg) {
-
-                                var isNotMine = (msg.sender_role !== "<?php echo $currentRole; ?>");
-                                var align = isNotMine ? "text-right" : "text-left";
-
-                                // رنگ پس‌زمینه بر اساس نقش
-                                var bubbleClass = "";
-                                var bubbleColor = "#ffffff"; // پیش‌فرض
-
-                                if (msg.sender_role === "admin_site") {
-                                    bubbleClass = "admin-site"; // برای استایل قرمز و آیکن
-                                    bubbleColor = "#ffe5e8";
-                                } else if (msg.sender_role === "admin_agency") {
-                                    bubbleColor = "#ffffff";
-                                }
-
-                                // وضعیت تیک‌ها
-                                var tick = "";
-                                if (!isNotMine) {
-                                    tick = msg.seen == 1
-                                        ? '<i class="fa fa-check-double" style="color:#0b87ff;"></i>'
-                                        : '<i class="fa fa-check"></i>';
-                                }
-
-                                // دکمه حذف
-                                var deleteBtn = "";
-                                if (!isNotMine) {
-                                    deleteBtn = '<div class="delete-message-btn" data-message-id="' + msg.id + '">×</div>';
-                                }
-
-                                // دکمه ریپلای
-                                var replyBtn =
-                                    '<div class="reply-message-btn" ' +
-                                    'data-message-id="' + msg.id + '" ' +
-                                    'data-message-text="' + msg.message.replace(/"/g, '&quot;') + '">' +
-                                    '↩</div>';
-
-                                // ریپلای باکس
-                                var replyBox = "";
-                                if (msg.parent_id && msg.parent_text) {
-                                    replyBox =
-                                        '<div class="reply-box" style="\
-                                             background:#ffd6dc;\
-                                            border-right:3px solid #ff8fa0;\
-                                            padding:6px 10px;\
-                                            margin-bottom:6px;\
-                                            font-size:12px;\
-                                            border-radius:5px;\
-                                            color:#b03d52;">'
-                                        + msg.parent_text +
-                                        '</div>';
-                                }
-
-                                // تولید HTML پیام
-                                html +=
-                                    '<div class="row margin-10">' +
-                                    '<div class="col-md-12 ' + align + '">' +
-                                    '<div class="chat-bubble-container">' +
-                                    deleteBtn +
-                                    replyBtn +
-                                    '<div class="chat-bubble ' + bubbleClass + '" style="background:' + bubbleColor + ';">' +
-                                    replyBox +
-                                    '<div>' + msg.message + '</div>' +
-                                    '<div class="meta">' + msg.created_at + '&nbsp;&nbsp;' + tick + '</div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>';
-                            });
-
-                            $("#chatMessages").html(html);
-                            $("#chatForm textarea[name='message']").val("");
-                            scrollChatBottom();
-
-                            bindDeleteButtons();
-                            bindReplyButtons();
+                            }
                         }
-
-
                     });
                 });
+            }
+        </script>
 
-                function bindReplyButtons() {
-                    $(".reply-message-btn").off("click").on("click", function () {
-
-                        // اطلاعات پیام والد
-                        let parentId = $(this).data("message-id");
-                        let parentAuthor = $(this).data("author") || "کاربر";
-                        let parentText = $(this).data("text") || "";
-
-                        // کوتاه‌سازی متن (اختیاری، فقط برای نمایش)
-                        if (parentText.length > 80) {
-                            parentText = parentText.substring(0, 80) + "...";
-                        }
-
-                        // ست‌کردن parent_id در فرم
-                        $("#parent_id").val(parentId);
-
-                        // نمایش باکس ریپلای بالا
-                        $("#replyPreview").show();
-                        $("#replyPreviewText").html(
-                            "<strong>" + parentAuthor + ":</strong> " + parentText
-                        );
-
-                        // اسکرول
-                        scrollChatBottom();
-                    });
-
-                    // لغو ریپلای
-                    $("#cancelReply").off("click").on("click", function () {
-                        $("#parent_id").val("");       // حذف parent_id
-                        $("#replyPreview").hide();     // بستن باکس نمایش
-                        $("#replyPreviewText").html("");
-                    });
-                }
-
-
-
-                function bindDeleteButtons() {
-                    $(".delete-message-btn").off("click").on("click", function () {
-                        var messageId = $(this).data("message-id");
-
-                        if (!confirm("آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟")) return;
-
-                        $.ajax({
-                            type: "POST",
-                            url: amadeusPath + "user_ajax.php",
-                            data: {
-                                flag: "deleteChatMessage",
-                                message_id: messageId
-                            },
-                            success: function (response) {
-                                if (response) {
-                                    $('div.delete-message-btn[data-message-id="' + messageId + '"]').closest('.row.margin-10').remove();
-
-                                }
-                            }
-                        });
-                    });
-                }
-            </script>
-
-            <?php
-        }
+        <?php
+    }
 
 
 
 
-        public function ModalShowBookForExclusiveTour($Param, $type) {
-            $objbook = Load::controller($this->Controller);
-            $ticketsInfo = functions::info_exclusive_tour_directions($Param);
-            ?>
+    public function ModalShowBookForExclusiveTour($Param, $type) {
+        $objbook = Load::controller($this->Controller);
+        $ticketsInfo = functions::info_exclusive_tour_directions($Param);
+        ?>
 
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">جزئیات خرید تور</h4>
-                    </div>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">جزئیات خرید تور</h4>
+                </div>
 
-                    <div class="modal-body">
+                <div class="modal-body">
 
-                        <?php if (empty($ticketsInfo)) { ?>
-                            <div class="text-center" style="padding:20px; color:#999;">
-                                اطلاعاتی برای نمایش موجود نیست.
+                    <?php if (empty($ticketsInfo)) { ?>
+                        <div class="text-center" style="padding:20px; color:#999;">
+                            اطلاعاتی برای نمایش موجود نیست.
+                        </div>
+                    <?php } else { ?>
+
+                        <?php
+                        // اطلاعات اصلی تور/پرواز/هتل از اولین آیتم
+                        $first = $ticketsInfo[0];
+                        ?>
+
+                        <!-- مشخصات کاربر -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات کاربر</div>
+                            <div class="col-md-4"><strong>نام و نام خانوادگی:</strong> <?= isset($first['member_name']) ? $first['member_name'] : '-' ?></div>
+                            <div class="col-md-4"><strong>شماره موبایل:</strong> <?= isset($first['member_mobile']) ? $first['member_mobile'] : '-' ?></div>
+                            <div class="col-md-4"><strong>ایمیل:</strong> <?= isset($first['member_email']) ? $first['member_email'] : '-' ?></div>
+                        </div>
+
+                        <!-- مشخصات پرداخت -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات پرداخت</div>
+                            <div class="col-md-4"><strong>تاریخ پرداخت:</strong> <?= !empty($first['payment_date']) ? functions::set_date_payment($first['payment_date']) : 'پرداخت نشده' ?></div>
+                            <div class="col-md-4"><strong>نوع پرداخت:</strong>
+                                <?php
+                                if($first['payment_type']=='cash') echo 'نقدی';
+                                else if($first['payment_type']=='credit' || $first['payment_type']=='member_credit') echo 'اعتباری';
+                                else echo '-';
+                                ?>
                             </div>
-                        <?php } else { ?>
+                            <div class="col-md-4"><strong>کد پیگیری بانک:</strong> <?= !empty($first['tracking_code_bank']) ? $first['tracking_code_bank'] : '-' ?></div>
+                        </div>
 
-                            <?php
-                            // اطلاعات اصلی تور/پرواز/هتل از اولین آیتم
-                            $first = $ticketsInfo[0];
-                            ?>
+                        <!-- مشخصات رفت و برگشت -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات پرواز</div>
+                            <div class="col-md-4"><strong>مبدا / مقصد:</strong> <?= $first['desti_city'] ?> / <?= $first['origin_city'] ?></div>
+                            <div class="col-md-4"><strong>تاریخ و ساعت رفت:</strong> <?= implode('-', array_reverse(explode('-', $first['date_flight']))) . ' ' . $first['time_flight'] ?></div>
+                            <div class="col-md-4"><strong>نام ایرلاین:</strong> <?= $first['airline_name'].' ('.$first['airline_iata'].')' ?></div>
+                            <div class="col-md-4"><strong>تاریخ و ساعت برگشت:</strong> <?= implode('-', array_reverse(explode('-', $first['ret_date_flight']))) . ' ' . $first['ret_time_flight'] ?></div>
+                            <div class="col-md-4"><strong>نام ایرلاین برگشت:</strong> <?= $first['ret_airline_name'].' ('.$first['ret_airline_iata'].')' ?></div>
+                            <div class="col-md-4"><strong>کلاس پرواز:</strong> <?= $first['seat_class'] ?></div>
+                            <div class="col-md-4"><strong>شماره پرواز رفت:</strong> <?= $first['flight_number'] ?></div>
+                            <div class="col-md-4"><strong>شماره پرواز برگشت:</strong> <?= $first['ret_flight_number'] ?></div>
+                        </div>
 
-                            <!-- مشخصات کاربر -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات کاربر</div>
-                                <div class="col-md-4"><strong>نام و نام خانوادگی:</strong> <?= isset($first['member_name']) ? $first['member_name'] : '-' ?></div>
-                                <div class="col-md-4"><strong>شماره موبایل:</strong> <?= isset($first['member_mobile']) ? $first['member_mobile'] : '-' ?></div>
-                                <div class="col-md-4"><strong>ایمیل:</strong> <?= isset($first['member_email']) ? $first['member_email'] : '-' ?></div>
+                        <!-- مشخصات هتل و اتاق -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات هتل</div>
+                            <div class="col-md-4"><strong>نام هتل:</strong> <?= $first['hotel_name'] ?></div>
+                            <div class="col-md-4">
+                                <strong>اطلاعات اتاق:</strong>
+                                <?php
+                                $rooms = json_decode($first['room_info'], true);
+                                if(!empty($rooms)) {
+                                    echo '<ul style="list-style:none; padding-left:0; margin-top:10px;">';
+                                    foreach($rooms as $room){
+                                        echo '<li style="margin-bottom:8px; padding:8px; border:1px solid #cbd5e1; border-radius:6px; background:#f1f5f9;">';
+                                        echo '<strong>'.$room['name'].' ('.$room['Type'].')</strong> | ';
+                                        echo '<span class="fa fa-user"></span> '.$room['Children'].' | ';
+                                        echo '<span class="fa fa-child"></span> '.$room['Adults'];
+                                        echo '</li>';
+                                    }
+                                    echo '</ul>';
+                                } else { echo '-'; }
+                                ?>
+                            </div>
+                            <div class="col-md-4"><strong>تاریخ ورود:</strong> <?= implode('-', array_reverse(explode('-', $first['check_in']))) ?></div>
+                            <div class="col-md-4"><strong>تاریخ خروج:</strong> <?= implode('-', array_reverse(explode('-', $first['check_out']))) ?></div>
+                        </div>
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">
+                                تفریحات انتخاب‌شده
                             </div>
 
-                            <!-- مشخصات پرداخت -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات پرداخت</div>
-                                <div class="col-md-4"><strong>تاریخ پرداخت:</strong> <?= !empty($first['payment_date']) ? functions::set_date_payment($first['payment_date']) : 'پرداخت نشده' ?></div>
-                                <div class="col-md-4"><strong>نوع پرداخت:</strong>
-                                    <?php
-                                    if($first['payment_type']=='cash') echo 'نقدی';
-                                    else if($first['payment_type']=='credit' || $first['payment_type']=='member_credit') echo 'اعتباری';
-                                    else echo '-';
-                                    ?>
-                                </div>
-                                <div class="col-md-4"><strong>کد پیگیری بانک:</strong> <?= !empty($first['tracking_code_bank']) ? $first['tracking_code_bank'] : '-' ?></div>
-                            </div>
+                            <div class="col-md-12">
+                                <?php
+                                if (!empty($first['entertainment_data_json'])) {
 
-                            <!-- مشخصات رفت و برگشت -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات پرواز</div>
-                                <div class="col-md-4"><strong>مبدا / مقصد:</strong> <?= $first['desti_city'] ?> / <?= $first['origin_city'] ?></div>
-                                <div class="col-md-4"><strong>تاریخ و ساعت رفت:</strong> <?= implode('-', array_reverse(explode('-', $first['date_flight']))) . ' ' . $first['time_flight'] ?></div>
-                                <div class="col-md-4"><strong>نام ایرلاین:</strong> <?= $first['airline_name'].' ('.$first['airline_iata'].')' ?></div>
-                                <div class="col-md-4"><strong>تاریخ و ساعت برگشت:</strong> <?= implode('-', array_reverse(explode('-', $first['ret_date_flight']))) . ' ' . $first['ret_time_flight'] ?></div>
-                                <div class="col-md-4"><strong>نام ایرلاین برگشت:</strong> <?= $first['ret_airline_name'].' ('.$first['ret_airline_iata'].')' ?></div>
-                                <div class="col-md-4"><strong>کلاس پرواز:</strong> <?= $first['seat_class'] ?></div>
-                                <div class="col-md-4"><strong>شماره پرواز رفت:</strong> <?= $first['flight_number'] ?></div>
-                                <div class="col-md-4"><strong>شماره پرواز برگشت:</strong> <?= $first['ret_flight_number'] ?></div>
-                            </div>
+                                    $entData = json_decode($first['entertainment_data_json'], true);
 
-                            <!-- مشخصات هتل و اتاق -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات هتل</div>
-                                <div class="col-md-4"><strong>نام هتل:</strong> <?= $first['hotel_name'] ?></div>
-                                <div class="col-md-4">
-                                    <strong>اطلاعات اتاق:</strong>
-                                    <?php
-                                    $rooms = json_decode($first['room_info'], true);
-                                    if(!empty($rooms)) {
-                                        echo '<ul style="list-style:none; padding-left:0; margin-top:10px;">';
-                                        foreach($rooms as $room){
-                                            echo '<li style="margin-bottom:8px; padding:8px; border:1px solid #cbd5e1; border-radius:6px; background:#f1f5f9;">';
-                                            echo '<strong>'.$room['name'].' ('.$room['Type'].')</strong> | ';
-                                            echo '<span class="fa fa-user"></span> '.$room['Children'].' | ';
-                                            echo '<span class="fa fa-child"></span> '.$room['Adults'];
-                                            echo '</li>';
-                                        }
-                                        echo '</ul>';
-                                    } else { echo '-'; }
-                                    ?>
-                                </div>
-                                <div class="col-md-4"><strong>تاریخ ورود:</strong> <?= implode('-', array_reverse(explode('-', $first['check_in']))) ?></div>
-                                <div class="col-md-4"><strong>تاریخ خروج:</strong> <?= implode('-', array_reverse(explode('-', $first['check_out']))) ?></div>
-                            </div>
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">
-                                    تفریحات انتخاب‌شده
-                                </div>
+                                    if (is_array($entData) && count($entData)) {
 
-                                <div class="col-md-12">
-                                    <?php
-                                    if (!empty($first['entertainment_data_json'])) {
+                                        echo '<div class="ent-grid">';
 
-                                        $entData = json_decode($first['entertainment_data_json'], true);
+                                        foreach ($entData as $ent) {
 
-                                        if (is_array($entData) && count($entData)) {
+                                            $title = isset($ent['tourTitle']) && $ent['tourTitle'] != ''
+                                                ? $ent['tourTitle']
+                                                : 'تفریح';
 
-                                            echo '<div class="ent-grid">';
+                                            $price = isset($ent['final_price']) && $ent['final_price'] != ''
+                                                ? number_format($ent['final_price'])
+                                                : '0';
 
-                                            foreach ($entData as $ent) {
-
-                                                $title = isset($ent['tourTitle']) && $ent['tourTitle'] != ''
-                                                    ? $ent['tourTitle']
-                                                    : 'تفریح';
-
-                                                $price = isset($ent['final_price']) && $ent['final_price'] != ''
-                                                    ? number_format($ent['final_price'])
-                                                    : '0';
-
-                                                echo '<div class="ent-item">';
-                                                echo '<div class="ent-title">'.$title.'</div>';
-                                                echo '<div class="ent-price">'.$price.' تومان</div>';
-                                                echo '</div>';
-                                            }
-
+                                            echo '<div class="ent-item">';
+                                            echo '<div class="ent-title">'.$title.'</div>';
+                                            echo '<div class="ent-price">'.$price.' تومان</div>';
                                             echo '</div>';
-
-                                        } else {
-                                            echo '<span style="color:#888">بدون تفریح</span>';
                                         }
+
+                                        echo '</div>';
 
                                     } else {
                                         echo '<span style="color:#888">بدون تفریح</span>';
                                     }
-                                    ?>
-                                </div>
+
+                                } else {
+                                    echo '<span style="color:#888">بدون تفریح</span>';
+                                }
+                                ?>
                             </div>
+                        </div>
 
-                            <!-- مشخصات مسافران -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات مسافران</div>
+                        <!-- مشخصات مسافران -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات مسافران</div>
 
-                                <?php foreach($ticketsInfo as $passenger) { ?>
-                                    <div class="col-md-4" style="margin-bottom:10px;">
-                                        <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#eef2ff;">
-                                            <strong>نام و نام خانوادگی:</strong> <?= trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) != '' ? trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) : '-' ?><br>
+                            <?php foreach($ticketsInfo as $passenger) { ?>
+                                <div class="col-md-4" style="margin-bottom:10px;">
+                                    <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#eef2ff;">
+                                        <strong>نام و نام خانوادگی:</strong> <?= trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) != '' ? trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) : '-' ?><br>
 
-                                            <strong>تولد:</strong> <?= isset($passenger['passenger_birthday']) && $passenger['passenger_birthday'] != '' ? implode('-', array_reverse(explode('-', $passenger['passenger_birthday']))) : '-' ?><br>
+                                        <strong>تولد:</strong> <?= isset($passenger['passenger_birthday']) && $passenger['passenger_birthday'] != '' ? implode('-', array_reverse(explode('-', $passenger['passenger_birthday']))) : '-' ?><br>
 
-                                            <strong>کد ملی:</strong> <?= isset($passenger['passenger_national_code']) && $passenger['passenger_national_code'] != '' ? $passenger['passenger_national_code'] : '-' ?><br>
+                                        <strong>کد ملی:</strong> <?= isset($passenger['passenger_national_code']) && $passenger['passenger_national_code'] != '' ? $passenger['passenger_national_code'] : '-' ?><br>
 
-                                            <strong>شماره پاسپورت:</strong> <?= isset($passenger['passportNumber']) && $passenger['passportNumber'] != '' ? $passenger['passportNumber'] : '-' ?><br>
+                                        <strong>شماره پاسپورت:</strong> <?= isset($passenger['passportNumber']) && $passenger['passportNumber'] != '' ? $passenger['passportNumber'] : '-' ?><br>
 
-                                            <strong>رده سنی:</strong> <?= isset($passenger['passenger_age']) && $passenger['passenger_age'] != '' ? $passenger['passenger_age'] : '-' ?>
-                                        </div>
+                                        <strong>رده سنی:</strong> <?= isset($passenger['passenger_age']) && $passenger['passenger_age'] != '' ? $passenger['passenger_age'] : '-' ?>
                                     </div>
-                                <?php } ?>
-                            </div>
-                        <?php } ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
 
-                    </div>
-
-                    <div class="modal-footer site-bg-main-color"></div>
                 </div>
+
+                <div class="modal-footer site-bg-main-color"></div>
             </div>
+        </div>
 
-            <style>
-                .modal-content {
-                    border-radius: 10px;
-                    overflow: hidden;
-                    background: #ffffff;
-                    border: 1px solid #f87171; /* قرمز ملایم */
-                    box-shadow: 0 8px 20px rgba(248, 113, 113, 0.3);
-                }
+        <style>
+            .modal-content {
+                border-radius: 10px;
+                overflow: hidden;
+                background: #ffffff;
+                border: 1px solid #f87171; /* قرمز ملایم */
+                box-shadow: 0 8px 20px rgba(248, 113, 113, 0.3);
+            }
 
-                .modal-header {
-                    background: #f03c52; /* قرمز رسمی */
-                    color: #ffffff !important;
-                    padding: 15px 20px;
-                    border-bottom: 1px solid #b91c1c;
-                }
+            .modal-header {
+                background: #f03c52; /* قرمز رسمی */
+                color: #ffffff !important;
+                padding: 15px 20px;
+                border-bottom: 1px solid #b91c1c;
+            }
 
-                .modal-header .close {
-                    color: #ffffff;
-                    opacity: 1;
-                    font-size: 1.4rem;
-                }
+            .modal-header .close {
+                color: #ffffff;
+                opacity: 1;
+                font-size: 1.4rem;
+            }
 
-                .modal-title {
-                    font-weight: bold;
-                    font-size: 1.15rem;
-                    letter-spacing: 0.5px;
-                    color: #ffff;
-                }
+            .modal-title {
+                font-weight: bold;
+                font-size: 1.15rem;
+                letter-spacing: 0.5px;
+                color: #ffff;
+            }
 
-                .modal-body {
-                    background: #fff5f5; /* پس‌زمینه قرمز روشن */
-                    padding: 20px;
-                    max-height: 75vh;
-                    overflow-y: auto;
-                }
+            .modal-body {
+                background: #fff5f5; /* پس‌زمینه قرمز روشن */
+                padding: 20px;
+                max-height: 75vh;
+                overflow-y: auto;
+            }
 
-                .row.section-row {
-                    padding: 12px 15px;
-                    border-radius: 6px;
-                    background: #ffffff;
-                    border: 1px solid #f87171; /* خطوط قرمز */
-                    margin-bottom: 12px;
-                    transition: background 0.2s ease, transform 0.2s ease;
-                }
+            .row.section-row {
+                padding: 12px 15px;
+                border-radius: 6px;
+                background: #ffffff;
+                border: 1px solid #f87171; /* خطوط قرمز */
+                margin-bottom: 12px;
+                transition: background 0.2s ease, transform 0.2s ease;
+            }
 
-                .row.section-row:hover {
-                    background: #fee2e2; /* هایلایت روشن قرمز */
-                    transform: translateY(-2px);
-                }
+            .row.section-row:hover {
+                background: #fee2e2; /* هایلایت روشن قرمز */
+                transform: translateY(-2px);
+            }
 
-                .section-title {
-                    font-size: 1.05rem;
-                    margin-bottom: 10px;
-                    font-weight: 600;
-                    background: linear-gradient(to right, #f87171, #b91c1c);
-                }
+            .section-title {
+                font-size: 1.05rem;
+                margin-bottom: 10px;
+                font-weight: 600;
+                background: linear-gradient(to right, #f87171, #b91c1c);
+            }
 
-                hr {
-                    border: none;
-                    margin: 12px 0;
-                }
+            hr {
+                border: none;
+                margin: 12px 0;
+            }
 
-                .modal-footer {
-                    background: #f87171; /* پایینه رسمی قرمز */
-                    height: 12px;
-                    border-top: 1px solid #dc2626;
-                }
+            .modal-footer {
+                background: #f87171; /* پایینه رسمی قرمز */
+                height: 12px;
+                border-top: 1px solid #dc2626;
+            }
 
-                /* کارت مسافران */
-                .passenger-card {
-                    border: 1px solid #f87171;
-                    border-radius: 8px;
-                    padding: 12px;
-                    margin-bottom: 10px;
-                    background: #fff5f5;
-                    transition: background 0.2s ease, transform 0.2s ease;
-                }
+            /* کارت مسافران */
+            .passenger-card {
+                border: 1px solid #f87171;
+                border-radius: 8px;
+                padding: 12px;
+                margin-bottom: 10px;
+                background: #fff5f5;
+                transition: background 0.2s ease, transform 0.2s ease;
+            }
 
-                .passenger-card:hover {
-                    background: #fee2e2;
-                    transform: translateY(-2px);
-                }
+            .passenger-card:hover {
+                background: #fee2e2;
+                transform: translateY(-2px);
+            }
 
-                /* Scrollbar */
-                .modal-body::-webkit-scrollbar {
-                    width: 8px;
-                }
+            /* Scrollbar */
+            .modal-body::-webkit-scrollbar {
+                width: 8px;
+            }
 
-                .modal-body::-webkit-scrollbar-thumb {
-                    background: #f03c52;
-                    border-radius: 10px;
-                }
+            .modal-body::-webkit-scrollbar-thumb {
+                background: #f03c52;
+                border-radius: 10px;
+            }
 
-                .modal-body::-webkit-scrollbar-track {
-                    background: #ffe4e4;
-                }
+            .modal-body::-webkit-scrollbar-track {
+                background: #ffe4e4;
+            }
 
-                /* آیکون‌ها */
-                .fa-user, .fa-child {
-                    margin-right: 4px;
-                }
-                .ent-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                    gap: 12px;
-                }
+            /* آیکون‌ها */
+            .fa-user, .fa-child {
+                margin-right: 4px;
+            }
+            .ent-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 12px;
+            }
 
-                .ent-item {
-                    border: 1px solid #cbd5e1;
-                    border-radius: 8px;
-                    padding: 10px;
-                    background: #eef2ff;
-                    text-align: center;
-                }
+            .ent-item {
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                padding: 10px;
+                background: #eef2ff;
+                text-align: center;
+            }
 
-                .ent-title {
-                    font-weight: 600;
-                    margin-bottom: 6px;
-                }
+            .ent-title {
+                font-weight: 600;
+                margin-bottom: 6px;
+            }
 
-                .ent-price {
-                    font-size: 0.95rem;
-                    color: #14532d;
-                    font-weight: 500;
-                }
+            .ent-price {
+                font-size: 0.95rem;
+                color: #14532d;
+                font-weight: 500;
+            }
 
-                input::placeholder {
-                    color: #ccc !important;
-                }
+            input::placeholder {
+                color: #ccc !important;
+            }
 
-            </style>
-
-
-            <?php
-        }
+        </style>
 
 
+        <?php
+    }
 
 
-        public function ModalShowBookForCip($Param, $type) {
-            $objbook = Load::controller($this->Controller);
-            $ticketsInfo = functions::info_cip_directions($Param);
-            ?>
 
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">جزئیات خرید تشریفات فرودگاه</h4>
-                    </div>
 
-                    <div class="modal-body">
+    public function ModalShowBookForCip($Param, $type) {
+        $objbook = Load::controller($this->Controller);
+        $ticketsInfo = functions::info_cip_directions($Param);
+        ?>
 
-                        <?php if (empty($ticketsInfo)) { ?>
-                            <div class="text-center" style="padding:20px; color:#999;">
-                                اطلاعاتی برای نمایش موجود نیست.
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">جزئیات خرید تشریفات فرودگاه</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <?php if (empty($ticketsInfo)) { ?>
+                        <div class="text-center" style="padding:20px; color:#999;">
+                            اطلاعاتی برای نمایش موجود نیست.
+                        </div>
+                    <?php } else { ?>
+
+                        <?php
+                        // اطلاعات اصلی تور/پرواز/هتل از اولین آیتم
+                        $first = $ticketsInfo[0];
+                        ?>
+
+                        <!-- مشخصات کاربر -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات کاربر</div>
+                            <div class="col-md-4"><strong>نام و نام خانوادگی:</strong> <?= isset($first['member_name']) ? $first['member_name'] : '-' ?></div>
+                            <div class="col-md-4"><strong>شماره موبایل:</strong> <?= isset($first['member_mobile']) ? $first['member_mobile'] : '-' ?></div>
+                            <div class="col-md-4"><strong>ایمیل:</strong> <?= isset($first['member_email']) ? $first['member_email'] : '-' ?></div>
+                        </div>
+
+                        <!-- مشخصات پرداخت -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات پرداخت</div>
+                            <div class="col-md-4"><strong>تاریخ پرداخت:</strong> <?= !empty($first['payment_date']) ? functions::set_date_payment($first['payment_date']) : 'پرداخت نشده' ?></div>
+                            <div class="col-md-4"><strong>نوع پرداخت:</strong>
+                                <?php
+                                if($first['payment_type']=='cash') echo 'نقدی';
+                                else if($first['payment_type']=='credit' || $first['payment_type']=='member_credit') echo 'اعتباری';
+                                else echo '-';
+                                ?>
                             </div>
-                        <?php } else { ?>
+                            <div class="col-md-4"><strong>کد پیگیری بانک:</strong> <?= !empty($first['tracking_code_bank']) ? $first['tracking_code_bank'] : '-' ?></div>
+                        </div>
 
-                            <?php
-                            // اطلاعات اصلی تور/پرواز/هتل از اولین آیتم
-                            $first = $ticketsInfo[0];
-                            ?>
+                        <!-- مشخصات رفت و برگشت -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">اطلاعات سفر</div>
+                            <div class="col-md-4"><strong>تاریخ و ساعت :</strong> <?= $first['date_time'] ?></div>
+                            <div class="col-md-4"><strong>نام ایرلاین:</strong> <?= $first['airline_name'].' ('.$first['airline_iata'].')' ?></div>
+                            <div class="col-md-4"><strong>فرودگاه:</strong> <?= $first['airport_code'].' ('.$first['airport_code'].')' ?></div>
+                            <div class="col-md-4"><strong>شماره پرواز:</strong> <?= $first['flight_number'] ?></div>
+                        </div>
 
-                            <!-- مشخصات کاربر -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات کاربر</div>
-                                <div class="col-md-4"><strong>نام و نام خانوادگی:</strong> <?= isset($first['member_name']) ? $first['member_name'] : '-' ?></div>
-                                <div class="col-md-4"><strong>شماره موبایل:</strong> <?= isset($first['member_mobile']) ? $first['member_mobile'] : '-' ?></div>
-                                <div class="col-md-4"><strong>ایمیل:</strong> <?= isset($first['member_email']) ? $first['member_email'] : '-' ?></div>
+                        <!-- اطلاعات تشریفات -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">اطلاعات تشریفات</div>
+                            <div class="col-md-4"><strong>نام :</strong> <?= $first['cip_name'] ?></div>
+                            <div class="col-md-4"><strong>فرودگاه:</strong> <?= $first['airport_code_cip'] ?></div>
+                            <div class="col-md-4">
+                                <strong>نوع پرواز :</strong>
+                                <?= $first['flight_type'] === "inbound"
+                                    ? "پرواز ورودی به فرودگاه"
+                                    : "پرواز خروجی از فرودگاه (" .
+                                    ($first['trip_type'] === 'international'
+                                        ? "پرواز بین المللی"
+                                        : "پرواز داخلی")
+                                    . ")"
+                                ?>
                             </div>
-
-                            <!-- مشخصات پرداخت -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات پرداخت</div>
-                                <div class="col-md-4"><strong>تاریخ پرداخت:</strong> <?= !empty($first['payment_date']) ? functions::set_date_payment($first['payment_date']) : 'پرداخت نشده' ?></div>
-                                <div class="col-md-4"><strong>نوع پرداخت:</strong>
-                                    <?php
-                                    if($first['payment_type']=='cash') echo 'نقدی';
-                                    else if($first['payment_type']=='credit' || $first['payment_type']=='member_credit') echo 'اعتباری';
-                                    else echo '-';
-                                    ?>
-                                </div>
-                                <div class="col-md-4"><strong>کد پیگیری بانک:</strong> <?= !empty($first['tracking_code_bank']) ? $first['tracking_code_bank'] : '-' ?></div>
-                            </div>
-
-                            <!-- مشخصات رفت و برگشت -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">اطلاعات سفر</div>
-                                <div class="col-md-4"><strong>تاریخ و ساعت :</strong> <?= $first['date_time'] ?></div>
-                                <div class="col-md-4"><strong>نام ایرلاین:</strong> <?= $first['airline_name'].' ('.$first['airline_iata'].')' ?></div>
-                                <div class="col-md-4"><strong>فرودگاه:</strong> <?= $first['airport_code'].' ('.$first['airport_code'].')' ?></div>
-                                <div class="col-md-4"><strong>شماره پرواز:</strong> <?= $first['flight_number'] ?></div>
-                            </div>
-
-                            <!-- اطلاعات تشریفات -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">اطلاعات تشریفات</div>
-                                <div class="col-md-4"><strong>نام :</strong> <?= $first['cip_name'] ?></div>
-                                <div class="col-md-4"><strong>فرودگاه:</strong> <?= $first['airport_code_cip'] ?></div>
-                                <div class="col-md-4">
-                                    <strong>نوع پرواز :</strong>
-                                    <?= $first['flight_type'] === "inbound"
-                                        ? "پرواز ورودی به فرودگاه"
-                                        : "پرواز خروجی از فرودگاه (" .
-                                        ($first['trip_type'] === 'international'
-                                            ? "پرواز بین المللی"
-                                            : "پرواز داخلی")
-                                        . ")"
-                                    ?>
-                                </div>
-                            </div>
+                        </div>
 
 
-                            <!-- مشخصات مسافران -->
-                            <div class="row mb-3 section-row">
-                                <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات مسافران</div>
+                        <!-- مشخصات مسافران -->
+                        <div class="row mb-3 section-row">
+                            <div class="col-md-12 text-center text-bold text-danger section-title">مشخصات مسافران</div>
 
-                                <?php foreach($ticketsInfo as $passenger) { ?>
-                                    <div class="col-md-4" style="margin-bottom:10px;">
-                                        <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#eef2ff;">
-                                            <strong>نام و نام خانوادگی:</strong> <?= trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) != '' ? trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) : '-' ?><br>
+                            <?php foreach($ticketsInfo as $passenger) { ?>
+                                <div class="col-md-4" style="margin-bottom:10px;">
+                                    <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#eef2ff;">
+                                        <strong>نام و نام خانوادگی:</strong> <?= trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) != '' ? trim((isset($passenger['passenger_name']) ? $passenger['passenger_name'] : '').' '.(isset($passenger['passenger_family']) ? $passenger['passenger_family'] : '')) : '-' ?><br>
 
-                                            <strong>تولد:</strong> <?= isset($passenger['passenger_birthday']) && $passenger['passenger_birthday'] != '' ? implode('-', array_reverse(explode('-', $passenger['passenger_birthday']))) : '-' ?><br>
+                                        <strong>تولد:</strong> <?= isset($passenger['passenger_birthday']) && $passenger['passenger_birthday'] != '' ? implode('-', array_reverse(explode('-', $passenger['passenger_birthday']))) : '-' ?><br>
 
-                                            <strong>کد ملی:</strong> <?= isset($passenger['passenger_national_code']) && $passenger['passenger_national_code'] != '' ? $passenger['passenger_national_code'] : '-' ?><br>
+                                        <strong>کد ملی:</strong> <?= isset($passenger['passenger_national_code']) && $passenger['passenger_national_code'] != '' ? $passenger['passenger_national_code'] : '-' ?><br>
 
-                                            <strong>شماره پاسپورت:</strong> <?= isset($passenger['passportNumber']) && $passenger['passportNumber'] != '' ? $passenger['passportNumber'] : '-' ?><br>
+                                        <strong>شماره پاسپورت:</strong> <?= isset($passenger['passportNumber']) && $passenger['passportNumber'] != '' ? $passenger['passportNumber'] : '-' ?><br>
 
-                                            <strong>رده سنی:</strong> <?= isset($passenger['passenger_age']) && $passenger['passenger_age'] != '' ? $passenger['passenger_age'] : '-' ?><br>
+                                        <strong>رده سنی:</strong> <?= isset($passenger['passenger_age']) && $passenger['passenger_age'] != '' ? $passenger['passenger_age'] : '-' ?><br>
 
-                                            <strong>انقضا پاسپورت</strong> <?= isset($passenger['passportExpire']) && $passenger['passportExpire'] != '' ? $passenger['passportExpire'] : '-' ?><br>
+                                        <strong>انقضا پاسپورت</strong> <?= isset($passenger['passportExpire']) && $passenger['passportExpire'] != '' ? $passenger['passportExpire'] : '-' ?><br>
 
-                                            <strong>جنیست</strong> <?= isset($passenger['PassengerTitle']) && ($passenger['PassengerTitle'] == 'MS' || $passenger['PassengerTitle'] == 'MISS')  ? 'زن' : 'مرد' ?><br>
-                                        </div>
+                                        <strong>جنیست</strong> <?= isset($passenger['PassengerTitle']) && ($passenger['PassengerTitle'] == 'MS' || $passenger['PassengerTitle'] == 'MISS')  ? 'زن' : 'مرد' ?><br>
                                     </div>
-                                <?php } ?>
-                            </div>
-                        <?php } ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
 
-                    </div>
-
-                    <div class="modal-footer site-bg-main-color"></div>
                 </div>
+
+                <div class="modal-footer site-bg-main-color"></div>
             </div>
+        </div>
 
-            <style>
-                .modal-content {
-                    border-radius: 10px;
-                    overflow: hidden;
-                    background: #ffffff;
-                    border: 1px solid #f87171; /* قرمز ملایم */
-                    box-shadow: 0 8px 20px rgba(248, 113, 113, 0.3);
-                }
+        <style>
+            .modal-content {
+                border-radius: 10px;
+                overflow: hidden;
+                background: #ffffff;
+                border: 1px solid #f87171; /* قرمز ملایم */
+                box-shadow: 0 8px 20px rgba(248, 113, 113, 0.3);
+            }
 
-                .modal-header {
-                    background: #f03c52; /* قرمز رسمی */
-                    color: #ffffff !important;
-                    padding: 15px 20px;
-                    border-bottom: 1px solid #b91c1c;
-                }
+            .modal-header {
+                background: #f03c52; /* قرمز رسمی */
+                color: #ffffff !important;
+                padding: 15px 20px;
+                border-bottom: 1px solid #b91c1c;
+            }
 
-                .modal-header .close {
-                    color: #ffffff;
-                    opacity: 1;
-                    font-size: 1.4rem;
-                }
+            .modal-header .close {
+                color: #ffffff;
+                opacity: 1;
+                font-size: 1.4rem;
+            }
 
-                .modal-title {
-                    font-weight: bold;
-                    font-size: 1.15rem;
-                    letter-spacing: 0.5px;
-                    color: #ffff;
-                }
+            .modal-title {
+                font-weight: bold;
+                font-size: 1.15rem;
+                letter-spacing: 0.5px;
+                color: #ffff;
+            }
 
-                .modal-body {
-                    background: #fff5f5; /* پس‌زمینه قرمز روشن */
-                    padding: 20px;
-                    max-height: 75vh;
-                    overflow-y: auto;
-                }
+            .modal-body {
+                background: #fff5f5; /* پس‌زمینه قرمز روشن */
+                padding: 20px;
+                max-height: 75vh;
+                overflow-y: auto;
+            }
 
-                .row.section-row {
-                    padding: 12px 15px;
-                    border-radius: 6px;
-                    background: #ffffff;
-                    border: 1px solid #f87171; /* خطوط قرمز */
-                    margin-bottom: 12px;
-                    transition: background 0.2s ease, transform 0.2s ease;
-                }
+            .row.section-row {
+                padding: 12px 15px;
+                border-radius: 6px;
+                background: #ffffff;
+                border: 1px solid #f87171; /* خطوط قرمز */
+                margin-bottom: 12px;
+                transition: background 0.2s ease, transform 0.2s ease;
+            }
 
-                .row.section-row:hover {
-                    background: #fee2e2; /* هایلایت روشن قرمز */
-                    transform: translateY(-2px);
-                }
+            .row.section-row:hover {
+                background: #fee2e2; /* هایلایت روشن قرمز */
+                transform: translateY(-2px);
+            }
 
-                .section-title {
-                    font-size: 1.05rem;
-                    margin-bottom: 10px;
-                    font-weight: 600;
-                    background: linear-gradient(to right, #f87171, #b91c1c);
-                }
+            .section-title {
+                font-size: 1.05rem;
+                margin-bottom: 10px;
+                font-weight: 600;
+                background: linear-gradient(to right, #f87171, #b91c1c);
+            }
 
-                hr {
-                    border: none;
-                    margin: 12px 0;
-                }
+            hr {
+                border: none;
+                margin: 12px 0;
+            }
 
-                .modal-footer {
-                    background: #f87171; /* پایینه رسمی قرمز */
-                    height: 12px;
-                    border-top: 1px solid #dc2626;
-                }
+            .modal-footer {
+                background: #f87171; /* پایینه رسمی قرمز */
+                height: 12px;
+                border-top: 1px solid #dc2626;
+            }
 
-                /* کارت مسافران */
-                .passenger-card {
-                    border: 1px solid #f87171;
-                    border-radius: 8px;
-                    padding: 12px;
-                    margin-bottom: 10px;
-                    background: #fff5f5;
-                    transition: background 0.2s ease, transform 0.2s ease;
-                }
+            /* کارت مسافران */
+            .passenger-card {
+                border: 1px solid #f87171;
+                border-radius: 8px;
+                padding: 12px;
+                margin-bottom: 10px;
+                background: #fff5f5;
+                transition: background 0.2s ease, transform 0.2s ease;
+            }
 
-                .passenger-card:hover {
-                    background: #fee2e2;
-                    transform: translateY(-2px);
-                }
+            .passenger-card:hover {
+                background: #fee2e2;
+                transform: translateY(-2px);
+            }
 
-                /* Scrollbar */
-                .modal-body::-webkit-scrollbar {
-                    width: 8px;
-                }
+            /* Scrollbar */
+            .modal-body::-webkit-scrollbar {
+                width: 8px;
+            }
 
-                .modal-body::-webkit-scrollbar-thumb {
-                    background: #f03c52;
-                    border-radius: 10px;
-                }
+            .modal-body::-webkit-scrollbar-thumb {
+                background: #f03c52;
+                border-radius: 10px;
+            }
 
-                .modal-body::-webkit-scrollbar-track {
-                    background: #ffe4e4;
-                }
+            .modal-body::-webkit-scrollbar-track {
+                background: #ffe4e4;
+            }
 
-                /* آیکون‌ها */
-                .fa-user, .fa-child {
-                    margin-right: 4px;
-                }
-                .ent-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                    gap: 12px;
-                }
+            /* آیکون‌ها */
+            .fa-user, .fa-child {
+                margin-right: 4px;
+            }
+            .ent-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 12px;
+            }
 
-                .ent-item {
-                    border: 1px solid #cbd5e1;
-                    border-radius: 8px;
-                    padding: 10px;
-                    background: #eef2ff;
-                    text-align: center;
-                }
+            .ent-item {
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                padding: 10px;
+                background: #eef2ff;
+                text-align: center;
+            }
 
-                .ent-title {
-                    font-weight: 600;
-                    margin-bottom: 6px;
-                }
+            .ent-title {
+                font-weight: 600;
+                margin-bottom: 6px;
+            }
 
-                .ent-price {
-                    font-size: 0.95rem;
-                    color: #14532d;
-                    font-weight: 500;
-                }
+            .ent-price {
+                font-size: 0.95rem;
+                color: #14532d;
+                font-weight: 500;
+            }
 
-            </style>
+        </style>
 
 
-            <?php
-        }
+        <?php
+    }
 
-        public function ModalShowBookForServiceCip($Param, $type) {
+    public function ModalShowBookForServiceCip($Param, $type) {
         $objbook = Load::controller($this->Controller);
         $ticketsInfo = functions::info_cip_directions($Param);
         ?>
@@ -3222,139 +2886,139 @@ public function ModalShowBook($Param, $type) {
             </div>
 
         </div>
-    </div>
+        </div>
 
-    <style>
-        .modal-content {
-            border-radius: 10px;
-            overflow: hidden;
-            background: #ffffff;
-            border: 1px solid #f87171; /* قرمز ملایم */
-            box-shadow: 0 8px 20px rgba(248, 113, 113, 0.3);
-        }
+        <style>
+            .modal-content {
+                border-radius: 10px;
+                overflow: hidden;
+                background: #ffffff;
+                border: 1px solid #f87171; /* قرمز ملایم */
+                box-shadow: 0 8px 20px rgba(248, 113, 113, 0.3);
+            }
 
-        .modal-header {
-            background: #f03c52; /* قرمز رسمی */
-            color: #ffffff !important;
-            padding: 15px 20px;
-            border-bottom: 1px solid #b91c1c;
-        }
+            .modal-header {
+                background: #f03c52; /* قرمز رسمی */
+                color: #ffffff !important;
+                padding: 15px 20px;
+                border-bottom: 1px solid #b91c1c;
+            }
 
-        .modal-header .close {
-            color: #ffffff;
-            opacity: 1;
-            font-size: 1.4rem;
-        }
+            .modal-header .close {
+                color: #ffffff;
+                opacity: 1;
+                font-size: 1.4rem;
+            }
 
-        .modal-title {
-            font-weight: bold;
-            font-size: 1.15rem;
-            letter-spacing: 0.5px;
-            color: #ffff;
-        }
+            .modal-title {
+                font-weight: bold;
+                font-size: 1.15rem;
+                letter-spacing: 0.5px;
+                color: #ffff;
+            }
 
-        .modal-body {
-            background: #fff5f5; /* پس‌زمینه قرمز روشن */
-            padding: 20px;
-            max-height: 75vh;
-            overflow-y: auto;
-        }
+            .modal-body {
+                background: #fff5f5; /* پس‌زمینه قرمز روشن */
+                padding: 20px;
+                max-height: 75vh;
+                overflow-y: auto;
+            }
 
-        .row.section-row {
-            padding: 12px 15px;
-            border-radius: 6px;
-            background: #ffffff;
-            border: 1px solid #f87171; /* خطوط قرمز */
-            margin-bottom: 12px;
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
+            .row.section-row {
+                padding: 12px 15px;
+                border-radius: 6px;
+                background: #ffffff;
+                border: 1px solid #f87171; /* خطوط قرمز */
+                margin-bottom: 12px;
+                transition: background 0.2s ease, transform 0.2s ease;
+            }
 
-        .row.section-row:hover {
-            background: #fee2e2; /* هایلایت روشن قرمز */
-            transform: translateY(-2px);
-        }
+            .row.section-row:hover {
+                background: #fee2e2; /* هایلایت روشن قرمز */
+                transform: translateY(-2px);
+            }
 
-        .section-title {
-            font-size: 1.05rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-            background: linear-gradient(to right, #f87171, #b91c1c);
-        }
+            .section-title {
+                font-size: 1.05rem;
+                margin-bottom: 10px;
+                font-weight: 600;
+                background: linear-gradient(to right, #f87171, #b91c1c);
+            }
 
-        hr {
-            border: none;
-            margin: 12px 0;
-        }
+            hr {
+                border: none;
+                margin: 12px 0;
+            }
 
-        .modal-footer {
-            background: #f87171; /* پایینه رسمی قرمز */
-            height: 12px;
-            border-top: 1px solid #dc2626;
-        }
+            .modal-footer {
+                background: #f87171; /* پایینه رسمی قرمز */
+                height: 12px;
+                border-top: 1px solid #dc2626;
+            }
 
-        /* کارت مسافران */
-        .passenger-card {
-            border: 1px solid #f87171;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
-            background: #fff5f5;
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
+            /* کارت مسافران */
+            .passenger-card {
+                border: 1px solid #f87171;
+                border-radius: 8px;
+                padding: 12px;
+                margin-bottom: 10px;
+                background: #fff5f5;
+                transition: background 0.2s ease, transform 0.2s ease;
+            }
 
-        .passenger-card:hover {
-            background: #fee2e2;
-            transform: translateY(-2px);
-        }
+            .passenger-card:hover {
+                background: #fee2e2;
+                transform: translateY(-2px);
+            }
 
-        /* Scrollbar */
-        .modal-body::-webkit-scrollbar {
-            width: 8px;
-        }
+            /* Scrollbar */
+            .modal-body::-webkit-scrollbar {
+                width: 8px;
+            }
 
-        .modal-body::-webkit-scrollbar-thumb {
-            background: #f03c52;
-            border-radius: 10px;
-        }
+            .modal-body::-webkit-scrollbar-thumb {
+                background: #f03c52;
+                border-radius: 10px;
+            }
 
-        .modal-body::-webkit-scrollbar-track {
-            background: #ffe4e4;
-        }
+            .modal-body::-webkit-scrollbar-track {
+                background: #ffe4e4;
+            }
 
-        /* آیکون‌ها */
-        .fa-user, .fa-child {
-            margin-right: 4px;
-        }
-        .ent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-        }
+            /* آیکون‌ها */
+            .fa-user, .fa-child {
+                margin-right: 4px;
+            }
+            .ent-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 12px;
+            }
 
-        .ent-item {
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 10px;
-            background: #eef2ff;
-            text-align: center;
-        }
+            .ent-item {
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                padding: 10px;
+                background: #eef2ff;
+                text-align: center;
+            }
 
-        .ent-title {
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
+            .ent-title {
+                font-weight: 600;
+                margin-bottom: 6px;
+            }
 
-        .ent-price {
-            font-size: 0.95rem;
-            color: #14532d;
-            font-weight: 500;
-        }
+            .ent-price {
+                font-size: 0.95rem;
+                color: #14532d;
+                font-weight: 500;
+            }
 
-    </style>
+        </style>
 
 
-    <?php
-}
+        <?php
+    }
 
     #endregion
     #region ModalTrackingCancelTicketAdmin
@@ -5549,7 +5213,6 @@ public function ModalShowBook($Param, $type) {
 
     public function ModalSendSms($Param) {
         $ClientId = CLIENT_ID;
-
         $InfoTicket = functions::InfoFlight($Param);
         $checkSmsSend = functions::checkSendSmsManualToClient($InfoTicket['request_number']);
         $message='';
@@ -11261,7 +10924,6 @@ public function ModalCancelAdmin($Param, $param2) {
         if (isset($param2) && $param2 == 'flight') {
             $Fee = functions::FeeCancelFlight($InfoCancelTicket[0]['airline_iata'], $InfoCancelTicket[0]['cabin_type']);
         }
-
         ?>
 
         <div class="modal_custom" onclick="closeModalParent(event)">

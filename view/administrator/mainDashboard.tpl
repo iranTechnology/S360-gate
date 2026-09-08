@@ -11,17 +11,7 @@
 
         <div class="d-flex gap-5 justify-content-center align-items-center">
 
-            <div class="">
-                <div class="border border-ccc p-3 rounded-md d-flex justify-content-center" style="border-radius: 14px;font-size:13px">
-                    <span> میزان اعتبار حساب شما: </span>
-                    <p class="text-center m-0 p-0">
-                        {assign var="total_credit" value=$objTransaction->getCredit()}
-                        {$total_credit|number_format} ریال -{if $total_credit > 0}بستانکار{elseif $objAccountotal_credit< 0}بدهی{else}تسویه{/if}
 
-                    </p>
-
-                </div>
-            </div>
             <div class="">
                 <div class="border border-ccc p-3 rounded-md" style="border-radius: 14px;font-size:13px">
                     پیامک‌های اطلاع‌رسانی تغییرات رزرو به شماره
@@ -61,9 +51,11 @@
         {include file="view/administrator/reports/alert_agency_exeed_limit_report.tpl"}
     {/if}
     {if $smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en'}
+        {include file="view/administrator/reports/creditLimit.tpl"}
         {include file="view/administrator/reports/user_module_reports.tpl"}
         {include file="view/administrator/reports/servicesCommission.tpl"}
         {include file="view/administrator/reports/user_bookMarks_link.tpl"}
+
 
     {/if}
     {if $smarty.const.TYPE_ADMIN eq '1' && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
@@ -98,7 +90,6 @@
                                 {*                                بعضا چارتر کنندگان اسم مسافر را در لیست مانیفست ایرلاین رد نمی کنند و یا با تاخیر این کار را انجام می دهند درصورتی که اسم مسافر شما در کانتر پرواز نبود سریعا با پشتیبانی ایران تکنولوژی تماس بگیرید.*}
                                 {*                            </li>*}
 
-                                <li>در زمانیکه سیستم شما به اندازه کافی شارژ ندارد، برای حفظ محرمانگی سیستم شما، ما به مشتری پیغام "متاسفانه سامانه در حال بروز رسانی می باشد لطفا کمی بعد مجددا تلاش نمائید" را نمایش می دهیم و این به آن معنا است که شما باید پنل خود را شارژ بفرمایید</li>
 
                                 <li>پیامک تایید رزرو فقط در صورتی که پنل پیامکی خریداری و شارژ نموده باشید، برای مسافر ارسال خواهد شد</li>
                                 {*                            <li>از آنجایی که تمام اطلاع رسانی های سیستم از طریق شماره موبایل ثبت شده در سیستم انجام میپذیرد، لطفا اطلاعات خود را از طریق لینک مشاهده پروفایل، اطلاعات خود را تکمیل نمائید </li>*}
@@ -823,10 +814,6 @@
         });
     </script>
 {/literal}
-{else}
-    <script>
-        $(document).ready(function(){
-            $(".report-accordion").attr("style", "margin-top:20px !important;");
-        });
-    </script>
+
+
 {/if}

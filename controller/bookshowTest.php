@@ -1175,50 +1175,50 @@ class bookshowTest extends clientAuth {
         return isset( $split[1] ) ? $split[1] . ' ' . $date_now : $date_now;
     }
 
-   /*
-   public function getInfoTicketReservation( $requestNumber ) {
-        if ( TYPE_ADMIN == '1' ) {
+    /*
+    public function getInfoTicketReservation( $requestNumber ) {
+         if ( TYPE_ADMIN == '1' ) {
 
-            $ModelBase = Load::library( 'ModelBase' );
-            $sql       = " SELECT *
-                 FROM report_tb
-                 WHERE request_number='{$requestNumber}'
-                 ORDER BY passenger_age";
-            $Book      = $ModelBase->select( $sql );
+             $ModelBase = Load::library( 'ModelBase' );
+             $sql       = " SELECT *
+                  FROM report_tb
+                  WHERE request_number='{$requestNumber}'
+                  ORDER BY passenger_age";
+             $Book      = $ModelBase->select( $sql );
 
-        } else {
+         } else {
 
-            $Model = Load::library( 'Model' );
-            $sql   = " SELECT *
-                 FROM book_local_tb
-                 WHERE request_number='{$requestNumber}'
-                 ORDER BY passenger_age";
-            $Book  = $Model->select( $sql );
+             $Model = Load::library( 'Model' );
+             $sql   = " SELECT *
+                  FROM book_local_tb
+                  WHERE request_number='{$requestNumber}'
+                  ORDER BY passenger_age";
+             $Book  = $Model->select( $sql );
 
-        }
+         }
 
-        $totalPrice                = 0;
-        $totalPriceWithoutDiscount = 0;
-        foreach ( $Book as $val ) {
-            $namePrice                 = strtolower( $val['passenger_age'] ) . '_price';
-            $nameDiscountPrice         = 'discount_' . strtolower( $val['passenger_age'] ) . '_price';
-            $totalPriceWithoutDiscount += $val[ $namePrice ];
-            $totalPrice                += $val[ $nameDiscountPrice ];
-        }
+         $totalPrice                = 0;
+         $totalPriceWithoutDiscount = 0;
+         foreach ( $Book as $val ) {
+             $namePrice                 = strtolower( $val['passenger_age'] ) . '_price';
+             $nameDiscountPrice         = 'discount_' . strtolower( $val['passenger_age'] ) . '_price';
+             $totalPriceWithoutDiscount += $val[ $namePrice ];
+             $totalPrice                += $val[ $nameDiscountPrice ];
+         }
 
-        if ( $Book[0]['percent_discount'] > 0 ) {
-            $result['totalPriceWithoutDiscount'] = $totalPriceWithoutDiscount;
-            $result['totalPrice']                = $totalPrice;
-        } else {
-            $result['totalPriceWithoutDiscount'] = 0;
-            $result['totalPrice']                = $totalPriceWithoutDiscount;
-        }
+         if ( $Book[0]['percent_discount'] > 0 ) {
+             $result['totalPriceWithoutDiscount'] = $totalPriceWithoutDiscount;
+             $result['totalPrice']                = $totalPrice;
+         } else {
+             $result['totalPriceWithoutDiscount'] = 0;
+             $result['totalPrice']                = $totalPriceWithoutDiscount;
+         }
 
-        $result['infoTicket'] = $Book;
+         $result['infoTicket'] = $Book;
 
-        return $result;
-    }
-*/
+         return $result;
+     }
+ */
     public function getInfoTicketReservation( $requestNumber ) {
         if ( TYPE_ADMIN == '1' ) {
             $ModelBase = Load::library( 'ModelBase' );
@@ -6288,17 +6288,17 @@ class bookshowTest extends clientAuth {
                 $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Unknown").'</a>';
             } elseif ( $hotel['status'] == 'bank' ) {
                 $DataActivity = '<a class="btn btn-primary cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("NavigateToPort").'</a>';
-            } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 0 ) {
+            }elseif ( $hotel['status'] == 'credit' ) {
+                $DataActivity = '<a class="btn btn-secondary cursor-default w-90 text-white" onclick="return false;" style="background:#cdd0d3">'.functions::Xmlinformation("CreditSelection").'</a>';
+            }elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 0 ) {
                 $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Cancelrequest").'</a>';
             } elseif ( $hotel['status'] == 'Cancelled' && $hotel['admin_checked'] == 1 ) {
                 $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Canceled").'</a>';
             } elseif ( $hotel['status'] == 'OnRequest' ) {
                 $DataActivity = '<a class="btn btn-danger cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("InquiryHotel").'</a>';
-            } elseif ( $hotel['status'] == 'pending' ) {
+            } elseif ( $hotel['status'] == 'pending') {
                 $DataActivity = '<a class="btn btn-print cursor-warning w-90" onclick="return false;">'.functions::Xmlinformation("pendingPrintFlight").'</a>';
-
-            }else {
-
+            } else {
                 $DataActivity = $this->btnErrorHotel($hotel);
             }
 
@@ -7773,6 +7773,7 @@ class bookshowTest extends clientAuth {
                                                                 <div class="pull-left margin-10">';
                         if ( $flightBook['successfull'] != 'nothing' ) {
                             $DataFlightActionBtn .= '<a onclick="ModalShowBookForExclusiveTour(' . "'" . $flightBook['request_number'] . "'" . ');return false" data-toggle="modal" data-target="#ModalPublic"> <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye" data-toggle="tooltip" data-placement="top" title="" data-original-title="مشاهده خرید"></i> </a>';
+
                         }
                         $DataFlightActionBtn .= '</div>
 
@@ -7922,14 +7923,15 @@ class bookshowTest extends clientAuth {
                                                                                title=""
                                                                                data-original-title="مشاهده خرید"></i>
                                                                         </a>';
+
                         }
                         $DataFlightActionBtn .= ' </div>
 
                                                                 ';
 
 
-                        if ( ( $flightBook['IsInternal'] == '1' && $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightActionBtn .= '<div class="pull-left margin-10"> <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=fa"
+                        if ( (  $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
+                            $DataFlightActionBtn .= '<div class="pull-left margin-10"> <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookExclusiveTour&id=' . $flightBook['factor_number'] . '&lang=fa"
                                                                            target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
@@ -10664,6 +10666,7 @@ class bookshowTest extends clientAuth {
             if (!empty($hotel['passenger_name'])) {
                 $passengerName = $hotel['passenger_name'];
             }
+            functions::insertLog('$hotel: ' . json_encode($hotel) , '000shojaee');
 
 
             $agencyName = $hotel['agency_name'] ?? functions::ClientName($hotel['client_id']) ?? 'نامشخص';
@@ -10705,7 +10708,8 @@ class bookshowTest extends clientAuth {
 
             $agencyName = $insurance['NameAgency'] ?? $insurance['agency_name'] ?? functions::Xmlinformation("Unknown");
             $statusText = $this->getInsuranceStatusText($insurance);
-
+            $parts = explode('(', $insurance['creation_date_int']);
+            $time = trim($parts[1], ') ');
             $AllBookings[] = [
                 "id" => $CountRow++,
                 "service_type" => functions::Xmlinformation("Insurance"),
@@ -10714,7 +10718,7 @@ class bookshowTest extends clientAuth {
                 "passenger_name" => $passengerName,
                 "agency_name" => $agencyName,
                 "status" => $statusText,
-                "request_time" => dateTimeSetting::jdate('H:i:s', $insurance['creation_date_int'] ?? time()),
+                "request_time" =>$time,
             ];
         }
 
@@ -10747,7 +10751,7 @@ class bookshowTest extends clientAuth {
                 "passenger_name" => $passengerName,
                 "agency_name" => $agencyName,
                 "status" => $statusText,
-                "request_time" => dateTimeSetting::jdate('H:i:s', strtotime($bus['PaymentDate'] ?? 'now')),
+                "request_time" =>trim($bus['PaymentTime'], '()'),
             ];
         }
 
