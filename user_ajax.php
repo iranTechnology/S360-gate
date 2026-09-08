@@ -2483,10 +2483,9 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
         $discountCode = $getDiscountCode['discountCode'];
     }
 
-// Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
+    // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
     if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
         $credit = $objUser->getCreditMember();
-
     } else {
         $credit = $objMember->getCredit();
     }
@@ -2494,15 +2493,11 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     $reserveInfo   = functions::GetInfoHotel( $factorNumber );
     if ($reserveInfo['hotel_payments_price']>0) {
         $amount        = $reserveInfo['hotel_payments_price'];
-
-
     }else{
         $amount        = $reserveInfo['total_price'];
-
     }
 
     $memberId = Session::getUserId();
-
     $amount = $objDiscountCodes->reduceAmountViaDiscountCode( $amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType'] );
 
     if ( $_POST['paymentStatus'] == 'prePayment' ) {
@@ -2513,52 +2508,51 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
     $totalPriceBank = $reserveInfo['hotel_payments_price'];
 
     if ( $credit > $amount ) {
-    if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle'] == 'PrivatePortalHotel' ) {
+        if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle'] == 'PrivatePortalHotel' ) {
 
-        $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " به شماره رزرو " . " " . $reserveInfo['factor_number'];
-        $checkRepeat = 'yes';
-        $total_price = 0;
-        $comment .= " - اختصاصی";
-        $reason = 'buy_hotel';
+            $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . " به شماره رزرو " . " " . $reserveInfo['factor_number'];
+            $checkRepeat = 'yes';
+            $total_price = 0;
+            $comment .= " - اختصاصی";
+            $reason = 'buy_hotel';
 
-        if ($_POST['creditUse'] == 'member_credit') {
-            $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
-        } else {
-            $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
-        }
-
-        $check = [];
-
-        if ($typeApplication == 'reservation') {
-            $check['status'] = 'TRUE';
-        }
-        else {
-            $check = $objTransaction->checkCredit( $total_price );
-        }
-
-        if ( $check['status'] == 'TRUE' ) {
-            $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
-            if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
-                $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
-                if ( $reduceTransaction ) {
-                    echo 'success:' . $amount;
-                } else {
-                    echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
-                }
+            if ($_POST['creditUse'] == 'member_credit') {
+                $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
             } else {
-                echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
+                $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
             }
+
+            $check = [];
+
+            if ($typeApplication == 'reservation') {
+                $check['status'] = 'TRUE';
+            }
+            else {
+                $check = $objTransaction->checkCredit( $total_price );
+            }
+
+            if ( $check['status'] == 'TRUE' ) {
+                $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
+                if ( empty( $existTransaction ) || $typeApplication == 'reservation' ) {
+                    $reduceTransaction = $objTransaction->decreaseSuccessCredit( $total_price, $factorNumber, $comment, $reason );
+                    if ( $reduceTransaction ) {
+                        echo 'success:' . $amount;
+                    } else {
+                        echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCredit' );
+                    }
+                } else {
+                    echo 'error:' . functions::Xmlinformation( 'ChargeRialSystem' );
+                }
+            }
+            else {
+                echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
+            }
+
         }
         else {
-            echo 'error:' . functions::Xmlinformation( 'ErrorDecreaseCreditByFactorNumber' );
-        }
-
-    }
-    else {
             $reserveInfo['payment_status'] = $_POST['paymentStatus'];
             $comment = " رزرو " . " " . $reserveInfo['room_count'] . " باب اتاق در شهر " . " " . $reserveInfo['city_name'] . "به شماره رزرو " . " " . $reserveInfo['factor_number'];
             if ( $typeApplication == 'api' || $typeApplication == 'externalApi' ) {
-
                 $checkRepeat = 'yes';
                 if ( $reserveInfo['serviceTitle'] == 'PrivateLocalHotel' || $reserveInfo['serviceTitle']=='PrivatePortalHotel' ) {
 
@@ -2568,9 +2562,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
                     $total_price = $reserveInfo['totalPriceTransaction'];
                     $comment     .= " - اشتراکی";
                 }
-
                 $reason = 'buy_hotel';
-
             }
             elseif ( $typeApplication == 'reservation' ) {
                 $checkRepeat = 'no';
@@ -2586,15 +2578,12 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
                 $reason      = 'buy_foreign_hotel';
 
             }
-
             if ($_POST['creditUse'] == 'member_credit') {
                 $objMemberCredit->decreaseChargeMemberForBuy( $amount, $factorNumber, $comment );
             } else {
                 $objMember->decreaseCounterCredit( $amount, $factorNumber, $reserveInfo, 'Hotel', $checkRepeat );
             }
-
             $check = [];
-
             if ($typeApplication == 'reservation') {
                 $check['status'] = 'TRUE';
             }
@@ -2602,7 +2591,6 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
                 // Caution: اعتبارسنجی صاحب پنل
                 $check = $objTransaction->checkCredit( $total_price );
             }
-
             if ( $check['status'] == 'TRUE' ) {
 
                 $existTransaction = $objTransaction->getTransactionByFactorNumber( $factorNumber );
@@ -2625,7 +2613,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditHotelLocal' ) 
             }
 
 
-    }
+        }
     }    else {
         echo 'error: ' . functions::Xmlinformation( 'notEnoughCredit' );
     }

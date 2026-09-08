@@ -2025,12 +2025,8 @@ class detailHotel extends ApiHotelCore
         $factor_number = $requestArray['FactorNumber'];
         //		unset( $requestArray['FactorNumber'] );
         functions::insertLog(PHP_EOL . 'request with factor number ' . $factor_number . ' AND data ' . json_encode($requestArray, 256 | 64) . ' => ', 'log_hotel_preReserve');
-        functions::insertLog( 'request with factor number==>'.$factor_number.print_r($requestArray, true)." \n", '0ardalani' );
-
         $HotelReserveRoom = json_decode(parent::Book($requestArray), true);
-
         functions::insertLog(PHP_EOL . 'response with factor number ' . $factor_number . ' => ' . json_encode($HotelReserveRoom, 256 | 64), 'log_hotel_preReserve');
-        functions::insertLog( 'response with factor number==>'.$factor_number.print_r($HotelReserveRoom, true)." \n", '0ardalani' );
 
         if (!isset($HotelReserveRoom['Result'])) {
             return $this->showError('خطا در رزرو هتل. ', 400, $HotelReserveRoom);

@@ -172,36 +172,18 @@ class BookingHotelNew extends clientAuth
         if ($Hotel['type_application'] == 'api' || $Hotel['type_application'] == 'externalApi' || $Hotel['type_application'] == 'api_app') {
 
             /** @var detailHotel $detailHotel */
-            functions::insertLog('->Call Reserve: ' . print_r($Hotel, true), '0ardalani');
             $apiReserveHotel = $detailHotel->Reserve( $Hotel);
-            functions::insertLog('Call Response: ' . print_r($apiReserveHotel, true), '0ardalani');
-            error_log('try show result method Hotel in : ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel). " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
-
-            error_log('try show result method Hotel in : ' . date('Y/m/d H:i:s') . ' buy Credit array equal in => : ' . $apiReserveHotel. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+            error_log('try show result method Hotel in 1: ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel). " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+            error_log('try show result method Hotel in 2: ' . date('Y/m/d H:i:s') . ' buy Credit array equal in => : ' . $apiReserveHotel. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
             $ReserveHotel = json_decode($apiReserveHotel,true);
-            // لاگ ۲: بررسی اینکه آیا JSON به درستی به آرایه تبدیل شده یا خیر
-            if (is_array($ReserveHotel)) {
-                functions::insertLog('Decoded JSON (Success): ' . ($ReserveHotel['Success'] ? 'TRUE' : 'FALSE'), '0ardalani');
-                if (!$ReserveHotel['Success']) {
-                    // لاگ ۳: اگر خطا داده، متن خطا چیست؟
-                    functions::insertLog('API Error Content: ' . json_encode($ReserveHotel['Result']['Error'] ?? $ReserveHotel), '0ardalani');
-                }
-            } else {
-                functions::insertLog('JSON Decode Failed! Raw string was not a valid JSON.', '0ardalani');
-            }
             $request_number = isset($ReserveHotel['RequestNumber']) ? $ReserveHotel['RequestNumber'] : $Hotel['request_number'];
 
             error_log(' ' . date('Y/m/d H:i:s') . ' RN : ' . $Hotel['request_number']. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
             error_log(PHP_EOL . date('Y/m/d H:i:s') ."reserve_hotel_result" .  json_encode($ReserveHotel), 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
-//	        echo Load::plog($ReserveHotel);
-
-//	        var_dump($ReserveHotel['Success']);
             if ($ReserveHotel['Success']) {
-
                 error_log(PHP_EOL . date('Y/m/d H:i:s') . "isSuccess ", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
-
                 $data['payment_date'] = date('Y-m-d H:i:s');
                 if(isset($ReserveHotel['Result']['ManualBook']) && $ReserveHotel['Result']['ManualBook'] == true){
                     $data['manual_book'] = '1';
