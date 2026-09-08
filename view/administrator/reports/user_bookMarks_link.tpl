@@ -4,8 +4,8 @@
     .bookmarks-wrapper {
         background: #ffff;
         border-radius: 14px;
-        padding: 20px;
-        margin: 20px 0;
+        padding: 8px 20px;
+        margin: 12px 0;
         border: solid 1px #ccc;
     }
 
@@ -13,7 +13,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 16px;
+        padding: 10px 16px;
         background: #ffffff;
         border-radius: 12px;
         cursor: pointer;
@@ -349,7 +349,7 @@
             <i class="fa fa-bookmark"></i>
             <span>لینک‌های سریع</span>
             <span style="font-size:14px">(برای خود دسترسی لینک های مهم پنل را ایجاد کنید.)</span>
-{*            <span class="bookmark-count">{$objBookmarks->total_bookmarks}</span>*}
+            {*            <span class="bookmark-count">{$objBookmarks->total_bookmarks}</span>*}
         </div>
         <div class="bookmarks-controls">
             <button class="add-bookmark-btn" onclick="event.stopPropagation(); openAddModal()">
@@ -369,7 +369,7 @@
                             <i class="fa fa-trash"></i>
                         </button>
                         <div class="bookmark-card-title">{$bookmark.title}</div>
-{*                        <div class="bookmark-card-url">{$bookmark.url}</div>*}
+                        {*                        <div class="bookmark-card-url">{$bookmark.url}</div>*}
                     </div>
                 {/foreach}
             </div>
@@ -409,124 +409,124 @@
 </div>
 
 <script>
-   $(document).ready(function() {
-   const content = document.getElementById('bookmarksContent');
-   const icon = document.getElementById('toggleIcon');
-      content.style.maxHeight = content.scrollHeight + 'px';
-      content.classList.add('expanded');
-      icon.classList.add('rotated');
-   })
-   function toggleBookmarks() {
-      const content = document.getElementById('bookmarksContent');
-      const icon = document.getElementById('toggleIcon');
+    $(document).ready(function() {
+        const content = document.getElementById('bookmarksContent');
+        const icon = document.getElementById('toggleIcon');
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.classList.add('expanded');
+        icon.classList.add('rotated');
+    })
+    function toggleBookmarks() {
+        const content = document.getElementById('bookmarksContent');
+        const icon = document.getElementById('toggleIcon');
 
-      if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-         content.style.maxHeight = '0';
-         content.classList.remove('expanded');
-         icon.classList.remove('rotated');
-      } else {
-         content.style.maxHeight = content.scrollHeight + 'px';
-         content.classList.add('expanded');
-         icon.classList.add('rotated');
-      }
-   }
+        if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+            content.style.maxHeight = '0';
+            content.classList.remove('expanded');
+            icon.classList.remove('rotated');
+        } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.classList.add('expanded');
+            icon.classList.add('rotated');
+        }
+    }
 
-   function openAddModal() {
-      document.getElementById('bookmarkModal').classList.add('active');
-      document.getElementById('bookmarkTitle').focus();
-   }
+    function openAddModal() {
+        document.getElementById('bookmarkModal').classList.add('active');
+        document.getElementById('bookmarkTitle').focus();
+    }
 
-   function closeAddModal() {
-      document.getElementById('bookmarkModal').classList.remove('active');
-      document.getElementById('addBookmarkForm').reset();
-   }
+    function closeAddModal() {
+        document.getElementById('bookmarkModal').classList.remove('active');
+        document.getElementById('addBookmarkForm').reset();
+    }
 
-   function submitBookmark(e) {
-      e.preventDefault();
+    function submitBookmark(e) {
+        e.preventDefault();
 
-      const title = document.getElementById('bookmarkTitle').value;
-      const url = document.getElementById('bookmarkUrl').value;
+        const title = document.getElementById('bookmarkTitle').value;
+        const url = document.getElementById('bookmarkUrl').value;
 
-      $.ajax({
-         url: amadeusPath + 'user_ajax.php',
-         type: 'POST',
-         data: {
-            action: 'add',
-            title: title,
-            flag:'userBookmarks',
-            url: url
-         },
-         success: function(response) {
-            if (response) {
-               $.toast({
-                  heading: 'موفق',
-                  text: "لینک با موفقیت اضافه گردید",
-                  position: 'top-right',
-                  loaderBg: '#fff',
-                  icon: 'success',
-                  hideAfter: 3500,
-                  textAlign: 'right',
-                  stack: 6
-               });
-               closeAddModal();
-               setTimeout(function(){
-                  window.location.reload();
-               },300)
-            } else {
-               alert(response.message || 'خطا در ذخیره');
+        $.ajax({
+            url: amadeusPath + 'user_ajax.php',
+            type: 'POST',
+            data: {
+                action: 'add',
+                title: title,
+                flag:'userBookmarks',
+                url: url
+            },
+            success: function(response) {
+                if (response) {
+                    $.toast({
+                        heading: 'موفق',
+                        text: "لینک با موفقیت اضافه گردید",
+                        position: 'top-right',
+                        loaderBg: '#fff',
+                        icon: 'success',
+                        hideAfter: 3500,
+                        textAlign: 'right',
+                        stack: 6
+                    });
+                    closeAddModal();
+                    setTimeout(function(){
+                        window.location.reload();
+                    },300)
+                } else {
+                    alert(response.message || 'خطا در ذخیره');
+                }
+            },
+            error: function() {
+                alert('خطا در ارتباط با سرور');
             }
-         },
-         error: function() {
-            alert('خطا در ارتباط با سرور');
-         }
-      });
+        });
 
-      return false;
-   }
+        return false;
+    }
 
-   function deleteBookmark(id) {
-      if (!confirm('آیا از حذف این لینک اطمینان دارید؟')) {
-         return;
-      }
+    function deleteBookmark(id) {
+        if (!confirm('آیا از حذف این لینک اطمینان دارید؟')) {
+            return;
+        }
 
-      $.ajax({
-         url: amadeusPath + 'user_ajax.php',
-         type: 'POST',
-         data: {
-            action: 'delete',
-            flag:'userBookmarks',
-            id: id
-         },
-         success: function(response) {
-            if (response) {
-               $.toast({
-                  heading: 'موفق',
-                  text: "لینک با موفقیت حذف گردید",
-                  position: 'top-right',
-                  loaderBg: '#fff',
-                  icon: 'success',
-                  hideAfter: 3500,
-                  textAlign: 'right',
-                  stack: 6
-               });
-               closeAddModal();
-               setTimeout(function(){
-                  window.location.reload();
-               },300)
-            } else {
-               alert(response.message || 'خطا در حذف');
+        $.ajax({
+            url: amadeusPath + 'user_ajax.php',
+            type: 'POST',
+            data: {
+                action: 'delete',
+                flag:'userBookmarks',
+                id: id
+            },
+            success: function(response) {
+                if (response) {
+                    $.toast({
+                        heading: 'موفق',
+                        text: "لینک با موفقیت حذف گردید",
+                        position: 'top-right',
+                        loaderBg: '#fff',
+                        icon: 'success',
+                        hideAfter: 3500,
+                        textAlign: 'right',
+                        stack: 6
+                    });
+                    closeAddModal();
+                    setTimeout(function(){
+                        window.location.reload();
+                    },300)
+                } else {
+                    alert(response.message || 'خطا در حذف');
+                }
+            },
+            error: function() {
+                alert('خطا در ارتباط با سرور');
             }
-         },
-         error: function() {
-            alert('خطا در ارتباط با سرور');
-         }
-      });
-   }
+        });
+    }
 
-   // بستن مودال با کلیک روی پس‌زمینه
-   document.getElementById('bookmarkModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-         closeAddModal();
-      }
-   });
+    // بستن مودال با کلیک روی پس‌زمینه
+    document.getElementById('bookmarkModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAddModal();
+        }
+    });
 </script>

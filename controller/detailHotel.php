@@ -1862,10 +1862,10 @@ class detailHotel extends ApiHotelCore
                     //					];
                     if ($room['source_id'] == '42') {
                         $buyerArray = [
-                            'FirstName' => $room['member_name'],
-                            'LastName' => $room['member_name'],
+                            'FirstName' => $room['member_name'] ? $room['member_name'] :'Abazar',
+                            'LastName' => $room['member_name'] ? $room['member_name'] :'Abazar',
                             'Mobile' => $room['member_mobile'],
-                            'Email' => $room['member_email'],
+                            'Email' => $room['member_email'] ? $room['member_email'] : 'info@iran-tech.com',
                         ];
                     } else {
                         $buyerArray = [

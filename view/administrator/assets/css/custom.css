@@ -3161,3 +3161,507 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
     50%  { opacity: 0; }
     100% { opacity: 1; }
 }
+
+/* ========================================
+   هتل - استایل‌های مودال مشخصات رزرو
+   ======================================== */
+
+/* ---- کانتینر اصلی ---- */
+.hotel-modal .modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* ---- هدر مودال ---- */
+.hotel-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 20px 25px;
+}
+
+.hotel-modal-header .close {
+    color: #fff;
+    opacity: 0.8;
+    font-size: 28px;
+}
+
+.hotel-modal-header .close:hover {
+    opacity: 1;
+}
+
+.hotel-modal-header .header-icon {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.hotel-modal-header .header-icon i {
+    color: #fff;
+    font-size: 24px;
+}
+
+.hotel-modal-header .modal-title {
+    color: #fff;
+    font-weight: 600;
+    margin: 0;
+}
+
+.hotel-modal-header .header-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---- بدنه مودال ---- */
+.hotel-modal-body {
+    padding: 25px;
+    background: #f0f2f5;
+}
+
+/* ---- کارت وضعیت ---- */
+.hotel-status-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.hotel-status-card .voucher-label {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.hotel-status-card .voucher-number {
+    font-weight: 600;
+    font-size: 16px;
+    color: #2d3748;
+}
+
+.hotel-status-badge {
+    color: #fff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.hotel-status-badge i {
+    font-size: 8px;
+    margin-left: 6px;
+}
+
+/* ---- کارت‌های اطلاعاتی ---- */
+.hotel-info-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* رنگ‌های حاشیه کارت‌ها */
+.hotel-info-card.border-user { border-right: 4px solid #6d67ca; }
+.hotel-info-card.border-buyer { border-right: 4px solid #f370a8; }
+.hotel-info-card.border-payment { border-right: 4px solid #32c5fe; }
+.hotel-info-card.border-hotel { border-right: 4px solid #fd7e14; }
+.hotel-info-card.border-passenger { border-right: 4px solid #cbe4e7; }
+.hotel-info-card.border-transfer { border-right: 4px solid #bf9eda; }
+
+/* ---- هدر کارت‌ها ---- */
+.hotel-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.hotel-card-header .card-icon {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hotel-card-header .card-icon i {
+    color: #fff;
+    font-size: 16px;
+}
+
+.hotel-card-header .card-title {
+    margin: 0;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 15px;
+}
+
+/* رنگ‌های آیکون کارت‌ها */
+.hotel-card-header .icon-user { background: linear-gradient(135deg, #667eea, #764ba2); }
+.hotel-card-header .icon-buyer { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.hotel-card-header .icon-payment { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.hotel-card-header .icon-hotel { background: linear-gradient(135deg, #f093fb, #fd7e14); }
+.hotel-card-header .icon-passenger { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+.hotel-card-header .icon-transfer { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+.hotel-card-header .icon-passenger i {
+    color: #2d3748;
+}
+
+/* ---- محتوای کارت‌ها با گرید ---- */
+.hotel-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    text-align:center
+}
+.hotel-card-grid .grid-item{
+    display: flex;
+    gap: 7px;
+    flex-direction: column;
+
+}
+.hotel-card-grid .grid-item .label {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.hotel-card-grid .grid-item .value {
+    font-weight: 600;
+}
+
+.hotel-card-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+/* ---- کارت ترانسفر ---- */
+.hotel-transfer-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.hotel-transfer-box {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.hotel-transfer-box.border-enter { border-right: 3px solid #2b8a3e; }
+.hotel-transfer-box.border-exit { border-right: 3px solid #c92a2a; }
+
+.hotel-transfer-box .transfer-title {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.hotel-transfer-box .transfer-title.enter { color: #2b8a3e; }
+.hotel-transfer-box .transfer-title.exit { color: #c92a2a; }
+
+.hotel-transfer-box .transfer-grid {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 5px 15px;
+    font-size: 13px;
+}
+
+.hotel-transfer-box .transfer-grid .label {
+    color: #6c757d;
+}
+
+.hotel-transfer-box .transfer-grid .value {
+    font-weight: 600;
+}
+
+/* ---- فوتر مودال ---- */
+.hotel-modal-footer {
+    border: none;
+    padding: 16px 0 0 0;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.hotel-modal-footer .btn {
+    border-radius: 8px;
+    padding: 8px 24px;
+    font-weight: 500;
+}
+
+.hotel-modal-footer .btn-confirm-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.hotel-modal-footer .btn-confirm-wrapper .code-label {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.hotel-modal-footer .btn-confirm-wrapper .code-input {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: block;
+    width: 200px;
+}
+
+.hotel-modal-footer .btn-success-disabled,
+.hotel-modal-footer .btn-danger-disabled {
+    opacity: 0.8;
+    cursor: default;
+}
+
+.icon-user::before{
+    content:'' !important;
+}
+
+/* ---- پاسخگو ---- */
+@media (max-width: 768px) {
+    .hotel-transfer-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .hotel-status-card {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .hotel-modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hotel-modal-footer .btn-confirm-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hotel-modal-footer .btn-confirm-wrapper .code-input {
+        width: 100%;
+    }
+
+    .hotel-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hotel-modal-body {
+        padding: 15px;
+    }
+
+    .hotel-info-card {
+        padding: 15px;
+    }
+
+    .hotel-transfer-box .transfer-grid {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+}
+
+/* ========================================
+   سفر - استایل‌های مودال مشخصات بلیط
+   ======================================== */
+
+.travel-modal .modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.travel-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 20px 25px;
+}
+.travel-modal-header .close {
+    color: #fff;
+    opacity: 0.8;
+    font-size: 28px;
+}
+.travel-modal-header .close:hover { opacity: 1; }
+.travel-modal-header .modal-title {
+    color: #fff;
+    font-weight: 600;
+    margin: 0;
+}
+
+.travel-modal-body {
+    padding: 25px;
+    background: #f0f2f5;
+}
+
+.travel-info-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* رنگ‌های حاشیه کارت‌ها */
+.travel-info-card.border-user { border-right: 4px solid #6d67ca; }
+.travel-info-card.border-buyer { border-right: 4px solid #f370a8; }
+.travel-info-card.border-payment { border-right: 4px solid #32c5fe; }
+.travel-info-card.border-travel { border-right: 4px solid #fd7e14; }
+.travel-info-card.border-passenger { border-right: 4px solid #cbe4e7; }
+.travel-info-card.border-cancel { border-right: 4px solid #dc3545; }
+
+.travel-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+.travel-card-header .card-icon {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.travel-card-header .card-icon i {
+    color: #fff;
+    font-size: 16px;
+}
+.travel-card-header .card-title {
+    margin: 0;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 15px;
+}
+
+/* رنگ‌های آیکون‌ها */
+.travel-card-header .icon-user { background: linear-gradient(135deg, #667eea, #764ba2); }
+.travel-card-header .icon-buyer { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.travel-card-header .icon-payment { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.travel-card-header .icon-travel { background: linear-gradient(135deg, #f093fb, #fd7e14); }
+.travel-card-header .icon-passenger { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+.travel-card-header .icon-cancel { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+.travel-card-header .icon-passenger i { color: #2d3748; }
+
+.travel-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 10px;
+}
+.travel-card-grid .grid-item .label {
+    color: #6c757d;
+    font-size: 13px;
+}
+.travel-card-grid .grid-item .value {
+    font-weight: 600;
+}
+.travel-card-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+/* زیر کارت سفر */
+.travel-sub-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+}
+.travel-sub-title {
+    color: #2d3748;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 8px;
+}
+.travel-sub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px 15px;
+}
+.travel-sub-grid .sub-item .label {
+    color: #6c757d;
+    font-size: 12px;
+}
+.travel-sub-grid .sub-item .value {
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* بخش قیمت */
+.travel-price-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 30px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+    border-top: 2px solid #e9ecef;
+}
+.travel-price-item .label {
+    color: #6c757d;
+    font-size: 13px;
+}
+.travel-price-item .value {
+    font-weight: 600;
+    font-size: 15px;
+}
+.travel-price-item .value.price {
+    color: #28a745;
+    font-size: 17px;
+}
+.travel-price-item .value .old-price {
+    text-decoration: line-through;
+    color: #dc3545;
+    font-size: 14px;
+    margin-left: 8px;
+}
+.travel-price-item .value .new-price {
+    color: #28a745;
+    font-size: 17px;
+}
+
+/* مسافرین */
+.passenger-item {
+    border-bottom: 1px solid #f0f2f5;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+.passenger-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.cancel-badge {
+    color: #dc3545;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .travel-card-grid {
+        grid-template-columns: 1fr;
+    }
+    .travel-sub-grid {
+        grid-template-columns: 1fr;
+    }
+    .travel-price-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

@@ -221,386 +221,333 @@ class ModalCreatorForHotel
 
     public function ModalShowBook($Param)
     {
-
         $objDiscountCode = Load::controller('discountCodes');
         $objbook = Load::controller($this->Controller);
         $Hotel = $objbook->info_hotel_client($Param, TYPE_ADMIN);
         ?>
-
-        <div class="modal-dialog modal-lg">
-
-            <!-- Modal content-->
+        <div class="modal-dialog modal-lg modal-dialog-centered hotel-modal">
             <div class="modal-content">
-                <div class="modal-header site-bg-main-color">
+
+                <!-- ===== هدر ===== -->
+                <div class="modal-header hotel-modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">مشاهده مشخصات هتل
-                        &nbsp; <?php echo !empty($Hotel[0]['member_name']) ? 'کاربر اصلی ' : 'کاربرمهمان'; ?>
-                    </h4>
+                    <div class="header-icon">
+                        <i class="fa fa-hotel"></i>
+                    </div>
+                    <div>
+                        <h4 class="modal-title">مشخصات رزرو هتل</h4>
+                        <small class="header-subtitle">
+                            <i class="fa fa-user"></i> <?php echo !empty($Hotel[0]['member_name']) ? 'کاربر اصلی : ' . $Hotel[0]['member_name'] : 'کاربر مهمان'; ?>
+                        </small>
+                    </div>
                 </div>
-                <div class="modal-body">
+
+                <div class="modal-body hotel-modal-body">
+
                     <?php
                     foreach ($Hotel as $key => $view) {
-                    if ($key < 1) {
+                        if ($key < 1) {
 
-                    if (TYPE_ADMIN == '1') {
-                        ?>
-                        <!--<div class="row margin-both-vertical-20">
-                            <div class="col-md-12 text-center text-bold " style="color: #fb002a;"><span>مشخصات ارائه دهنده هتل</span>
-                            </div>
-                        </div>
+                            $statusColor = [
+                                'BookedSuccessfully' => '#28a745',
+                                'pending' => '#ffc107',
+                                'Requested' => '#17a2b8',
+                                'RequestAccepted' => '#28a745',
+                                'RequestRejected' => '#dc3545',
+                                'canceled' => '#6c757d',
+                                'PreReserve' => '#fd7e14',
+                                'NoReserve' => '#ff7676',
+                                'bank' => '#707cd2',
+                            ];
+                            $statusText = [
+                                'BookedSuccessfully' => 'رزرو قطعی',
+                                'pending' => 'در انتظار',
+                                'Requested' => 'درخواست شده',
+                                'RequestAccepted' => 'تایید شده',
+                                'RequestRejected' => 'رد شده',
+                                'canceled' => 'لغو شده',
+                                'credit' => 'انتخاب اعتباری',
+                                'bank' => 'هدایت به درگاه',
+                                'PreReserve' => 'پیش رزرو',
+                                'NoReserve' => 'خطای پروایدر'
+                            ];
+                            $currentStatus = $view['status'] ?? 'PreReserve';
+                            ?>
 
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-4 "><span>نام آژانس  : </span><span>ایران تکنولوژی</span></div>
-                            <div class="col-md-4 "><span> نام مدیر آژانس: </span><span>جناب آقای افشار</span></div>
-                            <div class="col-md-4 "><span class=""> شماره تلفن: </span>021-88866609<span class="yn"></span>
-                            </div>
-                            <div class="col-md-4 "><span> وب سایت : </span><span>http://www.iran-tech.com</span></div>
-                            <div class="col-md-8 "><span>آدرس: </span><span>
-تهران - خیابان مطهری - بعد از مفتح - پلاک 180 - واحد 1 </span></div>
-                        </div>
-                        <hr style="margin: 5px 0;"/>-->
-                    <?php } ?>
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-12 text-center text-bold" style="color: #fb002a;">
-                            <span>مشخصات کاربر</span></div>
-                    </div>
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-4 "><span>نام و نام خانوادگی  : </span><span><?php echo $view['member_name']; ?></span></div>
-                        <div class="col-md-4 "><span class=""> شماره تلفن موبایل: </span><span class="yn"><?php echo $view['member_mobile']; ?></span></div>
-                        <div class="col-md-4 "><span>ایمیل :</span><span><?php echo $view['member_email']; ?></span></div>
-                    </div>
-
-
-                    <hr style="margin: 5px 0;"/>
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-12 text-center text-bold" style="color: #fb002a;"><span>اطلاعات خریدار </span>
-                        </div>
-                    </div>
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-6 "><span>نام  : </span><span><?php echo $view['passenger_leader_room_fullName'];?></span></div>
-                        <div class="col-md-6 "><span class=""> موبایل : </span><span class="yn"><?php echo $view['passenger_leader_room'];?></span></div>
-
-                        <?php if($view['passenger_leader_room_email']){ ?>
-                            <div class="col-md-6 "><span class=""> ایمیل : </span><span class="yn"><?php echo $view['passenger_leader_room_email'];?></span></div>
-                        <?php } ?>
-
-                        <?php if($view['passenger_leader_room_postalcode']){ ?>
-                            <div class="col-md-6 "><span class=""> کدپستی : </span><span class="yn"><?php echo $view['passenger_leader_room_postalcode'];?></span></div>
-                        <?php } ?>
-
-                        <?php if($view['passenger_leader_room_address']){ ?>
-                            <div class="col-md-6 "><span class=""> آدرس : </span><span class="yn"><?php echo $view['passenger_leader_room_address'];?></span></div>
-                        <?php } ?>
-
-                    </div>
-                    <hr style="margin: 5px 0;"/>
-
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-12 text-center text-bold " style="color: #fb002a;"><span>مشخصات پرداخت</span>
-                        </div>
-                    </div>
-
-                    <?php if($view['status']=='BookedSuccessfully' || $view['status']=='pending'){ ?>
-
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-4"><span class=" pull-left">تاریخ پرداخت : </span><span class="yn">
-                                        <?php echo($view['payment_date'] != '' ? functions::set_date_payment($view['payment_date']) : 'پرداخت نشده'); ?>
+                            <!-- ===== STATUS CARD ===== -->
+                            <div class="hotel-status-card">
+                                <div>
+                                    <span class="voucher-label">شماره واچر :</span>
+                                    <span class="voucher-number"><?php echo $view['request_number']; ?></span>
+                                </div>
+                                <div>
+                                <span class="hotel-status-badge" style="background: <?php echo $statusColor[$currentStatus] ?? '#6c757d'; ?>;">
+                                    <i class="fa fa-circle"></i>
+                                    <?php echo $statusText[$currentStatus] ?? $currentStatus; ?>
                                 </span>
+                                </div>
                             </div>
-                            <?php if ($view['payment_date'] != ''){ ?>
 
-                                <div class="col-md-4"><span>نوع پرداخت: </span><span>
-                                        <?php
-                                        if ($view['payment_type'] == 'cash') {
-                                            echo 'نقدی';
-                                        } else if ($view['payment_type'] == 'credit') {
-                                            echo 'اعتباری';
-                                        }
-                                        ?>
-                                    </span>
+                            <!-- ===== CARD: مشخصات کاربر ===== -->
+                            <div class="hotel-info-card border-user">
+                                <div class="hotel-card-header">
+                                    <div class="card-icon icon-user"><i class="fa fa-user"></i></div>
+                                    <h5 class="card-title">مشخصات کاربر</h5>
                                 </div>
-
-
-                                <div class="col-md-4">
-                                    <span>کد پیگیری بانک: </span>
-                                    <span class="yn">
-                                            <?php echo !empty($view['tracking_code_bank']) ? $view['tracking_code_bank'] : 'ندارد'; ?>
-                                        </span>
+                                <div class="hotel-card-grid">
+                                    <div class="grid-item">
+                                        <div class="label">نام و نام خانوادگی</div>
+                                        <div class="value"><?php echo $view['member_name']; ?></div>
+                                    </div>
+                                    <div class="grid-item">
+                                        <div class="label">شماره موبایل</div>
+                                        <div class="value"><?php echo $view['member_mobile']; ?></div>
+                                    </div>
+                                    <div class="grid-item">
+                                        <div class="label">ایمیل</div>
+                                        <div class="value"><?php echo $view['member_email']; ?></div>
+                                    </div>
                                 </div>
+                            </div>
 
-
-                                <?php if (TYPE_ADMIN == '1' && $view['payment_type'] == 'cash') {
-                                    ?>
-                                    <div class="col-md-4">
-                                        <span>نام بانک: </span>
-                                        <span><?php echo $objbook->namebank($view['name_bank_port'], $view['client_id']); ?></span>
+                            <!-- ===== CARD: اطلاعات خریدار ===== -->
+                            <div class="hotel-info-card border-buyer">
+                                <div class="hotel-card-header">
+                                    <div class="card-icon icon-buyer"><i class="fa fa-shopping-cart"></i></div>
+                                    <h5 class="card-title">اطلاعات خریدار</h5>
+                                </div>
+                                <div class="hotel-card-grid">
+                                    <div class="grid-item">
+                                        <div class="label">نام</div>
+                                        <div class="value"><?php echo $view['passenger_leader_room_fullName']; ?></div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <span class="">شماره درگاه: </span>
-                                        <span class="yn"><?php echo $objbook->numberPortBnak($view['name_bank_port'], $view['client_id']); ?></span>
+                                    <div class="grid-item">
+                                        <div class="label">موبایل</div>
+                                        <div class="value"><?php echo $view['passenger_leader_room']; ?></div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <span>صاحب امتیاز درگاه: </span>
-                                        <span><?php echo $objbook->numberPortBnak($view['name_bank_port'], $view['client_id']) == '379918' ? 'ایران تکنولوژی' : $objbook->nameAgency($view['client_id']); ?></span>
+                                    <?php if($view['passenger_leader_room_email']){ ?>
+                                        <div class="grid-item">
+                                            <div class="label">ایمیل</div>
+                                            <div class="value"><?php echo $view['passenger_leader_room_email']; ?></div>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if($view['passenger_leader_room_postalcode']){ ?>
+                                        <div class="grid-item">
+                                            <div class="label">کدپستی</div>
+                                            <div class="value"><?php echo $view['passenger_leader_room_postalcode']; ?></div>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if($view['passenger_leader_room_address']){ ?>
+                                        <div class="grid-item full-width">
+                                            <div class="label">آدرس</div>
+                                            <div class="value"><?php echo $view['passenger_leader_room_address']; ?></div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+
+                            <!-- ===== CARD: مشخصات پرداخت ===== -->
+                            <div class="hotel-info-card border-payment">
+                                <div class="hotel-card-header">
+                                    <div class="card-icon icon-payment"><i class="fa fa-credit-card"></i></div>
+                                    <h5 class="card-title">مشخصات پرداخت</h5>
+                                </div>
+                                <div class="hotel-card-grid">
+                                    <?php if($view['status']=='BookedSuccessfully' || $view['status']=='pending'){ ?>
+                                        <div class="grid-item">
+                                            <div class="label">تاریخ پرداخت</div>
+                                            <div class="value"><?php echo($view['payment_date'] != '' ? functions::set_date_payment($view['payment_date']) : 'پرداخت نشده'); ?></div>
+                                        </div>
+                                        <?php if ($view['payment_date'] != ''){ ?>
+                                            <div class="grid-item">
+                                                <div class="label">نوع پرداخت</div>
+                                                <div class="value"><?php echo ($view['payment_type'] == 'cash') ? 'نقدی' : 'اعتباری'; ?></div>
+                                            </div>
+                                            <div class="grid-item">
+                                                <div class="label">کد پیگیری</div>
+                                                <div class="value"><?php echo !empty($view['tracking_code_bank']) ? $view['tracking_code_bank'] : 'ندارد'; ?></div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <div class="grid-item">
+                                            <div class="label">تاریخ پرداخت</div>
+                                            <div class="value">پرداخت نشده</div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+
+                            <!-- ===== CARD: مشخصات هتل ===== -->
+                            <div class="hotel-info-card border-hotel">
+                                <div class="hotel-card-header">
+                                    <div class="card-icon icon-hotel"><i class="fa fa-hotel"></i></div>
+                                    <h5 class="card-title">مشخصات هتل</h5>
+                                </div>
+                                <div class="hotel-card-grid">
+                                    <div class="grid-item">
+                                        <div class="label">نام هتل</div>
+                                        <div class="value"><?php echo $view['hotel_name']; ?></div>
                                     </div>
-                                <?php } ?>
+                                    <div class="grid-item">
+                                        <div class="label">شهر</div>
+                                        <div class="value"><?php echo $view['city_name']; ?></div>
+                                    </div>
+                                    <div class="grid-item">
+                                        <div class="label">مدت اقامت</div>
+                                        <div class="value"><?php echo $view['number_night'] . ' شب'; ?></div>
+                                    </div>
+                                    <div class="grid-item">
+                                        <div class="label">تاریخ ورود</div>
+                                        <div class="value"><?php echo $view['start_date']; ?></div>
+                                    </div>
+                                    <div class="grid-item">
+                                        <div class="label">تاریخ خروج</div>
+                                        <div class="value"><?php echo $view['end_date']; ?></div>
+                                    </div>
+                                    <?php if ($view['payment_status'] != '') { ?>
+                                        <div class="grid-item">
+                                            <div class="label">مبلغ پیش پرداخت</div>
+                                            <div class="value"><?php echo number_format($view['hotel_payments_price']); ?> ریال</div>
+                                        </div>
+                                        <div class="grid-item">
+                                            <div class="label">مبلغ باقی مانده</div>
+                                            <div class="value"><?php echo number_format($view['total_price'] - $view['hotel_payments_price']); ?> ریال</div>
+                                        </div>
+                                    <?php } else { ?>
+                                        <div class="grid-item">
+                                            <div class="label">مبلغ پرداختی</div>
+                                            <div class="value"><?php echo number_format($view['total_price']); ?> ریال</div>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if (!empty($view['hotel_confirm_code'])) { ?>
+                                        <div class="grid-item">
+                                            <div class="label">کد کانفرم هتل</div>
+                                            <div class="value"><?php echo $view['hotel_confirm_code']; ?></div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
 
+                            <!-- ===== CARD: مشخصات مسافرین ===== -->
+                            <div class="hotel-info-card border-passenger">
+                                <div class="hotel-card-header">
+                                    <div class="card-icon icon-passenger"><i class="fa fa-users"></i></div>
+                                    <h5 class="card-title">مشخصات مسافرین (سرگروه اول هر اتاق)</h5>
+                                </div>
+                                <div class="hotel-card-grid">
+                                    <div class="grid-item">
+                                        <div class="label">نام و نام خانوادگی</div>
+                                        <div class="value">
+                                            <?php
+                                            if (!empty($view['passenger_name'])){
+                                                echo $view['passenger_name'] . ' ' . $view['passenger_family'] . ' (' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
+                                            } elseif (!empty($view['passenger_name_en'])){
+                                                echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en'] . ' (' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div class="grid-item">
+                                        <div class="label">شماره ملی/پاسپورت</div>
+                                        <div class="value"><?php echo $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code']; ?></div>
+                                    </div>
+                                    <?php if(!($view['source_id']==29)){ ?>
+                                        <div class="grid-item">
+                                            <div class="label">تاریخ تولد</div>
+                                            <div class="value"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : $view['passenger_birthday_en']; ?></div>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="grid-item">
+                                        <div class="label">اتاق</div>
+                                        <div class="value"><?php echo $view['room_count'] . ' باب ' . $view['room_name']; ?></div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- ===== CARD: اطلاعات ترانسفر ===== -->
+                            <?php
+                            $transferData = json_decode($view['transfer_hotel'], true);
+                            $vehicleTypes = ['flight'=>'پرواز', 'bus'=>'اتوبوس', 'train'=>'قطار', 'other'=>'سایر'];
+                            ?>
+                            <?php if($transferData && is_array($transferData) && (!empty($transferData['type_vehicle']) || !empty($transferData['type_vehicle_arrival']))): ?>
+                                <div class="hotel-info-card border-transfer">
+                                    <div class="hotel-card-header">
+                                        <div class="card-icon icon-transfer"><i class="fa fa-exchange"></i></div>
+                                        <h5 class="card-title">اطلاعات ترانسفر</h5>
+                                    </div>
+                                    <div class="hotel-transfer-wrapper">
+                                        <?php if(!empty($transferData['type_vehicle']) || !empty($transferData['number_vehicle'])): ?>
+                                            <div class="hotel-transfer-box border-enter">
+                                                <h6 class="transfer-title enter"><i class="fa fa-arrow-down"></i> ترانسفر ورود</h6>
+                                                <div class="transfer-grid">
+                                                    <span class="label">نوع وسیله</span>
+                                                    <span class="value"><?php echo $vehicleTypes[$transferData['type_vehicle']] ?? $transferData['type_vehicle'] ?? '-'; ?></span>
+                                                    <span class="label">شماره وسیله</span>
+                                                    <span class="value"><?php echo $transferData['number_vehicle'] ?? '-'; ?></span>
+                                                    <span class="label">ساعت حرکت</span>
+                                                    <span class="value"><?php echo $transferData['time_vehicle'] ?? '-'; ?></span>
+                                                    <span class="label">شرکت حمل کننده</span>
+                                                    <span class="value"><?php echo $transferData['carrier_company'] ?? '-'; ?></span>
+                                                    <span class="label">شهر مبدا</span>
+                                                    <span class="value"><?php echo $transferData['origin_city'] ?? '-'; ?></span>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if(!empty($transferData['type_vehicle_arrival']) || !empty($transferData['number_vehicle_arrival'])): ?>
+                                            <div class="hotel-transfer-box border-exit">
+                                                <h6 class="transfer-title exit"><i class="fa fa-arrow-up"></i> ترانسفر خروج</h6>
+                                                <div class="transfer-grid">
+                                                    <span class="label">نوع وسیله</span>
+                                                    <span class="value"><?php echo $vehicleTypes[$transferData['type_vehicle_arrival']] ?? $transferData['type_vehicle_arrival'] ?? '-'; ?></span>
+                                                    <span class="label">شماره وسیله</span>
+                                                    <span class="value"><?php echo $transferData['number_vehicle_arrival'] ?? '-'; ?></span>
+                                                    <span class="label">ساعت حرکت</span>
+                                                    <span class="value"><?php echo $transferData['time_vehicle_arrival'] ?? '-'; ?></span>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php
+                            // ======== دکمه‌های وضعیت ========
+                            if ($view['status'] == 'Requested' && $view['payment_status'] != '') { ?>
+                                <div class="hotel-modal-footer">
+                                    <div class="btn-confirm-wrapper">
+                                        <div>
+                                            <label class="code-label">کد کانفرم هتل</label>
+                                            <input class="code-input" name="ConfirmAdminRequestedPrereserveHotelUserCode" id="ConfirmAdminRequestedPrereserveHotelUserCode">
+                                        </div>
+                                        <button type="button" class="btn btn-success" onclick="ConfirmAdminRequestedPrereserveHotelUser('<?php echo $view['factor_number']; ?>')">
+                                            <i class="fa fa-check"></i> تایید پیش پرداخت
+                                        </button>
+                                    </div>
+                                    <button type="button" class="btn btn-danger" onclick="RejectAdminRequestedPrereserveHotelUser('<?php echo $view['factor_number']; ?>')">
+                                        <i class="fa fa-times"></i> عدم تایید
+                                    </button>
+                                </div>
+                            <?php } elseif($view['status'] == 'RequestAccepted' && $view['payment_status'] != ''){ ?>
+                                <div class="hotel-modal-footer">
+                                    <button type="button" class="btn btn-success btn-success-disabled">
+                                        <i class="fa fa-check-circle"></i> پیش رزرو توسط ادمین تایید شد
+                                    </button>
+                                </div>
+                            <?php } elseif($view['status'] == 'RequestRejected' && $view['payment_status'] != ''){ ?>
+                                <div class="hotel-modal-footer">
+                                    <button type="button" class="btn btn-danger btn-danger-disabled">
+                                        <i class="fa fa-times-circle"></i> پیش رزرو توسط ادمین رد شد
+                                    </button>
+                                </div>
                             <?php } ?>
 
-                        </div>
-                    <?php }else { ?>
-
-                        <div class="row margin-both-vertical-20">
-                            <div class="col-md-4">
-                                <span class=" pull-left">تاریخ پرداخت : </span><span class="yn">پرداخت نشده</span>
-                            </div>
-                        </div>
-
+                        <?php } ?>
                     <?php } ?>
 
-                    <hr style="margin: 5px 0;"/>
-
-
-                    <div class="row margin-both-vertical-20">
-                        <div class="col-md-12 text-center text-bold " style="color: #fb002a;">
-                            <span>مشخصات هتل</span></div>
-                    </div>
-                    <div class="row margin-both-vertical-20">
-
-                        <?php
-                        $payDate = (!empty($view['payment_date']) ? functions::set_date_payment($view['payment_date']) : '');
-                        if($payDate != ''){ $payDate = explode(' ', $payDate); }
-                        ?>
-
-                        <div class="col-md-4">
-                            <span class=" pull-left">تاریخ رزرو هتل : </span>
-                            <span class="yn"><?php echo !empty($view['payment_date']) ? $payDate[0] : 'ندارد';?></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span class=" pull-left">ساعت رزرو هتل : </span>
-                            <span class="yn"><?php echo !empty($view['payment_date']) ? $payDate[1] : 'ندارد'; ?></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>شماره واچر :</span>
-                            <span class="yn"><?php echo $view['request_number']; ?></span></div>
-                    </div>
-                    <?php if (!empty($view['hotel_confirm_code'])) { ?>
-                    <div class="col-md-4">
-                        <span>کد کانفرم هتل :</span>
-                        <span class="yn"><?php echo $view['hotel_confirm_code']; ?></span></div>
                 </div>
-                <?php }?>
-                <div class="row margin-both-vertical-20">
-                    <div class="col-md-4 ">
-                        <span>شهر : </span>
-                        <span><?php echo $view['city_name'] ; ?></span>
-                    </div>
-                    <div class="col-md-4 ">
-                        <span>هتل : </span>
-                        <span><?php echo $view['hotel_name'] ; ?></span>
-                    </div>
-                    <div class="col-md-4 ">
-                        <span>مدت اقامت : </span>
-                        <span><?php echo $view['number_night'] .' شب ' ; ?></span>
-                    </div>
-                </div>
-                <div class="row margin-both-vertical-20">
-                    <div class="col-md-4 ">
-                        <span>تاریخ ورود : </span>
-                        <span><?php echo $view['start_date'] ; ?></span>
-                    </div>
-                    <div class="col-md-4 ">
-                        <span>تاریخ خروج : </span>
-                        <span><?php echo  $view['end_date'] ; ?></span>
-                    </div>
-                    <!--                                <div class="col-md-4 ">-->
-                    <!--                                    <span>هزینه هتل : </span>-->
-                    <!--                                    <span class="yn">--><?php //echo number_format($view['total_price']); ?><!-- ربال </span>-->
-                    <!--                                </div>-->
-                    <?php
-                    if ($view['payment_status'] != '') {?>
-
-                        <div class="col-md-3">
-                            <span>مبلغ پیش پرداخت :</span>
-                            <span class="yn"><?php echo number_format($view['hotel_payments_price']); ?></span>
-                        </div>
-
-                        <div class="col-md-3">
-                            <span>مبلغ باقی مانده:</span>
-                            <span class="yn"><?php echo number_format($view['total_price'] - $view['hotel_payments_price']); ?></span>
-                        </div>
-
-                    <?php }else{ ?>
-                        <div class="col-md-3">
-                            <span>مبلغ پرداختی:</span>
-                            <span class="yn"><?php echo number_format($view['total_price']); ?></span>
-                        </div>
-                    <?php } ?>
-                </div>
-                <?php
-                if ($view['status'] == 'Requested' && $view['payment_status'] != '') {?>
-                    <div class="modal-footer site-bg-main-color"
-                         style="display: flex;gap: 10px;align-items: end;">
-                        <div style="display: flex;gap: 10px;flex-direction: column-reverse;">
-                            <button type="button" class="btn btn-primary  pull-left" style="margin-right:2px;  height: fit-content;"
-                                    onclick="ConfirmAdminRequestedPrereserveHotelUser('<?php echo $view['factor_number']; ?>')">
-                                تایید پیش پرداخت
-                            </button>
-                            <div style="display: flex;flex-direction: column;">
-                                <label for="ConfirmAdminRequestedPrereserveHotelUserCode">کد کانفرم هتل</label>
-                                <input name="ConfirmAdminRequestedPrereserveHotelUserCode" id="ConfirmAdminRequestedPrereserveHotelUserCode">
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-danger  pull-left" style="height: fit-content;"
-                                onclick="RejectAdminRequestedPrereserveHotelUser('<?php echo $view['factor_number']; ?>')">
-                            عدم تایید پیش پرداخت
-                        </button>
-
-                    </div>
-                <?php }elseif($view['status'] == 'RequestAccepted' && $view['payment_status'] != ''){ ?>
-                    <button type="button" class="btn btn-primary  pull-left" style="margin-right:2px">
-                        پیش رزرو توسط ادمین تایید شد
-                    </button>
-                <?php }elseif($view['status'] == 'RequestRejected' && $view['payment_status'] != ''){ ?>
-                    <button type="button" class="btn btn-danger  pull-left" style="margin-right:2px">
-                        پیش رزرو توسط ادمین رد شد
-                    </button>
-                <?php } ?>
-
-
-
-                <?php
-                $discountCodeInfo = $objDiscountCode->getDiscountCodeByFactor($view['factor_number']);
-                if (!empty($discountCodeInfo)) {
-                    ?>
-                    <div class="row">
-                        <div class="col-md-4 ">
-                            <span>کد تخفیف:</span>
-                            <span class="yn"><?php echo $discountCodeInfo['discountCode']; ?></span>
-                        </div>
-                        <div class="col-md-8 ">
-                            <span>قیمت پس از اعمال کد تخفیف</span>
-                            <span class="yn">
-                                            <?php echo number_format($view['total_price'] - $discountCodeInfo['amount']); ?>
-                                    ریال</span>
-                        </div>
-                    </div>
-                <?php } ?>
-
-                <hr style="margin: 5px 0;"/>
-
-                <div class="row margin-top-10 margin-both-vertical-20">
-                    <div class="col-md-12 text-center text-bold " style="color: #fb002a;"><span>مشخصات مسافرین (سرگروه اول هر اتاق) </span>
-                    </div>
-                </div>
-
-                <?php } ?>
-
-                <div class="row modal-padding-bottom-15 margin-both-vertical-20">
-                    <div class="col-md-3 ">
-                        <span>نام و نام خانوادگی :</span>
-                        <span>
-                                    <?php
-                                    if (!empty($view['passenger_name'])){
-                                        echo $view['passenger_name'] . ' ' . $view['passenger_family']
-                                            . '(' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
-                                    } elseif (!empty($view['passenger_name_en'])){
-                                        echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en']
-                                            . '(' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
-                                    }
-                                    ?>
-                                </span>
-                    </div>
-                    <div class="col-md-3 ">
-                        <span>شماره ملی/پاسپورت:</span>
-                        <span class="yn"><?php echo $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code']; ?></span>
-                    </div>
-                    <?php if(!($view['source_id']==29)){  ?>
-
-                        <div class="col-md-3 ">
-                            <span class=" pull-left">  تاریخ تولد:</span>
-                            <span class="yn"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : $view['passenger_birthday_en']; ?></span>
-                        </div>
-                    <?php }  ?>
-                    <div class="col-md-3 ">
-                        <span class=" pull-left">اتاق:</span>
-                        <span class=" pull-left"><?php echo $view['room_count'] . ' باب ' . $view['room_name']; ?></span>
-                    </div>
-                </div>
-
-
-                <?php
-                // دیکد کردن اطلاعات ترانسفر
-                $transferData = json_decode($view['transfer_hotel'], true);
-                ?>
-                <?php if($transferData && is_array($transferData) && (!empty($transferData['type_vehicle']) || !empty($transferData['type_vehicle_arrival']))): ?>
-                    <div class="row margin-both-vertical-20 mx-3" style="border:1px solid #e2e2e2; border-radius:8px; padding:10px; margin-top:15px; background:#f8fafc;">
-                        <div class="col-md-12 text-center text-bold" style="color: #28a745; border-bottom:2px solid #28a745; padding-bottom:10px; margin-bottom:15px;">
-                            <i class="fa fa-exchange"></i> اطلاعات ترانسفر
-                        </div>
-
-                        <?php if(!empty($transferData['type_vehicle']) || !empty($transferData['number_vehicle'])): ?>
-                            <div class="col-md-6">
-                                <div style="border:1px solid #ddd; border-radius:6px; background:#fff; padding:10px;">
-                                    <h5 style="margin:0 0 10px 0; color:#2b8a3e; font-weight:bold; border-bottom:1px solid #eee; padding-bottom:8px;">
-                                        ترانسفر ورود
-                                    </h5>
-                                    <div style="font-size:13px;">
-                                        <p style="margin:4px 0;"><strong>نوع وسیله:</strong>
-                                            <?php
-                                            $vehicleTypes = ['flight'=>'پرواز', 'bus'=>'اتوبوس', 'train'=>'قطار', 'other'=>'سایر'];
-                                            echo $vehicleTypes[$transferData['type_vehicle']] ?? $transferData['type_vehicle'] ?? '-';
-                                            ?>
-                                        </p>
-                                        <p style="margin:4px 0;"><strong>شماره وسیله:</strong> <?= $transferData['number_vehicle'] ?? '-' ?></p>
-                                        <p style="margin:4px 0;"><strong>ساعت حرکت:</strong> <?= $transferData['time_vehicle'] ?? '-' ?></p>
-                                        <p style="margin:4px 0;"><strong>شرکت حمل کننده:</strong> <?= $transferData['carrier_company'] ?? '-' ?></p>
-                                        <p style="margin:4px 0;"><strong>شهر مبدا:</strong> <?= $transferData['origin_city'] ?? '-' ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if(!empty($transferData['type_vehicle_arrival']) || !empty($transferData['number_vehicle_arrival'])): ?>
-                            <div class="col-md-6">
-                                <div style="border:1px solid #ddd; border-radius:6px; background:#fff; padding:10px;">
-                                    <h5 style="margin:0 0 10px 0; color:#c92a2a; font-weight:bold; border-bottom:1px solid #eee; padding-bottom:8px;">
-                                        ترانسفر خروج
-                                    </h5>
-                                    <div style="font-size:13px;">
-                                        <p style="margin:4px 0;"><strong>نوع وسیله:</strong>
-                                            <?php
-                                            $vehicleTypes = ['flight'=>'پرواز', 'bus'=>'اتوبوس', 'train'=>'قطار', 'other'=>'سایر'];
-                                            echo $vehicleTypes[$transferData['type_vehicle_arrival']] ?? $transferData['type_vehicle_arrival'] ?? '-';
-                                            ?>
-                                        </p>
-                                        <p style="margin:4px 0;"><strong>شماره وسیله:</strong> <?= $transferData['number_vehicle_arrival'] ?? '-' ?></p>
-                                        <p style="margin:4px 0;"><strong>ساعت حرکت:</strong> <?= $transferData['time_vehicle_arrival'] ?? '-' ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php } ?>
-                <!--                    <div class="modal-footer site-bg-main-color">-->
-                <!---->
-                <!---->
-                <!--                    </div>-->
             </div>
         </div>
-
-        </div>
-
         <?php
-
     }
 
     public function ModalShowEditBookHotel($Param)
