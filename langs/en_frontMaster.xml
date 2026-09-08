@@ -3462,6 +3462,10 @@
   <InternalFlightSearchBox>Iran</InternalFlightSearchBox>
   <SearchForCityOfOrigin>Search for city of origin</SearchForCityOfOrigin>
   <SearchForDestinationCity>Search for destination city</SearchForDestinationCity>
-  <SelectDepartureDate>Select departure date</SelectDepartureDate>
-  <SelectReturnDate>Select return date</SelectReturnDate>
+  <TransferDetails>Transfer details</TransferDetails>
+  <TransferEnter>Transfer enter</TransferEnter>
+  <TransferExit>Transfer exit</TransferExit>
+  <MoveNumber>Move number</MoveNumber>
+  <CarrierCompany>Carrier company</CarrierCompany>
+  <TrainNumber>Train number</TrainNumber>
 </Main>

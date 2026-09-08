@@ -171,9 +171,11 @@
   <Yourhotelreservationdeadlineexpiredrestart>مهلت رزرو هتل شما به اتمام رسید لطفا مجددا اقدام نمایید.</Yourhotelreservationdeadlineexpiredrestart>
   <PackageHotels>پکیج هتل ها</PackageHotels>
   <Freetransferfromhotel>ترانسفر رایگان از جانب هتل</Freetransferfromhotel>
+  <TransferDetails>مشخصات ترانسفر</TransferDetails>
+  <TransferEnter>ترانسفر ورود</TransferEnter>
+  <TransferExit>ترانسفر خروج</TransferExit>
   <Searchnamehotel>نام / آدرس هتل</Searchnamehotel>
   <Namehotel>نام هتل</Namehotel>
-  <TransferDetails>مشخصات ترانسفر</TransferDetails>
   <Hotelgrade>درجه هتل</Hotelgrade>
   <Allhotelincity>هتل های شهر</Allhotelincity>
   <Starhotel>ستاره هتل</Starhotel>
@@ -3936,11 +3938,7 @@
   <AgencyCommission>کمیسیون آژانس</AgencyCommission>
   <ForAPeriodOf>بمدت</ForAPeriodOf>
   <SearchForPurchase>جست و جو برای خرید</SearchForPurchase>
-  <FromFlightSearchBox>مبدا</FromFlightSearchBox>
-  <ToFlightSearchBox>مقصد</ToFlightSearchBox>
-  <InternalFlightSearchBox>داخلی</InternalFlightSearchBox>
-  <SearchForCityOfOrigin>جستجوی شهر مبدا</SearchForCityOfOrigin>
-  <SearchForDestinationCity>جستجوی شهر مقصد</SearchForDestinationCity>
-  <SelectDepartureDate>انتخاب تاریخ رفت</SelectDepartureDate>
-  <SelectReturnDate>انتخاب تاریخ برگشت</SelectReturnDate>
+  <MoveNumber>شماره حرکت</MoveNumber>
+  <CarrierCompany>شرکت حمل کننده</CarrierCompany>
+  <TrainNumber>شماره قطار</TrainNumber>
 </Main>

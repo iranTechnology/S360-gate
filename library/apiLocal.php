@@ -1558,7 +1558,7 @@ class apiLocal extends clientAuth
             } elseif ($rec['pid_private'] == '1') {
 
                 if ($sourceId == '22') {
-                    $data['Books'][$key]['PhoneNumber'] = !empty($rec['mobile_buyer']) ? $rec['mobile_buyer'] : $rec['member_mobile'];
+                    $data['Books'][$key]['PhoneNumber'] = !empty($rec['member_mobile']) ? $rec['member_mobile'] : $rec['mobile_buyer'];
                     if (!empty($rec['email_buyer'])) {
                         $data['Books'][$key]['Email'] = $rec['email_buyer'];
                     } elseif (!empty($rec['member_email'])) {

@@ -336,6 +336,19 @@
                         </div>
                     </div>
 
+                    <div class="form-group col-sm-12">
+                        <label style="font-size:13px">ترانسفر رایگان دارد یا ندارد؟</label>
+                        <div class="radio radio-success p-0" style="display: flex; gap: 20px;">
+                            <div class="radio-inline">
+                                <input type="radio" id="transfer_yes" name="is_transfer" value="1"  {if $objResult->list['is_transfer'] == 1}checked{/if}>
+                                <label for="transfer_yes">دارد</label>
+                            </div>
+                            <div class="radio-inline">
+                                <input type="radio" id="transfer_no" name="is_transfer" value="0" {if $objResult->list['is_transfer'] == 0 || $objResult->list['is_transfer'] == ''}checked{/if}>
+                                <label for="transfer_no">ندارد</label>
+                            </div>
+                        </div>
+                    </div>
 
                     {$objResult->getHotelBroker($smarty.get.id)}
                     <div class="form-group col-sm-12">

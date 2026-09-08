@@ -3146,5 +3146,12 @@
   <SearchForDestinationCity>Поиск города назначения</SearchForDestinationCity>
   <SelectDepartureDate>Выберите дату отправления</SelectDepartureDate>
   <SelectReturnDate>Выберите дату возвращения</SelectReturnDate>
+  <MoveNumber>Номер транзакции</MoveNumber>
+  <CarrierCompany>Транспортная компания</CarrierCompany>
+  <TrainNumber>Номер поезда</TrainNumber>
+  <TransferDetails>Детали перевода</TransferDetails>
+  <TransferEnter>Перенос (ввод)</TransferEnter>
+  <TransferExit>Выход для пересадки</TransferExit>
+
 </Main>
 

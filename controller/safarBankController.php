@@ -15,6 +15,66 @@ class safarBankController extends clientAuth
     /**
      * گرفتن دیتای گزارش برای جدول (خروجی آرایه)
      */
+
+    /**
+     * گرفتن آمار رویدادهای یک آژانس از جدول safarbank_reporting
+     */
+    public function getAgencyEventStatsHome($providerId, $dateFrom, $dateTo)
+    {
+        try {
+            $ModelBase = new ModelBase();
+            $ModelBase->setTable('safarbank_reporting');
+//            if (empty($dateFrom)) {
+            // امروز را بگیر
+            $today = date('Y-m-d');
+            // ۳۰ روز قبل را محاسبه کن
+            $dateFrom = date('Y-m-d', strtotime('-30 days', strtotime($today)));
+//            }
+            $sql = "SELECT 
+                    event_type,
+                    COUNT(*) as total_count
+                FROM safarbank_reporting
+                WHERE provider_id = {$providerId}
+                    AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'
+                GROUP BY event_type";
+
+            $results = $ModelBase->select($sql);
+
+            $stats = [
+                'impression' => 0,      // search_impression
+                'detail_view' => 0,     // detail_view
+                'refer_site' => 0,      // agency_website_click
+                'refer_tour' => 0       // agency_tour_click
+            ];
+
+            foreach ($results as $row) {
+                switch ($row['event_type']) {
+                    case 'search_impression':
+                        $stats['impression'] = (int)$row['total_count'];
+                        break;
+                    case 'detail_view':
+                        $stats['detail_view'] = (int)$row['total_count'];
+                        break;
+                    case 'agency_website_click':
+                        $stats['refer_site'] = (int)$row['total_count'];
+                        break;
+                    case 'agency_tour_click':
+                        $stats['refer_tour'] = (int)$row['total_count'];
+                        break;
+                }
+            }
+
+            return $stats;
+
+        } catch (Exception $e) {
+            return [
+                'impression' => 0,
+                'detail_view' => 0,
+                'refer_site' => 0,
+                'refer_tour' => 0
+            ];
+        }
+    }
     public function getReportData()
     {
         $endDate = date('Y-m-d');
@@ -25,7 +85,8 @@ class safarBankController extends clientAuth
         $safarBankStatus = $_POST['safar_bank_status'] ?? $_GET['safar_bank_status'] ?? 'all';
         $dateFrom = $_POST['date_of'] ?? $_GET['date_of'] ?? '';
         $dateTo = $_POST['to_date'] ?? $_GET['to_date'] ?? '';
-        // تبدیل تاریخ شمسی به میلادی اگه مقدار داشته باشه
+
+        // تبدیل تاریخ شمسی به میلادی
         if (!empty($dateFrom)) {
             $dateFrom = $this->toGregorian($dateFrom);
         } else {
@@ -38,10 +99,10 @@ class safarBankController extends clientAuth
             $dateTo = $endDate;
         }
 
-        // گرفتن همه آژانس‌های فعال (سطر اول)
+        // گرفتن همه آژانس‌های فعال
         $agencies = $this->getAgencies($agencyName);
 
-        // گرفتن آمار تورها (سطر دوم)
+        // گرفتن آمار تورها
         $stats = $this->getStats($dateFrom, $dateTo);
 
         $result = [];
@@ -54,10 +115,10 @@ class safarBankController extends clientAuth
                 $filterValue = ($safarBankStatus == 'true');
                 if ($isSafarBank != $filterValue) continue;
             }
+
             $tour_count = $this->activeSafarBankTour($agencyId);
 
-
-            // آمار رو بگیر، اگه نبود 0 بذار
+            // آمار تورها
             $agencyStats = $stats[$agencyId] ?? [
                 'total_visits' => 0,
                 'unique_visits' => 0,
@@ -66,6 +127,9 @@ class safarBankController extends clientAuth
                 'tours_count' => 0,
                 'conversion_rate' => 0
             ];
+
+            // ======== گرفتن آمار رویدادها از safarbank_reporting ========
+            $eventStats = $this->getAgencyEventStatsHome($agencyId, $dateFrom, $dateTo);
 
             $result[] = [
                 'id' => (int)$agencyId,
@@ -79,23 +143,23 @@ class safarBankController extends clientAuth
                 'tours_count' => (int)$agencyStats['tours_count'],
                 'conversion_rate' => $agencyStats['conversion_rate'],
                 'total_safarBank_tour_count' => $tour_count['Active_cn'] ?? 0,
-                'total_tour_count' => $tour_count['Total_cn'] ?? 0
+                'total_tour_count' => $tour_count['Total_cn'] ?? 0,
+                // ======== ۴ ستون جدید ========
+                'impression' => $eventStats['impression'] ?? 0,
+                'detail_view' => $eventStats['detail_view'] ?? 0,
+                'refer_site' => $eventStats['refer_site'] ?? 0,
+                'refer_tour' => $eventStats['refer_tour'] ?? 0
             ];
         }
 
-        // مرتب‌سازی: اول آژانس‌های فعال (is_safar_bank = true)، سپس بر اساس total_visits نزولی
+        // مرتب‌سازی
         usort($result, function($a, $b) {
-            // اولویت اول: وضعیت سفربانک (فعال اول)
             if ($a['is_safar_bank'] != $b['is_safar_bank']) {
                 return $b['is_safar_bank'] - $a['is_safar_bank'];
             }
-
-            // اولویت دوم: تعداد بازدید کل (بیشتر اول)
             if ($a['total_visits'] != $b['total_visits']) {
                 return $b['total_visits'] - $a['total_visits'];
             }
-
-            // در صورت تساوی، بر اساس نام آژانس
             return strcmp($a['name'], $b['name']);
         });
 
@@ -1037,9 +1101,6 @@ class safarBankController extends clientAuth
                 GROUP BY event_type";
 
             $results = $ModelBase->select($sql);
-
-            // لاگ برای دیباگ (اختیاری)
-            functions::insertLog('$results: ' . json_encode($results), '000shojaee');
 
             // آرایه نهایی با مقادیر پیش‌فرض
             $stats = [

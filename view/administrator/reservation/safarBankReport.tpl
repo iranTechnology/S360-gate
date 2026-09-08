@@ -9,7 +9,7 @@
 
 {* اگر تاریخ انتخاب نشده، از تابع timeNow استفاده کن *}
 {if empty($dateFrom)}
-    {assign var="dateFrom" value=$objFunctions->timeNow()}
+    {assign var="dateFrom" value=dateTimeSetting::jdate('Y-m-d', strtotime('-30 days'), '', '', 'en')}
 {/if}
 {if empty($dateTo)}
     {assign var="dateTo" value=$objFunctions->timeNow()}
