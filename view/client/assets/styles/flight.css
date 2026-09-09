@@ -5173,7 +5173,9 @@ div.foreign.WY .logo-airline-ico-foreign,
 div.foreign.omanair .logo-airline-ico-foreign {
     background-position: -360px -60px;
 }
-
+div.foreign.airline-more-three-route .logo-airline-ico-foreign {
+    background-position: -718px -361px !important;
+}
 div.foreign.EK .logo-airline-ico-foreign {
     background-position: -180px -120px;
 }

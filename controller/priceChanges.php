@@ -603,10 +603,21 @@ class priceChanges extends baseController
             if (SOFTWARE_LANG != 'fa' ) {
 
                 $price['hasDiscount'] = 'yes';
+                $ModelBase = Load::library('ModelBase');
+                $clientId = CLIENT_ID;
+                $sql = "SELECT * FROM clients_tb WHERE id='{$clientId}'";
+                $client = $ModelBase->load($sql);
+                $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+                $currenyCode = $info_currency['CurrencyCode'];
+                $eqAmount = $info_currency['EqAmount'];
+                $CurrencyTitleEn= $info_currency['CurrencyTitleEn'];
 
-                $base_price_currency       = functions::CurrencyCalculate($price[$key]['BasePrice'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
-                $total_price_currency      = functions::CurrencyCalculate($price[$key]['TotalPrice'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
-                $total_price_with_discount = functions::CurrencyCalculate($price[$key]['TotalPriceWithDiscount'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
+                $base_price_currency       = functions::CurrencyCalculate($price[$key]['BasePrice'],$currenyCode,$eqAmount,$CurrencyTitleEn);
+                $total_price_currency      = functions::CurrencyCalculate($price[$key]['TotalPrice'],$currenyCode,$eqAmount,$CurrencyTitleEn);
+                $total_price_with_discount = functions::CurrencyCalculate($price[$key]['TotalPriceWithDiscount'],$currenyCode,$eqAmount,$CurrencyTitleEn);
+//                $base_price_currency       = functions::CurrencyCalculate($price[$key]['BasePrice'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
+//                $total_price_currency      = functions::CurrencyCalculate($price[$key]['TotalPrice'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
+//                $total_price_with_discount = functions::CurrencyCalculate($price[$key]['TotalPriceWithDiscount'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
 
                 $price[$key]['BasePrice'] = $base_price_currency['AmountCurrency'];
                 $price[$key]['TotalPrice'] = $total_price_currency['AmountCurrency'];

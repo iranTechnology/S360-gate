@@ -1503,7 +1503,7 @@ class apiLocal extends clientAuth
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
         $irantechCommission = Load::controller('irantechCommission');
-
+        $currency_code = Session::getCurrency();
         $sql = "SELECT * FROM book_local_tb WHERE member_id='{$IdMember}' AND request_number='{$RequestNumber}'";
         $passengers = $Model->select($sql);
 
@@ -1742,8 +1742,25 @@ class apiLocal extends clientAuth
                 $Price['discount_chd_price'] = isset($Price['chd']) ? $Price['Chd'] - (($Price['Chd'] * $Discount['off_percent']) / 100) : '0';
                 $Price['percent_discount'] = $Discount['off_percent'];
                 $it_commission = $irantechCommission->getFlightCommission($TypeService, $sourceId);
+                $convertRialToCurrency = function($priceRial) use ($currency_code) {
+                    if (empty($currency_code) || $priceRial <= 0) {
+                        return $priceRial;
+                    }
 
+                    // ========== استفاده از CurrencyCalculate ==========
+                    $converted = functions::CurrencyCalculate($priceRial, $currency_code);
+                    return $converted['AmountCurrency'] ?? $priceRial;
+                };
 
+// ============================================
+// تابع کمکی برای تنظیم قیمت و فیلد ارزی
+// ============================================
+                $setPriceField = function(&$data, $fieldName, $priceRial) use ($convertRialToCurrency) {
+                    $data[$fieldName] = $priceRial;                    // قیمت به ریال
+                    $data[$fieldName . '_currency'] = $convertRialToCurrency($priceRial); // قیمت به ارز (دلار)
+                };
+
+                functions::insertLog('$book: ' . json_encode($book) , '000shojaee');
                 foreach ($book['Result']['Request']['RequestPassengers'] as $ReqPassenger) {
 
                     if (strtolower($ReqPassenger['PassengerType']) == "adt") {
@@ -1760,9 +1777,7 @@ class apiLocal extends clientAuth
 //                            $addon = ($PriceFare['Adt'] * 3) / 100 ;
 //                        }
 
-
                         $d['adt_price'] = $Price['Adt'] + $addon;
-
                         $d['adt_fare'] = $PriceFare['Adt'];
                         $d['adt_tax'] = $PriceTax['Adt'];
                         $d['adt_com'] = $PriceCom['Adt'];
@@ -1789,6 +1804,22 @@ class apiLocal extends clientAuth
                         $d['provider_adt_price'] = $Price['Adt'];
                         $d['provider_chd_price'] = '0';
                         $d['provider_inf_price'] = '0';
+                        $d['chd_price_currency'] = '0';
+                        $d['chd_fare_currency'] = '0';
+                        $d['chd_tax_currency'] = '0';
+                        $d['chd_com_currency'] = '0';
+                        $d['discount_chd_price_currency'] = '0';
+                        $d['inf_price_currency'] = '0';
+                        $d['inf_fare_currency'] = '0';
+                        $d['inf_tax_currency'] = '0';
+                        $d['inf_com_currency'] = '0';
+                        $d['discount_inf_price_currency'] = '0';
+                        $setPriceField($d, 'api_commission', $d['api_commission']);
+                        $setPriceField($d, 'agency_commission', $d['agency_commission']);
+                        $setPriceField($d, 'supplier_commission',  $d['supplier_commission']);
+                        $setPriceField($d, 'provider_adt_price', $d['provider_adt_price']);
+                        $d['provider_chd_price_currency'] = '0';
+                        $d['provider_inf_price_currency'] = '0';
                     } else if (strtolower($ReqPassenger['PassengerType']) == "chd") {
 
                         // این تیکه کد مربوط به سیاست قدیمی قیمت گذاری پرواز ها میباشد ، کامن شد به جاش سیست جدید که به صورت داینامیک هست نوشته شده است
@@ -1828,6 +1859,26 @@ class apiLocal extends clientAuth
                         $d['provider_chd_price'] = $Price['Chd'];
                         $d['provider_adt_price'] = '0';
                         $d['provider_inf_price'] = '0';
+
+                        $d['adt_price_currency'] = '0';
+                        $d['adt_fare_currency'] = '0';
+                        $d['adt_tax_currency'] = '0';
+                        $d['adt_com_currency'] = '0';
+                        $d['discount_adt_price_currency'] = '0';
+                        $d['inf_price_currency'] = '0';
+                        $d['inf_fare_currency'] = '0';
+                        $d['inf_tax_currency'] = '0';
+                        $d['inf_com_currency'] = '0';
+                        $d['discount_inf_price_currency'] = '0';
+                        $setPriceField($d, 'api_commission', $d['api_commission']);
+                        $setPriceField($d, 'agency_commission', $d['agency_commission']);
+                        $setPriceField($d, 'supplier_commission', $d['supplier_commission']);
+                        $d['provider_chd_price'] = $Price['Chd'];
+                        $d['provider_adt_price'] = '0';
+                        $d['provider_inf_price'] = '0';
+                        $setPriceField($d, 'provider_chd_price', $d['provider_chd_price']);
+                        $d['provider_adt_price_currency'] = '0';
+                        $d['provider_inf_price_currency'] = '0';
                     } else if (strtolower($ReqPassenger['PassengerType']) == "inf") {
 
                         // این تیکه کد مربوط به سیاست قدیمی قیمت گذاری پرواز ها میباشد ، کامن شد به جاش سیست جدید که به صورت داینامیک هست نوشته شده است
@@ -1867,10 +1918,49 @@ class apiLocal extends clientAuth
                         $d['provider_inf_price'] = $Price['Inf'];
                         $d['provider_chd_price'] = '0';
                         $d['provider_adt_price'] = '0';
+
+                        $d['adt_price_currency'] = '0';
+                        $d['adt_fare_currency'] = '0';
+                        $d['adt_tax_currency'] = '0';
+                        $d['adt_com_currency'] = '0';
+                        $d['discount_adt_price_currency'] = '0';
+                        $d['chd_price_currency'] = '0';
+                        $d['chd_fare_currency'] = '0';
+                        $d['chd_tax_currency'] = '0';
+                        $d['chd_com_currency'] = '0';
+                        $d['discount_chd_price_currency'] = '0';
+                        $setPriceField($d, 'api_commission', $d['api_commission']);
+                        $setPriceField($d, 'agency_commission', $d['agency_commission']);
+                        $setPriceField($d, 'supplier_commission', $d['supplier_commission']);
+                        $d['provider_inf_price'] = $Price['Inf'];
+                        $d['provider_chd_price'] = '0';
+                        $d['provider_adt_price'] = '0';
+                        $setPriceField($d, 'provider_inf_price', $d['provider_inf_price']);
+                        $d['provider_chd_price_currency'] = '0';
+                        $d['provider_adt_price_currency'] = '0';
                     }
+
+
 
                     $d = $this->getController('commissionSources')->sourceCommissionCalculation($d, 'book');
                     $d = $this->getController('commissionSources')->setAgencyBenefitSystemFlight($d, 'book', $IdMember);
+
+                    $setPriceField($d, 'adt_price', $d['adt_price']);
+                    $setPriceField($d, 'adt_fare', $d['adt_fare']);
+                    $setPriceField($d, 'adt_tax', $d['adt_tax']);
+                    $setPriceField($d, 'adt_com', $d['adt_com']);
+                    $setPriceField($d, 'discount_adt_price', $d['discount_adt_price']);
+                    $setPriceField($d, 'chd_price', $d['chd_price']);
+                    $setPriceField($d, 'chd_fare', $d['api_commission']);
+                    $setPriceField($d, 'chd_tax', $d['chd_tax']);
+                    $setPriceField($d, 'chd_com', $d['chd_com']);
+                    $setPriceField($d, 'discount_chd_price', $d['discount_chd_price']);
+                    $setPriceField($d, 'inf_price', $d['inf_price']);
+                    $setPriceField($d, 'inf_fare', $d['inf_fare']);
+                    $setPriceField($d, 'inf_tax', $d['inf_tax']);
+                    $setPriceField($d, 'inf_com', $d['inf_com']);
+                    $setPriceField($d, 'discount_inf_price', $d['discount_inf_price']);
+
                     $condition = " member_id = '{$IdMember}' AND request_number='{$RequestNumber}' AND passenger_age='{$ReqPassenger['PassengerType'] }'";
                     $Model->setTable("book_local_tb");
                     $res = $Model->update($d, $condition);

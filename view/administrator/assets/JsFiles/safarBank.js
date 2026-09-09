@@ -608,24 +608,23 @@ $(document).ready(function() {
 
     function calculateTotals() {
         var totalVisits = 0;
-        var uniqueVisits = 0;
+        var referSite = 0;
         var totalClicks = 0;
-        var uniqueClicks = 0;
+        var referTour = 0;
         var toursCount = 0;
         var safarBankToursCount = 0;
         var totalToursCount = 0;
         var conversionSum = 0;
         var conversionCount = 0;
 
-        $('#agenciesTable tbody tr').each(function() {
+        $('#agenciesTable tbody tr').each(function () {
             totalVisits += parseInt($(this).find('td:eq(3)').text().replace(/,/g, '')) || 0;
-            uniqueVisits += parseInt($(this).find('td:eq(4)').text().replace(/,/g, '')) || 0;
-            totalClicks += parseInt($(this).find('td:eq(5)').text().replace(/,/g, '')) || 0;
-            uniqueClicks += parseInt($(this).find('td:eq(6)').text().replace(/,/g, '')) || 0;
+            totalClicks += parseInt($(this).find('td:eq(4)').text().replace(/,/g, '')) || 0;
+            referSite += parseInt($(this).find('td:eq(5)').text().replace(/,/g, '')) || 0;
+            referTour += parseInt($(this).find('td:eq(6)').text().replace(/,/g, '')) || 0;
             toursCount += parseInt($(this).find('td:eq(7)').text().replace(/,/g, '')) || 0;
-            safarBankToursCount += parseInt($(this).find('td:eq(8)').text().replace(/,/g, '')) || 0;
-            totalToursCount += parseInt($(this).find('td:eq(9)').text().replace(/,/g, '')) || 0;
-            var conv = parseFloat($(this).find('td:eq(10)').text()) || 0;  // ✅ اصلاح شد
+            totalToursCount += parseInt($(this).find('td:eq(8)').text().replace(/,/g, '')) || 0;
+            var conv = parseFloat($(this).find('td:eq(9)').text()) || 0;  // ✅ اصلاح شد
             if (conv > 0) {
                 conversionSum += conv;
                 conversionCount++;
@@ -633,11 +632,10 @@ $(document).ready(function() {
         });
 
         $('#footerTotalVisits').text(numberFormat(totalVisits));
-        $('#footerUniqueVisits').text(numberFormat(uniqueVisits));
-        $('#footerTotalClicks').text(numberFormat(totalClicks));
-        $('#footerUniqueClicks').text(numberFormat(uniqueClicks));
-        $('#footerToursCount').text(numberFormat(toursCount));
-        $('#footerSafarBankToursCount').text(numberFormat(safarBankToursCount));
+        $('#footerUniqueClicks').text(numberFormat(totalClicks));
+        $('#footerReferSite').text(numberFormat(referSite));
+        $('#footerReferTour').text(numberFormat(referTour));
+        $('#footerActiveTours').text(numberFormat(toursCount));
         $('#footerTotalToursCount').text(numberFormat(totalToursCount));
 
         var avgConversion = conversionCount > 0 ? (conversionSum / conversionCount).toFixed(2) : 0;

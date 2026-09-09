@@ -169,7 +169,7 @@ class passengersDetailLocal extends apiLocal
 
                     $price_search = $this->getController('temporaryLocal')->getTotalSearchPrice($price_selected,$data_count);
 
-                    $this->diff_price = $price_temporary['FinalTotalPrice'] - $price_search ;
+                    $this->diff_price = $price_temporary['FinalTotalPrice'] - $price_search;
 
                 }
 

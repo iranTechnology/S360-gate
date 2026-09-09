@@ -396,10 +396,12 @@ class agency  extends clientAuth {
 
 		/** @var Model $Model */
 		$Model = Load::library( 'Model' );
-		
+        $currency  = Load::controller( 'currency' );
+
 		if ( isset( $id ) && ! empty( $id ) ) {
 			$edit_query = " SELECT * FROM  agency_tb  WHERE id='{$id}'";
 			$res_edit   = $Model->load( $edit_query );
+            $res_edit['type_currency']  = $currency->ShowInfo( $res_edit['type_currency'] );
 			if ( ! empty( $res_edit ) ) {
 				$this->edit = $res_edit;
 			} else {

@@ -168,7 +168,6 @@ class partner_tb extends ModelBase
                     'creationDateInt' => time(),
                 ];
                 $jsonData = json_encode($dataToInsert);
-
                 functions::curlExecution($url, $jsonData, 'yes');
 
 
@@ -766,7 +765,7 @@ class partner_tb extends ModelBase
         $data['AdditionalData'] = json_encode($Info['AdditionalData'], 256 | 64);
         $data['isIframe'] = $Info['isIframe'];
         $data['usedDemo'] = $Info['usedDemo'];
-
+        $data['currency_type_id'] = $Info['currency_type_id'];
 
         //
         $data['new_login'] = 1;

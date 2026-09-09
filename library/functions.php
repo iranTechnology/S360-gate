@@ -7659,9 +7659,45 @@ class functions {
 
         return $CurrencyCalculate;
 
-
     }
 
+    public static function CalculateRialToCurrency($params) {
+        $amount = $params['price'];
+        $currency_type = $params['currency_type'];
+        $decimals = $params['decimals'] ?? 2; // تعداد اعشار (پیش‌فرض 2)
+
+        $currencyEquivalentModel = Load::getModel('currencyEquivalentModel');
+        $currencyModel = Load::getModel('currencyModel');
+
+        $resultCurrencyEquivalent = $currencyEquivalentModel->get()
+            ->where('CurrencyCode', $currency_type)
+            ->find();
+
+        $currency = $currencyModel->get()
+            ->where('IsEnable', 'Enable')
+            ->where('CurrencyCode', $currency_type)
+            ->find();
+
+        $eqAmount = $resultCurrencyEquivalent['EqAmount'] ?? 0;
+
+        if ($eqAmount <= 0) {
+            return [
+                'AmountCurrency' => 0,
+                'TypeCurrency' => $currency['CurrencyTitleEn'] ?? 'IRR'
+            ];
+        }
+
+        // محاسبه قیمت به ارز
+        $priceInCurrency = $amount / $eqAmount;
+
+        // ========== گرد کردن به بالا با تعداد اعشار مشخص ==========
+        $roundedPrice = ceil($priceInCurrency * pow(10, $decimals)) / pow(10, $decimals);
+
+        $CurrencyCalculate['AmountCurrency'] = $roundedPrice;
+        $CurrencyCalculate['TypeCurrency'] = $currency['CurrencyTitleEn'] ?? 'USD';
+
+        return $CurrencyCalculate;
+    }
     #endregion
 
     #region TicketPriceCurrency
