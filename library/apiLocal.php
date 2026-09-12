@@ -866,7 +866,7 @@ class apiLocal extends clientAuth
 
     public function PreReserveFlight($s_id, $direction, $factor_number)
     {
-
+        $ModelBase = Load::library('ModelBase');
         $params = array();
 
 
@@ -876,8 +876,21 @@ class apiLocal extends clientAuth
             parse_str($_POST['dataForm'], $params);
         }
 
+        $agencyInfo = $this->getController('agency')->subAgencyInfo();
+        $isCounter = $this->getController('login')->isCounter();
+        $currency_code = '';
+        if($isCounter && $agencyInfo){
+            $currency_code = Session::getCurrency();
+        }else{
+            $clientId = CLIENT_ID;
+            $sql = "SELECT * FROM clients_tb WHERE id='{$clientId}'";
+            $client = $ModelBase->load($sql);
+            $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+            $currency_code = $info_currency['CurrencyCode'];
+            $eqAmount = $info_currency['EqAmount'];
+            $CurrencyTitleEn = $info_currency['CurrencyTitleEn'];
+        }
 
-        $currency_code = Session::getCurrency();
         $model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
         $passengerController = Load::controller('passengers');
@@ -1503,9 +1516,27 @@ class apiLocal extends clientAuth
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
         $irantechCommission = Load::controller('irantechCommission');
-        $currency_code = Session::getCurrency();
+        $agencyInfo = $this->getController('agency')->subAgencyInfo();
+        $isCounter = $this->getController('login')->isCounter();
+        $currency_code = '';
+        if($isCounter && $agencyInfo){
+            $currency_code = Session::getCurrency();
+        }else{
+            $clientId = CLIENT_ID;
+            $sql = "SELECT * FROM clients_tb WHERE id='{$clientId}'";
+            $client = $ModelBase->load($sql);
+            $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+            $currency_code = $info_currency['CurrencyCode'];
+            $eqAmount = $info_currency['EqAmount'];
+            $CurrencyTitleEn = $info_currency['CurrencyTitleEn'];
+        }
+
+
+
         $sql = "SELECT * FROM book_local_tb WHERE member_id='{$IdMember}' AND request_number='{$RequestNumber}'";
         $passengers = $Model->select($sql);
+
+
 
         $data['securityCode'] = $securityCode;
         foreach ($passengers as $key => $rec) {
@@ -1603,7 +1634,7 @@ class apiLocal extends clientAuth
         }
 
         $data['subAgencyId'] = '';
-        $agencyInfo = $this->getController('agency')->subAgencyInfo();
+
         if ($agencyInfo != null && !empty($agencyInfo['sepehr_username']) && !empty($agencyInfo['sepehr_password'])) {
             $data['subAgencyId'] = $agencyInfo['id'];
         }

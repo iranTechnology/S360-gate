@@ -12251,6 +12251,18 @@ class functions {
 
         return array_column($clientIds, 'id');
     }
+    public static function getClientInfo($id){
+
+        Load::autoload( 'ModelBase' );
+        $ModelBase = new ModelBase();
+
+        $sql = " SELECT * FROM clients_tb WHERE id='{$id}' ORDER BY id DESC";
+
+        $clientifo = $ModelBase->select( $sql );
+
+
+        return $clientifo[0];
+    }
 
     public static function getEnClientIds(){
 

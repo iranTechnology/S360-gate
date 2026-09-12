@@ -152,7 +152,7 @@ function bookUserHistoryFilter(target) {
                                <div class="reserves_footer">
                                    <div>
                                        <h2>${useXmltag("OrderNumber")}<span>${i?.factor_number ?? ''}</span></h2>
-                                       <h2>${useXmltag("PriceAllOrder")}<span>${i?.price ?? ''}</span>${useXmltag("Rial")}</h2>
+                                       <h2>${useXmltag("PriceAllOrder")}<span>${i?.price ?? ''}</span>${i?.currency_title ?? useXmltag("Rial")}</h2>
                                    </div>
                
                                    <button onclick="open_details_box($(event.currentTarget))">

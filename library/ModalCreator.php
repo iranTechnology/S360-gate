@@ -3414,6 +3414,7 @@ class ModalCreator extends clientAuth {
                         </div>
 
                         <?php if ($infoMember['fk_counter_type_id'] != '5' && $InfoFlight['payment_type']=='credit'){?>
+                            <?php if($InfoFlight['currency_code'] == '0'){ ?>
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <div class="checkbox checkbox-info">
@@ -3422,6 +3423,7 @@ class ModalCreator extends clientAuth {
                                     </div>
                                 </div>
                             </div>
+                            <?php } ?>
                         <?php }?>
 
                     </div>

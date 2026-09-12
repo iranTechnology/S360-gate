@@ -53,25 +53,25 @@ class temporaryLocal extends clientAuth {
         $change_price = false;
 
         $prices = array(
-                'adult' => array(
-                    'TotalPrice' => $data_temporary['AdtPrice'],
-                    'BasePrice' => $data_temporary['AdtFare'],
-                    'CommisionPrice' => $data_temporary['AdtCom'],
-                    'count'     => $data_temporary['Adt_qty']
-                ),
-                'child' => array(
-                    'TotalPrice' => $data_temporary['ChdPrice'],
-                    'BasePrice' => $data_temporary['ChdFare'],
-                    'CommisionPrice' => $data_temporary['ChdCom'],
-                    'count'     => $data_temporary['Chd_qty']
-                ),
-                'infant' => array(
-                    'TotalPrice' => $data_temporary['InfPrice'],
-                    'BasePrice' => $data_temporary['InfFare'],
-                    'CommisionPrice' => $data_temporary['InfCom'],
-                    'count'     => $data_temporary['Inf_qty']
+            'adult' => array(
+                'TotalPrice' => $data_temporary['AdtPrice'],
+                'BasePrice' => $data_temporary['AdtFare'],
+                'CommisionPrice' => $data_temporary['AdtCom'],
+                'count'     => $data_temporary['Adt_qty']
+            ),
+            'child' => array(
+                'TotalPrice' => $data_temporary['ChdPrice'],
+                'BasePrice' => $data_temporary['ChdFare'],
+                'CommisionPrice' => $data_temporary['ChdCom'],
+                'count'     => $data_temporary['Chd_qty']
+            ),
+            'infant' => array(
+                'TotalPrice' => $data_temporary['InfPrice'],
+                'BasePrice' => $data_temporary['InfFare'],
+                'CommisionPrice' => $data_temporary['InfCom'],
+                'count'     => $data_temporary['Inf_qty']
 
-                ),
+            ),
         );
 
         $foreignAirline = null;
@@ -192,10 +192,29 @@ class temporaryLocal extends clientAuth {
             $origin_price_total_after_change = $price[$key]['TotalPrice'];
             $origin_price_discount_total_after_change = $price[$key]['TotalPriceWithDiscount'];
             if (SOFTWARE_LANG != 'fa') {
-                $base_price_currency = functions::CurrencyCalculate($price[$key]['BasePrice'], $info_currency['CurrencyCode'], $info_currency['EqAmount'], $info_currency['CurrencyTitleEn']);
-                $total_price_currency = functions::CurrencyCalculate($price[$key]['TotalPrice'], $info_currency['CurrencyCode'], $info_currency['EqAmount'], $info_currency['CurrencyTitleEn']);
-                $total_price_with_discount = functions::CurrencyCalculate($price[$key]['TotalPriceWithDiscount'], $info_currency['CurrencyCode'], $info_currency['EqAmount'], $info_currency['CurrencyTitleEn']);
-               
+
+                $agencyInfo = $this->getController('agency')->subAgencyInfo();
+                $isCounter = $this->getController('login')->isCounter();
+                $isCounter = json_decode($isCounter);
+
+                $ModelBase = Load::library('ModelBase');
+                $clientId = CLIENT_ID;
+                $sql = "SELECT * FROM clients_tb WHERE id='{$clientId}'";
+                $client = $ModelBase->load($sql);
+                $info_currency_base = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+                $currenyCode = $info_currency_base['CurrencyCode'];
+                $eqAmount = $info_currency_base['EqAmount'];
+                $CurrencyTitleEn = $info_currency_base['CurrencyTitleEn'];
+                if($isCounter && $agencyInfo){
+                    $base_price_currency = functions::CurrencyCalculate($price[$key]['BasePrice'], $info_currency['CurrencyCode'], $info_currency['EqAmount'], $info_currency['CurrencyTitleEn']);
+                    $total_price_currency = functions::CurrencyCalculate($price[$key]['TotalPrice'], $info_currency['CurrencyCode'], $info_currency['EqAmount'], $info_currency['CurrencyTitleEn']);
+                    $total_price_with_discount = functions::CurrencyCalculate($price[$key]['TotalPriceWithDiscount'], $info_currency['CurrencyCode'], $info_currency['EqAmount'], $info_currency['CurrencyTitleEn']);
+                }
+                else{
+                    $base_price_currency = functions::CurrencyCalculate($price[$key]['BasePrice'], $currenyCode, $eqAmount, $CurrencyTitleEn);
+                    $total_price_currency = functions::CurrencyCalculate($price[$key]['TotalPrice'], $currenyCode, $eqAmount, $CurrencyTitleEn);
+                    $total_price_with_discount = functions::CurrencyCalculate($price[$key]['TotalPriceWithDiscount'], $currenyCode, $eqAmount, $CurrencyTitleEn);
+                }
                 $price[$key]['BasePrice'] = $base_price_currency['AmountCurrency'];
                 $price[$key]['TotalPrice'] = $total_price_currency['AmountCurrency'];
                 $price[$key]['TotalPriceWithDiscount'] = $total_price_with_discount['AmountCurrency'];
@@ -228,7 +247,7 @@ class temporaryLocal extends clientAuth {
 
 
     public function getTotalSearchPrice($price,$count) {
-        
+
         return ($price['adult']['price']*$count['adult_count']) +($price['child']['price']*$count['child_count']) +($price['infant']['price']*$count['infant_count']);
     }
 
