@@ -330,10 +330,41 @@ class reservationHotel extends clientAuth
     }
 
 
+    function addOneDay($date)
+    {
+        $year  = (int) substr($date, 0, 4);
+        $month = (int) substr($date, 4, 2);
+        $day   = (int) substr($date, 6, 2);
+
+        if ($month <= 6) {
+            $daysInMonth = 31;
+        } elseif ($month <= 11) {
+            $daysInMonth = 30;
+        } else {
+            $daysInMonth = 29;
+        }
+
+        $day++;
+
+        if ($day > $daysInMonth) {
+            $day = 1;
+            $month++;
+
+            if ($month > 12) {
+                $month = 1;
+                $year++;
+            }
+        }
+
+        return sprintf('%04d%02d%02d', $year, $month, $day);
+    }
+
     ///////////////////////////////// افزودن قیمت اتاق/////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
     public function InsertRoomPrice($info)
     {
+
+
         if(CLIENT_ID == '317') {
             if(isset($info['start_date_en']) && !empty($info['start_date_en'])) {
                 $info['start_date'] = functions::ConvertToJalali($info['start_date_en']);
@@ -369,6 +400,55 @@ class reservationHotel extends clientAuth
 
         $allSuccess = true;
 
+        if(!empty($info['start_date_old']) && !empty($info['end_date_old'])) {
+            $oldStart = preg_replace('/\D/', '', $info['start_date_old']);
+            $oldEnd   = preg_replace('/\D/', '', $info['end_date_old']);
+
+            $newStart = preg_replace('/\D/', '', $info['start_date']);
+            $newEnd   = preg_replace('/\D/', '', $info['end_date']);
+
+            $removedDates = [];
+
+            if ($oldStart < $newStart || $oldEnd > $newEnd) {
+
+                // قسمت ابتدایی بازه قدیمی که در بازه جدید نیست
+                if ($oldStart < $newStart) {
+
+                    $date = $oldStart;
+
+                    while ($date < $newStart) {
+                        $removedDates[] = $date;
+                        $date = $this->addOneDay($date);
+                    }
+                }
+
+                // قسمت انتهایی بازه قدیمی که در بازه جدید نیست
+                if ($oldEnd > $newEnd) {
+
+                    $date = $this->addOneDay($newEnd);
+
+                    while ($date <= $oldEnd) {
+                        $removedDates[] = $date;
+                        $date = $this->addOneDay($date);
+                    }
+                }
+            }
+
+            $removedDatesString = "'" . implode("','", $removedDates) . "'";
+
+            $sql = "
+    UPDATE reservation_hotel_room_prices_tb
+    SET is_del = 'yes'
+    WHERE date IN ($removedDatesString)
+    AND is_del != 'yes'
+    AND id_same = {$info['id_same']}
+    AND id_hotel = {$info['hotel_name']}
+";
+
+            $Model = Load::library('Model');
+            $resultRemovedDates = $Model->select($sql);
+
+        }
 
         // حلقه به تعداد کاربران انتخاب شده //
         for ($for_user = 1; $for_user <= $info['count_other_user']; $for_user++) {
@@ -692,7 +772,8 @@ class reservationHotel extends clientAuth
                     }
 
 
-                } else {
+                }
+                else {
                     $resInsert[] = "0";
                 }
 
