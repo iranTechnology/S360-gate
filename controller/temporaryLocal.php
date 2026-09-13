@@ -230,11 +230,22 @@ class temporaryLocal extends clientAuth {
                     $price[$key]['TotalPrice'] -= $price[$key]['CommisionPrice'];
                 }
             }
+            $agencyInfo = $this->getController('agency')->subAgencyInfo();
+            $isCounter = $this->getController('login')->isCounter();
+            $isCounter = json_decode($isCounter);
+            $client = functions::getClientInfo(CLIENT_ID);
+
+            if($agencyInfo && $isCounter){
+                $currencyCode = Session::getCurrency();
+                $info_currency = functions::infoCurrencyBySessionCode($currencyCode);
+            }else{
+                $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+            }
 
             if ($price[$key]['has_discount'] =='yes') {
-                $FinalTotalPrice = (int)$price[$key]['TotalPriceWithDiscount'];
+                $FinalTotalPrice = $info_currency ? $price[$key]['TotalPriceWithDiscount'] : (int)$price[$key]['TotalPriceWithDiscount'];
             } else {
-                $FinalTotalPrice = (int)$price[$key]['TotalPrice'];
+                $FinalTotalPrice = $info_currency ? $price[$key]['TotalPrice'] : (int)$price[$key]['TotalPrice'];
             }
 
             $price['FinalTotalPrice'] += ( $FinalTotalPrice *  (int)$price_type['count']);

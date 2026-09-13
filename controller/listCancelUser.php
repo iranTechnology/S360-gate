@@ -53,6 +53,8 @@ LEFT JOIN book_local_tb AS book
     ON book.request_number = cancel.RequestNumber
 LEFT JOIN book_hotel_local_tb AS hotel
     ON hotel.factor_number = cancel.FactorNumber
+LEFT JOIN book_cip_tb AS cip
+    ON cip.request_number = cancel.RequestNumber
 WHERE 1=1
 ";
 

@@ -1618,7 +1618,7 @@
   <ErrorDiscountCode>Unfortunately, the discount code is not assigned to you</ErrorDiscountCode>
   <CompletePayment>To complete the process, please click on the Payment option</CompletePayment>
   <MessagePaymentByCreditUser>The amount of payment after credit is calculated @@creditPayment@@ Rials, please select a bank account to pay your account balance</MessagePaymentByCreditUser>
-  <ZeroCredit>Unfortunately, your credit is 0 Rials.</ZeroCredit>
+  <ZeroCredit>Unfortunately, your credit is 0 @@Currency@@.</ZeroCredit>
   <notEnoughCredit>Insufficient credit to pay the loan</notEnoughCredit>
   <AccessDenied>You do not have access to this section</AccessDenied>
   <AwardDiscountCode>Congratulations; you received our discount code @@CodeDiscount@@ from @@title@@</AwardDiscountCode>

@@ -436,7 +436,10 @@ class user extends baseController
         if($type=='insurance'){
             return $this->getInfoTicketInsuranceCancel($RequestNumber);
         }
+        if($type=='cip'){
+            return $this->getInfoTicketCipCancel($RequestNumber);
 
+        }
     }
 
     public function InfoModalBusCancel($FactorNumber)
@@ -569,15 +572,50 @@ class user extends baseController
                 $passenger_birthday_en = 'book.passenger_birth_date_en';
                 $passenger_birthday = 'book.passenger_birth_date';
                 break;
+
+            case 'cip':
+                $bookTable = 'book_cip_tb';
+                $bookJoinKey = 'book.request_number';
+                $passport_number = 'book.passport_number';
+                $passenger_birthday_en = 'book.passenger_birth_date_en';
+                $passenger_birthday = 'book.passenger_birth_date';
+                break;
         }
 
         /* -------------------------------
            Final SQL (CORRECT DESIGN)
         -------------------------------- */
-        $sql = "
+        if($cancelDetail['TypeCancel'] == 'cip'){
+            $sql = " 
+                SELECT
+        book.*,
+        book.provider_ref AS pnr,
+        book.passenger_name AS passenger_name_en,
+        book.passenger_family AS passenger_family_en,
+        book.passenger_age AS passenger_age,
+        book.passenger_national_code,
+        book.factor_number AS factor_number,
+        book.passportNumber ,
+        book.member_id,
+        TCancel.*,
+        TCancel.NationalCode AS cancel_national_code,
+        `Cancel`.*
+    FROM book_cip_tb AS book
+    INNER JOIN cancel_ticket_details_tb AS `Cancel`
+       ON Cancel.RequestNumber = {$bookJoinKey}
+          AND Cancel.id = '{$id}'
+    LEFT JOIN cancel_ticket_tb AS TCancel
+        ON TCancel.IdDetail = `Cancel`.id
+        AND (
+            TCancel.NationalCode = book.passenger_national_code
+            OR TCancel.NationalCode = book.passportNumber
+        )
+   WHERE {$bookJoinKey} = '{$RequestNumber}';
+            " ;
+        }else{
+            $sql = "
         SELECT
             book.*,
-
             book.passenger_name,
             book.passenger_family,
             book.passenger_name_en,
@@ -608,6 +646,7 @@ class user extends baseController
 
         WHERE {$bookJoinKey} = '{$RequestNumber}'
     ";
+        }
 
         return $this->admin->ConectDbClient($sql, $ClientId, "SelectAll");
     }
@@ -1048,31 +1087,42 @@ class user extends baseController
         return $this->Model->select($sql);
     }
 
-    private function getInfoTicketCipCancel($RequestNumber)
-    {
-        $sql = "SELECT  "
-            . " book.id,"
-            . " book.passenger_name, "
-            . " book.passenger_family, "
-            . " book.passenger_birthday, "
-            . " book.passenger_national_code, "
-            . " book.passportNumber, "
-            . " book.factor_number, "
-            . " book.member_id , "
-            . " book.request_number , "
-            . " book.passenger_age , "
-            . " ( SELECT Cancel.NationalCode  FROM cancel_ticket_tb As Cancel"
-            . " INNER JOIN cancel_ticket_details_tb AS detailCancel ON detailCancel.id=Cancel.IdDetail"
-            . " WHERE (book.passenger_national_code=Cancel.NationalCode OR book.passportNumber=Cancel.NationalCode)  AND detailCancel.RequestNumber='{$RequestNumber}') AS NationalCode,"
-            . " ( SELECT detailCancel.`Status` FROM cancel_ticket_tb As Cancel"
-            . "  INNER JOIN cancel_ticket_details_tb AS detailCancel ON detailCancel.id=Cancel.IdDetail"
-            . "  WHERE (book.passenger_national_code=Cancel.NationalCode OR book.passportNumber=Cancel.NationalCode) AND detailCancel.RequestNumber='{$RequestNumber}') AS Status"
-            . " FROM book_cip_tb AS book "
-            . " WHERE book.request_number ='{$RequestNumber}'"
-            . " GROUP BY book.id ";
-        return $this->Model->select($sql);
-    }
 
+    public function getInfoTicketCipCancel($order_code,$ClientId=CLIENT_ID)
+    {
+
+        $sql = "SELECT
+                        book.id,
+                        book.passenger_name AS passenger_name_en,
+                        book.passenger_family AS passenger_family_en,
+                        book.passenger_age,
+                        book.passenger_national_code,
+                        book.passportNumber,
+                        book.passenger_birthday,
+                        book.member_id,
+                        book.total_price,
+                        book.request_number AS RequestNumber,
+                        cancelDetail.*,
+                        cancelTicket.NationalCode as NationalCode
+                    FROM
+                        book_cip_tb AS book
+                        LEFT JOIN cancel_ticket_tb AS cancelTicket ON book.passenger_national_code = cancelTicket.NationalCode 
+                        OR book.passportNumber = cancelTicket.NationalCode
+                        LEFT JOIN cancel_ticket_details_tb AS cancelDetail ON cancelDetail.id = cancelTicket.IdDetail 
+                        AND cancelDetail.RequestNumber=book.request_number
+
+                    WHERE
+                        book.request_number = '{$order_code}' 
+                    GROUP BY
+                        book.id";
+
+        /*if(CLIENT_ID == 166){
+            var_dump($sql);
+            die();
+        }*/
+
+        return $this->admin->ConectDbClient($sql, $ClientId, "SelectAll", "", "", "");
+    }
 
     public function getInfoTicketBusCancel($order_code,$ClientId=CLIENT_ID)
     {
@@ -1080,25 +1130,25 @@ class user extends baseController
                         book.id,
                         book.passenger_name,
                         book.passenger_family,
-                        book.passenger_factor_num,
                         book.passenger_national_code,
+                        book.passenger_age,
                         book.passportNumber,
                         book.passenger_birthday,
                         book.member_id,
-                        book.order_code,
+                        book.factor_number,
                         book.total_price,
-                        book.order_code AS RequestNumber,
+                        book.factor_number as RequestNumber,
                         cancelDetail.*,
                         cancelTicket.NationalCode as NationalCode
                     FROM
-                        book_bus_tb AS book
+                        book_cip_tb AS book
                         LEFT JOIN cancel_ticket_tb AS cancelTicket ON book.passenger_national_code = cancelTicket.NationalCode 
                         OR book.passportNumber = cancelTicket.NationalCode
                         LEFT JOIN cancel_ticket_details_tb AS cancelDetail ON cancelDetail.id = cancelTicket.IdDetail 
-                        AND cancelDetail.RequestNumber=book.order_code
+                        AND cancelDetail.RequestNumber=book.factor_number
 
                     WHERE
-                        book.order_code = '{$order_code}' 
+                        book.factor_number = '{$order_code}' 
                     GROUP BY
                         book.id";
 
@@ -1632,7 +1682,7 @@ class user extends baseController
             }
 
             $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($amount_buy, $item['factor_number']),$number_format_float);
-            functions::insertLog('$item: ' . json_encode(functions::calcDiscountCodeByFactor($amount_buy, $item['factor_number'])) , '000shojaee');
+
             if ($item['IsInternal'] == 0) {
                 $bookList[$key]['flight_internal_external'] = functions::Xmlinformation('Foreign')->__toString();
             }else {
@@ -2171,24 +2221,30 @@ class user extends baseController
         $tableNameCip = 'book_cip_tb';
 
         $sql = "
-        SELECT
-              passenger_name,
-              passenger_family ,
-              total_price,
-              factor_number,
-              creation_date_int,
-              successfull,
-              request_cancel ,
-              cip_name,
-              airport_code,
-              airline_iata,
-              date_time,
-              airport_code_cip ,
-              trip_type ,
-              PassengerTitle,
-              flight_type
-        FROM
-            {$tableNameCip}
+       SELECT
+    c.passenger_name,
+    c.passenger_family,
+    c.total_price,
+    c.factor_number,
+    c.request_number,
+    c.creation_date_int,
+    c.successfull,
+    c.request_cancel,
+    c.cip_name,
+    c.airport_code,
+    c.airline_iata,
+    c.date_time,
+    c.airport_code_cip,
+    c.trip_type,
+    c.PassengerTitle,
+    c.flight_type,
+    cd.Status       AS StatusCancel,
+    cd.TypeCancel   AS TypeCancel,
+    cd.RequestNumber AS CancelRequestNumber
+FROM {$tableNameCip} AS c
+LEFT JOIN cancel_ticket_details_tb AS cd
+    ON c.request_number = cd.RequestNumber
+    AND cd.TypeCancel = 'cip'
         WHERE
             member_id = '{$memberId}'
             {$conditions} {$factor_number} {$status}
@@ -2320,14 +2376,107 @@ class user extends baseController
             // === دکمه‌های عملیاتی ===
             $result[$key]['button_list'] = [];
 
-            // دکمه دریافت بلیط برای رزروهای قطعی
             if ($item['successfull'] == 'book') {
-                $result[$key]['button_list'][] = [
-                    'title' => functions::Xmlinformation('GetTicket')->__toString(),
-                    'type' => 'link',
-                    'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookCip&id=' . $item['factor_number'],
-                ];
+                if (
+                    $item['StatusCancel'] !== 'close' && $item['StatusCancel'] !== 'ConfirmCancel' &&
+                    $item['StatusCancel'] !== '' && $item['StatusCancel'] !== NULL
+                )
+                {
+                    // درخواست در حال بررسی
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('OsafarRefundPending')->__toString(),
+                        'type' => 'button',
+                        'function' => ""
+                    ];
+
+                    $result[$key]['button_list'][] =
+                        [
+                            'title' => functions::Xmlinformation('OsafarRefundother')->__toString(),
+                            'type' => 'button',
+                            'function' => "ModalCancelUserProfile(event.currentTarget ,'cip' , '" . $item['request_number'] . "')",
+
+                        ];
+
+                }
+                else if ($item['StatusCancel'] === 'ConfirmCancel') {
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                        'type' => 'link',
+                        'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookCip&id=' . $item['factor_number'],
+                    ];
+                }
+                else if ($item['StatusCancel'] === '' || $item['StatusCancel'] === NULL || $item['StatusCancel'] === 'close') {
+                    if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm') {//esterdad
+                        $result[$key]['button_list'][] =
+                            [
+                                'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                                'type' => 'link',
+                                'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookCip&id=' . $item['factor_number'],
+                            ];
+                    } else {
+                        $result[$key]['button_list'][] =
+                            [
+                                'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                                'type' => 'button',
+                                'function' => "ModalCancelUserProfile(event.currentTarget ,'cip' , '" . $item['request_number'] . "')",
+
+                            ];
+                    }
+
+                    if ($item['StatusCancel'] === 'close') {
+                        $result[$key]['button_list'][] = [
+                            'title' => functions::Xmlinformation('OsafarRefundClosed')->__toString(),
+                            'type' => 'text'
+                        ];
+                    }
+
+                    if ($item['successfull'] == 'book') {//bedone bilit
+                        if ($item['IsInternal'] != '0') {
+                            $result[$key]['button_list'][] =
+                                [
+                                    'title' => functions::Xmlinformation('GetTicket')->__toString(),
+                                    'type' => 'link',
+                                    'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookCip&id=' . $item['factor_number'],
+                                ];
+                        }
+                    }
+                }
+
+
+
+                if(CLIENT_ID == 271){
+                    $reservation_proof = Load::controller('reservationProof');
+                    $file = $reservation_proof->getProofFile($item['request_number'] , 'Flight');
+                    if($file && isset($file) && !empty($file)) {
+                        $result[$key]['button_list'][] =
+                            [
+                                'title' => functions::Xmlinformation('ViewProof')->__toString(),
+                                'type' => 'button' ,
+                                'function'  => "modalForReservationProofVersa( event.currentTarget ,".$item['factor_number'].", 'flight')" ,
+                            ];
+                    }
+                }else {
+                    $bookList[$key]['reservationProofVersa'] = '';
+                }
+
+
             }
+            // دکمه دریافت بلیط برای رزروهای قطعی
+//            if ($item['successfull'] == 'book') {
+//                $result[$key]['button_list'][] =
+//                    [
+//                        'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+//                        'type' => 'button',
+//                        'function' => "ModalCancelUserProfile(event.currentTarget ,'cip' , '" . $item['request_number'] . "')",
+//
+//                    ];
+//                $result[$key]['button_list'][] = [
+//                    'title' => functions::Xmlinformation('GetTicket')->__toString(),
+//                    'type' => 'link',
+//                    'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookCip&id=' . $item['factor_number'],
+//                ];
+//
+//            }
         }
 
         return $result;
@@ -6221,19 +6370,12 @@ GROUP BY factor_number
 
                 // دکمه لغو برای رزروهای قطعی
                 if ($item['statusBook'] == 'book') {
-//                    if ($item['request_cancel'] == 'confirm') {
-//                        $result[$key]['button_list'][] = [
-//                            'title' => functions::Xmlinformation('OsafarRefund'),
-//                            'type' => 'link',
-//                            'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=cipBooking&id=' . $item['factor_number'] . '&cancelStatus=confirm',
-//                        ];
-//                    } else {
-//                        $result[$key]['button_list'][] = [
-//                            'title' => functions::Xmlinformation('OsafarRefund'),
-//                            'type' => 'button',
-//                            'function' => "ModalCancelItemProfile(event.currentTarget, 'cip', " . $item['factor_number'] . ")",
-//                        ];
-//                    }
+                    $result[$key]['button_list'][] =
+                        [
+                            'title' => functions::Xmlinformation('OsafarRefund')->__toString(),
+                            'type' => 'button',
+                            'function' => "ModalCancelUserProfile(event.currentTarget ,'cip' , '" . $item['request_number'] . "')",
+                        ];
 
                     // دکمه مشاهده فاکتور
 //                    $result[$key]['button_list'][] = [

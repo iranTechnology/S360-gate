@@ -32,7 +32,6 @@ $(document).ready(function () {
             default_language: "required",
             isIframe: "required",
             usedDemo: "required",
-            base_currency_code: "required",
             UsernameSms: {
                 required: {
                     depends: function (element) {

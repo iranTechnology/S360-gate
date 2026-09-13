@@ -536,7 +536,7 @@ class functions {
             /** @var currencyEquivalent $currency_controller */
             $currency_controller = Load::controller('currencyEquivalent');
             $info_currency = $currency_controller->InfoCurrency($info_member['type_currency']);
-            return number_format($total_transaction).' '. $info_currency['CurrencyTitleEn'];
+            return number_format($total_transaction,2).' '. $info_currency['CurrencyTitleEn'];
         }
 
         return number_format($total_transaction) .' '. self::Xmlinformation('Rial');
@@ -2613,6 +2613,19 @@ class functions {
 
         return $ResultFlight;
 
+    }
+
+    public static function InfoCip( $requestNumber ) {
+
+        Load::autoload( 'ModelBase' );
+
+        $ModelBase = new ModelBase();
+
+        $SqlCip = "SELECT * , COUNT(id) as Count_id  FROM report_cip_tb WHERE request_number='{$requestNumber}'";
+
+        $ResultCip = $ModelBase->load( $SqlCip );
+
+        return $ResultCip;
     }
 
     #endregion

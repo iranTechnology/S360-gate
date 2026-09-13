@@ -1010,10 +1010,23 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditLocal' ) {
         $total_amount         += $amount[ $direction ];
         $total_amount_counter[$direction]        = $amount[ $direction ];
     }
+    $agencyInfo = Load::controller('agency')->subAgencyInfo();
+    $isCounter = Load::controller('login')->isCounter();
+    $isCounter = json_decode($isCounter);
+    if($isCounter && $agencyInfo){
+        $currency_code = Session::getCurrency();
+    }else{
+        $client = functions::getClientInfo(CLIENT_ID);
+        $currency_code = $client['base_currency_code'];
+    }
+    $info_currency = functions::infoCurrencyBySessionCode($currency_code);
+    $currenyCode = $info_currency['CurrencyCode'];
+    $eqAmount = $info_currency['EqAmount'];
+    $CurrencyTitleEn = $info_currency['CurrencyTitleEn'];
 
     if($info_member['type_payment'] == 'currency')
     {
-        $amount_currency = functions::CurrencyCalculate($total_amount);
+        $amount_currency = functions::CurrencyCalculate($total_amount , $currenyCode,$eqAmount,$CurrencyTitleEn);
         $total_amount = $amount_currency['AmountCurrency'] ;
     }
 
@@ -1035,7 +1048,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditLocal' ) {
             $comment     .= ' ' . $request_number . $prices['pidTitle'];
             if($info_member['type_payment'] == 'currency')
             {
-                $amount_currency_counter = functions::CurrencyCalculate($total_amount_counter[$direction]);
+                $amount_currency_counter = functions::CurrencyCalculate($total_amount_counter[$direction], $currenyCode,$eqAmount,$CurrencyTitleEn);
                 $total_amount_counter[$direction] = $amount_currency_counter['AmountCurrency'] ;
             }
 //            echo "1";
@@ -1058,6 +1071,7 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'buyByCreditLocal' ) {
         if ( empty( $existTransaction ) ) {
             // Caution: اعتبارسنجی صاحب سیستم
             $check = $objTransaction->checkCredit( $total_price );
+
             if ( $check['status'] == 'TRUE' ) {
 
                 //set buy status to credit
@@ -2223,12 +2237,21 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'checkMemberCredit' ) {
                 $check = $objTransaction->checkCredit( $dataPost['priceToPay'] );
             }
 
-
-
+            $agencyInfo = Load::controller('agency')->subAgencyInfo();
+            $isCounter = Load::controller('login')->isCounter();
+            $isCounter = json_decode($isCounter);
+            if($isCounter && $agencyInfo){
+                $currency_code = Session::getCurrency();
+            }else{
+                $client =functions::getClientInfo(CLIENT_ID);
+                $currency_code = $client['base_currency_code'];
+            }
+            $info_currency = functions::infoCurrencyBySessionCode($currency_code);
+            $CurrencyTitleEn = $info_currency['CurrencyTitleEn'] ?? $info_currency['CurrencyTitle'];
 
             if ( $check['status'] != 'TRUE' ) {
                 $result['result_status']  = 'none_credit';
-                $result['result_message'] = functions::Xmlinformation( 'ZeroCredit' );
+                $result['result_message'] = array(functions::StrReplaceInXml(["@@Currency@@"=>($CurrencyTitleEn)],"ZeroCredit"));
             }elseif ( $credit > 0 && ( intval( $credit ) < intval( $dataPost['priceToPay'] ) ) ) {
                 $result['result_status']  = 'half_credit';
                 $credit                   = number_format( $dataPost['priceToPay'] - $credit );

@@ -617,6 +617,8 @@ class priceChanges extends baseController
                 $eqAmount = $info_currency['EqAmount'];
                 $CurrencyTitleEn = $info_currency['CurrencyTitleEn'];
 
+
+
                 if($isCounter && $agencyInfo){
                     $base_price_currency       = functions::CurrencyCalculate($price[$key]['BasePrice'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
                     $total_price_currency      = functions::CurrencyCalculate($price[$key]['TotalPrice'],$data_info['info_currency']['CurrencyCode'],$data_info['info_currency']['EqAmount'],$data_info['info_currency']['CurrencyTitleEn']);
