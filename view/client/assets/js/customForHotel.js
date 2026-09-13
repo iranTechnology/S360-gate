@@ -653,16 +653,6 @@ function internalHotelSearchDetails() {
         }
         let generateRoomSelectForm = function(result, hotelValue, RequestNumber) {
 
-            console.log('=== generateRoomSelectForm  177===');
-            console.log('hotelValue:', hotelValue);
-            console.log('hotelValue.History:', hotelValue?.History);
-            console.log('StartDate:', hotelValue?.History?.StartDate);
-            console.log('EndDate:', hotelValue?.History?.EndDate);
-            console.log('CheckIn:', hotelValue?.History?.CheckIn);
-            console.log('CheckOut:', hotelValue?.History?.CheckOut);
-            console.log('Rooms:', hotelValue?.History?.Rooms);
-            console.log('PaxRooms:', hotelValue?.History?.PaxRooms);
-
             let modal = ''
             let eachRoom = ''
             let RoomIds = []
@@ -970,7 +960,7 @@ function internalHotelSearchDetails() {
                 }
 
                 $.each(value.Pictures, function(index, picture) {
-                    galleryHtml += `<img src='${picture.medium}' alt='${hotelName}'>`
+                    galleryHtml += `<img src='${picture.medium}' alt='${hotelName}' referrerpolicy="no-referrer" loading="lazy">`
                 })
                 if (window.innerWidth < 576) {
                     galleryHtml += `</div>`;
@@ -1013,11 +1003,25 @@ function internalHotelSearchDetails() {
             // $('#CurrencyCode').val(value.CurrencyCode)
             if (value.IsInternal == true || value.IsInternal == 1 ) {
                 $('.hotelDetailHotelName').text(hotelName)
-            } else {
-                $('.hotelDetailCityName').text(value.City)
-                $('#destination_country').val(searched_details.Country)
-                $('#destination_city').val(searched_details.City)
-                $('#autoComplateSearchIN').val(searched_details.Country + ' - ' + searched_details.City)
+            }
+            else {
+                let histCountry = searched_details?.Country || value.Country || value.CountryName || value.CountryNameEn || '';
+                let histCity    = searched_details?.City    || value.City    || value.CityName    || value.CityNameEn    || '';
+
+                $('.hotelDetailCityName').text(histCity || $('.hotelDetailCityName').text() || '');
+
+                if (histCountry) {
+                    $('#destination_country').val(histCountry);
+                }
+
+                if (histCity) {
+                    $('#destination_city').val(histCity);
+                }
+
+                let destinationText = [histCountry, histCity].filter(Boolean).join(' - ');
+                if (destinationText) {
+                    $('#autoComplateSearchIN').val(destinationText);
+                }
             }
 
             /*
