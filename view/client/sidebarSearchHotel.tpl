@@ -69,7 +69,7 @@
                                value="{$info_city['city_name']}"
                                placeholder='##Selection## ##City##'
                                autocomplete="off">
-                        <input type="hidden" id="autoComplateSearchIN_hidden" value="{$info_city['id']}">
+                        <input type="hidden" id="autoComplateSearchIN_hidden" value="{$smarty.get.city}">
                     {else}
                         <input id="autoComplateSearchIN" name="autoComplateSearchIN"
                                class="inputSearchForeign has-night-badge"

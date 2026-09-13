@@ -1,4 +1,4 @@
-﻿@font-face {:root
+﻿@font-face {
     font-family: "IRANYekanXVF";
     src: url("../../../assets/all-fonts/IRANYekanX(Pro)/IRANYekanXVF.woff") format("woff-variations"), url("../../../assets/all-fonts/IRANYekanX(Pro)/IRANYekanXVF.woff") format("woff");
     font-weight: 100 1000;
@@ -485,11 +485,11 @@ footer h6 {
 }
 
 .nav-brand .logo-img {
-    width: 103px
+    width: 185px
 }
 
 .footer-brand img {
-    width: 124px
+    width: 190px
 }
 
 .megamenu-list img {
@@ -1419,7 +1419,7 @@ footer h6 {
 }
 
 .all-tour-menu:hover {
-    color: #190606 !important
+    color: var(--secondColor) !important
 }
 
 .nav-dropdown > li:last-child > a {
@@ -2066,11 +2066,11 @@ footer h6 {
     }
 
     .nav-brand .logo-img {
-        width: 100px; /*! height: 100%; */
+        width: 170px; /*! height: 100%; */
     }
 
     .footer-brand img {
-        width: 100px; /*! height: 100%; */
+        width: 170px; /*! height: 100%; */
     }
 
     .nav-menus-wrapper {
@@ -2187,12 +2187,8 @@ footer h6 {
         margin-right: auto
     }
 
-    .nav-brand .logo-img {
-        width: 92px !important
-    }
-
     .footer-brand img {
-        width: 92px
+        width: 160px
     }
 
     .logo-caption {
@@ -2482,6 +2478,9 @@ footer h6 {
 }
 
 @media (max-width: 576px) {
+    .nav-brand .logo-img {
+        width: 160px !important
+    }
     .sabze {
         width: 29px
     }
@@ -2618,10 +2617,6 @@ footer h6 {
     .namads > a {
         width: 70px;
         height: 70px
-    }
-
-    .footer-brand img {
-        width: 100px
     }
 
     .img-noruz-footer {
@@ -2831,9 +2826,9 @@ footer h6 {
 
 .btn-user:hover {
     text-decoration: none;
-    background-color: #190606;
+    background-color: var(--secondColor);
     color: #fff;
-    border-color: #190606
+    border-color: var(--secondColor)
 }
 
 .btn-user i {
@@ -3811,8 +3806,8 @@ footer h6 {
 
 .btn-phone:hover {
     text-decoration: none;
-    background-color: #190606;
-    border-color: #190606;
+    background-color: var(--secondColor);
+    border-color: var(--secondColor);
     color: #fff
 }
 
