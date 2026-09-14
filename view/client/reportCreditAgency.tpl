@@ -6,42 +6,77 @@
     {assign var="info_credit" value=$objAgency->getSumCreditAgency($objSession->getAgencyId())} {*گرفتن اطلاعات کاربر*}
     {assign var="total_credit" value=$objAgency->CreditAgency($objSession->getAgencyId())} {*گرفتن اطلاعات کاربر*}
     {assign var="total_credit" value=$objAgency->CreditAgency($objSession->getAgencyId())}
+    {load_presentation_object filename="members" assign="objCounter"}
+    {assign var="check_is_counter" value=$obj_main_page->checkIsCounter()}
 
+
+
+    {assign var="isSubAgencyInfo" value=$objAgency->subAgencyInfo()}
+    {assign var="infoClient" value=functions::getClientInfo($smarty.const.CLIENT_ID)}
+    {assign var="Currency" value=Session::getCurrency()}
+    {if $check_is_counter && $isSubAgencyInfo}
+        {assign var="currencyCode" value=$Currency}
+    {else}
+        {assign var="currencyCode" value=$infoClient['base_currency_code']}
+    {/if}
+    {assign var="info_currency" value=$objCounter->showInfoCurrency($currencyCode)}
     {assign var='bank_list' value=$objAgency->getBankList()}
     <div class="container">
         <div class="row agency-credit-payment">
             <div class="alert alert-secondary parent-agency-box" role="alert">
-              <div class='agency-item'>
-                  <span class=''>اعتبار غیر مالی:</span>
-                  <span>{$profile['limit_credit']|number_format} ریال</span>
-              </div>
+                <div class='agency-item'>
+                    <span class=''>اعتبار غیر مالی:</span>
+                    <span>
+                      {if $info_currency}
+                          {$profile['limit_credit']|number_format:2:".":","}  {$info_currency['CurrencyTitleEn']}
+
+                      {else}
+                          {$profile['limit_credit']|number_format} ##Rial##
+                      {/if}</span>
+                </div>
                 <div class='agency-item'>
                     <span class=''>اعتبار شارژی:</span>
-                    <span>{$info_credit['sum_increase_credit']|number_format} ریال</span>
+                    <span>{$info_credit['sum_increase_credit']|number_format}
+                        {if $info_currency}
+                            {$info_credit['sum_increase_credit']|number_format:2:".":","}  {$info_currency['CurrencyTitleEn']}
+
+                        {else}
+                            {$info_credit['sum_increase_credit']|number_format} ##Rial##
+                        {/if}</span>
                 </div>
                 <div class='agency-item'>
                     <span class=''>خرید:</span>
-                    <span>{$info_credit['sum_decrease_credit']|number_format} ریال</span>
+                    <span>{$info_credit['sum_decrease_credit']|number_format}   {if $info_currency}
+                            {$info_credit['sum_decrease_credit']|number_format:2:".":","}  {$info_currency['CurrencyTitleEn']}
+
+                        {else}
+                            {$info_credit['sum_decrease_credit']|number_format} ##Rial##
+                        {/if}</span>
                 </div>
                 <div class='agency-item'>
                     <span class=''>باقیمانده اعتبار:</span>
-                    <span>{$total_credit|number_format} ریال</span>
+                    <span>{$total_credit|number_format}    {if $info_currency}
+                            {$info_credit['sum_decrease_credit']|number_format:2:".":","}  {$info_currency['CurrencyTitleEn']}
+
+                        {else}
+                            {$info_credit['sum_decrease_credit']|number_format} ##Rial##
+                        {/if}</span>
                 </div>
             </div>
             <div class="col-12 col-lg-6 p-0">
                 <p class="reportCreditAgency__parent-form-pay_p">برای افزایش اعتبار از کادر زیر استفاده نمایید :</p>
                 <div class="reportCreditAgency__bank_style-new pl-2">
                     {foreach $bank_list as $bank}
-                    <label class="reportCreditAgency__custom-radio">
-                        <input type="radio" value="{$bank['bank_dir']}" name="bank_to_pay">
-                        <span class="reportCreditAgency__radio-btn">
+                        <label class="reportCreditAgency__custom-radio">
+                            <input type="radio" value="{$bank['bank_dir']}" name="bank_to_pay">
+                            <span class="reportCreditAgency__radio-btn">
                             <svg class="reportCreditAgency__svg-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>
                             <div class="reportCreditAgency__hobbies-icon">
                                 <img src="assets/images/bank/bank{$bank['title_en']}.png" alt="{$bank['title']}">
                                 <span>{$bank['title']}</span>
                             </div>
                         </span>
-                    </label>
+                        </label>
                     {/foreach}
                 </div>
 
@@ -93,8 +128,16 @@
             </div>
         </div>
     </div>
+    {assign var="currencyTitle" value="##Rial##"}
+    {if $info_currency}
+        {assign var="currencyTitle" value=$info_currency['CurrencyTitleEn']}
+    {/if}
+
 {literal}
     <script>
+        {/literal}
+        var currencyTitle = "{$currencyTitle}";
+        {literal}
         $(document).ready(function () {
             getCategoryData('#reportCreditAgency');
         });
@@ -104,7 +147,6 @@
             targetTable.children('tr').remove();
             targetTable.children('tbody').remove();
             targetTable.children('thead').remove();
-
         }
 
         function getCategoryData(targetTable) {
@@ -113,36 +155,13 @@
                 refreshData(targetTable);
             }
             var columns = [
-
-                {
-                    "title": "شماره واچر/فاکتور",
-                    "data": "requestNumber"
-                }, {
-                    "title": "توضیحات",
-                    "data": "comment"
-                }, {
-                    "title": "تاریخ ترکنش",
-                    "data": "dateBuy"
-                }, {
-                  "title": "مبلغ تراکنش (ریال)",
-                  "data": "credit"
-               },
-               {
-                  "title": "مانده (ریال)",
-                  "data": "balance_after"
-               },
-            //    {
-            //         "title": "دلیل تراکنش",
-            //         "data": "reason"
-            //     }
-            // ,
-               {
-                    "title": "نوع تراکنش",
-                    "data": "typeCredit"
-                } ,{
-                  "title": "type",
-                  "data": "type"
-               }
+                { "title": "شماره واچر/فاکتور", "data": "requestNumber" },
+                { "title": "توضیحات", "data": "comment" },
+                { "title": "تاریخ ترکنش", "data": "dateBuy" },
+                { "title": "مبلغ تراکنش (" + currencyTitle + ")", "data": "credit" },
+                { "title": "مانده (" + currencyTitle + ")", "data": "balance_after" },
+                { "title": "نوع تراکنش", "data": "typeCredit" },
+                { "title": "type", "data": "type" }
             ];
 
             targetTable.DataTable({
@@ -161,9 +180,7 @@
                     },
                 },
                 columns: columns
-
             });
-
         }
     </script>
 {/literal}

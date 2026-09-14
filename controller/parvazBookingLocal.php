@@ -1975,8 +1975,6 @@ class parvazBookingLocal extends apiLocal
                 </table>
                 <?php
                 if ($info['request_cancel'] != 'confirm' && ($info['successfull'] == 'book' || $info['successfull'] == 'private_reserve') && CLIENT_ID == 408){ ?>
-
-
                     <div class="" style="margin: 10px 100px ;border:1px solid #ccc">
 
                         <table width="100%" align="center" cellpadding="0" cellspacing="0">
@@ -1997,8 +1995,6 @@ class parvazBookingLocal extends apiLocal
                                         <li>برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</li>
                                         <li>8- جدول جریمه به شکل زیر است، اما امکان دارد در مواقعی خاص و بر اساس سیاست تامین کننده، تغییراتی داشته باشد. </li>
                                         <li><a href="https://apstick.ir/api/DeepLink/Refund/V1?language=fa" target="_blank">https://apstick.ir/api/DeepLink/Refund/V1?language=fa</a></li>
-
-
                                     </ul>
 
                                 </td>

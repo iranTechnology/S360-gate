@@ -1,6 +1,7 @@
 <?php
 
 //if($_SERVER['REMOTE_ADDR']==='5.201.144.255'){
+//if(CLIENT_ID == 393){
 //    error_reporting(1);
 //    error_reporting(E_ALL | E_STRICT);
 //    @ini_set('display_errors', 1);
@@ -474,6 +475,8 @@ class user extends baseController
             $passport_number = 'book.passportNumber';
             $passenger_birthday_en = 'book.passenger_birthday_en';
             $passenger_birthday = 'book.passenger_birthday';
+            $passenger_name_en = "book.passenger_name_en";
+            $passenger_family_en = "book.passenger_family_en";
             $passenger_age = 'book.passenger_age';
             $passenger_factor_number = 'book.factor_number';
             if($resultExistCancel['TypeCancel']=='train'){
@@ -484,7 +487,16 @@ class user extends baseController
                 $passenger_age = 'book.passenger_birthday';
                 $passenger_factor_number = 'book.passenger_factor_num';
                 $LeftJoin = "LEFT JOIN book_bus_tb AS book ON book.order_code = Cancel.RequestNumber AND ((TCancel.NationalCode = book.passenger_national_code)OR(TCancel.NationalCode = book.passportNumber))";
-            }else if($resultExistCancel['TypeCancel'] == 'insurance'){
+            }
+            else if($resultExistCancel['TypeCancel'] == 'cip'){
+                $passport_number = 'book.passportNumber';
+                $passenger_birthday_en = 'passenger_birthday';
+                $passenger_birthday = "''";
+                $passenger_name_en = "''";
+                $passenger_family_en = "''";
+                $LeftJoin = "LEFT JOIN book_cip_tb AS book ON book.request_number = Cancel.RequestNumber AND ((TCancel.NationalCode = book.passenger_national_code)OR(TCancel.NationalCode = book.passportNumber))";
+            }
+            else if($resultExistCancel['TypeCancel'] == 'insurance'){
                 $passport_number = 'book.passport_number';
                 $passenger_birthday_en = 'book.passenger_birth_date_en';
                 $passenger_birthday = 'book.passenger_birth_date';
@@ -496,8 +508,8 @@ class user extends baseController
         $sql = "SELECT TCancel.*, "
             . " book.passenger_name, "
             . " book.passenger_family, "
-            . " book.passenger_name_en, "
-            . " book.passenger_family_en, "
+            . " {$passenger_name_en} AS passenger_name_en, "
+            . " {$passenger_family_en} AS passenger_family_en, "
             . " {$passenger_age}, "
             . " book.passenger_national_code, "
             . " {$passport_number}, "
@@ -1633,10 +1645,12 @@ class user extends baseController
         if (!empty($param['startDate']) && !empty($param['endDate'])) {
             $date_of = explode('-', $_POST['startDate']);
             $date_to = explode('-', $_POST['endDate']);
+
             if(SOFTWARE_LANG == 'fa'){
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -1933,7 +1947,8 @@ class user extends baseController
                total_price,
                request_cancel,
                entertainment_data_json,
-               currency_code
+               currency_code,
+               provider_ref as pnr
              FROM book_exclusive_tour_tb 
              WHERE member_id='{$id}' AND request_number > '0' ";
 
@@ -1941,10 +1956,12 @@ class user extends baseController
         if (!empty($param['startDate']) && !empty($param['endDate'])) {
             $date_of = explode('-', $_POST['startDate']);
             $date_to = explode('-', $_POST['endDate']);
+
             if(SOFTWARE_LANG == 'fa'){
                 $date_of_int = dateTimeSetting::jmktime(0,0,0,$date_of[1],$date_of[2],$date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23,59,59,$date_to[1],$date_to[2],$date_to[0]);
             } else {
+
                 $date_of_int = mktime(0,0,0,$date_of[1],$date_of[2],$date_of[0]);
                 $date_to_int = mktime(23,59,59,$date_to[1],$date_to[2],$date_to[0]);
             }
@@ -2037,6 +2054,7 @@ class user extends baseController
             $result[$key]['service'] = 'ExclusiveTour';
             $result[$key]['title'] = functions::Xmlinformation('ExclusiveTour')->__toString() .' '. $item['origin_city'] .' - '. $item['desti_city'] .' ('. $item['hotel_name'].')';
             $result[$key]['date'] = $creation_date;
+            $result[$key]['pnr'] = $item['pnr'];
             $result[$key]['time'] = $creation_time;
             $result[$key]['status'] = [
                 'title' => $item['successfull'],
@@ -2196,6 +2214,16 @@ class user extends baseController
         if (!empty($param['startDate']) && !empty($param['endDate'])) {
             $date_of = explode('-', $param['startDate']);
             $date_to = explode('-', $param['endDate']);
+            if(SOFTWARE_LANG != 'fa'){
+                if ((int)$date_of[0] > 1450) {
+                    $jalali_of = dateTimeSetting::gregorian_to_jalali($date_of[0], $date_of[1], $date_of[2], '-');
+                    $date_of   = explode('-', $jalali_of);
+                }
+                if ((int)$date_to[0] > 1450) {
+                    $jalali_to = dateTimeSetting::gregorian_to_jalali($date_to[0], $date_to[1], $date_to[2], '-');
+                    $date_to   = explode('-', $jalali_to);
+                }
+            }
             $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
             $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             $conditions .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
@@ -2510,10 +2538,12 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
             $date_of = explode('-', $_POST['startDate']);
             $date_to = explode('-', $_POST['endDate']);
+
             if(SOFTWARE_LANG == 'fa'){
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -2942,10 +2972,12 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
             $date_of = explode('-', $_POST['startDate']);
             $date_to = explode('-', $_POST['endDate']);
+
             if(SOFTWARE_LANG == 'fa'){
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -3143,10 +3175,12 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
             $date_of = explode('-', $_POST['startDate']);
             $date_to = explode('-', $_POST['endDate']);
+
             if(SOFTWARE_LANG == 'fa'){
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -3358,10 +3392,12 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
             $date_of = explode('-', $_POST['startDate']);
             $date_to = explode('-', $_POST['endDate']);
+
             if(SOFTWARE_LANG == 'fa'){
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -3492,10 +3528,12 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
             $date_of = explode('-', $_POST['startDate']);
             $date_to = explode('-', $_POST['endDate']);
+
             if(SOFTWARE_LANG == 'fa'){
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -3634,6 +3672,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -3761,6 +3800,14 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }else{
+                if ((int)$date_of[0] > 1450) {
+                    $jalali_of = dateTimeSetting::gregorian_to_jalali($date_of[0], $date_of[1], $date_of[2], '-');
+                    $date_of   = explode('-', $jalali_of);
+                }
+                if ((int)$date_to[0] > 1450) {
+                    $jalali_to = dateTimeSetting::gregorian_to_jalali($date_to[0], $date_to[1], $date_to[2], '-');
+                    $date_to   = explode('-', $jalali_to);
+                }
                 $date_of_int = mktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
                 $date_to_int = mktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
             }
@@ -3874,10 +3921,23 @@ LEFT JOIN cancel_ticket_details_tb AS cd
         $successfull = '';
         $status = '';
         if (!empty($param['startDate']) && !empty($param['endDate'])) {
+
             $date_of = explode('-', $param['startDate']);
             $date_to = explode('-', $param['endDate']);
+            if(SOFTWARE_LANG != 'fa'){
+                if ((int)$date_of[0] > 1450) {
+                    $jalali_of = dateTimeSetting::gregorian_to_jalali($date_of[0], $date_of[1], $date_of[2], '-');
+                    $date_of   = explode('-', $jalali_of);
+                }
+                if ((int)$date_to[0] > 1450) {
+                    $jalali_to = dateTimeSetting::gregorian_to_jalali($date_to[0], $date_to[1], $date_to[2], '-');
+                    $date_to   = explode('-', $jalali_to);
+                }
+            }
+
             $date_of_int = dateTimeSetting::jmktime(0, 0, 0, $date_of[1], $date_of[2], $date_of[0]);
             $date_to_int = dateTimeSetting::jmktime(23, 59, 59, $date_to[1], $date_to[2], $date_to[0]);
+
             $conditions .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
             $conditions_flight .= " AND creation_date_int >= '{$date_of_int}' AND creation_date_int  <= '{$date_to_int}'";
         }
@@ -3989,7 +4049,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  currency_equivalent AS currency_equivalent
+                  currency_equivalent AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameFlight}
             WHERE
@@ -4077,7 +4138,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameBus} 
             WHERE
@@ -4165,7 +4227,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameTrain} 
             WHERE
@@ -4254,7 +4317,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameGasht} 
             WHERE
@@ -4343,7 +4407,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameTour} 
             WHERE
@@ -4431,7 +4496,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameHotel} 
             WHERE
@@ -4519,7 +4585,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameInsurance} 
             WHERE
@@ -4608,7 +4675,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameVisa} 
             WHERE
@@ -4696,7 +4764,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameEntertainment} 
             WHERE
@@ -4785,7 +4854,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS airport_code_cip,
                   '' AS trip_type,
                   '' AS PassengerTitle,
-                  '' AS currency_equivalent
+                  '' AS currency_equivalent,
+                  '' AS pnr
             FROM
                 {$tableNameEuropcar} 
             WHERE
@@ -4874,7 +4944,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
               '' AS airport_code_cip,
               '' AS trip_type,
               '' AS PassengerTitle,
-              '' AS currency_equivalent
+              '' AS currency_equivalent,
+              provider_ref AS pnr
         FROM {$tableNameExclusiveTour}
         WHERE member_id = '{$memberId}' AND request_number > '0'
         GROUP BY request_number
@@ -4958,13 +5029,15 @@ LEFT JOIN cancel_ticket_details_tb AS cd
       airport_code_cip AS airport_code_cip,
       trip_type AS trip_type,
       PassengerTitle AS PassengerTitle,
-      '' AS currency_equivalent
+      '' AS currency_equivalent,
+      '' AS pnr
 FROM {$tableNameCip}
 WHERE member_id = '{$memberId}'
 {$conditions} {$factor_number} {$successfull}
 GROUP BY factor_number
                 ";
         $sql .= " ORDER BY creation_date_int DESC ";
+
 //echo $sql;
 
         $bookList = $Model->select($sql);
@@ -4978,6 +5051,7 @@ GROUP BY factor_number
             $bookList[$key]['ViewDetails'] = '';
             $bookList[$key]['btnDetails'] = '';
             $bookList[$key]['dataBtnPdfFreeLink'] = '';
+
 
             $bookList[$key]['module_title'] = $item['moduleTitle'];
             if ($item['creation_date_int'] != '') {
@@ -6138,6 +6212,7 @@ GROUP BY factor_number
                 $result[$key]['title'] = functions::Xmlinformation('ExclusiveTour')->__toString() .' '. $item['origin_city'] .' - '. $item['desti_city'] .' ('. $item['hotel_name'].')';
                 $result[$key]['date'] = $creation_date;
                 $result[$key]['time'] = $creation_time;
+                $result[$key]['pnr'] = $item['pnr'];
                 $result[$key]['status'] = [
                     'title' => $item['statusBook'],
                     'value' => $view_status

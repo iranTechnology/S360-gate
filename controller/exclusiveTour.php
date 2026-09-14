@@ -366,6 +366,7 @@ class exclusiveTour extends clientAuth {
         INNER JOIN reservation_city_tb rcb
             ON rcb.id = e.city_id AND rcb.abbreviation = '{$city_code}'
         WHERE e.validate = 1
+            AND e.deleted_at IS NULL
           AND e.tour_price IS NOT NULL
           AND e.tour_price > 0
     ";

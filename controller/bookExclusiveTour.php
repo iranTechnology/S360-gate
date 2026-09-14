@@ -101,37 +101,37 @@ class bookExclusiveTour extends exclusiveTour
 
         $resultBook = false;
 
-            functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookExclusiveTour');
-            if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
-                functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
-                $this->updateStatusProcessing($info['factor_number']);
+        functions::insertLog('in foreach==>' . json_encode([$info['factor_number'], $info['successfull']], 256), 'newBookExclusiveTour');
+        if ($info['successfull'] !== "book" && $info['successfull'] !== "error") {
+            functions::insertLog('before updateStatusProcessing==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
+            $this->updateStatusProcessing($info['factor_number']);
 
-                    try {
-                        $startTime = time();
-                        $maxTime = 70;
-                        set_time_limit($maxTime + 5);
+            try {
+                $startTime = time();
+                $maxTime = 70;
+                set_time_limit($maxTime + 5);
 
-                        $resultBook = $this->reserveTicket($payType, $info);
+                $resultBook = $this->reserveTicket($payType, $info);
 
-                        $elapsed = time() - $startTime;
-                        if ($elapsed > $maxTime) {
-                            return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
-                        }
-
-                    }
-                    catch (Exception $e) {
-                        return functions::withError('', 500, 'Error when booking a flight');
-                    }
-
-
-                    functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
-
-                functions::insertLog('**************************************', 'newBookExclusiveTour');
+                $elapsed = time() - $startTime;
+                if ($elapsed > $maxTime) {
+                    return functions::withSuccess('pending', 408, 'Tickets require more time to be issued');
+                }
 
             }
-            else {
-                return functions::withError('', 403, 'تور قبلا به نتیجه رسیده است');
+            catch (Exception $e) {
+                return functions::withError('', 500, 'Error when booking a flight');
             }
+
+
+            functions::insertLog('after reserveTicket==>' . json_encode([$info['factor_number'], $resultBook], 256), 'newBookExclusiveTour');
+
+            functions::insertLog('**************************************', 'newBookExclusiveTour');
+
+        }
+        else {
+            return functions::withError('', 403, 'تور قبلا به نتیجه رسیده است');
+        }
 
         if ($resultBook) {
             return functions::withSuccess($resultBook, 200, 'تور با موفقیت صادر شد');
@@ -185,7 +185,7 @@ class bookExclusiveTour extends exclusiveTour
 
         return $airlineController->checkSourceAirline($dataCheckConfigAirline);
     }
-    
+
     private function updateInfo($payType, $eachDirection, $ReserveTicket = array()) {
 
 
@@ -194,10 +194,10 @@ class bookExclusiveTour extends exclusiveTour
             $this->transaction->setCreditToSuccess($eachDirection['factor_number'], $eachDirection['tracking_code_bank']);
         }
 
-                $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
+        $this->members->memberCreditConfirm($eachDirection['factor_number'], $this->tracking_code);
 
-                //email to buyer
-                $this->sendSmsToClient($eachDirection);
+        //email to buyer
+        $this->sendSmsToClient($eachDirection);
 
 
         return true;
@@ -324,15 +324,15 @@ class bookExclusiveTour extends exclusiveTour
         functions::insertLog('after reserve ticket==>' . json_encode([$eachDirection['factor_number']], 256), 'newBookExclusiveTour');
 
         if (!empty($ReserveTicket) && $ReserveTicket['curl_error'] == false && !empty($ReserveTicket['Pnr'])) {
-                functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookExclusiveTour');
-                $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
+            functions::insertLog('before updateInfo==>' . json_encode([$eachDirection['factor_number'], $ReserveTicket], 256), 'newBookExclusiveTour');
+            $resultBookedFlight = $this->updateInfo($payType, $eachDirection, $ReserveTicket);
 
-                functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookExclusiveTour');
+            functions::insertLog('after updateInfo==>' . json_encode([$eachDirection['factor_number'], $resultBookedFlight], 256), 'newBookExclusiveTour');
         }
         else {
             if ($payType == 'credit') {
                 if ($eachDirection['successfull'] != 'book') {
-                        $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
+                    $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
                     $this->transaction->deleteCreditAgencyCurrent($eachDirection['request_number']);
                 }
             }
@@ -801,7 +801,7 @@ class bookExclusiveTour extends exclusiveTour
                           <div style="width:50%; float: right;text-align:right;">
                             <img src="' . ROOT_ADDRESS_WITHOUT_LANG . '/pic/' . CLIENT_LOGO . '" alt="Logo" height="80" style="vertical-align: middle;">   
                               <span style="display: inline-block; vertical-align: middle; padding-left: 10px;"> ' .
-               $getSubAgencyInfo['name_fa']. '
+            $getSubAgencyInfo['name_fa']. '
             </span>                        
                         </div>
                         <div style="text-align:left;width:50%;float: left;padding-top:1%">  <img src="https://safar360.com/gds/library/barcode/barcode_creator.php?barcode=' . trim($info_hotel[0]["pnr"]) . '" alt="Barcode"  style="width: 80px" height="50px"></div>
@@ -902,7 +902,7 @@ class bookExclusiveTour extends exclusiveTour
                                             <td style="border: none;"></td>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: yekanbakh;">' . (!empty($firstInfo) ? '1' : '0')  . ' اتاق </td>  
                                         </tr> <tr>
-                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: yekanbakh;">کد بلیط هواپیما: </td>
+                                            <td style="border: none; padding: 2px 0; font-size: 11px; color: #333; font-weight: bold; line-height: 1.4; font-family: yekanbakh;">رفرنس (pnr): </td>
                                            <td style="border: none;"></td>
                                             <td style="border: none; padding: 2px 0; font-size: 11px; color: #666; line-height: 1.4; font-family: yekanbakh;">' . $voucherNumber  . '</td>
                                         </tr>
@@ -1098,7 +1098,7 @@ class bookExclusiveTour extends exclusiveTour
                     </thead>
                     <tbody>';
 
-            $html .= '
+        $html .= '
                         <tr style="border-bottom: 1px solid #ddd;">
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">رفت</td>
                                <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">'. (!empty($firstInfo['origin_city']) ? $firstInfo['origin_city'] : '-') .'</td>
@@ -1135,7 +1135,7 @@ class bookExclusiveTour extends exclusiveTour
          ';
         $entertainments = json_decode($info_hotel[0]['entertainment_data_json'] , true);
         if(!empty($entertainments)){
-         $html .='   
+            $html .='   
             <div style="padding: 15px; font-family: yekanbakh; overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse; font-family: yekanbakh;">
                     <thead>
@@ -1146,32 +1146,32 @@ class bookExclusiveTour extends exclusiveTour
                         </tr>
                     </thead>
                     <tbody>';
-        $entertainmentNum = 1;
+            $entertainmentNum = 1;
 
-        $total_price_entertaimant = 0;
-        foreach ($entertainments as $entertainment) {
-            $total_price_entertaimant += $entertainment['final_price'];
-            $html .= '
+            $total_price_entertaimant = 0;
+            foreach ($entertainments as $entertainment) {
+                $total_price_entertaimant += $entertainment['final_price'];
+                $html .= '
                         <tr style="border-bottom: 1px solid #ddd;">
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">' . $entertainmentNum . '</td>
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333; font-weight: bold;">' . (!empty($entertainment['tourTitle']) ? $entertainment['tourTitle'] : '-') . '</td>
                             <td style="padding: 12px; text-align: right; border: 1px solid #ddd; font-family: yekanbakh; color: #333;">' . (!empty($entertainment['final_price']) ? number_format($entertainment['final_price']) . ' ریال '  : '-') . '</td>
                         </tr>';
-            $entertainmentNum++;
-        }
+                $entertainmentNum++;
+            }
 
 
-        $html .= '
+            $html .= '
                     </tbody>
                 </table>
                 </div>
                 ';
         }
-    else{
-        $html .= '
+        else{
+            $html .= '
 <div style="text-align:center ;padding:20px;width:100%">بدون تفریح</div>
         </div>';
-    }
+        }
 
 
 
@@ -1206,6 +1206,35 @@ class bookExclusiveTour extends exclusiveTour
                 </table>
             </div>
         </div>';
+
+        if ($info_hotel[0]['request_cancel'] != 'confirm' && ($info_hotel[0]['successfull'] == 'book' || $info_hotel[0]['successfull'] == 'private_reserve') && CLIENT_ID == 408) {
+
+            $html .= '
+    <div style="background: #fff; border-radius: 8px; text-align: right; overflow: hidden; margin: 20px; border: 2px solid #ddd; font-family: yekanbakh; page-break-before: always;">
+        <div style="background: #d5dddd; color: #333; padding: 12px; font-weight: bold; font-size: 14px; font-family: yekanbakh;">
+            قوانین کنسلی و استرداد
+        </div>
+        <div style="padding: 15px; font-family: yekanbakh;">
+            <ul style="margin: 0; padding-right: 20px; list-style: none; color: #333; font-size: 12px; line-height: 1.9; font-family: yekanbakh;">
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">1- جریمه استرداد تا 30 دقیقه بعد از رزرو (فقط تا 16 ساعت قبل از پرواز) 0 درصد مي باشد.</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">2- جریمه استرداد از زمان صدور بلیت تا ساعت 12 ظهر 3 روز قبل از پرواز 30 درصد مي باشد.</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">3- جریمه استرداد از ساعت 12 ظهر 3 روز قبل از پرواز تا ساعت 12 ظهر 2 روز قبل از پرواز 40 درصد مي باشد.</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">4- جریمه استرداد از ساعت 12 ظهر 2 روز قبل از پرواز تا ساعت 12 ظهر 1 روز قبل از پرواز 70 درصد مي باشد.</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">5- جریمه استرداد از ساعت 12 ظهر 1 روز قبل از پرواز تا 24 ساعت قبل از پرواز 80 درصد مي باشد.</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">6- جریمه استرداد از 24 ساعت قبل از پرواز به بعد 100 درصد مي باشد.</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">7- تمامی درصد جریمه های پروازی بر روی سیستم کنسلی و استرداد آنلاین تعریف شده است و مسافرین محترم میتوانند از طریق لینک زیر اقدام به ثبت کنسلی و استرداد بلیت های خود نمایند. ضمنا در صورت خرید نرخ های دو مسیره قوانین استرداد متفاوت بوده و بر اساس کل رفرنس محاسبه میگردد با تشکر</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">برای بررسی نوشو در ساعات اداری با شماره تماس 02123076 داخلی 430 تماس حاصل بفرمایید.</li>
+                <li style="padding: 6px 0; border-bottom: 1px dashed #ddd;">8- جدول جریمه به شکل زیر است، اما امکان دارد در مواقعی خاص و بر اساس سیاست تامین کننده، تغییراتی داشته باشد.</li>
+                <li style="padding: 6px 0;">
+                    <a href="https://apstick.ir/api/DeepLink/Refund/V1?language=fa" target="_blank" style="color: #1976d2; text-decoration: none; font-family: yekanbakh;">
+                        https://apstick.ir/api/DeepLink/Refund/V1?language=fa
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    ';
+        }
 
 
 //        if ($firstInfo['type_application'] == 'api') {
