@@ -94,6 +94,9 @@
                         <input type="text" class="form-control datepicker" name="start_date"
                                value="{$objPublic->format_Date($objResult->infoRoomPrice['minDate'])}"
                                id="start_date" placeholder="تاریخ شروع برگزاری اتاق را وارد نمائید">
+
+                        <input type="text" class="d-none" name="start_date_old"
+                               value="{$objPublic->format_Date($objResult->infoRoomPrice['minDate'])}" id="start_date_old">
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="end_date" class="control-label">پایان تاریخ فروش اتاق</label><span
@@ -101,6 +104,9 @@
                         <input type="text" class="form-control datepicker" name="end_date"
                                value="{$objPublic->format_Date($objResult->infoRoomPrice['maxDate'])}" id="end_date"
                                placeholder="تاریخ پایان برگزاری اتاق را وارد نمائید">
+
+                        <input type="text" class="d-none" name="end_date_old"
+                               value="{$objPublic->format_Date($objResult->infoRoomPrice['maxDate'])}" id="end_date_old">
                     </div>
 
 
@@ -283,7 +289,7 @@
                                             <input type="text" class="form-control" name="currency_price{$currentKey}1" value="{$item['DBL']['currency_price']}" id="currency_price{$currentKey}1" placeholder="قیمت ارزی را وارد کنید" onkeypress="isDigit(this)" onkeyup="javascript:separator(this);" aria-invalid="false">
                                         </td>
                                         <td>
-                                            <select name="currency_type1" id="currency_type1" class="form-control ">
+                                            <select name="currency_type{$currentKey}1" id="currency_type{$currentKey}1" class="form-control ">
                                                 <option value="">انتخاب کنید....</option>
                                                 {foreach $objCurrencyEquivalent->ListCurrencyEquivalentAdmin() as $currency}
                                                     <option value="{$currency.CurrencyCode}" {if $item['DBL']['currency_type'] == $currency.CurrencyCode}selected{/if}>{$currency.CurrencyTitle} ({$currency.EqAmount})</option>

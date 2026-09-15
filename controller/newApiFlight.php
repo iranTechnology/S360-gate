@@ -2681,7 +2681,7 @@ class newApiFlight extends clientAuth
                                     $title = $this->getBaggageTitle($number, $translateVariable ,$unit);
 
                                     // ✅ کلید با واحد تشخیص داده شده
-                                    $key = $number . ' ' . $unit;
+                                    $key = $unit . ' ' . $number;
 
                                     $baggageSet[$key] = array(
                                         'name_fa' => $title,
@@ -2712,7 +2712,7 @@ class newApiFlight extends clientAuth
 
                             $title = $this->getBaggageTitle($number, $translateVariable,$unit);
 
-                            $key = $number . ' ' . $unit;
+                            $key = $unit . ' ' . $number;
 
                             $baggageSet[$key] = array(
                                 'name_fa' => $title,
@@ -2738,7 +2738,7 @@ class newApiFlight extends clientAuth
 
                     $title = $this->getBaggageTitle($number, $translateVariable,$unit);
 
-                    $key = $number . ' ' . $unit;
+                    $key = $unit . ' ' . $number;
 
                     $baggageSet[$key] = array(
                         'name_fa' => $title,
@@ -2823,7 +2823,7 @@ class newApiFlight extends clientAuth
         // بقیه اعداد: "عدد کیلوگرم"
         $kilogramLabel = isset($translateVariable['kg']) ? $translateVariable['kg'] : functions::Xmlinformation( "Kilograms" );
         $unitTitle = $unit == 'PC' ? ' ' . functions::Xmlinformation( "Suitcase" ) : $kilogramLabel;
-        return $number . ' ' . $unitTitle;
+        return $unitTitle . ' ' . $number;
     }
 
     /**
@@ -4037,6 +4037,7 @@ class newApiFlight extends clientAuth
 
         $flights = json_decode($this->findTicketInSearch(), true);
 
+
         $request_numbers = [];
         foreach ($flights as $direction => $arrayFlight) {
             $request_numbers[$direction] = $arrayFlight['Code'] ;
@@ -4145,6 +4146,7 @@ class newApiFlight extends clientAuth
             }
 
 //            functions::insertLog(json_encode($flights),'000shojaee');
+
             foreach ($flights as $direction => $arrayFlight) {
 
                 $start = microtime(true);
@@ -4258,6 +4260,8 @@ class newApiFlight extends clientAuth
 
 
                     $price_change_calculate = $priceChangesController->setPriceChangesFlight($data_change_price, $data_param_set_change_price, $agencyBenefitSystemFlight);
+
+
 
 
 
@@ -4646,7 +4650,11 @@ class newApiFlight extends clientAuth
 
                 //مربوط به تنظیمات ایرلاین های پرواز های داخلی بود ، در یک زمانی در صفحه  https://admin.chartertech.ir/gds/itadmin/ticket/airlineClinetNewDomestic&id=378 تنظیم میکردیم که سرویس دهنده ای اول نمایش دهد و در صورتی که پرواز مشابه این نبود از سرویس دهنده دوم نمایش دهد ، کامنت کردیم تا همه تامین کنندگان را نمایش دهد هر چند تا تامین کننده که داشته باشه و وصل باشه
 
+
+
                 $this->tickets['flights'][$direction] = $this->getController('resultLocal')->deleteInactiveAirline($this->tickets['flights'][$direction], 'isInternal', $data_param_set_change_price, 'new');
+
+
 
 
                 $this->tickets['time']['end_inactive'] = date('H:i:s',time());
@@ -4741,6 +4749,8 @@ class newApiFlight extends clientAuth
             $methodEndDateTime = DateTime::createFromFormat('U.u', number_format($methodEndTime, 6, '.', ''))
                 ->setTimezone(new DateTimeZone('Asia/Tehran'))
                 ->format('Y-m-d H:i:s.v');
+
+
 
             // ========== ذخیره لاگ زمان ==========
             $this->logFlightInternalTime(

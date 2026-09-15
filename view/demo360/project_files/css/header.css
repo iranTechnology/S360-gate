@@ -1,4 +1,4 @@
-﻿@font-face {
+﻿@font-face {:root
     font-family: "IRANYekanXVF";
     src: url("../../../assets/all-fonts/IRANYekanX(Pro)/IRANYekanXVF.woff") format("woff-variations"), url("../../../assets/all-fonts/IRANYekanX(Pro)/IRANYekanXVF.woff") format("woff");
     font-weight: 100 1000;
