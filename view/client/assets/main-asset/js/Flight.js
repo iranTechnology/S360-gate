@@ -1764,6 +1764,31 @@ function jumping(obj_type,type,DepartureCode){
         }, 300);
       }
     } else if(obj_type === "destination"){
+      if($("#departure_date_internal_exclusive_tour").length) {
+        var departureInput = $("#departure_date_internal_exclusive_tour")[0];
+        var lastValue = departureInput.value;
+
+        // استفاده از interval برای رصد تغییرات
+        var checkInterval = setInterval(function() {
+          if(departureInput.value !== lastValue && departureInput.value !== '') {
+            lastValue = departureInput.value;
+            clearInterval(checkInterval);
+
+            setTimeout(function() {
+              if($("#internal-arrival-date-exclusive-tour-js").length) {
+                $("#internal-arrival-date-exclusive-tour-js").trigger("click").focus();
+              }
+            }, 300);
+          }
+        }, 100);
+
+        // پاکسازی interval بعد از 10 ثانیه
+        setTimeout(function() {
+          clearInterval(checkInterval);
+        }, 10000);
+
+        $("#departure_date_internal_exclusive_tour").trigger("click").focus();
+      }
       if (window.innerWidth <= 576) {
         closeMobileDrawer();
       }
