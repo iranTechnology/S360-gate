@@ -30,7 +30,14 @@
                 {if $typeMember eq 'Counter'}
                     <span class="sup-menu-flex_span">{$objFunctions->CalculateCredit($objSession->getUserId())} </span>
                 {elseif $typeMember eq 'Ponline'}
-                    <span class="sup-menu-flex_span">{$objFunctions->getOnlineMemberCredit()|number_format}  {if $info_currency}{$info_currency['CurrencyTitleEn']}{else}##Rial##{/if} </span>
+                    <span class="sup-menu-flex_span">
+                {if $info_currency}
+                    {$objFunctions->getOnlineMemberCredit()|number_format:2:".":","}  {$info_currency['CurrencyTitleEn']}
+
+                {else}
+                    {$objFunctions->getOnlineMemberCredit()|number_format} ##Rial##
+                {/if}
+                        </span>
                 {/if}
 
             </div>
@@ -61,7 +68,13 @@
                 {if $typeMember eq 'Counter'}
                     <span class="sup-menu-flex_span">{$objFunctions->CalculateCredit($objSession->getUserId())} </span>
                 {elseif $typeMember eq 'Ponline'}
-                    <span class="sup-menu-flex_span">{$objFunctions->getOnlineMemberCredit()|number_format}  {if $info_currency}{$info_currency['CurrencyTitleEn']}{else}##Rial##{/if} </span>
+                    <span class="sup-menu-flex_span">
+                    {if $info_currency}
+                        {$objFunctions->getOnlineMemberCredit()|number_format:2:".":","}  {$info_currency['CurrencyTitleEn']}
+                    {else}
+                        {$objFunctions->getOnlineMemberCredit()|number_format} ##Rial##
+                    {/if}
+                        </span>
                 {/if}
 
                 {if $check_is_counter neq 1}

@@ -53,6 +53,8 @@ LEFT JOIN book_local_tb AS book
     ON book.request_number = cancel.RequestNumber
 LEFT JOIN book_hotel_local_tb AS hotel
     ON hotel.factor_number = cancel.FactorNumber
+LEFT JOIN book_cip_tb AS cip
+    ON cip.request_number = cancel.RequestNumber
 WHERE 1=1
 ";
 
@@ -314,6 +316,11 @@ WHERE 1=1
             $resultBook = $Model->load($sqlBook);
             $date = dateTimeSetting::jdate("Y-F-d", time(),'','','en');
         }
+        elseif ($Param['typeCancel']=='cip'){
+            $sqlBook = "SELECT  * FROM  book_cip_tb  WHERE request_number='{$RequestNumber}'";
+            $resultBook = $Model->load($sqlBook);
+            $date = dateTimeSetting::jdate("Y-F-d", time(),'','','en');
+        }
 
 
         if (!empty($result)) {
@@ -376,20 +383,33 @@ WHERE 1=1
                         $type='ویزا';
                     }elseif($result['TypeCancel']=='entertainment'){
                         $type='تفریحات';
-                    }else{
+                    }
+                    elseif($result['TypeCancel']=='cip'){
+                        $type='تشریفات فرودگاه';
+                    }
+                    else{
                         $type='قطار';
                     }
 
-                    $sms =
-                        "پشتیبان safar360 آژانس مشتری شما کنسلی دارد\n\n" .
-                        "کنسلی جدید - " . CLIENT_NAME . " - {$date} - {$type}\n" .
-                        "دلیل کنسلی: {$data['DescriptionClient']}\n" .
-                        "ایرلاین: {$resultBook['airline_name']}\n" .
-                        "مبدا: {$resultBook['origin_city']}\n" .
-                        "مقصد: {$resultBook['desti_city']}\n" .
-                        "ساعت: {$resultBook['time_flight']}\n" .
-                        "شماره پرواز: {$resultBook['flight_number']}\n" .
-                        "PNR: {$resultBook['pnr']}";
+                    if($result['TypeCancel']=='cip'){
+                        $sms =
+                            "پشتیبان safar360 آژانس مشتری شما کنسلی دارد\n\n" .
+                            "کنسلی جدید - " . CLIENT_NAME . " - {$date} - {$type}\n" .
+                            "دلیل کنسلی: {$data['DescriptionClient']}\n" .
+                            "PNR: {$resultBook['provider_ref']}";
+                    }else{
+                        $sms =
+                            "پشتیبان safar360 آژانس مشتری شما کنسلی دارد\n\n" .
+                            "کنسلی جدید - " . CLIENT_NAME . " - {$date} - {$type}\n" .
+                            "دلیل کنسلی: {$data['DescriptionClient']}\n" .
+                            "ایرلاین: {$resultBook['airline_name']}\n" .
+                            "مبدا: {$resultBook['origin_city']}\n" .
+                            "مقصد: {$resultBook['desti_city']}\n" .
+                            "ساعت: {$resultBook['time_flight']}\n" .
+                            "شماره پرواز: {$resultBook['flight_number']}\n" .
+                            "PNR: {$resultBook['pnr']}";
+                    }
+
 
                     $cellArray = array(
                         'abasi2' => '09057078341',

@@ -67,103 +67,104 @@
 
 {literal}
     <script type="text/javascript">
-       window.onload =
-          function () {
+        window.onload =
+            function () {
 
-             let  successPayment = '{/literal}{$successPayment}{literal}'
-             let  factorNumber = '{/literal}{$factorNumber}{literal}';
+                let  successPayment = '{/literal}{$successPayment}{literal}'
+                let  factorNumber = '{/literal}{$factorNumber}{literal}';
 
-             console.log('successPayment: ' , successPayment)
-             console.log('factorNumber: ' , factorNumber)
+                console.log('successPayment: ' , successPayment)
+                console.log('factorNumber: ' , factorNumber)
 
-             let time_delay = 70000 ;
-             // let time_delay = 1000 ;
-             showDown(event);
-             let request =
-                $.ajax({
-                   url: amadeusPath + 'ajax',
-                   type: 'POST',
-                   dataType: 'JSON',
-                   data: JSON.stringify({
-                      method: 'book',
-                      className: 'bookExclusiveTour',
-                      factorNumber:factorNumber,
-                      paymentType:'{/literal}{$infoReserve.paymentType}{literal}',
-                      trackingCode:'{/literal}{$infoReserve.trackingCode}{literal}',
-                      successPayment:'{/literal}{$infoReserve.successPayment}{literal}',
-                      paymentBank:'{/literal}{$infoReserve.paymentBank}{literal}',
-                   }),
-                   success: function (response) {
-                      console.log('response: ' , response)
-                      createSuccessSection();
-                   },
-                   error: function (error) {
-                      console.log('error: ' , error)
-                      if (typeof error.responseJSON.code === 'undefined' || typeof error.responseJSON.code === null) {
-                         createErrorSection(500);
-                      } else {
-                         createErrorSection(error.responseJSON.code);
-                      }
-                   }
-                });
+                let time_delay = 70000 ;
+                // let time_delay = 1000 ;
+                showDown(event);
+                let request =
+                    $.ajax({
+                        url: amadeusPath + 'ajax',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: JSON.stringify({
+                            method: 'book',
+                            className: 'bookExclusiveTour',
+                            factorNumber:factorNumber,
+                            paymentType:'{/literal}{$infoReserve.paymentType}{literal}',
+                            trackingCode:'{/literal}{$infoReserve.trackingCode}{literal}',
+                            successPayment:'{/literal}{$infoReserve.successPayment}{literal}',
+                            paymentBank:'{/literal}{$infoReserve.paymentBank}{literal}',
+                        }),
+                        success: function (response) {
+                            console.log('response: ' , response)
+                            createSuccessSection();
+                        },
+                        error: function (error) {
+                            console.log('error: ' , error)
+                            if (typeof error.responseJSON.code === 'undefined' || typeof error.responseJSON.code === null) {
+                                createErrorSection(500);
+                            } else {
+                                createErrorSection(error.responseJSON.code);
+                            }
+                        }
+                    });
 
-             setTimeout(function() {
-                request.abort(); // If you want to abort the xhr which are still executing after 2 minutes
+                setTimeout(function() {
+                    request.abort(); // If you want to abort the xhr which are still executing after 2 minutes
 
-             }, time_delay );
-             // Disable right mouse click Script
-             document.onmousedown="if (event.button==2) return false";
-             document.oncontextmenu=new Function("return false");
-             document.onkeydown = showDown();
-          }
+                }, time_delay );
+                // Disable right mouse click Script
+                document.onmousedown="if (event.button==2) return false";
+                document.oncontextmenu=new Function("return false");
+                document.onkeydown = showDown();
+            }
 
-       function showDown(evt) {
-          evt = (evt) ? evt : ((event) ? event : null);
-          if (evt) {
-             if (event.keyCode === 8) {
+        function showDown(evt) {
+            evt = (evt) ? evt : ((event) ? event : null);
+            if (evt) {
+                if (event.keyCode === 8) {
 // When backspace is pressed but not in form element
-                cancelKey(evt);
-             } else if (event.keyCode === 116) {
+                    cancelKey(evt);
+                } else if (event.keyCode === 116) {
 // When F5 is pressed
-                cancelKey(evt);
-             } else if (event.keyCode === 122) {
+                    cancelKey(evt);
+                } else if (event.keyCode === 122) {
 // When F11 is pressed
-                cancelKey(evt);
-             } else if (event.ctrlKey && (event.keyCode === 78 || event.keyCode === 82)) {
+                    cancelKey(evt);
+                } else if (event.ctrlKey && (event.keyCode === 78 || event.keyCode === 82)) {
 // When ctrl is pressed with R or N
-                cancelKey(evt);
-             } else if (event.altKey && event.keyCode === 37) {
+                    cancelKey(evt);
+                } else if (event.altKey && event.keyCode === 37) {
 // stop Alt left cursor
+                    return false;
+                }
+            }
+        }
+
+        function cancelKey(evt) {
+            if (evt.preventDefault) {
+                evt.preventDefault();
                 return false;
-             }
-          }
-       }
+            } else {
+                evt.keyCode = 0;
+                evt.returnValue = false;
+            }
+        }
 
-       function cancelKey(evt) {
-          if (evt.preventDefault) {
-             evt.preventDefault();
-             return false;
-          } else {
-             evt.keyCode = 0;
-             evt.returnValue = false;
-          }
-       }
+        function homePage() {
+            window.location.href = window.location.origin;
+        }
 
-       function homePage() {
-          window.location.href = window.location.origin;
-       }
-
-       function createSuccessSection(){
+        function createSuccessSection(){
 
 
-          let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
-          let element = $('.bank_box_row');
+            let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
+            let element = $('.bank_box_row');
 
-          let link_profile = `${amadeusPathByLang}Profile`;
-          let link_tracking = `${amadeusPathByLang}UserBook`;
+            let link_profile = `${amadeusPathByLang}Profile`;
+            let link_tracking = `${amadeusPathByLang}UserBook`;
+            let  factorNumber = '{/literal}{$factorNumber}{literal}';
+            let link_pdf = `${amadeusPathByLang}pdf&target=bookExclusiveTour&id=${factorNumber}`;
 
-
-          let statement_error_login = `
+            let statement_error_login = `
 <div class="error-flight-payment-box">
     <div class="problem-icon">
         <div class="icon-circle" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
@@ -175,20 +176,24 @@
         <p>${useXmltag('SuccessMessageRetrunBank')}</p>
     </div>
     <div class="action-buttons">
-        <a href="${link_profile}" class="btn-click btn-pdf btn-pdf-success" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+        <a href="${link_profile}" class="btn-click btn-pdf btn-pdf-success p-3" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
             <i class="fa-regular fa-user"></i>
             ${useXmltag('userAccount')}
         </a>
-        <a href="javascript:" class="btn-click btn-receipt" onclick="homePage()">
+        <a href="/" class="btn-click btn-receipt p-3">
             <i class="fa-regular fa-house"></i>
             ${useXmltag('OsafarHome')}
+        </a>
+ <a href="${link_pdf}" target="_blank" class="btn-click btn-success p-3" >
+            <i class="fa-regular fa-file-pdf"></i>
+            ${useXmltag('Printticket')}
         </a>
     </div>
 </div>
 `;
 
 
-          let statement_error_no_login = `
+            let statement_error_no_login = `
 
 <div class="error-flight-payment-box">
     <div class="problem-icon">
@@ -201,11 +206,11 @@
         <p>${useXmltag('SuccessMessageRetrunBank')}</p>
     </div>
     <div class="action-buttons">
-        <a href="${link_tracking}" class="btn-click btn-pdf">
+        <a href="${link_tracking}" class="btn-click btn-pdf p-3">
             <i class="fa-regular fa-user"></i>
             ${useXmltag('TrackOrder')}
         </a>
-        <a href="javascript:" class="btn-click btn-receipt" onclick="homePage()">
+        <a href="javascript:" class="btn-click btn-receipt p-3" onclick="homePage()">
             <i class="fa-regular fa-house"></i>
             ${useXmltag('OsafarHome')}
         </a>
@@ -214,27 +219,28 @@
 
 `;
 
-          let final_statement = (is_login) ? statement_error_login : statement_error_no_login ;
-          let section_div_error = `
+            let final_statement = (is_login) ? statement_error_login : statement_error_no_login ;
+            let section_div_error = `
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 d-flex justify-content-center" >
                           ${final_statement}
                 </div>
       `;
 
-          element.html(section_div_error);
+            element.html(section_div_error);
 
-       }
+        }
 
-       function createPendingSection(factor_number){
+        function createPendingSection(factor_number){
 
 
-          let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
-          let element = $('.bank_box_row');
+            let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
+            let element = $('.bank_box_row');
 
-          let link_profile = `${amadeusPathByLang}userBook`;
-          let link_tracking = `${amadeusPathByLang}UserTracking`;
+            let link_profile = `${amadeusPathByLang}userBook`;
+            let link_tracking = `${amadeusPathByLang}UserTracking`;
 
-          let statement_pending_login = `
+
+            let statement_pending_login = `
 
 
 <div class="error-flight-payment-box">
@@ -258,7 +264,7 @@
 `;
 
 
-          let statement_pending_no_login = `
+            let statement_pending_no_login = `
 <div class="error-flight-payment-box">
     <div class="problem-icon">
         <div class="icon-circle bg-warning">
@@ -279,8 +285,8 @@
 </div>
 `;
 
-          let final_statement = (is_login) ? statement_pending_login : statement_pending_no_login ;
-          let section_div_pending = `
+            let final_statement = (is_login) ? statement_pending_login : statement_pending_no_login ;
+            let section_div_pending = `
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 " >
                     <div class="main-bank-box">
                         <div class="mbb-preload mbb-preload-time">
@@ -293,47 +299,47 @@
                 </div>
       `;
 
-          element.html(section_div_pending);
+            element.html(section_div_pending);
 
 
-          $.ajax({
-             url: amadeusPath + 'ajax',
-             type: 'POST',
-             dataType: 'JSON',
-             data: JSON.stringify({
-                method: 'changeFlagToPending',
-                className: 'bookshow',
-                factor_number:factor_number,
-             }),
-             success: function (response) {
+            $.ajax({
+                url: amadeusPath + 'ajax',
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify({
+                    method: 'changeFlagToPending',
+                    className: 'bookshow',
+                    factor_number:factor_number,
+                }),
+                success: function (response) {
 
-             }
-          });
-
-
-       }
-
-       function createErrorSection(errorCode){
+                }
+            });
 
 
-          let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
-          let element = $('.bank_box_row');
+        }
 
-          let link_profile = `${amadeusPathByLang}Profile`;
-          let link_tracking = `${amadeusPathByLang}UserBook`;
+        function createErrorSection(errorCode){
 
-          let errorMessage;
-          if (errorCode == 500) {
-             errorMessage = useXmltag('unexpectedErrorFlight');
-          } else if(errorCode == 403) {
-             errorMessage = useXmltag('recurringBooking');
-          } else if (errorCode == 400) {
-             errorMessage = useXmltag('errorFlight');
-          } else {
-             errorMessage = useXmltag('unexpectedErrorFlight');
-          }
 
-          let statement_error_login = `
+            let  is_login = '{/literal}{$objSession->IsLogin()}{literal}';
+            let element = $('.bank_box_row');
+
+            let link_profile = `${amadeusPathByLang}Profile`;
+            let link_tracking = `${amadeusPathByLang}UserBook`;
+
+            let errorMessage;
+            if (errorCode == 500) {
+                errorMessage = useXmltag('unexpectedErrorFlight');
+            } else if(errorCode == 403) {
+                errorMessage = useXmltag('recurringBooking');
+            } else if (errorCode == 400) {
+                errorMessage = useXmltag('errorFlight');
+            } else {
+                errorMessage = useXmltag('unexpectedErrorFlight');
+            }
+
+            let statement_error_login = `
 
 
 <div class="error-flight-payment-box">
@@ -355,13 +361,14 @@
             <i class="fa-regular fa-house"></i>
             ${useXmltag('OsafarHome')}
         </a>
+
     </div>
 </div>
 
 `;
 
 
-          let statement_error_no_login = `
+            let statement_error_no_login = `
 
 <div class="error-flight-payment-box">
     <div class="problem-icon">
@@ -387,16 +394,16 @@
 
 `;
 
-          let final_statement = (is_login) ? statement_error_login : statement_error_no_login ;
-          let section_div_error = `
+            let final_statement = (is_login) ? statement_error_login : statement_error_no_login ;
+            let section_div_error = `
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40 d-flex justify-content-center" >
                           ${final_statement}
                 </div>
       `;
 
-          element.html(section_div_error);
+            element.html(section_div_error);
 
-       }
+        }
     </script>
 
     <style>

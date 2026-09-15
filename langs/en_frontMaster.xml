@@ -1172,7 +1172,7 @@
   <Possiblepurchasebabychildticketwithanadultticket>It is possible to purchase an infant or child ticket only with an adult ticket.</Possiblepurchasebabychildticketwithanadultticket>
   <Typeaircraftannouncedairlinechartererandanychangesareresponsibilityairline>The type of aircraft is as announced by the airline or charterer and any changes are the responsibility of the airline.</Typeaircraftannouncedairlinechartererandanychangesareresponsibilityairline>
   <Unavailable>Inactive</Unavailable>
-<Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>The airline is responsible for flight cancellation, delay or acceleration.</Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>
+  <Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>The airline is responsible for flight cancellation, delay or acceleration.</Theairlineisresponsibleforflightcancellationsdelaysoraccelerations>
   <Havingvalididentificationdocumentboardingaircraft>Carrying a valid ID is mandatory to board the plane.</Havingvalididentificationdocumentboardingaircraft>
   <Delayhurryflightnotificationmadeviamobilenumber>Notification of flight delays, accelerations, or cancellations is made via call or text message to the passenger's mobile number.</Delayhurryflightnotificationmadeviamobilenumber>
   <Theticketsissuedpassengersnon-transferablenon-non-renewablenames> </Theticketsissuedpassengersnon-transferablenon-non-renewablenames>
@@ -1618,7 +1618,7 @@
   <ErrorDiscountCode>Unfortunately, the discount code is not assigned to you</ErrorDiscountCode>
   <CompletePayment>To complete the process, please click on the Payment option</CompletePayment>
   <MessagePaymentByCreditUser>The amount of payment after credit is calculated @@creditPayment@@ Rials, please select a bank account to pay your account balance</MessagePaymentByCreditUser>
-  <ZeroCredit>Unfortunately, your credit is 0 Rials.</ZeroCredit>
+  <ZeroCredit>Unfortunately, your credit is 0 @@Currency@@.</ZeroCredit>
   <notEnoughCredit>Insufficient credit to pay the loan</notEnoughCredit>
   <AccessDenied>You do not have access to this section</AccessDenied>
   <AwardDiscountCode>Congratulations; you received our discount code @@CodeDiscount@@ from @@title@@</AwardDiscountCode>
@@ -1836,6 +1836,8 @@
   <OsafarContactsInformation>Contact Information</OsafarContactsInformation>
   <OsafarAllRightsReserved>All Rights Reserved by @@ CLIENT_NAME @@.</OsafarAllRightsReserved>
   <OsafarTravelAgencyDesign>Travel Agency Design</OsafarTravelAgencyDesign>
+  <GetTicketCounter>ticket counter</GetTicketCounter>
+  <PassengerTicket>ticket passenger</PassengerTicket>
   <Osafarirantech>Iran Technology</Osafarirantech>
   <OsafarProfile>User Information</OsafarProfile>
   <OsafarShowbuy>View Purchase</OsafarShowbuy>
@@ -2592,7 +2594,7 @@
 
 
 
-<!--Employment-->
+  <!--Employment-->
   <PleaseEnterNameLastName>Enter your first and last name</PleaseEnterNameLastName>
   <LongNameLastNameError>Your name is long</LongNameLastNameError>
   <PleaseEnterMarried>Specify marital status</PleaseEnterMarried>
@@ -3360,7 +3362,7 @@
   <PA_CO_LIST>Contact List</PA_CO_LIST>
   <PA_CO_LISTTITLE>In the list below, you can view all your contacts.</PA_CO_LISTTITLE>
   <PA_CO_RESULTTABLE>Show _MENU_ entries</PA_CO_RESULTTABLE>
-<PA_CO_RESULTTABLE2>Show</PA_CO_RESULTTABLE2>
+  <PA_CO_RESULTTABLE2>Show</PA_CO_RESULTTABLE2>
   <PA_CO_REQUESTDETAIL>Request Details</PA_CO_REQUESTDETAIL>
   <PA_CO_STATUSNOTSEEN> Not Reviewed</PA_CO_STATUSNOTSEEN>
   <PA_CO_STATUSSEEN>Viewed</PA_CO_STATUSSEEN>
@@ -3442,7 +3444,7 @@
   <PassengerSale>Sale to Passenger</PassengerSale>
   <PassengerOnline>Passenger Online</PassengerOnline>
   <SeatCount>Number of Seats</SeatCount>
-<ReceiveInfoError>Error receiving information</ReceiveInfoError>
+  <ReceiveInfoError>Error receiving information</ReceiveInfoError>
   <PhoneNumberBuyer>The mobile number you used to make the purchase.</PhoneNumberBuyer>
   <PaymentWithADiscountCode>Payment with a discount code</PaymentWithADiscountCode>
   <AsADiscountCodeHasBeenApplied>As a discount code has been applied and the invoice amount is settled, no further payment is required. To finalize the process, please select the "Pay with Discount Code" button.</AsADiscountCodeHasBeenApplied>

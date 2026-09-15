@@ -928,6 +928,10 @@ class ModalCreator extends clientAuth {
             $objbook = Load::controller($this->Controller);
             $ticketsInfo = functions::info_hotel_directions($Param);
         }
+        elseif ($type == 'cip') {
+            $objbook = Load::controller($this->Controller);
+            $ticketsInfo = functions::info_cip_directions($Param);
+        }
 
         $info_cancel_ticket = $ticketsInfo['info_detail_cancel'] ;
         unset($ticketsInfo['info_detail_cancel']);
@@ -962,6 +966,9 @@ class ModalCreator extends clientAuth {
                 }
                 elseif($type == 'insurance'){
                     $requestNumber = $view['order_code'];
+                }
+                elseif($type == 'cip'){
+                    $requestNumber = $view['request_number'];
                 }
                 else{
                     $requestNumber = $view['requestNumber'];
@@ -1158,13 +1165,22 @@ class ModalCreator extends clientAuth {
                                         </div>
                                     <?php } ?>
                                     <div class="grid-item">
-                                        <span class="label">مبدا / مقصد</span>
+
+                                        <span class="label">
+                                             <?php if($type == 'cip'){
+                                                 echo 'سرویس';
+                                             }else{
+                                                 echo 'مبدا / مقصد';
+                                             }?>
+                                        </span>
                                         <span class="value"><?php
                                             if($type == 'bus'){
                                                 echo $view['OriginName']. '/' . $view['DestinationName'];
                                             } else if($type == 'insurance'){
                                                 echo $view['destination'];
-                                            } else if($type == 'hotel'){
+                                            } else if($type == 'cip'){
+                                                echo $view['cip_name'];
+                                            }else if($type == 'hotel'){
                                                 echo $view['city_name'] . '/ هتل ' . $view['hotel_name'];
                                             } else {
                                                 if ($typeFlight) {
@@ -1175,11 +1191,20 @@ class ModalCreator extends clientAuth {
                                             }
                                             ?></span>
                                     </div>
-                                    <div class="grid-item">
-                                        <span class="label">تعداد</span>
-                                        <span class="value"><?php echo $view['CountTicket']; ?></span>
-                                    </div>
-                                    <?php if($type != 'hotel' && $type != 'insurance'){ ?>
+                                    <?php if($type == 'cip'){ ?>
+                                        <div class="grid-item">
+                                            <span class="label">نوع پرواز</span>
+                                            <span class="value">
+                                            <?php echo $view['flight_type'] == 'inbound' ? 'پرواز ورودی به فرودگاه' : 'پرواز خروجی از فرودگاه';  ?>
+                                            (<?php echo $view['trip_type'] == 'international' ? 'پرواز بین المللی' : 'پرواز داخلی';  ?>)
+                                        </span>
+                                        </div>
+                                    <?php }else{ ?>
+                                        <div class="grid-item">
+                                            <span class="label">تعداد</span>
+                                            <span class="value"><?php echo $view['CountTicket']; ?></span>
+                                        </div>
+                                    <?php } if($type != 'hotel' && $type != 'insurance' && $type != 'cip'){ ?>
                                         <div class="grid-item">
                                             <span class="label">ساعت و تاریخ حرکت</span>
                                             <span class="value" dir="ltr"><?php
@@ -1195,7 +1220,13 @@ class ModalCreator extends clientAuth {
                                                 ?></span>
                                         </div>
                                     <?php } ?>
-                                    <?php if ($typeFlight) { ?>
+
+                                    <?php if($type == 'cip'){ ?>
+                                        <div class="grid-item">
+                                            <span class="label">شماره رفرنس</span>
+                                            <span class="value"><?php echo $view['provider_ref'] ?></span>
+                                        </div>
+                                    <?php } if ($typeFlight) { ?>
                                         <div class="grid-item">
                                             <span class="label">نام ایرلاین / شناسه نرخی</span>
                                             <span class="value"><?php echo $view['airline_name'] . '/' . $view['cabin_type']; ?></span>
@@ -1262,6 +1293,9 @@ class ModalCreator extends clientAuth {
                                                 } else if ($type == 'hotel'){
                                                     $totalPrice = $view['total_price'];
                                                 }
+                                                else if ($type == 'cip'){
+                                                    $totalPrice = $view['total_price'];
+                                                }
                                                 $totalPriceWithDiscount = 0;
                                             }
                                             if ($totalPriceWithDiscount > 0) {
@@ -1276,7 +1310,10 @@ class ModalCreator extends clientAuth {
                                                 echo number_format($view['base_price']);
                                             } else if($type == 'hotel'){
                                                 echo number_format($view['total_price']);
-                                            } else if($type == 'train'){
+                                            } else if($type == 'cip'){
+                                                echo number_format($view['total_price']);
+                                            }
+                                            else if($type == 'train'){
                                                 $train = Load::controller('bookingTrain');
                                                 echo number_format($train->TotalPriceByFactorNumber($view['factor_number']));
                                             }
@@ -1323,42 +1360,34 @@ class ModalCreator extends clientAuth {
                                 <?php
                                 if($type == 'hotel'){
                                     $Tickets = $ticketsInfo;
+                                }else if($type == 'cip'){
+                                    $Tickets = $ticketsInfo;
                                 }
-                                foreach ($Tickets as $view) { ?>
-                                    <div class="passenger-item">
-                                        <div class="travel-card-grid">
-                                            <div class="grid-item">
-                                                <span class="label">نام فارسی</span>
-                                                <span class="value"><?php echo $view['passenger_name'] . ' ' . $view['passenger_family'] . '----'; ?></span>
-                                            </div>
-                                            <div class="grid-item">
-                                                <span class="label">تولد شمسی</span>
-                                                <span class="value" dir="ltr"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : '----' ?></span>
-                                            </div>
-                                            <div class="grid-item">
-                                                <span class="label">شماره پاسپورت</span>
-                                                <span class="value"><?php echo !empty($view['passportNumber']) ? $view['passportNumber'] : '----' ?></span>
-                                            </div>
-                                            <div class="grid-item">
-                                                <span class="label">شماره بلیط</span>
-                                                <span class="value"><?php echo !empty($view['eticket_number']) ? $view['eticket_number'] : '----' ?></span>
-                                            </div>
-                                            <div class="grid-item">
-                                                <span class="label">نام انگلیسی</span>
-                                                <span class="value"><?php echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en'] . ' (' . $view['passportCountry'] . ')'; ?></span>
-                                            </div>
-                                            <div class="grid-item">
-                                                <span class="label">تولد میلادی</span>
-                                                <span class="value" dir="ltr"><?php echo !empty($view['passenger_birthday_en']) ? $view['passenger_birthday_en'] : '----' ?></span>
-                                            </div>
-                                            <div class="grid-item">
-                                                <span class="label">انقضای پاسپورت</span>
-                                                <span class="value" dir="ltr"><?php echo !empty($view['passportExpire']) ? $view['passportExpire'] : '----' ?></span>
-                                            </div>
-                                            <?php if ($typeFlight) { ?>
+
+                                foreach ($Tickets as $view) {
+                                    if($type == 'cip'){ ?>
+                                        <div class="passenger-item">
+                                            <div class="travel-card-grid">
                                                 <div class="grid-item">
-                                                    <span class="label">هزینه بلیط</span>
-                                                    <span class="value">
+                                                    <span class="label">نام انگلیسی</span>
+                                                    <span class="value"><?php echo $view['passenger_name'] . ' ' . $view['passenger_family']; ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">شماره پاسپورت</span>
+                                                    <span class="value"><?php echo !empty($view['passportNumber']) ? $view['passportNumber'] : '----' ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">تولد میلادی</span>
+                                                    <span class="value" dir="ltr"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : '----' ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">انقضای پاسپورت</span>
+                                                    <span class="value" dir="ltr"><?php echo !empty($view['passportExpire']) ? $view['passportExpire'] : '----' ?></span>
+                                                </div>
+                                                <?php if ($typeFlight) { ?>
+                                                    <div class="grid-item">
+                                                        <span class="label">هزینه بلیط</span>
+                                                        <span class="value">
                                                     <?php
                                                     if ($view['percent_discount'] > 0) {
                                                         echo number_format(functions::CalculatePriceTicketOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes'));
@@ -1370,17 +1399,73 @@ class ModalCreator extends clientAuth {
                                                     }
                                                     ?> ریال
                                                 </span>
-                                                </div>
-                                            <?php } ?>
-                                            <div class="grid-item">
-                                                <span class="label">شماره ملی</span>
-                                                <span class="value"><?php echo $view['passenger_national_code'] != '0000000000' ? $view['passenger_national_code'] : '----' ?>
-                                                    <?php echo (!empty($array_national) && (in_array($view['passenger_national_code'],$array_national) || in_array($view['passportNumber'],$array_national))) ? ' <span class="cancel-badge">(کنسل شده)</span>' : '' ?>
+                                                    </div>
+                                                <?php } ?>
+                                                <div class="grid-item">
+                                                    <span class="label">شماره ملی</span>
+                                                    <span class="value"><?php echo $view['passenger_national_code'] != '0000000000' ? $view['passenger_national_code'] : '----' ?>
+                                                        <?php echo (!empty($array_national) && (in_array($view['passenger_national_code'],$array_national) || in_array($view['passportNumber'],$array_national))) ? ' <span class="cancel-badge">(کنسل شده)</span>' : '' ?>
                                             </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <?php } ?>
+                                    <?php } else {?>
+                                        <div class="passenger-item">
+                                            <div class="travel-card-grid">
+                                                <div class="grid-item">
+                                                    <span class="label">نام فارسی</span>
+                                                    <span class="value"><?php echo $view['passenger_name'] . ' ' . $view['passenger_family'] . '----'; ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">تولد شمسی</span>
+                                                    <span class="value" dir="ltr"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : '----' ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">شماره پاسپورت</span>
+                                                    <span class="value"><?php echo !empty($view['passportNumber']) ? $view['passportNumber'] : '----' ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">شماره بلیط</span>
+                                                    <span class="value"><?php echo !empty($view['eticket_number']) ? $view['eticket_number'] : '----' ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">نام انگلیسی</span>
+                                                    <span class="value"><?php echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en'] . ' (' . $view['passportCountry'] . ')'; ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">تولد میلادی</span>
+                                                    <span class="value" dir="ltr"><?php echo !empty($view['passenger_birthday_en']) ? $view['passenger_birthday_en'] : '----' ?></span>
+                                                </div>
+                                                <div class="grid-item">
+                                                    <span class="label">انقضای پاسپورت</span>
+                                                    <span class="value" dir="ltr"><?php echo !empty($view['passportExpire']) ? $view['passportExpire'] : '----' ?></span>
+                                                </div>
+                                                <?php if ($typeFlight) { ?>
+                                                    <div class="grid-item">
+                                                        <span class="label">هزینه بلیط</span>
+                                                        <span class="value">
+                                                    <?php
+                                                    if ($view['percent_discount'] > 0) {
+                                                        echo number_format(functions::CalculatePriceTicketOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes'));
+                                                    } else {
+                                                        echo number_format(functions::CalculatePriceTicketOnePerson($view['request_number'], $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code'], 'yes'));
+                                                    }
+                                                    if ($view['request_cancel'] == 'confirm') {
+                                                        echo ' <span class="cancel-badge">(کنسل شده)</span>';
+                                                    }
+                                                    ?> ریال
+                                                </span>
+                                                    </div>
+                                                <?php } ?>
+                                                <div class="grid-item">
+                                                    <span class="label">شماره ملی</span>
+                                                    <span class="value"><?php echo $view['passenger_national_code'] != '0000000000' ? $view['passenger_national_code'] : '----' ?>
+                                                        <?php echo (!empty($array_national) && (in_array($view['passenger_national_code'],$array_national) || in_array($view['passportNumber'],$array_national))) ? ' <span class="cancel-badge">(کنسل شده)</span>' : '' ?>
+                                            </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php }} ?>
                             </div>
                         <?php } ?>
 
@@ -3027,7 +3112,6 @@ class ModalCreator extends clientAuth {
         $user = Load::controller($this->Controller);
         $transportType=$_POST['transportType'];
         $InfoCancelTicket = $user->ShowInfoModalTicketCancel($Param, $id);
-
         if (empty($InfoCancelTicket)) {
             $InfoCancelTicket = array();
         }
@@ -3414,16 +3498,17 @@ class ModalCreator extends clientAuth {
                         </div>
 
                         <?php if ($infoMember['fk_counter_type_id'] != '5' && $InfoFlight['payment_type']=='credit'){?>
-                            <?php if($InfoFlight['currency_code'] == '0'){ ?>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <div class="checkbox checkbox-info">
-                                        <input id="isCreditPayment" name="isCreditPayment" type="checkbox">
-                                        <label for="isCreditPayment"> واریز وجه استرداد 	<small>(درصورتی که تمایل دارید بعد از استرداد وجه ،مستقیما به اعتبار همکار خریدار بلیط واریز شود این  گزینه  را تیک بزنید)</small></label>
+                            <?php if($InfoFlight['currency_code'] == '0' && SOFTWARE_LANG != 'fa'){ ?>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <div class="checkbox checkbox-info">
+                                            <input id="isCreditPayment" name="isCreditPayment" type="checkbox">
+                                            <label for="isCreditPayment"> واریز وجه استرداد 	<small>(درصورتی که تمایل دارید بعد از استرداد وجه ،مستقیما به اعتبار همکار خریدار بلیط واریز شود این  گزینه  را تیک بزنید)</small></label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <?php } ?>
+                            <?php }?>
                         <?php }?>
 
                     </div>
@@ -3755,7 +3840,6 @@ class ModalCreator extends clientAuth {
 
         // اطلاعات اصلی درخواست کنسلی (flight/bus/insurance ...)
         $InfoCancelTicket = $listCancel->ShowInfoModalTicketCancel_new($Param, $id, $ClientId);
-
         /* ===============================
          *  Percent / Refund Calculation
          * =============================== */
@@ -3870,6 +3954,62 @@ class ModalCreator extends clientAuth {
             }
         }
 
+
+        if ($transportType === 'cip') {
+
+            $user      = Load::controller('user');
+            $infoCip   = functions::InfoCip($Param);
+
+            // فقط برای api_id=10 محاسبه پنالتی داریم (مثل قبل)
+            if (!empty($infoCip['api_id']) && $infoCip['api_id'] == '10') {
+
+                $infoCancelCip = $user->InfoModalTicketCancel($Param, $transportType, $ClientId);
+                $apiCip        = Load::library('apiLocal');
+
+                $caseTitle = 2; // default مثل قبل
+                if (!empty($infoCancelCip) && isset($infoCancelCip[0]['ReasonMember'])) {
+                    switch ($infoCancelCip[0]['ReasonMember']) {
+                        case 'CancelByAirline': $caseTitle = 1; break;
+                        case 'PersonalReason':  $caseTitle = 2; break;
+                        case 'DelayTwoHours':   $caseTitle = 3; break;
+                    }
+                }
+
+                $dataCancel = [
+                    'FlightRefundType' => 1,
+                    'FlightReasonType' => $caseTitle,
+                    // نسخه جدید: array_column (مثل تو) ولی حتماً array باشد
+                    'passportNumber'   => !empty($infoCancelCip) ? array_values(array_filter(array_column($infoCancelCip, 'passportNumber'))) : []
+                ];
+
+                $viewCancel = $apiCip->getAmountPenaltyAltrabo($Param, $dataCancel);
+
+                // کلیدهای نسخه قدیمی MUST: responseSuccessfull, penaltyAmount, totalPayAmount, totalAmount
+                $responseOk = (!empty($viewCancel['response']['successful']));
+
+                $dataCancelView = [
+                    'responseSuccessfull' => $responseOk ? true : false,
+                    'penaltyAmount'       => '—',
+                    'totalPayAmount'      => 0,
+                    'totalAmount'         => 0,
+                ];
+
+                if ($responseOk && !empty($viewCancel['data'])) {
+                    $crcnType = !empty($viewCancel['data']['penaltyPassengers'][0]['crcnType'])
+                        ? $viewCancel['data']['penaltyPassengers'][0]['crcnType']
+                        : 'Value';
+
+                    $dataCancelView['totalAmount']    = !empty($viewCancel['data']['totalAmount']) ? $viewCancel['data']['totalAmount'] : 0;
+                    $dataCancelView['totalPayAmount'] = !empty($viewCancel['data']['totalPayAmount']) ? $viewCancel['data']['totalPayAmount'] : 0;
+
+                    $totalPenaltyAmount = !empty($viewCancel['data']['totalPenaltyAmount']) ? $viewCancel['data']['totalPenaltyAmount'] : 0;
+                    $dataCancelView['penaltyAmount']  = ($crcnType === 'Value')
+                        ? ($totalPenaltyAmount . ' ریال')
+                        : ($totalPenaltyAmount . ' درصد');
+                }
+            }
+        }
+
         if (empty($InfoCancelTicket)) {
             echo 'داده‌ای یافت نشد';
             return;
@@ -3931,81 +4071,96 @@ class ModalCreator extends clientAuth {
 
                 <div class="modal-body">
 
-                    <!-- BOX 1 : Flight Info -->
-                    <?php if ($transportType === 'flight'): ?>
-                        <div class="cancel-box">
-                            <div class="cancel-box__title">اطلاعات پرواز</div>
-                            <div class="cancel-grid">
-                                <div><strong>ایرلاین:</strong> <?php echo !empty($flight['airline_name']) ? $flight['airline_name'] : '—'; ?></div>
-                                <div><strong>شماره پرواز:</strong> <?php echo !empty($flight['flight_number']) ? $flight['flight_number'] : '—'; ?></div>
-                                <div><strong>مبدأ:</strong> <?php echo !empty($flight['origin_city']) ? $flight['origin_city'] : '—'; ?> (<?php echo !empty($flight['origin_airport_iata']) ? $flight['origin_airport_iata'] : '—'; ?>)</div>
-                                <div><strong>مقصد:</strong> <?php echo !empty($flight['desti_city']) ? $flight['desti_city'] : '—'; ?> (<?php echo !empty($flight['desti_airport_iata']) ? $flight['desti_airport_iata'] : '—'; ?>)</div>
-                                <div><strong>تاریخ رفت:</strong>
-                                    <?php
-                                    if (!empty($flight['date_flight'])) {
-                                        // تبدیل تاریخ میلادی به timestamp اگر رشته است
-                                        $timestamp = strtotime($flight['date_flight']);
-                                        if ($timestamp !== false) {
-                                            // تاریخ شمسی
-                                            $jdate = dateTimeSetting::jdate('Y/m/d', $timestamp);
-                                            // تاریخ میلادی اصلی
-                                            $gdate = date('Y/m/d', $timestamp);
-                                            echo $jdate . ' (' . $gdate . ')';
-                                        } else {
-                                            echo $flight['date_flight'];
-                                        }
-                                    } else {
-                                        echo '—';
-                                    }
-                                    ?>
-                                </div>
-                                <div><strong>تاریخ برگشت:</strong>
-                                    <?php
-                                    if (!empty($flight['date_flight_arrival'])) {
-                                        // تبدیل تاریخ میلادی به timestamp اگر رشته است
-                                        $timestamp = strtotime($flight['date_flight_arrival']);
-                                        if ($timestamp !== false) {
-                                            // تاریخ شمسی
-                                            $jdate = dateTimeSetting::jdate('Y/m/d', $timestamp);
-                                            // تاریخ میلادی اصلی
-                                            $gdate = date('Y/m/d', $timestamp);
-                                            echo $jdate . ' (' . $gdate . ')';
-                                        } else {
-                                            echo $flight['date_flight_arrival'];
-                                        }
-                                    } else {
-                                        echo '—';
-                                    }
-                                    ?>
-                                </div>
-                                <div><strong>پروایدر:</strong> <?php echo $DataFlightType; ?></div>
-                                <div dir="rtl"><strong>PNR:</strong> <?php echo $flight['pnr']; ?></div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-
-                    <!-- BOX 2 : Passengers -->
+                    <?php if ($transportType === 'cip'): ?>
                     <div class="cancel-box">
-                        <div class="cancel-box__title">لیست مسافران</div>
+                        <div class="cancel-box__title">اطلاعات تشریفات</div>
+                        <div class="cancel-grid">
+                            <div><strong>عنوان:</strong> <?php echo !empty($flight['cip_name']) ? $flight['cip_name'] : '—'; ?></div>
+                            <div><strong>فرودگاه:</strong> <?php echo !empty($flight['airport_code']) ? $flight['airport_code'] : '—'; ?></div>
+                        </div>
+                        <div class="cancel-grid">
+                            <div><strong>نوع پرواز:</strong> <?php echo $flight['flight_type']  == 'inbound' ? 'پرواز ورودی به فرودگاه' : 'پرواز خروجی از فرودگاه'; ?> (<?php echo $flight['trip_type'] == 'international' ? 'پرواز بین المللی' : 'پرواز داخلی'; ?>)</div>
+                            <div dir="rtl"><strong>رفرنس:</strong> <?php echo $flight['pnr']; ?></div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
 
-                        <div class="passenger-table">
-                            <div class="passenger-table__head">
-                                <span>نام مسافر</span>
-                                <span>کد ملی / پاسپورت</span>
-                                <span>تاریخ تولد</span>
-                                <span>نوع</span>
-                                <span>وضعیت</span>
-                            </div>
-
-                            <?php foreach ($InfoCancelTicket as $p): ?>
+                <!-- BOX 1 : Flight Info -->
+                <?php if ($transportType === 'flight'): ?>
+                    <div class="cancel-box">
+                        <div class="cancel-box__title">اطلاعات پرواز</div>
+                        <div class="cancel-grid">
+                            <div><strong>ایرلاین:</strong> <?php echo !empty($flight['airline_name']) ? $flight['airline_name'] : '—'; ?></div>
+                            <div><strong>شماره پرواز:</strong> <?php echo !empty($flight['flight_number']) ? $flight['flight_number'] : '—'; ?></div>
+                            <div><strong>مبدأ:</strong> <?php echo !empty($flight['origin_city']) ? $flight['origin_city'] : '—'; ?> (<?php echo !empty($flight['origin_airport_iata']) ? $flight['origin_airport_iata'] : '—'; ?>)</div>
+                            <div><strong>مقصد:</strong> <?php echo !empty($flight['desti_city']) ? $flight['desti_city'] : '—'; ?> (<?php echo !empty($flight['desti_airport_iata']) ? $flight['desti_airport_iata'] : '—'; ?>)</div>
+                            <div><strong>تاریخ رفت:</strong>
                                 <?php
-                                $isCanceledPassenger = !empty($p['cancel_national_code']);
-                                $status = $isCanceledPassenger ? (!empty($p['Status']) ? $p['Status'] : 'danger') : 'danger';
+                                if (!empty($flight['date_flight'])) {
+                                    // تبدیل تاریخ میلادی به timestamp اگر رشته است
+                                    $timestamp = strtotime($flight['date_flight']);
+                                    if ($timestamp !== false) {
+                                        // تاریخ شمسی
+                                        $jdate = dateTimeSetting::jdate('Y/m/d', $timestamp);
+                                        // تاریخ میلادی اصلی
+                                        $gdate = date('Y/m/d', $timestamp);
+                                        echo $jdate . ' (' . $gdate . ')';
+                                    } else {
+                                        echo $flight['date_flight'];
+                                    }
+                                } else {
+                                    echo '—';
+                                }
                                 ?>
-                                <div class="passenger-table__row <?php echo !$isCanceledPassenger ? 'passenger-table__row--danger' : ''; ?>">
-                                    <span><?php echo trim((!empty($p['passenger_name_en']) ? $p['passenger_name_en'] : '') . ' ' . (!empty($p['passenger_family_en']) ? $p['passenger_family_en'] : '')); ?></span>
+                            </div>
+                            <div><strong>تاریخ برگشت:</strong>
+                                <?php
+                                if (!empty($flight['date_flight_arrival'])) {
+                                    // تبدیل تاریخ میلادی به timestamp اگر رشته است
+                                    $timestamp = strtotime($flight['date_flight_arrival']);
+                                    if ($timestamp !== false) {
+                                        // تاریخ شمسی
+                                        $jdate = dateTimeSetting::jdate('Y/m/d', $timestamp);
+                                        // تاریخ میلادی اصلی
+                                        $gdate = date('Y/m/d', $timestamp);
+                                        echo $jdate . ' (' . $gdate . ')';
+                                    } else {
+                                        echo $flight['date_flight_arrival'];
+                                    }
+                                } else {
+                                    echo '—';
+                                }
+                                ?>
+                            </div>
+                            <div><strong>پروایدر:</strong> <?php echo $DataFlightType; ?></div>
+                            <div dir="rtl"><strong>PNR:</strong> <?php echo $flight['pnr']; ?></div>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
-                                    <span>
+                <!-- BOX 2 : Passengers -->
+                <div class="cancel-box">
+                    <div class="cancel-box__title">لیست مسافران</div>
+
+                    <div class="passenger-table">
+                        <div class="passenger-table__head">
+                            <span>نام مسافر</span>
+                            <span>کد ملی / پاسپورت</span>
+                            <span>تاریخ تولد</span>
+                            <span>نوع</span>
+                            <span>وضعیت</span>
+                        </div>
+
+                        <?php foreach ($InfoCancelTicket as $p): ?>
+                            <?php
+                            $isCanceledPassenger = !empty($p['cancel_national_code']);
+                            $status = $isCanceledPassenger ? (!empty($p['Status']) ? $p['Status'] : 'danger') : 'danger';
+                            ?>
+                            <div class="passenger-table__row <?php echo !$isCanceledPassenger ? 'passenger-table__row--danger' : ''; ?>">
+                                <span><?php echo trim((!empty($p['passenger_name_en']) ? $p['passenger_name_en'] : '') . ' ' . (!empty($p['passenger_family_en']) ? $p['passenger_family_en'] : '')); ?></span>
+
+                                <span>
                                     <?php
                                     echo !empty($p['passenger_national_code'])
                                         ? $p['passenger_national_code']
@@ -4013,7 +4168,7 @@ class ModalCreator extends clientAuth {
                                     ?>
                                 </span>
 
-                                    <span>
+                                <span>
                                     <?php
                                     if ($transportType !== 'insurance') {
                                         if (!empty($p['passenger_birthday'])) echo $p['passenger_birthday'];
@@ -4025,9 +4180,9 @@ class ModalCreator extends clientAuth {
                                     ?>
                                 </span>
 
-                                    <span><?php echo !empty($p['passenger_age']) ? $p['passenger_age'] : '—'; ?></span>
+                                <span><?php echo !empty($p['passenger_age']) ? $p['passenger_age'] : '—'; ?></span>
 
-                                    <span class="passenger-status passenger-status--<?php echo $status; ?>">
+                                <span class="passenger-status passenger-status--<?php echo $status; ?>">
                                     <?php
                                     if (!$isCanceledPassenger) {
                                         echo 'این مسافر کنسل نشده است';
@@ -4046,123 +4201,123 @@ class ModalCreator extends clientAuth {
                                     }
                                     ?>
                                 </span>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-
-                    <!-- BOX 3 : Refund Info -->
-                    <div class="cancel-box">
-                        <div class="cancel-box__title">جزئیات استرداد</div>
-                        <div class="cancel-grid">
-                            <div>
-                                <strong>تاریخ تایید / رد درخواست:</strong>
-                                <?php
-                                if (!empty($flight['DateSetCancelInt']) && $flight['DateSetCancelInt'] != '0' && !empty($flight['Status']) && $flight['Status'] == 'SetCancelClient') {
-                                    echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $flight['DateSetCancelInt']);
-                                } elseif (!empty($flight['DateConfirmCancelInt']) && $flight['DateConfirmCancelInt'] != '0' && !empty($flight['Status']) && $flight['Status'] == 'ConfirmCancel') {
-                                    echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $flight['DateConfirmCancelInt']);
-                                } else {
-                                    echo '—';
-                                }
-                                ?>
                             </div>
-
-                            <div><strong>درصد جریمه:</strong> <?php echo ($flight['PercentIndemnity'] !== '' && $flight['PercentIndemnity'] !== null) ? ($flight['PercentIndemnity'] . '%') : '—'; ?></div>
-                            <div><strong>مبلغ استرداد:</strong> <?php echo isset($flight['PriceIndemnity']) ? number_format($flight['PriceIndemnity']) . ' ریال' : '—'; ?></div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
+                </div>
 
-                    <!-- BOX 4 : تعیین درصد کنسلی (تمام دکمه‌ها حفظ شده، فقط در غیر RequestClient غیرفعال می‌شود) -->
-                    <div class="cancel-box">
-                        <div class="cancel-box__title">تعیین درصد کنسلی</div>
+                <!-- BOX 3 : Refund Info -->
+                <div class="cancel-box">
+                    <div class="cancel-box__title">جزئیات استرداد</div>
+                    <div class="cancel-grid">
+                        <div>
+                            <strong>تاریخ تایید / رد درخواست:</strong>
+                            <?php
+                            if (!empty($flight['DateSetCancelInt']) && $flight['DateSetCancelInt'] != '0' && !empty($flight['Status']) && $flight['Status'] == 'SetCancelClient') {
+                                echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $flight['DateSetCancelInt']);
+                            } elseif (!empty($flight['DateConfirmCancelInt']) && $flight['DateConfirmCancelInt'] != '0' && !empty($flight['Status']) && $flight['Status'] == 'ConfirmCancel') {
+                                echo dateTimeSetting::jdate('(H:i:s) Y-m-d', $flight['DateConfirmCancelInt']);
+                            } else {
+                                echo '—';
+                            }
+                            ?>
+                        </div>
 
-                        <?php if (!$canSetPercent): ?>
-                            <div class="alert alert-warning" style="margin-bottom: 12px;">
-                                در این وضعیت شما قادر به گذاشن درصد کنسلی از این بخش نمیباشید.
-                            </div>
-                        <?php endif; ?>
+                        <div><strong>درصد جریمه:</strong> <?php echo ($flight['PercentIndemnity'] !== '' && $flight['PercentIndemnity'] !== null) ? ($flight['PercentIndemnity'] . '%') : '—'; ?></div>
+                        <div><strong>مبلغ استرداد:</strong> <?php echo isset($flight['PriceIndemnity']) ? number_format($flight['PriceIndemnity']) . ' ریال' : '—'; ?></div>
+                    </div>
+                </div>
 
-                        <div class="cancel-grid">
+                <!-- BOX 4 : تعیین درصد کنسلی (تمام دکمه‌ها حفظ شده، فقط در غیر RequestClient غیرفعال می‌شود) -->
+                <div class="cancel-box">
+                    <div class="cancel-box__title">تعیین درصد کنسلی</div>
 
-                            <?php if ($transportType === 'bus'): ?>
+                    <?php if (!$canSetPercent): ?>
+                        <div class="alert alert-warning" style="margin-bottom: 12px;">
+                            در این وضعیت شما قادر به گذاشن درصد کنسلی از این بخش نمیباشید.
+                        </div>
+                    <?php endif; ?>
 
-                                <?php if (!empty($busRefund) && !empty($busRefund['refundable'])): ?>
-                                    <div><strong>کل پرداختی:</strong> <?php echo number_format($busRefund['totalPrice']); ?></div>
-                                    <div><strong>جریمه سیستم:</strong> <?php echo $busRefund['percentage']; ?></div>
-                                    <div><strong>مبلغ جریمه:</strong> <?php echo number_format($busRefund['PenaltyAmount']); ?></div>
-                                    <div><strong>قابل استرداد:</strong> <?php echo number_format($busRefund['RefundableAmount']); ?></div>
-                                <?php else: ?>
-                                    <div class="text-success">بدون جریمه</div>
-                                <?php endif; ?>
+                    <div class="cancel-grid">
 
-                            <?php elseif ($transportType === 'flight'): ?>
+                        <?php if ($transportType === 'bus'): ?>
 
-                                <?php if (!empty($dataCancelView) && !empty($dataCancelView['responseSuccessfull'])): ?>
-                                    <div><strong>کل پرداختی:</strong> <?php echo number_format($dataCancelView['totalAmount']); ?></div>
-                                    <div><strong>جریمه سیستم:</strong> <?php echo $dataCancelView['penaltyAmount']; ?></div>
-                                    <div><strong>قابل استرداد:</strong> <?php echo number_format($dataCancelView['totalPayAmount']); ?></div>
-
-                                    <!-- دکمه کنسل کردن (دقیقاً مثل نسخه قدیمی) -->
-                                    <div class="cancel-action">
-                                        <button
-                                                type="button"
-                                                class="btn-cancel-action"
-                                                onclick="cancelAltrabo('<?php echo $Param; ?>','<?php echo $transportType; ?>','<?php echo $ClientId; ?>')">
-                                            کنسل کردن
-                                        </button>
-                                    </div>
-                                <?php else: ?>
-                                    <div class="text-warning">از بخش فنی استعلام گرفته شود</div>
-                                <?php endif; ?>
-
+                            <?php if (!empty($busRefund) && !empty($busRefund['refundable'])): ?>
+                                <div><strong>کل پرداختی:</strong> <?php echo number_format($busRefund['totalPrice']); ?></div>
+                                <div><strong>جریمه سیستم:</strong> <?php echo $busRefund['percentage']; ?></div>
+                                <div><strong>مبلغ جریمه:</strong> <?php echo number_format($busRefund['PenaltyAmount']); ?></div>
+                                <div><strong>قابل استرداد:</strong> <?php echo number_format($busRefund['RefundableAmount']); ?></div>
+                            <?php else: ?>
+                                <div class="text-success">بدون جریمه</div>
                             <?php endif; ?>
 
-                        </div>
+                        <?php elseif ($transportType === 'flight'): ?>
 
-                        <!-- فرم درصد و توضیحات + دکمه ارسال (حفظ کامل، فقط در غیر RequestClient disable) -->
-                        <div class="form-group mt-3">
-                            <label class="PercentLabel">
-                                تعیین درصد
-                                <small>(شما میتوانید درصد جریمه مربوط را در اینجا وارد نمائید)</small>
-                            </label>
+                            <?php if (!empty($dataCancelView) && !empty($dataCancelView['responseSuccessfull'])): ?>
+                                <div><strong>کل پرداختی:</strong> <?php echo number_format($dataCancelView['totalAmount']); ?></div>
+                                <div><strong>جریمه سیستم:</strong> <?php echo $dataCancelView['penaltyAmount']; ?></div>
+                                <div><strong>قابل استرداد:</strong> <?php echo number_format($dataCancelView['totalPayAmount']); ?></div>
 
-                            <!-- مثل نسخه قدیمی: input + % از fare -->
-                            <div style="display:flex; gap:10px; align-items:center;">
-                                <input
-                                        class="form-control LimitInput"
-                                        id="PercentIndemnity"
-                                        placeholder="درصد"
-                                    <?php echo $canSetPercent ? '' : 'disabled'; ?>
-                                >
-                                <span>% از fare</span>
-                            </div>
-                        </div>
+                                <!-- دکمه کنسل کردن (دقیقاً مثل نسخه قدیمی) -->
+                                <div class="cancel-action">
+                                    <button
+                                            type="button"
+                                            class="btn-cancel-action"
+                                            onclick="cancelAltrabo('<?php echo $Param; ?>','<?php echo $transportType; ?>','<?php echo $ClientId; ?>')">
+                                        کنسل کردن
+                                    </button>
+                                </div>
+                            <?php else: ?>
+                                <div class="text-warning">از بخش فنی استعلام گرفته شود</div>
+                            <?php endif; ?>
 
-                        <div class="form-group">
-                            <label>توضیحات</label>
-                            <textarea
-                                    class="form-control"
-                                    id="DescriptionAdmin"
-                                    placeholder="توضیحات"
-                            <?php echo $canSetPercent ? '' : 'disabled'; ?>
-                        ></textarea>
-                        </div>
+                        <?php endif; ?>
 
-                        <div class="cancel-action">
-                            <button
-                                    type="button"
-                                    class="btn-submit-action"
-                                    onclick="SendPercentForAgency('<?php echo $Param; ?>','<?php echo $id; ?>','<?php echo $ClientId; ?>')"
+                    </div>
+
+                    <!-- فرم درصد و توضیحات + دکمه ارسال (حفظ کامل، فقط در غیر RequestClient disable) -->
+                    <div class="form-group mt-3">
+                        <label class="PercentLabel">
+                            تعیین درصد
+                            <small>(شما میتوانید درصد جریمه مربوط را در اینجا وارد نمائید)</small>
+                        </label>
+
+                        <!-- مثل نسخه قدیمی: input + % از fare -->
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input
+                                    class="form-control LimitInput"
+                                    id="PercentIndemnity"
+                                    placeholder="درصد"
                                 <?php echo $canSetPercent ? '' : 'disabled'; ?>
                             >
-                                ارسال اطلاعات
-                            </button>
+                            <span>% از fare</span>
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label>توضیحات</label>
+                        <textarea
+                                class="form-control"
+                                id="DescriptionAdmin"
+                                placeholder="توضیحات"
+                            <?php echo $canSetPercent ? '' : 'disabled'; ?>
+                        ></textarea>
+                    </div>
+
+                    <div class="cancel-action">
+                        <button
+                                type="button"
+                                class="btn-submit-action"
+                                onclick="SendPercentForAgency('<?php echo $Param; ?>','<?php echo $id; ?>','<?php echo $ClientId; ?>')"
+                            <?php echo $canSetPercent ? '' : 'disabled'; ?>
+                        >
+                            ارسال اطلاعات
+                        </button>
+                    </div>
                 </div>
+
             </div>
+        </div>
         </div>
 
         <style>
@@ -6943,7 +7098,6 @@ class ModalCreator extends clientAuth {
         $objbook = Load::controller($this->Controller);
         $objDiscountCode = Load::controller('discountCodes');
         $books = $objbook->bookRecords($Param);
-        functions::insertLog('$books: ' . json_encode($Param) , '000shojaee');
 
         ?>
 

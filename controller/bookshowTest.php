@@ -10721,7 +10721,42 @@ class bookshowTest extends clientAuth {
                 "request_time" =>$time,
             ];
         }
+        // =============================================
+        // 3. دریافت اطلاعات بیمه (Exclusivetour) - بدون شرط وضعیت
+        // =============================================
 
+        if ( ! empty( $param['member_id'] ) ) {
+            $intendedUser = [
+                "member_id" => $param['member_id'],
+                "agency_id" => @$param['agency_id']
+            ];
+            $BookExclusiveTour = $this->listBookExclusiveTourLocal(null, $intendedUser);
+        } else {
+            $BookExclusiveTour = $this->listBookExclusiveTourLocal();
+        }
+
+        foreach ( $BookExclusiveTour as $exclusiveTour ) {
+            // حذف شرط - همه بیمه‌ها را می‌آورد
+            $passengerName = trim(($exclusiveTour['passenger_name'] ?? '') . ' ' . ($exclusiveTour['passenger_family'] ?? ''));
+            if (empty($passengerName)) {
+                $passengerName = $exclusiveTour['member_name'] ?? functions::Xmlinformation("Unknown");
+            }
+
+            $agencyName = $exclusiveTour['NameAgency'] ?? $exclusiveTour['agency_name'] ?? functions::Xmlinformation("Unknown");
+            $statusText = $this->getExclusiveTourStatusText($exclusiveTour);
+
+
+            $AllBookings[] = [
+                "id" => $CountRow++,
+                "service_type" => functions::Xmlinformation("ExclusiveTour"),
+                "request_number" => $exclusiveTour['request_number'],
+                "factor_number" => $exclusiveTour['factor_number'],
+                "passenger_name" => $passengerName,
+                "agency_name" => $agencyName,
+                "status" => $statusText,
+                "request_time" =>dateTimeSetting::jdate('H:i:s', $exclusiveTour['creation_date_int'] ?? time()),
+            ];
+        }
         // =============================================
         // 4. دریافت اطلاعات اتوبوس (Bus) - بدون شرط وضعیت
         // =============================================
@@ -10788,6 +10823,24 @@ class bookshowTest extends clientAuth {
     /**
      * دریافت متن وضعیت پرواز (تمام حالت‌ها)
      */
+    private function getExclusiveTourStatusText($exclusiveTour) {
+        $status = $exclusiveTour['successfull'] ?? 'نامشخص';
+
+        $statusMap = [
+            'book' =>functions::Xmlinformation("Definitivereservation"),
+            'prereserve' => functions::Xmlinformation("Prereservation"),
+            'bank' =>  functions::Xmlinformation("NavigateToPort"),
+            'credit' => functions::Xmlinformation("CreditSelection"),
+            'nothing' =>functions::Xmlinformation("NoStatus"),
+            'pending' =>functions::Xmlinformation("pendingPrintFlight"),
+            'error' =>functions::Xmlinformation("providerError"),
+            'lock' =>functions::Xmlinformation("Prereservation"),
+            '' => functions::Xmlinformation("Unknown")
+        ];
+
+        return $statusMap[$status] ?? $status;
+    }
+
     private function getFlightStatusText($flightBook,$error) {
         $status = $flightBook['successfull'] ?? functions::Xmlinformation("Unknown");
 

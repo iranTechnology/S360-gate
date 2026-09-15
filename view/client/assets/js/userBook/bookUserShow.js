@@ -144,6 +144,7 @@ function bookUserHistoryFilter(target) {
                                        <img src="${amadeusPath}view/client/assets/images/service/${i?.service ?? 'default'}.svg" alt="${i?.service ?? ''}">
                                        ${i?.title ?? ''}
                                        <span>${i?.passenger_name ?? ''}</span>
+                                 
                                    </h2>
                                    <span class="mr-auto ml-2">${i?.time ?? ''} - ${i?.date ?? ''}</span>
                                    <span class="${i?.status?.title ?? ''}">${i?.status?.value ?? ''}</span>

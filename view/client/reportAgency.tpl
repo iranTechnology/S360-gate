@@ -1,8 +1,19 @@
 {load_presentation_object filename="agency" assign="objAgency"}
 {load_presentation_object filename="services" assign="objServices"}
+{load_presentation_object filename="members" assign="objCounter"}
 
 {assign var='checkAccessService' value=$objAgency->checkAccessSubAgency()}
 {assign var="allServices" value=$objServices->getAllGroups()}
+
+{assign var="isSubAgencyInfo" value=$objAgency->subAgencyInfo()}
+{assign var="infoClient" value=functions::getClientInfo($smarty.const.CLIENT_ID)}
+{assign var="Currency" value=Session::getCurrency()}
+{if $check_is_counter && $isSubAgencyInfo}
+    {assign var="currencyCode" value=$Currency}
+{else}
+    {assign var="currencyCode" value=$infoClient['base_currency_code']}
+{/if}
+{assign var="info_currency" value=$objCounter->showInfoCurrency($currencyCode)}
 
 {if $objSession->IsLogin() && $smarty.session.typeUser eq 'agency' && $smarty.session.AgencyId gt 0}
     {include file="`$smarty.const.FRONT_CURRENT_CLIENT`agencyMenu.tpl"}
@@ -74,7 +85,7 @@
 
                                 <div class="UserBuy-tab-link current parent-box-services"
                                      data-tab="tab-{$mainServiceLower}"
-                                        {if !$hasAccess}style="opacity: 0.6;" {/if}
+                                     {if !$hasAccess}style="opacity: 0.6;" {/if}
                                 >
 
                                     <input id="radio-{$mainServiceLower}" class="radio-custom"
@@ -111,13 +122,19 @@
 
         </div>
     </div>
+    <script>
+        var currencyTitle = "{$info_currency['CurrencyTitleEn']}";
+    </script>
 {literal}
     <script src="assets/js/userBook/bookUserShow.js"></script>
     <script>
+
         $(document).ready(function () {
             getCategoryData('#historyBuyAgency');
         });
-
+        function priceTitle() {
+            return "قیمت (" + currencyTitle + ")";
+        }
         function refreshData(targetTable) {
             targetTable.DataTable().clear().destroy();
             targetTable.children('tr').remove();
@@ -268,7 +285,7 @@
                     "title": "شمارهpnr/شماره بلیط",
                     "data": "pnrAndETicketNumber"
                 }, {
-                    "title": "قیمت",
+                    "title":priceTitle(),
                     "data": "price"
                 }, {
                     "title": "دریافت بلیط",
@@ -297,7 +314,7 @@
                     "title": "شماره واچر",
                     "data": "voucherNumber"
                 }, {
-                    "title": "قیمت",
+                    "title": priceTitle(),
                     "data": "price"
                 }, {
                     "title": "دریافت بلیط",
@@ -328,7 +345,7 @@
                     "title": "نام بیمه",
                     "data": "SourceName"
                 }, {
-                    "title": "قیمت",
+                    "title": priceTitle(),
                     "data": "price"
                 }, {
                     "title": "جزییات",
@@ -359,7 +376,7 @@
                     "title": "شماره فاکتور",
                     "data": "factorNumber"
                 }, {
-                    "title": "قیمت",
+                    "title": priceTitle(),
                     "data": "price"
                 }, {
                     "title": "دریافت بلیط",
@@ -422,9 +439,9 @@
                     "title": "قیمت پرداختی",
                     "data": "pricePayment"
                 }, {
-                  "title": "جزییات",
-                  "data": "linkPdfTicket"
-               }
+                    "title": "جزییات",
+                    "data": "linkPdfTicket"
+                }
             ];
         }
 
@@ -449,7 +466,7 @@
                     "title": "شماره فاکتور",
                     "data": "factorNumber"
                 }, {
-                    "title": "قیمت",
+                    "title": priceTitle(),
                     "data": "price"
                 }, {
                     "title": "دریافت بلیط",
@@ -477,7 +494,7 @@
                     "title": "شماره بلیط/شماره سریال",
                     "data": "ticketNumberAndSecurityNumber"
                 }, {
-                    "title": "قیمت",
+                    "title": priceTitle(),
                     "data": "price"
                 }, {
                     "title": "دریافت بلیط",
