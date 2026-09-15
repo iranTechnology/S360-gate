@@ -362,11 +362,13 @@ class specialPages extends positions
 
         $result = [];
         foreach ($data as $key => $item) {
+            if ($item['file'] != $main_file_src) {
                 $result[] = [
                     'src' => SERVER_HTTP . CLIENT_DOMAIN . '/gds/pic/special_pages/' . $item['file'],
                     'alt' => $item['alt'] ?: 'gallery image ' . $key,
                     'id' => $item['id'],
                 ];
+            }
         }
         return $result;
     }

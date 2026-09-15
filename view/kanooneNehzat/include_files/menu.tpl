@@ -41,6 +41,9 @@
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/rules">قوانین و مقررات</a></li>
                                 </ul>
                             </li>
+                            <li class="d-block d-lg-none">
+                                <a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">پیگیری</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

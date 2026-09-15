@@ -608,7 +608,7 @@ class searchHotel extends ApiHotelCore {
 
         (
             SELECT
-                MAX(HHR.discount)
+                MAX(CAST(HHR.discount AS UNSIGNED))
             FROM
                 reservation_hotel_tb HH
                 INNER JOIN reservation_hotel_room_prices_tb HHR
@@ -618,7 +618,6 @@ class searchHotel extends ApiHotelCore {
                 AND HH.city = '{$idCity}'
                 AND HH.id = '{$idHotel}'
                 AND HHR.date = HR.date
-                AND HHR.flat_type = 'DBL'
                 AND HHR.is_del = 'no'
                 AND HHR.online_price > 0
         ) AS maxDiscount

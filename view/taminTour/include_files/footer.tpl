@@ -118,8 +118,8 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">
-تماس با ما
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/pay">
+پرداخت آنلاین
                                             </a>
                                         </li>
                                     </ul>

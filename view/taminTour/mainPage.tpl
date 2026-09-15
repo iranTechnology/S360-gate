@@ -9,7 +9,6 @@
     {include file="include_files/fast_flight_search-1.tpl"}
     {include file="include_files/hotels-webservice2.tpl"}
     {include file="include_files/tours.tpl"}
-    {include file="include_files/installment_calculator.tpl"}
 </main>
 {include file="include_files/footer.tpl"}
 </body>

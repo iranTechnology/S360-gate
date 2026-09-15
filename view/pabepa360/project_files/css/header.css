@@ -1903,7 +1903,7 @@ footer h6{
 
 .parent-li-tour-menu {
     display: grid;
-    grid-template-columns:repeat(5, 1fr);
+    grid-template-columns:repeat(7, 1fr);
     grid-column-gap: 20px;
     padding: 0 20px;
 }
@@ -2117,6 +2117,9 @@ footer h6{
         'item1Footer item2Footer item3Footer item4Footer'
         'item5Footer item5Footer item5Footer item5Footer';
         grid-template-columns: repeat(4, 1fr);
+    }
+    .parent-li-tour-menu {
+        grid-template-columns:repeat(6, 1fr) !important;
     }
 }
 @media (max-width: 1100px){
