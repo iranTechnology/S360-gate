@@ -7,8 +7,13 @@
 
 {$objCounter->showedit($smarty.get.id)}  {*گرفتن مشخصات کاربر*}
 
-{assign var="info_currency" value=$objCounter->showInfoCurrency($objCounter->list['type_currency'])}
+{assign var="infoClient" value=functions::getClientInfo($smarty.const.CLIENT_ID)}
 
+{if $infoClient['base_currency_code'] neq null}
+    {assign var="info_currency" value=$objCounter->showInfoCurrency($infoClient['base_currency_code'])}
+{else}
+    {assign var="info_currency" value=$objCounter->showInfoCurrency($objCounter->list['type_currency'])}
+{/if}
 
 <div class="container-fluid">
     <div class="row bg-title">
@@ -33,8 +38,8 @@
             <div class="white-box">
                 <h3 class="box-title m-b-0">افزودن(کسر) اعتبار</h3>
                 <p class="text-muted m-b-30"> شما با استفاده از فرم زیر میتوانید اعتبار خود  را در سیستم کسر یا افزایش  دهید
-                        <br/>
-                        توجه داشته باشید نوع ارز   <span style="color:red;"> {$info_currency['CurrencyTitle']} </span> در سیستم تعریف شده و تمامی پردازش ها بر روی تراکنش های کاربر بر اساس این ارز میباشد
+                    <br/>
+                    توجه داشته باشید نوع ارز   <span style="color:red;"> {$info_currency['CurrencyTitle']} </span> در سیستم تعریف شده و تمامی پردازش ها بر روی تراکنش های کاربر بر اساس این ارز میباشد
 
                 </p>
 
@@ -76,7 +81,7 @@
 
                     <div class="form-group col-sm-12">
                         <label for="comment" class="control-label">توضیحات </label>
-                   <textarea class="form-control" id="comment" name="comment"></textarea>
+                        <textarea class="form-control" id="comment" name="comment"></textarea>
 
                     </div>
 

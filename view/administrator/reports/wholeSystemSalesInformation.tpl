@@ -1,5 +1,10 @@
 {load_presentation_object filename="wholeSystemSalesInformation" assign="objSales"}
 {assign var="salesInformation" value=$objSales->ShowTotalSales()}
+<style>
+    .white-box{
+        margin-bottom: 10px !important;
+    }
+</style>
 {if $salesInformation.total_sales_ticket > 0}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -19,7 +24,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pr-0">
             <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش بلیط هواپیما
@@ -60,7 +65,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pr-0">
             <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش هتل
@@ -117,7 +122,7 @@
         </div>
     </div>
 {/if}
-{if $salesInformation.total_sales_bus > 0 }
+{if $salesInformation.total_sales_bus > 0}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border border-ccc">
@@ -174,7 +179,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pr-0">
             <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">
                     <i class="ti-money text-purple me-2 FontSize26 align-middle"></i> فروش بیمه
@@ -309,19 +314,19 @@
 {/if}
 {if $salesInformation.total_sales_gasht > 0 && ($smarty.const.LANG_PANEL_ADMIN neq 'ar' && $smarty.const.LANG_PANEL_ADMIN neq 'en')}
     <div class="row">
-    <div class="col-lg-6  col-md-6 col-sm-6 col-xs-12">
-        <div class="white-box border border-ccc">
-            <h3 class="box-title"> تعداد فروش/مسافر در گشت </h3>
-            <ul class="list-inline two-part">
-                <li class="hidden-xs hidden-sm"><i class="fa fa-map-signs text-info"></i></li>
-                <li class="text-start text-nowrap flex-grow-1">
-                    <span class=" yn FontSize26">{$salesInformation.total_sales_gasht}</span>
-                    <span class=" yn FontSize26"> / </span>
-                    <span class=" yn FontSize26">{$salesInformation.total_passengers_gasht}</span>
-                </li>
-            </ul>
+        <div class="col-lg-6  col-md-6 col-sm-6 col-xs-12">
+            <div class="white-box border border-ccc">
+                <h3 class="box-title"> تعداد فروش/مسافر در گشت </h3>
+                <ul class="list-inline two-part">
+                    <li class="hidden-xs hidden-sm"><i class="fa fa-map-signs text-info"></i></li>
+                    <li class="text-start text-nowrap flex-grow-1">
+                        <span class=" yn FontSize26">{$salesInformation.total_sales_gasht}</span>
+                        <span class=" yn FontSize26"> / </span>
+                        <span class=" yn FontSize26">{$salesInformation.total_passengers_gasht}</span>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="white-box border border-ccc">
                 <h3 class="box-title FontSize26">

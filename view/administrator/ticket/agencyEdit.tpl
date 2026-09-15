@@ -283,6 +283,16 @@
                             </select>
                         </div>
 
+                        <div class="form-group col-sm-3 ">
+                            <label for="currency_title" class="control-label">نوع ارز</label>
+                            <select name="currency_title" id="currency_title" required aria-required="true" disabled
+                                    class="form-control">
+                                <option selected="selected">
+                                    {$objAgency->edit['type_currency']['CurrencyTitle']}
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="form-group col-sm-3  {if $objAgency->edit['hasSite'] eq '0'} hidden {/if}">
                             <label for="is" class="control-label">همکار داری وایت لیبل</label>
                             <select name="hasSite" id="hasSite" required aria-required="true"

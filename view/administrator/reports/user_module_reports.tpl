@@ -5,17 +5,17 @@
         background: #ffff;
         border-radius: 16px;
         border: solid 1px #ccc;
-        padding: 30px;
+        padding: 10px 15px;
         font-family: inherit;
         direction: rtl;
-        margin-top: 5px;
-        margin-bottom: 21px;
+        margin-top: 5px !important;
+        margin-bottom: 10px;
         /*box-shadow: 0 10px 30px rgba(0,0,0,0.05);*/
     }
 
     /* آکاردئون */
     .accordion-header {
-        padding: 18px 24px;
+        padding: 12px 24px;
         background: #ffffff;
         cursor: pointer;
         display: flex;
@@ -23,7 +23,7 @@
         align-items: center;
         border-radius: 14px;
         font-weight: 700;
-        font-size: 20px;
+        font-size: 18px;
         color: #111827;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         transition: background 0.3s, transform 0.2s;
@@ -295,7 +295,8 @@
 
 </style>
 
-<div class="report-accordion">
+<div class="report-accordion" style="margin-top:10px !important;">
+
     <div class="accordion-header" onclick="toggleAccordion(this)">
         <i class="fa-solid fa-trophy header-trophy-icon"></i>
         <div class="header-text">
@@ -310,7 +311,7 @@
 
 
     <div class="report-grid-container" style="overflow: hidden; max-height: 0; transition: max-height 0.5s ease;">
-    <div class="filter-container" id="filterButtons">
+        <div class="filter-container" id="filterButtons">
             <button onclick="filterModules('all', this)" class="active">همه</button>
             <button onclick="filterModules('purchased', this)">خریداری شده</button>
             <button onclick="filterModules('notPurchased', this)">خریداری نشده</button>
@@ -345,44 +346,44 @@
 </div>
 
 <script>
-   function toggleAccordion(el) {
-      const container = el.nextElementSibling;
-      const icon = el.querySelector(".accordion-icon i");
+    function toggleAccordion(el) {
+        const container = el.nextElementSibling;
+        const icon = el.querySelector(".accordion-icon i");
 
-      if(container.style.maxHeight && container.style.maxHeight !== "0px") {
-         container.style.maxHeight = "0";
-         icon.style.transform = "rotate(0deg)"; // فلش به پایین
-      } else {
-         container.style.maxHeight = container.scrollHeight + "px";
-         icon.style.transform = "rotate(180deg)"; // فلش به بالا
-      }
-   }
-
-
-
-   function toggleModuleDesc(el) {
-      const desc = el.parentElement.nextElementSibling;
-      const icon = el.querySelector(".icon");
-
-      if(desc.style.maxHeight && desc.style.maxHeight !== "0px") {
-         desc.style.maxHeight = "0";
-         icon.style.transform = "rotate(0deg)"; // فلش به پایین
-      } else {
-         desc.style.maxHeight = desc.scrollHeight + "px";
-         icon.style.transform = "rotate(180deg)"; // فلش به بالا
-      }
-   }
+        if(container.style.maxHeight && container.style.maxHeight !== "0px") {
+            container.style.maxHeight = "0";
+            icon.style.transform = "rotate(0deg)"; // فلش به پایین
+        } else {
+            container.style.maxHeight = container.scrollHeight + "px";
+            icon.style.transform = "rotate(180deg)"; // فلش به بالا
+        }
+    }
 
 
-   function filterModules(value, btn) {
-      document.querySelectorAll('#filterButtons button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
 
-      document.querySelectorAll('.module-card').forEach(card => {
-         const purchased = card.getAttribute('data-purchased') === 'true';
-         card.style.display = (value === 'all' || (value === 'purchased' && purchased) || (value === 'notPurchased' && !purchased)) ? 'flex' : 'none';
-      });
-   }
+    function toggleModuleDesc(el) {
+        const desc = el.parentElement.nextElementSibling;
+        const icon = el.querySelector(".icon");
+
+        if(desc.style.maxHeight && desc.style.maxHeight !== "0px") {
+            desc.style.maxHeight = "0";
+            icon.style.transform = "rotate(0deg)"; // فلش به پایین
+        } else {
+            desc.style.maxHeight = desc.scrollHeight + "px";
+            icon.style.transform = "rotate(180deg)"; // فلش به بالا
+        }
+    }
+
+
+    function filterModules(value, btn) {
+        document.querySelectorAll('#filterButtons button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.module-card').forEach(card => {
+            const purchased = card.getAttribute('data-purchased') === 'true';
+            card.style.display = (value === 'all' || (value === 'purchased' && purchased) || (value === 'notPurchased' && !purchased)) ? 'flex' : 'none';
+        });
+    }
 
 
 
