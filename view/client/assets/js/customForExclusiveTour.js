@@ -1036,7 +1036,18 @@ function initializeJDateCalendars() {
                autoClose: true
             });
          });
-
+         $('.shamsiInfantBirthdayCalendar').each(function() {
+            $(this).persianDatepicker({
+               observer: true,
+               format: 'YYYY-MM-DD',
+               altField: $(this),
+               altFormat: 'YYYY-MM-DD',
+               maxDate: new persianDate().valueOf(),
+               minDate: new persianDate().subtract('year', 2).valueOf(),
+               initialValue: false,
+               autoClose: true
+            });
+         });
          // تاریخ تولد نوزادان شمسی (کمتر از 2 سال)
          $('.shamsiInfantBirthdayCalendar').each(function() {
             $(this).persianDatepicker({

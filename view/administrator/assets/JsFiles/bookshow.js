@@ -1640,9 +1640,13 @@ function AlertUserCancel(){
             },
         success: function (data) {
             console.log('data' , data.hasNewCancel)
-            if(data.hasNewCancel){
-                $('#showAlertCancellations')[0].classList.add('d-block');
+            const alertElement = document.getElementById('showAlertCancellations');
+            if (alertElement) {
+                alertElement.classList.add('d-block');
             }
+            // if(data.hasNewCancel){
+            //     $('#showAlertCancellations')[0].classList.add('d-block');
+            // }
 
         }
     });

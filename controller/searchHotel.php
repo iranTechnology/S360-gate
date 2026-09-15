@@ -310,7 +310,7 @@ class searchHotel extends ApiHotelCore {
 
                     $resultHotelApi = json_decode($this->hotelList($dataSearch), true);
 
-
+                    functions::insertLog('$resultHotelApi: ' . json_encode($resultHotelApi) , '000shojaee');
                     if (!empty($resultHotelApi['Result'])) {
                         $t2 = microtime(true);
                         $final_result_search = $this->excludeWebserviceHotel($resultHotelApi['Result']);
@@ -417,6 +417,7 @@ class searchHotel extends ApiHotelCore {
                             $this->Hotel[$Hotel['HotelIndex'] . $index]['pointClub'] = $pointClub;
                             $this->Hotel[$Hotel['HotelIndex'] . $index]['requestNumber'] = $resultHotelApi['RequestNumber'];
                             $this->Hotel[$Hotel['HotelIndex'] . $index]['is_special'] = 'no';
+                            $this->Hotel[$Hotel['HotelIndex'] . $index]['room_type_list'] = $Hotel['RoomTypeList'];
 
 
                             if ($Hotel['Facilities'] && is_array($Hotel['Facilities'])) {
@@ -479,7 +480,7 @@ class searchHotel extends ApiHotelCore {
             'prices'   => $arrayPrice,
             'requestNumber'   => $this->requestNumber,
         ];
-
+        functions::insertLog('$final_result: ' . json_encode($final_result) , '000shojaee');
         if(!empty($this->Hotel)){
             $final_result['Advertises'] = functions::getConfigContentByTitle('local_hotel_search_advertise');
         }
@@ -839,18 +840,18 @@ WHERE
             $apiResult = $this->excludeWebserviceHotel($apiResult);
             foreach ( $apiResult as $hotel ) {
 //                if(isset($hotel['NameEn'] ) && !empty($hotel['NameEn'] )){
-                    $i ++;
-                    $hotelNameEn = strtolower( trim( urldecode( $hotel['NameEn'] ) ) );
-                    $hotelNameEn = str_replace( "  ", " ", $hotelNameEn );
-                    $hotelNameEn = str_replace( " ", "-", $hotelNameEn );
-                    $ApiHotel    = [
-                        'HotelId'     => $hotel['Id'],
-                        'HotelName'   => $hotel['Name'],
-                        'HotelNameEn' => $hotelNameEn,
-                        'CityName'    => $hotel['CityName'],
-                        'CityId'      => $hotel['CityId'],
-                    ];
-                    $result['ApiHotels'][] = $ApiHotel;
+                $i ++;
+                $hotelNameEn = strtolower( trim( urldecode( $hotel['NameEn'] ) ) );
+                $hotelNameEn = str_replace( "  ", " ", $hotelNameEn );
+                $hotelNameEn = str_replace( " ", "-", $hotelNameEn );
+                $ApiHotel    = [
+                    'HotelId'     => $hotel['Id'],
+                    'HotelName'   => $hotel['Name'],
+                    'HotelNameEn' => $hotelNameEn,
+                    'CityName'    => $hotel['CityName'],
+                    'CityId'      => $hotel['CityId'],
+                ];
+                $result['ApiHotels'][] = $ApiHotel;
 //                }
             }
         }
@@ -867,7 +868,7 @@ WHERE
     public function excludeWebserviceHotel($hotel_list) {
         $webserviceHotelController = $this->getController('webserviceHotel') ;
         $webserviceHotel = $webserviceHotelController->getNotIncludeWebservice('40');
-        $result = [] ; 
+        $result = [] ;
         foreach ($hotel_list as $hotel) {
             if(!in_array( $hotel['index'] , $webserviceHotel )){
                 $result[] = $hotel;
