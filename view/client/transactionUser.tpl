@@ -1,9 +1,23 @@
+{load_presentation_object filename="user" assign="objUser"}
+{load_presentation_object filename="members" assign="objCounter"}
+{load_presentation_object filename="agency" assign="objAgency"}
+{assign var="check_is_counter" value=$objUser->checkIsCounter()}
+{assign var="isSubAgencyInfo" value=$objAgency->subAgencyInfo()}
 
-    {load_presentation_object filename="user" assign="objUser"}
-    {if $objSession->IsLogin() and $objSession->getTypeUser() eq 'counter'}
+
+{if $objSession->IsLogin() and $objSession->getTypeUser() eq 'counter'}
     {assign var="profile" value=$objUser->getProfileGds({$objSession->getUserId()})} {*گرفتن اطلاعات کاربر*}
     {assign var="userid" value=$objSession->getUserId()}
     {assign var="transactionCreditUser" value=$objUser->transactionCreditUser()}
+    {assign var="infoClient" value=functions::getClientInfo($smarty.const.CLIENT_ID)}
+    {assign var="Currency" value=Session::getCurrency()}
+    {if $check_is_counter && $isSubAgencyInfo}
+        {assign var="currencyCode" value=$Currency}
+    {else}
+        {assign var="currencyCode" value=$infoClient['base_currency_code']}
+    {/if}
+    {assign var="info_currency" value=$objCounter->showInfoCurrency($currencyCode)}
+    {functions::insertLog(json_encode($info_currency),'000shojaee')}
     <main>
         <section class="profile_section mt-3 mb-3 row">
             <div class="container">
@@ -34,9 +48,14 @@
                                                 <thead>
                                                 <tr>
                                                     <th>##Row##</th>
-{*                                                    <th>##Row##</th>*}
+                                                    {*                                                    <th>##Row##</th>*}
                                                     <th>##Invoicenumber##</th>
-                                                    <th>##Amount##(##Rial##)</th>
+                                                    <th>##Amount##({if $info_currency['CurrencyTitleEn']}
+                                                        {$info_currency['CurrencyTitleEn']}
+                                                        {elseif $info_currency['CurrencyTitle']}
+                                                        {$info_currency['CurrencyTitle']}
+                                                        {else}
+                                                        ##Rial##{/if})</th>
                                                     <th>##TypeTransaction##</th>
                                                     <th>##Description##</th>
                                                     <th>##Status##</th>
@@ -46,46 +65,46 @@
                                                 <tbody>
                                                 {assign var="number" value="1"}
                                                 {foreach key=key item=item from=$transactionCreditUser}
-                                                   <tr>
-                                                       <td data-content="##Row##" align="center">{$number++}</td>
-{*                                                       <td data-content="##Invoicenumber##" align="center">{$item.id}</td>*}
-                                                       <td data-content="##Invoicenumber##" align="center">{$item.factorNumber}</td>
-                                                       <td data-content="##Amount##" align="center">{$item.amount|number_format}</td>
-                                                       <td data-content="##Typepayment##" dir="ltr" align="center">
-                                                           {if $item.reason eq 'charge'}
-                                                               ##ChargeAccount##
-                                                           {elseif $item.reason eq 'buy'}
-                                                               ##Buy##
-                                                           {elseif $item.reason eq 'giftBuyTicket'}
-                                                               ##BuyTicket##
-                                                           {elseif $item.reason eq 'reagent_code_presented'}
-                                                               ##GiftCodeReference##
-                                                           {elseif $item.reason eq 'increase'}
-                                                               ##ChargeAccount## {$smarty.const.CLIENT_NAME}
-                                                           {elseif $item.reason eq 'decrease'}
-                                                               ##DecreaseUser## {$smarty.const.CLIENT_NAME}
-                                                           {elseif $item.reason eq 'credit_deduction'}
-                                                               ##DecreaseMoneyOfCreditByMember##
-                                                           {/if}
-                                                       </td>
-                                                       <td data-content="##Description##" dir="ltr"  align="center">{$item.comment}</td>
-                                                       <td data-content="##Status##" align="center">
-                                                           {if $item.status eq 'success'}
-                                                               <span class='success-bg-text-with-padding-and-radius text-center'>##Successpayment##  </span>
-                                                           {elseif $item.status eq 'error'}
-                                                               <span class='error-bg-text-with-padding-and-radius text-center'>##ErrorPayment##  </span>
-                                                           {elseif $item.status eq 'progress'}
-                                                               <span class='pending-bg-text-with-padding-and-radius text-center'>##Processing##  </span>
-                                                           {elseif $item.status eq 'rejectAdmin'}
-                                                               <span class='error-bg-text-with-padding-and-radius text-center'>##rejectByAdmin##  </span>
-                                                           {/if}
-                                                       </td>
-                                                       <td data-content="##Date##" align="center">
-                                                           {if $item.creationDateInt neq 0}
-                                                           {$objDate->jdate("Y-m-d H:i:s",$item.creationDateInt)}
-                                                           {/if}
-                                                       </td>
-                                                   </tr>
+                                                    <tr>
+                                                        <td data-content="##Row##" align="center">{$number++}</td>
+                                                        {*                                                       <td data-content="##Invoicenumber##" align="center">{$item.id}</td>*}
+                                                        <td data-content="##Invoicenumber##" align="center">{$item.factorNumber}</td>
+                                                        <td data-content="##Amount##" align="center">{if $info_currency['CurrencyTitleEn']}{$item.amount|number_format:2:".":""}{else}{$item.amount|number_format}{/if}</td>
+                                                        <td data-content="##Typepayment##" dir="ltr" align="center">
+                                                            {if $item.reason eq 'charge'}
+                                                                ##ChargeAccount##
+                                                            {elseif $item.reason eq 'buy'}
+                                                                ##Buy##
+                                                            {elseif $item.reason eq 'giftBuyTicket'}
+                                                                ##BuyTicket##
+                                                            {elseif $item.reason eq 'reagent_code_presented'}
+                                                                ##GiftCodeReference##
+                                                            {elseif $item.reason eq 'increase'}
+                                                                ##ChargeAccount## {$smarty.const.CLIENT_NAME}
+                                                            {elseif $item.reason eq 'decrease'}
+                                                                ##DecreaseUser## {$smarty.const.CLIENT_NAME}
+                                                            {elseif $item.reason eq 'credit_deduction'}
+                                                                ##DecreaseMoneyOfCreditByMember##
+                                                            {/if}
+                                                        </td>
+                                                        <td data-content="##Description##" dir="ltr"  align="center">{$item.comment}</td>
+                                                        <td data-content="##Status##" align="center">
+                                                            {if $item.status eq 'success'}
+                                                                <span class='success-bg-text-with-padding-and-radius text-center'>##Successpayment##  </span>
+                                                            {elseif $item.status eq 'error'}
+                                                                <span class='error-bg-text-with-padding-and-radius text-center'>##ErrorPayment##  </span>
+                                                            {elseif $item.status eq 'progress'}
+                                                                <span class='pending-bg-text-with-padding-and-radius text-center'>##Processing##  </span>
+                                                            {elseif $item.status eq 'rejectAdmin'}
+                                                                <span class='error-bg-text-with-padding-and-radius text-center'>##rejectByAdmin##  </span>
+                                                            {/if}
+                                                        </td>
+                                                        <td data-content="##Date##" align="center">
+                                                            {if $item.creationDateInt neq 0}
+                                                                {$objDate->jdate("Y-m-d H:i:s",$item.creationDateInt)}
+                                                            {/if}
+                                                        </td>
+                                                    </tr>
                                                 {/foreach}
                                                 </tbody>
                                             </table>
@@ -144,257 +163,257 @@
     <script src="assets/js/profile.js"></script>
 
     <script type="text/javascript">
-      $(document).ready(function () {
-        $('#passengerList').DataTable();
-        $('body').on('click' ,'.submitPassengerUpdateFormData' , function () {
-          var thiss=$(this);
-          // thiss.removeClass('submitPassengerUpdateFormData').addClass('disabled');
-          console.log('runing');
-          var form = $("#updatePassengerFormData");
-          var url = form.attr("action");
-          var formData = $(form).serializeArray();
-          var formArray = {};
-          $.each(formData, function() {
-            formArray[this.name] = this.value;
-          });
-          var National_Code = $('#passengerNationalCode').val();
-          if (National_Code != "") {
-            if (National_Code.toString().length != 10) {
-              $.alert({
-                title: useXmltag("UpdateProfile"),
-                icon: 'fa fa-refresh',
-                content: useXmltag("EnteredCationalCodeNotValid"),
-                rtl: true,
-                type: 'red',
-              });
-              error = 1;
-            }else {
-              var NCode = checkCodeMeli(convertNumber(National_Code));
-              if (!NCode) {
-                $.alert({
-                  title: useXmltag("UpdateProfile"),
-                  icon: 'fa fa-refresh',
-                  content: useXmltag("EnteredCationalCodeNotValid"),
-                  rtl: true,
-                  type: 'red',
+        $(document).ready(function () {
+            $('#passengerList').DataTable();
+            $('body').on('click' ,'.submitPassengerUpdateFormData' , function () {
+                var thiss=$(this);
+                // thiss.removeClass('submitPassengerUpdateFormData').addClass('disabled');
+                console.log('runing');
+                var form = $("#updatePassengerFormData");
+                var url = form.attr("action");
+                var formData = $(form).serializeArray();
+                var formArray = {};
+                $.each(formData, function() {
+                    formArray[this.name] = this.value;
                 });
-                error = 1;
-              }else{
-                var error = '0';
-              }
-            }
+                var National_Code = $('#passengerNationalCode').val();
+                if (National_Code != "") {
+                    if (National_Code.toString().length != 10) {
+                        $.alert({
+                            title: useXmltag("UpdateProfile"),
+                            icon: 'fa fa-refresh',
+                            content: useXmltag("EnteredCationalCodeNotValid"),
+                            rtl: true,
+                            type: 'red',
+                        });
+                        error = 1;
+                    }else {
+                        var NCode = checkCodeMeli(convertNumber(National_Code));
+                        if (!NCode) {
+                            $.alert({
+                                title: useXmltag("UpdateProfile"),
+                                icon: 'fa fa-refresh',
+                                content: useXmltag("EnteredCationalCodeNotValid"),
+                                rtl: true,
+                                type: 'red',
+                            });
+                            error = 1;
+                        }else{
+                            var error = '0';
+                        }
+                    }
 
-          }else{
-            var error = '0';
-          }
-          if (error == 0) {
-            $.post(amadeusPath + 'user_ajax.php',
-              {
-                flag: 'PassengersUpdateModalData',
-                data: formArray
-              },
-              function(data) {
-                data = jQuery.parseJSON(data);
-                console.log(data.result_status);
-                if (data.result_status == 'success') {
-
-                  $.alert({
-                    title: useXmltag("UpdateProfile"),
-                    icon: 'fa fa-refresh',
-                    content: data.result_message,
-                    rtl: true,
-                    type: 'green',
-                  });
-
-                } else {
-
-                  $.alert({
-                    title: useXmltag("UpdateProfile"),
-                    icon: 'fa fa-refresh',
-                    content: data.result_message,
-                    rtl: true,
-                    type: 'red',
-                  });
-
+                }else{
+                    var error = '0';
                 }
-                // $(".modal_custom").remove()
-                setTimeout(function() {
-                  location.reload()
-                }, 2000);
-              });
-            // thiss.addClass('submitPassengerUpdateForm').removeClass('disabled');
-          }
-        });
-        $('body').on('click' ,'.submitPassengerAddFormData' , function () {
-          var thiss=$(this);
-          // thiss.removeClass('submitPassengerAddFormData').addClass('disabled');
-          console.log('runing');
-          var form = $("#AddPassengerFormData");
-          var url = form.attr("action");
-          var formData = $(form).serializeArray();
-          var formArray = {};
-          $.each(formData, function() {
-            formArray[this.name] = this.value;
-          });
-          var National_Code = $('#passengerNationalCode').val();
-          if (National_Code != "") {
-            if (National_Code.toString().length != 10) {
-              $.alert({
-                title: useXmltag("UpdateProfile"),
-                icon: 'fa fa-refresh',
-                content: useXmltag("EnteredCationalCodeNotValid"),
-                rtl: true,
-                type: 'red',
-              });
-              error = 1;
-            }else {
-              var NCode = checkCodeMeli(convertNumber(National_Code));
-              if (!NCode) {
-                $.alert({
-                  title: useXmltag("UpdateProfile"),
-                  icon: 'fa fa-refresh',
-                  content: useXmltag("EnteredCationalCodeNotValid"),
-                  rtl: true,
-                  type: 'red',
-                });
-                error = 1;
-              }else{
-                var error = '0';
-              }
-            }
+                if (error == 0) {
+                    $.post(amadeusPath + 'user_ajax.php',
+                        {
+                            flag: 'PassengersUpdateModalData',
+                            data: formArray
+                        },
+                        function(data) {
+                            data = jQuery.parseJSON(data);
+                            console.log(data.result_status);
+                            if (data.result_status == 'success') {
 
-          }else{
-            var error = '0';
-          }
-          if (error == 0) {
-            $.post(amadeusPath + 'user_ajax.php',
-              {
-                flag: 'PassengersAddModalData',
-                data : formArray
-              },
-              function (data) {
-                data = jQuery.parseJSON(data);
-                console.log(data.result_status);
-                if (data.result_status == 'success') {
+                                $.alert({
+                                    title: useXmltag("UpdateProfile"),
+                                    icon: 'fa fa-refresh',
+                                    content: data.result_message,
+                                    rtl: true,
+                                    type: 'green',
+                                });
 
-                  $.alert({
-                    title: useXmltag("NewPassengerRegistration"),
-                    icon: 'fa fa-refresh',
-                    content: data.result_message,
-                    rtl: true,
-                    type: 'green',
-                  });
-                  // $(".modal_custom").remove();
-                  setTimeout(function () {
-                    location.reload()
-                  }, 2000);
-                  // thiss.addClass('submitPassengerAddForm').removeClass('disabled');
-                } else {
+                            } else {
 
-                  $.alert({
-                    title: useXmltag("NewPassengerRegistration"),
-                    icon: 'fa fa-refresh',
-                    content: data.result_message,
-                    rtl: true,
-                    type: 'red',
-                  });
+                                $.alert({
+                                    title: useXmltag("UpdateProfile"),
+                                    icon: 'fa fa-refresh',
+                                    content: data.result_message,
+                                    rtl: true,
+                                    type: 'red',
+                                });
+
+                            }
+                            // $(".modal_custom").remove()
+                            setTimeout(function() {
+                                location.reload()
+                            }, 2000);
+                        });
+                    // thiss.addClass('submitPassengerUpdateForm').removeClass('disabled');
                 }
-              });
-          }
-        });
-        $('body').on('click' ,'.PassengerDelete' , function () {
-          var thiss=$(this);
-          // thiss.removeClass('PassengerDelete').addClass('disabled');
-          console.log('runing');
-          var form = $("#PassengerDeleteForm");
-          var url = form.attr("action");
-          var formData = $(form).serializeArray();
-          var formArray = {};
-          $.each(formData, function() {
-            formArray[this.name] = this.value;
-          });
-          $.post(amadeusPath + 'user_ajax.php',
-            {
-              flag: 'PassengersDeleteModal',
-              data: formArray
-            },
-            function(data) {
-              data = jQuery.parseJSON(data);
-              console.log(data.result_status);
-              if (data.result_status == 'success') {
-
-                $.alert({
-                  title: useXmltag("RecordPassengerDelete"),
-                  icon: 'fa fa-refresh',
-                  content: data.result_message,
-                  rtl: true,
-                  type: 'green',
-                });
-              } else {
-
-                $.alert({
-                  title: useXmltag("RecordPassengerDelete"),
-                  icon: 'fa fa-refresh',
-                  content: data.result_message,
-                  rtl: true,
-                  type: 'red',
-                });
-              }
-              $(".modal_custom").remove()
-              setTimeout(function() {
-                location.reload()
-              }, 1000);
             });
-          // thiss.addClass('submitPassengerAddForm').removeClass('disabled');
-        });
-        $('body').on('click' ,'.close_modal_passenger' , function () {
-          $(".modal_custom").remove();
-          $("body,html").removeClass("overflow-hidden");
-        });
-        $('html , body').click(() => {
-          $(".profile_dropdown_custom > div").hide()
-          $(".list_calender_profile").hide()
-        })
-      });
+            $('body').on('click' ,'.submitPassengerAddFormData' , function () {
+                var thiss=$(this);
+                // thiss.removeClass('submitPassengerAddFormData').addClass('disabled');
+                console.log('runing');
+                var form = $("#AddPassengerFormData");
+                var url = form.attr("action");
+                var formData = $(form).serializeArray();
+                var formArray = {};
+                $.each(formData, function() {
+                    formArray[this.name] = this.value;
+                });
+                var National_Code = $('#passengerNationalCode').val();
+                if (National_Code != "") {
+                    if (National_Code.toString().length != 10) {
+                        $.alert({
+                            title: useXmltag("UpdateProfile"),
+                            icon: 'fa fa-refresh',
+                            content: useXmltag("EnteredCationalCodeNotValid"),
+                            rtl: true,
+                            type: 'red',
+                        });
+                        error = 1;
+                    }else {
+                        var NCode = checkCodeMeli(convertNumber(National_Code));
+                        if (!NCode) {
+                            $.alert({
+                                title: useXmltag("UpdateProfile"),
+                                icon: 'fa fa-refresh',
+                                content: useXmltag("EnteredCationalCodeNotValid"),
+                                rtl: true,
+                                type: 'red',
+                            });
+                            error = 1;
+                        }else{
+                            var error = '0';
+                        }
+                    }
 
-      function modalListForEditUser(passenger_id) {
-        $.post(libraryPath + 'ModalCreatorProfile.php',
-          {
-            Method: 'ModalShowEdit',
-            passenger_id: passenger_id
-          },
-          function (data) {
-            $('#ModalPublic').html(data);
-            $("body,html").addClass("overflow-hidden");
+                }else{
+                    var error = '0';
+                }
+                if (error == 0) {
+                    $.post(amadeusPath + 'user_ajax.php',
+                        {
+                            flag: 'PassengersAddModalData',
+                            data : formArray
+                        },
+                        function (data) {
+                            data = jQuery.parseJSON(data);
+                            console.log(data.result_status);
+                            if (data.result_status == 'success') {
+
+                                $.alert({
+                                    title: useXmltag("NewPassengerRegistration"),
+                                    icon: 'fa fa-refresh',
+                                    content: data.result_message,
+                                    rtl: true,
+                                    type: 'green',
+                                });
+                                // $(".modal_custom").remove();
+                                setTimeout(function () {
+                                    location.reload()
+                                }, 2000);
+                                // thiss.addClass('submitPassengerAddForm').removeClass('disabled');
+                            } else {
+
+                                $.alert({
+                                    title: useXmltag("NewPassengerRegistration"),
+                                    icon: 'fa fa-refresh',
+                                    content: data.result_message,
+                                    rtl: true,
+                                    type: 'red',
+                                });
+                            }
+                        });
+                }
+            });
+            $('body').on('click' ,'.PassengerDelete' , function () {
+                var thiss=$(this);
+                // thiss.removeClass('PassengerDelete').addClass('disabled');
+                console.log('runing');
+                var form = $("#PassengerDeleteForm");
+                var url = form.attr("action");
+                var formData = $(form).serializeArray();
+                var formArray = {};
+                $.each(formData, function() {
+                    formArray[this.name] = this.value;
+                });
+                $.post(amadeusPath + 'user_ajax.php',
+                    {
+                        flag: 'PassengersDeleteModal',
+                        data: formArray
+                    },
+                    function(data) {
+                        data = jQuery.parseJSON(data);
+                        console.log(data.result_status);
+                        if (data.result_status == 'success') {
+
+                            $.alert({
+                                title: useXmltag("RecordPassengerDelete"),
+                                icon: 'fa fa-refresh',
+                                content: data.result_message,
+                                rtl: true,
+                                type: 'green',
+                            });
+                        } else {
+
+                            $.alert({
+                                title: useXmltag("RecordPassengerDelete"),
+                                icon: 'fa fa-refresh',
+                                content: data.result_message,
+                                rtl: true,
+                                type: 'red',
+                            });
+                        }
+                        $(".modal_custom").remove()
+                        setTimeout(function() {
+                            location.reload()
+                        }, 1000);
+                    });
+                // thiss.addClass('submitPassengerAddForm').removeClass('disabled');
+            });
+            $('body').on('click' ,'.close_modal_passenger' , function () {
+                $(".modal_custom").remove();
+                $("body,html").removeClass("overflow-hidden");
+            });
+            $('html , body').click(() => {
+                $(".profile_dropdown_custom > div").hide()
+                $(".list_calender_profile").hide()
+            })
+        });
+
+        function modalListForEditUser(passenger_id) {
+            $.post(libraryPath + 'ModalCreatorProfile.php',
+                {
+                    Method: 'ModalShowEdit',
+                    passenger_id: passenger_id
+                },
+                function (data) {
+                    $('#ModalPublic').html(data);
+                    $("body,html").addClass("overflow-hidden");
+                    $(".select2").select2();
+                });
+            $("#ModalPublic").show(700);
+        }
+        function modalListForDeleteUser(passenger_id) {
+            $.post(libraryPath + 'ModalCreatorProfile.php',
+                {
+                    Method: 'ModalShowDelete',
+                    passenger_id: passenger_id
+                },
+                function (data) {
+                    $('#ModalPublic').html(data);
+                    $("body,html").addClass("overflow-hidden");
+                });
+            $("#ModalPublic").show();
+        }
+        function modalListForAddUser(currentTarget , member_id) {
+            $(currentTarget).children('.bouncing-loader').removeClass("bouncing-loader-none")
+            $.post(libraryPath + 'ModalCreatorProfile.php', {
+                    Method: 'ModalShowAdd',
+                    passenger_id: member_id
+                },
+                function (data) {
+                    $("#html_modal").html(data);
+                    $("body,html").addClass("overflow-hidden");
+                    $(currentTarget).children('.bouncing-loader').addClass("bouncing-loader-none")
+                });
             $(".select2").select2();
-          });
-        $("#ModalPublic").show(700);
-      }
-      function modalListForDeleteUser(passenger_id) {
-        $.post(libraryPath + 'ModalCreatorProfile.php',
-          {
-            Method: 'ModalShowDelete',
-            passenger_id: passenger_id
-          },
-          function (data) {
-            $('#ModalPublic').html(data);
-            $("body,html").addClass("overflow-hidden");
-          });
-        $("#ModalPublic").show();
-      }
-      function modalListForAddUser(currentTarget , member_id) {
-        $(currentTarget).children('.bouncing-loader').removeClass("bouncing-loader-none")
-        $.post(libraryPath + 'ModalCreatorProfile.php', {
-            Method: 'ModalShowAdd',
-            passenger_id: member_id
-          },
-          function (data) {
-            $("#html_modal").html(data);
-            $("body,html").addClass("overflow-hidden");
-            $(currentTarget).children('.bouncing-loader').addClass("bouncing-loader-none")
-          });
-        $(".select2").select2();
-      }
+        }
     </script>
 
 {/literal}

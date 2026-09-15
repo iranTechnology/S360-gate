@@ -175,8 +175,16 @@ class BookingHotelNew extends clientAuth
             $apiReserveHotel = $detailHotel->Reserve( $Hotel);
             error_log('try show result method Hotel in 1: ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel). " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
             error_log('try show result method Hotel in 2: ' . date('Y/m/d H:i:s') . ' buy Credit array equal in => : ' . $apiReserveHotel. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+            $apiReserveHotel = $detailHotel->Reserve($Hotel);
+            error_log('try show result method Hotel in 1: ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel) . " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+            error_log('try show result method Hotel in 2: ' . date('Y/m/d H:i:s') . ' buy Credit array equal in => : ' . $apiReserveHotel . " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+            $apiReserveHotel = $detailHotel->Reserve($Hotel);
+            error_log('try show result method Hotel in 1: ' . date('Y/m/d H:i:s') . ' HotelDetail => : ' . json_encode($Hotel) . " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
+            error_log('try show result method Hotel in 2: ' . date('Y/m/d H:i:s') . ' buy Credit array equal in => : ' . $apiReserveHotel . " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');
 
             $ReserveHotel = json_decode($apiReserveHotel,true);
+            $ReserveHotel = json_decode($apiReserveHotel, true);
+            $ReserveHotel = json_decode($apiReserveHotel, true);
             $request_number = isset($ReserveHotel['RequestNumber']) ? $ReserveHotel['RequestNumber'] : $Hotel['request_number'];
 
             error_log(' ' . date('Y/m/d H:i:s') . ' RN : ' . $Hotel['request_number']. " \n", 3, LOGS_DIR . 'log_method_ReserveHotel.txt');

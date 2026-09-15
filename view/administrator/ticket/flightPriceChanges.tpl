@@ -1,6 +1,7 @@
 {load_presentation_object filename="priceChanges" assign="objPriceChanges"}
 {load_presentation_object filename="airline" assign="objAirline"}
 {load_presentation_object filename="counterType" assign="objCounterType"}
+{assign var="infoClient" value=functions::getClientInfo($smarty.const.CLIENT_ID)}
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
@@ -31,21 +32,21 @@
                         <br/>
                         افزایش قیمت روی پرواز هایی که داری کمیسیون هستند اعمال نمی گردد
                     </span>
-                        <br/>
-                        در فرم زیر میتوانید  تغییرات قیمت هر ایرلاین با همه ایرلاین ها به صورت یکجا  را اعمال کنید
+                    <br/>
+                    در فرم زیر میتوانید  تغییرات قیمت هر ایرلاین با همه ایرلاین ها به صورت یکجا  را اعمال کنید
 
 
                 </p>
 
                 <div class="form-group col-md-2 ">
                     <label for="airline_iata" class="control-label">نام ایرلاین</label>
-                        <select name='airline_iata' id='airline_iata' class='select2 form-control'>
-                            <option value=''>انتخاب کنید</option>
-                            <option value='all'>همه</option>
-                            {foreach $objAirline->airLineList() as $airline_iata}
-                                <option value='{$airline_iata['abbreviation']}'>{$airline_iata['name_fa']}({$airline_iata['abbreviation']})</option>
-                            {/foreach}
-                        </select>
+                    <select name='airline_iata' id='airline_iata' class='select2 form-control'>
+                        <option value=''>انتخاب کنید</option>
+                        <option value='all'>همه</option>
+                        {foreach $objAirline->airLineList() as $airline_iata}
+                            <option value='{$airline_iata['abbreviation']}'>{$airline_iata['name_fa']}({$airline_iata['abbreviation']})</option>
+                        {/foreach}
+                    </select>
                 </div>
 
                 <div class="form-group col-md-2 ">
@@ -78,7 +79,9 @@
                     <label for="change_type" class="control-label">نوع افزایش</label>
                     <select name='change_type' id='change_type' class='select2 form-control'>
                         <option value=''>انتخاب کنید</option>
-                        <option value='cost'>ریالی</option>
+                        {if $infoClient['base_currency_code'] eq ''}
+                            <option value='cost'>ریالی</option>
+                        {/if}
                         <option value='percent'>درصد</option>
                     </select>
                 </div>
@@ -105,12 +108,12 @@
         <div class="col-sm-12">
             <div class="white-box">
                 <h3 class="box-title m-b-0">لیست تغییرات قیمت پرواز</h3>
-                     <div class='row'>
-                         <div class="form-group col-md-6 col-sm-6 col-xs-12" style="margin-top: 27px;">
-                            <a class="btn btn-primary" target='_blank' href="priceChangesHistory" style="margin-left: 5px;" >سوابق افزایش قیمت </a>
-                            <a type="button" class="btn btn-danger localResetForm" onclick='restChangePrice()'>ریست</a>
-                   </div>
-               </div>
+                <div class='row'>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12" style="margin-top: 27px;">
+                        <a class="btn btn-primary" target='_blank' href="priceChangesHistory" style="margin-left: 5px;" >سوابق افزایش قیمت </a>
+                        <a type="button" class="btn btn-danger localResetForm" onclick='restChangePrice()'>ریست</a>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table id="flight-price-changes-table" class="table table-striped">
                         <thead></thead>

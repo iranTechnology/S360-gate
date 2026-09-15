@@ -2,17 +2,17 @@
     /* استایل‌های عمومی کارت‌ها */
     .service-card {
         border-radius: 16px;
-        padding: 37px 20px;
+        padding: 8px 14px;
         transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         position: relative;
         overflow: hidden;
         border: 1px solid #e5e7eb !important;
         cursor: default;
-        margin-bottom: 30px !important;
-        height: 190px;
+        margin-bottom: 14px !important;
+        height: 140px;
     }
     .service-card .box-title {
-        font-size: 19px;
+        font-size: 17px;
         font-weight: 700;
         display: flex;
         align-items: center;
@@ -21,9 +21,9 @@
     }
 
     .service-card .box-title i {
-        font-size: 26px;
-        width: 42px;
-        height: 42px;
+        font-size: 20px;
+        width: 35px;
+        height: 35px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -32,7 +32,7 @@
     }
 
     .service-card p {
-        font-size: 14px;
+        font-size: 13px;
         line-height: 1.8;
         color: #4b5563;
         margin-bottom: 6px;
@@ -47,9 +47,6 @@
     }
 
     .service-card .badge-icon {
-        position: absolute;
-        top: 12px;
-        right: 12px;
         font-size: 10px;
         font-weight: 700;
         padding: 3px 12px;
@@ -197,7 +194,7 @@
         font-family: inherit;
         direction: rtl;
         margin-top: 5px;
-        margin-bottom: 21px;
+        margin-bottom: 13px !important;
     }
     .box-detail{
         font-size: 12px;
@@ -258,51 +255,63 @@
 
 <div class="box">
     <div>
-        <h3 class="mb-1">راهنمای دریافت سود از فروش خدمات</h3>
+        <h4 class="mb-1">راهنمای دریافت سود از فروش خدمات</h4>
         <p class="box-detail">در تنظیم مارک آپ و تخفیف خدمات خود دقت بفرمایید تا اختلاف قیمت فاحشی با رقبا نداشته باشید. در نظر داشته باشید سود شما برای پروازهای چارتری همان مارک آپی است که انجام داده اید و در پروازهای سیستمی داخلی 80% کمیسیون ایرلاین و در پروازهای خارجی مارک آپی است که انجام داده اید</p>
     </div>
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0">
             <div class="white-box service-card card-system-flight">
-                <span class="badge-icon">کمیسیون استاندارد ایرلاین</span>
-                <h3 class="box-title">
-                    <i class="fa fa-plane"></i> پرواز سیستمی داخلی
-                </h3>
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <h3 class="box-title">
+                        <i class="fa fa-plane"></i> پرواز سیستمی داخلی
+                    </h3>
+                    <span class="badge-icon">کمیسیون استاندارد ایرلاین</span>
+                </div>
                 <p>سیستم به صورت اتوماتیک کمیسیون هر ایرلاین را به عنوان سود به شما برگشت می‌دهد</p>
                 <p>مثلا بلیط ۱۰۰/۰۰۰/۰۰۰ ریال فروش می‌رود اما از اعتبار شما پس از کسر کمیسیون ایرلاین <span class="highlight-text">۹۵/۰۰۰/۰۰۰</span> ریال کسر می‌شود.</p>
             </div>
         </div>
 
         <!-- 2. پرواز چارتری - آبی -->
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0 pr-4">
             <div class="white-box service-card card-charter-flight">
-                <span class="badge-icon">مارکاپ دستی</span>
-                <h3 class="box-title">
-                    <i class="fa fa-plane"></i> پرواز چارتری داخلی
-                </h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="box-title">
+                        <i class="fa fa-plane"></i> پرواز چارتری داخلی
+                    </h3>
+                    <span class="badge-icon">مارکاپ دستی</span>
+
+                </div>
                 <p>سیستم به شما قیمت نت تحویل می‌دهد پس برای آن که سود داشته باشید از <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/ticket/flightPriceChanges" target="_blank" style="color: #1d4ed8; font-weight: 600; text-decoration: none;">اینجا</a> مارکاپ کنید.</p>
             </div>
         </div>
     </div>
     <div class="row">
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0">
             <div class="white-box service-card card-charter-flight">
-                <span class="badge-icon">مارکاپ دستی</span>
-                <h3 class="box-title">
-                    <i class="fa fa-plane"></i>پرواز چارتری سیستمی و چارتری خارجی
-                </h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="box-title">
+                        <i class="fa fa-plane"></i>پرواز چارتری سیستمی و چارتری خارجی
+                    </h3>
+                    <span class="badge-icon">مارکاپ دستی</span>
+
+                </div>
                 <p>سیستم به شما قیمت نت تحویل می‌دهد پس برای آن که سود داشته باشید از <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/ticket/flightPriceChanges" target="_blank" style="color: #1d4ed8; font-weight: 600; text-decoration: none;">اینجا</a> مارکاپ کنید.</p>
             </div>
         </div>
 
         <!-- 4. اتوبوس - زرد -->
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0 pr-4">
             <div class="white-box service-card card-bus">
-                <span class="badge-icon">کمیسیون ۱-۲٪</span>
-                <h3 class="box-title">
-                    <i class="fa fa-bus"></i> اتوبوس داخلی
-                </h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="box-title">
+                        <i class="fa fa-bus"></i> اتوبوس داخلی
+                    </h3>
+                    <span class="badge-icon">کمیسیون ۱-۲٪</span>
+
+                </div>
                 <p>سیستم به صورت اتوماتیک بین ۱ یا ۲ درصد به شما کمیسیون می‌دهد و به عنوان سود برگشت می‌دهد</p>
                 <p>مثلا بلیط ۱۰/۰۰۰/۰۰۰ ریال فروش می‌رود اما از اعتبار شما <span class="highlight-text">۹/۸۰۰/۰۰۰</span> ریال کسر می‌شود.</p>
             </div>
@@ -310,22 +319,26 @@
     </div>
     <div class="row">
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0">
             <div class="white-box service-card card-hotel">
-                <span class="badge-icon">مارکاپ دستی</span>
-                <h3 class="box-title">
-                    <i class="fa fa-bed"></i> هتل داخلی
-                </h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="box-title">
+                        <i class="fa fa-bed"></i> هتل داخلی
+                    </h3>
+                    <span class="badge-icon">مارکاپ دستی</span>
+                </div>
                 <p>سیستم به شما قیمت نت تحویل می‌دهد پس برای آن که سود داشته باشید از <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/hotel/changePriceHotel" target="_blank" style="color: #c2410c; font-weight: 600; text-decoration: none;">اینجا</a> مارکاپ کنید.</p>
             </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0 pr-4">
             <div class="white-box service-card card-hotel">
-                <span class="badge-icon">مارکاپ دستی</span>
-                <h3 class="box-title">
-                    <i class="fa fa-bed"></i> هتل خارجی
-                </h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="box-title">
+                        <i class="fa fa-bed"></i> هتل خارجی
+                    </h3>
+                    <span class="badge-icon">مارکاپ دستی</span>
+                </div>
                 <p>سیستم به شما قیمت نت تحویل می‌دهد پس برای آن که سود داشته باشید از <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/hotel/changePriceExternalHotel" target="_blank" style="color: #c2410c; font-weight: 600; text-decoration: none;">اینجا</a> مارکاپ کنید.</p>
             </div>
         </div>
@@ -333,23 +346,28 @@
     <div class="row">
 
         <!-- 5. بیمه مسافرتی - صورتی -->
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box service-card card-insurance mb-0">
-                <span class="badge-icon">اختصاصی دریافت کنید</span>
-                <h3 class="box-title">
-                    <i class="fa fa-suitcase"></i> بیمه مسافرتی
-                </h3>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0">
+            <div class="white-box service-card card-insurance mb-0" style="margin-bottom: 0 !important;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="box-title">
+                        <i class="fa fa-suitcase"></i> بیمه مسافرتی
+                    </h3>
+                    <span class="badge-icon">اختصاصی دریافت کنید</span>
+                </div>
                 <p>پیشنهاد می‌کنیم به صورت مستقیم از بیمه سامان یوزرنیم و پسورد اختصاصی دریافت کنید تا سود استاندارد شرکت بیمه به شما تخصیص داده شود.</p>
             </div>
         </div>
 
         <!-- 6. تشریفات فرودگاهی - بنفش -->
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box service-card card-airport-service mb-0">
-                <span class="badge-icon">اختصاصی دریافت کنید</span>
-                <h3 class="box-title">
-                    <i class="ti-money"></i> تشریفات فرودگاهی
-                </h3>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0 pr-4">
+            <div class="white-box service-card card-airport-service mb-0" style="margin-bottom: 0 !important;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="box-title">
+                        <i class="ti-money"></i> تشریفات فرودگاهی
+                    </h3>
+                    <span class="badge-icon">اختصاصی دریافت کنید</span>
+
+                </div>
                 <p>پیشنهاد می‌کنیم به صورت مستقیم از شرکت واران یوزرنیم و پسورد اختصاصی دریافت کنید تا سود استاندارد شرکت واران به شما تخصیص داده شود.</p>
             </div>
         </div>

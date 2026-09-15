@@ -1565,6 +1565,7 @@ class user extends baseController
                    b.request_cancel,
                    b.direction,
                    b.currency_code,
+                   b.currency_equivalent,
                    c.Status as StatusCancel
                  FROM book_local_tb b 
                  LEFT JOIN cancel_ticket_details_tb c 
@@ -1613,7 +1614,25 @@ class user extends baseController
         foreach ($bookList as  $key => $item ){
             $amount_buy = functions::CalculateDiscount($item['request_number']) ;
             $number_format_float = ($info_agency['type_payment'] == 'currency' && SOFTWARE_LANG !="fa") ? 2 : 0 ;
+            $agencyInfo = $this->getController('agency')->subAgencyInfo();
+            $isCounter = $this->getController('login')->isCounter();
+            if($isCounter && $agencyInfo){
+                $currency_code = Session::getCurrency();
+                $info_currency = functions::infoCurrencyBySessionCode($currency_code);
+            }else{
+                $client = functions::getClientInfo(CLIENT_ID);
+                $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+
+            }
+
+            if($info_currency){
+                $amount_buy = $amount_buy / $item['currency_equivalent'];
+                $number_format_float = 2;
+                $CurrencyTitleEn = $info_currency['CurrencyTitleEn'];
+            }
+
             $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($amount_buy, $item['factor_number']),$number_format_float);
+            functions::insertLog('$item: ' . json_encode(functions::calcDiscountCodeByFactor($amount_buy, $item['factor_number'])) , '000shojaee');
             if ($item['IsInternal'] == 0) {
                 $bookList[$key]['flight_internal_external'] = functions::Xmlinformation('Foreign')->__toString();
             }else {
@@ -1674,6 +1693,7 @@ class user extends baseController
             ];
             $result[$key]['factor_number'] = $item['factor_number'];
             $result[$key]['price'] = $bookList[$key]['price_final'];
+            $result[$key]['currency_title'] = $CurrencyTitleEn ;
             if ($item['eticket_number']) {
                 $eticket_number = $item['eticket_number'];
             }else{
@@ -3819,7 +3839,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  currency_equivalent AS currency_equivalent
             FROM
                 {$tableNameFlight}
             WHERE
@@ -3906,7 +3927,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameBus} 
             WHERE
@@ -3993,7 +4015,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameTrain} 
             WHERE
@@ -4081,7 +4104,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameGasht} 
             WHERE
@@ -4169,7 +4193,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameTour} 
             WHERE
@@ -4256,7 +4281,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameHotel} 
             WHERE
@@ -4343,7 +4369,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameInsurance} 
             WHERE
@@ -4431,7 +4458,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameVisa} 
             WHERE
@@ -4518,7 +4546,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameEntertainment} 
             WHERE
@@ -4606,7 +4635,8 @@ class user extends baseController
                   '' AS date_time,
                   '' AS airport_code_cip,
                   '' AS trip_type,
-                  '' AS PassengerTitle
+                  '' AS PassengerTitle,
+                  '' AS currency_equivalent
             FROM
                 {$tableNameEuropcar} 
             WHERE
@@ -4694,7 +4724,8 @@ class user extends baseController
               '' AS date_time,
               '' AS airport_code_cip,
               '' AS trip_type,
-              '' AS PassengerTitle
+              '' AS PassengerTitle,
+              '' AS currency_equivalent
         FROM {$tableNameExclusiveTour}
         WHERE member_id = '{$memberId}' AND request_number > '0'
         GROUP BY request_number
@@ -4777,7 +4808,8 @@ class user extends baseController
       date_time AS date_time,
       airport_code_cip AS airport_code_cip,
       trip_type AS trip_type,
-      PassengerTitle AS PassengerTitle
+      PassengerTitle AS PassengerTitle,
+      '' AS currency_equivalent
 FROM {$tableNameCip}
 WHERE member_id = '{$memberId}'
 {$conditions} {$factor_number} {$successfull}
@@ -4807,9 +4839,27 @@ GROUP BY factor_number
                 $bookList[$key]['creation_time_int'] = '----';
             }
             if ($item['moduleTitle'] == 'flight') {
-                $info_agency = functions::infoAgencyByMemberId($memberId);
+
                 $amount_buy = functions::CalculateDiscount($item['request_number']) ;
+
                 $number_format_float = ($info_agency['type_payment'] == 'currency' && SOFTWARE_LANG !="fa") ? 2 : 0 ;
+                $info_agency = functions::infoAgencyByMemberId($memberId);
+                $agencyInfo = $this->getController('agency')->subAgencyInfo();
+                $isCounter = $this->getController('login')->isCounter();
+                if($isCounter && $agencyInfo){
+                    $currency_code = Session::getCurrency();
+                    $info_currency = functions::infoCurrencyBySessionCode($currency_code);
+                }else{
+                    $client = functions::getClientInfo(CLIENT_ID);
+                    $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+
+                }
+
+                if($info_currency){
+                    $amount_buy = $amount_buy / $item['currency_equivalent'];
+                    $number_format_float = 2;
+                    $CurrencyTitleEn = $info_currency['CurrencyTitleEn'];
+                }
                 $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($amount_buy, $item['factor_number']),$number_format_float);
                 if ($item['IsInternal'] == 0) {
                     $bookList[$key]['flight_internal_external'] = functions::Xmlinformation('Foreign')->__toString();
@@ -4888,6 +4938,7 @@ GROUP BY factor_number
                 ];
                 $result[$key]['factor_number'] = $item['factor_number'];
                 $result[$key]['price'] = $bookList[$key]['price_final'];
+                $result[$key]['currency_title'] = $CurrencyTitleEn ;
                 if ($item['eticket_number']) {
                     $eticket_number = $item['eticket_number'];
                 }else{

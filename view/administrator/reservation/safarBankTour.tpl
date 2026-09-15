@@ -165,15 +165,14 @@
                         <tfoot>
                         <tr class="active">
                             <th colspan="3" class="text-left">مجموع کل</th>
-                            {*                            <th id="footerTotalVisits" class="text-center">0</th>*}
-                            {*                            <th id="footerUniqueVisits" class="text-center">0</th>*}
-                            {*                            <th id="footerTotalClicks" class="text-center">0</th>*}
-                            {*                            <th id="footerUniqueClicks" class="text-center">0</th>*}
-                            {*                            <th id="footerToursCount" class="text-center">0</th>*}
-                            <th id="footerSafarBankToursCount" class="text-center">0</th>
+                            <th id="footerTotalVisits" class="text-center">0</th>
+                            <th id="footerUniqueClicks" class="text-center">0</th>
+                            <th id="footerReferSite" class="text-center">0</th>
+                            <th id="footerReferTour" class="text-center">0</th>
+                            <th id="footerActiveTours" class="text-center">0</th>
                             <th id="footerTotalToursCount" class="text-center">0</th>
-                            <th id="footerAvgConversion" class="text-center">0%</th>
                             <th></th>
+
                         </tr>
                         </tfoot>
                     </table>

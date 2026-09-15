@@ -401,7 +401,7 @@ function displayMatchingRecord(record) {
             
                 <div class="rooms-row">
                     ${record.Hotel.Rooms.map(
-      room => `
+       room => `
                         <div class="room-card">
                             <p class="room-title">${room.Name} (${room.Type})</p>
                             <small class="room-details">
@@ -476,10 +476,19 @@ function displayMatchingRecord(record) {
                <!-- قیمت پرواز + هتل -->
                 <div id="final-price-box" class="price-minimal">
 
-                  <div class="row">
-                     <span>قیمت پرواز + هتل</span>
-                     <span class="value" data-price-type="total-base">0</span>
-                  </div>
+     
+      <div class="row">
+         <span>قیمت پرواز</span>
+         <span class="value" data-price-type="flight">0</span>
+      </div>
+
+   
+
+      <div class="row">
+         <span>قیمت هتل</span>
+         <span class="value" data-price-type="hotel">0</span>
+      </div>
+
 
                <div class="row">
                   <span>قیمت خدمات اضافه</span>
@@ -531,9 +540,11 @@ function displayMatchingRecord(record) {
       const totalBaseEl  = document.querySelector('[data-price-type="total-base"]');
       const entEl        = document.querySelector('[data-price-type="entertain"]');
       const finalTotalEl = document.querySelector('[data-price-type="final-total"]');
+      const flightEl = document.querySelector('[data-price-type="flight"]');
+      const hotelEl = document.querySelector('[data-price-type="hotel"]');
       const hasPendingEntertainment =
-         pendingEntertainmentSelection &&
-         pendingEntertainmentSelection.length;
+          pendingEntertainmentSelection &&
+          pendingEntertainmentSelection.length;
 
       let entPrice = 0;
 
@@ -554,10 +565,13 @@ function displayMatchingRecord(record) {
       if (totalBaseEl)  animateCounter(totalBaseEl,  previousPrices.base,  newBase);
       if (entEl)        animateCounter(entEl,        previousPrices.ent,   newEnt);
       if (finalTotalEl) animateCounter(finalTotalEl, previousPrices.final, newFinal);
-
+      if (flightEl) animateCounter(flightEl, previousPrices.flight || 0, newFlightPrice);
+      if (hotelEl) animateCounter(hotelEl, previousPrices.hotel || 0, newHotelPrice);
       updateEntertainmentSummaryInSidebar();
 
       // ذخیره برای دفعات بعد
+      previousPrices.flight = newFlightPrice;
+      previousPrices.hotel = newHotelPrice;
       previousPrices.base  = newBase;
       previousPrices.ent   = newEnt;
       previousPrices.final = newFinal;
@@ -657,13 +671,13 @@ function proceedWithSelection() {
       localStorage.setItem('pendingExclusiveTourAction', JSON.stringify({
          action: 'proceedWithSelection',
          selectedPackageIndex: disaggregateData.uniqueRoomPackages.findIndex(
-            p => p.packageKey === selectedOptions.roomPackage?.packageKey
+             p => p.packageKey === selectedOptions.roomPackage?.packageKey
          ),
          selectedOutputFlightIndex: disaggregateData.uniqueOutputRoutes.findIndex(
-            f => f.FlightNo === selectedOptions.outboundFlight?.FlightNo
+             f => f.FlightNo === selectedOptions.outboundFlight?.FlightNo
          ),
          selectedReturnFlightIndex: disaggregateData.uniqueReturnRoutes.findIndex(
-            f => f.FlightNo === selectedOptions.returnFlight?.FlightNo
+             f => f.FlightNo === selectedOptions.returnFlight?.FlightNo
          ),
          selectedEntertainmentIndices: selectedEntertainmentIndices   // 👈 این خط جدید
       }));
@@ -707,8 +721,8 @@ function goToNextStep() {
 
    /* 1️⃣ step فعلی → done */
    $current
-      .removeClass('active')
-      .addClass('done');
+       .removeClass('active')
+       .addClass('done');
 
    /* 2️⃣ جایگزینی آیکن با تیک */
    const $iconWrapper = $current.find('span').first();
@@ -853,10 +867,10 @@ $('#internal-arrival-date-exclusive-tour-js').datepicker({
    onSelect: function (dateText) {
 
       $return
-         .prop('readonly', false)
-         .datepicker('option', 'minDate', dateText)
-         .datepicker('option', 'showRange', true) // ✅ درست
-         .datepicker('show');
+          .prop('readonly', false)
+          .datepicker('option', 'minDate', dateText)
+          .datepicker('option', 'showRange', true) // ✅ درست
+          .datepicker('show');
    }
 });
 
@@ -1185,7 +1199,7 @@ function createPassengerFields(number, type, totalPassengers) {
                           data-required="foreign" name="passportCountry${number}" id="passportCountry${number}" class="select2">
                      <option value="">${typeof useXmltag === 'function' ? useXmltag('Countryissuingpassport') : 'کشور صادر کننده گذرنامه'}</option>
                      ${window.countryCodes ? window.countryCodes.map(country =>
-      `<option value="${country.code}">${country.name}</option>`
+       `<option value="${country.code}">${country.name}</option>`
    ).join('') : ''}
                   </select>
                </div>
@@ -1567,10 +1581,10 @@ function lock(formattedData , additionalData) {
 
 
    document
-      .querySelector('.passenger-form-main-content')
-      .insertAdjacentHTML(
-         'afterend',
-         `
+       .querySelector('.passenger-form-main-content')
+       .insertAdjacentHTML(
+           'afterend',
+           `
     <div id='resultRoomHotel'>
         <div class='roomHotelLocal'>
             <div class='loader-box-user-buy'>
@@ -1580,7 +1594,7 @@ function lock(formattedData , additionalData) {
         </div>
     </div>
     `
-      );
+       );
 
    formattedData.SourceId = source_id;
    let selectedEntertainmentData = Array.from(selectedEntertainment).map(i => {
@@ -1672,23 +1686,23 @@ function showLock() {
    `;
    $('.parent_next_tour_n_').hide();
    document
-      .querySelector('.passenger-form-main-content')
-      .insertAdjacentHTML(
-         'afterend',
-         mainContentHTML
-      );
+       .querySelector('.passenger-form-main-content')
+       .insertAdjacentHTML(
+           'afterend',
+           mainContentHTML
+       );
    document
-      .querySelector('.passengerDetailReservationTour_aside_lastBox .row.total')
-      .insertAdjacentHTML(
-         'afterend',
-         inputRules
-      );
+       .querySelector('.passengerDetailReservationTour_aside_lastBox .row.total')
+       .insertAdjacentHTML(
+           'afterend',
+           inputRules
+       );
    document
-      .querySelector('.s-u-result-item-RulsCheck-item')
-      .insertAdjacentHTML(
-         'afterend',
-         btnPay
-      );
+       .querySelector('.s-u-result-item-RulsCheck-item')
+       .insertAdjacentHTML(
+           'afterend',
+           btnPay
+       );
 }
 
 function createPassengersLockView(passenger , number) {
@@ -2016,8 +2030,8 @@ function updateEntertainmentSummaryInSidebar() {
    if (!el) return;
 
    const titles = Array.from(selectedEntertainment)
-      .map(i => entertainmentList[i]?.title)
-      .filter(Boolean);
+       .map(i => entertainmentList[i]?.title)
+       .filter(Boolean);
 
    el.textContent = titles.length ? titles.join(" - ") : "خدماتی انتخاب نشده است";
 }
@@ -2163,9 +2177,9 @@ function restoreEntertainmentSelection(indices) {
    if (!indices || !indices.length) return;
 
    const hasUI =
-      entertainmentList &&
-      entertainmentList.length &&
-      document.querySelector('#entertainment-container .ent-box');
+       entertainmentList &&
+       entertainmentList.length &&
+       document.querySelector('#entertainment-container .ent-box');
 
    if (!hasUI) {
       pendingEntertainmentSelection = indices;
@@ -2289,14 +2303,14 @@ function checkAndFindMatch() {
 function selectDefaultPackage() {
    // بررسی اینکه داده‌ها موجود هستند
    if (!disaggregateData || !disaggregateData.uniqueRoomPackages ||
-      !disaggregateData.uniqueOutputRoutes || !disaggregateData.uniqueReturnRoutes) {
+       !disaggregateData.uniqueOutputRoutes || !disaggregateData.uniqueReturnRoutes) {
       return;
    }
 
    // بررسی اینکه حداقل یک آیتم در هر بخش وجود دارد
    if (disaggregateData.uniqueRoomPackages.length === 0 ||
-      disaggregateData.uniqueOutputRoutes.length === 0 ||
-      disaggregateData.uniqueReturnRoutes.length === 0) {
+       disaggregateData.uniqueOutputRoutes.length === 0 ||
+       disaggregateData.uniqueReturnRoutes.length === 0) {
       return;
    }
 

@@ -41,13 +41,19 @@ class currency extends baseController{
     }
 
     #region CurrencyList
-    public function CurrencyList($is_json = false) {
+    public function CurrencyList($is_json = false,$isEnable = false) {
         // Get all currencies from the base database
-        $currencyList = $this->currencyModel()->get()->all();
+
+        if($isEnable){
+            $currencyList = $this->currencyModel()->get()->where('IsEnable' , 'Enable')->all();
+        }else{
+            $currencyList = $this->currencyModel()->get()->all();
+        }
 
         // Get customer-specific currencies if not admin
         if (TYPE_ADMIN != '1') {
             $customerCurrencyModel = $this->getModel('customerCurrencyModel');
+
             $customerCurrencyList = $customerCurrencyModel->get()->all();
 
             // Create a map of customer currencies by ID for quick lookup
@@ -61,7 +67,7 @@ class currency extends baseController{
                 if (isset($customerCurrencyMap[$currency['id']])) {
                     // Mark this currency as customized
                     $currencyList[$key]['is_customized'] = true;
-                    
+
                     // Override base currency properties with customer currency properties
                     foreach ($customerCurrencyMap[$currency['id']] as $prop => $value) {
                         // Skip the ID field and base_currency_id field
@@ -364,13 +370,13 @@ class currency extends baseController{
         }
 
         $customer_currency_model = $this->getModel('customerCurrencyModel');
-        
+
         // Get the base currency ID
         $currency_id = $param['id'];
-        
+
         // Delete the customer-specific currency record
         $result = $customer_currency_model->delete(['base_currency_id' => $currency_id]);
-        
+
         if ($result) {
             return "Success : تنظیمات ارز با موفقیت به حالت پیش فرض بازگردانده شد";
         } else {

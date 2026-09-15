@@ -5,8 +5,8 @@
     .limits-wrapper {
         background: #ffffff;
         border-radius: 14px;
-        padding: 18px;
-        margin: 20px 0;
+        padding: 10px 18px;
+        margin: 12px 0;
         border: solid 1px #ccc;
     }
 
@@ -325,85 +325,85 @@
 </div>
 
 <script>
-   $(document).ready(function() {
-      const content = document.getElementById('limitsContent');
-      const icon = document.getElementById('limitsToggleIcon');
+    $(document).ready(function() {
+        const content = document.getElementById('limitsContent');
+        const icon = document.getElementById('limitsToggleIcon');
 
-      content.style.maxHeight = content.scrollHeight + 'px';
-      content.classList.add('expanded');
-      icon.classList.add('rotated');
-   });
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.classList.add('expanded');
+        icon.classList.add('rotated');
+    });
 
-   function toggleLimits() {
-      const content = document.getElementById('limitsContent');
-      const icon = document.getElementById('limitsToggleIcon');
+    function toggleLimits() {
+        const content = document.getElementById('limitsContent');
+        const icon = document.getElementById('limitsToggleIcon');
 
-      if (content.classList.contains('expanded')) {
-         content.style.maxHeight = '0px';
-         content.classList.remove('expanded');
-         icon.classList.remove('rotated');
-      } else {
-         content.classList.add('expanded');
-         content.style.maxHeight = content.scrollHeight + 'px';
-         icon.classList.add('rotated');
-      }
-   }
+        if (content.classList.contains('expanded')) {
+            content.style.maxHeight = '0px';
+            content.classList.remove('expanded');
+            icon.classList.remove('rotated');
+        } else {
+            content.classList.add('expanded');
+            content.style.maxHeight = content.scrollHeight + 'px';
+            icon.classList.add('rotated');
+        }
+    }
 
-   // ===========================
-   // Modal Remove Limit
-   // ===========================
-   let selectedAgencyId = null;
+    // ===========================
+    // Modal Remove Limit
+    // ===========================
+    let selectedAgencyId = null;
 
-   function openRemoveModal(agencyId) {
-      selectedAgencyId = agencyId;
-      document.getElementById('limitModal').classList.add('active');
-   }
+    function openRemoveModal(agencyId) {
+        selectedAgencyId = agencyId;
+        document.getElementById('limitModal').classList.add('active');
+    }
 
-   function closeRemoveModal() {
-      document.getElementById('limitModal').classList.remove('active');
-      selectedAgencyId = null;
-   }
+    function closeRemoveModal() {
+        document.getElementById('limitModal').classList.remove('active');
+        selectedAgencyId = null;
+    }
 
-   function confirmRemoveLimit() {
-      if (!selectedAgencyId) return;
+    function confirmRemoveLimit() {
+        if (!selectedAgencyId) return;
 
-      $.ajax({
-         url: amadeusPath + 'user_ajax.php',
-         type: 'POST',
-         data: {
-            flag: 'remove_agency_search_limit',
-            agency_id: selectedAgencyId
-         },
-         success: function(response) {
-            if (response) {
-               $.toast({
-                  heading: 'موفق',
-                  text: "لیمیت با موفقیت برداشته شد",
-                  position: 'top-right',
-                  loaderBg: '#fff',
-                  icon: 'success',
-                  hideAfter: 3500,
-                  textAlign: 'right',
-                  stack: 6
-               });
-               closeRemoveModal();
-               setTimeout(function(){
-                  window.location.reload();
-               },300)
-            } else {
-               alert(response.message || 'خطا در حذف لیمیت');
+        $.ajax({
+            url: amadeusPath + 'user_ajax.php',
+            type: 'POST',
+            data: {
+                flag: 'remove_agency_search_limit',
+                agency_id: selectedAgencyId
+            },
+            success: function(response) {
+                if (response) {
+                    $.toast({
+                        heading: 'موفق',
+                        text: "لیمیت با موفقیت برداشته شد",
+                        position: 'top-right',
+                        loaderBg: '#fff',
+                        icon: 'success',
+                        hideAfter: 3500,
+                        textAlign: 'right',
+                        stack: 6
+                    });
+                    closeRemoveModal();
+                    setTimeout(function(){
+                        window.location.reload();
+                    },300)
+                } else {
+                    alert(response.message || 'خطا در حذف لیمیت');
+                }
+            },
+            error: function() {
+                alert('خطا در ارتباط با سرور');
             }
-         },
-         error: function() {
-            alert('خطا در ارتباط با سرور');
-         }
-      });
-   }
+        });
+    }
 
-   // بستن مودال با کلیک روی پس‌زمینه
-   document.getElementById('limitModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-         closeRemoveModal();
-      }
-   });
+    // بستن مودال با کلیک روی پس‌زمینه
+    document.getElementById('limitModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeRemoveModal();
+        }
+    });
 </script>
