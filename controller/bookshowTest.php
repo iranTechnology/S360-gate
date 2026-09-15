@@ -7480,6 +7480,7 @@ class bookshowTest extends clientAuth {
         }
 
 
+
         if (empty($ListBookExclusiveTour)) {
             return [
                 "footer" => [
@@ -7507,7 +7508,6 @@ class bookshowTest extends clientAuth {
         $pubSystem_qty_type = 0;
         $GetWayIranTech     = functions::DataIranTechGetWay();
         $FlightData         = [];
-        $CountTicket        = '1';
         $RowCountTicket     = $this->CountTicket;
         foreach ( $ListBookExclusiveTour as $key => $flightBook ) {
             if($flightBook == null){
@@ -8192,7 +8192,7 @@ class bookshowTest extends clientAuth {
 
 
             $FlightData[ $FlightDataNewest ][ $key ]["رنگ"]                                                 = $ColorTr;
-            $FlightData[ $FlightDataNewest ][ $key ]["ردیف"]                                                = $CountTicket ++;
+            $FlightData[ $FlightDataNewest ][ $key ]["ردیف"]                                                = $key + 1;
             $FlightData[ $FlightDataNewest ][ $key ]["تاریخ خرید<br/>واچر<br/>بلیط<br/>"]                = $DataFlightType;
             $FlightData[ $FlightDataNewest ][ $key ]["اطلاعات پرواز"]                                        = $DataFlightInformation;
             $FlightData[ $FlightDataNewest ][ $key ]["اطلاعات هتل"]                                        = $DataHotelInformation;
@@ -8203,12 +8203,13 @@ class bookshowTest extends clientAuth {
             $FlightData[ $FlightDataNewest ][ $key ]["وضعیت"]                                               = $DataFlightCondition;
 
 
+            $ColorTr               = '';
             $DataFlightType               = '';
             $DataFlightInformation        = '';
+            $DataHotelInformation        = '';
+            $entertainmentHtml        = '';
             $DataFlightCounterType        = '';
-            $DataFlightAgencyShare        = '';
             $DataFlightTotalFree          = '';
-            $DataFlightPassengerPayData   = '';
             $DataFlightActionBtn          = '';
             $DataFlightCondition          = '';
         }
@@ -10666,7 +10667,6 @@ class bookshowTest extends clientAuth {
             if (!empty($hotel['passenger_name'])) {
                 $passengerName = $hotel['passenger_name'];
             }
-            functions::insertLog('$hotel: ' . json_encode($hotel) , '000shojaee');
 
 
             $agencyName = $hotel['agency_name'] ?? functions::ClientName($hotel['client_id']) ?? 'نامشخص';
