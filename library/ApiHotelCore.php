@@ -334,6 +334,8 @@ class ApiHotelCore extends clientAuth {
 
             return $this->returnJson( $resultHotel );
         }
+
+
         return $this->showError( 'شما دسترسی لازم به این صفحه را ندارید', 403 );
     }
 

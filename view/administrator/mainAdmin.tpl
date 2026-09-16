@@ -767,16 +767,21 @@
    $(document).ready(function(){
       $(".bg-title").attr("style", "margin-top:50px !important;margin-bottom: 5px  !important;");
    });
-   setTimeout(() => {
-       document.getElementById("notifBell").classList.remove("bell-shake");
-   }, 5000);
    const bell = document.getElementById("notifBell");
-   bell.addEventListener("mouseenter", () => {
-       bell.classList.remove("bell-shake");
-   });
-   bell.addEventListener("click", () => {
-       bell.classList.remove("bell-shake");
-   });
+   setTimeout(() => {
+       if (bell) {
+           bell.classList.remove("bell-shake");
+       }
+   }, 5000);
+
+   if(bell) {
+       bell.addEventListener("mouseenter", () => {
+           bell.classList.remove("bell-shake");
+       });
+       bell.addEventListener("click", () => {
+           bell.classList.remove("bell-shake");
+       });
+   }
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
