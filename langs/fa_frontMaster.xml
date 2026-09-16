@@ -176,6 +176,7 @@
   <TransferExit>ترانسفر خروج</TransferExit>
   <Searchnamehotel>نام / آدرس هتل</Searchnamehotel>
   <Namehotel>نام هتل</Namehotel>
+  <TransferDetails>مشخصات ترانسفر</TransferDetails>
   <Hotelgrade>درجه هتل</Hotelgrade>
   <Allhotelincity>هتل های شهر</Allhotelincity>
   <Starhotel>ستاره هتل</Starhotel>
@@ -3938,7 +3939,20 @@
   <AgencyCommission>کمیسیون آژانس</AgencyCommission>
   <ForAPeriodOf>بمدت</ForAPeriodOf>
   <SearchForPurchase>جست و جو برای خرید</SearchForPurchase>
+  <FromFlightSearchBox>مبدا</FromFlightSearchBox>
+  <ToFlightSearchBox>مقصد</ToFlightSearchBox>
+  <InternalFlightSearchBox>داخلی</InternalFlightSearchBox>
+  <SearchForCityOfOrigin>جستجوی شهر مبدا</SearchForCityOfOrigin>
+  <SearchForDestinationCity>جستجوی شهر مقصد</SearchForDestinationCity>
   <MoveNumber>شماره حرکت</MoveNumber>
   <CarrierCompany>شرکت حمل کننده</CarrierCompany>
   <TrainNumber>شماره قطار</TrainNumber>
+  <internationalForFlightSearchBox>خارجی</internationalForFlightSearchBox>
+  <MainLoad>بار اصلی</MainLoad>
+  <HandLuggage>بار دستی</HandLuggage>
+  <Information>اطلاعات</Information>
+  <TermsandConditionsDetailFlight>قوانین و مقررات</TermsandConditionsDetailFlight>
+  <WithoutAPenalty>بدون جریمه</WithoutAPenalty>
+  <Untitled>عنوان نامشخص</Untitled>
+
 </Main>

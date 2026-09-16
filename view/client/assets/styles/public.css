@@ -444,7 +444,7 @@ input:focus-visible {
 
 .modal-login-title {
   margin-top: 5px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 200px !important;
   display: block !important;
   font-size: 21px;
   color: white;
@@ -1700,7 +1700,7 @@ li:nth-child(7) {
 
   .modal-login-title {
     margin-top: 5px !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 50px !important;
   }
 }
 

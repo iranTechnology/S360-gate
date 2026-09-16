@@ -3152,6 +3152,13 @@
   <TransferDetails>Детали перевода</TransferDetails>
   <TransferEnter>Перенос (ввод)</TransferEnter>
   <TransferExit>Выход для пересадки</TransferExit>
+  <internationalForFlightSearchBox>международный</internationalForFlightSearchBox>
+  <MainLoad>Основная нагрузка</MainLoad>
+  <HandLuggage>Ручная кладь</HandLuggage>
+  <Information>Информация</Information>
+  <TermsandConditionsDetailFlight>Условия и положения</TermsandConditionsDetailFlight>
+  <WithoutAPenalty>Без штрафа</WithoutAPenalty>
+  <Untitled>Без названия</Untitled>
 
 </Main>
 

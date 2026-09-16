@@ -18,7 +18,7 @@
                 <ul class="tabs">
                   <li class="tab-link  detailShow current"
                       :data-tab="`tab-1-${key_flight}`" :counterTab="`${key_flight}`">
-                    {{ useXmltag('Informationflight')}}
+                    {{ useXmltag('Information')}}
                   </li>
                   <li class="tab-link "  :data-tab="`tab-2-${key_flight}`">
                     {{ useXmltag('Price')}}
@@ -26,7 +26,7 @@
                   <li class="tab-link"
                       :data-tab="`tab-3-${key_flight}`"
                       @click="getFeeCancel(each_flight.flight_type_li, each_flight.airline, each_flight.cabin_type)">
-                    {{ useXmltag('TermsandConditions')}}
+                    {{ useXmltag('TermsandConditionsDetailFlight')}}
                   </li>
                   <li class="tab-link site-border-top-main-color"  :data-tab="`tab-4-${key_flight}`"
                       @click="getAirRules()" v-show="each_flight.source_id=='14'">
@@ -130,7 +130,7 @@
                       </div>
 
                       <div class="price-row price-total">
-                        <span>{{useXmltag('Finalprice')}}</span>
+                        <span>{{useXmltag('Total')}}</span>
                         <strong>{{ row.finalDisplay }} {{useXmltag('Rial')}}</strong>
                       </div>
                     </div>
@@ -497,10 +497,10 @@
                        this.fee_cancel = data_fee.data.map(item => ({
                           ...item,
                           fine_text: item.fine_text ||
-                             (Number(item.fine_percentage) === 0 ? 'بدون جریمه' :
-                                Number(item.fine_percentage) === 100 ? 'غیرقابل استرداد' :
+                             (Number(item.fine_percentage) === 0 ? useXmltag('WithoutAPenalty') :
+                                Number(item.fine_percentage) === 100 ? useXmltag('NonRefundable') :
                                    `%${item.fine_percentage}`),
-                          title: item.title || 'عنوان نامشخص'
+                          title: item.title || useXmltag('Untitled')
                        }));
                     } else {
                        this.fee_cancel = [];

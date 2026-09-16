@@ -911,8 +911,11 @@ if (window.innerWidth <= 576) {
     });
   });
 
-// Close bottom sheet with X button
-  closeSheetButton.addEventListener('click', closeBottomSheet);
+  if (closeSheetButton) {
+    // Close bottom sheet with X button
+    closeSheetButton.addEventListener('click', closeBottomSheet);
+  }
+
 
 // Close bottom sheet with overlay
   overlay.addEventListener('click', closeBottomSheet);

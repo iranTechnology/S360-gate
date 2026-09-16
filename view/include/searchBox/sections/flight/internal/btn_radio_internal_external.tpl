@@ -8,7 +8,7 @@
                id="raftobar">
         <label for="raftobar"
                class="switch-label switch-label-on">
-            ##Foreign##
+            ##internationalForFlightSearchBox##
         </label>
         <input autocomplete="off"
                type="radio"

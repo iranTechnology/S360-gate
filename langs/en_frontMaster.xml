@@ -437,7 +437,7 @@
   <Wentflight>Flight</Wentflight>
   <Returnflight>Return Flight</Returnflight>
   <Selectionflight>Book</Selectionflight>
-  <SelectionAndDetailflight>flight detail and buy</SelectionAndDetailflight>
+  <SelectionAndDetailflight>flight detail</SelectionAndDetailflight>
 
   <Numflight>Flight Number</Numflight>
   <Informationflight>Flight Information</Informationflight>
@@ -639,8 +639,8 @@
   <Typepassenger>Passenger Type</Typepassenger>
   <Membershipnumber>Membership Number</Membershipnumber>
   <Identificationnumber>Identification number</Identificationnumber>
-  <DepartureDate>Departure date</DepartureDate>
-  <Returndate>Return Date</Returndate>
+  <DepartureDate>Departure</DepartureDate>
+  <Returndate>Return</Returndate>
   <Exitdate>Exit date</Exitdate>
   <Typeidentitydocument>Identity file type</Typeidentitydocument>
   <Passport>passport</Passport>
@@ -665,10 +665,10 @@
   <Locationdocumentfile>File type file Location</Locationdocumentfile>
   <Identityidentity>Identity Identity</Identityidentity>
   <Iam>I'm In</Iam>
-  <Passportexpirydate>Passport expiration date</Passportexpirydate>
+  <Passportexpirydate>Passport expiration</Passportexpirydate>
   <Requireddocuments>Required Documents</Requireddocuments>
   <InformationSaler>Information</InformationSaler>
-  <InformationSalerInfo>Buyer's contact information</InformationSalerInfo>
+  <InformationSalerInfo>contact information</InformationSalerInfo>
   <Tracknumber>Tracking Number</Tracknumber>
   <Title>Title</Title>
   <TitleEnglish>English Title</TitleEnglish>
@@ -727,7 +727,7 @@
   <Starttime>Clockwise</Starttime>
   <Returntime>Return time</Returntime>
   <Return>Return</Return>
-  <Nationalnumber>National Number</Nationalnumber>
+  <Nationalnumber>National Id</Nationalnumber>
   <National>National</National>
   <NameTransport>Transport Name Name</NameTransport>
   <Row>Rows</Row>
@@ -815,7 +815,7 @@
   <Chooseflatlayout>Select Flat Layout</Chooseflatlayout>
   <Startpriceforonnight>One Night Starting Price</Startpriceforonnight>
   <Informationpassenger>Passenger Information</Informationpassenger>
-  <Total>Total Total</Total>
+  <Total>Total</Total>
   <Surnamechildrenunderyearsage>Name of children under the age of 6</Surnamechildrenunderyearsage>
   <Reviewapplycode>Review and apply the code</Reviewapplycode>
   <StaylongeruntilPercentageovernightovernight>Stay longer until 2 pm (50) Percentage overnight and more than 2:00 pm Full charge overnight.</StaylongeruntilPercentageovernightovernight>
@@ -954,7 +954,7 @@
   <Charter>Charter</Charter>
   <BusinessType>Business</BusinessType>
   <SystemType>Schedule</SystemType>
-  <EconomicsType>Economics</EconomicsType>
+  <EconomicsType>Economy</EconomicsType>
   <Rial>Rial</Rial>
   <RequestDetails>Request Specification</RequestDetails>
   <EmeraldLeague>Emerald League</EmeraldLeague>
@@ -1359,7 +1359,7 @@
   <CompletionCapacity>Completion Capacity</CompletionCapacity>
   <PhoneNumberToBookings>Phone Number for Phone Book Coordination</PhoneNumberToBookings>
   <CancellationPrice>Cancellation Price</CancellationPrice>
-  <Kilograms>kilogram</Kilograms>
+  <Kilograms>Kg</Kilograms>
   <AccordingCivilAviationOrganizationResponsibilityResponsibleFlying>Under the provisions of the Civil Aviation Organization, the responsibility for the inconvenience, delay or delay at the time of flight is the responsibility of the flight organizer.</AccordingCivilAviationOrganizationResponsibilityResponsibleFlying>
   <ResponsibilityAllTravelInformationEntryIncorrectPassengerRePurchase>is responsible for the correct insertion of all passenger and route information and ... with the user, and if the incorrect information is included, the passenger name, date, etc. are not updated after the final purchase. To correct the information, the passenger should cancel the ticket. And redeem or be fined.</ResponsibilityAllTravelInformationEntryIncorrectPassengerRePurchase>
   <MustEnterValidMobileNecessary>The user must enter a valid mobile number with an SMS that is open in the system to send SMS if needed, delay, hurry and cancel flight.</MustEnterValidMobileNecessary>
@@ -3281,7 +3281,7 @@
   <RegisterDiscountCode>Register discount code</RegisterDiscountCode>
   <InfantOrBedlessChild>Infant Or Child Without Bed</InfantOrBedlessChild>
   <Apply>Apply</Apply>
-  <agencycredentials>Your agency's credibility</agencycredentials>
+  <agencycredentials>Your agency credit</agencycredentials>
   <Enteryourdiscountcode>Enter your discount code</Enteryourdiscountcode>
 
   <TypePointYes>Earn points</TypePointYes>
@@ -3451,13 +3451,13 @@
   <flightInternatiol>flightInternatiol</flightInternatiol>
   <flightInternalToAirport>flight Internal To Airport</flightInternalToAirport>
   <flightInternationalToAirport>flight International To Airport</flightInternationalToAirport>
-  <BasePriceFlight>Base Price</BasePriceFlight>
-  <TaxesAndLevies>Taxes and Levies</TaxesAndLevies>
+  <BasePriceFlight>Base</BasePriceFlight>
+  <TaxesAndLevies>Tax</TaxesAndLevies>
   <AgencyCommission>Agency commission</AgencyCommission>
   <ForAPeriodOf>For a period of</ForAPeriodOf>
-  <AdultInfo>Adult Passenger Information</AdultInfo>
-  <ChildInfo>Child Passenger Information</ChildInfo>
-  <BabyInfo>Infant Passenger Information</BabyInfo>
+  <AdultInfo>Adult</AdultInfo>
+  <ChildInfo>Child</ChildInfo>
+  <BabyInfo>Infant</BabyInfo>
   <SearchForPurchase>Search for purchase</SearchForPurchase>
   <FromFlightSearchBox>From</FromFlightSearchBox>
   <ToFlightSearchBox>To</ToFlightSearchBox>
@@ -3470,4 +3470,12 @@
   <MoveNumber>Move number</MoveNumber>
   <CarrierCompany>Carrier company</CarrierCompany>
   <TrainNumber>Train number</TrainNumber>
+  <internationalForFlightSearchBox>international</internationalForFlightSearchBox>
+  <MainLoad>Main load</MainLoad>
+  <HandLuggage>Hand luggage</HandLuggage>
+  <Information>Information</Information>
+  <TermsandConditionsDetailFlight>Conditions</TermsandConditionsDetailFlight>
+  <WithoutAPenalty>Without a penalty</WithoutAPenalty>
+  <Untitled>Untitled</Untitled>
+
 </Main>

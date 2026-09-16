@@ -517,7 +517,11 @@ $(document).ready(function () {
         });
 
 
-        document.getElementById('loginedname').contentWindow.postMessage('','*');
+        const frame = document.getElementById('loginedname');
+        if (frame && frame.contentWindow) {
+            frame.contentWindow.postMessage('', '*');
+        }
+
         // const frame = document.getElementById('loginedname');
         // frame.contentWindow.postMessage('*', 'https://online.manshoortravel.com/gds/iframe&manshore_solh_new&topBarMainName');
 

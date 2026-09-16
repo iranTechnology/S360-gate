@@ -520,10 +520,10 @@ class apiLocal extends clientAuth
                     if ($data['IsInternalFlight'] == '1') {
                         $data['Date'] = str_replace('-', '/', functions::DateJalali($Revalidate['Result']['Flight']['OutputRoutes'][0]['DepartureDate']));
                         $data['Time'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['DepartureTime'];
-                        $data['OriginAirportIata'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['Departure']['Code']['Code'];
-                        $data['OriginCity'] = functions::NameCity($Revalidate['Result']['Flight']['OutputRoutes'][0]['Departure']['Code']['Code']);
-                        $data['DestiAirportIata'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['Arrival']['Code']['Code'];
-                        $data['DestiCity'] = functions::NameCity($Revalidate['Result']['Flight']['OutputRoutes'][0]['Arrival']['Code']['Code']);
+                        $data['OriginAirportIata'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['Departure']['Code'];
+                        $data['OriginCity'] = functions::NameCity($Revalidate['Result']['Flight']['OutputRoutes'][0]['Departure']['Code']);
+                        $data['DestiAirportIata'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['Arrival']['Code'];
+                        $data['DestiCity'] = functions::NameCity($Revalidate['Result']['Flight']['OutputRoutes'][0]['Arrival']['Code']);
                         $data['AircraftCode'] = !empty($Revalidate['Result']['Flight']['OutputRoutes'][0]['Aircraft']['Manufacturer']) ? $Revalidate['Result']['Flight']['OutputRoutes'][0]['Aircraft']['Manufacturer'] : '';
                         $data['FlightNo'] = $Revalidate['Result']['Flight']['OutputRoutes'][0]['FlightNo'];
                     }
