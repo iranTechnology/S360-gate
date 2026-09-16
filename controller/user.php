@@ -2122,9 +2122,15 @@ class user extends baseController
                 $result[$key]['button_list'] = [];
 
                 $result[$key]['button_list'][] = [
-                    'title' => functions::Xmlinformation('FlightTicket')->__toString(),
+                    'title' => functions::Xmlinformation('Onewayticket')->__toString(),
                     'type' => 'link',
                     'link' => $bookList[$key]['dataBtnPdf'],
+                ];
+
+                $result[$key]['button_list'][] = [
+                    'title' => functions::Xmlinformation('Returnticket')->__toString(),
+                    'type' => 'link',
+                    'link' =>  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightReturnPdf&id=' . $item['request_number'].'&lang=fa',
                 ];
 
                 if ($item['successfull'] == 'book' && $item['IsInternal'] != '0') {
@@ -6281,9 +6287,15 @@ GROUP BY factor_number
                     $result[$key]['button_list'] = [];
 
                     $result[$key]['button_list'][] = [
-                        'title' => functions::Xmlinformation('FlightTicket')->__toString(),
+                        'title' => functions::Xmlinformation('Onewayticket')->__toString(),
                         'type' => 'link',
                         'link' => $bookList[$key]['dataBtnPdf'],
+                    ];
+
+                    $result[$key]['button_list'][] = [
+                        'title' => functions::Xmlinformation('Returnticket')->__toString(),
+                        'type' => 'link',
+                        'link' =>  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightReturnPdf&id=' . $item['request_number'].'&lang=fa',
                     ];
 
                     if ($item['statusBook'] == 'book' && $item['IsInternal'] != '0') {

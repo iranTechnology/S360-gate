@@ -1,5 +1,8 @@
 <?php
-
+//    error_reporting(1);
+//    error_reporting(E_ALL | E_STRICT);
+//    @ini_set('display_errors', 1);
+//    @ini_set('display_errors', 'on');
 
 class detailHotel extends ApiHotelCore
 {
@@ -354,6 +357,7 @@ class detailHotel extends ApiHotelCore
             // -----------------------
             // Generals
             // -----------------------
+
             if (
                 isset($apiHotel['Result']['ExtraData']['Description']) &&
                 ($apiHotel['Result']['ExtraData']['Description'] === "" || $apiHotel['Result']['ExtraData']['Description'] === null)
@@ -504,7 +508,6 @@ class detailHotel extends ApiHotelCore
                 }
             }
         }
-
 
 
 
@@ -773,7 +776,6 @@ class detailHotel extends ApiHotelCore
 
     public function insertTemporaryHotel($param)
     {
-
         $allPrices =json_decode($param['Prices'],true);
         $hotelDetail = json_decode($param['HotelDetail'], true);
 
@@ -830,7 +832,6 @@ class detailHotel extends ApiHotelCore
                 if($source_id == '29') {
                     $room_name = explode('|' , $room['RoomName']);
                 }
-
                 foreach ($rate['Prices'] as $k => $priceItem) {
 
                     $RoomName = isset($rate['Board']['Name']) ? $room['RoomName'] . ' ' . $rate['Board']['Name'] : $room['RoomName'];
@@ -862,7 +863,9 @@ class detailHotel extends ApiHotelCore
                     $prices[$i]['PriceChild'] = $priceItem['Child'];
                     $prices[$i]['PriceExtraBed'] = $priceItem['ExtraBed'];
                     $prices[$i]['StartDate'] = $priceItem['StartDate'];
-                    $prices[$i]['EndDate'] = $priceItem['EndDate'];
+                    $prices[$i]['AdultCapacity'] = $room['AdultCapacity'];
+                    $prices[$i]['ChildCapacity'] = $room['ChildCapacity'];
+                    $prices[$i]['ChildAge'] = $room['ChildAge'];
 
                     $i++;
                 }
@@ -1063,7 +1066,6 @@ class detailHotel extends ApiHotelCore
                             if ($final_room_index == $room_reserve_select) {
 
                                 $roomIndex++;
-
                                 $prices[$k]['Index'] = $roomKey;
                                 $prices[$k]['Count'] = $explode[1];
                                 $prices[$k]['ExCount'] = 0;
@@ -1200,7 +1202,9 @@ class detailHotel extends ApiHotelCore
             $d['room_count'] = $count;
             $d['agency_commission'] = 0;
             $d['agency_commission_price_type'] = '';
-            $d['type_of_price_change'] = '';
+            $d['AdultCapacity'] = $roomSelected[$room]['AdultCapacity'];
+            $d['ChildCapacity'] = $roomSelected[$room]['ChildCapacity'];
+            $d['ChildAge'] = $roomSelected[$room]['ChildAge'];
 
             $stars = $hotelDetail['Result']['Stars'] > 0 ? $hotelDetail['Result']['Stars'] : 'all';
             functions::insertLog('dataaaaaa insert temprory agency_commission==>'.  json_encode([$CityId, $stars, $this->counterId, $roomSelected[$room]['Date'], $type_application],256),'Hotels/valiagepeydakonam');
@@ -1616,6 +1620,9 @@ class detailHotel extends ApiHotelCore
         $d['source_id'] = $temprory_hotel['source_id'];
         $d['price_session_id'] = $temprory_hotel['price_session_id'];
         $d['isInternal'] = $temprory_hotel['is_internal'];
+        $d['AdultCapacity'] = $temprory_hotel['AdultCapacity'];
+        $d['ChildCapacity'] = $temprory_hotel['ChildCapacity'];
+        $d['ChildAge'] = $temprory_hotel['ChildAge'];
 
         if($temprory_hotel['is_internal'] == '0' || ($temprory_hotel['is_internal'] == '1' && ($temprory_hotel['source_id'] =='17' || $temprory_hotel['source_id'] =='29')) ){
             $d['total_price_api'] = $temprory_hotel['price_online_current'];
@@ -1823,7 +1830,7 @@ class detailHotel extends ApiHotelCore
                         $birthday = ($room['passenger_birthday_en']) ? $room['passenger_birthday_en'] : dateTimeSetting::jalali_to_gregorian(explode('-', $room['passenger_birthday'])[0], explode('-', $room['passenger_birthday'])[1], explode('-', $room['passenger_birthday'])[2], '-');
                     }
                     if($room['source_id'] == '42'){
-                        $numberOfPassengers = (int)($room['room_count'] ?? 1);
+                        $numberOfPassengers = (int)($room['AdultCapacity'] ?? 1);
                         for ($i = 0; $i < $numberOfPassengers; $i++) {
                             $passengersArray[] = [
                                 'Gender' => $room['passenger_gender'],
@@ -1839,7 +1846,9 @@ class detailHotel extends ApiHotelCore
                             ];
                         }
 
-                    }else{
+                    }
+
+                    else{
                         $passengersArray[] = [
                             'Gender' => $room['passenger_gender'],
                             'FirstName'    => $room['passenger_name'],
@@ -1889,11 +1898,17 @@ class detailHotel extends ApiHotelCore
                     }
                 }
 
+
+
+
+
+
                 $requestArray = [
                     'FactorNumber' => $factor_number,
                     'RequestNumber' => $params['requestNumber'],
                     'PriceSessionId' => $price_session_id,
                     'Rooms' => $roomsArray,
+                    'CountPassengers' => $book_hotel[0]['AdultCapacity'],
                     'Passengers' => $passengersArray,
                     'Buyer' => $buyerArray,
                 ];

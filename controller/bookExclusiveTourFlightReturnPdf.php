@@ -5,7 +5,7 @@ if(  $_SERVER['REMOTE_ADDR']=='93.118.161.174'  ) {
 //    @ini_set('display_errors', 1);
 //    @ini_set('display_errors', 'on');
 }
-class bookExclusiveTourFlightPdf  extends exclusiveTour
+class bookExclusiveTourFlightReturnPdf  extends exclusiveTour
 {
 
     public function getTicketDataByRequestNumber($request_number, $conditionCancelStatus = null)
@@ -315,8 +315,8 @@ class bookExclusiveTourFlightPdf  extends exclusiveTour
 //        $cancelTicketPrice = $priceTotal - (($priceTotal * $info['cancelTicketPercent']) / 100);
 
             }
-            $picAirline = functions::getAirlinePhoto($info['airline_iata']);
-            $airlineName = functions::InfoAirline($info['airline_iata']);
+            $picAirline = functions::getAirlinePhoto($info['ret_airline_iata']);
+            $airlineName = functions::InfoAirline($info['ret_airline_iata']);
             // $price = functions::CalculateDiscountOnePerson($info['request_number'], $info['passenger_national_code'] == '0000000000' ? $info['passenger_national_code'] : $info['passportNumber'], 'yes');
             $airplan = 'https://versagasht.com/gds/view/client/assets/images/air.png';
             //               $barcodeBase64 = barcode128_base64($info['pnr']);
@@ -403,44 +403,44 @@ class bookExclusiveTourFlightPdf  extends exclusiveTour
                                     <?php if($_GET['lang'] == 'fa'){ ?>
                                         <td style="padding:10px; vertical-align:top; border-top:1px solid #ccc;">
                                             <p class="head-p">مبدا</p>
-                                            <p class="head-detail-p"><?php echo $info['origin_city']?></p>
-                                            <p class="head-p">مقصد</p>
                                             <p class="head-detail-p"><?php echo $info['desti_city']?></p>
+                                            <p class="head-p">مقصد</p>
+                                            <p class="head-detail-p"><?php echo $info['origin_city']?></p>
                                         </td>
                                     <?php  } ?>
                                     <td style="padding:10px; text-align:left; vertical-align:top; border-top:1px solid #ccc;">
                                         <p class="head-p">Origin</p>
-                                        <p class="head-detail-p"><?php echo $info['origin_city']?></p>
-                                        <p class="head-p">Destination</p>
                                         <p class="head-detail-p"><?php echo $info['desti_city']?></p>
+                                        <p class="head-p">Destination</p>
+                                        <p class="head-detail-p"><?php echo $info['origin_city']?></p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <?php if($_GET['lang'] == 'fa'){ ?>
                                         <td style="padding:10px; vertical-align:top; border-top:1px solid #ccc;">
                                             <p class="head-p">تاریخ حرکت</p>
-                                            <p class="head-detail-p"><?php $date = functions::OtherFormatDate($info['date_flight']); echo $date['DepartureDate']; ?></p>
+                                            <p class="head-detail-p"><?php $date = functions::OtherFormatDate($info['ret_date_flight']); echo $date['DepartureDate']; ?></p>
                                             <p class="head-p">ساعت حرکت</p>
-                                            <p class="head-detail-p"><?php echo $resultLocal->format_hour($info['time_flight']); ?></p>
+                                            <p class="head-detail-p"><?php echo $resultLocal->format_hour($info['ret_time_flight']); ?></p>
                                         </td>
                                     <?php } ?>
                                     <td style="padding:10px; text-align:left; vertical-align:top; border-top:1px solid #ccc;">
                                         <p class="head-p">Flight Date</p>
-                                        <p class="head-detail-p"><?php $dateRet = functions::ConvertToMiladi($info['date_flight']); echo $dateRet;?></p>
+                                        <p class="head-detail-p"><?php $dateRet = functions::ConvertToMiladi($info['ret_date_flight']); echo $dateRet;?></p>
                                         <p class="head-p">Flight Time</p>
-                                        <p class="head-detail-p"><?php echo $resultLocal->format_hour($info['time_flight']); ?></p>
+                                        <p class="head-detail-p"><?php echo $resultLocal->format_hour($info['ret_time_flight']); ?></p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <?php if($_GET['lang'] == 'fa'){ ?>
                                         <td style="padding:10px; vertical-align:top; border-top:1px solid #ccc;">
                                             <p class="head-p">شماره پرواز</p>
-                                            <p class="head-detail-p"><?php echo $info['flight_number']?></p>
+                                            <p class="head-detail-p"><?php echo $info['ret_flight_number']?></p>
                                         </td>
                                     <?php } ?>
                                     <td style="padding:10px; text-align:left; vertical-align:top; border-top:1px solid #ccc;">
                                         <p class="head-p">Flight Number</p>
-                                        <p class="head-detail-p"><?php echo $info['flight_number']?></p>
+                                        <p class="head-detail-p"><?php echo $info['ret_flight_number']?></p>
                                     </td>
                                 </tr>
                                 <!--                                <tr>-->
@@ -474,14 +474,14 @@ class bookExclusiveTourFlightPdf  extends exclusiveTour
                                     <?php  if($_GET['lang'] == 'fa'){  ?>
                                         <td style="padding:10px; vertical-align:top;">
                                             <p class="head-p">ایرلاین</p>
-                                            <p class="head-detail-p"><?php echo $info['airline_name'] . ' (' . $info['airline_iata'] . ')'?></p>
+                                            <p class="head-detail-p"><?php echo $info['ret_airline_name'] . ' (' . $info['ret_airline_iata'] . ')'?></p>
                                         </td>
                                     <?php } ?>
                                     <td style="padding:10px; text-align:left; vertical-align:top;">
                                         <p class="head-p">Airline</p>
                                         <p class="head-detail-p" style="text-align:right">
-                                            <?php echo $info['airline_name']; ?>
-                                            (<span dir="rtl"><?php echo $info['airline_iata']; ?></span>)
+                                            <?php echo $info['ret_airline_name']; ?>
+                                            (<span dir="rtl"><?php echo $info['ret_airline_iata']; ?></span>)
                                         </p>
                                     </td>
                                 </tr>
@@ -510,12 +510,12 @@ class bookExclusiveTourFlightPdf  extends exclusiveTour
                                     <?php if($_GET['lang'] == 'fa'){ ?>
                                         <td style="padding:10px; vertical-align:top; border-top:1px solid #ccc;">
                                             <p class="head-p">کلاس پرواز</p>
-                                            <p class="head-detail-p"><?php echo $info['seat_class'] ? $info['seat_class'] : '-'?></p>
+                                            <p class="head-detail-p"><?php echo $info['ret_seat_class'] ? $info['ret_seat_class'] : '-'?></p>
                                         </td>
                                     <?php } ?>
                                     <td style="padding:10px; text-align:left; vertical-align:top; border-top:1px solid #ccc;">
                                         <p class="head-p">Flight Class</p>
-                                        <p class="head-detail-p"><?php echo $info['seat_class'] ? $info['seat_class'] : '-'?></p>
+                                        <p class="head-detail-p"><?php echo $info['ret_seat_class'] ? $info['ret_seat_class'] : '-'?></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -877,7 +877,6 @@ class bookExclusiveTourFlightPdf  extends exclusiveTour
 
                 }
                 ?>
-
                 <?php
                 if ($info['request_cancel'] != 'confirm' && ($info['successfull'] == 'book' || $info['successfull'] == 'private_reserve') && CLIENT_ID == 408){ ?>
                     <div class="" style="margin: 10px 100px ;border:1px solid #ccc">
@@ -912,7 +911,6 @@ class bookExclusiveTourFlightPdf  extends exclusiveTour
                     </div>
                     <?php
                 }?>
-
 
                 <div style="
                 <?php
