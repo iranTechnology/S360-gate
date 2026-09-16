@@ -269,7 +269,7 @@
                             </div>
 
                             <div class="s-u-result-item-div s-u-result-content-item-div-change ">
-                                <span class="d-flex align-items-center justify-content-center gap-2">{$objDetail->AirlineName[$direction]} <span> ({$item[0]['flight_number']})</span></span>
+                                <span class="d-flex align-items-center justify-content-center gap-2">{$objDetail->Airline_IATA[$direction]} <span> ({$item[0]['flight_number']})</span></span>
                             </div>
                         </div>
                         <div class="s-u-result-item-wrapper s-u-result-item-wrapper-change col-xs-9 col-sm-10">
@@ -1589,7 +1589,7 @@
                     <th>##Nameenglish##</th>
                     <th>##Familyenglish##</th>
                     <th>##Happybirthday##</th>
-                    <th>##Numpassport##/##Nationalnumber##</th>
+                    <th>##Numpassport##<br>##Nationalnumber##</th>
                     <th>##Price##</th>
                 </tr>
                 </thead>

@@ -28,10 +28,10 @@
                         <div class=" international-available-panel-min">
                             <ul class="tabs">
                                 <li class="tab-link  site-border-top-main-color detailShow current" :data-tab="`tab-1-${key_flight}`" :counterTab="`${key_flight}`">
-                                    {{ useXmltag('Informationflight')}}
+                                    {{ useXmltag('Information')}}
                                 </li>
                                 <li class="tab-link site-border-top-main-color "  :data-tab="`tab-2-${key_flight}`">
-                                    {{ useXmltag('TermsandConditions')}}
+                                    {{ useXmltag('TermsandConditionsDetailFlight')}}
                                 </li>
 <!--                                  <li class="tab-link site-border-top-main-color"  :data-tab="`tab-3-${key_flight}`" @click="getAirRules()">-->
 <!--                                      {{ useXmltag('Ticketrules')}}-->

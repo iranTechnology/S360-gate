@@ -3386,4 +3386,12 @@
   <TransferDetails>تفاصيل التحويل</TransferDetails>
   <TransferEnter>خدمة النقل عند الوصول</TransferEnter>
   <TransferExit>خدمة النقل عند المغادرة</TransferExit>
+  <internationalForFlightSearchBox>دولي</internationalForFlightSearchBox>
+  <MainLoad>الحمل الرئيسي</MainLoad>
+  <HandLuggage>أمتعة يدوية</HandLuggage>
+  <Information>معلومة</Information>
+  <TermsandConditionsDetailFlight>القواعد واللوائح</TermsandConditionsDetailFlight>
+  <WithoutAPenalty>بدون غرامة</WithoutAPenalty>
+  <Untitled>بدون عنوان</Untitled>
+
 </Main>

@@ -259,6 +259,7 @@ class passengersDetailLocal extends apiLocal
                 }
 
                 if ($rec['IsInternalFlight'] == '1') {
+
                     $this->OriginCity[$direction] = $rec['OriginCity'];
                     $this->DestiCity[$direction] = $rec['DestiCity'];
                     $this->OriginAirportIata[$direction] = $rec['OriginAirportIata'];
@@ -428,7 +429,7 @@ class passengersDetailLocal extends apiLocal
                     $this->Chd_qty = $rec['Chd_qty'];
                     $this->Inf_qty = $rec['Inf_qty'];
                     $this->token_session[$direction] = $rec['token_session'];
-                    $this->SeatClass[$direction] =($rec['SeatClass'] == 'C' || $rec['SeatClass'] == 'B')  ? 'بیزینس' : 'اکونومی';
+                    $this->SeatClass[$direction] =($rec['SeatClass'] == 'C' || $rec['SeatClass'] == 'B')  ? functions::Xmlinformation('Business') : functions::Xmlinformation('EconomicsType');
                     $this->SourceID[$direction] = $rec['SourceID'];
                     $this->Amount += (intval($this->Adt_qty) * ($AdtPriceByChangeExploded[2] == 'YES' ? $this->AdtPriceByChange[$direction] : $this->AdtPrice[$direction])) + (intval($this->Chd_qty) * ($ChdPriceByChangeExploded[2] == 'YES' ? $this->ChdPriceByChange[$direction] : $this->ChdPrice[$direction])) + (intval($this->Inf_qty) * $this->InfPrice[$direction]);
                 }
@@ -481,7 +482,6 @@ class passengersDetailLocal extends apiLocal
 
             $searchDate = str_replace('/', '-', $this->Date['dept'] . (!empty($this->Date['return']) ? '&' . $this->Date['return'] : ''));
 
-            functions::insertLog('OriginAirportIata: ' . json_encode($this->OriginAirportIata) , '000shojaee');
             $searchDestination = $this->OriginAirportIata['dept'] . '-' . $this->DestiAirportIata['dept'];
 
         }

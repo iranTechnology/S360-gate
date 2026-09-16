@@ -2720,7 +2720,7 @@
             <span class="timeout-modal__title site-main-text-color">##Endofsearchtime##!</span>
 
             <p class="timeout-modal__flight">
-                به منظور بروزرسانی قیمت ها و پرواز ها، لطفا جستجوی خود را از ابتدا انجام دهید.
+                ##OrderSearceBeginning##
             </p>
             <button onclick="BackToHome('{$objDetail->reSearchAddress}'); return false" type="button" class="btn btn-research site-bg-main-color">
                 ##Repeatsearch##

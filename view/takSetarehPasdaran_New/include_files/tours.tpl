@@ -1,45 +1,49 @@
-
 {assign var=dateNow value=dateTimeSetting::jdate("Ymd", "", "", "", "en")}
-{assign var="special_tour_params" value=['type'=>'special','limit'=> '4','dateNow' => $dateNow]}
-
+{assign var="special_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow]}
 {assign var='special_tours' value=$obj_main_page->getToursReservation($special_tour_params)}
 
-{assign var="internal_tour_params" value=['type'=>'','limit'=> '6','dateNow' => '', 'country' =>'internal']}
-{assign var="foreging_tour_params" value=['type'=>'','limit'=> '1','dateNow' => '', 'country' =>'external']}
 
-{assign var='foreginTours' value=$obj_main_page->getToursReservation($foreging_tour_params)}
-
-
-
+{if !empty($special_tours)}
 <section class="sp-tour-banner">
 
     <div class="sp-tour-banner__inner container">
 
-        <div class="sp-tour-banner__header">
-            <h2>
-                <span>تور استانبول</span>
-            </h2>
-
-            <div class="sp-tour-banner__actions">
-                {if isset($foreginTours[0].tour_file) && $foreginTours[0].tour_file neq ''}
-                    <a href="gds/pic/reservationTour/{$foreginTours[0].tour_file}"
-                       target="_blank" class="sp-tour-banner__btn sp-tour-banner__btn--download">
-                        دانلود پکیج
-                    </a>
-                {/if}
-
-
-                <a href="/gds/fa/detailTour/8/zemestantour"
-                   class="sp-tour-banner__btn sp-tour-banner__btn--login">
-                    جزئیات تور ...
-                </a>
+        <div class="title-center-demo">
+            <div class="">
+                <h2>
+                    <div class="square-title"></div>
+                    <span>تورهای ویژه</span>
+                </h2>
+                <p>
+                    تورهای ویژه با برنامه‌های منحصر به فرد و خدمات اختصاصی، تجربه‌ای متمایز و به‌یادماندنی را برای مسافران فراهم می‌کنند.
+                </p>
             </div>
         </div>
 
-        <div class="sp-tour-banner__image">
-            <img src="project_files/images/ist-porsetare.jpg"
-                 alt="تورهای ویژه">
+        <div class="owl-carousel owl-theme owl-tour-demo">
+        {foreach $special_tours as $tour}
+        <div class="sp-tour-banner__header item">
+            <div class="sp-tour-banner__parent">
+                <img src="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pic/reservationTour/{$tour['tour_pic']}"
+                     alt="تورهای ویژه">
+                <h3 class="__title_class__">
+                    {$tour['tour_name']}
+                </h3>
+                <div class="sp-tour-banner__actions">
+                    {if isset($tour.tour_file) && $tour.tour_file neq ''}
+                        <a href="gds/pic/reservationTour/{$tour.tour_file}"
+                           target="_blank" class="sp-tour-banner__btn sp-tour-banner__btn--download">
+                            دانلود پکیج
+                        </a>
+                    {/if}
+                </div>
+            </div>
+
         </div>
+        {/foreach}
+        </div>
+
+
 
     </div>
 
@@ -86,6 +90,9 @@
         .sp-tour-banner__actions {
             display: flex;
             gap: 10px;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
         }
 
         /* Buttons */
@@ -100,12 +107,11 @@
 
         /* Download */
         .sp-tour-banner__btn--download {
-            background: #2563eb;
+            background: #eb1e25;
             color: #fff;
         }
 
         .sp-tour-banner__btn--download:hover {
-            background: #1e40af;
             color: #fff;
         }
 
@@ -121,17 +127,30 @@
         }
 
         /* Image */
-        .sp-tour-banner__image {
+        .sp-tour-banner__parent {
             margin-top: 12px;
             border-radius: 14px;
             overflow: hidden;
+            width: 100%;
+            position: relative;
         }
 
-        .sp-tour-banner__image img {
-            width: 100%;
-            height: auto;
-            display: block;
+        .sp-tour-banner__parent img {
+            display: block !important;
+            width: 100% !important;
+            filter: brightness(65%) !important;
+            height: 200px !important;
+            object-fit: cover !important;
+        }
+
+        .sp-tour-banner__parent h3 {
+            position: absolute;
+            bottom: 2px;
+            color: #fff;
+            right: 10px;
         }
 
     </style>
 {/literal}
+
+{/if}

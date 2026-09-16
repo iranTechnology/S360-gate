@@ -4,14 +4,14 @@
         <input type="hidden" class="international-child-js" name="child_number_international" id="count_child_international" value="0">
         <input type="hidden" class="international-infant-js" name="infant_number_international" id="count_infant_international" value="0">
         <div class="box-of-count-passenger-boxes box-of-count-passenger-boxes-js">
-            <span class="text-count-passenger text-count-passenger-js">1 ##Adult## ,0 ##Child## ,0 ##Infant##</span>
+            <span class="text-count-passenger text-count-passenger-js">1 ##Adult##, 0 ##Child##, 0 ##Infant##</span>
             <span class="fas fa-caret-down down-count-passenger"></span>
         </div>
         <div class="cbox-count-passenger cbox-count-passenger-js">
             <div class="col-xs-12 cbox-count-passenger-ch adult-number-js">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-6">
-                        <div class="type-of-count-passenger"><h6> ##Adult## </h6> ##OlderThanTwelve##
+                        <div class="type-of-count-passenger"><h6> ##Adult## </h6>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-6">
@@ -26,7 +26,7 @@
             <div class="col-xs-12 cbox-count-passenger-ch child-number-js">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-6">
-                        <div class="type-of-count-passenger"><h6> ##Child## </h6> ##BetweenTwoAndTwelve##
+                        <div class="type-of-count-passenger"><h6> ##Child## </h6>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-6">
@@ -41,7 +41,7 @@
             <div class="col-xs-12 cbox-count-passenger-ch infant-number-js">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-6">
-                        <div class="type-of-count-passenger"><h6> ##Infant## </h6> ##YoungerThanTwo##
+                        <div class="type-of-count-passenger"><h6> ##Infant## </h6>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-6">

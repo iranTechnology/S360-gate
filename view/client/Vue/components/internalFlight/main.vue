@@ -369,6 +369,8 @@
            });
            this.$store.dispatch('isSafar360').then(response=>{
            });
+          this.$store.dispatch('SOFTWARE_LANG').then(response => {
+          });
         },
         computed: {
             count_flights(){

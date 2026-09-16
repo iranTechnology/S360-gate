@@ -34,17 +34,6 @@
                 <div class="gds-login-register-inner">
                     <div class="no-register-buy site-bg-main-color">
                         <div class="modal-login-title">##Buyguest##</div>
-                        <div class="modal-login-text">
-                            {*##Purchasewithoutregistrationneedtestingdisplay##*}
-                            ##Withoutregister##
-                        </div>
-                        {if $useType neq 'ticket' || ($useType eq 'ticket' && $smarty.const.SEARCH_FLIGHT_NUMBER eq '')}
-                            <ul>
-                                <li>##Withoutdiscount##</li>
-                                <li>##Withoutpoint##</li>
-                                <li>##Dontinclub##</li>
-                            </ul>
-                        {/if}
 
                         <div class='d-flex flex-wrap justify-content-center align-items-center'>
                             <button class='btn btn-light btn-sm px-5 py-2 rounded site-main-text-color light-shadow'

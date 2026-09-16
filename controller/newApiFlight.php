@@ -4441,8 +4441,8 @@ class newApiFlight extends clientAuth
                             isset($flight['OutputRoutes'][0]['CabinType']) &&
                             isset($businessCabinTypes[$flight['OutputRoutes'][0]['CabinType']])
                         )
-                            ? '25 کیلوگرم'
-                            : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
+                            ? '25 ' . functions::Xmlinformation('Kilograms')->__toString()
+                            : '20 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('MainLoad')->__toString() . ' + 5 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('HandLuggage')->__toString(),
 //                            ($flight['OutputRoutes'][0]['Baggage']['Code'] > 0)
 //                                ? $this->baggageTitle(
 //                                $flight['SourceId'],
@@ -4488,8 +4488,8 @@ class newApiFlight extends clientAuth
                                     isset($details_dept['CabinType']) &&
                                     isset($businessCabinTypes[$details_dept['CabinType']])
                                 )
-                                    ? '25 کیلوگرم'
-                                    : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
+                                    ? '25 ' . functions::Xmlinformation('Kilograms')->__toString()
+                                    : '20 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('MainLoad')->__toString() . ' + 5 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('HandLuggage')->__toString(),
                                 'airline' => array(
                                     'airline_name' => $airlines_name[$airline_iata_twoWay][$langFieldIndex],
                                     'airline_code' => $airline_iata_twoWay,
@@ -4589,8 +4589,8 @@ class newApiFlight extends clientAuth
                                         isset($details_return['CabinType']) &&
                                         isset($businessCabinTypes[$details_return['CabinType']])
                                     )
-                                        ? '25 کیلوگرم'
-                                        : ' 20 کیلو بار اصلی + 5 کیلو بار دستی',
+                                        ? '25 ' . functions::Xmlinformation('Kilograms')->__toString()
+                                        : '20 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('MainLoad')->__toString() . ' + 5 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('HandLuggage')->__toString(),
                                     'airline' => array(
                                         'airline_name' => $airlines_name[$airline_iata_details_return][$langFieldIndex],
                                         'airline_code' => $airline_iata_details_return,
