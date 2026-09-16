@@ -476,6 +476,16 @@ body > .select2-container {
     background: rgba(0, 0, 0, .12)
 }
 
+
+.pnr-reference::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    left: -10px;
+    background: rgba(0, 0, 0, .12)
+}
+
 .reserves_card .reserves_footer > div h2 span {
     font-size: 1rem
 }

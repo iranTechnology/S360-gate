@@ -2132,6 +2132,7 @@ function selectTextMessage(_this){
         case 'Cancel':
             new_text=' باطل میباشد . لذا خواهشمند است جهت استرداد بلیت و برگشت وجه اقدام فرمایید . '
             break;
+
     }
     content.val(sample_text+new_text)
 }
