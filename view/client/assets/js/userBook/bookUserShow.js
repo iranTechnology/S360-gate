@@ -153,6 +153,7 @@ function bookUserHistoryFilter(target) {
                                <div class="reserves_footer">
                                    <div>
                                        <h2>${useXmltag("OrderNumber")}<span>${i?.factor_number ?? ''}</span></h2>
+                                        <h2 class="${i?.pnr ? '' : 'd-none'} pnr-reference">${useXmltag("Reference")}<span>${i?.pnr}</span></h2>
                                        <h2>${useXmltag("PriceAllOrder")}<span>${i?.price ?? ''}</span>${i?.currency_title ?? useXmltag("Rial")}</h2>
                                    </div>
                

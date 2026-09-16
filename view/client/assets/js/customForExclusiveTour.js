@@ -876,6 +876,8 @@ $('#internal-arrival-date-exclusive-tour-js').datepicker({
 
 
 // تابع initialize کردن تقویم‌ها
+
+
 function initializeJDateCalendars() {
 
    // ابتدا تقویم‌های میلادی را با jQuery UI Datepicker initialize می‌کنیم
@@ -1036,18 +1038,7 @@ function initializeJDateCalendars() {
                autoClose: true
             });
          });
-         $('.shamsiInfantBirthdayCalendar').each(function() {
-            $(this).persianDatepicker({
-               observer: true,
-               format: 'YYYY-MM-DD',
-               altField: $(this),
-               altFormat: 'YYYY-MM-DD',
-               maxDate: new persianDate().valueOf(),
-               minDate: new persianDate().subtract('year', 2).valueOf(),
-               initialValue: false,
-               autoClose: true
-            });
-         });
+
          // تاریخ تولد نوزادان شمسی (کمتر از 2 سال)
          $('.shamsiInfantBirthdayCalendar').each(function() {
             $(this).persianDatepicker({
@@ -1077,7 +1068,7 @@ function initializeJDateCalendars() {
       });
 
       // تاریخ تولد کودکان شمسی (بین 2 تا 12 سال)
-      $('.shamsiChildBirthdayCalendar').each(function() {
+      $('.shamsiBirthdayCalendar').each(function() {
          $(this).jDatepicker({
             dateFormat: 'YYYY-MM-DD',
             maxDate: 'today -2y',
@@ -1098,7 +1089,6 @@ function initializeJDateCalendars() {
    }
 
 }
-
 // ساخت فیلدهای هر مسافر
 function createPassengerFields(number, type, totalPassengers) {
    const passengerAge = type === 'adult' ? 'adt' : (type === 'child' ? 'chd' : 'inf');
@@ -1113,9 +1103,9 @@ function createPassengerFields(number, type, totalPassengers) {
       typeLabel = typeof useXmltag === 'function' ? useXmltag('InfantOrBedlessChild') : 'نوزاد';
    }
 
-   const classNameBirthdayShamsi = type === 'adult' ? 'shamsiBirthdayCalendar' : (type === 'child' ? 'shamsiChildBirthdayCalendar' : 'shamsiInfantBirthdayCalendar');
+   // const classNameBirthdayShamsi = type === 'adult' ? 'shamsiBirthdayCalendar' : (type === 'child' ? 'shamsiChildBirthdayCalendar' : 'shamsiInfantBirthdayCalendar');
    const classNameBirthdayMiladi = type === 'adult' ? 'gregorianAdultBirthdayCalendar' : (type === 'child' ? 'gregorianChildBirthdayCalendar' : 'gregorianInfantBirthdayCalendar');
-
+   const classNameBirthdayShamsi = 'shamsiBirthdayCalendar';
    // دکمه دفترچه مسافرین (فقط در صورت لاگین)
    const passengerBookButton = window.isUserLoggedIn ? `
       <span class="s-u-last-passenger-btn s-u-last-passenger-btn-change" onclick="setHidenFildnumberRow('${number}')">

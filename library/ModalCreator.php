@@ -3112,6 +3112,7 @@ class ModalCreator extends clientAuth {
         $user = Load::controller($this->Controller);
         $transportType=$_POST['transportType'];
         $InfoCancelTicket = $user->ShowInfoModalTicketCancel($Param, $id);
+        functions::insertLog('$InfoCancelTicket: ' . json_encode($InfoCancelTicket) , '000shojaee');
         if (empty($InfoCancelTicket)) {
             $InfoCancelTicket = array();
         }
@@ -5402,7 +5403,8 @@ class ModalCreator extends clientAuth {
                                     <option value="Delay">تاخیر</option>
                                     <option value="HurryUp">تعجیل</option>
                                     <option value="Cancel">کنسلی</option>
-
+                                    <option value="Change">تغییر</option>
+                                    <option value="OtherSms">پیام های دیگر</option>
                                 </select>
                             </div>
                         </div>

@@ -1628,6 +1628,7 @@ class user extends baseController
                    b.direction,
                    b.currency_code,
                    b.currency_equivalent,
+                   b.pnr,
                    c.Status as StatusCancel
                  FROM book_local_tb b 
                  LEFT JOIN cancel_ticket_details_tb c 
@@ -1751,6 +1752,7 @@ class user extends baseController
             $result[$key]['passenger_name'] = $item['passenger_name'] . ' ' . $item['passenger_family'];
             $result[$key]['date'] = $bookList[$key]['creation_date_int'];
             $result[$key]['time'] = $bookList[$key]['creation_time_int'];
+            $result[$key]['pnr'] = $item['pnr'];
             $result[$key]['status'] = [
                 'title' => $item['successfull'],
                 'value' => $bookList[$key]['view_status']
@@ -2272,6 +2274,7 @@ class user extends baseController
     c.trip_type,
     c.PassengerTitle,
     c.flight_type,
+    c.provider_ref as pnr,
     cd.Status       AS StatusCancel,
     cd.TypeCancel   AS TypeCancel,
     cd.RequestNumber AS CancelRequestNumber
@@ -2372,6 +2375,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
             // === نتیجه نهایی ===
             $result[$key]['service'] = 'Cip';
+            $result[$key]['pnr'] = $item['pnr'];
             $result[$key]['title'] = $item['cip_name'];
             $result[$key]['passenger_name'] = $item['passenger_name'] . ' ' . $item['passenger_family'];
             $result[$key]['date'] = $bookList[$key]['creation_date_int'];
@@ -2536,6 +2540,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                     request_cancel,
                     passenger_birthday,
                     passenger_birthday_en ,
+                    pnr ,
                      GROUP_CONCAT(passenger_chairs SEPARATOR ', ') AS chairs
                  FROM book_bus_tb 
                  WHERE 
@@ -2609,6 +2614,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
             ];
             $result[$key]['factor_number'] = $item['passenger_factor_num'];
             $result[$key]['price'] = $bookList[$key]['price_final'];
+            $result[$key]['pnr'] = $item['pnr'];
             $result[$key]['info_list'] = [
                 [
                     'title' => functions::Xmlinformation('Ticketnumber')->__toString() ,
@@ -3173,7 +3179,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                     request_cancel,
                     type_application,
                     passenger_leader_room_fullName,
-                    number_night
+                    number_night,
+                    pnr
                  FROM book_hotel_local_tb 
                  WHERE 
                     member_id='{$id}' ";
@@ -3270,6 +3277,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
             $result[$key]['passenger_name'] = $item['passenger_name'] . ' ' . $item['passenger_family'];
             $result[$key]['date'] = $bookList[$key]['creation_date_int'];
             $result[$key]['time'] = $bookList[$key]['creation_time_int'];
+            $result[$key]['pnr'] = $item['pnr'];
             $result[$key]['status'] = [
                 'title' => $item['status'],
                 'value' => $bookList[$key]['view_status']
@@ -4056,7 +4064,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   currency_equivalent AS currency_equivalent,
-                  '' AS pnr
+                  pnr AS pnr
             FROM
                 {$tableNameFlight}
             WHERE
@@ -4145,7 +4153,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  pnr AS pnr
             FROM
                 {$tableNameBus} 
             WHERE
@@ -4503,7 +4511,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  pnr AS pnr
             FROM
                 {$tableNameHotel} 
             WHERE
@@ -4592,7 +4600,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  pnr AS pnr
             FROM
                 {$tableNameInsurance} 
             WHERE
@@ -4682,7 +4690,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  pnr AS pnr
             FROM
                 {$tableNameVisa} 
             WHERE
@@ -5036,7 +5044,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
       trip_type AS trip_type,
       PassengerTitle AS PassengerTitle,
       '' AS currency_equivalent,
-      '' AS pnr
+      provider_ref AS pnr
 FROM {$tableNameCip}
 WHERE member_id = '{$memberId}'
 {$conditions} {$factor_number} {$successfull}
@@ -5168,6 +5176,7 @@ GROUP BY factor_number
                 $result[$key]['factor_number'] = $item['factor_number'];
                 $result[$key]['price'] = $bookList[$key]['price_final'];
                 $result[$key]['currency_title'] = $CurrencyTitleEn ;
+                $result[$key]['pnr'] = $item['pnr'];
                 if ($item['eticket_number']) {
                     $eticket_number = $item['eticket_number'];
                 }else{
@@ -5328,6 +5337,7 @@ GROUP BY factor_number
                 ];
                 $result[$key]['factor_number'] = $item['passenger_factor_num'];
                 $result[$key]['price'] = $bookList[$key]['price_final'];
+                $result[$key]['pnr'] = $item['pnr'];
                 $result[$key]['info_list'] = [
                     [
                         'title' => functions::Xmlinformation('Ticketnumber')->__toString() ,
@@ -5532,6 +5542,7 @@ GROUP BY factor_number
                 ];
                 $result[$key]['factor_number'] = $item['passenger_factor_num'];
                 $result[$key]['price'] = $bookList[$key]['price_final'];
+
                 $result[$key]['info_list'] = [
                     [
                         'title' => functions::Xmlinformation('Servicetype')->__toString() .' / '. functions::Xmlinformation('Servicename')->__toString(),
@@ -5752,6 +5763,7 @@ GROUP BY factor_number
                 $result[$key]['passenger_name'] = $item['passenger_name'] . ' ' . $item['passenger_family'];
                 $result[$key]['date'] = $bookList[$key]['creation_date_int'];
                 $result[$key]['time'] = $bookList[$key]['creation_time_int'];
+                $result[$key]['pnr'] = $item['pnr'];
                 $result[$key]['status'] = [
                     'title' => $item['statusBook'],
                     'value' => $bookList[$key]['view_status']
@@ -5891,6 +5903,7 @@ GROUP BY factor_number
                 ];
                 $result[$key]['factor_number'] =  $bookList[$key]['factor_number'];
                 $result[$key]['price'] = $bookList[$key]['price_final'];
+                $result[$key]['pnr'] = $item['pnr'];
                 $result[$key]['info_list'] = [
                     [
                         'title' => functions::Xmlinformation('Customername')->__toString(),
@@ -6413,7 +6426,7 @@ GROUP BY factor_number
                 // نتیجه نهایی
                 $result[$key]['service'] = 'Cip';
                 $result[$key]['title'] =  $item['cip_name'] ;
-
+                $result[$key]['pnr'] = $item['pnr'];
                 $result[$key]['date'] = $bookList[$key]['creation_date_int'];
                 $result[$key]['time'] = $bookList[$key]['creation_time_int'];
                 $result[$key]['status'] = [
