@@ -3664,7 +3664,7 @@ function HotelPopular(e) {
       $(targetUl).html(`<h2>${useXmltag('Popularhotels')}</h2>`);
    } else if (e === 'externalHotel') {
       targetUl = '#listSearchCity_2';
-      flag = 'flightExternalRoutesDefault';
+      flag = 'HotelExternalRoutesDefault';//flightExternalRoutesDefault
       $(targetUl).html(`<h2>${useXmltag('Popularhotels')}</h2>`);
    } else if (e === 'residence') {
       targetUl = '#listSearchCityResidence';

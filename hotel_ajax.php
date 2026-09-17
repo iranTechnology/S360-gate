@@ -1633,6 +1633,54 @@ if(isset($_POST['flag']) && $_POST['flag'] == 'flightExternalRoutesDefault'){
     exit();
 
 }
+if(isset($_POST['flag']) && $_POST['flag'] == 'HotelExternalRoutesDefault') {
+
+    unset($_POST['flag']);
+
+    /** @var ModelBase $ModelBase */
+    if (isset($_POST['self_Db']) && $_POST['self_Db'] != true) {
+        $db = Load::library('ModelBase');
+    } else {
+        $db = Load::library('Model');
+    }
+
+    $clientSql = "
+        SELECT 
+            c.city_code     AS DepartureCode,
+            c.city_name_en  AS DepartureCityEn,
+            c.city_name_en  AS DepartureCityFa,
+            ''              AS AirportFa,
+            ''              AS AirportEn,
+            co.country_name AS CountryFa,
+            co.country_name AS CountryEn
+        FROM safar360_coreapi.travzillapro_hotel_cities c
+        INNER JOIN safar360_coreapi.travzillapro_hotel_countries co 
+            ON co.country_code = c.country_code
+        WHERE c.is_synced = 1 
+          AND LOWER(co.country_name) != 'iran'
+        ORDER BY c.id DESC
+        LIMIT 0, 20
+    ";
+
+    $result = $db->select($clientSql);
+
+    if (!empty($result) && is_array($result)) {
+        foreach ($result as $key => $flight) {
+            $countryNameEn = strtolower(trim($flight['CountryEn']));
+            $countryNameEn = str_replace("  ", " ", $countryNameEn);
+            $countryNameEn = str_replace(" ", "-", $countryNameEn);
+            $cityNameEn = strtolower(trim($flight['DepartureCityEn']));
+            $cityNameEn = str_replace("  ", " ", $cityNameEn);
+            $cityNameEn = str_replace(" ", "-", $cityNameEn);
+
+            $result[$key]['DepartureCityEn'] = $cityNameEn;
+            $result[$key]['CountryEn'] = $countryNameEn;
+        }
+    }
+
+    echo json_encode($result);
+    exit();
+}
 
 if(isset($_POST['flag']) && $_POST['flag'] == 'flightInternalRoutesDefault'){
     unset($_POST['flag']);
