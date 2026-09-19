@@ -111,42 +111,42 @@ class functions {
 
     public static function strip_html_tags( $text ) {
         $text = preg_replace( array(// Remove invisible content
-            '@<head[^>]*?>.*?</head>@siu',
+                '@<head[^>]*?>.*?</head>@siu',
             /** @lang text */
-            "@<style[^>]*?>.*?</style>@siu",
-            '@<script[^>]*?.*?</script>@siu',
-            '@<object[^>]*?.*?</object>@siu',
-            '@<embed[^>]*?.*?</embed>@siu',
-            '@<applet[^>]*?.*?</applet>@siu',
-            '@<noframes[^>]*?.*?</noframes>@siu',
-            '@<noscript[^>]*?.*?</noscript>@siu',
-            '@<noembed[^>]*?.*?</noembed>@siu',
+                "@<style[^>]*?>.*?</style>@siu",
+                '@<script[^>]*?.*?</script>@siu',
+                '@<object[^>]*?.*?</object>@siu',
+                '@<embed[^>]*?.*?</embed>@siu',
+                '@<applet[^>]*?.*?</applet>@siu',
+                '@<noframes[^>]*?.*?</noframes>@siu',
+                '@<noscript[^>]*?.*?</noscript>@siu',
+                '@<noembed[^>]*?.*?</noembed>@siu',
             // Add line breaks before and after blocks
-            '@</?((address)|(blockquote)|(center)|(del))@iu',
-            '@</?((div)|(h[1-9])|(ins)|(isindex)|(p)|(pre))@iu',
-            '@</?((dir)|(dl)|(dt)|(dd)|(li)|(menu)|(ol)|(ul))@iu',
-            '@</?((table)|(th)|(td)|(caption))@iu',
-            '@</?((form)|(button)|(fieldset)|(legend)|(input))@iu',
-            '@</?((label)|(select)|(optgroup)|(option)|(textarea))@iu',
-            '@</?((frameset)|(frame)|(iframe))@iu',
+                '@</?((address)|(blockquote)|(center)|(del))@iu',
+                '@</?((div)|(h[1-9])|(ins)|(isindex)|(p)|(pre))@iu',
+                '@</?((dir)|(dl)|(dt)|(dd)|(li)|(menu)|(ol)|(ul))@iu',
+                '@</?((table)|(th)|(td)|(caption))@iu',
+                '@</?((form)|(button)|(fieldset)|(legend)|(input))@iu',
+                '@</?((label)|(select)|(optgroup)|(option)|(textarea))@iu',
+                '@</?((frameset)|(frame)|(iframe))@iu',
         ), array(
-            ' ',
-            ' ',
-            ' ',
-            ' ',
-            ' ',
-            ' ',
-            ' ',
-            ' ',
-            ' ',
-            "\n\$0",
-            "\n\$0",
-            "\n\$0",
-            "\n\$0",
-            "\n\$0",
-            "\n\$0",
-            "\n\$0",
-            "\n\$0",
+                ' ',
+                ' ',
+                ' ',
+                ' ',
+                ' ',
+                ' ',
+                ' ',
+                ' ',
+                ' ',
+                "\n\$0",
+                "\n\$0",
+                "\n\$0",
+                "\n\$0",
+                "\n\$0",
+                "\n\$0",
+                "\n\$0",
+                "\n\$0",
         ), $text );
 
         return strip_tags( $text );
@@ -225,10 +225,10 @@ class functions {
         try {
             $query  = ( "CALL sp_point_club_tb(:service,:baseCompany,:company,:counterId)" );
             $params = array(
-                ':service'     => $service,
-                ':baseCompany' => $baseCompany,
-                ':company'     => $company,
-                ':counterId'   => $counterId,
+                    ':service'     => $service,
+                    ':baseCompany' => $baseCompany,
+                    ':company'     => $company,
+                    ':counterId'   => $counterId,
             );
             return $Model->runSP( $query, $params );
 
@@ -247,11 +247,11 @@ class functions {
             $counterId = ( $counterId == "" ) ? '5' : $counterId;
             $query     = ( "CALL sp_discount_private_train_tb(:service,:baseCompany,:company,:counterId,:moveDate)" );
             $params    = array(
-                ':service'     => $service,
-                ':baseCompany' => $baseCompany,
-                ':company'     => $company,
-                ':counterId'   => $counterId,
-                ':moveDate'    => $moveDate,
+                    ':service'     => $service,
+                    ':baseCompany' => $baseCompany,
+                    ':company'     => $company,
+                    ':counterId'   => $counterId,
+                    ':moveDate'    => $moveDate,
             );
             $result    = $Model->runSP( $query, $params );
 
@@ -536,7 +536,7 @@ class functions {
             /** @var currencyEquivalent $currency_controller */
             $currency_controller = Load::controller('currencyEquivalent');
             $info_currency = $currency_controller->InfoCurrency($info_member['type_currency']);
-            return number_format($total_transaction,2).' '. $info_currency['CurrencyTitleEn'];
+            return number_format($total_transaction , 2).' '. $info_currency['CurrencyTitleEn'];
         }
 
         return number_format($total_transaction) .' '. self::Xmlinformation('Rial');
@@ -1793,7 +1793,7 @@ class functions {
     #region LogLoginAdmin
 
     public static function CalculateForOnePersonWithOutDiscount(
-        $RequestNumber, $nationalCode, $FlagPriceChange = 'yes'
+            $RequestNumber, $nationalCode, $FlagPriceChange = 'yes'
     ) {
 
         //yes means nesesary calculate  price changes
@@ -1880,7 +1880,7 @@ class functions {
     #region CalculatePriceApi
 
     public static function CalculatePriceApi(
-        $ClientId, $Price, $FlightType, $TypTicket, $Airline, $ISLogin, $MemberId = null
+            $ClientId, $Price, $FlightType, $TypTicket, $Airline, $ISLogin, $MemberId = null
     ) {
         $FlightType = ( strtolower( $FlightType ) == 'system' ) ? 'system' : 'charter';
 
@@ -2788,7 +2788,7 @@ class functions {
     #region list airline
 
     public static function ShowContentMinimumPrice(
-        $Departure_Code, $Arrival_Code, $dateRequest, $adult, $child, $infant, $typeSelect = 'Next'
+            $Departure_Code, $Arrival_Code, $dateRequest, $adult, $child, $infant, $typeSelect = 'Next'
     ) {
         $dateArray = explode( '-', $dateRequest );
 
@@ -3563,11 +3563,11 @@ class functions {
             $query  = ( "CALL sp_price_hotel_change_tb(:city,:hotelStar,:counterId,:date,:typeApplication)" );
 
             $params = array(
-                ':city'            => $city,
-                ':hotelStar'       => $hotelStar,
-                ':counterId'       => $counterId,
-                ':date'            => $date,
-                ':typeApplication' => $typeApplication
+                    ':city'            => $city,
+                    ':hotelStar'       => $hotelStar,
+                    ':counterId'       => $counterId,
+                    ':date'            => $date,
+                    ':typeApplication' => $typeApplication
             );
             $result = $Model->runSP( $query, $params );
 
@@ -3688,11 +3688,11 @@ class functions {
             $Model  = Load::library( 'Model' );
             $query  = ( "CALL sp_bus_ticket_price_changes_tb(:originCity,:destinationCity,:companyBus,:counterId,:date)" );
             $params = array(
-                ':originCity'      => $param['originCity'],
-                ':destinationCity' => $param['destinationCity'],
-                ':companyBus'      => $param['companyId'],
-                ':counterId'       => $param['counterId'],
-                ':date'            => $date
+                    ':originCity'      => $param['originCity'],
+                    ':destinationCity' => $param['destinationCity'],
+                    ':companyBus'      => $param['companyId'],
+                    ':counterId'       => $param['counterId'],
+                    ':date'            => $date
             );
             $result = $Model->runSP( $query, $params );
             if ( ! empty( $result ) && $param['price'] != 0 && $result['change_type'] == 'increase' && $result['price_type'] == 'cost' ) {
@@ -3708,10 +3708,10 @@ class functions {
             }
 
             return [
-                'price'        => $returnPrice,
-                'price_change' => $result['price'],
-                'price_type'   => $result['price_type'],
-                'change_type'  => $result['change_type']
+                    'price'        => $returnPrice,
+                    'price_change' => $result['price'],
+                    'price_type'   => $result['price_type'],
+                    'change_type'  => $result['change_type']
             ];
         } catch ( PDOException $ex ) {
             return false;
@@ -3789,7 +3789,7 @@ class functions {
                                     } else {
                                         ?>
                                         <i class="bg-price-box site-bg-main-color"><?php echo number_format( round( $OriginPriceWithOutDiscount,
-                                            - 1 ) ) ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?><?php
+                                                - 1 ) ) ?></i><?php echo functions::Xmlinformation( 'Rial' ) ?><?php
                                     }
                                 } else {
                                     if ( $SubPriceCalculated[2] == 'YES' ) {
@@ -3882,31 +3882,31 @@ class functions {
                         <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromthetimeticketissueuntilnoondaysbeforeflight' ) ?></span>
                         <span
                                 class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThreeDaysBefore'] ) ?
-                                $Fee['ThreeDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeDaysBefore']; ?> </span>
+                                    $Fee['ThreeDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeDaysBefore']; ?> </span>
                     </div>
                     <div class="cancel-policy-item">
                         <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromnoondaysbeforeflightnoondaybeforeflight' ) ?></span>
                         <span
                                 class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['OneDaysBefore'] ) ?
-                                $Fee['OneDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OneDaysBefore']; ?> </span>
+                                    $Fee['OneDaysBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OneDaysBefore']; ?> </span>
                     </div>
                     <div class="cancel-policy-item">
                         <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromnoondaybeforeflighthoursbeforeflight' ) ?></span>
                         <span
                                 class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThreeHoursBefore'] ) ?
-                                $Fee['ThreeHoursBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeHoursBefore']; ?> </span>
+                                    $Fee['ThreeHoursBefore'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThreeHoursBefore']; ?> </span>
                     </div>
                     <div class="cancel-policy-item">
                         <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Fromhoursbeforeflighttominutesbeforeflight' ) ?></span>
                         <span
                                 class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['ThirtyMinutesAgo'] ) ?
-                                $Fee['ThirtyMinutesAgo'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThirtyMinutesAgo']; ?> </span>
+                                    $Fee['ThirtyMinutesAgo'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['ThirtyMinutesAgo']; ?> </span>
                     </div>
                     <div class="cancel-policy-item">
                         <span class="cancel-policy-item-text"><?php echo functions::Xmlinformation( 'Minutesbeforetheflight' ) ?></span>
                         <span
                                 class="cancel-policy-item-pnalty site-bg-main-color"><?php echo is_numeric( $Fee['OfThirtyMinutesAgoToNext'] ) ?
-                                $Fee['OfThirtyMinutesAgoToNext'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OfThirtyMinutesAgoToNext']; ?> </span>
+                                    $Fee['OfThirtyMinutesAgoToNext'] . ' ' . functions::Xmlinformation( 'PenaltyPercent' ) : $Fee['OfThirtyMinutesAgoToNext']; ?> </span>
                     </div>
                 </div>
             </div>
@@ -4006,8 +4006,8 @@ class functions {
 
 
         $HaveDiscount = ( ( $Discount['off_percent'] > 0 && ( $Price != $PriceWithChanges )
-            && ( ( GDS_SWITCH == 'Local' || GDS_SWITCH == 'international' || GDS_SWITCH == 'user_ajax.php' )
-                || $IsLogin ) ) ? 'YES' : 'No' );
+                && ( ( GDS_SWITCH == 'Local' || GDS_SWITCH == 'international' || GDS_SWITCH == 'user_ajax.php' )
+                        || $IsLogin ) ) ? 'YES' : 'No' );
 
         return round( $Price ) . ':' . round( $PriceWithChanges ) . ':' . $HaveDiscount;
     }
@@ -4265,11 +4265,11 @@ class functions {
             $admin = Load::controller('admin');
             $ModelBase = Load::library( 'ModelBase' );
             $sql       = "SELECT R.*, "
-                . " (SELECT COUNT(id) FROM report_tb WHERE request_number = R.request_number) AS CountTicket "
-                . " FROM report_tb R WHERE "
-                . " (R.factor_number='{$request_number}' OR R.request_number='{$request_number}') "
-                . " AND (((R.factor_number OR R.request_number) > 0) OR ((R.factor_number OR R.request_number) <>'')) "
-                . " GROUP BY R.direction ";
+                    . " (SELECT COUNT(id) FROM report_tb WHERE request_number = R.request_number) AS CountTicket "
+                    . " FROM report_tb R WHERE "
+                    . " (R.factor_number='{$request_number}' OR R.request_number='{$request_number}') "
+                    . " AND (((R.factor_number OR R.request_number) > 0) OR ((R.factor_number OR R.request_number) <>'')) "
+                    . " GROUP BY R.direction ";
             $result    = $ModelBase->select( $sql );
 
 
@@ -4287,11 +4287,11 @@ class functions {
         } else {
             $Model  = Load::library( 'Model' );
             $sql    = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM book_local_tb WHERE request_number = B.request_number) AS CountTicket "
-                . " FROM book_local_tb B  WHERE "
-                . " (B.factor_number='{$request_number}' OR B.request_number='{$request_number}') "
-                . " AND (((B.factor_number OR B.request_number) > 0) OR ((B.factor_number OR B.request_number) <>'')) "
-                . " GROUP BY B.direction ";
+                    . " (SELECT COUNT(id) FROM book_local_tb WHERE request_number = B.request_number) AS CountTicket "
+                    . " FROM book_local_tb B  WHERE "
+                    . " (B.factor_number='{$request_number}' OR B.request_number='{$request_number}') "
+                    . " AND (((B.factor_number OR B.request_number) > 0) OR ((B.factor_number OR B.request_number) <>'')) "
+                    . " GROUP BY B.direction ";
             $result = $Model->select( $sql );
 
             $info_cancel_sql = " SELECT 
@@ -4317,10 +4317,10 @@ class functions {
         if ( TYPE_ADMIN == '1' ) {
             $ModelBase = Load::library( 'ModelBase' );
             $sql       = "SELECT R.*, "
-                . " (SELECT COUNT(id) FROM report_exclusive_tour_tb WHERE request_number = R.request_number) AS CountTicket "
-                . " FROM report_exclusive_tour_tb R WHERE "
-                . " (R.factor_number='{$request_number}' OR R.request_number='{$request_number}') "
-                . " AND (((R.factor_number OR R.request_number) > 0) OR ((R.factor_number OR R.request_number) <>'')) ";
+                    . " (SELECT COUNT(id) FROM report_exclusive_tour_tb WHERE request_number = R.request_number) AS CountTicket "
+                    . " FROM report_exclusive_tour_tb R WHERE "
+                    . " (R.factor_number='{$request_number}' OR R.request_number='{$request_number}') "
+                    . " AND (((R.factor_number OR R.request_number) > 0) OR ((R.factor_number OR R.request_number) <>'')) ";
             $result    = $ModelBase->select( $sql );
 
 
@@ -4328,10 +4328,10 @@ class functions {
         } else {
             $Model  = Load::library( 'Model' );
             $sql    = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM book_exclusive_tour_tb WHERE request_number = B.request_number) AS CountTicket "
-                . " FROM book_exclusive_tour_tb B  WHERE "
-                . " (B.factor_number='{$request_number}' OR B.request_number='{$request_number}') "
-                . " AND (((B.factor_number OR B.request_number) > 0) OR ((B.factor_number OR B.request_number) <>'')) ";
+                    . " (SELECT COUNT(id) FROM book_exclusive_tour_tb WHERE request_number = B.request_number) AS CountTicket "
+                    . " FROM book_exclusive_tour_tb B  WHERE "
+                    . " (B.factor_number='{$request_number}' OR B.request_number='{$request_number}') "
+                    . " AND (((B.factor_number OR B.request_number) > 0) OR ((B.factor_number OR B.request_number) <>'')) ";
             $result = $Model->select( $sql );
         }
 
@@ -4345,10 +4345,10 @@ class functions {
         if ( TYPE_ADMIN == '1' ) {
             $ModelBase = Load::library( 'ModelBase' );
             $sql       = "SELECT R.*, "
-                . " (SELECT COUNT(id) FROM report_cip_tb WHERE request_number = R.request_number) AS CountTicket "
-                . " FROM report_cip_tb R WHERE "
-                . " (R.factor_number='{$request_number}' OR R.request_number='{$request_number}') "
-                . " AND (((R.factor_number OR R.request_number) > 0) OR ((R.factor_number OR R.request_number) <>'')) ";
+                    . " (SELECT COUNT(id) FROM report_cip_tb WHERE request_number = R.request_number) AS CountTicket "
+                    . " FROM report_cip_tb R WHERE "
+                    . " (R.factor_number='{$request_number}' OR R.request_number='{$request_number}') "
+                    . " AND (((R.factor_number OR R.request_number) > 0) OR ((R.factor_number OR R.request_number) <>'')) ";
             $result    = $ModelBase->select( $sql );
 
 
@@ -4356,10 +4356,10 @@ class functions {
         } else {
             $Model  = Load::library( 'Model' );
             $sql    = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM book_cip_tb WHERE request_number = B.request_number) AS CountTicket "
-                . " FROM book_cip_tb B  WHERE "
-                . " (B.factor_number='{$request_number}' OR B.request_number='{$request_number}') "
-                . " AND (((B.factor_number OR B.request_number) > 0) OR ((B.factor_number OR B.request_number) <>'')) ";
+                    . " (SELECT COUNT(id) FROM book_cip_tb WHERE request_number = B.request_number) AS CountTicket "
+                    . " FROM book_cip_tb B  WHERE "
+                    . " (B.factor_number='{$request_number}' OR B.request_number='{$request_number}') "
+                    . " AND (((B.factor_number OR B.request_number) > 0) OR ((B.factor_number OR B.request_number) <>'')) ";
             $result = $Model->select( $sql );
         }
 
@@ -4374,20 +4374,20 @@ class functions {
         if ( TYPE_ADMIN == '1' ) {
             $Model = Load::library( 'ModelBase' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM report_train_tb WHERE requestNumber = B.requestNumber) AS CountTicket "
-                . " FROM book_train_tb AS  B  WHERE "
-                . " (B.factor_number='{$request_number}' OR B.requestNumber='{$request_number}') "
-                . " AND (((B.factor_number OR B.requestNumber) > 0) OR ((B.factor_number OR B.requestNumber) <>'')) ";
+                    . " (SELECT COUNT(id) FROM report_train_tb WHERE requestNumber = B.requestNumber) AS CountTicket "
+                    . " FROM book_train_tb AS  B  WHERE "
+                    . " (B.factor_number='{$request_number}' OR B.requestNumber='{$request_number}') "
+                    . " AND (((B.factor_number OR B.requestNumber) > 0) OR ((B.factor_number OR B.requestNumber) <>'')) ";
             if ( $groupBy == 'yes' ) {
                 $sql .= " GROUP BY B.Route_Type ";
             }
         } else {
             $Model = Load::library( 'Model' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM book_train_tb WHERE requestNumber = B.requestNumber) AS CountTicket "
-                . " FROM book_train_tb AS  B  WHERE "
-                . " (B.factor_number='{$request_number}' OR B.requestNumber='{$request_number}') "
-                . " AND (((B.factor_number OR B.requestNumber) > 0) OR ((B.factor_number OR B.requestNumber) <>'')) ";
+                    . " (SELECT COUNT(id) FROM book_train_tb WHERE requestNumber = B.requestNumber) AS CountTicket "
+                    . " FROM book_train_tb AS  B  WHERE "
+                    . " (B.factor_number='{$request_number}' OR B.requestNumber='{$request_number}') "
+                    . " AND (((B.factor_number OR B.requestNumber) > 0) OR ((B.factor_number OR B.requestNumber) <>'')) ";
             if ( $groupBy == 'yes' ) {
                 $sql .= " GROUP BY B.Route_Type ";
             }
@@ -4407,10 +4407,10 @@ class functions {
             $admin = Load::controller('admin');
             $Model = Load::library( 'ModelBase' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM report_bus_tb WHERE order_code = B.order_code) AS CountTicket "
-                . " FROM report_bus_tb AS  B  WHERE "
-                . " (B.passenger_factor_num='{$request_number}' OR B.order_code='{$request_number}') "
-                . " AND (((B.passenger_factor_num OR B.order_code) > 0) OR ((B.passenger_factor_num OR B.order_code) <>'')) ";
+                    . " (SELECT COUNT(id) FROM report_bus_tb WHERE order_code = B.order_code) AS CountTicket "
+                    . " FROM report_bus_tb AS  B  WHERE "
+                    . " (B.passenger_factor_num='{$request_number}' OR B.order_code='{$request_number}') "
+                    . " AND (((B.passenger_factor_num OR B.order_code) > 0) OR ((B.passenger_factor_num OR B.order_code) <>'')) ";
             $result  = $Model->select( $sql );
             echo $info_cancel_sql = " SELECT 
                           cancel.NationalCode,
@@ -4425,10 +4425,10 @@ class functions {
         } else {
             $Model = Load::library( 'Model' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM book_bus_tb WHERE order_code = B.order_code) AS CountTicket "
-                . " FROM book_bus_tb AS  B  WHERE "
-                . " (B.passenger_factor_num='{$request_number}' OR B.order_code='{$request_number}') "
-                . " AND (((B.passenger_factor_num OR B.order_code) > 0) OR ((B.passenger_factor_num OR B.order_code) <>'')) ";
+                    . " (SELECT COUNT(id) FROM book_bus_tb WHERE order_code = B.order_code) AS CountTicket "
+                    . " FROM book_bus_tb AS  B  WHERE "
+                    . " (B.passenger_factor_num='{$request_number}' OR B.order_code='{$request_number}') "
+                    . " AND (((B.passenger_factor_num OR B.order_code) > 0) OR ((B.passenger_factor_num OR B.order_code) <>'')) ";
             $result = $Model->select( $sql );
             $info_cancel_sql = " SELECT
                           cancel.NationalCode,
@@ -4452,9 +4452,9 @@ class functions {
             $admin = Load::controller('admin');
             $Model = Load::library( 'ModelBase' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM report_insurance_tb WHERE factor_number = B.factor_number) AS CountTicket "
-                . " FROM report_insurance_tb AS  B  WHERE "
-                . "  B.factor_number='{$request_number}'";
+                    . " (SELECT COUNT(id) FROM report_insurance_tb WHERE factor_number = B.factor_number) AS CountTicket "
+                    . " FROM report_insurance_tb AS  B  WHERE "
+                    . "  B.factor_number='{$request_number}'";
 
             $result = $Model->select( $sql );
             echo $info_cancel_sql = " SELECT 
@@ -4471,9 +4471,9 @@ class functions {
         } else {
             $Model = Load::library( 'Model' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM book_insurance_tb WHERE factor_number = B.factor_number) AS CountTicket "
-                . " FROM book_insurance_tb AS  B  WHERE "
-                . " (B.factor_number='{$request_number}') ";
+                    . " (SELECT COUNT(id) FROM book_insurance_tb WHERE factor_number = B.factor_number) AS CountTicket "
+                    . " FROM book_insurance_tb AS  B  WHERE "
+                    . " (B.factor_number='{$request_number}') ";
 
             $result = $Model->select( $sql );
             $info_cancel_sql = " SELECT 
@@ -4497,9 +4497,9 @@ class functions {
             $admin = Load::controller('admin');
             $Model = Load::library( 'ModelBase' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM report_hotel_tb WHERE factor_number = B.factor_number) AS CountTicket "
-                . " FROM report_hotel_tb AS  B  WHERE "
-                . "  B.factor_number='{$request_number}'";
+                    . " (SELECT COUNT(id) FROM report_hotel_tb WHERE factor_number = B.factor_number) AS CountTicket "
+                    . " FROM report_hotel_tb AS  B  WHERE "
+                    . "  B.factor_number='{$request_number}'";
 
             $result = $Model->select( $sql );
             echo $info_cancel_sql = " SELECT 
@@ -4516,9 +4516,9 @@ class functions {
         } else {
             $Model = Load::library( 'Model' );
             $sql   = "SELECT B.*, "
-                . " (SELECT COUNT(id) FROM book_hotel_local_tb WHERE factor_number = B.factor_number) AS CountTicket "
-                . " FROM book_hotel_local_tb AS  B  WHERE "
-                . " (B.factor_number='{$request_number}') ";
+                    . " (SELECT COUNT(id) FROM book_hotel_local_tb WHERE factor_number = B.factor_number) AS CountTicket "
+                    . " FROM book_hotel_local_tb AS  B  WHERE "
+                    . " (B.factor_number='{$request_number}') ";
 
             $result = $Model->select( $sql );
             $info_cancel_sql = " SELECT 
@@ -4547,7 +4547,7 @@ class functions {
         $LogoUser   = ROOT_ADDRESS_WITHOUT_LANG . "/pic/" . LOGO_AGENCY;
 
         $template
-            = '
+                = '
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 	<head>
@@ -5118,11 +5118,11 @@ class functions {
                             <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0;">
                                 
                                 <img align="right" alt="" src="'
-            . $LogoUser
-            . '" width="75" style="max-width:75px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+                . $LogoUser
+                . '" width="75" style="max-width:75px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
                                 <p style="font-family: tahoma;font-size: 16px;color: #204a5f;font-weight: bold;text-align: right;">'
-            . $AgencyName
-            . '</p>
+                . $AgencyName
+                . '</p>
                             
                             </td>
                         </tr>
@@ -5188,8 +5188,8 @@ class functions {
                             <table border="0" cellspacing="0" class="mcnTextContentContainer" width="100%" style="min-width: 100% !important;background-color: #00B0B4;border: 2px solid #FFFFFF;">
                                 <tbody>
                                     '
-            . $emailContent
-            . '
+                . $emailContent
+                . '
                                 </tbody>
                             </table>
                         </td>
@@ -5213,8 +5213,8 @@ class functions {
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonContentContainer" style="border-collapse: separate !important;">
                     <tbody>
                         '
-            . $pdfButton
-            . '
+                . $pdfButton
+                . '
                     </tbody>
                 </table>
             </td>
@@ -5264,12 +5264,12 @@ class functions {
 					<tr>
 						<td class="m_-2679729263370124627mcnTextContent" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;color:#ffffff;font-family:Helvetica;font-size:12px;line-height:150%;text-align:center" valign="top">
 						<div style="text-align:right"><span style="color:#FFFFFF"><span class="im"><span style="font-size:12px"><strong><span style="font-family:tahoma,verdana,segoe,sans-serif">آدرس : '
-            . $Address
-            . '</span></strong></span></span></span></div>
+                . $Address
+                . '</span></strong></span></span></span></div>
 
 						<div style="clear:both;text-align:right"><span style="color:#FFFFFF"><span class="im"><span style="font-size:12px"><strong><span style="font-family:tahoma,verdana,segoe,sans-serif">تلفن : '
-            . $Phone
-            . '</span></strong></span></span></span></div>
+                . $Phone
+                . '</span></strong></span></span></span></div>
 						</td>
 					</tr>
 				</tbody>
@@ -5320,7 +5320,7 @@ class functions {
     public static function emailTemplate( $param ) {
 
         $template
-            = '
+                = '
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
@@ -5807,7 +5807,7 @@ class functions {
 
             foreach ( $param['pdf'] as $key=>$pdf ) {
                 $template
-                    .= '
+                        .= '
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonBlock" style="min-width:100%;">
                         <tbody class="mcnButtonBlockOuter">
                             <tr>
@@ -5817,12 +5817,12 @@ class functions {
                                             <tr>
                                                 <td align="center" valign="middle" class="mcnButtonContent" style="font-family: Tahoma, Verdana, Segoe, sans-serif; font-size: 18px;  padding: 13px 25px;">
                                                     <a class="mcnButton " title="'
-                    . $pdf['button_title']
-                    . '" href="'
-                    . $param['pdf'][0]['url']
-                    . '" target="_blank" style="font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">'
-                    . $pdf['button_title']
-                    . '</a>
+                        . $pdf['button_title']
+                        . '" href="'
+                        . $param['pdf'][0]['url']
+                        . '" target="_blank" style="font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">'
+                        . $pdf['button_title']
+                        . '</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -5837,7 +5837,7 @@ class functions {
 
 
         $template
-            .= '
+                .= '
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonBlock" style="min-width:100%;">
                         <tbody class="mcnButtonBlockOuter">
                             <tr>
@@ -5994,16 +5994,16 @@ class functions {
     public static function ConvertNumberToAlphabet( $str, $type = null ) {
         $Number    = array( '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', );
         $Letter    = array(
-            functions::Xmlinformation( 'One' ),
-            functions::Xmlinformation( 'Two' ),
-            functions::Xmlinformation( 'Three' ),
-            functions::Xmlinformation( 'Four' ),
-            functions::Xmlinformation( 'Five' ),
-            functions::Xmlinformation( 'Six' ),
-            functions::Xmlinformation( 'Seven' ),
-            functions::Xmlinformation( 'Eight' ),
-            functions::Xmlinformation( 'Nine' ),
-            functions::Xmlinformation( 'Zero' ),
+                functions::Xmlinformation( 'One' ),
+                functions::Xmlinformation( 'Two' ),
+                functions::Xmlinformation( 'Three' ),
+                functions::Xmlinformation( 'Four' ),
+                functions::Xmlinformation( 'Five' ),
+                functions::Xmlinformation( 'Six' ),
+                functions::Xmlinformation( 'Seven' ),
+                functions::Xmlinformation( 'Eight' ),
+                functions::Xmlinformation( 'Nine' ),
+                functions::Xmlinformation( 'Zero' ),
         );
         if ( SOFTWARE_LANG == 'fa' ) {
             $LetterApp = array( 'اول', 'دوم', 'سوم', 'چهارم', 'پنجم', 'ششم', 'هفتم', 'هشتم', 'نهم', 'صفر', );
@@ -6063,16 +6063,16 @@ class functions {
         if ( TYPE_ADMIN == '1' ) {
             $ModelBase = Load::library( 'ModelBase' );
             $sql       = "SELECT *, "
-                . " (SELECT COUNT(id) FROM report_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
-                . " FROM report_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
-                . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))  ";
+                    . " (SELECT COUNT(id) FROM report_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
+                    . " FROM report_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
+                    . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))  ";
             $result    = $ModelBase->select( $sql );
         } else {
             $Model  = Load::library( 'Model' );
             $sql    = "SELECT *, "
-                . " (SELECT COUNT(id) FROM book_local_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
-                . " FROM book_local_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
-                . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))";
+                    . " (SELECT COUNT(id) FROM book_local_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
+                    . " FROM book_local_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
+                    . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))";
             $result = $Model->select( $sql );
         }
 
@@ -6086,16 +6086,16 @@ class functions {
         if ( TYPE_ADMIN == '1' ) {
             $ModelBase = Load::library( 'ModelBase' );
             $sql       = "SELECT *, "
-                . " (SELECT COUNT(id) FROM report_exclusive_tour_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
-                . " FROM report_exclusive_tour_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
-                . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))  ";
+                    . " (SELECT COUNT(id) FROM report_exclusive_tour_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
+                    . " FROM report_exclusive_tour_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
+                    . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))  ";
             $result    = $ModelBase->select( $sql );
         } else {
             $Model  = Load::library( 'Model' );
             $sql    = "SELECT *, "
-                . " (SELECT COUNT(id) FROM book_exclusive_tour_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
-                . " FROM book_exclusive_tour_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
-                . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))";
+                    . " (SELECT COUNT(id) FROM book_exclusive_tour_tb WHERE factor_number='{$request_number}' OR request_number='{$request_number}') AS CountId "
+                    . " FROM book_exclusive_tour_tb  WHERE (factor_number='{$request_number}' OR request_number='{$request_number}') "
+                    . " AND (((factor_number OR request_number) > 0) OR ((factor_number OR request_number) <>''))";
             $result = $Model->select( $sql );
         }
 
@@ -6120,8 +6120,8 @@ class functions {
             $Model = new Model();
 
             $sql    = "select *,"
-                . " (SELECT COUNT(id) FROM book_europcar_local_tb WHERE factor_number='$factorNumber') AS CountId "
-                . " from book_europcar_local_tb  where factor_number='$factorNumber' ";
+                    . " (SELECT COUNT(id) FROM book_europcar_local_tb WHERE factor_number='$factorNumber') AS CountId "
+                    . " from book_europcar_local_tb  where factor_number='$factorNumber' ";
             $result = $Model->load( $sql );
         }
 
@@ -6142,15 +6142,15 @@ class functions {
             $ModelBase = Load::library( 'ModelBase' );
 
             $sql    = "select *," . " (SELECT COUNT(id) FROM report_tour_tb WHERE factor_number='{$factorNumber}') AS CountId "
-                . " from report_tour_tb  where factor_number='{$factorNumber}'  ";
+                    . " from report_tour_tb  where factor_number='{$factorNumber}'  ";
             $result = $ModelBase->load( $sql );
         } else {
             Load::autoload( 'Model' );
             $Model = new Model();
 
             $sql    = "select *,"
-                . " (SELECT COUNT(id) FROM book_tour_local_tb WHERE factor_number='{$factorNumber}') AS CountId "
-                . " from book_tour_local_tb  where factor_number='{$factorNumber}' ";
+                    . " (SELECT COUNT(id) FROM book_tour_local_tb WHERE factor_number='{$factorNumber}') AS CountId "
+                    . " from book_tour_local_tb  where factor_number='{$factorNumber}' ";
 
             $result = $Model->load( $sql );
         }
@@ -6220,16 +6220,16 @@ class functions {
             $ModelBase = Load::library( 'ModelBase' );
 
             $sql    = "select *,"
-                . " (SELECT COUNT(id) FROM report_europcar_tb WHERE temp_reserve_number='$tempReserveNumber') AS CountId "
-                . " from report_europcar_tb  where temp_reserve_number='$tempReserveNumber'  ";
+                    . " (SELECT COUNT(id) FROM report_europcar_tb WHERE temp_reserve_number='$tempReserveNumber') AS CountId "
+                    . " from report_europcar_tb  where temp_reserve_number='$tempReserveNumber'  ";
             $result = $ModelBase->load( $sql );
         } else {
             Load::autoload( 'Model' );
             $Model = new Model();
 
             $sql    = "select *,"
-                . " (SELECT COUNT(id) FROM book_europcar_local_tb WHERE temp_reserve_number='$tempReserveNumber') AS CountId "
-                . " from book_europcar_local_tb  where temp_reserve_number='$tempReserveNumber' ";
+                    . " (SELECT COUNT(id) FROM book_europcar_local_tb WHERE temp_reserve_number='$tempReserveNumber') AS CountId "
+                    . " from book_europcar_local_tb  where temp_reserve_number='$tempReserveNumber' ";
             $result = $Model->load( $sql );
         }
 
@@ -6518,10 +6518,10 @@ class functions {
 
         if ( $Type == 'Local' ) {
             $Sql
-                = " SELECT Departure_Code,Departure_City,Departure_CityEn FROM flight_route_tb WHERE local_portal='0' AND (Departure_Code='{$Param}' OR Departure_Code LIKE '%{$Param}%' OR Departure_City LIKE '%{$Param}%' OR Departure_CityEn LIKE '%{$Param}%') GROUP BY  Departure_Code";
+                    = " SELECT Departure_Code,Departure_City,Departure_CityEn FROM flight_route_tb WHERE local_portal='0' AND (Departure_Code='{$Param}' OR Departure_Code LIKE '%{$Param}%' OR Departure_City LIKE '%{$Param}%' OR Departure_CityEn LIKE '%{$Param}%') GROUP BY  Departure_Code";
         } else {
             $Sql
-                = " SELECT * FROM flight_portal_tb WHERE DepartureCode='{$Param}' OR DepartureCode LIKE '%{$Param}%' OR AirportFa LIKE '%{$Param}%'OR AirportEn LIKE '%{$Param}%' OR DepartureCityFa LIKE '%{$Param}%' OR DepartureCityEn LIKE '%{$Param}%' OR CountryFa  LIKE '%{$Param}%' OR CountryEn  LIKE '%{$Param}%' GROUP BY  DepartureCode";
+                    = " SELECT * FROM flight_portal_tb WHERE DepartureCode='{$Param}' OR DepartureCode LIKE '%{$Param}%' OR AirportFa LIKE '%{$Param}%'OR AirportEn LIKE '%{$Param}%' OR DepartureCityFa LIKE '%{$Param}%' OR DepartureCityEn LIKE '%{$Param}%' OR CountryFa  LIKE '%{$Param}%' OR CountryEn  LIKE '%{$Param}%' GROUP BY  DepartureCode";
         }
 
         $result = $ModelBase->select( $Sql );
@@ -6617,11 +6617,11 @@ class functions {
 
 
             $AdtPriceByChange = self::setPriceChanges( $rec['Airline_IATA'], $rec['FlightType'], $rec['AdtPrice'], $rec['AdtFare'], ( $rec['IsInternalFlight'] == '1' ) ? 'Local' : 'Portal',
-                strtolower( $rec['FlightType'] ) == 'system' ? '' : 'public' );
+                    strtolower( $rec['FlightType'] ) == 'system' ? '' : 'public' );
             $ChdPriceByChange = self::setPriceChanges( $rec['Airline_IATA'], $rec['FlightType'], $rec['ChdPrice'], $rec['ChdFare'], ( $rec['IsInternalFlight'] == '1' ) ? 'Local' : 'Portal',
-                strtolower( $rec['FlightType'] ) == 'system' ? '' : 'public' );
+                    strtolower( $rec['FlightType'] ) == 'system' ? '' : 'public' );
             $InfPriceByChange = self::setPriceChanges( $rec['Airline_IATA'], $rec['FlightType'], $rec['InfPrice'], $rec['InfFare'], ( $rec['IsInternalFlight'] == '1' ) ? 'Local' : 'Portal',
-                strtolower( $rec['FlightType'] ) == 'system' ? '' : 'public' );
+                    strtolower( $rec['FlightType'] ) == 'system' ? '' : 'public' );
 
 
             $AdtPriceByChangeExploded = explode( ':', $AdtPriceByChange );
@@ -6634,11 +6634,11 @@ class functions {
 
 
             $Data['AdtPrice'][ $direction ]     = ( strtolower( $AdtPriceByChangeExploded[2] ) == 'yes' ) ? $AdtPriceByChangeExploded[0] :
-                $AdtPriceByChangeExploded[1];//$InfoCurrencyAdult['AmountCurrency'];
+                    $AdtPriceByChangeExploded[1];//$InfoCurrencyAdult['AmountCurrency'];
             $Data['ChdPrice'][ $direction ]     = ( strtolower( $ChdPriceByChangeExploded[2] ) == 'yes' ) ? $ChdPriceByChangeExploded[0] :
-                $ChdPriceByChangeExploded[1];//$InfoCurrencyAdult['AmountCurrency'];// $InfoCurrencyChild['AmountCurrency'];
+                    $ChdPriceByChangeExploded[1];//$InfoCurrencyAdult['AmountCurrency'];// $InfoCurrencyChild['AmountCurrency'];
             $Data['InfPrice'][ $direction ]     = ( strtolower( $InfPriceByChangeExploded[2] ) == 'yes' ) ? $InfPriceByChangeExploded[0] :
-                $InfPriceByChangeExploded[1];//$InfoCurrencyInfant['AmountCurrency'];
+                    $InfPriceByChangeExploded[1];//$InfoCurrencyInfant['AmountCurrency'];
             $Data['AdtPriceType'][ $direction ] = 'ریال';//$InfoCurrencyAdult['TypeCurrency'];
 
             //            $InfoCurrencyAdultByChange = functions::CurrencyCalculate($AdtPriceByChangeExploded[0],$rec['CurrencyCode']);
@@ -6649,7 +6649,7 @@ class functions {
             //            $Data['InfPriceByChange'][$direction] = $Data['InfPrice'][$direction];
 
             $Data['TotalPrice'] += ( $rec['Adt_qty'] * $Data['AdtPrice'][ $direction ] ) + ( $rec['Chd_qty'] * $Data['ChdPrice'][ $direction ] ) + ( $rec['Inf_qty']
-                    * $Data['InfPrice'][ $direction ] );
+                            * $Data['InfPrice'][ $direction ] );
             //$DataInfo[]=$Data;
         }
 
@@ -6869,29 +6869,29 @@ class functions {
 
     public static function Os() {
         $os_array = array(
-            '/windows nt 10/i'      => 'Windows 10',
-            '/windows nt 6.3/i'     => 'Windows 8.1',
-            '/windows nt 6.2/i'     => 'Windows 8',
-            '/windows nt 6.1/i'     => 'Windows 7',
-            '/windows nt 6.0/i'     => 'Windows Vista',
-            '/windows nt 5.2/i'     => 'Windows Server 2003/XP x64',
-            '/windows nt 5.1/i'     => 'Windows XP',
-            '/windows xp/i'         => 'Windows XP',
-            '/windows nt 5.0/i'     => 'Windows 2000',
-            '/windows me/i'         => 'Windows ME',
-            '/win98/i'              => 'Windows 98',
-            '/win95/i'              => 'Windows 95',
-            '/win16/i'              => 'Windows 3.11',
-            '/macintosh|mac os x/i' => 'Mac OS X',
-            '/mac_powerpc/i'        => 'Mac OS 9',
-            '/linux/i'              => 'Linux',
-            '/ubuntu/i'             => 'Ubuntu',
-            '/iphone/i'             => 'iPhone',
-            '/ipod/i'               => 'iPod',
-            '/ipad/i'               => 'iPad',
-            '/android/i'            => 'Android',
-            '/blackberry/i'         => 'BlackBerry',
-            '/webos/i'              => 'Mobile',
+                '/windows nt 10/i'      => 'Windows 10',
+                '/windows nt 6.3/i'     => 'Windows 8.1',
+                '/windows nt 6.2/i'     => 'Windows 8',
+                '/windows nt 6.1/i'     => 'Windows 7',
+                '/windows nt 6.0/i'     => 'Windows Vista',
+                '/windows nt 5.2/i'     => 'Windows Server 2003/XP x64',
+                '/windows nt 5.1/i'     => 'Windows XP',
+                '/windows xp/i'         => 'Windows XP',
+                '/windows nt 5.0/i'     => 'Windows 2000',
+                '/windows me/i'         => 'Windows ME',
+                '/win98/i'              => 'Windows 98',
+                '/win95/i'              => 'Windows 95',
+                '/win16/i'              => 'Windows 3.11',
+                '/macintosh|mac os x/i' => 'Mac OS X',
+                '/mac_powerpc/i'        => 'Mac OS 9',
+                '/linux/i'              => 'Linux',
+                '/ubuntu/i'             => 'Ubuntu',
+                '/iphone/i'             => 'iPhone',
+                '/ipod/i'               => 'iPod',
+                '/ipad/i'               => 'iPad',
+                '/android/i'            => 'Android',
+                '/blackberry/i'         => 'BlackBerry',
+                '/webos/i'              => 'Mobile',
         );
 
         return $os_array;
@@ -6917,7 +6917,7 @@ class functions {
         $ModelBase      = new ModelBase();
         $services       = array();
         $query
-            = "SELECT
+                = "SELECT
                       services_group.Title, services_group.MainService
                   FROM
                       client_auth_tb AS AUTH
@@ -6985,16 +6985,16 @@ class functions {
             $ModelBase = Load::library( 'ModelBase' );
 
             $sql    = "select *,"
-                . " (SELECT COUNT(id) FROM report_gasht_tb WHERE passenger_factor_num='$factorNumber') AS CountId "
-                . " from report_gasht_tb  where passenger_factor_num='$factorNumber'  ";
+                    . " (SELECT COUNT(id) FROM report_gasht_tb WHERE passenger_factor_num='$factorNumber') AS CountId "
+                    . " from report_gasht_tb  where passenger_factor_num='$factorNumber'  ";
             $result = $ModelBase->load( $sql );
         } else {
             Load::autoload( 'Model' );
             $Model = new Model();
 
             $sql    = "select *,"
-                . " (SELECT COUNT(id) FROM book_gasht_local_tb WHERE passenger_factor_num='$factorNumber') AS CountId "
-                . " from book_gasht_local_tb  where passenger_factor_num='$factorNumber' ";
+                    . " (SELECT COUNT(id) FROM book_gasht_local_tb WHERE passenger_factor_num='$factorNumber') AS CountId "
+                    . " from book_gasht_local_tb  where passenger_factor_num='$factorNumber' ";
             $result = $Model->load( $sql );
         }
 
@@ -7042,7 +7042,7 @@ class functions {
     public static function getCompanyBusPhoto( $nameCompany ) {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "
+                = "
         SELECT
             baseCompany.logo AS logo
         FROM
@@ -7073,7 +7073,7 @@ class functions {
     public static function getAllCompanyBus() {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "
+                = "
         SELECT
             id,
             name_fa
@@ -7103,7 +7103,7 @@ class functions {
     public static function getIdBaseCompanyBus( $nameCompany ) {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "
+                = "
         SELECT
             baseCompany.id AS id
         FROM
@@ -7128,7 +7128,7 @@ class functions {
     public static function getCompanyTrainById( $code ) {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "SELECT name_fa FROM base_company_bus_tb
+                = "SELECT name_fa FROM base_company_bus_tb
                 WHERE type_vehicle = 'train' AND code_company_raja = '{$code}' AND is_del = 'no' ";
         $result    = $ModelBase->load( $sql );
 
@@ -7141,7 +7141,7 @@ class functions {
     public static function getIdCompanyTrain( $param ) {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "SELECT id FROM base_company_bus_tb
+                = "SELECT id FROM base_company_bus_tb
                 WHERE type_vehicle = 'train' AND name_fa = '{$param}' AND is_del = 'no' ";
         $result    = $ModelBase->load( $sql );
 
@@ -7154,7 +7154,7 @@ class functions {
     public static function getIdCompanyTrainByCode( $code ) {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "SELECT id FROM base_company_bus_tb
+                = "SELECT id FROM base_company_bus_tb
                 WHERE type_vehicle = 'train' AND code_company_raja = '{$code}' AND is_del = 'no' ";
         $result    = $ModelBase->load( $sql );
 
@@ -7166,7 +7166,7 @@ class functions {
     public static function getCompanyTrainPhoto( $code, $capacity = null ) {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "SELECT logo FROM base_company_bus_tb
+                = "SELECT logo FROM base_company_bus_tb
                 WHERE type_vehicle = 'train' AND (code_company_raja = '{$code}' OR  name_fa='{$code}') AND is_del = 'no' ";
         $result    = $ModelBase->load( $sql );
         if ( ! empty( $result ) && $result['logo'] != '' ) {
@@ -7183,7 +7183,7 @@ class functions {
     public static function pdfGetCompanyTrainPhoto( $code, $capacity = null ) {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "SELECT logo FROM base_company_bus_tb
+                = "SELECT logo FROM base_company_bus_tb
                 WHERE type_vehicle = 'train' AND (code_company_raja = '{$code}' OR  name_fa='{$code}') AND is_del = 'no' ";
         $result    = $ModelBase->load( $sql );
         if ( ! empty( $result ) && $result['logo'] != '' ) {
@@ -7203,7 +7203,7 @@ class functions {
     public static function getAllCompanyTrain() {
         $ModelBase = Load::library( 'ModelBase' );
         $sql
-            = "SELECT
+                = "SELECT
                   name_fa AS name_company,
                   logo AS logo_company,
                   code_company_raja AS code_company
@@ -7452,16 +7452,16 @@ class functions {
         if ( TYPE_ADMIN == '1' ) {
             $ModelBase = Load::library( 'ModelBase' );
             $sql       = "SELECT *, "
-                . " (SELECT COUNT(id) FROM report_train_tb WHERE factor_number='{$request_number}' OR ServiceCode='{$request_number}') AS CountId "
-                . " FROM report_train_tb  WHERE (factor_number='{$request_number}' OR ServiceCode='{$request_number}') "
-                . " AND (((factor_number OR ServiceCode) > 0) OR ((factor_number OR ServiceCode) <>''))  ";
+                    . " (SELECT COUNT(id) FROM report_train_tb WHERE factor_number='{$request_number}' OR ServiceCode='{$request_number}') AS CountId "
+                    . " FROM report_train_tb  WHERE (factor_number='{$request_number}' OR ServiceCode='{$request_number}') "
+                    . " AND (((factor_number OR ServiceCode) > 0) OR ((factor_number OR ServiceCode) <>''))  ";
             $result    = $ModelBase->select( $sql );
         } else {
             $Model  = Load::library( 'Model' );
             $sql    = "SELECT *, "
-                . " (SELECT COUNT(id) FROM book_train_tb WHERE factor_number='{$request_number}' OR ServiceCode='{$request_number}') AS CountId "
-                . " FROM book_train_tb  WHERE (factor_number='{$request_number}' OR ServiceCode='{$request_number}') "
-                . " AND (((factor_number OR ServiceCode) > 0) OR ((factor_number OR ServiceCode) <>''))";
+                    . " (SELECT COUNT(id) FROM book_train_tb WHERE factor_number='{$request_number}' OR ServiceCode='{$request_number}') AS CountId "
+                    . " FROM book_train_tb  WHERE (factor_number='{$request_number}' OR ServiceCode='{$request_number}') "
+                    . " AND (((factor_number OR ServiceCode) > 0) OR ((factor_number OR ServiceCode) <>''))";
             $result = $Model->select( $sql );
         }
 
@@ -7534,12 +7534,12 @@ class functions {
             case 'Adt':
                 if ( $changePrice > 0 ) {
                     $message = self::StrReplaceInXml( [ '@@changePrice@@' => $changePriceFinal, '@@direction@@' => $direction ],
-                        'increasePriceAdultChange' );//self::Xmlinformation('increasePriceAdultChange');
+                            'increasePriceAdultChange' );//self::Xmlinformation('increasePriceAdultChange');
 
                     return $message;
                 } elseif ( $changePrice < 0 ) {
                     $message = self::StrReplaceInXml( [ '@@changePrice@@' => $changePriceFinal, '@@direction@@' => $direction ],
-                        'decreasePriceAdultChange' );// self::Xmlinformation('decreasePriceAdultChange');
+                            'decreasePriceAdultChange' );// self::Xmlinformation('decreasePriceAdultChange');
 
                     return $message;
                 }
@@ -7547,12 +7547,12 @@ class functions {
             case 'Chd':
                 if ( $changePrice > 0 ) {
                     $message = self::StrReplaceInXml( [ '@@changePrice@@' => $changePriceFinal, '@@direction@@' => $direction ],
-                        'increasePriceChildChange' );// self::Xmlinformation('increasePriceChildChange');
+                            'increasePriceChildChange' );// self::Xmlinformation('increasePriceChildChange');
 
                     return $message;
                 } elseif ( $changePrice < 0 ) {
                     $message = self::StrReplaceInXml( [ '@@changePrice@@' => $changePriceFinal, '@@direction@@' => $direction ],
-                        'decreasePriceChildChange' );//self::Xmlinformation('decreasePriceChildChange');
+                            'decreasePriceChildChange' );//self::Xmlinformation('decreasePriceChildChange');
 
                     return $message;
                 }
@@ -7560,12 +7560,12 @@ class functions {
             case 'Inf':
                 if ( $changePrice > 0 ) {
                     $message = self::StrReplaceInXml( [ '@@changePrice@@' => $changePriceFinal, '@@direction@@' => $direction ],
-                        'increasePriceInfantChange' );//self::Xmlinformation('increasePriceInfantChange');
+                            'increasePriceInfantChange' );//self::Xmlinformation('increasePriceInfantChange');
 
                     return $message;
                 } elseif ( $changePrice < 0 ) {
                     $message = self::StrReplaceInXml( [ '@@changePrice@@' => $changePriceFinal, '@@direction@@' => $direction ],
-                        'decreasePriceInfantChange' );//self::Xmlinformation('decreasePriceInfantChange');
+                            'decreasePriceInfantChange' );//self::Xmlinformation('decreasePriceInfantChange');
 
                     return $message;
                 }
@@ -7586,11 +7586,11 @@ class functions {
 
 
         self::insertLog('CurrencyCalculate Input Params => ' . json_encode([
-                'Price' => $Price,
-                'CurrencyCode' => $CurrencyCode,
-                'CurrencyEquivalent' => $CurrencyEquivalent,
-                'title_currency' => $title_currency
-            ]), 'CurrencyCalculate');
+                        'Price' => $Price,
+                        'CurrencyCode' => $CurrencyCode,
+                        'CurrencyEquivalent' => $CurrencyEquivalent,
+                        'title_currency' => $title_currency
+                ]), 'CurrencyCalculate');
 
         $SessionCurrency = '';
         if ( $CurrencyCode > '0' ) {
@@ -7610,9 +7610,9 @@ class functions {
         }
 
         self::insertLog('Currency Info => ' . json_encode([
-                'info_currency' => $info_currency,
-                'EquivalentAmount' => $EquivalentAmount
-            ]), 'CurrencyCalculate');
+                        'info_currency' => $info_currency,
+                        'EquivalentAmount' => $EquivalentAmount
+                ]), 'CurrencyCalculate');
 
         $Amount     = ( $SessionCurrency > 0 && ISCURRENCY == '1' && ! empty( $EquivalentAmount ) ) ? ( $Price / $EquivalentAmount ) : $Price;
         if (SOFTWARE_LANG == 'fa') {
@@ -7648,14 +7648,71 @@ class functions {
         }
         $Amount     = ($SessionCurrency > 0 && ISCURRENCY == '1' && !empty($EquivalentAmount)) ? ($Price * $EquivalentAmount) : $Price;
         $TypeAmount = (($SessionCurrency > 0 && ISCURRENCY == '1' && !empty($info_currency))
-            ? functions::Xmlinformation('Rial')->__toString()
-            : (($title_currency != null) ? $title_currency : 'Unknown'));
+                ? functions::Xmlinformation('Rial')->__toString()
+                : (($title_currency != null) ? $title_currency : 'Unknown'));
         $CurrencyConvert['AmountRial']   = $Amount;
         $CurrencyConvert['TypeCurrency'] = $TypeAmount;
         return $CurrencyConvert;
     }
     #endregion
+    /**
+     * تبدیل قیمت از ریال به ارز (مثلاً دلار)
+     *
+     * @param array $params ['price' => قیمت به ریال, 'currency_type' => کد ارز مثل USD]
+     * @return array ['AmountCurrency' => قیمت به ارز, 'TypeCurrency' => عنوان ارز]
+     */
+    public static function CalculateRialToCurrency($params) {
+        $amount = $params['price'];
+        $currency_type = $params['currency_type'];
+        $decimals = $params['decimals'] ?? 2;
+        $roundingMode = $params['rounding'] ?? 'nearest'; // 'nearest', 'up', 'down'
 
+        $currencyEquivalentModel = Load::getModel('currencyEquivalentModel');
+        $currencyModel = Load::getModel('currencyModel');
+
+        $resultCurrencyEquivalent = $currencyEquivalentModel->get()
+                ->where('CurrencyCode', $currency_type)
+                ->find();
+
+        $currency = $currencyModel->get()
+                ->where('IsEnable', 'Enable')
+                ->where('CurrencyCode', $currency_type)
+                ->find();
+
+        $eqAmount = $resultCurrencyEquivalent['EqAmount'] ?? 0;
+
+        if ($eqAmount <= 0) {
+            return [
+                    'AmountCurrency' => 0,
+                    'TypeCurrency' => $currency['CurrencyTitleEn'] ?? 'IRR'
+            ];
+        }
+        // محاسبه قیمت به ارز
+        $priceInCurrency = $amount / $eqAmount;
+
+        // ========== گرد کردن بر اساس حالت ==========
+        switch ($roundingMode) {
+            case 'up':
+                // گرد کردن به بالا (مثل ceil)
+                $roundedPrice = ceil($priceInCurrency * pow(10, $decimals)) / pow(10, $decimals);
+                break;
+            case 'down':
+                // گرد کردن به پایین (مثل floor)
+                $roundedPrice = floor($priceInCurrency * pow(10, $decimals)) / pow(10, $decimals);
+                break;
+            case 'nearest':
+                $roundedPrice = round($priceInCurrency, $decimals, PHP_ROUND_HALF_UP);
+                break;
+            default:
+                $roundedPrice = $priceInCurrency;
+                break;
+        }
+
+        $CurrencyCalculate['AmountCurrency'] = $roundedPrice;
+        $CurrencyCalculate['TypeCurrency'] = $currency['CurrencyTitleEn'] ?? 'USD';
+
+        return $CurrencyCalculate;
+    }
     #region CalculateCurrencyPrice
 
     public static function CalculateCurrencyPrice( $params ) {
@@ -7672,45 +7729,9 @@ class functions {
 
         return $CurrencyCalculate;
 
+
     }
 
-    public static function CalculateRialToCurrency($params) {
-        $amount = $params['price'];
-        $currency_type = $params['currency_type'];
-        $decimals = $params['decimals'] ?? 2; // تعداد اعشار (پیش‌فرض 2)
-
-        $currencyEquivalentModel = Load::getModel('currencyEquivalentModel');
-        $currencyModel = Load::getModel('currencyModel');
-
-        $resultCurrencyEquivalent = $currencyEquivalentModel->get()
-            ->where('CurrencyCode', $currency_type)
-            ->find();
-
-        $currency = $currencyModel->get()
-            ->where('IsEnable', 'Enable')
-            ->where('CurrencyCode', $currency_type)
-            ->find();
-
-        $eqAmount = $resultCurrencyEquivalent['EqAmount'] ?? 0;
-
-        if ($eqAmount <= 0) {
-            return [
-                'AmountCurrency' => 0,
-                'TypeCurrency' => $currency['CurrencyTitleEn'] ?? 'IRR'
-            ];
-        }
-
-        // محاسبه قیمت به ارز
-        $priceInCurrency = $amount / $eqAmount;
-
-        // ========== گرد کردن به بالا با تعداد اعشار مشخص ==========
-        $roundedPrice = ceil($priceInCurrency * pow(10, $decimals)) / pow(10, $decimals);
-
-        $CurrencyCalculate['AmountCurrency'] = $roundedPrice;
-        $CurrencyCalculate['TypeCurrency'] = $currency['CurrencyTitleEn'] ?? 'USD';
-
-        return $CurrencyCalculate;
-    }
     #endregion
 
     #region TicketPriceCurrency
@@ -7825,7 +7846,7 @@ class functions {
         $modelBase = Load::library( 'ModelBase' );
 
         $Sql
-            = "SELECT * FROM report_tb WHERE (request_number='{$RequestNumber}' OR factor_number='{$RequestNumber}') AND (passenger_national_code='{$nationalCode}' OR passportNumber='{$nationalCode}')";
+                = "SELECT * FROM report_tb WHERE (request_number='{$RequestNumber}' OR factor_number='{$RequestNumber}') AND (passenger_national_code='{$nationalCode}' OR passportNumber='{$nationalCode}')";
 
         $result = $modelBase->select( $Sql );
 
@@ -8063,18 +8084,18 @@ class functions {
 
     public static function ConvertArrayByLanguage( $String ) {
         $ArrayInstead = array(
-            "flight"        => self::Xmlinformation( 'Flight' ),
-            "hotel"         => self::Xmlinformation( 'Hotel' ),
-            "insurance"     => self::Xmlinformation( 'Insurance' ),
-            "gashttransfer" => self::Xmlinformation( 'PatrolTransfer' ),
-            "europcar"      => self::Xmlinformation( 'Carrental' ),
-            "tour"          => self::Xmlinformation( 'Tour' ),
-            "visa"          => self::Xmlinformation( 'Visa' ),
-            "bus"           => self::Xmlinformation( 'Bus' ),
-            "train"         => self::Xmlinformation( 'Train' ),
-            "entertainment" => self::Xmlinformation( 'Entertainment' ),
-            "package"       => self::Xmlinformation( 'Package' ),
-            "cip"       => self::Xmlinformation( 'Cip' )
+                "flight"        => self::Xmlinformation( 'Flight' ),
+                "hotel"         => self::Xmlinformation( 'Hotel' ),
+                "insurance"     => self::Xmlinformation( 'Insurance' ),
+                "gashttransfer" => self::Xmlinformation( 'PatrolTransfer' ),
+                "europcar"      => self::Xmlinformation( 'Carrental' ),
+                "tour"          => self::Xmlinformation( 'Tour' ),
+                "visa"          => self::Xmlinformation( 'Visa' ),
+                "bus"           => self::Xmlinformation( 'Bus' ),
+                "train"         => self::Xmlinformation( 'Train' ),
+                "entertainment" => self::Xmlinformation( 'Entertainment' ),
+                "package"       => self::Xmlinformation( 'Package' ),
+                "cip"       => self::Xmlinformation( 'Cip' )
         );
         foreach ( $ArrayInstead AS $key => $value ) {
             if ( $key == $String ) {
@@ -8250,8 +8271,8 @@ class functions {
         if (empty($type)) {
             if ($arrayTicket['SourceId'] == '10' || $arrayTicket['SourceId'] == '1' || $arrayTicket['SourceId']=='14') {
                 return (empty($route['Baggage']) ? self::Xmlinformation('NoBaggage') : (($route['Baggage'][0]['Code'] == 'Piece') ? self::StrReplaceInXml([
-                    '@@numberPiece@@' => $route['Baggage'][0]['allowanceAmount'],
-                    '@@amountPiece@@' => $route['Baggage'][0]['Charge'],
+                        '@@numberPiece@@' => $route['Baggage'][0]['allowanceAmount'],
+                        '@@amountPiece@@' => $route['Baggage'][0]['Charge'],
                 ], 'AmountBaggage') : $route['Baggage'][0]['Charge'] . self::Xmlinformation("Kg")->__toString()));
             }
 
@@ -8271,7 +8292,7 @@ class functions {
 
             if ($arrayTicket['api_id'] == '10' || $arrayTicket['api_id'] == '1' || $arrayTicket['api_id']=='14') {
                 return (empty($route['Baggage']) ? 'No Load' :
-                    (($route['BaggageType'] == 'Piece') ? $route['AllowanceAmount'] . ' pack, each pack ' . $route['Baggage'] . ' kg' : $route['Baggage'] . self::Xmlinformation("Kg")->__toString()));
+                        (($route['BaggageType'] == 'Piece') ? $route['AllowanceAmount'] . ' pack, each pack ' . $route['Baggage'] . ' kg' : $route['Baggage'] . self::Xmlinformation("Kg")->__toString()));
             }
 
 
@@ -8296,13 +8317,13 @@ class functions {
     public static function notAllowedAccessToPage() {
 
         return array(
-            TRAIN_TICKET,
-            ConstPrintTicket,
-            ConstPrintHotel,
-            ConstPrintEuropcar,
-            ConstPrintTourReservation,
-            ConstPrintHotelReservationAhuan,
-            ConstPrintHotelReservationZarvan,
+                TRAIN_TICKET,
+                ConstPrintTicket,
+                ConstPrintHotel,
+                ConstPrintEuropcar,
+                ConstPrintTourReservation,
+                ConstPrintHotelReservationAhuan,
+                ConstPrintHotelReservationZarvan,
 
         );
     }
@@ -8349,16 +8370,16 @@ class functions {
     #region textNumber
     public static function textNumber( $number ) {
         $numbers = array(
-            ''  => '',
-            '1' => 'First',
-            '2' => 'Second',
-            '3' => 'Third',
-            '4' => 'Fourth',
-            '5' => 'Fifth',
-            '6' => 'Sixth',
-            '7' => 'Seventh',
-            '8' => 'Eighth',
-            '9' => 'Ninth',
+                ''  => '',
+                '1' => 'First',
+                '2' => 'Second',
+                '3' => 'Third',
+                '4' => 'Fourth',
+                '5' => 'Fifth',
+                '6' => 'Sixth',
+                '7' => 'Seventh',
+                '8' => 'Eighth',
+                '9' => 'Ninth',
         );
 
         $textNumber = functions::Xmlinformation( $numbers[ $number ] );
@@ -8433,20 +8454,20 @@ class functions {
 
         $string = str_replace( "'", "''", $string );
         $string = str_replace( array( "\n", "'", "‘", "’", "'", "“", "”", "„", "?", '"', '(', ')', '<', '>' ), array(
-            "",
-            "\’",
-            "\’",
-            "\’",
-            "\’",
-            "\"",
-            "\"",
-            "\"",
-            "\"",
-            "\"",
-            '\"',
-            '\"',
-            '\"',
-            '\"',
+                "",
+                "\’",
+                "\’",
+                "\’",
+                "\’",
+                "\"",
+                "\"",
+                "\"",
+                "\"",
+                "\"",
+                '\"',
+                '\"',
+                '\"',
+                '\"',
         ), $string );
         $string = stripslashes( $string );
         $string = escapeshellcmd( $string );
@@ -8598,25 +8619,25 @@ class functions {
     #region arabicToPersian
     public static function arabicToPersian( $string ) {
         $characters = array(
-            'ك'  => 'ک',
-            'دِ' => 'د',
-            'بِ' => 'ب',
-            'زِ' => 'ز',
-            'ذِ' => 'ذ',
-            'شِ' => 'ش',
-            'سِ' => 'س',
-            'ى'  => 'ی',
-            'ي'  => 'ی',
-            '١'  => '۱',
-            '٢'  => '۲',
-            '٣'  => '۳',
-            '٤'  => '۴',
-            '٥'  => '۵',
-            '٦'  => '۶',
-            '٧'  => '۷',
-            '٨'  => '۸',
-            '٩'  => '۹',
-            '٠'  => '۰',
+                'ك'  => 'ک',
+                'دِ' => 'د',
+                'بِ' => 'ب',
+                'زِ' => 'ز',
+                'ذِ' => 'ذ',
+                'شِ' => 'ش',
+                'سِ' => 'س',
+                'ى'  => 'ی',
+                'ي'  => 'ی',
+                '١'  => '۱',
+                '٢'  => '۲',
+                '٣'  => '۳',
+                '٤'  => '۴',
+                '٥'  => '۵',
+                '٦'  => '۶',
+                '٧'  => '۷',
+                '٨'  => '۸',
+                '٩'  => '۹',
+                '٠'  => '۰',
         );
 
         return str_replace( array_keys( $characters ), array_values( $characters ), $string );
@@ -8646,7 +8667,7 @@ class functions {
         define( 'MERCHANT_CODE_AJAX', 379918 );
         define( 'TERMINAL_CODE_AJAX', 384790 );
         define( 'KEYPRIVATE_CODE_AJAX',
-            '<RSAKeyValue><Modulus>vVYGdEx9XSxOY0+35rMTxdch/+6G9HdKHOGUsludVupUJjmM2fsA9FX33ds4yjh6TRk9JPEdA9H3kKRRYUUH4IAKviPxKUG5UW70E17otFUB3UEewQxDfPV+4EKgGguKUV6uO+tc7rhJ9ORoKh7qrYJcRG8srhPdAy3N5HmbK0E=</Modulus><Exponent>AQAB</Exponent><P>3Mnuzg8uEQj3upXCNzY2TWvw3b17aq1vZfKssq3auJyrtlE/VCqqZeKcncDDcHnz2SqmNCKtLjOtRWla9cHlnw==</P><Q>24f7Oz/03Rw424zn/D6bUAjBdskpY2t+PU+i3/rl68oqoZ7SZfu/d9ECKHPbw8NxbLaaSdcD1TwCUU/evWCDHw==</Q><DP>VTQMVzLeeS53w2aFs57VJ92O71NvLETP54zV/oI/FN1JGquR/94TMgxYmjxIb8BwTQ87YoU7RcglhtLYilyQSw==</DP><DQ>XBWD+mxvZ7gI2X8XaCVSvJWPoSXsKHnUcB9RcKYrf2ZDz5txIbohrD6Nqy4+BrWahEFsIoEAaJdNWZIpGkK7fQ==</DQ><InverseQ>UEuvirKmbzv+cuyXTtRxTPXcqQ/UvhghhGcbxl0dwcFZsjswCUZRfErAy5OrH+CW7dzfZxYz3LCsaA2qv6qcDw==</InverseQ><D>XbpHSa1P5h730yv0ku0VnbvJJgQzpLOk6bU2QjEeK5em/qFAu+wI5evk31wVue3JhX84CKCfx3NaxazCaI+evMdMFRv2F4Gqc7RBvnl3TcWlyZkEF/8iXH7OYqXpocVwCAgnfYWNQqlfANTEmUFhdMAT+biekC5goJ/K6FuGDm0=</D></RSAKeyValue>' );
+                '<RSAKeyValue><Modulus>vVYGdEx9XSxOY0+35rMTxdch/+6G9HdKHOGUsludVupUJjmM2fsA9FX33ds4yjh6TRk9JPEdA9H3kKRRYUUH4IAKviPxKUG5UW70E17otFUB3UEewQxDfPV+4EKgGguKUV6uO+tc7rhJ9ORoKh7qrYJcRG8srhPdAy3N5HmbK0E=</Modulus><Exponent>AQAB</Exponent><P>3Mnuzg8uEQj3upXCNzY2TWvw3b17aq1vZfKssq3auJyrtlE/VCqqZeKcncDDcHnz2SqmNCKtLjOtRWla9cHlnw==</P><Q>24f7Oz/03Rw424zn/D6bUAjBdskpY2t+PU+i3/rl68oqoZ7SZfu/d9ECKHPbw8NxbLaaSdcD1TwCUU/evWCDHw==</Q><DP>VTQMVzLeeS53w2aFs57VJ92O71NvLETP54zV/oI/FN1JGquR/94TMgxYmjxIb8BwTQ87YoU7RcglhtLYilyQSw==</DP><DQ>XBWD+mxvZ7gI2X8XaCVSvJWPoSXsKHnUcB9RcKYrf2ZDz5txIbohrD6Nqy4+BrWahEFsIoEAaJdNWZIpGkK7fQ==</DQ><InverseQ>UEuvirKmbzv+cuyXTtRxTPXcqQ/UvhghhGcbxl0dwcFZsjswCUZRfErAy5OrH+CW7dzfZxYz3LCsaA2qv6qcDw==</InverseQ><D>XbpHSa1P5h730yv0ku0VnbvJJgQzpLOk6bU2QjEeK5em/qFAu+wI5evk31wVue3JhX84CKCfx3NaxazCaI+evMdMFRv2F4Gqc7RBvnl3TcWlyZkEF/8iXH7OYqXpocVwCAgnfYWNQqlfANTEmUFhdMAT+biekC5goJ/K6FuGDm0=</D></RSAKeyValue>' );
 
         $timeStamp       = date( "Y/m/d H:i:s" );
         $invoiceDate     = date( "Y/m/d H:i:s" ); //تاريخ فاكتور
@@ -8654,7 +8675,7 @@ class functions {
         $merchantCode    = MERCHANT_CODE_AJAX; // كد پذيرنده--
         $terminalCode    = TERMINAL_CODE_AJAX; // كد ترمينال--
         $continueAddress = ( isset( $_POST['factorNumber'] ) && ! empty( $_POST['factorNumber'] ) ) ?
-            '&factorNumber=' . $_POST['factorNumber'] . '&idMember=' . $_POST['idMemberLoginToAdmin'] . '&type=creditAgency' : '';
+                '&factorNumber=' . $_POST['factorNumber'] . '&idMember=' . $_POST['idMemberLoginToAdmin'] . '&type=creditAgency' : '';
         $redirectAddress = ROOT_ADDRESS_WITHOUT_LANG . '/itadmin/ticket/accountChargeReturnBank&bank=pasargad' . $continueAddress; //addres bargasht
         //         $redirectAddress = 'http://hihyper.ir/bank/returnBank.php?bank=pasargad&Usedid='.CLIENT_ID;
         $redirectAddress = str_replace( "\\", "/", $redirectAddress );
@@ -8919,7 +8940,7 @@ class functions {
      * @return string
      */
     public static function accountantApiGenerateBrokerJson(
-        $agency_id = null, $amount = 0, $action = 'increase', $comment = ''
+            $agency_id = null, $amount = 0, $action = 'increase', $comment = ''
     ) {
         /** @var Model $Model */
         /** @var agency_tb $agencyModel */
@@ -8946,12 +8967,12 @@ class functions {
             }
         }
         $return['request'] = array(
-            'action'            => $action,
-            'comment'           => $comment,
-            'broker'            => [ 'cellphone' => $agency['mobile'], 'isColleague' => $agency['isColleague'] ],
-            'amount'            => $amount,
-            'payment_unit'      => 'rial',
-            'payment_bank_name' => 'تنخواه حساب اینترنتی',
+                'action'            => $action,
+                'comment'           => $comment,
+                'broker'            => [ 'cellphone' => $agency['mobile'], 'isColleague' => $agency['isColleague'] ],
+                'amount'            => $amount,
+                'payment_unit'      => 'rial',
+                'payment_bank_name' => 'تنخواه حساب اینترنتی',
         );
 
         return self::Json( $return );
@@ -8968,7 +8989,7 @@ class functions {
      * @internal param null $client_id
      */
     public static function accountantApiRequestInsertBrokerData(
-        $agency_id = null, $amount = 0, $action = 'increase', $comment = ''
+            $agency_id = null, $amount = 0, $action = 'increase', $comment = ''
     ) {
 //		$json = self::accountantApiGenerateBrokerJson( $agency_id, $amount, $action, $comment );
 //		self::insertLog( $json, 'log_s360_to_accountant_broker' );
@@ -8982,7 +9003,7 @@ class functions {
     }
 
     public static function accountantApiRequestInsertBrokerBothData(
-        $agency_id = null, $amount = 0, $comment = '', $request_type = 'system_owner'
+            $agency_id = null, $amount = 0, $comment = '', $request_type = 'system_owner'
     ) {
 
 
@@ -9257,8 +9278,8 @@ class functions {
             if ( $objSms ) {
                 $sms       = "{$charge_provider}  ومبلغ خرید مشتری {$amount_client} است";
                 $cellArray = array(
-                    'abasi2' => '09057078341',
-                    'alami' => '09155909722',
+                        'abasi2' => '09057078341',
+                        'alami' => '09155909722',
                 );
 
                 if ($objSms) {
@@ -9307,11 +9328,11 @@ class functions {
     }
     public static function daysAgo($days) {
         return dateTimeSetting::jdate(
-            "Y-m-d",
-            strtotime("-{$days} days"),
-            '',
-            '',
-            'en'
+                "Y-m-d",
+                strtotime("-{$days} days"),
+                '',
+                '',
+                'en'
         );
     }
 
@@ -9591,9 +9612,9 @@ class functions {
             $i=0;
             while($data['departure'][$i]){
                 $dataFinal['info_city'][] = array(
-                    'Origin'=> $data['departure'][$i],
-                    'Destination'=> $data['arrival'][$i],
-                    'DepartureDate'=> $data['departuredate'][$i],
+                        'Origin'=> $data['departure'][$i],
+                        'Destination'=> $data['arrival'][$i],
+                        'DepartureDate'=> $data['departuredate'][$i],
                 );
 
                 $i++ ;
@@ -9886,10 +9907,10 @@ class functions {
     public static function returnJsonResult($success = true, $message = '', $data = null, $statusCode = 200) {
         http_response_code($statusCode);
         return json_encode([
-            'success' => $success,
-            'message' => $message,
-            'code' => $statusCode,
-            'data' => $data
+                'success' => $success,
+                'message' => $message,
+                'code' => $statusCode,
+                'data' => $data
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
     }
@@ -9939,9 +9960,9 @@ class functions {
 
         $clientId = CLIENT_ID;
         $sql      = "SELECT servicesGroup.* FROM services_group_tb AS servicesGroup "
-            . " INNER JOIN client_services_tb AS clientService ON clientService.ServiceGroupId= servicesGroup.id"
-            . " INNER JOIN client_auth_tb AS clientAuth ON clientAuth.ServiceId = clientService.id"
-            . " WHERE clientAuth.ClientId='{$clientId}' GROUP BY servicesGroup.id ORDER BY servicesGroup.id";
+                . " INNER JOIN client_services_tb AS clientService ON clientService.ServiceGroupId= servicesGroup.id"
+                . " INNER JOIN client_auth_tb AS clientAuth ON clientAuth.ServiceId = clientService.id"
+                . " WHERE clientAuth.ClientId='{$clientId}' GROUP BY servicesGroup.id ORDER BY servicesGroup.id";
 
         return $ModelBase->select( $sql );
 
@@ -10030,7 +10051,7 @@ class functions {
     public static function _svgIconsArray() {
         $icons = array();
         $icons['radio_circle']
-            = '<svg width="20px" height="20px" viewBox="0 0 20 20"><circle class="site-svg-path-color" cx="10" cy="10" r="9"></circle><path d="M10,7 C8.34314575,7 7,8.34314575 7,10 C7,11.6568542 8.34314575,13 10,13 C11.6568542,13 13,11.6568542 13,10 C13,8.34314575 11.6568542,7 10,7 Z" class="inner site-svg-path-color"></path><path d="M10,1 L10,1 L10,1 C14.9705627,1 19,5.02943725 19,10 L19,10 L19,10 C19,14.9705627 14.9705627,19 10,19 L10,19 L10,19 C5.02943725,19 1,14.9705627 1,10 L1,10 L1,10 C1,5.02943725 5.02943725,1 10,1 L10,1 Z" class="outer site-svg-path-color"></path></svg>';
+                = '<svg width="20px" height="20px" viewBox="0 0 20 20"><circle class="site-svg-path-color" cx="10" cy="10" r="9"></circle><path d="M10,7 C8.34314575,7 7,8.34314575 7,10 C7,11.6568542 8.34314575,13 10,13 C11.6568542,13 13,11.6568542 13,10 C13,8.34314575 11.6568542,7 10,7 Z" class="inner site-svg-path-color"></path><path d="M10,1 L10,1 L10,1 C14.9705627,1 19,5.02943725 19,10 L19,10 L19,10 C19,14.9705627 14.9705627,19 10,19 L10,19 L10,19 C5.02943725,19 1,14.9705627 1,10 L1,10 L1,10 C1,5.02943725 5.02943725,1 10,1 L10,1 Z" class="outer site-svg-path-color"></path></svg>';
 
         return $icons;
     }
@@ -10308,15 +10329,15 @@ class functions {
     public static function getDetailsForExteranlBank( $factor_number = null, $service_type = null ) {
 
         $response = array(
-            'firstName'  => 'TestName',
-            'lastName'   => 'TestFamily',
-            'mobile'     => '09108632746',
-            'email'      => 'info@iran-tech.com',
-            'city'       => 'Tehran',
-            'country'    => 'IRAN',
-            'address'    => 'تهران ایران',
-            'postalCode' => sprintf( '%05d', mt_rand( 10000, 99999 ) ),
-            'currency'   => Session::getCurrency(),
+                'firstName'  => 'TestName',
+                'lastName'   => 'TestFamily',
+                'mobile'     => '09108632746',
+                'email'      => 'info@iran-tech.com',
+                'city'       => 'Tehran',
+                'country'    => 'IRAN',
+                'address'    => 'تهران ایران',
+                'postalCode' => sprintf( '%05d', mt_rand( 10000, 99999 ) ),
+                'currency'   => Session::getCurrency(),
         );
         $Model    = Load::library( 'Model' );
         if ( TYPE_ADMIN ) {
@@ -10571,11 +10592,11 @@ class functions {
      */
     public static function separateFiles($file_name) {
         $file_indexes = array(
-            'name',
-            'type',
-            'tmp_name',
-            'error',
-            'size',
+                'name',
+                'type',
+                'tmp_name',
+                'error',
+                'size',
         );
 
         $file = array();
@@ -10649,7 +10670,7 @@ class functions {
 
 
             $hours = ($hours > '00' ? ($hours > '09' ? $hours : str_replace('0', '', $hours)) : '0') . ' ' . $data_text_translate['hour_text']
-                . ' ' ;
+                    . ' ' ;
             $minuets = ($minuets > '00') ?  $minuets. ' ' . $data_text_translate['minutes_text'] : '';
             return   (($day_time > '0') ? $day_time . $data_text_translate['day_text'] .' '.$data_text_translate['and_text'] : '') . (($hours > '0') ? $hours  : '') . ' ' . $minuets ;
         }
@@ -10682,12 +10703,12 @@ class functions {
     public static function airPortForSourceSeven()
     {
         return array(
-            'IKA','MHD','KIH','AWZ','IFN','SYZ','BND','TBZ','GSM','ABD','AZD','SDG','KSH',
-            'SRY','IIL','OMH','ZAH','PGU','RAS','IST','NJF','DXB','BGW','MCT','TBS','SHJ',
-            'ESB','EVN','AYT','SAW','MOW','DME','VKO','SVO','BUS','GYD','ALA','KBL','ADB',
-            'DNZ','CAN','ISU','EBL','LHR','BKK','PVG','KZN','DLM','BEY','FRA','DEL','PEK',
-            'MIL','ROM','HKT','DAM','BOM','MZR','CGN','GZP','TAS','HAM','LHE','DYU','KIK',
-            'KWI','DOH','KDH','OHS','KER','LRR');
+                'IKA','MHD','KIH','AWZ','IFN','SYZ','BND','TBZ','GSM','ABD','AZD','SDG','KSH',
+                'SRY','IIL','OMH','ZAH','PGU','RAS','IST','NJF','DXB','BGW','MCT','TBS','SHJ',
+                'ESB','EVN','AYT','SAW','MOW','DME','VKO','SVO','BUS','GYD','ALA','KBL','ADB',
+                'DNZ','CAN','ISU','EBL','LHR','BKK','PVG','KZN','DLM','BEY','FRA','DEL','PEK',
+                'MIL','ROM','HKT','DAM','BOM','MZR','CGN','GZP','TAS','HAM','LHE','DYU','KIK',
+                'KWI','DOH','KDH','OHS','KER','LRR');
     }
 
     public static function displayRoomName( $room_name = '', $number = '',$age_type = 'Adt',$is_external = false,$is_single = false ) {
@@ -10696,15 +10717,15 @@ class functions {
         }
         if ( ! $is_external ) {
             return self::StrReplaceInXml( [
-                '@@number@@'    => self::ConvertNthNumber( $number ),
-                '@@room_name@@' => $room_name
+                    '@@number@@'    => self::ConvertNthNumber( $number ),
+                    '@@room_name@@' => $room_name
             ], 'HotelRoomDisplayName' );
 
         }
         return self::StrReplaceInXml(array(
-            '@@number@@'=>self::ConvertNthNumber( $number ),
-            '@@room_name@@' => $room_name,
-            '@@age_type@@'  => self::Xmlinformation($age_type),
+                '@@number@@'=>self::ConvertNthNumber( $number ),
+                '@@room_name@@' => $room_name,
+                '@@age_type@@'  => self::Xmlinformation($age_type),
         ),'HotelExternalRoomDisplayName');
 
     }
@@ -10728,15 +10749,15 @@ class functions {
 
     public static function ConvertNthNumber( $number = 1) {
         $numbers = array(
-            1 => 'First',
-            2 => 'Second',
-            3 => 'Third',
-            4 => 'Fourth',
-            5 => 'Fifth',
-            6 => 'Sixth',
-            7 => 'Seventh',
-            8 => 'Eighth',
-            9 => 'ninth'
+                1 => 'First',
+                2 => 'Second',
+                3 => 'Third',
+                4 => 'Fourth',
+                5 => 'Fifth',
+                6 => 'Sixth',
+                7 => 'Seventh',
+                8 => 'Eighth',
+                9 => 'ninth'
         );
         return isset($numbers[$number]) ? self::Xmlinformation($numbers[$number]) : '';
     }
@@ -10749,12 +10770,12 @@ class functions {
         $current_url = self::currentUrl();
         $register_url = ROOT_ADDRESS.'/registerUser';
         $gds_switches = array(
-            'detailHotel',
-            'roomHotelLocal',
-            'searchFlight',
-            'resultTrainApi',
-            'buses',
-            'international'
+                'detailHotel',
+                'roomHotelLocal',
+                'searchFlight',
+                'resultTrainApi',
+                'buses',
+                'international'
         );
         if(in_array(GDS_SWITCH,$gds_switches)){
             return "{$register_url}?redirect_url={$current_url}";
@@ -10765,7 +10786,7 @@ class functions {
     public static function gdsPageCurrency() {
 
         return array('searchFlight','international','searchHotel','resultExternalHotel','buses','resultTrainApi','searchPackage',
-            'resultInsurance','resultTourLocal','resultVisa','resultGasht');
+                'resultInsurance','resultTourLocal','resultVisa','resultGasht');
     }
 
     //region [gdsForceCurrencyPage]
@@ -11251,45 +11272,45 @@ class functions {
     public static function slugify($string, $divider = '-') {
 
         return str_replace([
-            "%20",
-            "2%",
-            "20%",
-            " ",
-            "--",
-            "---",
-            "-–-",
-            "/",
-            ":",
-            "«",
-            "»",
-            "	",
-            "	",
-            "--",
-            "“",
-            "”",
-            "&",
-            "`",
-            "#",
-            "'",
-            '"',
-            '+',
-            '/[\x{200B}-\x{200D}\x{FEFF}]/u',
-            ')',
-            '%'],'-',$string);
+                "%20",
+                "2%",
+                "20%",
+                " ",
+                "--",
+                "---",
+                "-–-",
+                "/",
+                ":",
+                "«",
+                "»",
+                "	",
+                "	",
+                "--",
+                "“",
+                "”",
+                "&",
+                "`",
+                "#",
+                "'",
+                '"',
+                '+',
+                '/[\x{200B}-\x{200D}\x{FEFF}]/u',
+                ')',
+                '%'],'-',$string);
 
     }
 
     public static function searchableText($string) {
         return str_replace([
-            '/',
-            '-',
-            ' ',
-            '*',
-            '.',
-            ',',
-            '@',
-            '#',
-            '=',
+                '/',
+                '-',
+                ' ',
+                '*',
+                '.',
+                ',',
+                '@',
+                '#',
+                '=',
         ],'%',$string);
     }
 
@@ -11498,7 +11519,7 @@ class functions {
 
     public static function selfPhoneCustomers() {
         return array(
-            '164'
+                '164'
         );
     }
     public static function disableServiceBank($service) {
@@ -11564,9 +11585,9 @@ class functions {
             }
 
             return [
-                "full"      => "$moduleImagesUrl/{$imageName}",
-                "thumbnail" => "{$moduleImagesUrl}/thumb/$imageName",
-                "medium"    => "{$moduleImagesUrl}/medium/$imageName",
+                    "full"      => "$moduleImagesUrl/{$imageName}",
+                    "thumbnail" => "{$moduleImagesUrl}/thumb/$imageName",
+                    "medium"    => "{$moduleImagesUrl}/medium/$imageName",
             ];
         }
 
@@ -11773,7 +11794,7 @@ class functions {
 
     public static function newLogin() {
         $staticIds =  ['4'  ,'166' , '315' , '317' , '180','186' ,'318' , '320' , '321' , '322' , '323' , '324' , '325' , '327', '328' , '330' , '331' , '296' , '271' , '332' , '333' , '334' , '335' , '336' , '337' , '338' , '339' , '340' , '341' , '342',
-            '343', '344', '345', '346', '347', '348', '349', '350' , '294' , '233' , '352' , '353' , '354' , '356' , '357', '359', '360', '361', '362', '363',  '364', '365', '366' , '367' ,  '369' , '370', '140' ,'280','372','373' , '127','374','377','378','379','383','400' ,'401','402','403','404','292'
+                '343', '344', '345', '346', '347', '348', '349', '350' , '294' , '233' , '352' , '353' , '354' , '356' , '357', '359', '360', '361', '362', '363',  '364', '365', '366' , '367' ,  '369' , '370', '140' ,'280','372','373' , '127','374','377','378','379','383','400' ,'401','402','403','404','292'
             ,'387' , '388' , '389' , '390', '392'  ,'395' , '405','406','407','408','409','410','411','412','413','415','416','417','418','419','420','421','422','423','517','519' , '217'];
 
         $dbIds = self::getClientIds();
@@ -11847,11 +11868,11 @@ class functions {
     }
     public static function checkFarsiAlphabet($str){
         $farsiUnicodeRanges = array(
-            '/[\x{0600}-\x{06FF}]/u', // Arabic
-            '/[\x{0750}-\x{077F}]/u', // Arabic Supplement
-            '/[\x{08A0}-\x{08FF}]/u', // Arabic Extended-A
-            '/[\x{FB50}-\x{FDFF}]/u', // Arabic Presentation Forms-A
-            '/[\x{FE70}-\x{FEFF}]/u', // Arabic Presentation Forms-B
+                '/[\x{0600}-\x{06FF}]/u', // Arabic
+                '/[\x{0750}-\x{077F}]/u', // Arabic Supplement
+                '/[\x{08A0}-\x{08FF}]/u', // Arabic Extended-A
+                '/[\x{FB50}-\x{FDFF}]/u', // Arabic Presentation Forms-A
+                '/[\x{FE70}-\x{FEFF}]/u', // Arabic Presentation Forms-B
         );
 
         foreach ($farsiUnicodeRanges as $range) {
@@ -11867,9 +11888,9 @@ class functions {
         $englishChars = range('a', 'z');
 
         $farsiChars = array(
-            106 => 'ت'  , 105 => 'ه' ,  118 => 'ر'  , 104 => 'ا' , 107 => 'ن'  , 108 => 'م'  , 97 => 'ش' , 110 => 'د' , 119 => 'ص' , 116 => 'ف' ,
-            97 => 'ش' , 100 => 'ی' , 99 => 'ز'  , 102 => 'ب' , 216 => 'ر' , 115 => 'س', 44 => 'و', 103 => 'ل', 39 => 'گ', 59 => 'ک', 114 => 'ق',
-            121 => 'غ', 117 => 'ع', 120 => 'ط', 122 => 'ظ', 113 => 'ض', 67 => 'ژ', 98 => 'ذ', 111 => 'خ', 112 => 'ح', 93 => 'چ', 91 => 'ج'
+                106 => 'ت'  , 105 => 'ه' ,  118 => 'ر'  , 104 => 'ا' , 107 => 'ن'  , 108 => 'م'  , 97 => 'ش' , 110 => 'د' , 119 => 'ص' , 116 => 'ف' ,
+                97 => 'ش' , 100 => 'ی' , 99 => 'ز'  , 102 => 'ب' , 216 => 'ر' , 115 => 'س', 44 => 'و', 103 => 'ل', 39 => 'گ', 59 => 'ک', 114 => 'ق',
+                121 => 'غ', 117 => 'ع', 120 => 'ط', 122 => 'ظ', 113 => 'ض', 67 => 'ژ', 98 => 'ذ', 111 => 'خ', 112 => 'ح', 93 => 'چ', 91 => 'ج'
         );
 
 
@@ -12048,8 +12069,8 @@ class functions {
                                     // Generate a form to POST the data to the new URL
                                     echo '<form id="redirectForm" method="POST" action="' . htmlspecialchars($called_url) . '">';
                                     $request_data = [
-                                        'startDate'  => $_POST['startDateForHotelLocal'] ,
-                                        'nights'      => $_POST['nights']
+                                            'startDate'  => $_POST['startDateForHotelLocal'] ,
+                                            'nights'      => $_POST['nights']
                                     ];
                                     // Add POST data as hidden fields if needed
                                     foreach ($request_data as $key => $value) {
@@ -12120,17 +12141,17 @@ class functions {
 
         $client_list = ['327' , '333'];
         $url_list = [
-            'search-flight' ,
-            'international' ,
-            'searchHotel'  ,
-            'detailHotel' ,
-            'resultExternalHotel',
-            'roomHotelLocal',
-            'buses',
-            'detailTour',
-            'resultInsurance',
-            'mag' ,
-            'news'
+                'search-flight' ,
+                'international' ,
+                'searchHotel'  ,
+                'detailHotel' ,
+                'resultExternalHotel',
+                'roomHotelLocal',
+                'buses',
+                'detailTour',
+                'resultInsurance',
+                'mag' ,
+                'news'
         ];
         $date = '';
         if(in_array(CLIENT_ID , $client_list) && in_array(GDS_SWITCH , $url_list)) {
@@ -12227,13 +12248,13 @@ class functions {
 
         if($is_admin || Session::getCounterTypeId() == 1) {
             return [
-                'has_access' => true ,
-                'type'       => 'admin'
+                    'has_access' => true ,
+                    'type'       => 'admin'
             ];
         }
         $params = [
-            'type'    => $type ,
-            'item_id' => $item
+                'type'    => $type ,
+                'item_id' => $item
         ];
         $user_has_role =  $user_role_controller->hasAccessItem($params) ;
         if($user_has_role) {
@@ -12241,28 +12262,15 @@ class functions {
                 $role_list[] = $role['role'];
             }
             return [
-                'has_access' => true ,
-                'type'       => $role_list
+                    'has_access' => true ,
+                    'type'       => $role_list
             ];
         }
 
         return [
-            'has_access' => false ,
-            'type'       => ''
+                'has_access' => false ,
+                'type'       => ''
         ];
-    }
-
-    public static function getClientIds(){
-
-        Load::autoload( 'ModelBase' );
-        $ModelBase = new ModelBase();
-
-        $sql = " SELECT id FROM clients_tb WHERE  id > 517 ORDER BY id DESC";
-
-        $clientIds = $ModelBase->select( $sql );
-
-
-        return array_column($clientIds, 'id');
     }
     public static function getClientInfo($id){
 
@@ -12275,6 +12283,18 @@ class functions {
 
 
         return $clientifo[0];
+    }
+    public static function getClientIds(){
+
+        Load::autoload( 'ModelBase' );
+        $ModelBase = new ModelBase();
+
+        $sql = " SELECT id FROM clients_tb WHERE  id > 517 ORDER BY id DESC";
+
+        $clientIds = $ModelBase->select( $sql );
+
+
+        return array_column($clientIds, 'id');
     }
 
     public static function getEnClientIds(){
@@ -12304,12 +12324,12 @@ class functions {
         $date = $y . "/" . $m . "/" . $d;
 
         return $model->get()
-            ->where('reservation_hotel_id' , $hotel_id)
-            ->where('counter_id' , $counterId)
-            ->where('type_application' , $typeApplication)
-            ->where('start_date' , $date , '<=')
-            ->where('end_date' , $date , '>=')
-            ->where('is_del' , 'no')->find();
+                ->where('reservation_hotel_id' , $hotel_id)
+                ->where('counter_id' , $counterId)
+                ->where('type_application' , $typeApplication)
+                ->where('start_date' , $date , '<=')
+                ->where('end_date' , $date , '>=')
+                ->where('is_del' , 'no')->find();
     }
     #endregion
     public static function marketServiceDiscount( $CounterId, $TitleServiceDiscount , $market_id ) {
@@ -12386,20 +12406,20 @@ class functions {
     }
     public function getPersianMonthName($month) {
         $persianMonths = [
-            1 => 'فروردین', 2 => 'اردیبهشت', 3 => 'خرداد',
-            4 => 'تیر', 5 => 'مرداد', 6 => 'شهریور',
-            7 => 'مهر', 8 => 'آبان', 9 => 'آذر',
-            10 => 'دی', 11 => 'بهمن', 12 => 'اسفند'
+                1 => 'فروردین', 2 => 'اردیبهشت', 3 => 'خرداد',
+                4 => 'تیر', 5 => 'مرداد', 6 => 'شهریور',
+                7 => 'مهر', 8 => 'آبان', 9 => 'آذر',
+                10 => 'دی', 11 => 'بهمن', 12 => 'اسفند'
         ];
         return $persianMonths[$month];
     }
 
     public function getEnglishMonthName($month) {
         $englishMonths = [
-            1 => 'January', 2 => 'February', 3 => 'March',
-            4 => 'April', 5 => 'May', 6 => 'June',
-            7 => 'July', 8 => 'August', 9 => 'September',
-            10 => 'October', 11 => 'November', 12 => 'December'
+                1 => 'January', 2 => 'February', 3 => 'March',
+                4 => 'April', 5 => 'May', 6 => 'June',
+                7 => 'July', 8 => 'August', 9 => 'September',
+                10 => 'October', 11 => 'November', 12 => 'December'
         ];
         return $englishMonths[$month];
     }
