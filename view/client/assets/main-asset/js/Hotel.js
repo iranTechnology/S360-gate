@@ -1508,16 +1508,36 @@ function viewResultInternationalHotel(data_response) {
 
    $(".div-hotel-city-js").html(element).removeClass("d-none")
 }
+function requireLoginBeforeSearchHotel(callback) {
+   const loginBtn = document.getElementById('login-popup');
 
-// function selectCity(city) {
-//    $(".text-search-hotel-js").val(city.city_name_fa + "-" + city.city_name_en)
-//    $(".destination-country-js").val(city.country_name_en)
-//    $(".destination-city-js").val(city.city_name_en)
-//    $(".div-hotel-city-js").addClass("d-none")
-//    $(".check-in-date-international-js").trigger("focus")
-// }
-function searchInternalHotel(flag , altDomain = null) {
+   if (!window.IS_LOGIN_BEFORE_SEARCH || !loginBtn) {
+      callback();
+      return;
+   }
+   if (isCheckingLogin) return; // جلوگیری از دابل‌کلیک
+   isCheckingLogin = true;
 
+   $.post(amadeusPath + 'user_ajax.php', { flag: 'CheckLogged' })
+       .done(function (data) {
+          if (String(data).indexOf('SuccessLogging') > -1) {
+             callback();
+          } else {
+             pendingAfterLogin = callback;
+             $('#useType').val('searchResume');
+             $('#noLoginBuy').attr('onclick', "popupBuyNoLogin('searchResume')");
+             loginBtn.click();
+          }
+       })
+       .fail(function () {
+          callback(); // اگر چک لاگین خطا داد، جلوی کاربر را نگیر
+       })
+       .always(function () {
+          isCheckingLogin = false;
+       });
+}
+
+function runHotelSearch(flag, altDomain) {
    const form = document.getElementById('internal_hotel_form');
    const is_new_tab = form?.target === '_blank';
 
@@ -1622,8 +1642,133 @@ function searchInternalHotel(flag , altDomain = null) {
    }
 
    // openLink(url, is_new_tab)
+
 }
-function searchInternationalHotel(flag , altDomain = null) {
+
+function searchInternalHotel(flag , altDomain = null) {
+
+   requireLoginBeforeSearchHotel(function () {
+      runHotelSearch(flag, altDomain);
+   });
+   return false;
+   // openLink(url, is_new_tab)
+}
+// function selectCity(city) {
+//    $(".text-search-hotel-js").val(city.city_name_fa + "-" + city.city_name_en)
+//    $(".destination-country-js").val(city.country_name_en)
+//    $(".destination-city-js").val(city.city_name_en)
+//    $(".div-hotel-city-js").addClass("d-none")
+//    $(".check-in-date-international-js").trigger("focus")
+// }
+// function searchInternalHotel(flag , altDomain = null) {
+//
+//    const form = document.getElementById('internal_hotel_form');
+//    const is_new_tab = form?.target === '_blank';
+//
+//    let type_application = $("#autoComplateSearchIN_hidden")
+//
+//    let check_in_date = $(".check-in-date-js")
+//    let nights_hotel = $(".nights-hotel-js")
+//    const city_for_hotel_local = $("#autoComplateSearchIN_hidden").val()
+//    const no_select_city = $("#no_select_city").val()
+//    const hotel_id = $("#autoComplateSearchIN_hidden").val()
+//    const hotel_name_en_local = $("#autoComplateSearchIN_hidden_en").val()
+//    checkSearchFields(nights_hotel, check_in_date, type_application)
+//    nights_hotel = nights_hotel.val()
+//    check_in_date = check_in_date.val()
+//    type_application = type_application.val()
+//    let hotel_select_room = $(".internal-hotel-select-room-js")
+//    let my_room_hotel_item = hotel_select_room.find(".internal-my-room-hotel-item-js")
+//    let rooms = ""
+//    my_room_hotel_item.each(function () {
+//       let childAge = 0
+//       const adult = parseInt($(this).find(".internal-count-parent-js").val())
+//       const child = parseInt($(this).find(".internal-count-child-js").val())
+//
+//       if (adult > 0) {
+//          rooms = rooms + "R:" + adult
+//          if (child > 0) {
+//             rooms = rooms + "-" + child
+//             let birth_days_item = $(this).find(".birth-days-item-js")
+//             birth_days_item.each(function (child_index) {
+//                childAge = 0
+//                childAge = $(this).find("select").val()
+//
+//                if (child_index === 0 && childAge !== undefined) {
+//                   rooms = rooms + "-" + childAge
+//                } else if (childAge !== undefined) {
+//                   rooms = rooms + "," + childAge
+//                }
+//             })
+//          } else {
+//             rooms = rooms + "-0-0"
+//          }
+//       }
+//       else {
+//          rooms = "1-0-0"
+//       }
+//    })
+//    let url = null
+//    let target = is_new_tab? '_blank' : ''
+//    if (no_select_city==="city") {
+//       type_application_searchInternalHotel = "city";
+//    }
+//
+//    let baseUrl;
+//    if (altDomain != null) {
+//       baseUrl = `${altDomain}/gds/fa/`;
+//    } else {
+//       baseUrl = amadeusPathByLang;
+//    }
+//
+//
+//    if (type_application_searchInternalHotel === "api") {
+//       url = "detailHotel/api/" + hotel_id + "/";
+//
+//       $("#internal_hotel_form").attr('action', baseUrl +url);
+//       $("#internal_hotel_form").attr('target', target);
+//       $("#internal_hotel_form").submit();
+//       return false;
+//    }
+//    if (type_application_searchInternalHotel === "city") {
+//       url = `searchHotel&type=new&city=${city_for_hotel_local}&startDate=${check_in_date}&nights=${nights_hotel}&rooms=${rooms}`
+//    }
+//    if (type_application_searchInternalHotel === "reservation") {
+//       url = `roomHotelLocal/reservation/${hotel_id}/${hotel_name_en_local}`
+//       $("<input>")
+//           .attr("type", "hidden")
+//           .attr("name", "startDate")
+//           .attr("value", check_in_date)
+//           .appendTo("#internal_hotel_form");
+//       $("<input>")
+//           .attr("type", "hidden")
+//           .attr("name", "nights")
+//           .attr("value", nights_hotel)
+//           .appendTo("#internal_hotel_form");
+//
+//       $("#internal_hotel_form").attr('action', baseUrl +url);
+//       $("#internal_hotel_form").attr('target', target);
+//       $("#internal_hotel_form").submit();
+//       return false;
+//
+//    }
+//    url = baseUrl + url
+//
+//    const target2 = form?.target;
+//
+//
+//    if(target2 === '_blank'){
+//       window.open(url , '_blank')
+//    }else if(target2 === '_top') {
+//       window.parent.location.href = url;
+//    }else {
+//       window.open(url , '_self')
+//    }
+//
+//    // openLink(url, is_new_tab)
+// }
+
+function runHotelInternationalSearch(flag, altDomain) {
    const form = document.getElementById('international_hotel_form');
    const target = form?.target;
 
@@ -1690,6 +1835,82 @@ function searchInternationalHotel(flag , altDomain = null) {
 
    // openLink(url,is_new_tab)
 }
+
+function searchInternationalHotel(flag , altDomain = null) {
+
+   requireLoginBeforeSearchHotel(function () {
+      runHotelInternationalSearch(flag, altDomain);
+   });
+   return false;
+   // openLink(url, is_new_tab)
+}
+// function searchInternationalHotel(flag , altDomain = null) {
+//    const form = document.getElementById('international_hotel_form');
+//    const target = form?.target;
+//
+//    let check_in_date = $("#international_hotel .check-in-date-international-js")
+//    let check_out_date_js = $("#international_hotel .check-out-date-international-js")
+//    let nights_hotel = $(".nights-hotel-js")
+//    let destination_country = $(".destination-country-js")
+//    const destination_city = $(".destination-city-js").val()
+//    const check_out_date = $(".check-out-date-international-js").val()
+//    checkSearchFields(check_in_date, check_out_date_js, destination_country)
+//    check_in_date = check_in_date.val()
+//    nights_hotel = nights_hotel.val()
+//    destination_country = destination_country.val()
+//    let hotel_select_room = $(".international-hotel-select-room-js")
+//    let my_room_hotel_item = hotel_select_room.find(".international-my-room-hotel-item-js")
+//    let rooms = ""
+//    my_room_hotel_item.each(function () {
+//       let childAge = 0
+//       const adult = parseInt(
+//           $(this).find(".international-count-parent-js").val()
+//       )
+//       const child = parseInt(
+//           $(this).find(".international-count-child-js").val()
+//       )
+//
+//       if (adult > 0) {
+//          rooms = rooms + "R:" + adult
+//          if (child > 0) {
+//             rooms = rooms + "-" + child
+//             let birth_days_item = $(this).find(".birth-days-item-js")
+//             birth_days_item.each(function (child_index) {
+//                childAge = 0
+//                childAge = $(this).find("select").val()
+//
+//                if (child_index === 0 && childAge !== undefined) {
+//                   rooms = rooms + "-" + childAge
+//                } else if (childAge !== undefined) {
+//                   rooms = rooms + "," + childAge
+//                }
+//             })
+//          } else {
+//             rooms = rooms + "-0-0"
+//          }
+//       } else {
+//          rooms = "1-0-0"
+//       }
+//    })
+//
+//    let url;
+//    if (altDomain != null) {
+//       url = `${altDomain}/gds/fa/resultExternalHotel/${destination_country}/${destination_city}/${check_in_date}/${check_out_date}/${nights_hotel}/${rooms}`;
+//    } else {
+//       url = `${amadeusPathByLang}resultExternalHotel/${destination_country}/${destination_city}/${check_in_date}/${check_out_date}/${nights_hotel}/${rooms}`;
+//    }
+//
+//
+//    if(target === '_blank'){
+//       window.open(url , '_blank')
+//    }else if(target === '_top') {
+//       window.parent.location.href = url;
+//    }else {
+//       window.open(url , '_self')
+//    }
+//
+//    // openLink(url,is_new_tab)
+// }
 
 function searchResidence(is_new_tab = false) {
    let type_application = $("#autoComplateSearchIN_hidden_en_residence")
@@ -3664,7 +3885,7 @@ function HotelPopular(e) {
       $(targetUl).html(`<h2>${useXmltag('Popularhotels')}</h2>`);
    } else if (e === 'externalHotel') {
       targetUl = '#listSearchCity_2';
-      flag = 'flightExternalRoutesDefault';
+      flag = 'HotelExternalRoutesDefault';//flightExternalRoutesDefault
       $(targetUl).html(`<h2>${useXmltag('Popularhotels')}</h2>`);
    } else if (e === 'residence') {
       targetUl = '#listSearchCityResidence';

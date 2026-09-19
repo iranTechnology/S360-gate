@@ -2162,48 +2162,154 @@ function dataSearchFlight(type) {
   }
 }
 
-function searchFlight(type , altDomain = null) {
-  let no_error = true
-  let obj_url = dataSearchFlight(type)
-  console.log(obj_url)
-  no_error = checkCountAdult(obj_url.number_adult)
-  if (no_error) {
-    no_error = checkCountAdultVsInfant(
-        obj_url.number_adult,
-        obj_url.number_infant,
-    )
+let pendingAfterLogin = null;
+let isCheckingLogin = false;
+
+/**
+ * اگر تنظیم «لاگین قبل از جستجو» فعال باشد و کاربر لاگین نباشد،
+ * پاپ‌آپ را باز می‌کند و callback را بعد از لاگین اجرا می‌کند.
+ * در غیر این صورت callback را مستقیم اجرا می‌کند.
+ */
+function requireLoginBeforeSearch(callback) {
+  const loginBtn = document.getElementById('login-popup');
+
+  if (!window.IS_LOGIN_BEFORE_SEARCH || !loginBtn) {
+    callback();
+    return;
   }
-  if (no_error) {
-    no_error = checkAdultAndChild(obj_url.number_adult, obj_url.number_child)
-  }
-  if (no_error) {
-    no_error = checkEmptyField(
-        obj_url.origin,
-        obj_url.destination,
-        obj_url.multi_way,
-        obj_url.return_date,
-    )
-  }
-  if (no_error) {
-    no_error = checkDateFlight(
-        obj_url.departure_date,
-        obj_url.today,
-        obj_url.return_date,
-        obj_url.multi_way,
-    )
-  }
-  if (no_error) {
-    if ($("#internal_international_flight_form").length === 1){
-      search_international_flight_form(obj_url , altDomain)
-    } else {
-      if (type === 'internal') {
-        searchInternal(obj_url , altDomain)
-      } else if (type === 'international') {
-        searchInternational(obj_url , altDomain)
-      }
+  if (isCheckingLogin) return; // جلوگیری از دابل‌کلیک
+  isCheckingLogin = true;
+
+  $.post(amadeusPath + 'user_ajax.php', { flag: 'CheckLogged' })
+      .done(function (data) {
+        if (String(data).indexOf('SuccessLogging') > -1) {
+          callback();
+        } else {
+          pendingAfterLogin = callback;
+          $('#useType').val('searchResume');
+          $('#noLoginBuy').attr('onclick', "popupBuyNoLogin('searchResume')");
+          loginBtn.click();
+        }
+      })
+      .fail(function () {
+        callback(); // اگر چک لاگین خطا داد، جلوی کاربر را نگیر
+      })
+      .always(function () {
+        isCheckingLogin = false;
+      });
+}
+
+function resumeAfterLogin() {
+  $('.cd-user-modal').removeClass('is-visible');
+  loadingToggle($('#login-submit-btn'), false);
+  loadingToggle($('#noLoginBuy'), false);
+
+  const cb = pendingAfterLogin;
+  pendingAfterLogin = null;
+  if (typeof cb === 'function') cb();
+}
+
+// ================== مودال لاگین ==================
+$(function () {
+  const $modal = $('.cd-user-modal');
+
+  $(document).on('click', '#login-popup, .cd-signin', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $modal.addClass('is-visible');
+  });
+
+  $(document).on('click', '.cd-user-modal', function (e) {
+    if ($(e.target).is('.cd-user-modal, .cd-close-form')) {
+      $modal.removeClass('is-visible');
+      pendingAfterLogin = null;
     }
+  });
+
+  $(document).on('keyup', function (e) {
+    if (e.key === 'Escape' && $modal.hasClass('is-visible')) {
+      $modal.removeClass('is-visible');
+      pendingAfterLogin = null;
+    }
+  });
+});
+
+// بعد از لاگین موفق (یا خرید بدون ثبت‌نام) صدا زده می‌شود
+
+function searchFlight(type, altDomain = null) {
+  const obj_url = dataSearchFlight(type);
+
+  const valid =
+      checkCountAdult(obj_url.number_adult) &&
+      checkCountAdultVsInfant(obj_url.number_adult, obj_url.number_infant) &&
+      checkAdultAndChild(obj_url.number_adult, obj_url.number_child) &&
+      checkEmptyField(obj_url.origin, obj_url.destination, obj_url.multi_way, obj_url.return_date) &&
+      checkDateFlight(obj_url.departure_date, obj_url.today, obj_url.return_date, obj_url.multi_way);
+
+  if (!valid) return false;
+
+  requireLoginBeforeSearch(function () {
+    runFlightSearch(type, obj_url, altDomain);
+  });
+  return false;
+}
+function runFlightSearch(type, obj_url, altDomain) {
+  if ($('#internal_international_flight_form').length === 1) {
+    search_international_flight_form(obj_url, altDomain);
+  } else if (type === 'internal') {
+    searchInternal(obj_url, altDomain);
+  } else if (type === 'international') {
+    searchInternational(obj_url, altDomain);
   }
 }
+
+// بعد از لاگین موفق (یا خرید بدون ثبت‌نام) صدا زده می‌شود
+
+
+
+
+// function searchFlight(type , altDomain = null) {
+//   let no_error = true
+//   let obj_url = dataSearchFlight(type)
+//   console.log(obj_url)
+//   no_error = checkCountAdult(obj_url.number_adult)
+//   if (no_error) {
+//     no_error = checkCountAdultVsInfant(
+//         obj_url.number_adult,
+//         obj_url.number_infant,
+//     )
+//   }
+//   if (no_error) {
+//     no_error = checkAdultAndChild(obj_url.number_adult, obj_url.number_child)
+//   }
+//   if (no_error) {
+//     no_error = checkEmptyField(
+//         obj_url.origin,
+//         obj_url.destination,
+//         obj_url.multi_way,
+//         obj_url.return_date,
+//     )
+//   }
+//   if (no_error) {
+//     no_error = checkDateFlight(
+//         obj_url.departure_date,
+//         obj_url.today,
+//         obj_url.return_date,
+//         obj_url.multi_way,
+//     )
+//   }
+//   if (no_error) {
+//     if ($("#internal_international_flight_form").length === 1){
+//       search_international_flight_form(obj_url , altDomain)
+//     } else {
+//       if (type === 'internal') {
+//         searchInternal(obj_url , altDomain)
+//       } else if (type === 'international') {
+//         searchInternational(obj_url , altDomain)
+//       }
+//     }
+//   }
+// }
 
 function searchInternal(obj , altDomain) {
   //for parto test

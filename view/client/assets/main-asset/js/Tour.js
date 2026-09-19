@@ -32,7 +32,7 @@ function getArrivalCitiesTour(type, obj) {
    let like_category = $(`.${type}#like_category`).val()
    let method = "getTourCities";
    if(type == 'ziaraty') {
-       method = "getZiaratyTourCity";
+      method = "getZiaratyTourCity";
    }
    $.ajax({
       type: "POST",
@@ -56,9 +56,9 @@ function getArrivalCitiesTour(type, obj) {
                let option_text = ''
                if(lang == 'fa') {
                   option_text =
-                    obj_arrival[key]["name"] == ""
-                      ? `${obj_arrival[key]["name_en"]}`
-                      : `${obj_arrival[key]["name"]}`
+                      obj_arrival[key]["name"] == ""
+                          ? `${obj_arrival[key]["name_en"]}`
+                          : `${obj_arrival[key]["name"]}`
                }else{
                   option_text = `${obj_arrival[key]["name_en"]}`
                }
@@ -142,7 +142,37 @@ function getDestinationCityTour(type, obj) {
       },
    })
 }
-function searchInternalTour(altDomain = null) {
+
+function requireLoginBeforeSearchTour(callback) {
+   const loginBtn = document.getElementById('login-popup');
+
+   if (!window.IS_LOGIN_BEFORE_SEARCH || !loginBtn) {
+      callback();
+      return;
+   }
+   if (isCheckingLogin) return; // جلوگیری از دابل‌کلیک
+   isCheckingLogin = true;
+
+   $.post(amadeusPath + 'user_ajax.php', { flag: 'CheckLogged' })
+       .done(function (data) {
+          if (String(data).indexOf('SuccessLogging') > -1) {
+             callback();
+          } else {
+             pendingAfterLogin = callback;
+             $('#useType').val('searchResume');
+             $('#noLoginBuy').attr('onclick', "popupBuyNoLogin('searchResume')");
+             loginBtn.click();
+          }
+       })
+       .fail(function () {
+          callback(); // اگر چک لاگین خطا داد، جلوی کاربر را نگیر
+       })
+       .always(function () {
+          isCheckingLogin = false;
+       });
+}
+
+function runTourSearch(flag, altDomain) {
    const form = document.getElementById('gdsTourLocal');
    const target = form?.target;
 
@@ -153,9 +183,9 @@ function searchInternalTour(altDomain = null) {
    console.log('internal_date_travel_tour' , internal_date_travel_tour.val())
 
    checkSearchFields(
-      internal_origin_tour,
-      internal_destination_tour,
-      internal_date_travel_tour
+       internal_origin_tour,
+       internal_destination_tour,
+       internal_date_travel_tour
    )
 
    internal_origin_tour = internal_origin_tour.val()
@@ -176,10 +206,57 @@ function searchInternalTour(altDomain = null) {
    }else {
       window.open(url , '_self')
    }
+}
+
+
+function searchInternalTour(altDomain = null) {
+
+   requireLoginBeforeSearchTour(function () {
+      runTourSearch(altDomain);
+   });
+   return false;
 
    // openLink(url, is_new_tab)
 }
-function searchInternationalTour(altDomain = null) {
+// function searchInternalTour(altDomain = null) {
+//    const form = document.getElementById('gdsTourLocal');
+//    const target = form?.target;
+//
+//    let internal_origin_tour = $(".internal-origin-tour-js")
+//    let internal_destination_tour = $(".internal-destination-tour-js")
+//    let internal_date_travel_tour = $(".internal-date-travel-tour-js")
+//
+//    console.log('internal_date_travel_tour' , internal_date_travel_tour.val())
+//
+//    checkSearchFields(
+//       internal_origin_tour,
+//       internal_destination_tour,
+//       internal_date_travel_tour
+//    )
+//
+//    internal_origin_tour = internal_origin_tour.val()
+//    internal_destination_tour = internal_destination_tour.val()
+//    internal_date_travel_tour = internal_date_travel_tour.val()
+//
+//    let url;
+//    if (altDomain != null) {
+//       url = `${altDomain}/gds/fa/resultTourLocal/1-${internal_origin_tour}/1-${internal_destination_tour}/${internal_date_travel_tour}/all`
+//    } else {
+//       url = `${amadeusPathByLang}resultTourLocal/1-${internal_origin_tour}/1-${internal_destination_tour}/${internal_date_travel_tour}/all`
+//    }
+//
+//    if(target === '_blank'){
+//       window.open(url , '_blank')
+//    }else if(target === '_top') {
+//       window.parent.location.href = url;
+//    }else {
+//       window.open(url , '_self')
+//    }
+//
+//    // openLink(url, is_new_tab)
+// }
+
+function runTourInternationlSearch(flag, altDomain) {
    const form = document.getElementById('gdsPortalLocal');
    const target = form?.target;
 
@@ -189,16 +266,16 @@ function searchInternationalTour(altDomain = null) {
    let internal_date_travel_tour = $(".international-date-travel-tour-js")
 
    checkSearchFields(
-      international_tour,
-      international_destination_tour,
-      international_destination_city_tour,
-      internal_date_travel_tour
+       international_tour,
+       international_destination_tour,
+       international_destination_city_tour,
+       internal_date_travel_tour
    )
 
    international_tour = international_tour.val()
    international_destination_tour = international_destination_tour.val()
    international_destination_city_tour =
-      international_destination_city_tour.val()
+       international_destination_city_tour.val()
    internal_date_travel_tour = internal_date_travel_tour.val()
 
    let url;
@@ -207,7 +284,7 @@ function searchInternationalTour(altDomain = null) {
    } else {
       url = `${amadeusPathByLang}resultTourLocal/1-${international_tour}/${international_destination_tour}-${international_destination_city_tour}/${internal_date_travel_tour}/all`
    }
-   
+
    // let url = `${amadeusPathByLang}tours/تور-های-${international_tour.replace(' ','')}?origin=${international_destination_tour}-${international_destination_city_tour}&date=${internal_date_travel_tour}&type=all`
 
    if(target === '_blank'){
@@ -218,6 +295,13 @@ function searchInternationalTour(altDomain = null) {
       window.open(url , '_self')
    }
 
+}
+function searchInternationalTour(altDomain = null) {
+
+   requireLoginBeforeSearchTour(function () {
+      runTourInternationlSearch(altDomain);
+   });
+   return false;
    // openLink(url, is_new_tab)
 }
 
@@ -226,21 +310,21 @@ function searchZiaratiTour(is_new_tab = false) {
    let ziaraty_tour = $(".ziaraty-tour-origin-city-js")
    let ziaraty_destination_tour = $(".ziaraty-destination-tour-js")
    let ziaraty_destination_city_tour = $(
-     ".ziaraty-destination-city-tour-js"
+       ".ziaraty-destination-city-tour-js"
    )
    let ziaraty_date_travel_tour = $(".ziaratiy-date-travel-tour-js")
 
    checkSearchFields(
-     ziaraty_tour,
-     ziaraty_destination_tour,
-     ziaraty_destination_city_tour,
-     ziaraty_date_travel_tour
+       ziaraty_tour,
+       ziaraty_destination_tour,
+       ziaraty_destination_city_tour,
+       ziaraty_date_travel_tour
    )
 
    ziaraty_tour = ziaraty_tour.val()
    ziaraty_destination_tour = ziaraty_destination_tour.val()
    ziaraty_destination_city_tour =
-     ziaraty_destination_city_tour.val()
+       ziaraty_destination_city_tour.val()
    ziaraty_date_travel_tour = ziaraty_date_travel_tour.val()
 
    let url = `${amadeusPathByLang}resultTourLocal/1-${ziaraty_tour}/${ziaraty_destination_tour}-${ziaraty_destination_city_tour}/${ziaraty_date_travel_tour}/5`
