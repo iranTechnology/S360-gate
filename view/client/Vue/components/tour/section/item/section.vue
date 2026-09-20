@@ -19,6 +19,19 @@
 <<<<<<< HEAD
                alt="img-tour" />
          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
       </tour-section-item-link>
       <div class="parent-body-tour">
          <tour-section-item-link class="w-100" :tour="tour">

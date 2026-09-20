@@ -1,6 +1,7 @@
 {assign var=dateNow value=dateTimeSetting::jdate("Ymd", "", "", "", "en")}
-{assign var="special_tour_params" value=['type'=>'','limit'=> '4','dateNow' => $dateNow]}
+{assign var="special_tour_params" value=['type'=>'','limit'=> '400','dateNow' => $dateNow]}
 {assign var='special_tours' value=$obj_main_page->getToursReservation($special_tour_params)}
+
 
 
 {if !empty($special_tours)}
@@ -76,7 +77,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
         }
 
         /* Title */
@@ -91,15 +91,15 @@
             display: flex;
             gap: 10px;
             position: absolute;
-            bottom: 10px;
+            top: 10px;
             left: 10px;
         }
 
         /* Buttons */
         .sp-tour-banner__btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 600;
             text-decoration: none;
             transition: all .2s ease;
@@ -128,8 +128,6 @@
 
         /* Image */
         .sp-tour-banner__parent {
-            margin-top: 12px;
-            border-radius: 14px;
             overflow: hidden;
             width: 100%;
             position: relative;
@@ -141,13 +139,14 @@
             filter: brightness(65%) !important;
             height: 200px !important;
             object-fit: cover !important;
+            border-radius: 14px;
         }
 
         .sp-tour-banner__parent h3 {
-            position: absolute;
-            bottom: 2px;
-            color: #fff;
-            right: 10px;
+            font-size: 21px;
+            margin-top: 10px;
+            margin-bottom: 0;
+            color: #444;
         }
 
     </style>
