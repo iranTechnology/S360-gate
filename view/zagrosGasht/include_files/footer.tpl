@@ -248,14 +248,16 @@
            {$smarty.const.CLIENT_PHONE}
           </a>
          </div>
-         <div class="child-item-footer">
-          <i class="fa-light fa-mobile">
-          </i>
-          موبایل:
-          <a class="__mobile_class__" href="tel:{$smarty.const.CLIENT_MOBILE}">
-           {$smarty.const.CLIENT_MOBILE}
-          </a>
-         </div>
+{*         {if !empty($smarty.const.CLIENT_MOBILE)}*}
+{*         <div class="child-item-footer">*}
+{*          <i class="fa-light fa-mobile">*}
+{*          </i>*}
+{*          موبایل:*}
+{*          <a class="__mobile_class__" href="tel:{$smarty.const.CLIENT_MOBILE}">*}
+{*           {$smarty.const.CLIENT_MOBILE}*}
+{*          </a>*}
+{*         </div>*}
+{*         {/if}*}
          <div class="child-item-footer">
           <i class="fa-light fa-envelope">
           </i>

@@ -11,9 +11,10 @@
             @keyup="
               prepareSearchCity(
                 external_form.destination.country,
-                'destination'
+                'destination_country'
               )
             "
+            @focus="clearDestinationInput('country')"
             v-model="external_form.destination.country"
             ref="destination_country"
             type="text"
@@ -28,11 +29,15 @@
         <div class="form-group">
           <input
             @keyup="
-              prepareSearchCity(external_form.destination.city, 'destination')
+              prepareSearchCity(
+                external_form.destination.city,
+                'destination_city'
+              )
             "
             @input="
               (evt) => (external_form.destination.city = evt.target.value)
             "
+            @focus="clearDestinationInput('city')"
             autocomplete="nope"
             aria-haspopup="false"
             v-model="external_form.destination.city"
@@ -63,7 +68,7 @@
         <li
           v-for="item in city_list"
           v-if="item[spot_index] && item"
-          :key="item[spot_index].value"
+          :key="`${item.country && item.country.value}-${item.city && item.city.value}`"
           class="item_c">
           <button
             @click="selectCity(item)"
@@ -86,6 +91,7 @@ export default {
   props: ["index_data", "panel_data", "form"],
   data() {
     return {
+      skip_next_focus_clear: false,
       allItem : {
         "city": { "title": "همه مقاصد", "title_en": "all", "value": "all" },
         "country": { "title": "همه مقاصد", "title_en": "all", "value": "all" }
@@ -109,8 +115,6 @@ export default {
       refillable: {
         define: {
           value: "destination_country",
-          index: "destination",
-          city_list_index: "country",
         },
         origin_city: {
           index: "city",
@@ -159,10 +163,13 @@ export default {
       })
     },
     async selectCity(item) {
-      let index_name = this.refillable[this.refillable.define.value]["index"]
-      let value_name = this.refillable[this.refillable.define.value]["value"]
-      this.current_panel[value_name][index_name] =
-        item[this.refillable.define.city_list_index]
+      let spot_key =
+        this.current_panel.spot === "destination_city"
+          ? "destination_city"
+          : "destination_country"
+      let index_name = this.refillable[spot_key]["index"]
+      let value_name = this.refillable[spot_key]["value"]
+      this.current_panel[value_name][index_name] = item[index_name]
 
       await this.$store.commit("setPwaData", {
         index: this.index_data.key,
@@ -170,16 +177,13 @@ export default {
           [value_name]: this.current_panel[value_name],
         },
       })
-      this.getLang() == 'fa' ? item[this.refillable.define.city_list_index].title :item[this.refillable.define.city_list_index].title_en
 
-      this.external_form[this.refillable.define.index][index_name] =
-        this.getLang() == 'fa' ?   item[this.refillable.define.city_list_index].title : item[this.refillable.define.city_list_index].title_en
-
-      this.refillable.define.value = "destination_city"
-      this.refillable.define.city_list_index = "city"
+      this.external_form.destination[index_name] =
+        this.getLang() == 'fa' ? item[index_name].title : item[index_name].title_en
 
       await this.callOpenPanel(this.current_panel[value_name])
 
+      this.skip_next_focus_clear = true
       await this.$refs[this.current_panel.spot].focus()
       await this.$store.commit("setPwaData", {
         index: this.index_data.key,
@@ -188,6 +192,22 @@ export default {
       if (this.external_form.destination) {
         this.panel_data.status = false
       }
+    },
+    clearDestinationInput(field) {
+      if (this.skip_next_focus_clear) {
+        this.skip_next_focus_clear = false
+        return
+      }
+      if (this.timer) {
+        clearTimeout(this.timer)
+        this.timer = null
+      }
+      this.external_form.destination[field] = ""
+      this.loading.destination[field] = false
+      this.$store.commit("setPwaData", {
+        index: this.index_data.key,
+        data: { searched_cities: null },
+      })
     },
     prepareSearchCity(value, define) {
       if (this.timer) {
@@ -200,25 +220,18 @@ export default {
       }, 485)
     },
     async searchCity(searchable) {
-      let loading_index = this.refillable.define.value
-      this.loading[loading_index] = true
+      let index_name = this.refillable[this.refillable.define.value]["index"]
+      this.loading.destination[index_name] = true
       if (!searchable) {
-        this.external_form[this.refillable.define.value] = null
-        await this.$store.commit("setPwaData", {
-          index: this.index_data.key,
-          data: {
-            [this.refillable[this.refillable.define.value]]:
-              this.panel_data.city_template,
-          },
-        })
-        this.loading[loading_index] = false
+        this.external_form.destination[index_name] = null
+        this.loading.destination[index_name] = false
       }
       await this.$store.dispatch("pwaGetSearchedCities", {
         index: this.index_data.key,
         strategy: this.index_data.strategy,
         searchable: searchable,
       })
-      this.loading[loading_index] = false
+      this.loading.destination[index_name] = false
     },
   },
   /*watch: {
