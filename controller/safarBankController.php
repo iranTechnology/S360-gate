@@ -1094,7 +1094,8 @@ class safarBankController extends clientAuth
                     event_type,
                     COUNT(*) as total_count,
                     COUNT(DISTINCT session_id) as unique_sessions,
-                    COUNT(DISTINCT ip_address) as unique_ips
+                    COUNT(DISTINCT ip_address) as unique_ips,
+            
                 FROM safarbank_reporting
                 WHERE provider_id = {$providerId}
                     AND DATE(created_at) BETWEEN '{$dateFrom}' AND '{$dateTo}'

@@ -2,8 +2,8 @@
 
 
 class flightRouteCustomerModel extends Model {
-	protected $table = 'flight_route_tb';
-	protected $pk = 'id';
+    protected $table = 'flight_route_tb';
+    protected $pk = 'id';
 
     public function getFlightRoutInternal( $params ) {
         $result = $this->get( [
@@ -15,6 +15,7 @@ class flightRouteCustomerModel extends Model {
         ])->where('local_portal', '0');
 
         $values = [];
+
 
         if (isset($params['value']) && $params['value']) {
             // پشتیبانی از آرایه یا رشته جدا شده با کاما
@@ -31,7 +32,7 @@ class flightRouteCustomerModel extends Model {
                 $converted = functions::switchAlphabet($val);
 
                 $result = $result->like('Departure_City', $val);
-                $result = $result->like('Departure_City', $converted);
+                $result = $result->like('Departure_City', $converted );
                 $result = $result->like('Departure_CityEn', $val);
                 $result = $result->like('Departure_CityEn', $converted);
                 $result = $result->like('Departure_Code', $val);
@@ -39,6 +40,9 @@ class flightRouteCustomerModel extends Model {
             }
 
             $result = $result->closeParentheses();
+
+
+
         }
 
         if (isset($params['is_group']) && $params['is_group']) {
@@ -53,6 +57,29 @@ class flightRouteCustomerModel extends Model {
         $cities = $result->all();
 
         // اگر value ارسال شده باشد، ترتیب را دقیقاً بر اساس ترتیب آرایه value حفظ کن
+//        if (!empty($values)) {
+//            $ordered = [];
+//            $cities_by_key = [];
+//
+//            // ایندکس کردن بر اساس نام فارسی، انگلیسی و کد
+//            foreach ($cities as $city) {
+//                $cities_by_key[mb_strtolower(trim($city['Departure_City']))]   = $city;
+//                $cities_by_key[mb_strtolower(trim($city['Departure_CityEn']))] = $city;
+//                $cities_by_key[mb_strtolower(trim($city['Departure_Code']))]   = $city;
+//            }
+//
+//            foreach ($values as $val) {
+//                $key = mb_strtolower(trim($val));
+//                if (isset($cities_by_key[$key])) {
+//                    $ordered[] = $cities_by_key[$key];
+//                    // جلوگیری از اضافه شدن تکراری
+//                    unset($cities_by_key[$key]);
+//                }
+//            }
+//
+//            return $ordered;
+//        }
+
         if (!empty($values)) {
             $ordered = [];
             $cities_by_key = [];
@@ -66,16 +93,32 @@ class flightRouteCustomerModel extends Model {
 
             foreach ($values as $val) {
                 $key = mb_strtolower(trim($val));
+                if ($key === '') continue;
+
+                // ۱) تطابق دقیق
                 if (isset($cities_by_key[$key])) {
                     $ordered[] = $cities_by_key[$key];
-                    // جلوگیری از اضافه شدن تکراری
                     unset($cities_by_key[$key]);
+                    continue;
+                }
+
+                // ۲) تطابق partial (شروع با)
+                foreach ($cities_by_key as $city_key => $city) {
+                    if ($city_key !== '' && mb_strpos($city_key, $key) === 0) {
+                        $ordered[] = $city;
+                        // حذف همه کلیدهای این شهر برای جلوگیری از تکراری
+                        unset(
+                            $cities_by_key[mb_strtolower(trim($city['Departure_City']))],
+                            $cities_by_key[mb_strtolower(trim($city['Departure_CityEn']))],
+                            $cities_by_key[mb_strtolower(trim($city['Departure_Code']))]
+                        );
+                        break;
+                    }
                 }
             }
 
             return $ordered;
         }
-
         return $cities;
     }
 

@@ -6,7 +6,6 @@
 //}
 
 
-
 date_default_timezone_set('Asia/Tehran');
 // SITE_ROOT contains the full path to the Project folder
 defined('SITE_ROOT') or define('SITE_ROOT', dirname(dirname(__FILE__)));

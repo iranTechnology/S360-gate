@@ -163,7 +163,8 @@ $(document).ready(function () {
 
     $('.show-box-login-js').on('click',function(e) {
         e.stopPropagation()
-        $('.show-content-box-login-js').toggle();
+        // $('.show-content-box-login-js').toggle();
+        $('.show-content-box-login-js').css('display', 'block');
     })
     $('body').click(function () {
         $('.main-navigation__sub-menu2').hide();
@@ -8452,7 +8453,6 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
 
 }
 
-
 function number_format(num) {
     if(num == null){
         num = 0;
@@ -8512,7 +8512,6 @@ function sendFromResultToVisaPassengers(){
     $("#visaResultForm").attr("action", href);
     $("#visaResultForm").submit();
 }
-
 function sendToCip() {
     if (window.cipData) {
         localStorage.setItem('selectedCip', JSON.stringify(window.cipData));
@@ -8523,6 +8522,14 @@ function sendToCip() {
 }
 
 function popupLogin(useType, param1 = null) {
+    if (useType == 'searchResume') {
+        setTimeout(() => {
+            resumeAfterLogin();
+            // window.location.reload();
+        },2000)
+        return;
+    }
+
     if (useType == 'ticket') {
         memberLocalLogin();
     } else if (useType == 'newApiHotel') {
@@ -8584,8 +8591,15 @@ function popupLogin(useType, param1 = null) {
 function popupBuyNoLogin(useType, param1 = null, param2 = null,_this=null) {
     //پارام ها برای متغیری است که توی فانشنی که قراره کار کنه نیاز میشه .  اگه نداشت دیفالت رو نال گذاشتم که به مشکل نخوره
 
+    console.log(useType)
     if(_this && _this.length){
         loadingToggle(_this);
+    }
+    if (useType == 'searchResume') {
+        setTimeout(() => {
+            resumeAfterLogin();
+            // window.location.reload();
+        },2000)
     }
     // $('#noLoginBuy').addClass('skeleton');
     if (useType == 'ticket') {
@@ -10337,6 +10351,7 @@ jQuery.fn.extend({
 
     }
 });
+
 
 function searchPackage(){
 

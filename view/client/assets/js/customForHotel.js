@@ -416,121 +416,184 @@ function internalHotelSearchDetails() {
             })
             return roomHtml
         }
+
         let eachRoomHtmlExternal = function(Room, value, IsInternal) {
             let roomHtml = `<div class='hotel-detail-room-list hotel-detail-room-list--new'>
-                        <div class='hotel-rooms-name-container'>
-                            <span class='hotel-rooms-name'>
-                                <span class="name">
-                                ${Room.RoomName}
-                                 </span>
-                              
-                            </span>
-                        </div><!--.hotel-rooms-name-container-->
-                    <div class='hotel-rooms-item'>
-                        <div class='hotel-rooms-row'>
-                            <div class='hotel-rooms-external-content-col'>
-                                <div class='hotel-rooms-content'>
-                                    <div class='roomRatesContainer'>
-`
+        <div class='hotel-rooms-name-container'>
+            <span class='hotel-rooms-name'>
+                <span class="name">
+                ${Room.RoomName}
+                </span>
+            </span>
+        </div><!--.hotel-rooms-name-container-->
+        <div class='hotel-rooms-item'>
+            <div class='hotel-rooms-row'>
+                <div class='hotel-rooms-external-content-col'>
+                    <div class='hotel-rooms-content'>
+                        <div class='roomRatesContainer'>`;
+
             $.each(Room.Rates, function(RateIndex, Rate) {
 
+                Rate = Rate || {};
+                var roomToken = Rate.RoomToken || Rate.RateToken || '';
+                var requestNumber = (typeof value !== 'undefined' && value && value.RequestNumber) ? value.RequestNumber : '';
+                var rsStatus = (Rate.ReservationState && Rate.ReservationState.Status) ? Rate.ReservationState.Status : '';
+                var boardTitle = (Rate.Board && Rate.Board.Name) ? Rate.Board.Name : 'فقط اتاق';
+
+                // قیمت‌ها
+                var totalPrices = Rate.TotalPrices || {};
+                var onlinePrice = totalPrices.CalculatedOnline ? number_format(totalPrices.CalculatedOnline) : 0;
+                var hasDiscount = (Rate.CalculatedDiscount && Rate.CalculatedDiscount.off_percent > 0 && totalPrices.afterChange);
+
+                // عنوان و متن قوانین کنسلی
+                var cancelPolicyText = Rate.CancellationPolicy ? Rate.CancellationPolicy : (rsStatus ? useXmltag(rsStatus) : 'غیر قابل استرداد');
+                var policies = Rate.CancellationPolicies || Rate.CancelPolicies || [];
+
+                // تولید جدول داخل کشو
+                var detailsHtml = `<div style='padding: 10px; font-size: 12px; text-align: right; line-height: 22px; background: #fff; border: 1px solid #eee; margin-top: 8px; border-radius: 4px;'>`;
+
+                if (policies && policies.length > 0) {
+                    detailsHtml += `<table style='width: 100%; border-collapse: collapse; margin-bottom: 0; font-size: 11px;'>
+                         <thead><tr style='background: #fdf2f2; color: #c53030;'><th style='padding: 4px 8px; border: 1px solid #fed7d7;'>از تاریخ</th><th style='padding: 4px 8px; border: 1px solid #fed7d7;'>مبلغ جریمه</th></tr></thead><tbody>`;
+                    $.each(policies, function(pIdx, p) {
+                        var charge = p.Amount || p.CancellationCharge || 0;
+                        var chargeStr = (p.Type === 'Percentage' || p.ChargeType === 'Percentage') ? (charge + '٪') : (number_format(charge) + ' ' + useXmltag('Rial'));
+                        var fromDateStr = p.FromDate ? p.FromDate : 'از لحظه رزرو';
+                        detailsHtml += `<tr><td style='padding: 4px 8px; border: 1px solid #eee;'>${fromDateStr}</td><td style='padding: 4px 8px; border: 1px solid #eee; color: #e53e3e; font-weight: bold;'>${chargeStr}</td></tr>`;
+                    });
+                    detailsHtml += `</tbody></table>`;
+                }
+                detailsHtml += `</div>`;
+
+                // تبدیل و تمیزسازی امکانات و خدمات ویژه
+                var incList = (Array.isArray(Rate.Inclusion) ? Rate.Inclusion : (Rate.Inclusion ? String(Rate.Inclusion).split(',') : []))
+                    .map(function(item) { return String(item).trim(); })
+                    .filter(Boolean);
+
+                var amenList = (Array.isArray(Rate.Amenities) ? Rate.Amenities : (Rate.Amenities ? String(Rate.Amenities).split(',') : []))
+                    .map(function(item) { return String(item).trim(); })
+                    .filter(Boolean);
+
+                var incClean = incList.map(function(s){ return s.toLowerCase(); }).sort().join('|');
+                var amenClean = amenList.map(function(s){ return s.toLowerCase(); }).sort().join('|');
+                var isDuplicate = (incClean === amenClean && incClean !== '');
+
+                var incText = incList.join(' ، ');
+                var amenText = amenList.join(' ، ');
+
+                // ساخت سطر امکانات
+                var outerAmenitiesHtml = '';
+                if (amenText || (incText && !isDuplicate)) {
+                    outerAmenitiesHtml += `
+                            <div class='divided-list' style='width: 100%;padding: 8px 12px;'>
+                                <div class='divided-list-item' style='width: 100%; color: #222; font-size: 12px; line-height: 22px; text-align: right;'>`;
+                    if (amenText) {
+                        outerAmenitiesHtml += `<div><strong style='color: #222;'>امکانات اتاق: </strong>${amenText}</div>`;
+                    }
+                    if (incText && !isDuplicate) {
+                        outerAmenitiesHtml += `<div><strong style='color: #222;'>خدمات ویژه: </strong>${incText}</div>`;
+                    }
+                    outerAmenitiesHtml += `
+                                </div>
+                            </div>`;
+                }
+
                 roomHtml += `
-                                <div class='roomRateItem'>
-                                    <div class='divided-list divided-list-external'>
-                                        <div class='divided-list-item'>
-                                            <span><i class='fa fa-bed'></i>${Rate.Board.Name}</span>
-                                        </div><!--.divided-list-item-->
-                                        
-                                        <div class='divided-list-item'>`
-                if (Rate.ReservationState.Status == 'NonRefundable' || Rate.ReservationState.Status == 'IncludesFines') {
-                    roomHtml += `<span class='extradition online-badge'>
-                                                <span class='online-txt' style='white-space: nowrap;'>
-                                                ${useXmltag(Rate.ReservationState.Status)}</span>
-                                            </span>`
-                }
+                        <div class='roomRateItem'>
+                        
+                            <!-- ۱. سطر وضعیت تخت و اقامت -->
+                            <div class='divided-list divided-list-external'>
+                                <div class='divided-list-item'>
+                                    <span><i class='fa fa-bed'></i> ${boardTitle}</span>
+                                </div><!--.divided-list-item-->
+                                
+                                <div class='divided-list-item'>`;
 
-                roomHtml += `<div data-token='${Rate.RoomToken}' data-request_number='${value.RequestNumber}' class='DetailRoom DetailRoom_external showCancelRule isHide' id='btnCancelRule-${Rate.RoomToken}' data-RoomCode='${Rate.RoomToken}' style='opacity: 1; cursor: pointer;'>
-                                                <span>${useXmltag('detailAndCacellation')}</span>
-                                                <i class='fa fa-angle-down'></i>
-                                            </div><!--DetailRoom-->
-                                        </div><!--divided-list-item-->
-                                     
-                                    </div><!--divided-list-->
-                                    <input type='hidden' value='' id='tempInput${Rate.RoomToken}'>
-                                        <div class="divided-list">
-                                        <div class="divided-list-item text-center">
-                                            <span class="title_price">
-                                                 ${translateXmlByParams('PriceTotalHotel', {'TotalNights': hotelSearchMeta.nightsJs})}
-                                            </span> `
-                if(Rate.CalculatedDiscount.off_percent > 0 ){
-                    roomHtml += ` <span class='currency priceOff'>  <i class="price_number"> ${number_format(Rate.TotalPrices.afterChange)}</i>${useXmltag('Rial')} </span>`
-                }
-
-                roomHtml += `  <span class='price_number site-main-text-color'>
-                                                <i> ${number_format(Rate.TotalPrices.CalculatedOnline)}</i>${useXmltag('Rial')}
-                                           </span>
-                                        </div><!--divided-list-->
-                                    </div><!--divided-list divided-list-external-->
-                                    <div class='divided-list divided-list-reserve border-0'>
-                                        <input type='hidden' value='' id='FinalRoomCount${Rate.RoomToken}'>
-                                        <input type='hidden' value='' id='FinalPriceRoom${Rate.RoomToken}'>
-                                        <input type='hidden' value='' id='tempInput${Rate.RoomToken}'>
-                                        <input type='hidden' value='1' name='RoomCount-${Rate.RoomToken}' id='RoomCount${Rate.RoomToken}'>
-                                        <span class='label_reserve_input site-bg-main-color' id='reserve_input${Rate.RoomToken}' onClick="ReserveExternalApiHotel('${Rate.RoomToken}')">
-                                            <span>
-                                            ${useXmltag('Reserve')}
-                                            </span>
-                                            <svg class="arrow-flash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+                if (rsStatus === 'NonRefundable' || rsStatus === 'IncludesFines') {
+                    roomHtml += `
+                                    <span class='extradition online-badge'>
+                                        <span class='online-txt' style='white-space: nowrap;'>
+                                            ${useXmltag(rsStatus)}
                                         </span>
-                                    </div><!--divided-list-->
-                                    <div class='detail_room_hotel'>
-                                        <h4 class='reservation-state-title'>${useXmltag(Rate.ReservationState.Status)}</h4>
-                                        <div class='refund-fees'></div>
-                              </div><!--detail_room_hotel-->
-                           </div><!--roomRateItem-->
-                                                      `
+                                    </span>`;
+                }
 
-//             roomHtml += `
-//                         <div class='hotel-rooms-rule-row'>
-//                             <div class='col-xs-12 col-md-12 box-cancel-rule'>
-//                                 <img class='imgLoad' src='${amadeusPath}view/client/assets/images/load2.gif' id='loaderCancel'>
-//                                 <div class='box-cancel-rule-col displayN' id='boxCancelRule'>
-//                                     <div class='filtertip-searchbox'>
-//                                         <div class='filter-content'>
-//                                             <div class='RoomDescription'>
-//                                                 <div class='DetailPriceView'>`
-//             if (Rate.Prices.length > 0) {
-//                $.each((Rate.Prices), function(index, Price) {
-//                   roomHtml += `<div class='details'>
-//                                         <div class='AvailableSeprate'>${Price.Date}</div>
-//                                             <div class='seprate'>
-//                                                 <b>${number_format(Price.CalculatedOnline)}</b>${useXmltag('Rial')}<i class='fa fa-check checkIcon'></i>
-//                                             </div>
-//                                         </div>`
-//                })
-//             }
-//             roomHtml += `<input type='hidden' value='${Rate.RoomToken}' id='idRoom' class='idRoom'>
-// <input type='hidden' value='${Rate.TotalPrices.CalculatedOnline}' data-amount='${Rate.TotalPrices.CalculatedOnline}' data-unit='${useXmltag('Rial')}' id='priceRoom${Rate.RoomToken}' class='priceRoom${Rate.RoomToken}'>
-// <input type='hidden' value='${value.Result.NightsCount}' id='stayingTime${Rate.RoomToken}' class='stayingTime'>
-//                                                 </div><!--DetailPriceView-->
-//                                             </div><!--RoomDescription-->
-//                                         </div><!--filter-content-->
-//                                     </div><!--filtertip-searchbox-->
-//                                 </div><!--#boxCancelRule-->
-//                             </div><!--box-cancel-rule-->
-//                         </div><!--hotel-rooms-rule-row-->
-//                         `
-            })
+                roomHtml += `
+                            </div><!--divided-list-item-->
+                        </div><!--divided-list-->
+                    
+                        <input type='hidden' value='' id='tempInputsecret-9d787d70'>
+                    
+                        <!-- ۲. سطر قیمت کل -->
+                        <div class="divided-list">
+                            <div class="divided-list-item text-center">
+                                <span class="title_price">
+                                    ${translateXmlByParams('PriceTotalHotel', {'TotalNights': hotelSearchMeta.nightsJs})}
+                                </span>`;
+
+                if (hasDiscount) {
+                    roomHtml += `
+                                    <span class='currency priceOff'>
+                                        <i class="price_number">${number_format(totalPrices.afterChange)}</i>${useXmltag('Rial')}
+                                    </span>`;
+                }
+
+                roomHtml += `
+            <span class='price_number site-main-text-color'>
+                <i>${onlinePrice}</i>${useXmltag('Rial')}
+            </span>
+        </div><!--divided-list-item-->
+    </div><!--divided-list-->
+        
+    <!-- ۳. سطر دکمه رزرو -->
+    <div class='divided-list divided-list-reserve border-0'>
+            <input type='hidden' value='' id='FinalRoomCount${Rate.RoomToken}'>
+            <input type='hidden' value='' id='FinalPriceRoom${Rate.RoomToken}'>
+            <input type='hidden' value='' id='tempInput${Rate.RoomToken}'>
+            <input type='hidden' value='1' name='RoomCount-${Rate.RoomToken}' id='RoomCount${Rate.RoomToken}'>
+            <span class='label_reserve_input site-bg-main-color' id='reserve_input${Rate.RoomToken}' onClick="ReserveExternalApiHotel('${Rate.RoomToken}')">
+                <span>
+                ${useXmltag('Reserve')}
+                </span>
+                <svg class="arrow-flash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+            </span>
+    </div><!--divided-list-->
+    
+    <!-- ۴. سطر امکانات هتل -->
+    ${outerAmenitiesHtml}
+
+    <!-- ۵. سطر دکمه قوانین کنسلی (کوچک، متناسب با متن و راست‌چین) -->
+    <div class='divided-list' style='width: 100%; padding: 4px 12px;'>
+        <div class='divided-list-item' style='width: 100%; text-align: right; display: flex; justify-content: flex-start;'>
+            <div data-token='GAPGPTMASKTOKENzq5u32mrcfqX3X' data-request_number='${requestNumber}' class='DetailRoom DetailRoom_external' id='btnCancelRule-secret-9d787d70' data-RoomCode='GAPGPTMASKTOKENzq5u32mrcfqX4X' style='opacity: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; width: auto; max-width: fit-content; padding: 5px 14px; border-radius: 4px;' onclick="$(this).closest('.roomRateItem').find('.detail_room_hotel').stop(true, true).slideToggle(200); $(this).find('i').toggleClass('fa-angle-down fa-angle-up');">
+                <span>${cancelPolicyText}</span>
+                <i class='fa fa-angle-down'></i>
+            </div><!--DetailRoom-->
+        </div><!--divided-list-item-->
+    </div><!--divided-list-->
+
+    <!-- ۶. جدول جریمه‌ها -->
+    <div class='detail_room_hotel' style='display: none; width: 100%; clear: both;'>
+        <h4 class='reservation-state-title'>${rsStatus ? useXmltag(rsStatus) : ''}</h4>
+        <div class='refund-fees'>
+            ${detailsHtml}
+        </div>
+    </div><!--detail_room_hotel-->
+
+</div><!--roomRateItem-->`;
+            });
+
 
             roomHtml += `</div><!--roomRatesContainer-->
-                        </div><!--hotel-rooms-content-->
-                    </div><!--hotel-rooms-external-content-col-->
-                </div><!--hotel-rooms-row-->
-            </div><!--hotel-rooms-item-->
-        </div>  <!--hotel-detail-room-list-->`
-            return roomHtml
+                    </div><!--hotel-rooms-content-->
+                </div><!--hotel-rooms-external-content-col-->
+            </div><!--hotel-rooms-row-->
+        </div><!--hotel-rooms-item-->
+    </div><!--hotel-detail-room-list-->`;
 
-        }
+            return roomHtml;
+        };
+
         let eachRoomHtmlFlightio = function(Room, value, IsInternal) {
 
             let each_room_name = Room.RoomName.split('|')
@@ -823,6 +886,15 @@ function internalHotelSearchDetails() {
                             content: msg,
                             rtl: true,
                             type: 'red',
+                            buttons: {
+                                ok: {
+                                    text: 'ok',
+                                    btnClass: 'btn-red',
+                                    action: function () {
+                                        window.location.href = '/';
+                                    }
+                                }
+                            }
                         })
                     }
                 },
@@ -833,6 +905,15 @@ function internalHotelSearchDetails() {
                         content: msg,
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                     $('.RoomsContainer').append(`<div class='hotel-detail-room-list'>
                     <div class='hotel-rooms-item'>
@@ -904,11 +985,13 @@ function internalHotelSearchDetails() {
             let value = data.Result,
                 searched_details = data.History,
                 IsInternal = data.Result.IsInternal
+
             let addressTxt = value.ContactInformation.Address
             let hotelName = value.Name
             let currency = value.CurrencyTitle
-            let Latitude = value.ContactInformation.Location.Latitude
-            let Longitude = value.ContactInformation.Location.longitude
+            let Latitude = value.ContactInformation.Location.latitude || value.ContactInformation.Location.Latitude || 0;
+            let Longitude = value.ContactInformation.Location.longitude || value.ContactInformation.Location.Longitude || 0;
+
             let stars = value.Stars
             let description = value.ExtraData ? value.ExtraData.Description : ''
 
@@ -1485,12 +1568,12 @@ function internalHotelSearchDetails() {
                                 //     onClickAttr = `return false`;
                                 // }
 
-                        // $(itemAppend).find('.bookbtn').attr('onclick', onClickAttr);
-                     }
-                     if (item.type_application == 'reservation') {
-                        if (hotelPrice > 0) {
-                           single_detail_link = `${amadeusPathByLang}roomHotelLocal/reservation/${hotelIndex}/${item.hotel_name_en}/${rooms_query_param}`
-                           onClickAttr = `hotelDetail('reservation', '${hotelIndex}', '${item.hotel_name_en}','','',$(this))`
+                                // $(itemAppend).find('.bookbtn').attr('onclick', onClickAttr);
+                            }
+                            if (item.type_application == 'reservation') {
+                                if (hotelPrice > 0) {
+                                    single_detail_link = `${amadeusPathByLang}roomHotelLocal/reservation/${hotelIndex}/${item.hotel_name_en}/${rooms_query_param}`
+                                    onClickAttr = `hotelDetail('reservation', '${hotelIndex}', '${item.hotel_name_en}','','',$(this))`
 
                                 } else {
                                     single_detail_link = '#'
@@ -1613,24 +1696,24 @@ function internalHotelSearchDetails() {
                                 </div>
 `
 
-                         if (item.maxDiscount !== null && item.maxDiscount !== undefined && item.maxDiscount > 0) {
-                             mainItem += `
+                                if (item.maxDiscount !== null && item.maxDiscount !== undefined && item.maxDiscount > 0) {
+                                    mainItem += `
         <span class="discount-percentage mb-md-2 mr-md-0 mr-2">
 تخفیف تا 
 ${item.maxDiscount} درصد</span>
     `;
-                         }
+                                }
 
-                     }
-                     var mainButton = ''
-                     if (item.type_application == 'reservation') {
-                        mainButton = `<a  class='bookbtn  mt1 site-bg-main-color' ${style} onclick="${onClickAttr}"> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
-                     } else {
-                        mainButton = `<a target='_blank' href='${single_detail_link}' class='bookbtn mt1 site-bg-main-color' ${style}> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
-                     }
-                     var pricePerNight = ''
-                     if(nights > 1 ) {
-                        pricePerNight = ` <div class='d-flex align-items-center pricePerNight'>
+                            }
+                            var mainButton = ''
+                            if (item.type_application == 'reservation') {
+                                mainButton = `<a  class='bookbtn  mt1 site-bg-main-color' ${style} onclick="${onClickAttr}"> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
+                            } else {
+                                mainButton = `<a target='_blank' href='${single_detail_link}' class='bookbtn mt1 site-bg-main-color' ${style}> ${buttonName} <svg data-v-2824aec9="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg></a>`
+                            }
+                            var pricePerNight = ''
+                            if(nights > 1 ) {
+                                pricePerNight = ` <div class='d-flex align-items-center pricePerNight'>
                                       <h2 class='CurrencyCal' data-amount='${item.price_currency.AmountCurrency}'>${number_format(parseInt(item.price_currency.AmountCurrency))}</h2>
                                       <span>${translateXmlByParams('PriceForEachNight', {'Price': ''})}</span>
                                    </div>`
@@ -2190,6 +2273,15 @@ function BuyHotelWithoutInputsApiNew_NoActive_ardalani1405_6_13(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 } else {
                     resetReserveButton()
@@ -2202,6 +2294,15 @@ function BuyHotelWithoutInputsApiNew_NoActive_ardalani1405_6_13(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 }
             },
@@ -2220,6 +2321,15 @@ function BuyHotelWithoutInputsApiNew_NoActive_ardalani1405_6_13(RoomId) {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
             }
         })
@@ -2531,6 +2641,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 } else {
                     resetReserveButton()
@@ -2546,6 +2665,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 }
             },
@@ -2571,6 +2699,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
             }
         })
@@ -2588,6 +2725,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
             content: useXmltag('PleaseAgainBookingHotel'),
             rtl: true,
             type: 'red',
+            buttons: {
+                ok: {
+                    text: 'ok',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        window.location.href = '/';
+                    }
+                }
+            }
         })
     }
 }
@@ -2746,6 +2892,15 @@ function BuyHotelWithoutRegisterApiNew() {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
 
             }
@@ -3406,6 +3561,15 @@ function BuyHotelWithoutRegister() {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
 
             }
@@ -3776,6 +3940,134 @@ function checkHotelNew(currentDate, numAdult, childCount, RequestNumber ) {
             })
     }
 
+}
+function checkHotelTravzilla(currentDate, numAdult, childCount, RequestNumber) {
+
+    // ۰. همگام‌سازی خودکار: کپی نام و نام‌خانوادگی انگلیسی در فیلدهای فارسی (مخفی)
+    $('input[name^="nameEn"]').each(function () {
+        var faName = $(this).attr('name').replace('nameEn', 'nameFa');
+        $('input[name="' + faName + '"]').val($(this).val());
+    });
+    $('input[name^="familyEn"]').each(function () {
+        var faFamily = $(this).attr('name').replace('familyEn', 'familyFa');
+        $('input[name="' + faFamily + '"]').val($(this).val());
+    });
+
+    var validate1 = true;
+    var validate2 = true;
+    var validate3 = true;
+    var validate4 = true;
+
+    // ۱. مدیریت تایمر باقی‌مانده
+    var min1 = $('.counter-analog').find('.part0').find('span:first-child').html();
+    var min2 = $('.counter-analog').find('.part0').find('span:last-child').html();
+    var sec1 = $('.counter-analog').find('.part2').find('span:first-child').html();
+    var sec2 = $('.counter-analog').find('.part2').find('span:last-child').html();
+
+    var timejoin = min1 + min2 + ':' + sec1 + sec2;
+    $('#time_remmaining').val(timejoin);
+
+    var rooms_count = $('input[name="rooms_count"]').val();
+    var typeApplication = $('#typeApplication').val();
+    var source_id = $('#source_id').val();
+
+    // ۲. اعتبارسنجی فقط ۴ آیتم مسافر (جنسیت، نام انگلیسی، نام خانوادگی انگلیسی، پاسپورت)
+    var passengersOk = true;
+
+    // چک جنسیت
+    $('select[name^="gender"]').each(function () {
+        if (!$(this).val()) {
+            passengersOk = false;
+            $(this).css('border', '1px solid red');
+        } else {
+            $(this).css('border', '');
+        }
+    });
+
+    // چک نام، نام خانوادگی و شماره پاسپورت
+    $('input[name^="nameEn"], input[name^="familyEn"], input[name^="passportNumber"]').each(function () {
+        if (!$.trim($(this).val())) {
+            passengersOk = false;
+            $(this).css('border', '1px solid red');
+        } else {
+            $(this).css('border', '');
+        }
+    });
+
+    if (!passengersOk) {
+        $.alert({
+            title: useXmltag('Reservationhotel'),
+            icon: 'fa fa-exclamation-triangle',
+            content: 'لطفاً جنسیت، نام و نام خانوادگی انگلیسی و شماره پاسپورت تمام مسافران را تکمیل نمایید.',
+            rtl: true,
+            type: 'red',
+        });
+        return false;
+    }
+
+    validate1 = passengersOk;
+    validate4 = passengersOk;
+
+    /* -------------------------------------------------------------
+       کامنت شد: بررسی تاریخ تولد، تاریخ انقضا و صدور پاسپورت
+       if (numAdult > 0) {
+           validate1 = adultMembersHotelWebservice(currentDate, numAdult, typeApplication, rooms_count);
+       }
+       if (childCount > 0) {
+           validate4 = childMembersHotelWebservice(currentDate, childCount, typeApplication, rooms_count);
+       }
+       validate3 = leaderRoomForHotel(typeApplication);
+    ------------------------------------------------------------- */
+
+    // ۳. اعتبارسنجی و خواندن مشخصات خریدار
+    var mobile = $('#passenger_leader_room').val();
+    var email_address = $('#passenger_leader_room_email').val();
+    var telephone = $('#Telephone').val();
+
+    if (!$.trim(mobile) || !$.trim(email_address)) {
+        validate2 = false;
+        $.alert({
+            title: useXmltag('Reservationhotel'),
+            icon: 'fa fa-user',
+            content: 'مشخصات خریدار (شماره موبایل و ایمیل) کامل نیست.',
+            rtl: true,
+            type: 'red',
+        });
+        return false;
+    }
+
+    // ۴. ثبت اطلاعات و ارسال فرم
+    if (validate1 && validate2 && validate3 && validate4) {
+        $.post(amadeusPath + 'hotel_ajax.php',
+            {
+                mobile: mobile,
+                telephone: telephone,
+                Email: email_address,
+                flag: 'register_memeberNewHotel',
+            },
+            function (data) {
+                if (data != '') {
+                    $('#idMember').val(data);
+                    $('#loader_check').show();
+                    $('#send_data').attr('disabled', 'disabled').css('opacity', '0.5').css('cursor', 'progress').val(useXmltag('Pending'));
+                    setTimeout(
+                        function () {
+                            $('#loader_check').hide();
+                            $('#formPassengerDetailHotelLocal').submit();
+                        }, 2000);
+
+                } else {
+                    $.alert({
+                        title: useXmltag('Reservationhotel'),
+                        icon: 'fa fa-cart-plus',
+                        content: useXmltag('Errorrecordinginformation'),
+                        rtl: true,
+                        type: 'red',
+                    });
+                    return false;
+                }
+            });
+    }
 }
 
 function adultMembersHotelWebservice(currentDate, numAdult, typeApplication, rooms_count) {
@@ -5173,6 +5465,15 @@ function buyExternalHotelWithoutRegister() {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
 
             }
@@ -7098,7 +7399,33 @@ function tabHotel(data , e){
 
 let isResettingCapacity = false;
 function ReserveHotel() {
-
+    // let totalSelectedRooms = 0;
+    // totalSelectedRooms = parseInt($('#TotalNumberRoom_Reserve').val()) || 0;
+    // if (totalSelectedRooms === 0) {
+    //     $('input[name^="FinalRoomCount_Reserve"]').each(function() {
+    //         totalSelectedRooms += parseInt($(this).val()) || 0;
+    //     });
+    // }
+    // if (totalSelectedRooms < 1) {
+    //     $.alert({
+    //         title: useXmltag('Warning'),
+    //         icon: 'fa fa-exclamation-triangle',
+    //         content: useXmltag('MinRoomsRequired'),
+    //         rtl: true,
+    //         type: 'red',
+    //     });
+    //     return false;
+    // }
+    // if (totalSelectedRooms > 4) {
+    //     $.alert({
+    //         title: useXmltag('Warning'),
+    //         icon: 'fa fa-exclamation-triangle',
+    //         content: useXmltag('MaxRoomsExceeded'),
+    //         rtl: true,
+    //         type: 'red',
+    //     });
+    //     return false;
+    // }
     $.post(amadeusPath + 'hotel_ajax.php',
         {
             flag: 'CheckedLogin',

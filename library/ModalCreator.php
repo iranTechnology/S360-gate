@@ -927,6 +927,7 @@ class ModalCreator extends clientAuth {
         elseif ($type == 'hotel') {
             $objbook = Load::controller($this->Controller);
             $ticketsInfo = functions::info_hotel_directions($Param);
+
         }
         elseif ($type == 'cip') {
             $objbook = Load::controller($this->Controller);

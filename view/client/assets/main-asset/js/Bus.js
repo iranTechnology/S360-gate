@@ -372,8 +372,8 @@ $(document).ready(function () {
 
       $('#departure_date_bus').click(()=>{
 
-      setupMobileBusDrawerElementsDatePicker();
-      openMobileBusDrawerDatePicker();
+         setupMobileBusDrawerElementsDatePicker();
+         openMobileBusDrawerDatePicker();
       })
    }
 
@@ -451,8 +451,36 @@ $(document).ready(function () {
 
 });
 
+function requireLoginBeforeSearchBus(callback) {
+   const loginBtn = document.getElementById('login-popup');
 
-function searchBus(altDomain = null) {
+   if (!window.IS_LOGIN_BEFORE_SEARCH || !loginBtn) {
+      callback();
+      return;
+   }
+   if (isCheckingLogin) return; // جلوگیری از دابل‌کلیک
+   isCheckingLogin = true;
+
+   $.post(amadeusPath + 'user_ajax.php', { flag: 'CheckLogged' })
+       .done(function (data) {
+          if (String(data).indexOf('SuccessLogging') > -1) {
+             callback();
+          } else {
+             pendingAfterLogin = callback;
+             $('#useType').val('searchResume');
+             $('#noLoginBuy').attr('onclick', "popupBuyNoLogin('searchResume')");
+             loginBtn.click();
+          }
+       })
+       .fail(function () {
+          callback(); // اگر چک لاگین خطا داد، جلوی کاربر را نگیر
+       })
+       .always(function () {
+          isCheckingLogin = false;
+       });
+}
+
+function runBusSearch(altDomain){
    const form = document.getElementById('gds_local_bus');
    const target = form.target;
 
@@ -481,5 +509,11 @@ function searchBus(altDomain = null) {
    }else {
       window.open(url , '_self')
    }
+}
+function searchBus(altDomain = null) {
+   requireLoginBeforeSearchBus(function () {
+      runBusSearch(altDomain);
+   });
+   return false;
 
 }

@@ -1310,7 +1310,7 @@ class bookExclusiveTour extends exclusiveTour
             <tr>
                 <td style="border:none;">
                     <span>وبسایت:</span>
-                    <span dir="rtl">'.$getSubAgencyInfo['address_fa'].'</span>
+                    <span dir="rtl">'.CLIENT_DOMAIN.'</span>
                 </td>
                 <td style="border:none;">
                     <span>تلفن:</span>

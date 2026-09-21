@@ -58,7 +58,6 @@ class resultSearchExternalHotel extends clientAuth
 
         // واکشی اطلاعات کامل هتل های رزرواسیون و امکانات هتل های خارجی //
 
-
         $resultHotelDB = $objExternalHotel->getHotelsFromDB($param['countryNameEn'], $param['cityNameEn'], $param['startDate'], $param['nights'] , $param['rooms']);
 
 
