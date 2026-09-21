@@ -30,6 +30,7 @@
                             <option value="flight">پرواز</option>
                             <option value="hotel">هتل</option>
                             <option value="bus">اتوبوس</option>
+                            <option value="exclusiveTour">تور اختصاصی</option>
                         </select>
                     </div>
                     <div class="form-group col-sm-6">

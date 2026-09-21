@@ -658,6 +658,34 @@ class exclusiveTour extends clientAuth {
             }
 
     }
-
-
+    public function clientExclusiveTourData()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($_POST['code']) {
+                $code = 'code=' . $_POST['code'] ?? null;
+            }
+            if ($_POST['date_start']) {
+                $date_start = 'date_start=' . $_POST['date_start'] ?? null;
+            }
+            if ($_POST['date_end']) {
+                $date_end = 'date_end=' . $_POST['date_end'] ?? null;
+            }
+        }
+        $query_param = implode('', [$code, $date_start, $date_end]);
+        $url = "https://safar360.com/Core/V-1/Tour/getRequestedCode/$query_param"; //TODO change this url accordingly
+        header('Content-Type: application/json');
+        $result = functions::curlExecution($url, []);
+        $final_response = [];
+        foreach ($result as $data) {
+            $final_response[] = [
+                'id' => $data['id'],
+                'code' => $data['code'],
+                'businessMethodName' => $data['businessMethodName'],
+                'ApiMethodName' => $data['ApiMethodName'] ?? $data['businessMethodName'],
+                'response' => htmlentities($data['response']),
+                'request' => htmlentities($data['request']),
+            ];
+        }
+        echo json_encode($final_response);
+    }
 }

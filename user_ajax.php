@@ -1340,6 +1340,10 @@ elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'insert_client' ) {
         $controller = Load::library( 'apiBus' );
         echo $controller->clientBusData( $_POST );
     }
+    else if($_POST['type'] == 'exclusiveTour') {
+        $controller = Load::controller( 'exclusiveTour' );
+        echo $controller->clientExclusiveTourData( $_POST );
+    }
 
 
 } elseif ( isset( $_POST['flag'] ) && $_POST['flag'] == 'update_client' ) {

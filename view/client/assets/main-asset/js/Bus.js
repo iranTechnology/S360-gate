@@ -372,8 +372,8 @@ $(document).ready(function () {
 
       $('#departure_date_bus').click(()=>{
 
-      setupMobileBusDrawerElementsDatePicker();
-      openMobileBusDrawerDatePicker();
+         setupMobileBusDrawerElementsDatePicker();
+         openMobileBusDrawerDatePicker();
       })
    }
 
@@ -480,7 +480,7 @@ function requireLoginBeforeSearchBus(callback) {
        });
 }
 
-function runHotelSearch(altDomain){
+function runBusSearch(altDomain){
    const form = document.getElementById('gds_local_bus');
    const target = form.target;
 
@@ -512,7 +512,7 @@ function runHotelSearch(altDomain){
 }
 function searchBus(altDomain = null) {
    requireLoginBeforeSearchBus(function () {
-      runHotelSearch(altDomain);
+      runBusSearch(altDomain);
    });
    return false;
 
