@@ -581,6 +581,15 @@ class exclusiveTour extends clientAuth {
             $d['subAgencyId'] = $agencyInfo['id'];
         }
 
+        if (Session::IsLogin()) {
+            $userId = Session::getUserId();
+        }
+
+        $user =    $this->getModel('membersModel')->getMemberById($userId);
+
+        $d['passengerMobile'] = $user['mobile'];
+        $d['passengerEmail'] = $user['email'];
+
 
         $JsonArray = json_encode($d);
 
