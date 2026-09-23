@@ -3772,10 +3772,10 @@ class bookshowTest extends clientAuth {
                 if ( $flightBook['flight_type'] == 'charter' ||  $flightBook['api_id'] == '14' ) {
                     if ( $flightBook['percent_discount'] > 0 ) {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
-                        $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
+//                        $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
                         if(TYPE_ADMIN != 1){
-                            $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
-                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )                                . '</span>';
+//                            $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
+//                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )                                . '</span>';
                         }
 
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -3784,7 +3784,7 @@ class bookshowTest extends clientAuth {
                         }
                     } else {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
-                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
 
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal    = ( $flightBook['agency_commission'] + $flightBook['irantech_commission'] + $flightBook['supplier_commission'] ) + $pricetotal;
@@ -3795,10 +3795,10 @@ class bookshowTest extends clientAuth {
                 elseif ( $flightBook['flight_type'] == 'system' ) {
                     if ( $flightBook['percent_discount'] > 0 ) {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
-                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
                         if(TYPE_ADMIN != 1){
-                            $DataFlightPassengerPayData .= "<hr style='margin:3px'> <span style='text-decoration: line-through;'>";
-                            $DataFlightPassengerPayData .= $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] . '</span>';
+//                            $DataFlightPassengerPayData .= "<hr style='margin:3px'> <span style='text-decoration: line-through;'>";
+//                            $DataFlightPassengerPayData .= $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] . '</span>';
                         }
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
@@ -3812,10 +3812,10 @@ class bookshowTest extends clientAuth {
                     } else {
                         if ( $flightBook['IsInternal'] == '0' ) {
                             $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
-                            $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
+//                            $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
                         } else {
                             $PassengerPayment=$flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ;
-                            $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                            $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
                         }
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
@@ -3837,11 +3837,11 @@ class bookshowTest extends clientAuth {
                 $discountPrice = $InfoTicketReservation['discount_amount']; // مبلغ کل تخفیف (عددی)
 
                 if ( TYPE_ADMIN != 1 && $InfoTicketReservation['totalPriceWithoutDiscount'] != 0 ) {
-                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
+//                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
                 }
 
                 $PassengerPayment            = $InfoTicketReservation['totalPrice'];
-                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
+//                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
                 $pricetotal                  = ( $InfoTicketReservation['totalPrice'] ) + $pricetotal;
             }
 

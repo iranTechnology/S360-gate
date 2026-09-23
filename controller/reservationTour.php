@@ -717,7 +717,8 @@ class reservationTour extends clientAuth
                         '" . $data['tour_leader_language'] . "',
                         '" . $custom_file_fields . "',
                         '" . $isRequest . "',
-                         '" . $param['tourVideo'] . "'
+                         '" . $param['tourVideo'] . "',
+                         ''
                         ),";
                         }
 

@@ -2141,7 +2141,7 @@ div.J3 .logo-airline-ico {
     background-position: -411px -183px;
 }
 
-div.DZD .logo-airline-ico {
+div.DZD .logo-airline-ico , div.DZ .logo-airline-ico {
     background-position: -356px 406px;
 }
 
@@ -5004,7 +5004,7 @@ div.B9 .logo-airline-ico-foreign {
     background-position: -240px -540px;
 }
 
-div.DZD .logo-airline-ico-foreign, div.yazdair .logo-airline-ico-foreign {
+div.DZD .logo-airline-ico-foreign, div.yazdair .logo-airline-ico-foreign , div.DZ .logo-airline-ico-foreign {
     background-position: -716px 181px;
 }
 

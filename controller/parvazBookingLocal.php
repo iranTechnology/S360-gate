@@ -1329,7 +1329,7 @@ WHERE
                 $NumberFlightPassengerPayData1=$info['agency_commission'];
             }
 
-            $NumberFlightPassengerPayData2=$info['sum_amount_added'];
+            $NumberFlightPassengerPayData2=$info['amount_added'];
 
             $discountPrice=0;
             if ($info['flight_type'] == 'charterPrivate') {
