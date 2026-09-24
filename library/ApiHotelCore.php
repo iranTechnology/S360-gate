@@ -134,7 +134,7 @@ class ApiHotelCore extends clientAuth {
         if ( $this->auth == 'True' ) {
             $name = urlencode( $name );
             $url    = "{$this->urlApi}GetHotelsByName/{$name}";
-            functions::insertLog('data urlApi: ' . json_encode($this->urlApi) , '000shojaee');
+
             $result = functions::curlExecution( $url,[], $this->header );
             functions::insertLog(json_encode(['req'=>$url,'res'=>$result,'header'=>$this->header,'auth'=>$this->arrayAuth],256|64),'Hotels/GetHotelsByName');
             if (isset($result['StatusCode']) && $result['StatusCode'] == 200 ) {
@@ -239,6 +239,7 @@ class ApiHotelCore extends clientAuth {
             functions::insertLog('before list hotel curl=>','package_log');
         }
 
+
         $resultHotel = functions::curlExecution($url, $datajson, $this->header);
 
 
@@ -283,6 +284,7 @@ class ApiHotelCore extends clientAuth {
                 }
                 $final_hotel[$hotel_list['index']] = $hotel_list;
             }
+
 
             $resultHotel['Result'] = array_values($final_hotel);
             functions::insertLog( 'Response: ' . json_encode( $resultHotel, 256 | 64 ), 'Hotels/List' );
@@ -333,9 +335,8 @@ class ApiHotelCore extends clientAuth {
             }
 
             return $this->returnJson( $resultHotel );
+
         }
-
-
         return $this->showError( 'شما دسترسی لازم به این صفحه را ندارید', 403 );
     }
 
@@ -416,7 +417,7 @@ class ApiHotelCore extends clientAuth {
                 }
             }
 
-            functions::insertLog('$param: ' . json_encode($reqData) , '000shojaee');
+
             functions::insertLog( 'Hotel DirectDetail Method Request: ' . json_encode( $reqData, 256|64 ), 'DirectDetail' );
 
             $resultHotel = functions::curlExecution( $url, json_encode( $reqData ), $this->header );

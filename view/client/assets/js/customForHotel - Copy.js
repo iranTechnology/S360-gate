@@ -236,12 +236,7 @@ function internalHotelSearchDetails() {
                                </div>
                        </div>
 `
-
-
-
-
-
-                roomHtml += `</span>
+               roomHtml += `</span>
                     </div>
                     <div class='hotel-rooms-item'>`
                 roomHtml += `<div class='rate-item'>
@@ -416,180 +411,232 @@ function internalHotelSearchDetails() {
             })
             return roomHtml
         }
-
         let eachRoomHtmlExternal = function(Room, value, IsInternal) {
+            Room = Room || {};
+            Room.Rates = Room.Rates || [];
+
             let roomHtml = `<div class='hotel-detail-room-list hotel-detail-room-list--new'>
         <div class='hotel-rooms-name-container'>
             <span class='hotel-rooms-name'>
                 <span class="name">
-                ${Room.RoomName}
+                ${Room.RoomName || ''}
                 </span>
             </span>
         </div><!--.hotel-rooms-name-container-->
-        <div class='hotel-rooms-item'>
-            <div class='hotel-rooms-row'>
-                <div class='hotel-rooms-external-content-col'>
-                    <div class='hotel-rooms-content'>
-                        <div class='roomRatesContainer'>`;
+    <div class='hotel-rooms-item'>
+        <div class='hotel-rooms-row'>
+            <div class='hotel-rooms-external-content-col'>
+                <div class='hotel-rooms-content'>
+                    <div class='roomRatesContainer'>
+`;
 
             $.each(Room.Rates, function(RateIndex, Rate) {
-
                 Rate = Rate || {};
+
+                // پاکسازی توکن برای آیدی‌های جی‌کوئری (حذف کاراکترهای خاص مانند ! و .)
                 var roomToken = Rate.RoomToken || Rate.RateToken || '';
+                var safeToken = roomToken ? String(roomToken).replace(/[^a-zA-Z0-9_-]/g, '_') : ('rate_' + RateIndex);
                 var requestNumber = (typeof value !== 'undefined' && value && value.RequestNumber) ? value.RequestNumber : '';
-                var rsStatus = (Rate.ReservationState && Rate.ReservationState.Status) ? Rate.ReservationState.Status : '';
-                var boardTitle = (Rate.Board && Rate.Board.Name) ? Rate.Board.Name : 'فقط اتاق';
+
+                // وضعیت و متن اصلی قوانین کنسلی
+                var rs = Rate.ReservationState || {};
+                var rsStatus = rs.Status || '';
+                var statusTitle = rsStatus ? useXmltag(rsStatus) : '';
+                var cancelPolicyText = Rate.CancellationPolicy ? Rate.CancellationPolicy : (statusTitle || 'غیر قابل استرداد');
+
+                // استخراج و آماده‌سازی لیست امکانات (Amenities / Inclusion / Facilities)
+                var amenitiesList = [];
+                if (Rate.Amenities && Array.isArray(Rate.Amenities) && Rate.Amenities.length > 0) {
+                    amenitiesList = Rate.Amenities;
+                } else if (Room.Amenities && Array.isArray(Room.Amenities) && Room.Amenities.length > 0) {
+                    amenitiesList = Room.Amenities;
+                } else if (Room.RoomFacilities && Array.isArray(Room.RoomFacilities) && Room.RoomFacilities.length > 0) {
+                    amenitiesList = Room.RoomFacilities;
+                } else if (Rate.Inclusion && typeof Rate.Inclusion === 'string' && Rate.Inclusion.trim() !== '') {
+                    amenitiesList = Rate.Inclusion.split(/[,;]/).map(function(item) { return item.trim(); }).filter(Boolean);
+                } else if (Room.Inclusion && typeof Room.Inclusion === 'string' && Room.Inclusion.trim() !== '') {
+                    amenitiesList = Room.Inclusion.split(/[,;]/).map(function(item) { return item.trim(); }).filter(Boolean);
+                }
+
+                // استخراج شرایط نرخ (RateConditions / RoomPromotion)
+                var rateConditionsList = [];
+                if (Rate.RateConditions && Array.isArray(Rate.RateConditions) && Rate.RateConditions.length > 0) {
+                    rateConditionsList = rateConditionsList.concat(Rate.RateConditions);
+                } else if (typeof Rate.RateConditions === 'string' && Rate.RateConditions.trim() !== '') {
+                    rateConditionsList = rateConditionsList.concat(Rate.RateConditions.split('.').map(function(item) { return item.trim(); }).filter(Boolean));
+                } else if (Room.RateConditions && Array.isArray(Room.RateConditions) && Room.RateConditions.length > 0) {
+                    rateConditionsList = rateConditionsList.concat(Room.RateConditions);
+                }
+
+                if (Rate.RoomPromotion && Array.isArray(Rate.RoomPromotion) && Rate.RoomPromotion.length > 0) {
+                    rateConditionsList = rateConditionsList.concat(Rate.RoomPromotion);
+                } else if (Room.RoomPromotion && Array.isArray(Room.RoomPromotion) && Room.RoomPromotion.length > 0) {
+                    rateConditionsList = rateConditionsList.concat(Room.RoomPromotion);
+                }
+
+                // جزئیات پله‌ای جریمه
+                var detailedPolicies = Rate.CancelPolicies || Rate.CancellationPolicies || [];
+                var boardName = (Rate.Board && Rate.Board.Name) ? Rate.Board.Name : 'فقط اتاق';
 
                 // قیمت‌ها
                 var totalPrices = Rate.TotalPrices || {};
                 var onlinePrice = totalPrices.CalculatedOnline ? number_format(totalPrices.CalculatedOnline) : 0;
                 var hasDiscount = (Rate.CalculatedDiscount && Rate.CalculatedDiscount.off_percent > 0 && totalPrices.afterChange);
 
-                // عنوان و متن قوانین کنسلی
-                var cancelPolicyText = Rate.CancellationPolicy ? Rate.CancellationPolicy : (rsStatus ? useXmltag(rsStatus) : 'غیر قابل استرداد');
-                var policies = Rate.CancellationPolicies || Rate.CancelPolicies || [];
-
-                // تولید جدول داخل کشو
-                var detailsHtml = `<div style='padding: 10px; font-size: 12px; text-align: right; line-height: 22px; background: #fff; border: 1px solid #eee; margin-top: 8px; border-radius: 4px;'>`;
-
-                if (policies && policies.length > 0) {
-                    detailsHtml += `<table style='width: 100%; border-collapse: collapse; margin-bottom: 0; font-size: 11px;'>
-                         <thead><tr style='background: #fdf2f2; color: #c53030;'><th style='padding: 4px 8px; border: 1px solid #fed7d7;'>از تاریخ</th><th style='padding: 4px 8px; border: 1px solid #fed7d7;'>مبلغ جریمه</th></tr></thead><tbody>`;
-                    $.each(policies, function(pIdx, p) {
-                        var charge = p.Amount || p.CancellationCharge || 0;
-                        var chargeStr = (p.Type === 'Percentage' || p.ChargeType === 'Percentage') ? (charge + '٪') : (number_format(charge) + ' ' + useXmltag('Rial'));
-                        var fromDateStr = p.FromDate ? p.FromDate : 'از لحظه رزرو';
-                        detailsHtml += `<tr><td style='padding: 4px 8px; border: 1px solid #eee;'>${fromDateStr}</td><td style='padding: 4px 8px; border: 1px solid #eee; color: #e53e3e; font-weight: bold;'>${chargeStr}</td></tr>`;
-                    });
-                    detailsHtml += `</tbody></table>`;
-                }
-                detailsHtml += `</div>`;
-
-                // تبدیل و تمیزسازی امکانات و خدمات ویژه
-                var incList = (Array.isArray(Rate.Inclusion) ? Rate.Inclusion : (Rate.Inclusion ? String(Rate.Inclusion).split(',') : []))
-                    .map(function(item) { return String(item).trim(); })
-                    .filter(Boolean);
-
-                var amenList = (Array.isArray(Rate.Amenities) ? Rate.Amenities : (Rate.Amenities ? String(Rate.Amenities).split(',') : []))
-                    .map(function(item) { return String(item).trim(); })
-                    .filter(Boolean);
-
-                var incClean = incList.map(function(s){ return s.toLowerCase(); }).sort().join('|');
-                var amenClean = amenList.map(function(s){ return s.toLowerCase(); }).sort().join('|');
-                var isDuplicate = (incClean === amenClean && incClean !== '');
-
-                var incText = incList.join(' ، ');
-                var amenText = amenList.join(' ، ');
-
-                // ساخت سطر امکانات
-                var outerAmenitiesHtml = '';
-                if (amenText || (incText && !isDuplicate)) {
-                    outerAmenitiesHtml += `
-                            <div class='divided-list' style='width: 100%;padding: 8px 12px;'>
-                                <div class='divided-list-item' style='width: 100%; color: #222; font-size: 12px; line-height: 22px; text-align: right;'>`;
-                    if (amenText) {
-                        outerAmenitiesHtml += `<div><strong style='color: #222;'>امکانات اتاق: </strong>${amenText}</div>`;
-                    }
-                    if (incText && !isDuplicate) {
-                        outerAmenitiesHtml += `<div><strong style='color: #222;'>خدمات ویژه: </strong>${incText}</div>`;
-                    }
-                    outerAmenitiesHtml += `
-                                </div>
-                            </div>`;
-                }
-
                 roomHtml += `
-                        <div class='roomRateItem'>
-                        
-                            <!-- ۱. سطر وضعیت تخت و اقامت -->
-                            <div class='divided-list divided-list-external'>
-                                <div class='divided-list-item'>
-                                    <span><i class='fa fa-bed'></i> ${boardTitle}</span>
-                                </div><!--.divided-list-item-->
-                                
-                                <div class='divided-list-item'>`;
+    <div class='roomRateItem'>
+        <div class='divided-list divided-list-external'>
+            <div class='divided-list-item'>
+                <span><i class='fa fa-bed'></i>${boardName}</span>
+            </div><!--.divided-list-item-->
+            
+            <div class='divided-list-item'>`;
 
-                if (rsStatus === 'NonRefundable' || rsStatus === 'IncludesFines') {
-                    roomHtml += `
-                                    <span class='extradition online-badge'>
-                                        <span class='online-txt' style='white-space: nowrap;'>
-                                            ${useXmltag(rsStatus)}
-                                        </span>
-                                    </span>`;
+                // وضعیت کنسلی (بج آنلاین)
+                if (rsStatus == 'NonRefundable' || rsStatus == 'IncludesFines') {
+                    roomHtml += `<span class='extradition online-badge'>
+                <span class='online-txt' style='white-space: nowrap;'>
+                ${statusTitle}</span>
+            </span>`;
                 }
 
+                // دکمه نمایش جزییات و قوانین کنسلی با باز و بست مستقیم
                 roomHtml += `
-                            </div><!--divided-list-item-->
-                        </div><!--divided-list-->
-                    
-                        <input type='hidden' value='' id='tempInputsecret-9d787d70'>
-                    
-                        <!-- ۲. سطر قیمت کل -->
-                        <div class="divided-list">
-                            <div class="divided-list-item text-center">
-                                <span class="title_price">
-                                    ${translateXmlByParams('PriceTotalHotel', {'TotalNights': hotelSearchMeta.nightsJs})}
-                                </span>`;
+                <div data-token='GAPGPTMASKTOKENzanjwm4dwngX0X' 
+                     data-request_number='${requestNumber}' 
+                     data-roomindex='${safeToken}' 
+                     class='DetailRoom DetailRoom_external' 
+                     id='btnCancelRule-${safeToken}' 
+                     data-RoomCode='GAPGPTMASKTOKENzanjwm4dwngX1X' 
+                     onclick="$('#boxCancelRule-${safeToken}').slideToggle(200); $(this).find('i').toggleClass('fa-angle-down fa-angle-up');"
+                     style='opacity: 1; cursor: pointer;'>
+                     <span>${useXmltag('detailAndCacellation') || 'جزییات و قوانین اتاق'}</span>
+                     <i class='fa fa-angle-down' style='margin-right: 4px;'></i>
+                </div>
+            </div><!--divided-list-item-->
+         
+        </div><!--divided-list-->
+
+        <input type='hidden' value='' id='tempInput${safeToken}'>
+        <div class="divided-list">
+            <div class="divided-list-item text-center">
+                <span class="title_price">
+                     ${translateXmlByParams('PriceTotalHotel', {'TotalNights': (typeof hotelSearchMeta !== 'undefined' && hotelSearchMeta.nightsJs) ? hotelSearchMeta.nightsJs : 1})}
+                </span>`;
 
                 if (hasDiscount) {
-                    roomHtml += `
-                                    <span class='currency priceOff'>
-                                        <i class="price_number">${number_format(totalPrices.afterChange)}</i>${useXmltag('Rial')}
-                                    </span>`;
+                    roomHtml += ` <span class='currency priceOff'>  <i class="price_number"> ${number_format(totalPrices.afterChange)}</i>${useXmltag('Rial')} </span>`;
                 }
 
-                roomHtml += `
-            <span class='price_number site-main-text-color'>
-                <i>${onlinePrice}</i>${useXmltag('Rial')}
-            </span>
-        </div><!--divided-list-item-->
-    </div><!--divided-list-->
+                roomHtml += `  <span class='price_number site-main-text-color'>
+        <i> ${onlinePrice}</i>${useXmltag('Rial')}
+       </span>
+            </div><!--divided-list-item-->
+        </div><!--divided-list-->
         
-    <!-- ۳. سطر دکمه رزرو -->
-    <div class='divided-list divided-list-reserve border-0'>
-            <input type='hidden' value='' id='FinalRoomCount${Rate.RoomToken}'>
-            <input type='hidden' value='' id='FinalPriceRoom${Rate.RoomToken}'>
-            <input type='hidden' value='' id='tempInput${Rate.RoomToken}'>
-            <input type='hidden' value='1' name='RoomCount-${Rate.RoomToken}' id='RoomCount${Rate.RoomToken}'>
-            <span class='label_reserve_input site-bg-main-color' id='reserve_input${Rate.RoomToken}' onClick="ReserveExternalApiHotel('${Rate.RoomToken}')">
+        <div class='divided-list divided-list-reserve border-0'>
+            <input type='hidden' value='' id='FinalRoomCount${safeToken}'>
+            <input type='hidden' value='' id='FinalPriceRoom${safeToken}'>
+            <input type='hidden' value='' id='tempInput${safeToken}'>
+            <input type='hidden' value='1' name='RoomCount-${safeToken}' id='RoomCount${safeToken}'>
+            <span class='label_reserve_input site-bg-main-color' id='reserve_input${safeToken}' onClick="ReserveExternalApiHotel('GAPGPTMASKTOKENzanjwm4dwngX2X')">
                 <span>
                 ${useXmltag('Reserve')}
                 </span>
                 <svg class="arrow-flash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path data-v-2824aec9="" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
             </span>
-    </div><!--divided-list-->
-    
-    <!-- ۴. سطر امکانات هتل -->
-    ${outerAmenitiesHtml}
+        </div><!--divided-list-->
+        
+        <div class='detail_room_hotel'>
+            <h4 class='reservation-state-title'>${statusTitle}</h4>
+            <div class='refund-fees'></div>
+        </div><!--detail_room_hotel-->
+        
+        <!-- باکس کشویی کامل: قوانین کنسلی، امکانات و شرایط اتاق -->
+        <div class='box-cancel-rule-col' id='boxCancelRule-${safeToken}' style='display: none; width: 100%; padding: 14px 16px; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 6px; margin-top: 10px; margin-bottom: 8px; clear: both; box-sizing: border-box; text-align: right; direction: rtl;'>
+            
+            <!-- بخش قوانین کنسلی -->
+            <div style='font-size: 13px; line-height: 24px; margin-bottom: 10px;'>
+                <strong style='color: #c0392b;'><i class='fa fa-ban' style='margin-left: 5px;'></i> قوانین کنسلی: </strong>
+                <span style='color: #444;'>${cancelPolicyText}</span>
+            </div>`;
 
-    <!-- ۵. سطر دکمه قوانین کنسلی (کوچک، متناسب با متن و راست‌چین) -->
-    <div class='divided-list' style='width: 100%; padding: 4px 12px;'>
-        <div class='divided-list-item' style='width: 100%; text-align: right; display: flex; justify-content: flex-start;'>
-            <div data-token='GAPGPTMASKTOKENzq5u32mrcfqX3X' data-request_number='${requestNumber}' class='DetailRoom DetailRoom_external' id='btnCancelRule-secret-9d787d70' data-RoomCode='GAPGPTMASKTOKENzq5u32mrcfqX4X' style='opacity: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; width: auto; max-width: fit-content; padding: 5px 14px; border-radius: 4px;' onclick="$(this).closest('.roomRateItem').find('.detail_room_hotel').stop(true, true).slideToggle(200); $(this).find('i').toggleClass('fa-angle-down fa-angle-up');">
-                <span>${cancelPolicyText}</span>
-                <i class='fa fa-angle-down'></i>
-            </div><!--DetailRoom-->
-        </div><!--divided-list-item-->
-    </div><!--divided-list-->
+                // جدول بازه‌های جریمه در صورت وجود داده در CancelPolicies
+                if (detailedPolicies && detailedPolicies.length > 0 && (detailedPolicies[0].FromDate || detailedPolicies[0].CancellationCharge || detailedPolicies[0].Amount)) {
+                    var feeCurrency = (Rate.Currency === 'IRR' || !Rate.Currency) ? 'ریال' : Rate.Currency;
+                    roomHtml += `
+            <div style='margin-bottom: 12px; font-size: 12px;'>
+                <table style='width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #eee; text-align: right;'>
+                    <thead>
+                        <tr style='background: #fdf2f2; color: #c0392b;'>
+                            <th style='padding: 8px 12px; border: 1px solid #f5c6cb; width: 50%; text-align: right;'>از تاریخ</th>
+                            <th style='padding: 8px 12px; border: 1px solid #f5c6cb; width: 50%; text-align: left;'>مبلغ جریمه</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                    $.each(detailedPolicies, function(pIdx, p) {
+                        p = p || {};
+                        var charge = p.CancellationCharge || p.Amount || 0;
+                        var chargeStr = p.ChargeType === 'Percentage' ? (charge + '٪') : (number_format(charge) + ' ' + feeCurrency);
+                        var fromDateStr = p.FromDate ? p.FromDate : 'از لحظه رزرو';
+                        roomHtml += `
+                <tr>
+                    <td style='padding: 8px 12px; border: 1px solid #eee; text-align: right;'>${fromDateStr}</td>
+                    <td style='padding: 8px 12px; border: 1px solid #eee; color: #d9534f; font-weight: bold; text-align: left; direction: ltr;'>${chargeStr}</td>
+                </tr>`;
+                    });
+                    roomHtml += `
+                    </tbody>
+                </table>
+            </div>`;
+                }
 
-    <!-- ۶. جدول جریمه‌ها -->
-    <div class='detail_room_hotel' style='display: none; width: 100%; clear: both;'>
-        <h4 class='reservation-state-title'>${rsStatus ? useXmltag(rsStatus) : ''}</h4>
-        <div class='refund-fees'>
-            ${detailsHtml}
-        </div>
-    </div><!--detail_room_hotel-->
 
-</div><!--roomRateItem-->`;
+                // بخش امکانات اتاق (Amenities / Inclusion)
+                if (amenitiesList.length > 0) {
+                    roomHtml += `
+            <div style='margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e0e0e0;'>
+                <strong style='color: #27ae60; font-size: 13px;'><i class='fa fa-check-circle' style='margin-left: 5px;'></i> امکانات اتاق:</strong>
+                <div style='display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;'>`;
+                    $.each(amenitiesList, function(idx, item) {
+                        item = (item == null) ? '' : String(item).trim();
+                        if (!item) return;
+                        roomHtml += `<span style='background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; border-radius: 4px; padding: 2px 8px; font-size: 12px;'>${item}</span>`;
+                    });
+                    roomHtml += `
+                </div>
+            </div>`;
+                }
+
+                // بخش شرایط و ضوابط اتاق (RateConditions)
+                if (rateConditionsList.length > 0) {
+                    roomHtml += `
+            <div style='margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e0e0e0;'>
+                <strong style='color: #2980b9; font-size: 13px;'><i class='fa fa-list-alt' style='margin-left: 5px;'></i> شرایط و ضوابط اتاق:</strong>
+                <ul style='margin: 6px 0 0 0; padding-right: 18px; font-size: 12px; color: #555; line-height: 20px;'>`;
+                    $.each(rateConditionsList, function(idx, cond) {
+                        cond = (cond == null) ? '' : String(cond).trim();
+                        if (!cond) return;
+                        roomHtml += `<li>${cond}</li>`;
+                    });
+                    roomHtml += `
+                </ul>
+            </div>`;
+                }
+
+                roomHtml += `
+        </div><!--box-cancel-rule-col-->
+        
+    </div><!--roomRateItem-->
+    `;
             });
 
-
             roomHtml += `</div><!--roomRatesContainer-->
-                    </div><!--hotel-rooms-content-->
-                </div><!--hotel-rooms-external-content-col-->
-            </div><!--hotel-rooms-row-->
-        </div><!--hotel-rooms-item-->
-    </div><!--hotel-detail-room-list-->`;
+                </div><!--hotel-rooms-content-->
+            </div><!--hotel-rooms-external-content-col-->
+        </div><!--hotel-rooms-row-->
+    </div><!--hotel-rooms-item-->
+</div>  <!--hotel-detail-room-list-->`;
 
             return roomHtml;
         };
@@ -963,10 +1010,11 @@ function internalHotelSearchDetails() {
         }
         let generateHtmlForSearchHotel = function(data, parseJson) {
 
-
             let value = data.Result,
                 searched_details = data.History,
                 IsInternal = data.Result.IsInternal
+
+
 
             let addressTxt = value.ContactInformation.Address
             let hotelName = value.Name
@@ -1298,8 +1346,6 @@ function internalHotelSearchDetails() {
             const parent = document.querySelector('.parent-app--new');
             parent.insertAdjacentHTML('afterbegin', galleryHtml);
         }
-
-
         let generateCarousel = function(selector) {
             $(selector).owlCarousel({
                 items: 2,
@@ -3841,134 +3887,6 @@ function checkHotelNew(currentDate, numAdult, childCount, RequestNumber ) {
             })
     }
 
-}
-function checkHotelTravzilla(currentDate, numAdult, childCount, RequestNumber) {
-
-    // ۰. همگام‌سازی خودکار: کپی نام و نام‌خانوادگی انگلیسی در فیلدهای فارسی (مخفی)
-    $('input[name^="nameEn"]').each(function () {
-        var faName = $(this).attr('name').replace('nameEn', 'nameFa');
-        $('input[name="' + faName + '"]').val($(this).val());
-    });
-    $('input[name^="familyEn"]').each(function () {
-        var faFamily = $(this).attr('name').replace('familyEn', 'familyFa');
-        $('input[name="' + faFamily + '"]').val($(this).val());
-    });
-
-    var validate1 = true;
-    var validate2 = true;
-    var validate3 = true;
-    var validate4 = true;
-
-    // ۱. مدیریت تایمر باقی‌مانده
-    var min1 = $('.counter-analog').find('.part0').find('span:first-child').html();
-    var min2 = $('.counter-analog').find('.part0').find('span:last-child').html();
-    var sec1 = $('.counter-analog').find('.part2').find('span:first-child').html();
-    var sec2 = $('.counter-analog').find('.part2').find('span:last-child').html();
-
-    var timejoin = min1 + min2 + ':' + sec1 + sec2;
-    $('#time_remmaining').val(timejoin);
-
-    var rooms_count = $('input[name="rooms_count"]').val();
-    var typeApplication = $('#typeApplication').val();
-    var source_id = $('#source_id').val();
-
-    // ۲. اعتبارسنجی فقط ۴ آیتم مسافر (جنسیت، نام انگلیسی، نام خانوادگی انگلیسی، پاسپورت)
-    var passengersOk = true;
-
-    // چک جنسیت
-    $('select[name^="gender"]').each(function () {
-        if (!$(this).val()) {
-            passengersOk = false;
-            $(this).css('border', '1px solid red');
-        } else {
-            $(this).css('border', '');
-        }
-    });
-
-    // چک نام، نام خانوادگی و شماره پاسپورت
-    $('input[name^="nameEn"], input[name^="familyEn"], input[name^="passportNumber"]').each(function () {
-        if (!$.trim($(this).val())) {
-            passengersOk = false;
-            $(this).css('border', '1px solid red');
-        } else {
-            $(this).css('border', '');
-        }
-    });
-
-    if (!passengersOk) {
-        $.alert({
-            title: useXmltag('Reservationhotel'),
-            icon: 'fa fa-exclamation-triangle',
-            content: 'لطفاً جنسیت، نام و نام خانوادگی انگلیسی و شماره پاسپورت تمام مسافران را تکمیل نمایید.',
-            rtl: true,
-            type: 'red',
-        });
-        return false;
-    }
-
-    validate1 = passengersOk;
-    validate4 = passengersOk;
-
-    /* -------------------------------------------------------------
-       کامنت شد: بررسی تاریخ تولد، تاریخ انقضا و صدور پاسپورت
-       if (numAdult > 0) {
-           validate1 = adultMembersHotelWebservice(currentDate, numAdult, typeApplication, rooms_count);
-       }
-       if (childCount > 0) {
-           validate4 = childMembersHotelWebservice(currentDate, childCount, typeApplication, rooms_count);
-       }
-       validate3 = leaderRoomForHotel(typeApplication);
-    ------------------------------------------------------------- */
-
-    // ۳. اعتبارسنجی و خواندن مشخصات خریدار
-    var mobile = $('#passenger_leader_room').val();
-    var email_address = $('#passenger_leader_room_email').val();
-    var telephone = $('#Telephone').val();
-
-    if (!$.trim(mobile) || !$.trim(email_address)) {
-        validate2 = false;
-        $.alert({
-            title: useXmltag('Reservationhotel'),
-            icon: 'fa fa-user',
-            content: 'مشخصات خریدار (شماره موبایل و ایمیل) کامل نیست.',
-            rtl: true,
-            type: 'red',
-        });
-        return false;
-    }
-
-    // ۴. ثبت اطلاعات و ارسال فرم
-    if (validate1 && validate2 && validate3 && validate4) {
-        $.post(amadeusPath + 'hotel_ajax.php',
-            {
-                mobile: mobile,
-                telephone: telephone,
-                Email: email_address,
-                flag: 'register_memeberNewHotel',
-            },
-            function (data) {
-                if (data != '') {
-                    $('#idMember').val(data);
-                    $('#loader_check').show();
-                    $('#send_data').attr('disabled', 'disabled').css('opacity', '0.5').css('cursor', 'progress').val(useXmltag('Pending'));
-                    setTimeout(
-                        function () {
-                            $('#loader_check').hide();
-                            $('#formPassengerDetailHotelLocal').submit();
-                        }, 2000);
-
-                } else {
-                    $.alert({
-                        title: useXmltag('Reservationhotel'),
-                        icon: 'fa fa-cart-plus',
-                        content: useXmltag('Errorrecordinginformation'),
-                        rtl: true,
-                        type: 'red',
-                    });
-                    return false;
-                }
-            });
-    }
 }
 
 function adultMembersHotelWebservice(currentDate, numAdult, typeApplication, rooms_count) {

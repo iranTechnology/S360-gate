@@ -252,83 +252,119 @@
 
                                     <div class="th_hotel">
                                         {assign var="prices" value=$objHotel->getEachDayHotelPrices($room.factor_number,$room.room_id)}
-                                        {if $room.is_internal eq '1'}
-                                            <div class="box_pricees">
-                                                <div class="detail_room_hotel detail_room_hotel_new">
-                                                    {foreach $prices as $price}
-                                                        <div class="details">
-                                                            <div class="AvailableSeprate site-bg-main-color site-bg-color-border-right-b ">{$price.date_current}</div>
-                                                            <div class="seprate">
-                                                                    <span><b>{$price.price_current|number_format}</b>##Rial## <i class="fa fa-male checkIcon"></i>
-                                                                        <span class="tooltip-price">##Adult##</span>
-                                                                    </span>
-                                                                {if $room.extra_bed_count gt 0 AND $price.extra_bed_price gt 0}
-                                                                    <span><b>{$price.extra_bed_price|number_format}</b>##Rial## <i class="fa fa-bed checkIcon"></i>
-                                                                        <span class="tooltip-price">##Extrabed##</span>
-                                                                    </span>
-                                                                {/if}
-                                                                {if $room.child_count gt 0 AND $price.child_price gt 0}
-                                                                    <span><b>{$price.child_price|number_format}</b>##Rial## <i class="fas fa-baby-carriage"></i>
-                                                                        <span class="tooltip-price">##Child##</span>
-                                                                    </span>
-                                                                {/if}
+
+                                        {if $smarty.post.source_id neq '46'}
+                                            {if $room.is_internal eq '1'}
+                                                <div class="box_pricees">
+                                                    <div class="detail_room_hotel detail_room_hotel_new">
+                                                        {foreach $prices as $price}
+                                                            <div class="details">
+                                                                <div class="AvailableSeprate site-bg-main-color site-bg-color-border-right-b ">{$price.date_current}</div>
+                                                                <div class="seprate">
+                                                                        <span><b>{$price.price_current|number_format}</b>##Rial## <i class="fa fa-male checkIcon"></i>
+                                                                            <span class="tooltip-price">##Adult##</span>
+                                                                        </span>
+                                                                    {if $room.extra_bed_count gt 0 AND $price.extra_bed_price gt 0}
+                                                                        <span><b>{$price.extra_bed_price|number_format}</b>##Rial## <i class="fa fa-bed checkIcon"></i>
+                                                                            <span class="tooltip-price">##Extrabed##</span>
+                                                                        </span>
+                                                                    {/if}
+                                                                    {if $room.child_count gt 0 AND $price.child_price gt 0}
+                                                                        <span><b>{$price.child_price|number_format}</b>##Rial## <i class="fas fa-baby-carriage"></i>
+                                                                            <span class="tooltip-price">##Child##</span>
+                                                                        </span>
+                                                                    {/if}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    {/foreach}
+                                                        {/foreach}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {/if}
+                                            <span class="roomsTitle">{$room.room_name}</span>
+                                            <div class="hidden-md-up roomCapacity">
+                                                <h5 class="" style="display: inline-block; width: 100%; font-size: 13px;">
+                                                    {$objFunctions->StrReplaceInXml(['@@count@@'=>$objFunctions->ConvertNumberToAlphabet($room.room_count)],'RoomCountNumber')}
+                                                </h5>
+                                             </div>
+                                            {if $room.is_internal}
+
+                                                {if $room.extra_bed_count gt 0}
+                                                    <div class="extra-bed-element d-flex justify-content-around">
+                                                        <span class="extra-bed-title">##Extrabed##</span>
+                                                        <div class="extra-bed-count"><span>{$room.extra_bed_count}</span><i class="inIcon">x</i><span>{$room.room_count}</span></div>
+                                                        {assign var="totalExtraCurrency" value=0}
+                                                        {$totalExtraCurrency=$objFunctions->CurrencyCalculate(($room.total_prices.extra_bed * $room.number_night), $smarty.post.CurrencyCode)}
+                                                        <div class="extra-bed-price">{$objFunctions->numberFormat($totalExtraCurrency.AmountCurrency)} {$totalExtraCurrency.TypeCurrency}</div>
+                                                    </div>
+                                                {/if}
+                                                {if $room.child_count gt 0}
+                                                    <div class="child-element d-flex justify-content-around">
+                                                        <span class="child-title">##Chd##</span>
+                                                        <div class="child-count">{$room.child_count}</div>
+                                                        {assign var="totalChildCurrency" value=0}
+                                                        {$totalChildCurrency=$objFunctions->CurrencyCalculate(($room.total_prices.child *  $room.number_night), $smarty.post.CurrencyCode)}
+                                                        <div class="child-price">{$objFunctions->numberFormat($totalChildCurrency.AmountCurrency)} {$totalChildCurrency.TypeCurrency}</div>
+                                                    </div>
+                                                {/if}
+                                            {/if}
+
+                                        {else}
+                                                {* نمایش نام اتاق برای تروازویلا (سورس ۴۶) *}
+                                                <span class="roomsTitle" style="font-weight: bold; font-size: 14px;">
+                                                    {if !empty($prices[0].room_name)}
+                                                        {$prices[0].room_name}
+                                                    {else}
+                                                        {$room.room_name}
+                                                    {/if}
+                                                </span>
                                         {/if}
-                                        <span class="roomsTitle">{$room.room_name}</span>
-                                        <div class="hidden-md-up roomCapacity">
-                                            <h5 class="" style="display: inline-block; width: 100%; font-size: 13px;">
-                                                {$objFunctions->StrReplaceInXml(['@@count@@'=>$objFunctions->ConvertNumberToAlphabet($room.room_count)],'RoomCountNumber')}
-                                            </h5>
+
                                             <input type="hidden" name="RoomCount-{$room.room_id}" id="RoomCount-{$room.room_id}" value="{$room.room_count}">
-                                        </div>
-                                        {if $room.is_internal}
                                             <input type="hidden" name="child_count-{$room.room_id}" id="child_count-{$room.room_id}"
                                                    value="{$room.child_count}">
                                             <input type="hidden" name="extra_bed_count-{$room.room_id}" id="extra_bed_count-{$room.room_id}"
                                                    value="{$room.extra_bed_count}">
 
-                                            {if $room.extra_bed_count gt 0}
-                                                <div class="extra-bed-element d-flex justify-content-around">
-                                                    <span class="extra-bed-title">##Extrabed##</span>
-                                                    <div class="extra-bed-count"><span>{$room.extra_bed_count}</span><i class="inIcon">x</i><span>{$room.room_count}</span></div>
-                                                    {assign var="totalExtraCurrency" value=0}
-                                                    {$totalExtraCurrency=$objFunctions->CurrencyCalculate(($room.total_prices.extra_bed * $room.number_night), $smarty.post.CurrencyCode)}
-                                                    <div class="extra-bed-price">{$objFunctions->numberFormat($totalExtraCurrency.AmountCurrency)} {$totalExtraCurrency.TypeCurrency}</div>
-                                                </div>
-                                            {/if}
-                                            {if $room.child_count gt 0}
-                                                <div class="child-element d-flex justify-content-around">
-                                                    <span class="child-title">##Chd##</span>
-                                                    <div class="child-count">{$room.child_count}</div>
-                                                    {assign var="totalChildCurrency" value=0}
-                                                    {$totalChildCurrency=$objFunctions->CurrencyCalculate(($room.total_prices.child *  $room.number_night), $smarty.post.CurrencyCode)}
-                                                    <div class="child-price">{$objFunctions->numberFormat($totalChildCurrency.AmountCurrency)} {$totalChildCurrency.TypeCurrency}</div>
-                                                </div>
-                                            {/if}
-                                        {/if}
-
                                     </div>
-                                    {if $room.is_internal}
-                                        <div class="th_hotel hidden-xs">
-                                            {if $has_breakfast neq false }
-                                                <ul class="HotelRoomFeatureList">
-                                                    <li class="Breakfast"><i class="fa fa-coffee"></i> ##Breakfast##</li>
-                                                </ul>
-                                            {else}
-                                                <span>---</span>
-                                            {/if}
-                                        </div>
+                                    <div class="th_hotel hidden-xs">
+                                         {if $smarty.post.source_id eq '46'}
+                                                {assign var="searchRooms" value=$prices.0.search_rooms|json_decode:true}
+                                                {assign var="meal" value=$searchRooms.0.MealType}
 
-                                        <div class="th_hotel">
+                                                <span style="font-weight: 500;">
+                                                    {if $meal eq 'ROOM ONLY' || $meal eq 'Room Only' || $meal eq 'room only'}
+                                                        فقط اتاق (بدون صبحانه)
+                                                    {elseif $meal eq 'BREAKFAST' || $meal eq 'Breakfast' || $meal eq 'Bed and Breakfast'}
+                                                        به همراه صبحانه
+                                                    {elseif $meal eq 'HALF BOARD' || $meal eq 'Half Board'}
+                                                        صبحانه و شام (Half Board)
+                                                    {elseif $meal eq 'FULL BOARD' || $meal eq 'Full Board'}
+                                                        صبحانه، ناهار و شام (Full Board)
+                                                    {elseif $meal eq 'ALL INCLUSIVE' || $meal eq 'All Inclusive'}
+                                                        همه خدمات (All Inclusive)
+                                                    {elseif !empty($meal)}
+                                                        {$meal}
+                                                    {else}
+                                                        ---
+                                                    {/if}
+                                                </span>
 
+                                         {elseif $room.is_internal}
+                                                {if $has_breakfast neq false }
+                                                    <ul class="HotelRoomFeatureList">
+                                                        <li class="Breakfast"><i class="fa fa-coffee"></i> ##Breakfast##</li>
+                                                    </ul>
+                                                {else}
+                                                    <span>---</span>
+                                                {/if}
+                                         {else}
+                                               ---
+                                         {/if}
+                                    </div>
+                                    <div class="th_hotel">
+                                         {if $room.is_internal}
 
                                             {$totalRoomCurrency=$objFunctions->CurrencyCalculate(($room.final_total ), $smarty.post.CurrencyCode)}
-
-
                                             <div data-nights="{$room.number_night}"
                                                  data-child="{$room.child_count}"
                                                  data-extra-count="{$room.extra_bed_count}"
@@ -336,35 +372,27 @@
                                                  data-child-price="{$room.child_price}"
                                                  class="roomFinalPrice roomPriceTable">
                                                 {if  $smarty.post.source_id neq '29'}
-                                                    {$objFunctions->numberFormat($totalRoomCurrency.AmountCurrency)} <i> {$totalRoomCurrency.TypeCurrency}</i>
+                                                    {$objFunctions->numberFormat($totalRoomCurrency.AmountCurrency)}  {$totalRoomCurrency.TypeCurrency}
                                                 {else}
                                                     {$detailPrice=$objFunctions->CurrencyCalculate(($room.final_detail_price), $smarty.post.CurrencyCode)}
                                                     {$objFunctions->numberFormat($detailPrice.AmountCurrency)} <i> {$detailPrice.TypeCurrency}</i>
                                                 {/if}
-                                                {if $room.is_internal eq '1' and $smarty.post.source_id neq '29'}
+                                                {if $room.is_internal eq '1' and $smarty.post.source_id neq '29' and $smarty.post.source_id neq '46'}
                                                     <div class=" plus_price_room" title="جزییات قیمت برای هر اتاق">
                                                         <i class="far fa-list-alt"></i>
                                                     </div>
                                                 {/if}
 
                                             </div>
-
-
-                                        </div>
-                                    {else}
-                                        <div class="th_hotel hidden-xs">
-                                            ---
-                                        </div>
-                                        <div class="th_hotel ">
-
+                                         {else}
                                             <span class="pricePerNight">
                                                 <span class="currency">
                                                     {$room.AdultsCount} ##Adult##
                                                     {$room.ChildCount} ##Child##
                                                 </span>
                                             </span>
-                                        </div>
-                                    {/if}
+                                        {/if}
+                                     </div>
                                 </div>
                                 {$total_price = $total_price + $totalRoomCurrency.AmountCurrency}
                                 {if $hotelDetail.is_internal eq '0'}
@@ -374,19 +402,11 @@
 
                             {/foreach}
                         </div>
-
-
                     </div>
-
-
                 </div>
-
-
             </div>
-
             <div class="DivTotalPrice">
                 {assign var="totalPriceCurrency" value=$objFunctions->CurrencyCalculate($total_price, $smarty.post.CurrencyCode)}
-
                 <div class="fltl">##Amountpayable## :
                     {if $smarty.post.source_id eq '29'}
                         <span>{$objFunctions->numberFormat($totalPriceCurrency.AmountCurrency)}</span>
@@ -398,7 +418,46 @@
             </div>
         </div>
 
-        <div class='clear'></div>
+    {* واکشی با تابع اختصاصی جدید *}
+    {assign var="factorNumber" value=$objFactor->temproryHotel['factor_number']|default:$smarty.post.factorNumber}
+    {assign var="myPassengers" value=$objFactor->getMyFactorPassengers($factorNumber)}
+
+    {if !empty($myPassengers)}
+    <div class="main-Content-bottom-table Dash-ContentL-B-Table" style="margin: 20px 0;">
+        <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title site-bg-main-color" style="padding: 10px 15px; color: #fff; border-radius: 4px 4px 0 0;">
+            <i class="icon-table"></i>
+            <h3 style="margin:0; display:inline-block; font-size:15px; color:#fff;">##Listpassengers##</h3>
+        </div>
+        <div class="table-responsive" style="border: 1px solid #ddd; border-top: none; background: #fff;">
+            <table class="table table-bordered table-striped" style="width:100%; margin-bottom:0; text-align:center;">
+                <thead>
+                    <tr style="background:#f9f9f9; font-weight:bold;">
+                        <th style="text-align:center; padding:10px;">##Ages##</th>
+                        <th style="text-align:center; padding:10px;">##Name## / ##Nameenglish##</th>
+                        <th style="text-align:center; padding:10px;">##Family## / ##Familyenglish##</th>
+                        <th style="text-align:center; padding:10px;">##Numpassport## / ##Nationalnumber##</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $myPassengers as $p}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding:10px;">##{$p.passenger_age|default:'Adult'}##</td>
+                            <td style="padding:10px;">
+                                {if $p.passenger_name neq ''}{$p.passenger_name}{else}{$p.passenger_name_en}{/if}
+                            </td>
+                            <td style="padding:10px;">
+                                {if $p.passenger_family neq ''}{$p.passenger_family}{else}{$p.passenger_family_en}{/if}
+                            </td>
+                            <td style="padding:10px;">
+                                {if $p.passenger_national_code neq ''}{$p.passenger_national_code}{else}{$p.passportNumber}{/if}
+                            </td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {/if}
 
 
         {*                {$objFactor->getPassengersHotel()}*}
@@ -775,16 +834,14 @@
         {*</div>*}
         {*<div class="clear"></div>*}
         {*end edit here*}
+
+        <div class='clear'></div>
         {/if}
-
         <div class="clear"></div>
-
         {$objFactor->getPassengersHotel()}
-
         <code style="display:none;color: #ff6802;">
             {$objFactor->temproryHotel|json_encode}
         </code>
-
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padr0 padl0 marb40" style="padding: 0">
             <div class="s-u-result-wrapper">
                 <div class="s-u-result-item-change direcR iranR txt12 txtRed s-u-result-item-RulsCheck">
@@ -1302,7 +1359,71 @@
                     $(this).toggleClass('collapsed');
                 });
             </script>
-            <style>
+           <style>
+                /* هماهنگی کانتینر مسافران با کانتینر اتاق‌ها */
+                .hotel-booking-passengers {
+                    margin: 20px 0;
+                    background: #fff;
+                    border-radius: 4px;
+                }
+
+                .hotel-booking-passengers .Dash-ContentL-B-Title {
+                    background-color: #b71c1c; /* یا رنگ تم قرمز شما site-bg-main-color */
+                    color: #fff;
+                    padding: 10px 15px;
+                    border-radius: 4px 4px 0 0;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .hotel-booking-passengers .Dash-ContentL-B-Title h3 {
+                    margin: 0;
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #fff;
+                }
+
+                /* جدول div-based هتل */
+                .hotel-booking-passengers .table_hotel_nz {
+                    border: 1px solid #ddd;
+                    border-top: none;
+                    border-radius: 0 0 4px 4px;
+                    overflow: hidden;
+                }
+
+                .hotel-booking-passengers .thead_hotel .tr_hotel {
+                    background: #fbfbfb;
+                    border-bottom: 1px solid #e0e0e0;
+                    font-weight: bold;
+                    display: flex;
+                    text-align: center;
+                }
+
+                .hotel-booking-passengers .tbody_hotel .tr_hotel {
+                    display: flex;
+                    text-align: center;
+                    border-bottom: 1px solid #eee;
+                    background: #fff;
+                }
+
+                .hotel-booking-passengers .tbody_hotel .tr_hotel:last-child {
+                    border-bottom: none;
+                }
+
+                .hotel-booking-passengers .th_hotel {
+                    padding: 12px 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-left: 1px solid #eee;
+                    font-size: 13px;
+                }
+
+                .hotel-booking-passengers .th_hotel:last-child {
+                    border-left: none;
+                }
+
                 .remarks {
                     padding: 10px;
                     cursor: pointer;
@@ -1316,5 +1437,6 @@
                     text-overflow: ellipsis;
                 }
             </style>
-        {/literal}
 
+
+        {/literal}

@@ -53,6 +53,7 @@
         {assign var="totalChildCount" value=$totalChildCount+$childCount}
 
         {assign var="room_name" value=$room['room_name']|default:'Room 1'}
+        {assign var="IndexFor" value=0}
 
         <input type="hidden" name="adultCount{$roomNumber}" id="adultCount{$roomNumber}" value="{$adultCount}">
 
@@ -61,7 +62,8 @@
 
             <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first pb-2">
                 <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color direcR">
-                    {$objFunctions->displayRoomName($room_name,$adultNumber,'Adt',true)}
+                    {$IndexFor = $IndexFor + 1}
+                    مسافر {$IndexFor} (بزرگسال)
                 </span>
 
                 <input type="hidden" name="RoomCount_Reserve{$room['room_id']}" id="RoomCount_Reserve{$room['room_id']}" value="1">
@@ -69,9 +71,9 @@
 
                 <div class="panel-default-change site-border-main-color pb-2">
                     <div class="panel-heading-change">
-                        <span class="hidden-xs-down">##Nation##:</span>
+                        <span class="hidden-xs-down" style="display:none !important;">##Nation##:</span>
 
-                        <span class="kindOfPasenger">
+                        <span class="kindOfPasenger" style="display:none !important;">
                             <label class="control--checkbox">
                                 <span>##Iranian##</span>
                                 <input type="radio"
@@ -79,7 +81,7 @@
                                        id="passengerNationalityA{$roomNumber}{$adultNumber}"
                                        value="0"
                                        class="nationalityChange"
-                                       checked="checked">
+                                >
                                 <div class="checkbox">
                                     <div class="filler"></div>
                                     <svg fill="#000000" viewBox="0 0 30 30">
@@ -89,14 +91,15 @@
                             </label>
                         </span>
 
-                        <span class="kindOfPasenger">
+                        <span class="kindOfPasenger" style="display:none !important;">
                             <label class="control--checkbox">
                                 <span>##Another##</span>
                                 <input type="radio"
                                        name="passengerNationalityA{$roomNumber}{$adultNumber}"
                                        id="passengerNationalityA{$roomNumber}{$adultNumber}_1"
                                        value="1"
-                                       class="nationalityChange">
+                                       class="nationalityChange"
+                                       checked="checked">
                                 <div class="checkbox">
                                     <div class="filler"></div>
                                     <svg fill="#000000" viewBox="0 0 30 30">
@@ -141,7 +144,7 @@
                                    oninput="return validateEnglishInput('familyEnA{$roomNumber}{$adultNumber}')">
                         </div>
 
-                        <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
+                        <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                             <input id="birthdayEnA{$roomNumber}{$adultNumber}"
                                    type="text"
                                    placeholder="##miladihappybirthday##"
@@ -150,27 +153,27 @@
                                    readonly="readonly">
                         </div>
 
-                        {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                            <div class="s-u-passenger-item s-u-passenger-item-change">
-                                <input id="nameFaA{$roomNumber}{$adultNumber}"
-                                       type="text"
-                                       placeholder="##Namepersion##"
-                                       name="nameFaA{$roomNumber}{$adultNumber}"
-                                       oninput="return validatePersianInput('nameFaA{$roomNumber}{$adultNumber}')"
-                                       class="justpersian">
-                            </div>
+                        {* if $smarty.const.SOFTWARE_LANG eq 'fa' *}
+                        <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change">
+                            <input id="nameFaA{$roomNumber}{$adultNumber}"
+                                   type="text"
+                                   placeholder="##Namepersion##"
+                                   name="nameFaA{$roomNumber}{$adultNumber}"
+                                   oninput="return validatePersianInput('nameFaA{$roomNumber}{$adultNumber}')"
+                                   class="justpersian">
+                        </div>
 
-                            <div class="s-u-passenger-item s-u-passenger-item-change">
-                                <input id="familyFaA{$roomNumber}{$adultNumber}"
-                                       type="text"
-                                       placeholder="##Familypersion##"
-                                       name="familyFaA{$roomNumber}{$adultNumber}"
-                                       oninput="return validatePersianInput('familyFaA{$roomNumber}{$adultNumber}')"
-                                       class="justpersian">
-                            </div>
-                        {/if}
+                        <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change">
+                            <input id="familyFaA{$roomNumber}{$adultNumber}"
+                                   type="text"
+                                   placeholder="##Familypersion##"
+                                   name="familyFaA{$roomNumber}{$adultNumber}"
+                                   oninput="return validatePersianInput('familyFaA{$roomNumber}{$adultNumber}')"
+                                   class="justpersian">
+                        </div>
+                        {*/if*}
 
-                        <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                        <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change justIranian">
                             <input id="birthdayA{$roomNumber}{$adultNumber}"
                                    type="text"
                                    placeholder="##shamsihappybirthday##"
@@ -179,7 +182,7 @@
                                    readonly="readonly">
                         </div>
 
-                        <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                        <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change justIranian">
                             <input id="NationalCodeA{$roomNumber}{$adultNumber}"
                                    type="text"
                                    placeholder="##Nationalnumber##"
@@ -188,7 +191,7 @@
                                    class="UniqNationalCode">
                         </div>
 
-                        <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
+                        <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                             <select name="passportCountryA{$roomNumber}{$adultNumber}"
                                     id="passportCountryA{$roomNumber}{$adultNumber}"
                                     class="select2">
@@ -205,7 +208,7 @@
                             </select>
                         </div>
 
-                        <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
+                        <div style="display:inline-block !important;" class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                             <input id="passportNumberA{$roomNumber}{$adultNumber}"
                                    type="text"
                                    placeholder="##Numpassport##"
@@ -230,7 +233,8 @@
 
                 <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first pb-2">
                     <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color direcR">
-                        {$objFunctions->displayRoomName($room_name,$childNumber,'Chd',true)}
+                        {$IndexFor = $IndexFor + 1}
+                        مسافر {$IndexFor} (کودک)
                     </span>
 
                     <input type="hidden" name="RoomCount_Reserve{$room['room_id']}" id="RoomCount_ReserveChild{$room['room_id']}" value="1">
@@ -238,17 +242,16 @@
 
                     <div class="panel-default-change site-border-main-color">
                         <div class="panel-heading-change">
-                            <span class="hidden-xs-down">##Nation##:</span>
+                            <span class="hidden-xs-down" style="display:none !important;">##Nation##:</span>
 
-                            <span class="kindOfPasenger">
+                            <span style="display:none !important;" class="kindOfPasenger">
                                 <label class="control--checkbox">
                                     <span>##Iranian##</span>
                                     <input type="radio"
                                            name="passengerNationalityC{$roomNumber}{$childNumber}"
                                            id="passengerNationalityC{$roomNumber}{$childNumber}"
                                            value="0"
-                                           class="nationalityChange"
-                                           checked="checked">
+                                           class="nationalityChange">
                                     <div class="checkbox">
                                         <div class="filler"></div>
                                         <svg fill="#000000" viewBox="0 0 30 30">
@@ -258,14 +261,15 @@
                                 </label>
                             </span>
 
-                            <span class="kindOfPasenger">
+                            <span style="display:none !important;" class="kindOfPasenger">
                                 <label class="control--checkbox">
                                     <span>##Another##</span>
                                     <input type="radio"
                                            name="passengerNationalityC{$roomNumber}{$childNumber}"
                                            id="passengerNationalityC{$roomNumber}{$childNumber}_1"
                                            value="1"
-                                           class="nationalityChange">
+                                           class="nationalityChange"
+                                           checked="checked">
                                     <div class="checkbox">
                                         <div class="filler"></div>
                                         <svg fill="#000000" viewBox="0 0 30 30">
@@ -310,7 +314,7 @@
                                        oninput="return validateEnglishInput('familyEnC{$roomNumber}{$childNumber}')">
                             </div>
 
-                            <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
+                            <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                                 <input id="birthdayEnC{$roomNumber}{$childNumber}"
                                        type="text"
                                        placeholder="##miladihappybirthday##"
@@ -319,27 +323,27 @@
                                        readonly="readonly">
                             </div>
 
-                            {if $smarty.const.SOFTWARE_LANG eq 'fa'}
-                                <div class="s-u-passenger-item s-u-passenger-item-change">
-                                    <input id="nameFaC{$roomNumber}{$childNumber}"
-                                           type="text"
-                                           placeholder="##Namepersion##"
-                                           name="nameFaC{$roomNumber}{$childNumber}"
-                                           oninput="return validatePersianInput('nameFaC{$roomNumber}{$childNumber}')"
-                                           class="justpersian">
-                                </div>
+                            {*if $smarty.const.SOFTWARE_LANG eq 'fa'*}
+                            <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change">
+                                <input id="nameFaC{$roomNumber}{$childNumber}"
+                                       type="text"
+                                       placeholder="##Namepersion##"
+                                       name="nameFaC{$roomNumber}{$childNumber}"
+                                       oninput="return validatePersianInput('nameFaC{$roomNumber}{$childNumber}')"
+                                       class="justpersian">
+                            </div>
 
-                                <div class="s-u-passenger-item s-u-passenger-item-change">
-                                    <input id="familyFaC{$roomNumber}{$childNumber}"
-                                           type="text"
-                                           placeholder="##Familypersion##"
-                                           name="familyFaC{$roomNumber}{$childNumber}"
-                                           oninput="return validatePersianInput('familyFaC{$roomNumber}{$childNumber}')"
-                                           class="justpersian">
-                                </div>
-                            {/if}
+                            <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change">
+                                <input id="familyFaC{$roomNumber}{$childNumber}"
+                                       type="text"
+                                       placeholder="##Familypersion##"
+                                       name="familyFaC{$roomNumber}{$childNumber}"
+                                       oninput="return validatePersianInput('familyFaC{$roomNumber}{$childNumber}')"
+                                       class="justpersian">
+                            </div>
+                            {*/if*}
 
-                            <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                            <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change justIranian">
                                 <input id="birthdayC{$roomNumber}{$childNumber}"
                                        type="text"
                                        placeholder="##shamsihappybirthday##"
@@ -348,7 +352,7 @@
                                        readonly="readonly">
                             </div>
 
-                            <div class="s-u-passenger-item s-u-passenger-item-change justIranian">
+                            <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change justIranian">
                                 <input id="NationalCodeC{$roomNumber}{$childNumber}"
                                        type="text"
                                        placeholder="##Nationalnumber##"
@@ -357,7 +361,7 @@
                                        class="UniqNationalCode">
                             </div>
 
-                            <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
+                            <div style="display:none !important;" class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                                 <select name="passportCountryC{$roomNumber}{$childNumber}"
                                         id="passportCountryC{$roomNumber}{$childNumber}"
                                         class="select2">
@@ -374,7 +378,7 @@
                                 </select>
                             </div>
 
-                            <div class="s-u-passenger-item s-u-passenger-item-change noneIranian">
+                            <div style="display:inline-block !important;" class="s-u-passenger-item s-u-passenger-item-change noneIranian">
                                 <input id="passportNumberC{$roomNumber}{$childNumber}"
                                        type="text"
                                        placeholder="##Numpassport##"
@@ -398,37 +402,73 @@
     <input type="hidden" name="rooms_count" value="{$rooms_count}">
 
     <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change-Buyer first">
-        <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change passenger_leader site-main-text-color">
-            ##InformationSaler##
-        </span>
+    <span class="s-u-last-p-pasenger s-u-last-p-pasenger-change passenger_leader site-main-text-color">
+        ##InformationSaler##
+    </span>
 
         <div class="clear"></div>
 
         <div class="panel-default-change-Buyer">
-            <div class="s-u-passenger-items s-u-passenger-item-change">
+            {* نمایش متنی و تمیز اطلاعات خریدار برای کاربر *}
+            <div class="buyer-info-display" style="display: flex; width: 100%; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 14px 25px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 15px; font-size: 13.5px; box-sizing: border-box;">
+
+                <div style="display: flex; align-items: center;">
+                    <strong style="color: #64748b; margin-left: 6px;">##Namefamily##:</strong>
+                    <span style="font-weight: 600; color: #1e293b;">
+            {if is_array($InfoMember) && ($InfoMember.name neq '' || $InfoMember.family neq '')}
+                {$InfoMember.name} {$InfoMember.family}
+            {else}
+                -
+            {/if}
+        </span>
+                </div>
+
+                <div style="display: flex; align-items: center;">
+                    <strong style="color: #64748b; margin-left: 6px;">##Phonenumber##:</strong>
+                    <span class="dir-ltr" style="font-weight: 600; color: #1e293b; display: inline-block;">
+            {if is_array($InfoMember) && $InfoMember.mobile neq ''}
+                {$InfoMember.mobile}
+            {else}
+                -
+            {/if}
+        </span>
+                </div>
+
+                <div style="display: flex; align-items: center;">
+                    <strong style="color: #64748b; margin-left: 6px;">##Email##:</strong>
+                    <span class="dir-ltr" style="font-weight: 600; color: #1e293b; display: inline-block;">
+            {if is_array($InfoMember) && $InfoMember.email neq ''}
+                {$InfoMember.email}
+            {else}
+                -
+            {/if}
+        </span>
+                </div>
+
+            </div>
+
+            {* اینپوت‌های اصلی به صورت مخفی نگه‌داشته شده‌اند تا فرم بدون مشکل سابمیت شود *}
+            <div style="display: none !important;">
                 <input id="passenger_leader_room_fullName"
-                       type="text"
+                       type="hidden"
                        placeholder="##Namefamily##"
                        name="passenger_leader_room_fullName"
                        class="dir-ltr"
                        {if (is_array($InfoMember) && ($InfoMember.name neq '' || $InfoMember.family neq ''))}value="{$InfoMember.name} {$InfoMember.family}"{/if}>
-            </div>
 
-            <div class="s-u-passenger-items s-u-passenger-item-change">
                 <input id="passenger_leader_room"
-                       type="text"
+                       type="hidden"
                        placeholder="##Phonenumber##"
                        name="passenger_leader_room"
                        class="dir-ltr"
-                       {if (is_array($InfoMember) && $InfoMember.name neq '')}value="{$InfoMember.mobile}"{/if}>
-            </div>
+                       {if (is_array($InfoMember) && $InfoMember.mobile neq '')}value="{$InfoMember.mobile}"{/if}>
 
-            <div class="s-u-passenger-items s-u-passenger-item-change">
                 <input id="passenger_leader_room_email"
-                       type="text"
+                       type="hidden"
                        placeholder="##Email##"
                        name="passenger_leader_room_email"
-                       class="dir-ltr">
+                       class="dir-ltr"
+                       {if (is_array($InfoMember) && $InfoMember.email neq '')}value="{$InfoMember.email}"{/if}>
             </div>
 
             <div class="alert_msg" id="messagePassengerLeader"></div>
@@ -436,6 +476,7 @@
 
         <div class="clear"></div>
     </div>
+
 
     <input type="hidden" id="TotalNumberRoom_Reserve" name="TotalNumberRoom_Reserve" value="{$TotalNumberRoom}">
     <input type="hidden" id="TotalPrice_Reserve" name="TotalPrice_Reserve" value="{$TotalPrice}">
@@ -460,7 +501,7 @@
         <div class="next_hotel__">
             <a href="" onclick="return false" class="f-loader-check loaderpassengers" id="loader_check" style="display:none"></a>
             <button type="button"
-                    onclick="checkHotelNew('{$smarty.now}','{$totalAdultCount}','{$totalChildCount}','{$requestNumber}')"
+                    onclick="checkHotelTravzilla('{$smarty.now}','{$totalAdultCount}','{$totalChildCount}','{$requestNumber}')"
                     class="s-u-submit-passenger s-u-select-flight-change s-u-submit-passenger-Buyer site-bg-main-color"
                     id="send_data">
                 ##NextStepInvoice##&nbsp;

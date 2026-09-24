@@ -1531,9 +1531,6 @@ if (isset($_POST['flag']) && $_POST['flag'] == "nextStepReserveApiHotel") {
 }
 
 if (isset($_POST['flag']) && $_POST['flag'] == "nextStepReserveApiHotelNew") {
-
-
-
     unset($_POST['flag']);
     /** @var detailHotel $objHotel */
     $objHotel = Load::controller('detailHotel');

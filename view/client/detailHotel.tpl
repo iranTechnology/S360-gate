@@ -3,54 +3,12 @@
 <link href="assets/css/jquery.counter-analog.css" rel="stylesheet" type="text/css"/>
 <link rel='stylesheet' href='assets/css/galleryTour/mBox.css'>
 <link rel='stylesheet' href='assets/css/galleryTour/style.css'>
-<style>
-    /* استایل مشترک برای جلوگیری از ستون‌ستون شدن */
-    .tabHotel__box {
-        columns: auto !important;
-        column-count: auto !important;
-        width: 100% !important;
-    }
 
-    .tabHotel__box p {
-        columns: auto !important;
-        column-count: auto !important;
-        display: block;
-    }
-
-    /* تب ۱: توضیحات اقامتگاه (متن انگلیسی - چپ به راست) */
-    #tabHotel__box1 {
-        direction: ltr !important;
-        text-align: left !important;
-    }
-
-    /* تب ۲: قوانین و مقررات (متن فارسی - راست به چپ) */
-    #tabHotel__box2 {
-        direction: rtl !important;
-        text-align: right !important;
-    }
-
-    /* اصلاح چیدمان لیست قوانین */
-    .rulesHotel .hotel-rules-list {
-        list-style: disc inside;
-        direction: rtl;
-        text-align: right;
-        line-height: 2;
-        padding: 0;
-        margin: 0;
-    }
-
-    .rulesHotel .hotel-rules-list li {
-        direction: rtl;
-        text-align: right;
-    }
-
-</style>
 {assign var="typeApplication" value=$smarty.const.TYPE_APPLICATION}
 {assign var="hotelIndex" value=$smarty.const.HOTEL_INDEX}
 {assign var="sourceId" value=$hotelIndex|substr:0:2}
 {assign var="requestNumber" value=$smarty.const.REQUEST_NUMBER}
 {assign var="searchRooms" value=$smarty.request.searchRooms}
-
 
 
 {if $searchRooms eq null AND $smarty.request.countRoom gt 0}
@@ -726,3 +684,47 @@
     </script>
 {/literal}
 
+<style>
+    /* استایل مشترک برای جلوگیری از ستون‌ستون شدن */
+    .tabHotel__box {
+        columns: auto !important;
+        column-count: auto !important;
+        width: 100% !important;
+    }
+
+    .tabHotel__box p {
+        columns: auto !important;
+        column-count: auto !important;
+        display: block;
+    }
+
+    /* تب ۱: توضیحات اقامتگاه (متن انگلیسی - چپ به راست) */
+    #tabHotel__box1 {
+        direction: ltr !important;
+        text-align: left !important;
+    }
+
+    /* تب ۲: قوانین و مقررات (متن فارسی - راست به چپ) */
+    #tabHotel__box2 {
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
+    /* اصلاح چیدمان لیست قوانین */
+    .rulesHotel .hotel-rules-list {
+        list-style: disc inside;
+        direction: rtl;
+        text-align: right;
+        line-height: 2;
+        padding: 0;
+        margin: 0;
+    }
+
+    .rulesHotel .hotel-rules-list li {
+        direction: rtl;
+        text-align: right;
+    }
+
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
