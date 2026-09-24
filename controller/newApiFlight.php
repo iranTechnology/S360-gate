@@ -43,6 +43,8 @@ class newApiFlight extends clientAuth
     private $pageStartDateTime = null;
     // cache نتیجه functions::getCounterTypeId در pointClub (برای هر پرواز یک کوئری اجرا می‌شد)
     private $pointClubCounterTypeCache = [];
+    // cache متن‌های فایل زبان (هر فراخوانی Xmlinformation کل فایل XML را parse می‌کند)
+    private $xmlTextCache = [];
     //endregion
 
     //region [__construct]
@@ -1614,7 +1616,17 @@ class newApiFlight extends clientAuth
             $hours += $interval->days * 24;
         }
 
-        return $hours . ' ' . functions::Xmlinformation( "Hour" ) . ' ' . $minutes . ' ' . functions::Xmlinformation( "Minutes" );
+        return $hours . ' ' . $this->getXmlText( "Hour" ) . ' ' . $minutes . ' ' . $this->getXmlText( "Minutes" );
+    }
+
+    /**
+     * متن یک تگ فایل زبان؛ فقط یک بار در هر instance از Xmlinformation خوانده می‌شود
+     */
+    private function getXmlText($tagName) {
+        if (!array_key_exists($tagName, $this->xmlTextCache)) {
+            $this->xmlTextCache[$tagName] = (string) functions::Xmlinformation($tagName);
+        }
+        return $this->xmlTextCache[$tagName];
     }
 
     private function extractBaggageInfo($baggage) {
@@ -1633,8 +1645,8 @@ class newApiFlight extends clientAuth
         $type = isset($baggageItem['Type']) ? $baggageItem['Type'] : '';
         $code = isset($baggageItem['Code']) ? $baggageItem['Code'] : '';
         $weightType = strtoupper(trim(substr(strrchr($baggageItem['Charge'], ' '), 1)));
-        $weightUnit = ($weightType == 'PC') ? ' ' . functions::Xmlinformation( "Suitcase" ) . ' ' : ' ' . functions::Xmlinformation( "Kilograms" ) . ' ';
-        $weightDisplay = $weight > 0 ? $weight . $weightUnit  : functions::Xmlinformation( "NoBaggage" )->__toString();
+        $weightUnit = ($weightType == 'PC') ? ' ' . $this->getXmlText( "Suitcase" ) . ' ' : ' ' . $this->getXmlText( "Kilograms" ) . ' ';
+        $weightDisplay = $weight > 0 ? $weight . $weightUnit  : $this->getXmlText( "NoBaggage" );
         if(CLIENT_ID == 408){
             $weightDisplay = $weight > 0 ? $weight . $weightUnit  : ' 25 کیلوگرم';
         }
@@ -1786,13 +1798,23 @@ class newApiFlight extends clientAuth
             $this->tickets['time']['airlines_name_time'] = $airlines_name_time ;
             $this->tickets['time']['translateVariable_time'] = $translateVariable_time ;
             $this->tickets['time']['first'] = date('H:i:s',time());
-            functions::insertLog('before foreach==>'.json_encode($flights,256),'final_ticket_foreign');
             $request_number_flight = $flights[0]['Code'] ;
 
             // بهینه سازی: گرفتن controller ها یک بار قبل از حلقه
             $commissionController = $this->getController('commissionSources');
             $priceChangesController = $this->getController('priceChanges');
             $airlineController = $this->getController('airline');
+
+            // OPTIMIZATION: cache نتایج iataStandardization و isForeignAirline با کلید کد ایرلاین (هر کدام کوئری دیتابیس دارند)
+            $iataStandardCache = [];
+            $getIataStandard = function($code) use (&$iataStandardCache, $airlineController) {
+                $cacheKey = json_encode($code);
+                if (!array_key_exists($cacheKey, $iataStandardCache)) {
+                    $iataStandardCache[$cacheKey] = $airlineController->iataStandardization($code);
+                }
+                return $iataStandardCache[$cacheKey];
+            };
+            $isForeignAirlineCache = [];
 
             // بهینه سازی: Cache برای توابع تکراری
             $airportFieldNames = array(
@@ -1831,7 +1853,7 @@ class newApiFlight extends clientAuth
 
             $allAirlineCodes = [];
             foreach ($flights as $tempFlight) {
-                $airlineStandardIata = $airlineController->iataStandardization($tempFlight['OutputRoutes'][0]['Airline']['Code']);
+                $airlineStandardIata = $getIataStandard($tempFlight['OutputRoutes'][0]['Airline']['Code']);
                 if (isset($airlineStandardIata)) {
                     $allAirlineCodes[$airlineStandardIata] = true;
                 }
@@ -1893,7 +1915,11 @@ class newApiFlight extends clientAuth
                     $flightFortest = $flight;
                     $flight = $commissionController->sourceCommissionCalculation($flight , 'search');
                     $agencyBenefitSystemFlight = $commissionController->setAgencyBenefitSystemFlight($flight , 'search');
-                    $isForeignAirline = $commissionController->isForeignAirline($flight);
+                    $foreignAirlineKey = json_encode(isset($flight['OutputRoutes'][0]['Airline']['Code']) ? $flight['OutputRoutes'][0]['Airline']['Code'] : null);
+                    if (!array_key_exists($foreignAirlineKey, $isForeignAirlineCache)) {
+                        $isForeignAirlineCache[$foreignAirlineKey] = $commissionController->isForeignAirline($flight);
+                    }
+                    $isForeignAirline = $isForeignAirlineCache[$foreignAirlineKey];
 
                     // OPTIMIZATION: Cache repeated conditions and flight fields
                     $hasCapacity = $flight['Capacity'] != 0;
@@ -1910,7 +1936,7 @@ class newApiFlight extends clientAuth
                     $passengerChild = ($hasChild && $hasCapacity) ? $passengerDatas[1] : ['TotalPrice'=>0, 'BasePrice'=>0, 'TaxPrice'=>0 , 'CommisionPrice' => 0];
                     $passengerInfant = ($hasInfant && $hasCapacity) ? $passengerDatas[2] : ['TotalPrice'=>0, 'BasePrice'=>0, 'TaxPrice'=>0 , 'CommisionPrice' => 0];
 
-                    $airline_iata = $airlineController->iataStandardization($outputRoute0['Airline']['Code']);
+                    $airline_iata = $getIataStandard($outputRoute0['Airline']['Code']);
 
                     $data_change_price = array(
                         'airlineIata' => $airline_iata,
@@ -2168,7 +2194,7 @@ class newApiFlight extends clientAuth
 
                         // OPTIMIZATION: Cache airline and airport codes (used 5+ times each)
                         $airlineDept = $details_dept['Airline'];
-                        $airlineCode_dept = $airlineController->iataStandardization($airlineDept['Code']);
+                        $airlineCode_dept = $getIataStandard($airlineDept['Code']);
                         $airlineOperatorDept = isset($airlineDept['operator']) ? $airlineDept['operator'] : null;
                         $hasOperatorDept = ($airlineOperatorDept && $airlineCode_dept !== $airlineOperatorDept);
                         $deptCode = $details_dept['Departure']['Code'];
@@ -2268,7 +2294,7 @@ class newApiFlight extends clientAuth
                         $returnRouteLast = $returnRoutes[$Key_route_return];
 
                         // OPTIMIZATION: Cache airline code and repeated values
-                        $returnAirlineCode = $airlineController->iataStandardization($returnRoute0['Airline']['Code']);
+                        $returnAirlineCode = $getIataStandard($returnRoute0['Airline']['Code']);
                         $date_persian_return = $returnRoute0['DepartureDate'];
                         $hasArrivalDateLast = !empty($returnRouteLast['ArrivalDate']);
 
@@ -2325,7 +2351,7 @@ class newApiFlight extends clientAuth
 
                             // OPTIMIZATION: Cache airline and airport codes (used 5+ times each)
                             $airlineReturn = $details_return['Airline'];
-                            $airlineCode_return = $airlineController->iataStandardization($airlineReturn['Code']);
+                            $airlineCode_return = $getIataStandard($airlineReturn['Code']);
                             $airlineOperator = isset($airlineReturn['operator']) ? $airlineReturn['operator'] : null;
                             $hasOperator = ($airlineOperator && $airlineCode_return !== $airlineOperator);
                             $deptCode_return = $details_return['Departure']['Code'];
@@ -2936,7 +2962,7 @@ class newApiFlight extends clientAuth
                 $code = $route['Baggage'][0]['Code'];
                 if (in_array($code, ['Piece', 'pieces', 'N', 'pc', 'PC','PIECES'])) {
                     if (($source_id == '15' || $source_id == '14')) {
-                        return $baggageCharge . ' ' . functions::Xmlinformation('Close')->__toString();
+                        return $baggageCharge . ' ' . $this->getXmlText('Close');
                     } else {
                         return functions::StrReplaceInArray(
                             [

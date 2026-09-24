@@ -10660,7 +10660,6 @@ class functions {
             if($source_id=='17'){
                 $duration = strlen($duration)==10 ? $duration : '0:'.$duration ;
             }
-            self::insertLog($duration,'1_check_duration');
             $day_time = substr($duration, 0, 1);
 
             $hours = substr($duration, 2, 2);
@@ -10682,7 +10681,6 @@ class functions {
             if($source_id=='17'){
                 $duration = strlen($duration)==10 ? $duration : '0:'.$duration ;
             }
-            self::insertLog($duration,'1_check_duration');
             $day_time = substr($duration, 0, 1);
             $hours = substr($duration, 2, 2);
             $minuets = substr($duration, 5, 2);
