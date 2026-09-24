@@ -401,7 +401,7 @@
   </HoursdeliveryfromafternoonemptyingroommorningTwelve>
   <Selectedroom>اتاق انتخاب شده</Selectedroom>
   <ForXNight>برای @@night@@ شب</ForXNight>
-  <NoAvailableReserve>هم اکنون امکان رزو وجود ندارد</NoAvailableReserve>
+  <NoAvailableReserve>هم اکنون امکان رزرو وجود ندارد</NoAvailableReserve>
   <Discountrate>میزان تخفیف</Discountrate>
   <Discount>تخفیف</Discount>
   <Codediscount>کد تخفیف</Codediscount>
@@ -3954,5 +3954,7 @@
   <TermsandConditionsDetailFlight>قوانین و مقررات</TermsandConditionsDetailFlight>
   <WithoutAPenalty>بدون جریمه</WithoutAPenalty>
   <Untitled>عنوان نامشخص</Untitled>
-
+  <ListColleagues>لیست همکاران (در صورتی که این فیلد را خالی بزارید برای تمامی همکاران و کاربران نمایش داده میشود)</ListColleagues>
+  <MaxRoomsExceeded>حداکثر ۳ اتاق میتوانید انتخاب کنید.</MaxRoomsExceeded>
+  <MinRoomsRequired>لطفاً حداقل ۱ اتاق انتخاب کنید.</MinRoomsRequired>
 </Main>

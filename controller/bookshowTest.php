@@ -3772,10 +3772,10 @@ class bookshowTest extends clientAuth {
                 if ( $flightBook['flight_type'] == 'charter' ||  $flightBook['api_id'] == '14' ) {
                     if ( $flightBook['percent_discount'] > 0 ) {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
-                        $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
+//                        $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
                         if(TYPE_ADMIN != 1){
-                            $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
-                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )                                . '</span>';
+//                            $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
+//                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )                                . '</span>';
                         }
 
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -3784,7 +3784,7 @@ class bookshowTest extends clientAuth {
                         }
                     } else {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
-                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
 
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal    = ( $flightBook['agency_commission'] + $flightBook['irantech_commission'] + $flightBook['supplier_commission'] ) + $pricetotal;
@@ -3795,10 +3795,10 @@ class bookshowTest extends clientAuth {
                 elseif ( $flightBook['flight_type'] == 'system' ) {
                     if ( $flightBook['percent_discount'] > 0 ) {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
-                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
                         if(TYPE_ADMIN != 1){
-                            $DataFlightPassengerPayData .= "<hr style='margin:3px'> <span style='text-decoration: line-through;'>";
-                            $DataFlightPassengerPayData .= $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] . '</span>';
+//                            $DataFlightPassengerPayData .= "<hr style='margin:3px'> <span style='text-decoration: line-through;'>";
+//                            $DataFlightPassengerPayData .= $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] . '</span>';
                         }
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
@@ -3812,10 +3812,10 @@ class bookshowTest extends clientAuth {
                     } else {
                         if ( $flightBook['IsInternal'] == '0' ) {
                             $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
-                            $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
+//                            $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
                         } else {
                             $PassengerPayment=$flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ;
-                            $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                            $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
                         }
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
@@ -3837,11 +3837,11 @@ class bookshowTest extends clientAuth {
                 $discountPrice = $InfoTicketReservation['discount_amount']; // مبلغ کل تخفیف (عددی)
 
                 if ( TYPE_ADMIN != 1 && $InfoTicketReservation['totalPriceWithoutDiscount'] != 0 ) {
-                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
+//                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
                 }
 
                 $PassengerPayment            = $InfoTicketReservation['totalPrice'];
-                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
+//                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
                 $pricetotal                  = ( $InfoTicketReservation['totalPrice'] ) + $pricetotal;
             }
 
@@ -7463,6 +7463,7 @@ class bookshowTest extends clientAuth {
 
         return $DataTable;
     }
+
     public function MainExclusiveTourHistory( $param ) {
 
 
@@ -7477,8 +7478,9 @@ class bookshowTest extends clientAuth {
             $ListBookExclusiveTour = $this->listBookExclusiveTourLocal( null, $intendedUser );
         } else {
             $ListBookExclusiveTour = $this->listBookExclusiveTourLocal();
-        }
 
+
+        }
 
 
         if (empty($ListBookExclusiveTour)) {
@@ -7959,7 +7961,7 @@ class bookshowTest extends clientAuth {
                                                data-content="مسافر از تایید نهایی استفاده نکرده است"> انصراف از
                                                 خرید </a>';
                 } elseif ( $flightBook['successfull'] == 'error') {
-                    $DataFlightCondition = $this->btnErrorFlight($flightBook);
+                    $DataFlightCondition = $this->btnExclusiveTour($flightBook);
                 } elseif ( $flightBook['successfull'] == 'lock' ) {
                     $DataFlightCondition = '<a href="#" onclick="return false;" class="btn btn-warning cursor-default">
                                                 پیش رزرو </a>';
@@ -8203,6 +8205,7 @@ class bookshowTest extends clientAuth {
             $FlightData[ $FlightDataNewest ][ $key ]["وضعیت"]                                               = $DataFlightCondition;
 
 
+
             $ColorTr               = '';
             $DataFlightType               = '';
             $DataFlightInformation        = '';
@@ -8214,12 +8217,19 @@ class bookshowTest extends clientAuth {
             $DataFlightCondition          = '';
         }
 
+// ✅ پاکسازی UTF-8 (این هم اضافه کردم)
+        array_walk_recursive($FlightData, function(&$value) {
+            if (is_string($value) && !mb_check_encoding($value, 'UTF-8')) {
+                $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+            }
+        });
 
 
         return ( empty( $FlightData ) ? null : $FlightData );
 
 
     }
+
     public function listBookExclusiveTourLocal( $intendedUser = null ) {
         $date               = dateTimeSetting::jdate( "Y-m-d", time() );
         $date_now_explode   = explode( '-', $date );
@@ -9282,6 +9292,7 @@ class bookshowTest extends clientAuth {
 
 
     }
+
     public function listBookCip( $intendedUser = null ) {
         $date               = dateTimeSetting::jdate( "Y-m-d", time() );
         $date_now_explode   = explode( '-', $date );
@@ -9608,7 +9619,6 @@ class bookshowTest extends clientAuth {
 
         return $BookShow;
     }
-
 
     public function MainBusHistory( $param ) {
         $transactions = $this->getTransactionsByDateRange($param['date_of'],$param['to_date'],$param['pnr'],$param['factor_number'],$param['request_number'],$param['passenger_name']);//list Transactions
@@ -10965,6 +10975,171 @@ class bookshowTest extends clientAuth {
         return $partner_controller->subClient(CLIENT_ID);
     }
 
+    private function btnExclusiveTour($data, $tempDeduction = null) {
+
+        // ─────────────────────────────────────────────
+        // ۱. اگه خطا نیست، return خالی
+        // ─────────────────────────────────────────────
+        if (!isset($data['successfull']) || $data['successfull'] !== 'error') {
+            return '';
+        }
+
+        // ─────────────────────────────────────────────
+        // ۲. پاکسازی اولیه ورودی‌ها
+        // ─────────────────────────────────────────────
+        $status_admin = (TYPE_ADMIN == '1');
+        $client_id    = $status_admin ? ($data['client_id'] ?? '') : CLIENT_ID;
+        $request_num  = $data['request_number'] ?? '';
+        $pid_private  = $data['pid_private'] ?? '';
+        $api_id       = $data['api_id'] ?? '';
+
+        // ─────────────────────────────────────────────
+        // ۳. گرفتن پیام خطا از دیتابیس
+        // ─────────────────────────────────────────────
+        $data_error = $this->getController('logErrorFlights')
+            ->getErrorMessage($request_num, $client_id);
+
+        // اگه خطایی پیدا نشد
+        if (empty($data_error)) {
+            return '<a href="#" onclick="return false;" '
+                . 'class="btn btn-danger cursor-default">'
+                . functions::Xmlinformation('ErrorAirline')
+                . '</a>';
+        }
+
+        $messageCode = $data_error['messageCode'] ?? '';
+
+        // ─────────────────────────────────────────────
+        // ۴. تعیین کلاس
+        // ─────────────────────────────────────────────
+        $classes = in_array($messageCode, $this->getCodeSpecialError())
+            ? 'colorSpecialError'
+            : '';
+
+        // ─────────────────────────────────────────────
+        // ۵. تعیین متن دکمه (title)
+        // ─────────────────────────────────────────────
+        $text_btn = functions::Xmlinformation('ErrorAirline');
+
+        if (in_array($messageCode, $this->getCodeSpecialError())) {
+
+            if (($messageCode == 'Err0111006' && $pid_private == '1' && $api_id == '14')
+                || ($messageCode == '-506' && $pid_private == '1')) {
+                $text_btn = functions::Xmlinformation('InsufficientCredit');
+
+            } elseif ($messageCode == '-411') {
+                $text_btn = functions::Xmlinformation('SecurityCodeError');
+
+            } elseif ($messageCode == '-404') {
+                $text_btn = functions::Xmlinformation('MobileNumberError');
+
+            } elseif ($messageCode == '-418') {
+                $text_btn = functions::Xmlinformation('NationalIdError');
+
+            } elseif ($messageCode == 'ERROR113') {
+                $text_btn = functions::Xmlinformation('DuplicateRequestError');
+
+            } elseif ($messageCode == 'Err0107038') {
+                $text_btn = functions::Xmlinformation('PassengerNationalityError');
+
+            } elseif ($messageCode == 'Err0107011' || $messageCode == '-420') {
+                $text_btn = functions::Xmlinformation('PassportExpiryError');
+
+            } elseif (in_array($messageCode, array(
+                'Err0107020', 'Err0107009', 'Err0107010', 'Err0107012',
+                'Err0107040', 'Err0107045', 'Err0107051', 'Err0107065'
+            ))) {
+                $text_btn = functions::Xmlinformation('PassportError');
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        // ۶. تعیین محتوای popover (content)
+        // ─────────────────────────────────────────────
+        $content_btn = '';
+
+        // حالت خاص: خطای اعتبار برای آژانس
+        if (($messageCode == '-506' || $messageCode == 'Err0111006')
+            && !$status_admin
+            && $pid_private == '0') {
+
+            $content_btn = functions::Xmlinformation('providerError');
+
+        } elseif ($status_admin) {
+            // ادمین: نمایش هر دو پیام
+            $msgAdmin  = $data_error['text_message']['messageAdmin']  ?? '';
+            $msgAgency = $data_error['text_message']['messageAgency'] ?? '';
+
+            if (empty($msgAdmin) && empty($msgAgency) && is_string($data_error['text_message'] ?? null)) {
+                $content_btn = $data_error['text_message'];
+            } else {
+                $content_btn  = '<p><strong>ادمین</strong> : ' . $msgAdmin . '</p>';
+                $content_btn .= '<p><strong>آژانس</strong> : ' . $msgAgency . '</p>';
+            }
+
+        } else {
+            // آژانس: فقط پیام خودش
+            $content_btn = $data_error['text_message'] ?? '';
+
+            if (is_array($content_btn)) {
+                $content_btn = implode(' ', array_filter($content_btn, 'is_string'));
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        // ۷. پاکسازی UTF-8 (همه متغیرهای رشته‌ای)
+        // ─────────────────────────────────────────────
+        $cleanUtf8 = function($string) {
+            if (!is_string($string)) {
+                return $string;
+            }
+            // مرحله ۱: تبدیل به UTF-8 سالم
+            if (!mb_check_encoding($string, 'UTF-8')) {
+                $string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
+            }
+            // مرحله ۲: حذف کاراکترهای کنترلی
+            if (!mb_check_encoding($string, 'UTF-8')) {
+                $string = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x1F\x7F]/u', '', $string);
+            }
+            // مرحله ۳: حذف کاراکترهای غیر ASCII
+            if (!mb_check_encoding($string, 'UTF-8')) {
+                $string = preg_replace('/[^\x20-\x7E]/', '', $string);
+            }
+            return $string;
+        };
+
+        $text_btn    = $cleanUtf8($text_btn);
+        $content_btn = $cleanUtf8($content_btn);
+        $classes     = $cleanUtf8($classes);
+
+        // ─────────────────────────────────────────────
+        // ۸. escape برای HTML attribute
+        // ─────────────────────────────────────────────
+        $text_btn_escaped    = htmlspecialchars($text_btn,    ENT_QUOTES, 'UTF-8');
+        $content_btn_escaped = htmlspecialchars($content_btn, ENT_QUOTES, 'UTF-8');
+
+        // ─────────────────────────────────────────────
+        // ۹. ساخت HTML نهایی
+        // ─────────────────────────────────────────────
+        $html  = '<a href="#" onclick="return false;" ';
+        $html .= 'class="btn btn-danger ' . $classes . ' cursor-default popoverBox w-90 popover-danger" ';
+        $html .= 'data-toggle="popover" ';
+        $html .= 'data-html="true" ';
+        $html .= 'title="' . $text_btn_escaped . '" ';
+        $html .= 'data-placement="right" ';
+        $html .= 'data-content="' . $content_btn_escaped . '">';
+        $html .= $text_btn;
+        $html .= '<div style="display: none;" class="parent-ld">';
+        $html .= functions::Xmlinformation('pendingPrintFlight') . $tempDeduction;
+        $html .= '<div class="ld ld-ring ld-spin"></div>';
+        $html .= '</div>';
+        $html .= '</a>';
+
+        // ─────────────────────────────────────────────
+        // ۱۰. پاکسازی نهایی HTML
+        // ─────────────────────────────────────────────
+        return $cleanUtf8($html);
+    }
     private function btnErrorFlight($data_flight , $tempDeduction = null){
         $status_admin = (TYPE_ADMIN=='1') ? true : false ;
         $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID ;

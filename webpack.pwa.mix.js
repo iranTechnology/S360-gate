@@ -23,5 +23,3 @@ mix
   .setPublicPath("dist")
   .setResourceRoot("../")
   .vue();
-
-

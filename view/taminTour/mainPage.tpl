@@ -9,7 +9,12 @@
     {include file="include_files/fast_flight_search-1.tpl"}
     {include file="include_files/hotels-webservice2.tpl"}
     {include file="include_files/tours.tpl"}
+    <!-- login and register popup -->
+    {assign var="useType" value="ticket"}
+    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentLoginRegister.tpl"}
+    <!-- login and register popup -->
 </main>
+
 {include file="include_files/footer.tpl"}
 </body>
 {include file="include_files/footer_script.tpl"}

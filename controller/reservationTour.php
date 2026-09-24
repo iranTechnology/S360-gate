@@ -122,34 +122,34 @@ class reservationTour extends clientAuth
 
         $tour_link[] = $data_url_tour_all;
         foreach ($result_country as $key => $item) {
-                $url = SERVER_HTTP . CLIENT_DOMAIN . '/gds/' . SOFTWARE_LANG . '/resultTourLocal/1-all/1-' . $item['origin_country_id'] . '/all/all';
-                $data_url_country['loc'] = $url;
-                $data_url_country['priority'] = '0.5';
-                $data_url_country['lastmodJalali'] = $item['create_date_in'];
-                $data_url_country['lastmod'] = functions::ConvertToMiladi($data_url_country['lastmodJalali'], '-');
+            $url = SERVER_HTTP . CLIENT_DOMAIN . '/gds/' . SOFTWARE_LANG . '/resultTourLocal/1-all/1-' . $item['origin_country_id'] . '/all/all';
+            $data_url_country['loc'] = $url;
+            $data_url_country['priority'] = '0.5';
+            $data_url_country['lastmodJalali'] = $item['create_date_in'];
+            $data_url_country['lastmod'] = functions::ConvertToMiladi($data_url_country['lastmodJalali'], '-');
 
             $data_url_country_all[] = $data_url_country;
         }
         foreach ($result_city as $key => $item) {
-                $url = SERVER_HTTP . CLIENT_DOMAIN . '/gds/' . SOFTWARE_LANG . '/resultTourLocal/1-all/' . $item['origin_city_id'] . '-all/all/all';
-                $data_url_city['loc'] = $url;
-                $data_url_city['priority'] = '0.5';
-                $data_url_city['lastmodJalali'] = $item['create_date_in'];
-                $data_url_city['lastmod'] = functions::ConvertToMiladi($data_url_city['lastmodJalali'], '-');
+            $url = SERVER_HTTP . CLIENT_DOMAIN . '/gds/' . SOFTWARE_LANG . '/resultTourLocal/1-all/' . $item['origin_city_id'] . '-all/all/all';
+            $data_url_city['loc'] = $url;
+            $data_url_city['priority'] = '0.5';
+            $data_url_city['lastmodJalali'] = $item['create_date_in'];
+            $data_url_city['lastmod'] = functions::ConvertToMiladi($data_url_city['lastmodJalali'], '-');
 
             $result_final_city_all[] = $data_url_city;
         }
         foreach ($result as $key => $item) {
             if ($item['tour_name_en']  != '') {
-            $tour_slug = str_replace(" ", "-",$item['tour_name_en']);
-            $url = SERVER_HTTP . CLIENT_DOMAIN . '/gds/' . SOFTWARE_LANG . '/detailTour/' . $item['id'] . '/' . $tour_slug;
-            $data_add_gds_switch['loc'] = $url;
-            $data_add_gds_switch['priority'] = '0.5';
-            $data_add_gds_switch['lastmodJalali'] = $item['create_date_in'];
-            $data_add_gds_switch['lastmod'] = functions::ConvertToMiladi($data_add_gds_switch['lastmodJalali'], '-');
+                $tour_slug = str_replace(" ", "-",$item['tour_name_en']);
+                $url = SERVER_HTTP . CLIENT_DOMAIN . '/gds/' . SOFTWARE_LANG . '/detailTour/' . $item['id'] . '/' . $tour_slug;
+                $data_add_gds_switch['loc'] = $url;
+                $data_add_gds_switch['priority'] = '0.5';
+                $data_add_gds_switch['lastmodJalali'] = $item['create_date_in'];
+                $data_add_gds_switch['lastmod'] = functions::ConvertToMiladi($data_add_gds_switch['lastmodJalali'], '-');
 
                 $result_final[] = $data_add_gds_switch;
-        }
+            }
         }
 
 //        return [$tour_link , $data_url_country_all, $result_final_city_all , $result_final];
@@ -177,7 +177,7 @@ class reservationTour extends clientAuth
 
         $book_detail = $this->getModel('bookTourLocalModel')->get(['*'])
             ->where('factor_number' , $factorNumber)->find();
-      
+
         $book_update = $this->getModel('bookTourLocalModel')->updateWithBind([
             'status' => $status
         ], [
@@ -717,7 +717,8 @@ class reservationTour extends clientAuth
                         '" . $data['tour_leader_language'] . "',
                         '" . $custom_file_fields . "',
                         '" . $isRequest . "',
-                         '" . $param['tourVideo'] . "'
+                         '" . $param['tourVideo'] . "',
+                         ''
                         ),";
                         }
 
@@ -1376,7 +1377,7 @@ class reservationTour extends clientAuth
                     $tour_type_list = json_decode($infoTourById['tour_type_id']);
                     foreach ($tour_type_list as $key => $tour_type) {
                         $tour_types[$key] = $tour_type;
-                     }
+                    }
 
                     $param['tourTypeId'] = $tour_types;
                 }else{
@@ -1428,7 +1429,7 @@ class reservationTour extends clientAuth
                 $res[] = $this->editRout($param);
             }
 
-         
+
             if (!empty($param['tourTypeId'])) {
                 // tour type
                 $res[] = $this->registrationTourType($idSame, $param['tourTypeId']);
@@ -2146,13 +2147,13 @@ class reservationTour extends clientAuth
                     ->where('tour_id', $idSame)
                     ->find();
 
-                  foreach($param['TourTravelProgram']['day'] as $counter => $day) {
-                      foreach($day['gallery'] as $i => $gallery){
-                            if(empty($gallery['file']) || $gallery['file'] == ''){
-                                unset($param['TourTravelProgram']['day'][$counter]['gallery'][$i]);
-                            }
-                      }
-                  }
+                foreach($param['TourTravelProgram']['day'] as $counter => $day) {
+                    foreach($day['gallery'] as $i => $gallery){
+                        if(empty($gallery['file']) || $gallery['file'] == ''){
+                            unset($param['TourTravelProgram']['day'][$counter]['gallery'][$i]);
+                        }
+                    }
+                }
                 if (empty($resultTourTravel)) {
                     $TourTravelProgramData['tour_id'] = $idSame;
                     $TourTravelProgramData['data'] = json_encode($param['TourTravelProgram'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_QUOT | JSON_HEX_APOS);
@@ -2354,7 +2355,7 @@ class reservationTour extends clientAuth
 //            $startDate = $objController->dateNextFewDays($startDate, ' + 1');
 //
 //        }//end while startDate<=endDate
-                
+
 
 
 
@@ -3118,14 +3119,14 @@ class reservationTour extends clientAuth
         return $tour;
     }
     #endregion
-        #region infoTourByDateApi
+    #region infoTourByDateApi
     public function infoTourByDateApi($params) {
         if ($this->api) {
             return $this->api->infoTourByDateApi($params);
         }
         return false ;
     }
-        #endregion
+    #endregion
     #region infoTourByDate
     public function infoTourByDate($tour_code, $start_date, $type_tour = null) {
         $start_date = str_replace('-', '', $start_date);
@@ -3478,7 +3479,7 @@ class reservationTour extends clientAuth
     }
 
     #region registerIsShowTour
-    public function registerIsShowTour($id, $isShow, $detail) {
+    public function registerIsShowTour($id, $isShow, $detail,$colleagues) {
 
 
         $Model = Load::library('Model');
@@ -3499,7 +3500,13 @@ class reservationTour extends clientAuth
         }
 
         $data['is_show'] = $isShow;
-
+        $colleagues = array_map('strval', $colleagues);       // همه string
+        $colleagues = array_filter($colleagues, function($v) { // حذف خالی
+            return $v !== '' && $v !== null;
+        });
+        $colleagues = array_values($colleagues);              // ری‌ایندکس
+        $colleaguesJson = json_encode($colleagues, JSON_UNESCAPED_UNICODE);
+        $data['colleagues'] = $colleaguesJson;
 
         $types = json_decode($tour['tour_type_id'], true);
         foreach ($types as $type) {
@@ -3514,15 +3521,15 @@ class reservationTour extends clientAuth
             'id_same' => $tour['id_same']
         ]);
 
-       $smsController = Load::controller('smsServices');
-       $UserController = Load::controller('user');
-       $objSms = $smsController->initService('1');
-       $UserProfile = $UserController->getProfile($tour['user_id']);
-       $UserProfileMobile = $UserProfile['mobile'];
-       $smsArray = array(
+        $smsController = Load::controller('smsServices');
+        $UserController = Load::controller('user');
+        $objSms = $smsController->initService('1');
+        $UserProfile = $UserController->getProfile($tour['user_id']);
+        $UserProfileMobile = $UserProfile['mobile'];
+        $smsArray = array(
             'smsMessage' => $sms,
             'cellNumber' => $UserProfileMobile);
-       $smsController->sendSMS($smsArray);
+        $smsController->sendSMS($smsArray);
 
         return "success: " . functions::Xmlinformation('ChangesSuccessfullyCompleted');
         /*   if ($res) {
@@ -3849,9 +3856,9 @@ class reservationTour extends clientAuth
             ->where($type, $id)
             ->all();
         $data['is_del'] = $tourDetail[0]['is_del'] == 'yes' ? 'no' : 'yes';
-    
 
-        
+
+
 
 
         $condition = "{$type}='{$id}'";
@@ -4362,9 +4369,9 @@ class reservationTour extends clientAuth
         $data = [];
 
         foreach ($array as $key => $item) {
-          
+
             $data[$key] = $item;
-           
+
         }
 
         $Model = Load::library('Model');
@@ -4503,7 +4510,7 @@ class reservationTour extends clientAuth
 
         foreach ($packages as $package_key => $package) {
 
-              $packages[$package_key]['hotels'] =  $hotel_information_list[$package['id']]['hotels'] ;
+            $packages[$package_key]['hotels'] =  $hotel_information_list[$package['id']]['hotels'] ;
 
 //            $hotels = $this->infoTourHotelByIdPackage($package['id']);
 //
@@ -4650,11 +4657,11 @@ class reservationTour extends clientAuth
                     $do_discount = ($reservationTourController->calculateDiscount($tour_id, ['minPriceR' => $custom_room[$room_type]['price_r']], $package['id'], $room_type));
                     if (empty($do_discount['discountedMinPriceR'])) {
                         $price_change = $this->doPriceChange($package[$room_type['packagePriceName']], $package['change_price']);
-                         if(functions::isEnableSetting('toman')) {
-                             $final_price = round($price_change/10) ;
-                         }else{
-                             $final_price = $price_change ;
-                         }
+                        if(functions::isEnableSetting('toman')) {
+                            $final_price = round($price_change/10) ;
+                        }else{
+                            $final_price = $price_change ;
+                        }
 
 
                     } else {
@@ -4672,11 +4679,11 @@ class reservationTour extends clientAuth
 
                     $show_price =intval($this->doPriceChange($custom_room[$room_type]['price_r'], $package['change_price']));
 
-                      if(functions::isEnableSetting('toman')) {
-                          $price = round($show_price/10);
-                      }else{
-                          $price = $show_price;
-                      }
+                    if(functions::isEnableSetting('toman')) {
+                        $price = round($show_price/10);
+                    }else{
+                        $price = $show_price;
+                    }
                     $packages[$package_key]['rooms'][] = [
 
                         'name' => functions::Xmlinformation($room_type)->__toString(),
@@ -4692,7 +4699,7 @@ class reservationTour extends clientAuth
                     ];
                 }
 
-              
+
                 usort($packages[$package_key]['rooms'], function($a, $b)
                 {
                     if ($a["order"] == $b["order"])
@@ -4946,10 +4953,10 @@ class reservationTour extends clientAuth
             ]);
         } else {
 
-        return [
-            'origin' => $origin_route,
-            'destinations' => $destinations,
-        ];
+            return [
+                'origin' => $origin_route,
+                'destinations' => $destinations,
+            ];
         }
     }
 
@@ -4960,7 +4967,7 @@ class reservationTour extends clientAuth
             return $this->getPackagesApi($param);
         }
         $result_get_tour = $this->reservation_tour_model->get()->where('id', $param['tour_id'])->find();
-        
+
 
         $final_array = [];
         $room_types = [
@@ -5263,7 +5270,7 @@ class reservationTour extends clientAuth
             $transportCompaniesMap[$tc['id']] = $tc;
         }
 
-     
+
 
         foreach ($reservationTourList as $key => $item) {
             if ($item['type_vehicle_name'] == 'هواپیما') {
@@ -5438,7 +5445,7 @@ class reservationTour extends clientAuth
         }
 
     }
-    
+
     public function getPackageHotelInfo($package_id_list) {
 
         $tour_hotel_table = $this->reservation_tour_hotel_model->getTable();
@@ -5489,7 +5496,7 @@ class reservationTour extends clientAuth
                             ],
                         ];
                     }
-                  
+
                     $tour_route_information = $this->infoTourRoutByIdPackage($hotel['fk_tour_package_id'], $hotel['fk_city_id']);
 
                     $result_hotel[$hotel['fk_tour_package_id']]['hotels'][$counter] = $info;
@@ -5502,7 +5509,7 @@ class reservationTour extends clientAuth
 
         return $result_hotel ;
     }
-    
+
     public function calculateAllPackageDiscount($package_id_list , $tour_id , $packages , $room_types){
 
 
@@ -5576,47 +5583,47 @@ class reservationTour extends clientAuth
     }
 
     public function getInfoSearchedData($idSameTour) {
-       $tour      = $this->infoTourByIdSameDetail( $idSameTour );
-       $tour_type = $tour['tour_type_id'];
-       $tour_type = str_replace('"' , '' , $tour_type) ;
-       $tour_type = str_replace('[' , '' , $tour_type) ;
-       $tour_type = str_replace(']' , '' , $tour_type) ;
-       $tour_type = explode(',' , $tour_type);
-       foreach($tour_type as $type){
-           if($type != '1' && $type != '2'){
-               $tour_type = $type;
-               break;
-           }
-       }
-       $tour_type      = $this->infoTourType( $tour_type );
+        $tour      = $this->infoTourByIdSameDetail( $idSameTour );
+        $tour_type = $tour['tour_type_id'];
+        $tour_type = str_replace('"' , '' , $tour_type) ;
+        $tour_type = str_replace('[' , '' , $tour_type) ;
+        $tour_type = str_replace(']' , '' , $tour_type) ;
+        $tour_type = explode(',' , $tour_type);
+        foreach($tour_type as $type){
+            if($type != '1' && $type != '2'){
+                $tour_type = $type;
+                break;
+            }
+        }
+        $tour_type      = $this->infoTourType( $tour_type );
 
-       $tour_id = $tour['id'];
-       $tour_route = $this->infoNotFakeTourRoutByIdTour( $tour_id  , 'dept');
+        $tour_id = $tour['id'];
+        $tour_route = $this->infoNotFakeTourRoutByIdTour( $tour_id  , 'dept');
 
-       if(SOFTWARE_LANG == 'fa') {
-           if($tour_type && $tour_type['tour_type']) {
-               $result['type']['heading'] = $tour_type['tour_type'] ;
+        if(SOFTWARE_LANG == 'fa') {
+            if($tour_type && $tour_type['tour_type']) {
+                $result['type']['heading'] = $tour_type['tour_type'] ;
 //               $result['type']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_type['tour_type'] ;
-           }
+            }
 
-           if($tour_route['destination_country_id'] != 1) {
-               $result['country']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['country_name'] ;
-           }
-           $result['city']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['name'] ;
-       }else{
-           if($tour_type && $tour_type['tour_type_en']) {
-               $result['type']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_type['tour_type_en'] ;
-           }
+            if($tour_route['destination_country_id'] != 1) {
+                $result['country']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['country_name'] ;
+            }
+            $result['city']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['name'] ;
+        }else{
+            if($tour_type && $tour_type['tour_type_en']) {
+                $result['type']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_type['tour_type_en'] ;
+            }
 
 
-           if($tour_route['destination_country_id'] != 1) {
-               $result['country']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['country_name_en'] ;
-           }
-           $result['city']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['name_en'] ;
-       }
-       if($tour_type) {
-           $result['type']['link'] = ROOT_ADDRESS . '/resultTourLocal/all-all/' . 'all-all/all/' . $tour_type['id'] ;
-       }
+            if($tour_route['destination_country_id'] != 1) {
+                $result['country']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['country_name_en'] ;
+            }
+            $result['city']['heading'] = functions::Xmlinformation('Tours') . ' ' .$tour_route['name_en'] ;
+        }
+        if($tour_type) {
+            $result['type']['link'] = ROOT_ADDRESS . '/resultTourLocal/all-all/' . 'all-all/all/' . $tour_type['id'] ;
+        }
         if($tour_route['destination_country_id'] != 1) {
             $result['country']['link'] = ROOT_ADDRESS . '/resultTourLocal/all-all/'.$tour_route['destination_country_id'] .'-all'  . '/all/all';
         }
@@ -5639,7 +5646,7 @@ class reservationTour extends clientAuth
             $sql .= " AND TR.tour_title='return' ";
         }
         $sql .= " ORDER BY TR.tour_title ";
-       
+
         $tour = $Model->load($sql);
         return $tour;
     }
@@ -5653,10 +5660,10 @@ class reservationTour extends clientAuth
             ->where('id', $params['tour_id'])
             ->all();
 
-            $item = $query[0];
+        $item = $query[0];
 //            $item['tour_file_package'] = ROOT_ADDRESS_WITHOUT_LANG . '/pic/reservationTour/' . $item['tour_file'];
-            $item['tour_file_package'] =  $item['tour_file'];
-            return [$item]; // چون جاوااسکریپت منتظر آرایه‌ست
+        $item['tour_file_package'] =  $item['tour_file'];
+        return [$item]; // چون جاوااسکریپت منتظر آرایه‌ست
 
 
 

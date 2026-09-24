@@ -4,6 +4,23 @@
     {/if}
 {/foreach}
 
+
+{load_presentation_object filename="reservationSetting" assign="ObjSetting"}
+{assign var="IsLoginBeforeSearch" value=$ObjSetting->getReservationSettingByTitleService('IsLoginBeforeSearch' , "public")}
+
+
+{if $IsLoginBeforeSearch[0]['enable'] == 1}
+    <!-- login and register popup -->
+
+    {assign var="useType" value="searchResume"}
+    {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentLoginRegister.tpl"}
+    <script type="text/javascript" src="assets/js/custom.js"></script>
+    <script src='assets/js/sweetalert2.all.min.js' type='application/javascript'></script>
+    <!-- login and register popup -->
+{/if}
+<script>
+    window.IS_LOGIN_BEFORE_SEARCH = {if $IsLoginBeforeSearch[0]['enable'] == 1}true{else}false{/if};
+</script>
 <script type="text/javascript" src="assets/js/popup.js"></script>
 <script src="assets/plugins/camera/camera.min.js"></script>
 <script>

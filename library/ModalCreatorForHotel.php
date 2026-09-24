@@ -224,6 +224,7 @@ class ModalCreatorForHotel
         $objDiscountCode = Load::controller('discountCodes');
         $objbook = Load::controller($this->Controller);
         $Hotel = $objbook->info_hotel_client($Param, TYPE_ADMIN);
+        functions::insertLog('$Hotel: ' . json_encode($Hotel) , '000shojaee');
         ?>
         <div class="modal-dialog modal-lg modal-dialog-centered hotel-modal">
             <div class="modal-content">
@@ -242,7 +243,7 @@ class ModalCreatorForHotel
                     </div>
                 </div>
 
-                <div class="modal-body hotel-modal-body">
+                <div class="modal-body hotel-modal-body d-flex" style="flex-direction:column">
 
                     <?php
                     foreach ($Hotel as $key => $view) {
@@ -427,50 +428,54 @@ class ModalCreatorForHotel
                                     <?php } ?>
                                 </div>
                             </div>
-
-                            <!-- ===== CARD: مشخصات مسافرین ===== -->
-                            <div class="hotel-info-card border-passenger">
-                                <div class="hotel-card-header">
-                                    <div class="card-icon icon-passenger"><i class="fa fa-users"></i></div>
-                                    <h5 class="card-title">مشخصات مسافرین (سرگروه اول هر اتاق)</h5>
+                        <?php }
+                        $roomLabels = ['اتاق اول', 'اتاق دوم', 'اتاق سوم', 'اتاق چهارم', 'اتاق پنجم', 'اتاق ششم', 'اتاق هفتم', 'اتاق هشتم', 'اتاق نهم', 'اتاق دهم'];
+                        $roomLabel = $roomLabels[$key] ?? ('اتاق ' . ($key + 1));
+                        ?>
+                        <!-- ===== CARD: مشخصات مسافرین ===== -->
+                        <div class="hotel-info-card border-passenger">
+                            <div class="hotel-card-header">
+                                <div class="card-icon icon-passenger"><i class="fa fa-users"></i></div>
+                                <h5 class="card-title">مشخصات مسافرین (سرگروه <?php echo $roomLabel; ?>)</h5>
+                            </div>
+                            <div class="hotel-card-grid">
+                                <div class="grid-item">
+                                    <div class="label">نام و نام خانوادگی</div>
+                                    <div class="value">
+                                        <?php
+                                        functions::insertLog('$view: ' . json_encode($view) , '000shojaee');
+                                        if (!empty($view['passenger_name'])){
+                                            echo $view['passenger_name'] . ' ' . $view['passenger_family'] . ' (' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
+                                        } elseif (!empty($view['passenger_name_en'])){
+                                            echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en'] . ' (' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
+                                        }
+                                        ?>
+                                    </div>
                                 </div>
-                                <div class="hotel-card-grid">
+                                <div class="grid-item">
+                                    <div class="label">شماره ملی/پاسپورت</div>
+                                    <div class="value"><?php echo $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code']; ?></div>
+                                </div>
+                                <?php if(!($view['source_id']==29)){ ?>
                                     <div class="grid-item">
-                                        <div class="label">نام و نام خانوادگی</div>
-                                        <div class="value">
-                                            <?php
-                                            if (!empty($view['passenger_name'])){
-                                                echo $view['passenger_name'] . ' ' . $view['passenger_family'] . ' (' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
-                                            } elseif (!empty($view['passenger_name_en'])){
-                                                echo $view['passenger_name_en'] . ' ' . $view['passenger_family_en'] . ' (' . ($view['passportCountry'] != 'IRN' && $view['passportCountry'] != '' ? $view['passportCountry'] : 'IRN') . ')';
-                                            }
-                                            ?>
-                                        </div>
+                                        <div class="label">تاریخ تولد</div>
+                                        <div class="value"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : $view['passenger_birthday_en']; ?></div>
                                     </div>
-                                    <div class="grid-item">
-                                        <div class="label">شماره ملی/پاسپورت</div>
-                                        <div class="value"><?php echo $view['passenger_national_code'] == '0000000000' ? $view['passportNumber'] : $view['passenger_national_code']; ?></div>
-                                    </div>
-                                    <?php if(!($view['source_id']==29)){ ?>
-                                        <div class="grid-item">
-                                            <div class="label">تاریخ تولد</div>
-                                            <div class="value"><?php echo !empty($view['passenger_birthday']) ? $view['passenger_birthday'] : $view['passenger_birthday_en']; ?></div>
-                                        </div>
-                                    <?php } ?>
-                                    <div class="grid-item">
-                                        <div class="label">اتاق</div>
-                                        <div class="value"><?php echo $view['room_count'] . ' باب ' . $view['room_name']; ?></div>
-                                    </div>
+                                <?php } ?>
+                                <div class="grid-item">
+                                    <div class="label">اتاق</div>
+                                    <div class="value"><?php echo $view['room_count'] . ' باب ' . $view['room_name']; ?></div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- ===== CARD: اطلاعات ترانسفر ===== -->
-                            <?php
+                        <!-- ===== CARD: اطلاعات ترانسفر ===== -->
+                        <?php if ($key < 1) {
                             $transferData = json_decode($view['transfer_hotel'], true);
                             $vehicleTypes = ['flight'=>'پرواز', 'bus'=>'اتوبوس', 'train'=>'قطار', 'other'=>'سایر'];
                             ?>
                             <?php if($transferData && is_array($transferData) && (!empty($transferData['type_vehicle']) || !empty($transferData['type_vehicle_arrival']))): ?>
-                                <div class="hotel-info-card border-transfer">
+                                <div class="hotel-info-card border-transfer" style="order:9999;">
                                     <div class="hotel-card-header">
                                         <div class="card-icon icon-transfer"><i class="fa fa-exchange"></i></div>
                                         <h5 class="card-title">اطلاعات ترانسفر</h5>
@@ -541,8 +546,8 @@ class ModalCreatorForHotel
                                 </div>
                             <?php } ?>
 
-                        <?php } ?>
-                    <?php } ?>
+                        <?php } } ?>
+
 
                 </div>
             </div>

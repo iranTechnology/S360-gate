@@ -39,6 +39,8 @@
     </div>
 </section>
 
+{include file="include_files/banner-slider.tpl" }
+
 {if $smarty.const.GDS_SWITCH eq 'page'}
 <script>
     {literal}

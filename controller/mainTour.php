@@ -10,7 +10,8 @@ class mainTour extends clientAuth
     public $IsLogin;
 
 
-    public function __construct() {
+    public function __construct()
+    {
 
         $this->IsLogin = Session::IsLogin();
         require_once('./resource/tourResource.php');
@@ -25,8 +26,8 @@ class mainTour extends clientAuth
         require_once('./resource/countryResource.php');
         $this->country_resource = new countryResource();
 
-        if ( $this->IsLogin ) {
-            $this->counterId  = functions::getCounterTypeId( $_SESSION['userId'] );
+        if ($this->IsLogin) {
+            $this->counterId = functions::getCounterTypeId($_SESSION['userId']);
         } else {
             $this->counterId = '5';
         }
@@ -35,21 +36,24 @@ class mainTour extends clientAuth
     /**
      * @return bool|mixed|reservationVehicleModel
      */
-    public function reservationTypeOfVehicleModel() {
+    public function reservationTypeOfVehicleModel()
+    {
         return Load::getModel(reservationTypeOfVehicleModel::class);
     }
 
     /**
      * @return bool|mixed|airlineClientModel
      */
-    public function airlineClientModel() {
+    public function airlineClientModel()
+    {
         return Load::getModel(airlineClientModel::class);
     }
 
     /**
      * @return bool|mixed|reservationTourRoutModel
      */
-    public function reservationTourTypeModel() {
+    public function reservationTourTypeModel()
+    {
         return Load::getModel(reservationTourTypeModel::class);
     }
 
@@ -73,7 +77,8 @@ class mainTour extends clientAuth
      * @return bool|mixed|string
      * @throws Exception
      */
-    public function getTourList($data) {
+    public function getTourList($data)
+    {
 
 
         $tours = $this->getTour($data);
@@ -87,7 +92,8 @@ class mainTour extends clientAuth
         return functions::withError(null, 200, 'not found');
     }
 
-    public function getTour($data) {
+    public function getTour($data)
+    {
         $reservation_tour_model = $this->reservationTourModel()->getTable();
         $reservation_tour_model = $this->reservationTourModel()->getTable();
         $reservation_tour_rout_model = $this->reservationTourRoutModel()->getTable();
@@ -133,7 +139,7 @@ class mainTour extends clientAuth
         }
         $tours->join($reservation_tour_model, 'fk_tour_id', 'id', 'INNER', $reservation_tour_rout_model);
         $tours->join($reservation_tour_package_model, 'fk_tour_id', 'id', 'LEFT', $reservation_tour_package_model);
-        $tours->joinSimple([$reservation_tour_model,$reservation_tour_model], 'ReservationCity.id', 'origin_city_id', 'INNER', [$reservation_city_model,'ReservationCity']);
+        $tours->joinSimple([$reservation_tour_model, $reservation_tour_model], 'ReservationCity.id', 'origin_city_id', 'INNER', [$reservation_city_model, 'ReservationCity']);
         $tours->join($reservation_tour_model, 'id', 'origin_country_id', 'INNER', $reservation_country_model);
 
 
@@ -164,28 +170,32 @@ class mainTour extends clientAuth
     /**
      * @return bool|mixed|reservationTourModel
      */
-    public function reservationTourModel() {
+    public function reservationTourModel()
+    {
         return Load::getModel('reservationTourModel');
     }
 
     /**
      * @return bool|mixed|reservationTourRoutModel
      */
-    public function reservationTourRoutModel() {
+    public function reservationTourRoutModel()
+    {
         return Load::getModel('reservationTourRoutModel');
     }
 
     /**
      * @return bool|mixed|reservationCityModel
      */
-    public function reservationCityModel() {
+    public function reservationCityModel()
+    {
         return Load::getModel('reservationCityModel');
     }
 
     /**
      * @return bool|mixed|reservationCountryModel
      */
-    public function reservationCountryModel() {
+    public function reservationCountryModel()
+    {
         return Load::getModel('reservationCountryModel');
     }
 
@@ -193,7 +203,8 @@ class mainTour extends clientAuth
      * @param $conditions
      * @return array
      */
-    public function conditions($conditions) {
+    public function conditions($conditions)
+    {
 
         $new_condition = array();
 
@@ -216,7 +227,8 @@ class mainTour extends clientAuth
         return $new_condition;
     }
 
-    public function getTourDestinations($tour_id) {
+    public function getTourDestinations($tour_id)
+    {
         $destinationModel = $this->reservationTourRoutModel()->getTable();
         $cityModel = $this->reservationCityModel()->getTable();
         $countryModel = $this->reservationCountryModel()->getTable();
@@ -237,7 +249,8 @@ class mainTour extends clientAuth
         return $TourDestinations;
     }
 
-    public function getTourHotels($tour_id) {
+    public function getTourHotels($tour_id)
+    {
         $hotelModel = $this->reservationHotelModel()->getTable();
 
         $tourHotelModel = $this->reservationTourHotelModel()->getTable();
@@ -267,14 +280,16 @@ class mainTour extends clientAuth
     /**
      * @return bool|mixed|reservationHotelModel
      */
-    public function reservationHotelModel() {
+    public function reservationHotelModel()
+    {
         return Load::getModel(reservationHotelModel::class);
     }
 
     /**
      * @return bool|mixed|reservationTourHotelModel
      */
-    public function reservationTourHotelModel() {
+    public function reservationTourHotelModel()
+    {
         return Load::getModel(reservationTourHotelModel::class);
     }
 
@@ -286,10 +301,10 @@ class mainTour extends clientAuth
             return functions::withError(null, 200, 'not found');
         }
 
-        $hotelStars   = array();
+        $hotelStars = array();
         $vehicleTypes = array();
-        $vehicles     = array();
-        $allPrices    = array();
+        $vehicles = array();
+        $allPrices = array();
 
         foreach ($tours as &$tour) {
 
@@ -361,7 +376,7 @@ class mainTour extends clientAuth
                 }
             }
 
-            $lowestPrice  = !empty($tourPrices) ? min($tourPrices) : null;
+            $lowestPrice = !empty($tourPrices) ? min($tourPrices) : null;
             $highestPrice = !empty($tourPrices) ? max($tourPrices) : null;
 
             if ($lowestPrice !== null) {
@@ -376,11 +391,11 @@ class mainTour extends clientAuth
                 : 'PrivateLocalTour';
 
             $tour['pointClub'] = functions::CalculatePoint(array(
-                'service'     => $serviceName,
+                'service' => $serviceName,
                 'baseCompany' => 'all',
-                'company'     => 'all',
-                'counterId'   => $this->counterId,
-                'price'       => $lowestPrice
+                'company' => 'all',
+                'counterId' => $this->counterId,
+                'price' => $lowestPrice
             ));
 
         }
@@ -394,27 +409,28 @@ class mainTour extends clientAuth
         sort($hotelStars);
         sort($allPrices);
 
-        $lowestPriceGlobal  = !empty($allPrices) ? min($allPrices) : null;
+        $lowestPriceGlobal = !empty($allPrices) ? min($allPrices) : null;
         $highestPriceGlobal = !empty($allPrices) ? max($allPrices) : null;
 
         $tourCollection = $this->tour_resource->collection($tours);
 
         return functions::withSuccess(array(
-            'tours'   => $tourCollection,
+            'tours' => $tourCollection,
             'filters' => array(
-                'hotel_stars'   => $hotelStars,
+                'hotel_stars' => $hotelStars,
                 'vehicle_types' => $vehicleTypes,
-                'vehicles'      => $vehicles,
-                'prices'        => $allPrices,
-                'lowest_price'  => $lowestPriceGlobal,
+                'vehicles' => $vehicles,
+                'prices' => $allPrices,
+                'lowest_price' => $lowestPriceGlobal,
                 'highest_price' => $highestPriceGlobal,
             )
         ), 200, 'successfully fetch');
     }
 
 
-
-    public function getTour2($data) {
+    public function getTour2($data)
+    {
+        $isAccessOrganizationalTour = functions::checkClientConfigurationAccess('organizational_tour');
 
 
         $reservation_tour_model = $this->reservationTourModel()->getTable();
@@ -488,6 +504,32 @@ class mainTour extends clientAuth
         ";
         $tours->whereRaw($complexCondition);
 
+        if ($isAccessOrganizationalTour) {
+
+            $currentUserId = Session::getUserId();
+            $getAgency     = $currentUserId ? functions::getAgencyByUserId($currentUserId) : null;
+            $isColleague   = !empty($getAgency) && $getAgency['isColleague'] == 1;
+//            if (!$isColleague) {
+            $col = "{$reservation_tour_model}.colleagues";
+
+            // اگر کاربر آژانس دارد، تورهای مخصوص آژانس خودش هم نمایش داده شود
+            $agencyCondition = '';
+            if (!empty($getAgency['id'])) {
+                $agencyId        = $getAgency['id'];
+                $agencyCondition = "OR JSON_CONTAINS({$col}, '\"{$agencyId}\"')";
+            }
+            $tours->whereRaw("
+            CASE
+                WHEN {$col} IS NULL OR TRIM({$col}) IN ('', '[]', 'null') THEN 1
+                WHEN JSON_VALID({$col}) = 0 THEN 0
+                ELSE (
+                    JSON_CONTAINS({$col}, '\"onlinePassengers\"')
+                    {$agencyCondition}
+                )
+            END = 1
+        ");
+//            }
+        }
 
         $tours->groupBy($reservation_tour_model . '.id_same');
 
@@ -496,7 +538,7 @@ class mainTour extends clientAuth
 
         $tours->limit(0, $data['limit']);
 
-        $tours = $tours->all(true , 'getTour2');
+        $tours = $tours->all(true, 'getTour2');
 
         // Fetch destinations for each tour
         /** @var resultTourLocal $resultTourLocal */
@@ -508,20 +550,21 @@ class mainTour extends clientAuth
             $tours[$key]['hotels'] = $this->getTourHotels($tour['id']);
             $tours[$key]['getTypeVehicle'] = $resultTourLocal->getTypeVehicle($tour['id']);
 
-            $arrayTourType = json_decode( $tour['tour_type_id'] );
-            if ( in_array( '1', $arrayTourType ) ) {
+            $arrayTourType = json_decode($tour['tour_type_id']);
+            if (in_array('1', $arrayTourType)) {
                 $oneDayTour = 'yes';
             } else {
                 $oneDayTour = 'no';
             }
-            $tours[$key]['discount'] = $resultTourLocal->minPriceHotelByIdTourR($tour['id'] , $oneDayTour);
+            $tours[$key]['discount'] = $resultTourLocal->minPriceHotelByIdTourR($tour['id'], $oneDayTour);
         }
 
 
         return $tours;
     }
 
-    public function callGetCountry($params) {
+    public function callGetCountry($params)
+    {
         $dateNow = dateTimeSetting::jdate("Ymd", "", "", "", "en");
         $origin_country_id = $params['origin_country_id'];
         $origin_city_id = $params['origin_city_id'];
@@ -613,7 +656,8 @@ class mainTour extends clientAuth
 
     }
 
-    public function getCountry($data) {
+    public function getCountry($data)
+    {
 
         $reservation_tour_model = $this->reservationTourModel()->getTable();
         $reservation_tour_rout_model = $this->reservationTourRoutModel()->getTable();
@@ -749,7 +793,8 @@ class mainTour extends clientAuth
         return functions::withError(null, 200, 'not found');
     }
 
-    public function getCityListByCountry($data) {
+    public function getCityListByCountry($data)
+    {
 
         $reservation_city_model = $this->reservationCityModel()->getTable();
         $reservation_tour_rout_model = $this->reservationTourRoutModel()->getTable();
@@ -827,7 +872,8 @@ class mainTour extends clientAuth
         return functions::withError(null, 200, 'not found');
     }
 
-    public function getInternalOriginCities() {
+    public function getInternalOriginCities()
+    {
         $info_api = $this->getAccessTourWebService();
 
         $reservation_tour_model = $this->reservationTourModel()->getTable();
@@ -1052,7 +1098,8 @@ class mainTour extends clientAuth
         return functions::withSuccess(null, 200, 'not found');
     }
 
-    public function getCitiesByCategory($data, $origin_city_id = null) {
+    public function getCitiesByCategory($data, $origin_city_id = null)
+    {
         $reservation_city = $this->getModel('reservationCityModel');
         $reservation_tour = $this->getModel('reservationTourModel');
         $reservation_tour_rout = $this->getModel('reservationTourRoutModel');
@@ -1064,7 +1111,8 @@ class mainTour extends clientAuth
 
     }
 
-    public function getTourTypeList() {
+    public function getTourTypeList()
+    {
 
 
         $reservationTourTypeModel = $this->getModel('reservationTourTypeModel');
@@ -1080,7 +1128,8 @@ class mainTour extends clientAuth
         return functions::withError(null, 200, 'not found');
     }
 
-    public function getInternalTourCities($params = null) {
+    public function getInternalTourCities($params = null)
+    {
 
 
         $dateNow = dateTimeSetting::jdate("Ymd", "", "", "", "en");
@@ -1207,7 +1256,8 @@ class mainTour extends clientAuth
         return $this->getCityList($conditions);
     }
 
-    public function getCityList($data) {
+    public function getCityList($data)
+    {
 
         $info_api = $this->getAccessTourWebService();
 
@@ -1248,7 +1298,7 @@ class mainTour extends clientAuth
         $have_city_conditions['index'] = functions::array_filter_by_value($data['conditions'], 'index', 'id');
         $have_city_conditions['table'] = functions::array_filter_by_value($data['conditions'], 'table', $reservation_city_model);
 
-        if (isset($data['get_origin']) && $data['get_origin'] && (($have_country_conditions['index'] && $have_country_conditions['table']) || ($have_city_conditions['index'] && $have_city_conditions['table']) )) {
+        if (isset($data['get_origin']) && $data['get_origin'] && (($have_country_conditions['index'] && $have_country_conditions['table']) || ($have_city_conditions['index'] && $have_city_conditions['table']))) {
             $cities = $this->reservationCityModel()->get($getter, true);
             $cities->join($reservation_tour_model, 'origin_city_id', 'id', 'INNER');
             $cities->join($reservation_tour_model, 'fk_tour_id', 'id', 'INNER', $reservation_tour_rout_model);
@@ -1334,7 +1384,6 @@ class mainTour extends clientAuth
             $api_cities = $object_api->getOriginCity($conditions_tour);
 
         }
-
 
 
         if ($cities || (empty($cities) && !empty($api_cities))) {
@@ -1462,7 +1511,8 @@ class mainTour extends clientAuth
         return functions::withSuccess(null, 200, 'not found');
     }
 
-    public function getInternationalTourCities($params = null) {
+    public function getInternationalTourCities($params = null)
+    {
 
 
         $dateNow = dateTimeSetting::jdate("Ymd", "", "", "", "en");
@@ -1477,7 +1527,7 @@ class mainTour extends clientAuth
         // means looking for destination cities
         $category_conditions = [];
         if ($origin_city_id) {
-            if($origin_city_id != 'all') {
+            if ($origin_city_id != 'all') {
                 $category_conditions[] = [
                     'index' => 'origin_city_id',
                     'table' => 'reservation_tour_tb',
@@ -1511,7 +1561,7 @@ class mainTour extends clientAuth
                     'operator' => '=',
                     'value' => $destination_country_id,
                 ];
-            }else {
+            } else {
                 $category_conditions[] = [
                     'index' => 'destination_country_id',
                     'table' => 'reservation_tour_rout_tb',
@@ -1627,7 +1677,8 @@ class mainTour extends clientAuth
         return $this->getCityList($conditions);
     }
 
-    public function getTourCities($params = null) {
+    public function getTourCities($params = null)
+    {
 
 
         $dateNow = dateTimeSetting::jdate("Ymd", "", "", "", "en");
@@ -1782,8 +1833,7 @@ class mainTour extends clientAuth
             $conditions['group_by'] = 'reservation_tour_tb.origin_city_id';
 
             return $this->getExternalCities($conditions);
-        }
-        else if (isset($params['type']) && $params['type'] == 'international' && isset($params['city_id'])) {
+        } else if (isset($params['type']) && $params['type'] == 'international' && isset($params['city_id'])) {
 
             $conditions['group_by'] = 'reservation_country_tb.id';
             $conditions['is_external'] = true;
@@ -1826,7 +1876,8 @@ class mainTour extends clientAuth
         return $this->getCityList($conditions);
     }
 
-    public function getExternalCities($data) {
+    public function getExternalCities($data)
+    {
         $reservation_tour_model = $this->reservationTourModel()->getTable();
         $reservation_tour_rout_model = $this->reservationTourRoutModel()->getTable();
         $reservation_city_model = $this->reservationCityModel()->getTable();
@@ -1931,7 +1982,8 @@ class mainTour extends clientAuth
         return functions::withError(null, 200, 'not found');
     }
 
-    public function getZiaratyTourCity($params = null) {
+    public function getZiaratyTourCity($params = null)
+    {
 
         $dateNow = dateTimeSetting::jdate("Ymd", "", "", "", "en");
 
@@ -2040,7 +2092,8 @@ class mainTour extends clientAuth
     }
 
 
-    public function tourExternalCountryCity($params) {
+    public function tourExternalCountryCity($params)
+    {
         $dateNow = dateTimeSetting::jdate("Ymd", "", "", "", "en");
         $reservation_tour_rout_model = $this->getModel('reservationTourRoutModel')->getTable();
         $reservation_city_model = $this->getModel('reservationCityModel')->getTable();
@@ -2050,7 +2103,7 @@ class mainTour extends clientAuth
             ->join($reservation_tour_rout_model, 'destination_city_id', 'id', 'INNER')
             ->join($reservation_tour_rout_model, 'id', 'fk_tour_id', 'INNER', $reservation_tour_model)
             ->where($reservation_city_model . '.id_country', $params['country_id'])
-            ->where($reservation_tour_model . '.start_date', $dateNow , '>');
+            ->where($reservation_tour_model . '.start_date', $dateNow, '>');
 
 
         if (isset($params['category_id']) && $params['category_id']) {
@@ -2101,7 +2154,8 @@ class mainTour extends clientAuth
         return functions::withSuccess($result_city_external_tour, 200, 'data fetch successfully');
     }
 
-    public function v2GetTours() {
+    public function v2GetTours()
+    {
         $reservation_tour_model = $this->reservationTourModel()->getTable();
         $reservation_tour_rout_model = $this->reservationTourRoutModel()->getTable();
         $reservation_city_model = $this->reservationCityModel()->getTable();
@@ -2184,7 +2238,8 @@ class mainTour extends clientAuth
         return $tours = $tours->all();
     }
 
-    public function getInternationalDestinationCities($params = null) {
+    public function getInternationalDestinationCities($params = null)
+    {
 
 
         $dateNow = dateTimeSetting::jdate("Ymd", "", "", "", "en");
@@ -2311,7 +2366,8 @@ class mainTour extends clientAuth
         return $this->getCityList($conditions);
     }
 
-    public function setTourData($id) {
+    public function setTourData($id)
+    {
         $reservation_tour_model = $this->reservationTourModel()->getTable();
         $reservation_tour_rout_model = $this->reservationTourRoutModel()->getTable();
         $reservation_country_model = $this->reservationCountryModel()->getTable();
@@ -2321,7 +2377,7 @@ class mainTour extends clientAuth
             $reservation_tour_model . '.*',
             $reservation_tour_rout_model . '.destination_country_id',
             $reservation_tour_rout_model . '.destination_city_id',
-        ],true);
+        ], true);
         $tour->join($reservation_tour_model, 'fk_tour_id', 'id', 'INNER', $reservation_tour_rout_model);
         $tour->join($reservation_tour_model, 'id', 'origin_city_id', 'INNER', $reservation_city_model);
         $tour->join($reservation_tour_model, 'id', 'origin_country_id', 'INNER', $reservation_country_model);
@@ -2333,7 +2389,6 @@ class mainTour extends clientAuth
         $tour->orderBy($reservation_tour_model . '.id');
 
 
-
         $tour = $tour->find();
         defined('SEARCH_ORIGIN_COUNTRY') or define('SEARCH_ORIGIN_COUNTRY', $tour['origin_country_id']);
         defined('SEARCH_ORIGIN_CITY') or define('SEARCH_ORIGIN_CITY', $tour['origin_city_id']);
@@ -2343,10 +2398,13 @@ class mainTour extends clientAuth
         defined('SEARCH_TOUR_TYPE') or define('SEARCH_TOUR_TYPE', 'all');
     }
 
-    public function getTourById($id) {
+    public function getTourById($id)
+    {
         return $this->reservationTourModel()->get()->where('id', $id)->find();
     }
-    public function getTourByIdSame($id) {
+
+    public function getTourByIdSame($id)
+    {
 //        if (SOFTWARE_LANG == 'fa') {
         $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
 //        } else {
@@ -2354,10 +2412,10 @@ class mainTour extends clientAuth
 //        }
         $tour = $this->reservationTourModel()->get()
             ->where('id_same', $id)
-            ->where('start_date' , $dateNow , '>=')
-            ->where('is_del' , 'no')
+            ->where('start_date', $dateNow, '>=')
+            ->where('is_del', 'no')
             ->orderBy('start_date', 'asc')
-            ->limit(0 , 1)
+            ->limit(0, 1)
             ->all();
 
         if (empty($tour)) {
@@ -2366,7 +2424,9 @@ class mainTour extends clientAuth
 
         return $tour;
     }
-    public function getTourBySlug($name_en) {
+
+    public function getTourBySlug($name_en)
+    {
         if (SOFTWARE_LANG == 'fa') {
             $dateNow = dateTimeSetting::jdate("Ymd", '', '', '', 'en');
         } else {
@@ -2374,10 +2434,10 @@ class mainTour extends clientAuth
         }
         return $this->reservationTourModel()->get()
             ->where('tour_name_en', $name_en)
-            ->where('start_date' , $dateNow , '>=')
-            ->where('is_del' , 'no')
+            ->where('start_date', $dateNow, '>=')
+            ->where('is_del', 'no')
             ->orderBy('start_date', 'asc')
-            ->limit(0 , 1)
+            ->limit(0, 1)
             ->all();
     }
 }

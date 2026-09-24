@@ -441,6 +441,7 @@ class agency  extends clientAuth {
 			$data_currency  = $currency->ShowInfo( $rec['type_currency'] );
 
             $this->list[$key]['currency_title'] = $data_currency['CurrencyTitle'];
+            $this->list[$key]['isColleague'] = $rec['isColleague'];
             $this->list[$key]['type_payment_title'] = ($rec['type_payment'] == 'currency') ? 'ارزی' : 'ریالی';
             $this->list[$key]['limit_credit'] = $rec['limit_credit'] ;
             $this->list[$key]['check_time_limit_credit'] = ($rec['time_limit_credit'] > time()) ;

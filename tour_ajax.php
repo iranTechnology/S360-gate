@@ -771,6 +771,7 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'listRoutForTour') {
 
 }
 elseif (isset($_POST['flag']) && $_POST['flag'] == 'tourRegistration') {
+
     unset($_POST['flag']);
     /* @var reservationTour $objController */
     $objController = Load::controller('reservationTour');
@@ -847,7 +848,7 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'tourRegistration') {
     unset($_POST['flag']);
 
     $objController = Load::controller('reservationTour');
-    $result = $objController->registerIsShowTour($_POST['idTour'], $_POST['isShow'], $_POST['detail']);
+    $result = $objController->registerIsShowTour($_POST['idTour'], $_POST['isShow'], $_POST['detail'], $_POST['colleagues']);
 
     echo $result;
 

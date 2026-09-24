@@ -67,6 +67,7 @@ function showDiv(id) {
 }
 
 function showOnSite(idTour, isShow) {
+    var colleagues = $('#colleagues').val();
     if (isShow == 'yes') {
         var detail = $('#price').val();
     } else {
@@ -91,6 +92,7 @@ function showOnSite(idTour, isShow) {
                             idTour: idTour,
                             isShow: isShow,
                             detail: detail,
+                            colleagues:colleagues,
                             flag: 'isShowTour'
                         },
                         function (response) {

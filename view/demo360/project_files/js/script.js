@@ -203,61 +203,61 @@ if (window.innerWidth > 576) {  // فقط برای دسکتاپ
                     index: 'Flight',
                     title: 'رزرو بلیط هواپیما داخلی و خارجی',
                     description: ' برای خرید آنلاین بلیط هواپیما در سفر 360 کافیست مبدا، مقصد و تاریخ پرواز خود را انتخاب کنید. ',
-                    image: 'gds/view/demo360/project_files/images/bg-parvaz.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-parvaz.jpg',
                 },
                 {
                     index: 'Hotel',
                     title: 'رزرو هتل‌های داخلی و خارجی با بهترین قیمت',
                     description: ' بهترین هتل‌ها را در داخل و خارج از کشور با تخفیف‌های ویژه رزرو کنید و از سفری راحت و بی‌دغدغه لذت ببرید.  ',
-                    image: 'gds/view/demo360/project_files/images/bg-hotel.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-hotel.jpg',
                 },
                 {
                     index: 'Package',
                     title: 'پرواز + هتل؛ سفری آسان و به‌یادماندنی',
                     description: ' ترکیب پرواز و هتل برای سفری آسان و به‌یادماندنی، با انتخاب بهترین گزینه‌ها برای شما.  ',
-                    image: 'gds/view/demo360/project_files/images/bg-hotelParvaz.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-hotelParvaz.jpg',
                 },
                 {
                     index: 'Train',
                     title: 'رزرو آسان بلیط قطارهای داخلی ',
                     description: ' بلیط قطارهای داخلی را با بهترین قیمت و تخفیف‌های ویژه تهیه کنید و از سفری آسوده و مطمئن لذت ببرید.   ',
-                    image: 'gds/view/demo360/project_files/images/bg-train.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-train.jpg',
                 },
                 {
                     index: 'Bus',
                     title: 'سفر راحت با رزرو بلیط اتوبوس‌های داخلی ',
                     description: '  سفر 360 بهترین گزینه‌ها را برای رزرو بلیط اتوبوس‌های داخلی با قیمت‌های مناسب و خدمات عالی ارائه می‌دهد.    ',
-                    image: 'gds/view/demo360/project_files/images/bg-bus.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-bus.jpg',
                 },
                 {
                     index: 'Insurance',
                     title: 'بیمه مسافرتی مطمئن برای سفرهای داخلی و خارجی',
                     description: ' بهترین بیمه مسافرتی با پوشش‌های جامع و قیمت‌های رقابتی را تهیه کنید و با خیال راحت به سفرهای داخلی و خارجی بروید. ',
-                    image: 'gds/view/demo360/project_files/images/bg-bime.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-bime.jpg',
                 },
                 {
                     index: 'Tour',
                     title: 'تورهای ویژه داخلی و خارجی با خدمات استثنایی',
                     description: 'با سفر 360، سفرهای داخلی و خارجی خود را به تورهایی فراموش‌ نشدنی تبدیل کنید. ',
-                    image: 'gds/view/demo360/project_files/images/bg-tour.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-tour.jpg',
                 },
                 {
                     index: 'Entertainment',
                     title: 'تفریحات جذاب و هیجان‌انگیز در مقصدهای داخلی و خارجی',
                     description: 'بهترین و متنوع‌ترین تفریحات را در سفرهای داخلی و خارجی خود تجربه کنید. از فعالیت‌های هیجان‌انگیز تا لحظات آرامش‌بخش.',
-                    image: 'gds/view/demo360/project_files/images/bg-tafrihat.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-tafrihat.jpg',
                 },
                 {
                     index: 'Visa',
                     title: 'اخذ ویزای سریع و مطمئن برای مقاصد بین‌المللی',
                     description: 'فرآیند اخذ ویزا را به سادگی و با اطمینان کامل انجام دهید و به راحتی برای سفرهای بین‌المللی خود آماده شوید.',
-                    image: 'gds/view/demo360/project_files/images/bg-visa.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-visa.jpg',
                 },
                 {
                     index: 'Europcar',
                     title: 'اجاره خودرو با شرایط عالی برای سفرهای داخلی و خارجی',
                     description: 'با سفر 360، خودروهای باکیفیت و متنوع را با قیمت‌های مناسب و شرایط انعطاف‌پذیر اجاره کنید. ',
-                    image: 'gds/view/demo360/project_files/images/bg-car.jpg',
+                    // image: 'gds/view/demo360/project_files/images/bg-car.jpg',
                 },
             ];
 
@@ -265,12 +265,15 @@ if (window.innerWidth > 576) {  // فقط برای دسکتاپ
             const filteredData = mainData.find(item => item.index === dataName);
 
             if (filteredData) {
-                const bgBanner = document.getElementById('bg-banner-demo');
+                // const bgBanner = document.getElementById('bg-banner-demo');
                 const titleBanner = document.getElementById('title-banner');
                 const captionBanner = document.getElementById('caption-banner');
 
-                if (bgBanner && titleBanner && captionBanner) {
-                    bgBanner.style.backgroundImage = `url(${filteredData.image})`;
+                if (
+                    // bgBanner &&
+                    titleBanner && captionBanner
+                ) {
+                    // bgBanner.style.backgroundImage = `url(${filteredData.image})`;
                     titleBanner.textContent = filteredData.title;
                     captionBanner.textContent = filteredData.description;
                 }

@@ -886,6 +886,15 @@ function internalHotelSearchDetails() {
                             content: msg,
                             rtl: true,
                             type: 'red',
+                            buttons: {
+                                ok: {
+                                    text: 'ok',
+                                    btnClass: 'btn-red',
+                                    action: function () {
+                                        window.location.href = '/';
+                                    }
+                                }
+                            }
                         })
                     }
                 },
@@ -896,6 +905,15 @@ function internalHotelSearchDetails() {
                         content: msg,
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                     $('.RoomsContainer').append(`<div class='hotel-detail-room-list'>
                     <div class='hotel-rooms-item'>
@@ -2255,6 +2273,15 @@ function BuyHotelWithoutInputsApiNew_NoActive_ardalani1405_6_13(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 } else {
                     resetReserveButton()
@@ -2267,6 +2294,15 @@ function BuyHotelWithoutInputsApiNew_NoActive_ardalani1405_6_13(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 }
             },
@@ -2285,6 +2321,15 @@ function BuyHotelWithoutInputsApiNew_NoActive_ardalani1405_6_13(RoomId) {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
             }
         })
@@ -2596,6 +2641,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 } else {
                     resetReserveButton()
@@ -2611,6 +2665,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
                         content: useXmltag('PleaseAgainBookingHotel'),
                         rtl: true,
                         type: 'red',
+                        buttons: {
+                            ok: {
+                                text: 'ok',
+                                btnClass: 'btn-red',
+                                action: function () {
+                                    window.location.href = '/';
+                                }
+                            }
+                        }
                     })
                 }
             },
@@ -2636,6 +2699,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
             }
         })
@@ -2653,6 +2725,15 @@ function BuyHotelWithoutInputsApiNew(RoomId) {
             content: useXmltag('PleaseAgainBookingHotel'),
             rtl: true,
             type: 'red',
+            buttons: {
+                ok: {
+                    text: 'ok',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        window.location.href = '/';
+                    }
+                }
+            }
         })
     }
 }
@@ -2811,6 +2892,15 @@ function BuyHotelWithoutRegisterApiNew() {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
 
             }
@@ -3471,6 +3561,15 @@ function BuyHotelWithoutRegister() {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
 
             }
@@ -5366,6 +5465,15 @@ function buyExternalHotelWithoutRegister() {
                     content: useXmltag('PleaseAgainBookingHotel'),
                     rtl: true,
                     type: 'red',
+                    buttons: {
+                        ok: {
+                            text: 'ok',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.location.href = '/';
+                            }
+                        }
+                    }
                 })
 
             }
@@ -7291,7 +7399,33 @@ function tabHotel(data , e){
 
 let isResettingCapacity = false;
 function ReserveHotel() {
-
+    // let totalSelectedRooms = 0;
+    // totalSelectedRooms = parseInt($('#TotalNumberRoom_Reserve').val()) || 0;
+    // if (totalSelectedRooms === 0) {
+    //     $('input[name^="FinalRoomCount_Reserve"]').each(function() {
+    //         totalSelectedRooms += parseInt($(this).val()) || 0;
+    //     });
+    // }
+    // if (totalSelectedRooms < 1) {
+    //     $.alert({
+    //         title: useXmltag('Warning'),
+    //         icon: 'fa fa-exclamation-triangle',
+    //         content: useXmltag('MinRoomsRequired'),
+    //         rtl: true,
+    //         type: 'red',
+    //     });
+    //     return false;
+    // }
+    // if (totalSelectedRooms > 4) {
+    //     $.alert({
+    //         title: useXmltag('Warning'),
+    //         icon: 'fa fa-exclamation-triangle',
+    //         content: useXmltag('MaxRoomsExceeded'),
+    //         rtl: true,
+    //         type: 'red',
+    //     });
+    //     return false;
+    // }
     $.post(amadeusPath + 'hotel_ajax.php',
         {
             flag: 'CheckedLogin',

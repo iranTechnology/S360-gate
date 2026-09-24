@@ -1797,7 +1797,8 @@ class detailHotel extends ApiHotelCore
                             [
                                 'RoomCode' => $room['room_id'],
                                 'RoomCount' => $room['room_count'],
-                                'ExtraBed' => $room['extra_bed_count']
+                                'ExtraBed' => $room['extra_bed_count'],
+                                'CountAdult' => $room['AdultCapacity'],
                             ]
                         ];
                     }
@@ -1808,6 +1809,7 @@ class detailHotel extends ApiHotelCore
                             'RoomCode' => $room['room_id'],
                             'RoomCount' => $room['room_count'],
                             'ExtraBed' => $room['extra_bed_count'],
+                            'CountAdult' => $room['AdultCapacity'],
                         ];
 
                         //						echo $room['child_array'];
@@ -1908,7 +1910,6 @@ class detailHotel extends ApiHotelCore
                     'RequestNumber' => $params['requestNumber'],
                     'PriceSessionId' => $price_session_id,
                     'Rooms' => $roomsArray,
-                    'CountPassengers' => $book_hotel[0]['AdultCapacity'],
                     'Passengers' => $passengersArray,
                     'Buyer' => $buyerArray,
                 ];
