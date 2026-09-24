@@ -4221,7 +4221,7 @@ class bookshowTest extends clientAuth {
                                     <div class='pull-left margin-10'>
                                     <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=TicketTwoWay&id=" . $flightBook['request_number'] . "'
                                                                            target='_blank'>
-                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-primary fa fa-file-pdf-o '
+                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
                                                                                data-original-title='بلیط با سربرگ و قیمت دار'></i></a>
@@ -4231,7 +4231,7 @@ class bookshowTest extends clientAuth {
                                     <div class='pull-left margin-10'>
                                     <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=TicketTwoWay&Letterhead=no&cash=no&id=" . $flightBook['request_number'] . "'
                                                                            target='_blank'>
-                                                                            <i class='fcbtn btn btn-outline btn-warning btn-1c tooltip-primary fa fa-file-pdf-o '
+                                                                            <i class='fcbtn btn btn-outline btn-warning btn-1c tooltip-warning fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
                                                                                data-original-title='بلیط بدون سربرگ - بدون قیمت'></i></a>
@@ -4241,7 +4241,7 @@ class bookshowTest extends clientAuth {
                                     <div class='pull-left margin-10'>
                                     <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=fa'
                                                                            target='_blank'>
-                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-primary fa fa-file-pdf-o '
+                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
                                                                                data-original-title='بلیط با سربرگ و قیمت دار'></i></a>
@@ -4251,7 +4251,7 @@ class bookshowTest extends clientAuth {
                                     <div class='pull-left margin-10'>
                                     <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&Letterhead=no&cash=no&id=" . $flightBook['request_number'] . "&lang=fa'
                                                                            target='_blank'>
-                                                                            <i class='fcbtn btn btn-outline btn-warning btn-1c tooltip-primary fa fa-file-pdf-o '
+                                                                            <i class='fcbtn btn btn-outline btn-warning btn-1c tooltip-warning fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
                                                                                data-original-title='بلیط بدون سربرگ - بدون قیمت'></i></a>
@@ -4442,7 +4442,7 @@ class bookshowTest extends clientAuth {
                             <div class="pull-left margin-10">
                             <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
                                                                        target="_blank">
-                                                                        <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-primary fa fa-file-pdf-o "
+                                                                        <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o "
                                                                            data-toggle="tooltip"
                                                                            data-placement="top" title=""
                                                                            data-original-title=" بلیط با سربرگ و قیمت دار "></i>
@@ -4541,7 +4541,7 @@ class bookshowTest extends clientAuth {
                             $DataFlightAgencyShare .= '<div class="pull-left margin-10"> 
                                                             <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=fa"
                                                                            target="_blank">
-                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-primary fa fa-file-pdf-o "
+                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top"
                                                                                title=""
@@ -4718,7 +4718,7 @@ class bookshowTest extends clientAuth {
                             $DataFlightAgencyShare .= '<div class="pull-left margin-10">
                                                         <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
                                                                            target="_blank">
-                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-primary fa fa-file-pdf-o "
+                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top" title=""
                                                                                data-original-title=" بلیط با سربرگ و قیمت دار "></i>
