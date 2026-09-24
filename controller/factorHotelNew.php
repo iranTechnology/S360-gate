@@ -883,6 +883,10 @@ class factorHotelNew extends detailHotel
         if (empty($factorNumber)) {
             return [];
         }
+        // لود مدل و کوئری مستقیم به دیتابیس
+        //$model = Load::library('Model')->get('bookHotelLocalModel');
+        //return $model->where('factor_number', $factorNumber)->all();
+
         $result_temprory_hotel = $this->getModel('bookHotelLocalModel')
             ->get()
             ->where('factor_number', $factorNumber)

@@ -423,7 +423,7 @@
     {assign var="myPassengers" value=$objFactor->getMyFactorPassengers($factorNumber)}
 
     {if !empty($myPassengers)}
-    <div class="main-Content-bottom-table Dash-ContentL-B-Table" style="margin: 20px 0;">
+    <div class="main-Content-bottom-table Dash-ContentL-B-Table" style="margin: 20px 8px;">
         <div class="main-Content-bottom-table-Title Dash-ContentL-B-Title site-bg-main-color" style="padding: 10px 15px; color: #fff; border-radius: 4px 4px 0 0;">
             <i class="icon-table"></i>
             <h3 style="margin:0; display:inline-block; font-size:15px; color:#fff;">##Listpassengers##</h3>
