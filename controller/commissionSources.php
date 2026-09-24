@@ -291,8 +291,14 @@ class commissionSources extends clientAuth
         $flightType = isset($data['flightType']) ? $data['flightType'] : null;
         $sourceId = isset($data['sourceId']) ? $data['sourceId'] : null;
 
+        // cache نتیجه checkConfigPid (هر فراخوانی یک اتصال جدید به دیتابیس کلاینت باز می‌کند)
+        static $cache = array();
+        $cacheKey = json_encode(array($abbrev, $isInternalInt, $flightType, $sourceId));
 
-        $checkResult = functions::checkConfigPid($abbrev, $isInternalInt, $flightType, $sourceId);
+        if (!array_key_exists($cacheKey, $cache)) {
+            $cache[$cacheKey] = functions::checkConfigPid($abbrev, $isInternalInt, $flightType, $sourceId);
+        }
+        $checkResult = $cache[$cacheKey];
 
         return $checkResult === 'private';
     }

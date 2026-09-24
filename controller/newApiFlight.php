@@ -41,6 +41,8 @@ class newApiFlight extends clientAuth
     private $reportAgenciesSearch;
     private $pageStartTime = null;
     private $pageStartDateTime = null;
+    // cache نتیجه functions::getCounterTypeId در pointClub (برای هر پرواز یک کوئری اجرا می‌شد)
+    private $pointClubCounterTypeCache = [];
     //endregion
 
     //region [__construct]
@@ -2886,7 +2888,11 @@ class newApiFlight extends clientAuth
     public function pointClub($ticket, $info_price, $checkPrivate)
     {
         if ($this->IsLogin) {
-            $counter_id = functions::getCounterTypeId($_SESSION['userId']);
+            $counterCacheKey = json_encode($_SESSION['userId']);
+            if (!array_key_exists($counterCacheKey, $this->pointClubCounterTypeCache)) {
+                $this->pointClubCounterTypeCache[$counterCacheKey] = functions::getCounterTypeId($_SESSION['userId']);
+            }
+            $counter_id = $this->pointClubCounterTypeCache[$counterCacheKey];
             // OPTIMIZATION: استفاده از cache به جای کوئری مجدد
             $airlineCode = $ticket['OutputRoutes'][0]['Airline']['Code'];
             $result_point_club = isset($this->airlineInfoCache[$airlineCode])
@@ -4117,6 +4123,22 @@ class newApiFlight extends clientAuth
             $seatClassBusinessXml = functions::Xmlinformation("BusinessType")->__toString();
             $seatClassEconomyXml = functions::Xmlinformation("EconomicsType")->__toString();
 
+            // OPTIMIZATION: متن بار یک بار ساخته می‌شود (قبلا برای هر پرواز چند بار فایل XML زبان parse می‌شد)
+            $kilogramsText = functions::Xmlinformation('Kilograms')->__toString();
+            $baggageBusinessText = '25 ' . $kilogramsText;
+            $baggageEconomyText = '20 ' . $kilogramsText . ' ' . functions::Xmlinformation('MainLoad')->__toString() . ' + 5 ' . $kilogramsText . ' ' . functions::Xmlinformation('HandLuggage')->__toString();
+
+            // OPTIMIZATION: cache نتایج iataStandardization و Date_arrival با کلید آرگومان‌ها (هر کدام کوئری دیتابیس دارند)
+            $iataStandardCache = [];
+            $getIataStandard = function($code) use (&$iataStandardCache, $airlineController) {
+                $cacheKey = json_encode($code);
+                if (!array_key_exists($cacheKey, $iataStandardCache)) {
+                    $iataStandardCache[$cacheKey] = $airlineController->iataStandardization($code);
+                }
+                return $iataStandardCache[$cacheKey];
+            };
+            $dateArrivalCache = [];
+
             // OPTIMIZATION: Cache airline info برای هر دو direction (رفت و برگشت)
             // جمع‌آوری تمام airline codes یونیک
 
@@ -4128,7 +4150,7 @@ class newApiFlight extends clientAuth
                 if (isset($tempArrayFlight['Flights'])) {
                     foreach ($tempArrayFlight['Flights'] as $tempFlight) {
 
-                        $airline_iata_check = $airlineController->iataStandardization($tempFlight['OutputRoutes'][0]['Airline']['Code']);
+                        $airline_iata_check = $getIataStandard($tempFlight['OutputRoutes'][0]['Airline']['Code']);
 
                         if (isset($airline_iata_check)) {
                             $allAirlineCodes[$airline_iata_check] = true;
@@ -4176,7 +4198,7 @@ class newApiFlight extends clientAuth
                     // OPTIMIZATION: Cache OutputRoutes[0] (accessed 10+ times)
                     $outputRoute0 = $flight['OutputRoutes'][0];
 
-                    $airline_iata = $airlineController->iataStandardization($outputRoute0['Airline']['Code']);
+                    $airline_iata = $getIataStandard($outputRoute0['Airline']['Code']);
 
                     $this->tickets['time'][$key] = [
                         'iata'=>$airline_iata,
@@ -4296,14 +4318,24 @@ class newApiFlight extends clientAuth
 
 
 
-                    $dept_arrival_date = ($flight['OutputRoutes'][0]['ArrivalDate'] !="") ?  $flight['OutputRoutes'][0]['ArrivalDate'] : functions::Date_arrival($flight['OutputRoutes'][0]['Departure']['Code'], $flight['OutputRoutes'][0]['Arrival']['Code'], $flight['OutputRoutes'][0]['DepartureTime'], $flight['OutputRoutes'][0]['DepartureDate']);
+                    if ($flight['OutputRoutes'][0]['ArrivalDate'] !="") {
+                        $dept_arrival_date = $flight['OutputRoutes'][0]['ArrivalDate'];
+                    } else {
+                        $dateArrivalArgs = [$flight['OutputRoutes'][0]['Departure']['Code'], $flight['OutputRoutes'][0]['Arrival']['Code'], $flight['OutputRoutes'][0]['DepartureTime'], $flight['OutputRoutes'][0]['DepartureDate']];
+                        $dateArrivalKey = json_encode($dateArrivalArgs);
+                        if (!array_key_exists($dateArrivalKey, $dateArrivalCache)) {
+                            $dateArrivalCache[$dateArrivalKey] = functions::Date_arrival($dateArrivalArgs[0], $dateArrivalArgs[1], $dateArrivalArgs[2], $dateArrivalArgs[3]);
+                        }
+                        $dept_arrival_date = $dateArrivalCache[$dateArrivalKey];
+                    }
                     $this->tickets['time'][$key]['dept_arrival_date']= (((microtime(true)-$start)*1000)/1000);
 
 
 
 
                     // OPTIMIZATION: Cache checkConfigPid results با کلید ساده‌تر (بدون sourceId)
-                    $checkPrivateCacheKey = $airline_iata . '_' . $flightTypeLowerCase . '_' . $flight['SourceId'] . '_' . $flight['OutputRoutes'][0]['CabinType'] . '_' . $flight['OutputRoutes'][0]['FlightNo'];
+                    // کلید فقط از آرگومان‌های واقعی checkConfigPid ساخته می‌شود
+                    $checkPrivateCacheKey = json_encode([$airline_iata, $flightTypeLowerCase, $flight['SourceId']]);
 
                     if (!isset($checkPrivateCache[$checkPrivateCacheKey])) {
 
@@ -4441,8 +4473,8 @@ class newApiFlight extends clientAuth
                             isset($flight['OutputRoutes'][0]['CabinType']) &&
                             isset($businessCabinTypes[$flight['OutputRoutes'][0]['CabinType']])
                         )
-                            ? '25 ' . functions::Xmlinformation('Kilograms')->__toString()
-                            : '20 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('MainLoad')->__toString() . ' + 5 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('HandLuggage')->__toString(),
+                            ? $baggageBusinessText
+                            : $baggageEconomyText,
 //                            ($flight['OutputRoutes'][0]['Baggage']['Code'] > 0)
 //                                ? $this->baggageTitle(
 //                                $flight['SourceId'],
@@ -4458,7 +4490,7 @@ class newApiFlight extends clientAuth
 
                         foreach ($flight['OutputRoutes'] as $key_detail => $details_dept) {
 
-                            $airline_iata_twoWay = $airlineController->iataStandardization($details_dept['Airline']['Code']);
+                            $airline_iata_twoWay = $getIataStandard($details_dept['Airline']['Code']);
 
                             $details_dept['type_route'] = 'dept' ;
                             $this->tickets['flights'][$direction][$key]['output_routes_detail'][$key_detail] = array(
@@ -4488,8 +4520,8 @@ class newApiFlight extends clientAuth
                                     isset($details_dept['CabinType']) &&
                                     isset($businessCabinTypes[$details_dept['CabinType']])
                                 )
-                                    ? '25 ' . functions::Xmlinformation('Kilograms')->__toString()
-                                    : '20 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('MainLoad')->__toString() . ' + 5 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('HandLuggage')->__toString(),
+                                    ? $baggageBusinessText
+                                    : $baggageEconomyText,
                                 'airline' => array(
                                     'airline_name' => $airlines_name[$airline_iata_twoWay][$langFieldIndex],
                                     'airline_code' => $airline_iata_twoWay,
@@ -4523,7 +4555,7 @@ class newApiFlight extends clientAuth
                             $date_persian_return = $flight['ReturnRoutes'][0]['DepartureDate'];
                             $count_detail_return_rout = count($flight['ReturnRoutes']);
                             $Key_route_return = ($count_detail_return_rout - 1);
-                            $airline_iata_ReturnRoutes = $airlineController->iataStandardization($flight['ReturnRoutes'][0]['Airline']['Code']);
+                            $airline_iata_ReturnRoutes = $getIataStandard($flight['ReturnRoutes'][0]['Airline']['Code']);
 
                             $this->tickets['flights'][$direction][$key]['return_routes'] = array(
                                 'airline' => $airline_iata_ReturnRoutes,
@@ -4560,7 +4592,7 @@ class newApiFlight extends clientAuth
                             foreach ($flight['ReturnRoutes'] as $key_detail_return => $details_return) {
                                 $details_return['type_route'] = 'return' ;
 
-                                $airline_iata_details_return = $airlineController->iataStandardization($details_return['Airline']['Code']);
+                                $airline_iata_details_return = $getIataStandard($details_return['Airline']['Code']);
 
                                 $this->tickets['flights'][$direction][$key]['return_routes']['return_route_detail'][$key_detail_return] = array(
                                     'is_transit' => $key_detail_return > 0,
@@ -4589,8 +4621,8 @@ class newApiFlight extends clientAuth
                                         isset($details_return['CabinType']) &&
                                         isset($businessCabinTypes[$details_return['CabinType']])
                                     )
-                                        ? '25 ' . functions::Xmlinformation('Kilograms')->__toString()
-                                        : '20 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('MainLoad')->__toString() . ' + 5 ' . functions::Xmlinformation('Kilograms')->__toString() . ' ' . functions::Xmlinformation('HandLuggage')->__toString(),
+                                        ? $baggageBusinessText
+                                        : $baggageEconomyText,
                                     'airline' => array(
                                         'airline_name' => $airlines_name[$airline_iata_details_return][$langFieldIndex],
                                         'airline_code' => $airline_iata_details_return,
@@ -4740,9 +4772,6 @@ class newApiFlight extends clientAuth
             }
 
             $this->tickets['time']['end_direction'] = date('H:i:s',time());
-            functions::insertLog(json_encode($this->tickets,256|64),'a_check_flight');
-
-            functions::insertLog('***************************************','a_check_flight');
 
             $methodEndTime = microtime(true);
             $methodDuration = round(($methodEndTime - $methodStartTime) * 1000, 2);

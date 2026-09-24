@@ -480,7 +480,6 @@ class searchHotel extends ApiHotelCore {
             'prices'   => $arrayPrice,
             'requestNumber'   => $this->requestNumber,
         ];
-        functions::insertLog('$final_result: ' . json_encode($final_result) , '000shojaee');
         if(!empty($this->Hotel)){
             $final_result['Advertises'] = functions::getConfigContentByTitle('local_hotel_search_advertise');
         }

@@ -9,6 +9,9 @@ class priceChanges extends baseController
 
     #region [Variables]
     public $list = array();     //array that include list of flight price changes
+    // cache داخل همین instance: مقادیر زیر در طول یک درخواست ثابت هستند
+    private $flightCommissionCache = array();
+    private $foreignCurrencyContextCache = null;
     #endregion
 
     #region [__construct]
@@ -540,7 +543,11 @@ class priceChanges extends baseController
 
 
                 if($data['typeZone'] == 'Local'){
-                    $it_commission = $this->getController( 'irantechCommission' )->getFlightCommission( $type_service, $source_id );
+                    $flightCommissionKey = json_encode(array($type_service, $source_id));
+                    if (!array_key_exists($flightCommissionKey, $this->flightCommissionCache)) {
+                        $this->flightCommissionCache[$flightCommissionKey] = $this->getController( 'irantechCommission' )->getFlightCommission( $type_service, $source_id );
+                    }
+                    $it_commission = $this->flightCommissionCache[$flightCommissionKey];
 
                     $price[$key]['TotalPrice'] += $it_commission ;
                 }
@@ -603,16 +610,27 @@ class priceChanges extends baseController
             if (SOFTWARE_LANG != 'fa' ) {
 
                 $price['hasDiscount'] = 'yes';
-                $agencyInfo = $this->getController('agency')->subAgencyInfo();
-                $isCounter = $this->getController('login')->isCounter();
-                $isCounter = json_decode($isCounter);
+                if ($this->foreignCurrencyContextCache === null) {
+                    $agencyInfo = $this->getController('agency')->subAgencyInfo();
+                    $isCounter = $this->getController('login')->isCounter();
+                    $isCounter = json_decode($isCounter);
 
 
-                $ModelBase = Load::library('ModelBase');
-                $clientId = CLIENT_ID;
-                $sql = "SELECT * FROM clients_tb WHERE id='{$clientId}'";
-                $client = $ModelBase->load($sql);
-                $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+                    $ModelBase = Load::library('ModelBase');
+                    $clientId = CLIENT_ID;
+                    $sql = "SELECT * FROM clients_tb WHERE id='{$clientId}'";
+                    $client = $ModelBase->load($sql);
+                    $info_currency = functions::infoCurrencyBySessionCode($client['base_currency_code']);
+
+                    $this->foreignCurrencyContextCache = array(
+                        'agencyInfo' => $agencyInfo,
+                        'isCounter' => $isCounter,
+                        'info_currency' => $info_currency,
+                    );
+                }
+                $agencyInfo = $this->foreignCurrencyContextCache['agencyInfo'];
+                $isCounter = $this->foreignCurrencyContextCache['isCounter'];
+                $info_currency = $this->foreignCurrencyContextCache['info_currency'];
                 $currenyCode = $info_currency['CurrencyCode'];
                 $eqAmount = $info_currency['EqAmount'];
                 $CurrencyTitleEn = $info_currency['CurrencyTitleEn'];
