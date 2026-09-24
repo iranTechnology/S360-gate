@@ -878,6 +878,19 @@ class factorHotelNew extends detailHotel
         //		}
     }
 
+    public function getMyFactorPassengers($factorNumber)
+    {
+        if (empty($factorNumber)) {
+            return [];
+        }
+        $result_temprory_hotel = $this->getModel('bookHotelLocalModel')
+            ->get()
+            ->where('factor_number', $factorNumber)
+            ->orderBy('room_id,flat_type')
+            ->all();
+
+        return $result_temprory_hotel;
+    }
     public function HotelReserveNew($params = [])
     {
         return parent::HotelReserveNew($params);

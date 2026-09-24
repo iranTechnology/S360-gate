@@ -237,14 +237,13 @@ let getResultExternalHotelSearch = function (countryNameEn, cityNameEn, startDat
                 ? `<div class='ribbon-special-hotel'>${t.specialHotel}</div>`
                 : '';
 
-            const single_detail_link = `${amadeusPathByLang}detailHotel/${item.typeApp}/${item.HotelIndex}/${item.RequestNumber}&searchRooms=${searched_rooms}&type=${type}&nationality=${nat}`;
-
+            const single_detail_link = `${amadeusPathByLang}detailHotel/${item.typeApp}/${item.HotelIndex}/${item.RequestNumber}?searchRooms=${searched_rooms}&type=${type}&nationality=${nat}&nights=${nights}&startDate=${startDate}&endDate=${endDate}`;
             const nameWithLink = `<a target='_blank' href='javascript:' class='hotel-result-item-name hotelNameResult text-left'>${item.HotelName}</a>`
                 + `<kbd style="color:rgba(0,0,0,0);background:none;box-shadow:none;">S${item.SourceId}</kbd>`;
 
             const reserveBtn = isReservation
                 ? `<a onclick="hotelDetail('${item.typeApp}','${item.HotelIndex}','${item.nameEnUrl}','${item.RequestNumber}','${nights}')" class="bookbtn mt1">${t.showReservation} ${svgArrow}</a>`
-                : `<a href="${single_detail_link}" class="bookbtn mt1"> ${t.showReservation} ${svgArrow}</a>`;
+                : `<a href="${single_detail_link}" class="bookbtn mt1" target="_blank"> ${t.showReservation} ${svgArrow}</a>`;
 
             const imgClick = `<a><img src="${item.pictureUrl}" alt="${item.HotelName}"></a>`;
 
