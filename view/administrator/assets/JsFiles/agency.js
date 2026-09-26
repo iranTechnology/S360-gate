@@ -121,7 +121,13 @@ $(document).ready(function () {
                 number: true
             },
             password:{
+                required: true,
                 minlength: 6
+            },
+            confirmPass: {
+                required: true,
+                minlength: 6,
+                equalTo: "#password"
             },
             Confirm: {
                 required: {
@@ -134,6 +140,15 @@ $(document).ready(function () {
             },
         },
         messages: {
+            password: {
+                required: "کلمه عبور سفر360 گیت الزامیست (رمز ورود کانتر همکار هم همین است)",
+                minlength: "رمز عبور نمی تواند از 6 کارکتر کمتر باشد"
+            },
+            confirmPass: {
+                required: "وارد کردن این فیلد الزامیست",
+                minlength: "تکرار رمز عبور نمی تواند از 6 کارکتر کمتر باشد",
+                equalTo: "رمز عبور با تکرار آن برابر نمی باشد"
+            },
             Confirm: {
                 required: "وارد کردن این فیلد الزامیست",
                 minlength: "تکرار رمز عبور نمی تواند از 6 کارکتر کمتر باشد",

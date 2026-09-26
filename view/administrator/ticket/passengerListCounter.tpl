@@ -43,6 +43,13 @@
                             <span class="btn-label"><i class="mdi mdi-account-multiple-plus"></i></span>افزودن مسافر جدید
                         </a>
                     </span>
+                    <span class="pull-right">
+                        <a href="passengerImportCounter&id={$smarty.get.id}{if $objsession->adminIsLogin()}&agencyID={$smarty.get.agencyID}{/if}"
+                           class="btn btn-success waves-effect waves-light "
+                           type="button">
+                            <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>آپلود فایل اکسل مسافران
+                        </a>
+                    </span>
 
                 </p>
                 <div class="table-responsive">
