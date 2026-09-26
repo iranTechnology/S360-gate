@@ -3412,6 +3412,7 @@
   <ApplicationWord>Application</ApplicationWord>
   <EnglishTicket>English Ticket</EnglishTicket>
   <EnglishTicketNoPrice>English Ticket (No Price)</EnglishTicketNoPrice>
+  <EnglishTicketWithPrice>English Ticket (With Letterhead _ Price)</EnglishTicketWithPrice>
   <GuestUser>Guest User</GuestUser>
   <Counter>Counter</Counter>
   <FinalConfirmationStatus>The passenger has not used the final confirmation</FinalConfirmationStatus>
