@@ -572,6 +572,7 @@ async function getServicePositions(_this) {
       await $(this).parent().parent().removeClass('d-none')
     })
   } else {
+    positions.find('select[data-name="origin"]').parent().parent().removeClass('d-none')
     positions.find('select[data-name="destination"]').parent().parent().addClass('d-none')
   }
 

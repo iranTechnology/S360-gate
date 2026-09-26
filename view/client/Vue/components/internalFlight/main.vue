@@ -308,7 +308,7 @@
             let url_send_split = url_send.split('/')
             if(url_send_split.length <= 6 ){
                 if(url_send_split[5] !== undefined){
-                     url_finally = `/gds/fa/search-flight/1/${url_send_split[5]}/${dateNow('-')}/Y/1-0-0/${url_send_split[9]}`;
+                     url_finally = `/gds/fa/search-flight/1/${url_send_split[5]}/${dateNow('-')}/Y/1-0-0`;
 
                      window.history.pushState({path: url_send}, "", url_finally);
 
