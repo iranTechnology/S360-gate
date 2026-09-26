@@ -1350,14 +1350,14 @@ WHERE
                             <td style="padding-bottom:30px">
                                 <img src="<?php echo  ROOT_ADDRESS_WITHOUT_LANG . '/pic/' .'agencyPartner/' . CLIENT_ID . '/logo/'. $getSubAgencyInfo['logo'] ?>" height="80" style="vertical-align: middle;">
                                 <span style="display: inline-block; vertical-align: middle; padding-left: 10px;">
-                <?php echo $getSubAgencyInfo['name_fa'] ?>
-            </span>
+                                    <?php echo $getSubAgencyInfo['name_fa'] ?>
+                                </span>
                             </td>
-                            <td style="<?= $_GET['lang'] == 'fa' ? 'text-align:left' : 'text-align:right'; ?>
-                                    ">
-                                <!--                          <img src="https://safar360.com/gds/library/barcode/barcode_creator.php?barcode=--><?php //echo trim($info['pnr']); ?><!--"-->
-                                <!--                               style="max-width: 80px; min-height: 50px">-->
-                                <!--                               <img src="data:image/png;base64,--><?php //echo $qrCodeBase64; ?><!--" style="max-width: 80px; min-height: 50px"></td>-->
+                            <td style="<?= $_GET['lang'] == 'fa' ? 'text-align:left' : 'text-align:right'; ?>">
+                                <!-- <img src="https://safar360.com/gds/library/barcode/barcode_creator.php?barcode=--><?php //echo trim($info['pnr']); ?><!--"-->
+                                <!-- style="max-width: 80px; min-height: 50px">-->
+                                <!-- <img src="data:image/png;base64,--><?php //echo $qrCodeBase64; ?><!--" style="max-width: 80px; min-height: 50px">-->
+                            </td>
                         </tr>
                     </table>
                 <?php endif;?>
@@ -1589,8 +1589,6 @@ WHERE
                     <tr><td colspan="2" style="height:10px;"></td></tr>
                 </table>
 
-
-
                 <?php
 
                 if ($info['flight_type'] == 'system' && $info['successfull'] == 'private_reserve') {
@@ -1611,19 +1609,14 @@ WHERE
 
                 if(empty($_GET['isPassenger'])){
                     if ($type_member == 'Counter') { ?>
-
-
                         <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
                             <?php if($_GET['lang'] == 'fa'){ ?>
-
                                 <tr class="cancellationPolicy-tableHead">
                                     <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
                                     <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
                                     <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">کمیسیون</td>
                                     <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">مارک کانتر</td>
                                 </tr>
-
-
                                 <tr>
                                     <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
                                         <?= $DataFlightTotal ?> ریال
@@ -1645,8 +1638,6 @@ WHERE
                                     <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">Commission</td>
                                     <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">Counter Mark</td>
                                 </tr>
-
-
                                 <tr>
                                     <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
                                         <?= $DataFlightTotal ?> Rial
@@ -1661,12 +1652,8 @@ WHERE
                                         <?= $DataFlightPassengerPayData2 ?> Rial
                                     </td>
                                 </tr>
-
                             <?php } ?>
-
                         </table>
-
-
                         <?php
                     }
                 }
@@ -1707,6 +1694,7 @@ WHERE
 
                     <?php
                 }
+
                 if ($info['request_cancel'] != 'confirm' && ($info['successfull'] == 'book' || $info['successfull'] == 'private_reserve')){
                     ?>
                     <div class="" style="margin: 10px 100px ;border:1px solid #ccc">

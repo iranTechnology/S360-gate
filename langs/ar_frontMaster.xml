@@ -3326,6 +3326,7 @@
   <ApplicationWord>تطبيق</ApplicationWord>
   <EnglishTicket>تذكرة إنجليزية</EnglishTicket>
   <EnglishTicketNoPrice>تذكرة إنجليزية بدون سعر</EnglishTicketNoPrice>
+  <EnglishTicketWithPrice>English Ticket (With Letterhead _ Price)</EnglishTicketWithPrice>
   <GuestUser>مستخدم ضيف</GuestUser>
   <Counter>کاونتر</Counter>
   <FinalConfirmationStatus>المسافر لم يستخدم التأكيد النهائي</FinalConfirmationStatus>

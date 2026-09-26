@@ -3890,6 +3890,7 @@
   <EnglishTicket>بلیط انگلیسی</EnglishTicket>
   <PersionTicket>بلیط فارسی</PersionTicket>
   <EnglishTicketNoPrice>بلیط انگلیسی بدون قیمت</EnglishTicketNoPrice>
+  <EnglishTicketWithPrice>بلیط انگلیسی با سربرگ - با قیمت</EnglishTicketWithPrice>
   <GuestUser>کاربر مهمان</GuestUser>
   <Counter>کانتر</Counter>
   <FinalConfirmationStatus>مسافر از تایید نهایی استفاده نکرده است</FinalConfirmationStatus>
