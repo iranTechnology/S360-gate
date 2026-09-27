@@ -1609,51 +1609,56 @@ WHERE
 
                 if(empty($_GET['isPassenger'])){
                     if ($type_member == 'Counter') { ?>
-                        <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
                             <?php if($_GET['lang'] == 'fa'){ ?>
-                                <tr class="cancellationPolicy-tableHead">
-                                    <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
-                                    <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
-                                    <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">کمیسیون</td>
-                                    <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">مارک کانتر</td>
-                                </tr>
-                                <tr>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightTotal ?> ریال
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightFare ?> ریال
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightitAgencyCommission ?> ریال
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightPassengerPayData2 ?> ریال
-                                    </td>
-                                </tr>
-                            <?php } else{ ?>
-                                <tr class="cancellationPolicy-tableHead">
-                                    <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
-                                    <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
-                                    <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">Commission</td>
-                                    <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">Counter Mark</td>
-                                </tr>
-                                <tr>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightTotal ?> Rial
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightFare ?> Rial
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightitAgencyCommission ?> Rial
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightPassengerPayData2 ?> Rial
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </table>
+                                <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
+                                    <tr class="cancellationPolicy-tableHead">
+                                        <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
+                                        <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
+                                        <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">کمیسیون</td>
+                                        <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">مارک کانتر</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightTotal ?> ریال
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightFare ?> ریال
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightitAgencyCommission ?> ریال
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightPassengerPayData2 ?> ریال
+                                        </td>
+                                    </tr>
+                                </table>
+                            <?php }
+                            //else{ ?>
+                                <!--
+                                <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
+                                    <tr class="cancellationPolicy-tableHead">
+                                        <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
+                                        <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
+                                        <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">Commission</td>
+                                        <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">Counter Mark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightTotal ?> Rial
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightFare ?> Rial
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightitAgencyCommission ?> Rial
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightPassengerPayData2 ?> Rial
+                                        </td>
+                                    </tr>
+                                </table>
+                                -->
+                            <?php //} ?>
                         <?php
                     }
                 }
@@ -1670,7 +1675,7 @@ WHERE
 
                             <tr>
                                 <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                    <?= $DataFlightTotal ?> ریال
+                                    <?php echo $DataFlightTotal ?> ریال
                                 </td>
                             </tr>
                         <?php } else{ ?>
@@ -1682,7 +1687,7 @@ WHERE
 
                             <tr>
                                 <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                    <?= $DataFlightTotal ?> Rial
+                                    <?php echo $DataFlightTotal ?> Rial
                                 </td>
 
                             </tr>
@@ -1788,11 +1793,11 @@ WHERE
                                         if($_GET['lang'] == 'fa'){
                                             if ($info['origin_airport_iata'] == 'THR'){ ?>
                                                 <li>
-                                                    این پرواز از ترمینال خروجی  <?=  $infoAirline[0]['out_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
+                                                    این پرواز از ترمینال خروجی  <?php echo  $infoAirline[0]['out_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
                                                 </li>
                                             <?php }  if ($info['desti_airport_iata'] == 'THR'){ ?>
                                                 <li>
-                                                    این پرواز از ترمینال ورودی  <?=  $infoAirline[0]['enter_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
+                                                    این پرواز از ترمینال ورودی  <?php echo  $infoAirline[0]['enter_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
                                                 </li>
                                             <?php } ?>
 
@@ -1801,11 +1806,11 @@ WHERE
 
                                         <?php  }  else {   if ($info['origin_airport_iata'] == 'THR'){ ?>
                                             <li>
-                                                This flight departs from the terminal  <?=   $infoAirline[0]['out_thr'] . ' ' . $thrAirportEn ?> It takes place.
+                                                This flight departs from the terminal  <?php echo   $infoAirline[0]['out_thr'] . ' ' . $thrAirportEn ?> It takes place.
                                             </li>
                                         <?php }  if ($info['desti_airport_iata'] == 'THR'){ ?>
                                             <li>
-                                                This flight departs from the arrivals terminal  <?=  $infoAirline[0]['enter_thr'] . ' ' . $thrAirportEn ?> It takes place.
+                                                This flight departs from the arrivals terminal  <?php echo  $infoAirline[0]['enter_thr'] . ' ' . $thrAirportEn ?> It takes place.
                                             </li>
                                         <?php }?>
 
@@ -2152,26 +2157,26 @@ WHERE
                                cellspacing="0">
                             <tr>
                                 <td colspan="2">
-                                    <?= $_GET['lang'] == 'fa' ? 'آدرس :' : 'Address:'; ?>
-                                    <?= !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : $ClientAddress; ?>
+                                    <?php echo $_GET['lang'] == 'fa' ? 'آدرس :' : 'Address:'; ?>
+                                    <?php echo !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : $ClientAddress; ?>
 
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding-top:15px">
-                                    <?= $_GET['lang'] == 'fa' ? 'وب سایت :' : 'Website:'; ?>
+                                    <?php echo $_GET['lang'] == 'fa' ? 'وب سایت :' : 'Website:'; ?>
                                     <?php echo $ClientMainDomain; ?>
 
                                 </td>
                                 <td style="padding-top:15px">
-                                    <?= $_GET['lang'] == 'fa' ? ' تلفن پشتیبانی :' : 'Support phone:'; ?>
+                                    <?php echo $_GET['lang'] == 'fa' ? ' تلفن پشتیبانی :' : 'Support phone:'; ?>
 
-                                    <?= !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : $phone; ?>
+                                    <?php echo !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : $phone; ?>
                                 </td>
                                 <?php if($info_ticket[0]['agency_id']) {?>
                                     <td style="padding-top:15px">
-                                        <?= $_GET['lang'] == 'fa' ? 'تلفن کانتر فروش :' : 'Sales counter telephone:'; ?>
-                                        <?=  !empty($getSubAgencyInfo['mobile']) ? $getSubAgencyInfo['mobile'] : $PhoneManage; ?>
+                                        <?php echo $_GET['lang'] == 'fa' ? 'تلفن کانتر فروش :' : 'Sales counter telephone:'; ?>
+                                        <?php echo  !empty($getSubAgencyInfo['mobile']) ? $getSubAgencyInfo['mobile'] : $PhoneManage; ?>
                                     </td>
                                 <?php  } ?>
                             </tr>

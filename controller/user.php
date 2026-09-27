@@ -1807,7 +1807,7 @@ class user extends baseController
                     $type_member = functions::TypeUser(session::getUserId());
                     if ($type_member == 'Counter') {
                         $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
-                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'] . '&cash=no';
+                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'];// . '&cash=no'
                     }
 
                 }
@@ -1847,18 +1847,20 @@ class user extends baseController
                         'type' => 'button',
                         'function' => "modalPassengerDetails(event.currentTarget, " . $item['factor_number'] . ",'flight')",
                     ];
-
+                    /* 1405_07_05
                     $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('GetTicketCounter')->__toString(),
                         'type' => 'link',
                         'link' => $bookList[$key]['dataBtnPdf'],
                     ];
-
+                    */
+                    /* 1405_07_05
                     $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('Viewbill')->__toString(),
                         'type' => 'link',
                         'link' => ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=boxCheck&id=' . $item['request_number'],
                     ];
+                    */
 
                     if ($item['successfull'] == 'book' && $item['request_cancel'] == 'confirm') {//esterdad
                         $result[$key]['button_list'][] =

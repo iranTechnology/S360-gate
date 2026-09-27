@@ -13,10 +13,6 @@ class ticketForeign extends apiLocal
 
     public function createPdfContent($param , $cash)
     {
-        //        if ($_SERVER['REMOTE_ADDR'] == '84.241.4.20') {
-//            var_dump('aaaaa');
-//            die();
-//        }
         $airline_model = $this->getModel('airlineModel') ;
 
         $agencyController = Load::controller('agency');
@@ -147,11 +143,13 @@ class ticketForeign extends apiLocal
                 <div style="width: 100%; overflow: hidden;">
                     <table width="100%" align="center" style="margin: 0px 100px  " cellpadding="0" cellspacing="0"
                            class="page">
-                        <tr>
-                            <td style="padding: 5px; ">
-                                <img src="<?php echo $LogoAgency; ?>" style="max-width: 150px">
-                            </td>
-                        </tr>
+                        <?php if(!$_GET['Letterhead']):?>
+                            <tr>
+                                <td style="padding: 5px; ">
+                                    <img src="<?php echo $LogoAgency; ?>" style="max-width: 150px">
+                                </td>
+                            </tr>
+                        <?php endif;?>
                         <tr style="background-color: #CCC; ">
                             <td style="padding: 5px;" colspan="2" align="left">
                                 Electronic Ticket - pnr : <?php echo $info['pnr'] ?>
@@ -215,7 +213,7 @@ class ticketForeign extends apiLocal
                                         echo 'cashe';
                                     }else{
                                         $PriceTicket = functions::CalculateDiscountOnePerson($info['request_number'],$info['passportNumber']) ;
-
+                                        functions::insertLog( '$PriceTicket==>'.print_r($PriceTicket, true)." \n", '0ardalani' );
 
                                         $AddOnPrice = ((!empty($info['amount_added']) && $info['amount_added'] > 0) ? $info['amount_added'] : '0');
                                         if($agency_info['type_payment'] == 'currency' && !empty($agency_info)){
@@ -238,6 +236,25 @@ class ticketForeign extends apiLocal
                                             }
 
                                         }
+
+                                        //Ardalani::Price Toral Az Page mainTicketHistory
+                                        $modelBase = Load::library( 'ModelBase' );
+                                        $Sql = "SELECT 
+                                                flight_type,provider_adt_price,provider_chd_price,provider_inf_price
+                                                
+                                        FROM 
+                                                report_tb 
+                                        WHERE 
+                                              request_number='{$param}'";
+                                        $flightBook = $modelBase->load( $Sql );
+
+                                        if ( $flightBook['flight_type'] != 'charterPrivate' ) {
+                                            $priceTotal=$flightBook['provider_adt_price'] + $flightBook['provider_chd_price'] + $flightBook['provider_inf_price'];
+                                        }
+                                        else {
+                                            $priceTotal=0;
+                                        }
+
 
                                         echo  (Session::getCurrency() && ISCURRENCY == '1') ? number_format($priceTotal,2)  :  number_format($priceTotal);
                                         echo ' ';

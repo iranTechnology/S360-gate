@@ -1331,11 +1331,7 @@ class functions {
 
         //yes means nesesary calculate  price changes
         $modelBase = Load::library( 'Model' );
-
-
-
         $Sql = "SELECT *  FROM book_local_tb WHERE (request_number='{$RequestNumber}' OR factor_number='{$RequestNumber}') AND (passenger_national_code='{$nationalCode}' OR passportNumber='{$nationalCode}')";
-
         $rec = $modelBase->load( $Sql );
 
 
