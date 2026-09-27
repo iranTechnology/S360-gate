@@ -593,6 +593,7 @@ class exclusiveTour extends clientAuth {
 
         $JsonArray = json_encode($d);
 
+
         $result = functions::curlExecution($url, $JsonArray, 'yes');
 
 

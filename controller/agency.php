@@ -287,6 +287,7 @@ class agency  extends clientAuth {
 		$status_upload      = false;
 
 		if ( ! empty( $result ) ) {
+
 			$id                                      = $result['id'];
             $dataEditAgency['birthday']              = ! empty( $data['birthday'] ) ? $data['birthday'] : $result['birthday'];
             $dataEditAgency['agency_national_code']  = ! empty( $data['agency_national_code'] ) ? $data['agency_national_code'] : $result['agency_national_code'];
@@ -307,7 +308,7 @@ class agency  extends clientAuth {
 			$dataEditAgency['city_iata']          = ! empty( $data['city_iata'] ) ? $data['city_iata'] : $result['city_iata'];
 			$dataEditAgency['address_fa']         = ! empty( $data['addressFa'] ) ? $data['addressFa'] : $result['addressFa'];
 			$dataEditAgency['address_en']         = ! empty( $data['addressEn'] ) ? $data['addressEn'] : $result['addressEn'];
-			$dataEditAgency['isColleague']        = ! empty( $data['isColleague'] ) ? $data['isColleague'] : $result['isColleague'];
+			$dataEditAgency['isColleague']        = isset( $data['isColleague'] ) ? $data['isColleague'] : $result['isColleague'];
 			$dataEditAgency['colorMainBg']        = isset( $data['colorMainBg'] ) ? $data['colorMainBg'] : $result['colorMainBg'];
 			$dataEditAgency['colorMainBgHover']   = isset( $data['colorMainBgHover'] ) ? $data['colorMainBgHover'] : $result['colorMainBgHover'];
 			$dataEditAgency['colorMainText']      = isset( $data['colorMainText'] ) ? $data['colorMainText'] : $result['colorMainText'];
@@ -401,9 +402,6 @@ class agency  extends clientAuth {
 
                     }
                 }
-
-
-
 
 				$editAgency = $agency_model->updateWithBind( $dataEditAgency, "id='{$id}'" );
 				if ( isset($editAgency) ) {
