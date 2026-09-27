@@ -1916,7 +1916,6 @@ class resultTourLocal extends clientAuth {
 
             $package['currencyTitleFa'] = ( isset( $_POST['currencyTitleFa'] ) && $_POST['currencyTitleFa'] != '' ) ? $_POST['currencyTitleFa'] : '';
 
-
             if(functions::isEnableSetting('toman')) {
                 $package['total_price_package'] = round($total_price_package/10);
             }else{

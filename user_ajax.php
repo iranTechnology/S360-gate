@@ -2438,7 +2438,8 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
         echo $output;
     }
 
-} elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
+}
+elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
 
     unset($_POST['flag']);
     $factorNumber = trim($_POST['factorNumber']);
@@ -2817,10 +2818,17 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     $factorNumber = trim($_POST['factorNumber']);
     /** @var members $objMember */
     $objMember = Load::controller('members');
+    $objUser = Load::controller('user');
     $objTransaction = Load::controller('transaction');
+    $objMemberCredit = Load::controller('memberCredit');
 
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
-    $counterCredit = $objMember->getCredit();
+
+    if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
+        $counterCredit = $objUser->getCreditMember();
+    } else {
+        $counterCredit = $objMember->getCredit();
+    }
 
     $reserveInfo = functions::GetInfoTour($factorNumber);
 
@@ -2865,7 +2873,11 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
         ]);
 
 
-        $objMember->decreaseCounterCredit($amount, $factorNumber, $reserveInfo, 'reservationTour', 'no');
+        if ($_POST['creditUse'] == 'member_credit') {
+            $objMemberCredit->decreaseChargeMemberForBuy($amount, $factorNumber, $comment);
+        } else {
+            $objMember->decreaseCounterCredit($amount, $factorNumber, $reserveInfo, 'reservationTour', 'no');
+        }
 
         // Caution: اعتبارسنجی صاحب سیستم
         $check = $objTransaction->checkCredit($total_price);
@@ -2873,6 +2885,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
 
 
             // Caution: کاهش اعتبار صاحب سیستم
+
             $reduceTransaction = $objTransaction->decreaseSuccessCredit($total_price, $factorNumber, $comment, 'buy_reservation_tour');
 
             if ($reduceTransaction) {

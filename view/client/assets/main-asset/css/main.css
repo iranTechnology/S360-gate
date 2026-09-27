@@ -1611,7 +1611,7 @@
 
 }
 
-.s-u-popup-in-result .cd-user-modal-container::before {
+.s-u-popup-in-result .cd-user-modal-container.gds-login-modal::before {
     content: '';
     border: 8px solid #fff;
     opacity: .5;

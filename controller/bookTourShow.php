@@ -508,6 +508,10 @@ class bookTourShow extends clientAuth
 
                 $prepayment=$book['total_price']+$priceChanged;
 
+                if(functions::isEnableSetting('toman')) {
+                    $book['tour_total_price'] = round($book['tour_total_price']/10);
+                }
+
                 $op .= '<form action="'.ROOT_ADDRESS.'/passengerDetailReservationTour" method="post" id="formReservationTour">
                             <input name="serviceName" type="hidden" value="' . $serviceName . '">
                             <input name="idMember" type="hidden" value="' . $book['member_id'] . '">
@@ -603,8 +607,6 @@ class bookTourShow extends clientAuth
                 $discountCodeAmount = $getDiscountCodeAmount['amount'];
                 $totalPrice -= $discountCodeAmount;
             }
-            functions::insertLog(json_encode($getDiscountCode),'000shojaee');
-            functions::insertLog(json_encode($getDiscountCodeAmount),'000shojaee');
 
             $result .= join(', ',$cities) . '</td>';
             $result .= '<td>' . $book['tour_start_date'] . '<hr style="color: #f8f8f8;">';

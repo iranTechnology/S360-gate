@@ -34,6 +34,7 @@
 {else}
     {assign var="typeTourReserve" value="noOneDayTour"}
 {/if}
+
 <div id="steps">
     <div class="steps_items">
         <div class="step done ">
