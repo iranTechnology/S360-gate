@@ -7399,33 +7399,27 @@ function tabHotel(data , e){
 
 let isResettingCapacity = false;
 function ReserveHotel() {
-    // let totalSelectedRooms = 0;
-    // totalSelectedRooms = parseInt($('#TotalNumberRoom_Reserve').val()) || 0;
-    // if (totalSelectedRooms === 0) {
-    //     $('input[name^="FinalRoomCount_Reserve"]').each(function() {
-    //         totalSelectedRooms += parseInt($(this).val()) || 0;
-    //     });
-    // }
-    // if (totalSelectedRooms < 1) {
-    //     $.alert({
-    //         title: useXmltag('Warning'),
-    //         icon: 'fa fa-exclamation-triangle',
-    //         content: useXmltag('MinRoomsRequired'),
-    //         rtl: true,
-    //         type: 'red',
-    //     });
-    //     return false;
-    // }
-    // if (totalSelectedRooms > 4) {
-    //     $.alert({
-    //         title: useXmltag('Warning'),
-    //         icon: 'fa fa-exclamation-triangle',
-    //         content: useXmltag('MaxRoomsExceeded'),
-    //         rtl: true,
-    //         type: 'red',
-    //     });
-    //     return false;
-    // }
+    let totalSelectedRooms = parseInt($('#TotalNumberRoom').val()) || 0;
+    if (totalSelectedRooms < 1) {
+        $.alert({
+            title: useXmltag('Warning'),
+            icon: 'fa fa-exclamation-triangle',
+            content: useXmltag('MinRoomsRequired'),
+            rtl: true,
+            type: 'red',
+        });
+        return false;
+    }
+    if (totalSelectedRooms > 3) {
+        $.alert({
+            title: useXmltag('Warning'),
+            icon: 'fa fa-exclamation-triangle',
+            content: useXmltag('MaxRoomsExceeded'),
+            rtl: true,
+            type: 'red',
+        });
+        return false;
+    }
     $.post(amadeusPath + 'hotel_ajax.php',
         {
             flag: 'CheckedLogin',
@@ -7463,7 +7457,6 @@ function ReserveHotel() {
 
             }
         })
-
 }
 function researchAccordionBtnDetailHotel() {
     const ElemBtn = document.querySelector('.sidebar-detailHotel .filterBoxTop .filtertip_hotel_detail i');
