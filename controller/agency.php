@@ -93,6 +93,11 @@ class agency  extends clientAuth {
         if($resultSepehrUsername['id']>0 && !empty($agency['sepehr_username'])){
             return "error : خطا در تکراری بودن نام کاربری سپهر";
         }
+        // رمز سفر360 گیت، رمز کانتر پیش فرض همکار هم هست
+        if (mb_strlen(trim($agency['password'])) < 6) {
+            return "error : کلمه عبور سفر360 گیت الزامی است و باید حداقل 6 کاراکتر باشد (رمز ورود کانتر همکار هم همین است)";
+        }
+
         $agency_attachment_model = $this->getModel('agencyAttachmentModel');
         $status_upload        = true;
 		$data                  = $agency;
@@ -167,6 +172,8 @@ class agency  extends clientAuth {
 						$this->subAgencyModel()->insertWithBind( $dataSubAgency );
 					}
 				}
+                $counterMessage = $this->insertDefaultCounter($result, $agency);
+
                 if (isset($data['sepehr_username']) && !empty($data['sepehr_username']) && $data['sepehr_username'] != ''
                 && isset($data['sepehr_password']) && !empty($data['sepehr_password']) && $data['sepehr_password'] != '') {
                     $insertedAgency = $this->agencyModel()
@@ -183,10 +190,10 @@ class agency  extends clientAuth {
                     $resultInsertSubAgencyCore = Load::controller( 'settingCore' )->insertSubAgencyCore($dataSubAgencyCore);
 
                     if (!isset($resultInsertSubAgencyCore['status']) || $resultInsertSubAgencyCore['status'] != 'success') {
-                        return 'error : خطا در ثبت اطلاعات سپهر';
+                        return 'error : خطا در ثبت اطلاعات سپهر' . $counterMessage;
                     }
                 }
-                return "success : آژانس جدید با موفقیت ثبت شد";
+                return "success : آژانس جدید با موفقیت ثبت شد" . $counterMessage;
 			} else {
 				return "error : خطا در ثبت آژانس";
 			}
@@ -195,6 +202,56 @@ class agency  extends clientAuth {
 //		}
 
 
+	}
+
+	/**
+	 * ساخت کانتر زیرمجموعه همکار با اطلاعات خود همکار (همان روند فرم counterAdd)
+	 *
+	 * @param int $agencyId
+	 * @param array $agency اطلاعات فرم افزودن همکار
+	 *
+	 * @return string متن نتیجه برای اضافه شدن به پیام ثبت همکار
+	 */
+	private function insertDefaultCounter( $agencyId, $agency ) {
+		$mobile = trim( $agency['mobile'] );
+		if ( $mobile === '' ) {
+			return ' | کانتر همکار ساخته نشد، شماره تلفن همراه وارد نشده است';
+		}
+
+		$existMember = $this->getModel( 'membersModel' )->getExistMemberByUserName( array( 'entry' => $mobile ) );
+		if ( $existMember ) {
+			return ' | کانتر همکار ساخته نشد، کاربری با شماره ' . $mobile . ' قبلا در سیستم ثبت شده است';
+		}
+
+		// نام مدیر عامل: کلمه اول نام و بقیه نام خانوادگی
+		$managerParts = explode( ' ', trim( preg_replace( '/\s+/u', ' ', $agency['manager'] ) ), 2 );
+		$name         = $managerParts[0];
+		$family       = isset( $managerParts[1] ) ? $managerParts[1] : trim( $agency['name_fa'] );
+
+		/** @var members $membersController */
+		$membersController = Load::controller( 'members' );
+		$counterResult     = $membersController->addCounter( array(
+			'agency_id'            => $agencyId,
+			'is_member'            => '1',
+			'name'                 => $name,
+			'family'               => $family,
+			'name_en'              => '',
+			'family_en'            => '',
+			'mobile'               => $mobile,
+			'email'                => strtolower( trim( $agency['email'] ) ),
+			'fk_counter_type_id'   => '2', // کانتر طلایی
+			'accessAdmin'          => '0',
+			'password'             => $agency['password'],
+			'id_departments'       => '',
+			'tour_contact_display' => 'null',
+		) );
+
+		if ( strpos( trim( $counterResult ), 'success' ) === 0 ) {
+			return ' و کانتر همکار با نام کاربری ' . $mobile . ' ساخته شد';
+		}
+
+		// پیام در جاوااسکریپت فرم با «:» جدا می‌شود
+		return ' | کانتر همکار ساخته نشد، ' . str_replace( ':', ' ', trim( preg_replace( '/^error\s*:/', '', $counterResult ) ) );
 	}
 
 	/**
@@ -230,6 +287,7 @@ class agency  extends clientAuth {
 		$status_upload      = false;
 
 		if ( ! empty( $result ) ) {
+
 			$id                                      = $result['id'];
             $dataEditAgency['birthday']              = ! empty( $data['birthday'] ) ? $data['birthday'] : $result['birthday'];
             $dataEditAgency['agency_national_code']  = ! empty( $data['agency_national_code'] ) ? $data['agency_national_code'] : $result['agency_national_code'];
@@ -250,7 +308,7 @@ class agency  extends clientAuth {
 			$dataEditAgency['city_iata']          = ! empty( $data['city_iata'] ) ? $data['city_iata'] : $result['city_iata'];
 			$dataEditAgency['address_fa']         = ! empty( $data['addressFa'] ) ? $data['addressFa'] : $result['addressFa'];
 			$dataEditAgency['address_en']         = ! empty( $data['addressEn'] ) ? $data['addressEn'] : $result['addressEn'];
-			$dataEditAgency['isColleague']        = ! empty( $data['isColleague'] ) ? $data['isColleague'] : $result['isColleague'];
+			$dataEditAgency['isColleague']        = isset( $data['isColleague'] ) ? $data['isColleague'] : $result['isColleague'];
 			$dataEditAgency['colorMainBg']        = isset( $data['colorMainBg'] ) ? $data['colorMainBg'] : $result['colorMainBg'];
 			$dataEditAgency['colorMainBgHover']   = isset( $data['colorMainBgHover'] ) ? $data['colorMainBgHover'] : $result['colorMainBgHover'];
 			$dataEditAgency['colorMainText']      = isset( $data['colorMainText'] ) ? $data['colorMainText'] : $result['colorMainText'];
@@ -344,9 +402,6 @@ class agency  extends clientAuth {
 
                     }
                 }
-
-
-
 
 				$editAgency = $agency_model->updateWithBind( $dataEditAgency, "id='{$id}'" );
 				if ( isset($editAgency) ) {

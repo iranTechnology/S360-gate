@@ -67,9 +67,9 @@
         <li><a class="SMInstageram" href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
     </ul>
     <!-- end social-media -->
-    <a href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/"><div class="search">
+    <a href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/Kimeh-Ecolodge/"><div class="search">
 
-    </div></a>
+        </div></a>
     <!-- end search -->
 </aside>
 
@@ -120,7 +120,7 @@
                             <li class=""><a href="http://{$smarty.const.CLIENT_MAIN_DOMAIN}/blog" class="SMBlog">دانستنی ها</a></li>
 
 
-                            <li class=""><a href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/">  رزرو آنلاین </a></li>
+                            <li class=""><a href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/Kimeh-Ecolodge/">  رزرو آنلاین </a></li>
 
 
                         </ul>
@@ -152,7 +152,7 @@
 
 
                 {include file="`$smarty.const.FRONT_CURRENT_CLIENT`contentMain.tpl"}
-                </div>
+            </div>
 
 
         </div>
@@ -161,74 +161,74 @@
     {if $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotel && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintTicket && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservation && $smarty.const.GDS_SWITCH neq $smarty.const.ConstPrintHotelReservationAhuan}
 
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="logo_footer">
-
-                        <img src="project_files/images/logo.png" alt="">
-
-                    </div>
-                    <div class="footer-address">
-                        <div class="f-adress SMFooterAddress">{$smarty.const.CLIENT_ADDRESS}</div>
-                        <div class="f-tell SMFooterPhone" href="tel:02188866609  ">{$smarty.const.CLIENT_PHONE}</div>
-
-                        <div class="f-mail SMFooterEmail" href="mailto:info@iran-tech.com">{$smarty.const.CLIENT_EMAIL}</div>
-
-                        <div class="social_footer">
-
-                            <ul>
-                                <li><a class="SMInstageram" href=""><i class="fab fa-instagram"></i></a></li>
-                                <li><a class="SMWhatsApp" href=""><i class="fab fa-whatsapp"></i></a></li>
-                                <li><a class="SMTelegram" href=""><i class="fab fa-telegram-plane"></i></a></li>
-                                <li><a class="SMFaceBook" href=""><i class="fab fa-facebook-f"></i></a></li>
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- end col-4 -->
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <h4 class="footer-title">دسترسی آسان</h4>
-                    <ul class="footer-menu">
-                        <li><a  href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/">امکانات</a></li>
-                        <li><a class="SMGallery" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/gallery">گالری</a></li>
-                        <li><a class="SMContactus" href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/">رزرو آنلاین</a></li>
-                        <li><a class="SMRules" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/rules">قوانین و مقررات</a></li>
-                        <li><a class="SMAbout" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/aboutus">درباره ما</a></li>
-                        <li><a class="SMContactUs" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/contactus">تماس با ما</a></li>
-
-                    </ul>
-                </div>
-                <!-- end col-4 -->
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div id="g-map"></div>
-                    <!-- end weather -->
-                </div>
-                <!-- end col-4 -->
-
-
-            </div>
-            <!-- end row -->
-        </div>
-        <!-- end container -->
-        <div class="sub-footer">
+        <footer class="footer">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-8 col-12"><span class="copyright"> © 2020 -  تمام حقوق متعلق به بوم گردی کیمه می باشد </span></div>
-                    <!-- end col-6 -->
-                    <div class="col-sm-4 col-12"><span class="creation">
-                        <a href="https://www.iran-tech.com">طراحی و بهینه سازی </a> : ایران تکنولوژی</span> </div>
-                    <!-- end col-6 -->
+                    <div class="col-md-3">
+                        <div class="logo_footer">
+
+                            <img src="project_files/images/logo.png" alt="">
+
+                        </div>
+                        <div class="footer-address">
+                            <div class="f-adress SMFooterAddress">{$smarty.const.CLIENT_ADDRESS}</div>
+                            <div class="f-tell SMFooterPhone" href="tel:02188866609  ">{$smarty.const.CLIENT_PHONE}</div>
+
+                            <div class="f-mail SMFooterEmail" href="mailto:info@iran-tech.com">{$smarty.const.CLIENT_EMAIL}</div>
+
+                            <div class="social_footer">
+
+                                <ul>
+                                    <li><a class="SMInstageram" href=""><i class="fab fa-instagram"></i></a></li>
+                                    <li><a class="SMWhatsApp" href=""><i class="fab fa-whatsapp"></i></a></li>
+                                    <li><a class="SMTelegram" href=""><i class="fab fa-telegram-plane"></i></a></li>
+                                    <li><a class="SMFaceBook" href=""><i class="fab fa-facebook-f"></i></a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col-4 -->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <h4 class="footer-title">دسترسی آسان</h4>
+                        <ul class="footer-menu">
+                            <li><a  href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/Kimeh-Ecolodge/">امکانات</a></li>
+                            <li><a class="SMGallery" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/gallery">گالری</a></li>
+                            <li><a class="SMContactus" href="{$smarty.const.ROOT_ADDRESS}/roomHotelLocal/reservation/1/Kimeh-Ecolodge/">رزرو آنلاین</a></li>
+                            <li><a class="SMRules" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/rules">قوانین و مقررات</a></li>
+                            <li><a class="SMAbout" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/aboutus">درباره ما</a></li>
+                            <li><a class="SMContactUs" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}/contactus">تماس با ما</a></li>
+
+                        </ul>
+                    </div>
+                    <!-- end col-4 -->
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div id="g-map"></div>
+                        <!-- end weather -->
+                    </div>
+                    <!-- end col-4 -->
+
+
                 </div>
                 <!-- end row -->
             </div>
             <!-- end container -->
-        </div>
-        <!-- end sub-footer -->
-    </footer>
+            <div class="sub-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-12"><span class="copyright"> © 2020 -  تمام حقوق متعلق به بوم گردی کیمه می باشد </span></div>
+                        <!-- end col-6 -->
+                        <div class="col-sm-4 col-12"><span class="creation">
+                        <a href="https://www.iran-tech.com">طراحی و بهینه سازی </a> : ایران تکنولوژی</span> </div>
+                        <!-- end col-6 -->
+                    </div>
+                    <!-- end row -->
+                </div>
+                <!-- end container -->
+            </div>
+            <!-- end sub-footer -->
+        </footer>
 
     {/if}
 </div>
@@ -244,32 +244,32 @@
       crossorigin=""/>
 {literal}
 
-<script  src="project_files/js/megamenu.js"></script>
-<script  src="project_files/js/owl.carousel.min.js"></script>
-<script  src="project_files/js/jquery.paroller.min.js"></script>
-<script  src="project_files/js/scripts.js"></script>
+    <script  src="project_files/js/megamenu.js"></script>
+    <script  src="project_files/js/owl.carousel.min.js"></script>
+    <script  src="project_files/js/jquery.paroller.min.js"></script>
+    <script  src="project_files/js/scripts.js"></script>
 
-<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
-        integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
-        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+            integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+            crossorigin=""></script>
 
-<script type="text/javascript">
-    // position we will use later ,
-    var lat = 36.31377208503443;
-    var lon = 52.782989120003684;
-    // initialize map
-    map = L.map('g-map').setView([lat, lon], 15);
-    // set map tiles source
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-        maxZoom: 16,
-        minZoom: 14,
-    }).addTo(map);
-    // add marker to the map
-    marker = L.marker([lat, lon]).addTo(map);
-    // add popup to the marker
-    marker.bindPopup("مازندران، سوادکوه، شیرگاه به سمت لفور، روستای سیدکلا، اقامتگاه بوم‌گردی کیمه").openPopup();
-</script>
+    <script type="text/javascript">
+        // position we will use later ,
+        var lat = 36.31377208503443;
+        var lon = 52.782989120003684;
+        // initialize map
+        map = L.map('g-map').setView([lat, lon], 15);
+        // set map tiles source
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 16,
+            minZoom: 14,
+        }).addTo(map);
+        // add marker to the map
+        marker = L.marker([lat, lon]).addTo(map);
+        // add popup to the marker
+        marker.bindPopup("مازندران، سوادکوه، شیرگاه به سمت لفور، روستای سیدکلا، اقامتگاه بوم‌گردی کیمه").openPopup();
+    </script>
 
 {/literal}
 

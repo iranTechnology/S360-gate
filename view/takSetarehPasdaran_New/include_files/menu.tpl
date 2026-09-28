@@ -100,7 +100,10 @@
                             </li>
 
                             <li>
-                                <a href="{if $obj_main_page->isLogin()}{$smarty.const.ROOT_ADDRESS}/agencyProfile{else}{$smarty.const.ROOT_ADDRESS}/loginAgency{/if}">
+{*                                <a href="{if $obj_main_page->isLogin()}{$smarty.const.ROOT_ADDRESS}/agencyProfile{else}{$smarty.const.ROOT_ADDRESS}/loginAgency{/if}">*}
+{*                                    پنل همکاران*}
+{*                                </a>*}
+                                <a href="{$smarty.const.ROOT_ADDRESS}/userBook">
                                     پنل همکاران
                                 </a>
                             </li>

@@ -14,7 +14,7 @@
 {*    {include file="include_files/blog.tpl"}*}
 {*    {include file="include_files/news.tpl"}*}
     {include file="include_files/newsletter.tpl"}
-    {include file="include_files/new_social.tpl"}
+{*    {include file="include_files/new_social.tpl"}*}
 {*    {include file="include_files/other.tpl"}*}
 </main>
 {include file="include_files/footer.tpl"}

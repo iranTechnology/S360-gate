@@ -371,7 +371,8 @@ class bookshowTest extends clientAuth {
             $ModelBase = Load::library( 'ModelBase' );
 
             $sql = "SELECT rep.*, cli.AgencyName AS NameAgency, cli.Domain AS DomainAgency, "
-                . " SUM(api_commission) AS api_commission," . " SUM(agency_commission) AS agency_commission ,"
+                . " SUM(api_commission) AS api_commission,
+                " . " SUM(agency_commission) AS agency_commission ,"
                 . " SUM(supplier_commission) AS supplier_commission ,"
                 . " SUM(irantech_commission) AS irantech_commission,"
                 . " SUM(adt_price) AS adt_price,"
@@ -3772,10 +3773,10 @@ class bookshowTest extends clientAuth {
                 if ( $flightBook['flight_type'] == 'charter' ||  $flightBook['api_id'] == '14' ) {
                     if ( $flightBook['percent_discount'] > 0 ) {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
-                        $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
+//                        $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
                         if(TYPE_ADMIN != 1){
-                            $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
-                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )                                . '</span>';
+//                            $DataFlightPassengerPayData .= "<hr style='margin:3px'><span style='text-decoration: line-through;'>";
+//                            $DataFlightPassengerPayData .= number_format( $flightBook['agency_commission'] + $flightBook['supplier_commission'] + $flightBook['irantech_commission'] )                                . '</span>';
                         }
 
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
@@ -3784,7 +3785,7 @@ class bookshowTest extends clientAuth {
                         }
                     } else {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'yes' );
-                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
 
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal    = ( $flightBook['agency_commission'] + $flightBook['irantech_commission'] + $flightBook['supplier_commission'] ) + $pricetotal;
@@ -3795,10 +3796,10 @@ class bookshowTest extends clientAuth {
                 elseif ( $flightBook['flight_type'] == 'system' ) {
                     if ( $flightBook['percent_discount'] > 0 ) {
                         $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
-                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                        $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
                         if(TYPE_ADMIN != 1){
-                            $DataFlightPassengerPayData .= "<hr style='margin:3px'> <span style='text-decoration: line-through;'>";
-                            $DataFlightPassengerPayData .= $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] . '</span>';
+//                            $DataFlightPassengerPayData .= "<hr style='margin:3px'> <span style='text-decoration: line-through;'>";
+//                            $DataFlightPassengerPayData .= $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] . '</span>';
                         }
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
@@ -3812,10 +3813,10 @@ class bookshowTest extends clientAuth {
                     } else {
                         if ( $flightBook['IsInternal'] == '0' ) {
                             $PassengerPayment=functions::CalculateDiscount( $flightBook['request_number'], 'No' );
-                            $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
+//                            $DataFlightPassengerPayData = number_format( ($PassengerPayment + $flightBook['sum_amount_added']) );
                         } else {
                             $PassengerPayment=$flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ;
-                            $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
+//                            $DataFlightPassengerPayData = number_format(($PassengerPayment + $flightBook['sum_amount_added']));
                         }
                         if ( $flightBook['request_cancel'] != 'confirm' && ( $flightBook['successfull'] == 'book' || $flightBook['successfull'] == 'private_reserve' ) ) {
                             $pricetotal = ( $flightBook['adt_price'] + $flightBook['chd_price'] + $flightBook['inf_price'] ) + $pricetotal;
@@ -3837,11 +3838,11 @@ class bookshowTest extends clientAuth {
                 $discountPrice = $InfoTicketReservation['discount_amount']; // مبلغ کل تخفیف (عددی)
 
                 if ( TYPE_ADMIN != 1 && $InfoTicketReservation['totalPriceWithoutDiscount'] != 0 ) {
-                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
+//                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
                 }
 
                 $PassengerPayment            = $InfoTicketReservation['totalPrice'];
-                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
+//                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
                 $pricetotal                  = ( $InfoTicketReservation['totalPrice'] ) + $pricetotal;
             }
 
@@ -4214,74 +4215,131 @@ class bookshowTest extends clientAuth {
                         }
                         $DataFlightAgencyShare .= '</div>';
                         if ( $flightBook['IsInternal'] == '1' ) {
-                            $DataFlightAgencyShare .= "<div class='pull-left margin-10'>";
                             if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
                                 if($flightBook['direction']=='TwoWay' && $flightBook['api_id']=='14'){
-                                    $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=TicketTwoWay&id=" . $flightBook['request_number'] . "'
+                                    $DataFlightAgencyShare .= "
+                                    <div class='pull-left margin-10'>
+                                    <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=TicketTwoWay&id=" . $flightBook['request_number'] . "'
                                                                            target='_blank'>
-                                                                            <i class='fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o '
+                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title='بلیط پارسی'></i></a>";
+                                                                               data-original-title='بلیط با سربرگ و قیمت دار'></i></a>
+                                                                               
+                                    </div>";
+                                    $DataFlightAgencyShare .= "
+                                    <div class='pull-left margin-10'>
+                                    <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=TicketTwoWay&Letterhead=no&cash=no&id=" . $flightBook['request_number'] . "'
+                                                                           target='_blank'>
+                                                                            <i class='fcbtn btn btn-outline btn-warning btn-1c tooltip-warning fa fa-file-pdf-o '
+                                                                               data-toggle='tooltip'
+                                                                               data-placement='top' title=''
+                                                                               data-original-title='بلیط بدون سربرگ - بدون قیمت'></i></a>
+                                    </div> ";
                                 }else{
-                                    $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=fa'
+                                    $DataFlightAgencyShare .= "
+                                    <div class='pull-left margin-10'>
+                                    <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=fa'
                                                                            target='_blank'>
-                                                                            <i class='fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o '
+                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title='بلیط پارسی'></i></a>";
+                                                                               data-original-title='بلیط با سربرگ و قیمت دار'></i></a>
+                                    </div>";
+
+                                    $DataFlightAgencyShare .= "
+                                    <div class='pull-left margin-10'>
+                                    <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&Letterhead=no&cash=no&id=" . $flightBook['request_number'] . "&lang=fa'
+                                                                           target='_blank'>
+                                                                            <i class='fcbtn btn btn-outline btn-warning btn-1c tooltip-warning fa fa-file-pdf-o '
+                                                                               data-toggle='tooltip'
+                                                                               data-placement='top' title=''
+                                                                               data-original-title='بلیط بدون سربرگ - بدون قیمت'></i></a>
+                                    </div>";
                                 }
 
                             }
-                            $DataFlightAgencyShare .= '</div>';
                         }
-                        if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
+                        if ($flightBook['IsInternal'] == '1' &&
+                                ($flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ))
+                            ){
                             $DataFlightAgencyShare .= "<div class='pull-left margin-10'>";
                             $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=fa&Letterhead=true'
                                                                            target='_blank'>
                                                                             <i class='fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title='بلیط بدون سربرگ'></i></a>";
+                                                                               data-original-title='بلیط بدون سربرگ و قیمت دار'></i></a>";
                             $DataFlightAgencyShare .= '</div>';
                         }
 
-                        $DataFlightAgencyShare .= '<div class="pull-left margin-10">';
                         if ( $flightBook['IsInternal'] == '1' ) {
                             if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                                $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=en'
+                                $DataFlightAgencyShare .= "
+                                <div class='pull-left margin-10'>
+                                <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=en'
                                                                            target='_blank' title='دانلود بلیط(pdf)'>
                                                                             <i class='fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-file-pdf-o'
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title=' بلیط انگلیسی '></i></a>";
-                            }
-                        } else {
-                            if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                                $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=ticketForeign&id=" . $flightBook['request_number'] . "'
-                                                                           target='_blank' title='دانلود بلیط(pdf)'>
-                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-file-pdf-o'
-                                                                               data-toggle='tooltip'
-                                                                               data-placement='top' title=''
-                                                                               data-original-title='چاپ بلیط'></i></a>";
+                                                                               data-original-title=' بلیط انگلیسی با سربرگ - با قیمت '></i></a></div>";
                             }
                         }
-                        $DataFlightAgencyShare .= '</div><div class="pull-left margin-10">';
+                        else {
+                            if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
+                                $DataFlightAgencyShare .= "
+                                <div class='pull-left margin-10'>
+                                <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=ticketForeign&id=" . $flightBook['request_number'] . "'
+                                                                           target='_blank' title='بلیط با سربرگ و قیمت دار'>
+                                                                            <i class='fcbtn btn btn-outline btn-success btn-1c  tooltip-success  fa fa-file-pdf-o'
+                                                                               data-toggle='tooltip'
+                                                                               data-placement='top' title=''
+                                                                               data-original-title='بلیط با سربرگ و قیمت دار'></i></a></div>";
+
+                                $DataFlightAgencyShare .= "
+                                <div class='pull-left margin-10'>
+                                <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=ticketForeign&cash=no&id=" . $flightBook['request_number'] . "'
+                                                                           target='_blank' title='بلیط با سربرگ و بدون قیمت'>
+                                                                            <i class='fcbtn btn btn-outline btn-warning btn-1c  tooltip-warning  fa fa-file-pdf-o'
+                                                                               data-toggle='tooltip'
+                                                                               data-placement='top' title=''
+                                                                               data-original-title='بلیط با سربرگ و بدون قیمت'></i></a></div>";
+                                $DataFlightAgencyShare .= "
+                                <div class='pull-left margin-10'>
+                                <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=ticketForeign&Letterhead=no&id=" . $flightBook['request_number'] . "'
+                                                                           target='_blank' title='بلیط بدون سربرگ و با قیمت'>
+                                                                            <i class='fcbtn btn btn-outline btn-primary btn-1c  tooltip-primary  fa fa-file-pdf-o'
+                                                                               data-toggle='tooltip'
+                                                                               data-placement='top' title=''
+                                                                               data-original-title='بلیط بدون سربرگ و با قیمت'></i></a></div>";
+
+                                $DataFlightAgencyShare .= "
+                                <div class='pull-left margin-10'>
+                                <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=ticketForeign&Letterhead=no&cash=no&id=" . $flightBook['request_number'] . "'
+                                                                           target='_blank' title='بلیط بدون سربرگ و بدون قیمت'>
+                                                                            <i class='fcbtn btn btn-outline btn-info btn-1c  tooltip-info  fa fa-file-pdf-o'
+                                                                               data-toggle='tooltip'
+                                                                               data-placement='top' title=''
+                                                                               data-original-title='بلیط بدون سربرگ و بدون قیمت'></i></a></div>";
+                            }
+                        }
+
                         if ( $flightBook['IsInternal'] == '1' && ($flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' )) ) {
-                            $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&cash=no'
+                            $DataFlightAgencyShare .= "
+                            <div class='pull-left margin-10'>
+                            <a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&cash=no'
                                                                            target='_blank'>
                                                                             <i class='fcbtn btn btn-outline btn-default btn-1c tooltip-default fa fa-ticket '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title=' بلیط بدون قیمت '></i>
-                                                                               </a>
+                                                                               data-original-title=' بلیط با سربرگ و بدون قیمت '></i>
+                                                                               </a></div>
                                                                                ";
                         }
-                        $DataFlightAgencyShare .= '</div>
-                                            <div class="pull-left margin-10">';
                         if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
-                            $DataFlightAgencyShare .= ' <a 
-                                                       onclick="ModalCancelFlightAdmin(' . "'" . $flightBook['request_number'] . "'" .  ",'" ."flight'"  . '); return false ;"
+                            $DataFlightAgencyShare .= '
+                             <div class="pull-left margin-10">
+                             <a onclick="ModalCancelFlightAdmin(' . "'" . $flightBook['request_number'] . "'" .  ",'" ."flight'"  . '); return false ;"
                                                        target="_blank"
                                                        data-toggle="modal"
                                                        data-target="#ModalPublic"
@@ -4293,9 +4351,8 @@ class bookshowTest extends clientAuth {
                                                            data-original-title="استرداد"
                                                            >
                                                         </i>
-                                                    </a>';
+                                                    </a></div>';
                         }
-                        $DataFlightAgencyShare .= '</div>';
 
                         if ( ($flightBook['successfull'] == 'bank' || $flightBook['successfull'] == 'credit'|| $flightBook['successfull'] == 'pending' || $flightBook['successfull'] == 'processing') && TYPE_ADMIN == '1') {
                             $DataFlightAgencyShare .= "<div class='pull-left margin-10'><a onclick='DonePreReserve(" . '"' . $flightBook['request_number'] . '"' . "," . '"' . $flightBook['factor_number'] . '"' . "," . '"' . $flightBook['client_id'] . '"' . "); return false ;'
@@ -4411,17 +4468,28 @@ class bookshowTest extends clientAuth {
                                                                            data-original-title="مشاهده خرید"></i>
                                                                     </a>';
                         }
-                        $DataFlightAgencyShare .= '</div><div class="pull-left margin-10">';
+                        $DataFlightAgencyShare .='</div> ';
                         if ( $flightBook['successfull'] == 'book' ) {
-                            $DataFlightAgencyShare .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
+                            $DataFlightAgencyShare .= '
+                            <div class="pull-left margin-10">
+                            <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
+                                                                       target="_blank">
+                                                                        <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o "
+                                                                           data-toggle="tooltip"
+                                                                           data-placement="top" title=""
+                                                                           data-original-title=" بلیط با سربرگ و قیمت دار "></i>
+                                                                    </a></div>';
+                            $DataFlightAgencyShare .= '
+                            <div class="pull-left margin-10">
+                            <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&Letterhead=no&cash=no&id=' . $flightBook['request_number'] . '"
                                                                        target="_blank">
                                                                         <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                            data-toggle="tooltip"
                                                                            data-placement="top" title=""
-                                                                           data-original-title=" بلیط پارسی "></i>
-                                                                    </a>';
+                                                                           data-original-title=" بلیط بدون سربرگ و بدون قیمت "></i>
+                                                                    </a></div>';
                         }
-                        $DataFlightAgencyShare .= '</div> </div> </li> </ul> </div> <hr style="margin:3px">';
+                        $DataFlightAgencyShare .= '</div> </li> </ul> </div> <hr style="margin:3px">';
                     }
                 }
             }
@@ -4505,11 +4573,20 @@ class bookshowTest extends clientAuth {
                             $DataFlightAgencyShare .= '<div class="pull-left margin-10"> 
                                                             <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&id=' . $flightBook['request_number'] . '&lang=fa"
                                                                            target="_blank">
+                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o "
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top"
+                                                                               title=""
+                                                                               data-original-title=" بلیط با سربرگ و قیمت دار "></i>
+                                                       </a></div>';
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10"> 
+                                                            <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=parvazBookingLocal&Letterhead=no&cash=no&id=' . $flightBook['request_number'] . '&lang=fa"
+                                                                           target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top"
                                                                                title=""
-                                                                               data-original-title=" بلیط پارسی "></i>
+                                                                               data-original-title=" بلیط بدون سربرگ و بدون قیمت "></i>
                                                        </a></div>';
                         }
 
@@ -4522,7 +4599,7 @@ class bookshowTest extends clientAuth {
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="top"
                                                                                    title=""
-                                                                                   data-original-title=" '.functions::Xmlinformation('EnglishTicket').' "></i>
+                                                                                   data-original-title=" '.functions::Xmlinformation('EnglishTicketWithPrice').' "></i>
                                                                             </a></div>';
                             }
                         } else {
@@ -4534,7 +4611,7 @@ class bookshowTest extends clientAuth {
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="top"
                                                                                    title=""
-                                                                                   data-original-title=" '.functions::Xmlinformation('EnglishTicket').' "></i>
+                                                                                   data-original-title=" '.functions::Xmlinformation('EnglishTicketWithPrice').' "></i>
                                                            </a></div>';
                             }
                         }
@@ -4575,10 +4652,9 @@ class bookshowTest extends clientAuth {
                                                            data-toggle="tooltip"
                                                            data-placement="top"
                                                            title=""
-                                                           data-original-title=" بلیط بدون قیمت "></i>
+                                                           data-original-title=" بلیط با سربرگ و بدون قیمت "></i>
                                                     </a></div>';
                         }
-
                         if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && (TYPE_ADMIN == '1'  )) ) {
                             $DataFlightAgencyShare .= '<div class="pull-left margin-10">
                                                        <a onclick="ModalCancelFlightAdmin(' . "'" . $flightBook['request_number'] . "'" .  ",'" ."flight'"  . '); return false ;"
@@ -4674,10 +4750,18 @@ class bookshowTest extends clientAuth {
                             $DataFlightAgencyShare .= '<div class="pull-left margin-10">
                                                         <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&id=' . $flightBook['request_number'] . '"
                                                                            target="_blank">
+                                                                            <i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-file-pdf-o "
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top" title=""
+                                                                               data-original-title=" بلیط با سربرگ و قیمت دار "></i>
+                                                                        </a></div>';
+                            $DataFlightAgencyShare .= '<div class="pull-left margin-10">
+                                                        <a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=BookingReservationTicket&Letterhead=no&cash=no&id=' . $flightBook['request_number'] . '"
+                                                                           target="_blank">
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top" title=""
-                                                                               data-original-title=" بلیط پارسی "></i>
+                                                                               data-original-title=" بلیط بدون سربرگ و بدون قیمت "></i>
                                                                         </a></div>';
                         }
                         if ( (
@@ -5201,7 +5285,7 @@ class bookshowTest extends clientAuth {
                                                                             <i class='fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title='بلیط پارسی'></i></a>";
+                                                                               data-original-title='بلیط با سربرگ و قیمت دار'></i></a>";
                             }
                             $DataFlightActionBtn .= '</div>';
                         }
@@ -5233,7 +5317,7 @@ class bookshowTest extends clientAuth {
                                                                             <i class='fcbtn btn btn-outline btn-default btn-1c tooltip-default fa fa-ticket '
                                                                                data-toggle='tooltip'
                                                                                data-placement='top' title=''
-                                                                               data-original-title=' بلیط بدون قیمت '></i>";
+                                                                               data-original-title=' بلیط با سربرگ و بدون قیمت '></i>";
                         }
                         $DataFlightActionBtn .= '</div>';
 
@@ -5392,7 +5476,7 @@ class bookshowTest extends clientAuth {
                                                                         <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                            data-toggle="tooltip"
                                                                            data-placement="top" title=""
-                                                                           data-original-title=" بلیط پارسی "></i>
+                                                                           data-original-title=" بلیط با سربرگ و قیمت دار "></i>
                                                                     </a>';
                         }
                         $DataFlightActionBtn .= '</div> </div> </li> </ul> </div> <hr style="margin:3px">';
@@ -5485,7 +5569,7 @@ class bookshowTest extends clientAuth {
                                                                                data-toggle="tooltip"
                                                                                data-placement="top"
                                                                                title=""
-                                                                               data-original-title=" بلیط پارسی "></i>
+                                                                               data-original-title=" بلیط با سربرگ و قیمت دار "></i>
                                                                         </a></div>';
                         }
 
@@ -5551,7 +5635,7 @@ class bookshowTest extends clientAuth {
                                                            data-toggle="tooltip"
                                                            data-placement="top"
                                                            title=""
-                                                           data-original-title=" بلیط بدون قیمت "></i>
+                                                           data-original-title=" بلیط با سربرگ و بدون قیمت "></i>
                                                     </a>';
                         }
                         $DataFlightActionBtn .= ' </div>
@@ -5629,7 +5713,7 @@ class bookshowTest extends clientAuth {
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top" title=""
-                                                                               data-original-title=" بلیط پارسی "></i>
+                                                                               data-original-title=" بلیط با سربرگ و قیمت دار "></i>
                                                                         </a>';
                         }
                         $DataFlightActionBtn .= '</div> <div class="pull-left margin-10">';

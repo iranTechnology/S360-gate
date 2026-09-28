@@ -28,7 +28,10 @@
         <div class="col-sm-12">
             <div class="white-box">
                 <h3 class="box-title m-b-0">افزودن همکار جدید</h3>
-                <p class="text-muted m-b-30"> شما با استفاده از فرم زیر میتوانید همکار جدیدی را در سیستم ثبت نمائید</p>
+                <p class="text-muted m-b-30"> شما با استفاده از فرم زیر میتوانید همکار جدیدی را در سیستم ثبت نمائید
+                    <br>
+                    همراه با ثبت همکار، یک کانتر طلایی زیرمجموعه همکار ساخته می‌شود: نام و نام خانوادگی از نام مدیر عامل، نام کاربری شماره تلفن همراه و رمز عبور همان کلمه عبور سفر360 گیت.
+                </p>
                 <hr>
                 <form data-toggle="validator" id="AddAgency" method="post">
                     <input type="hidden" name="flag" value="insert_agency">
@@ -122,7 +125,7 @@
                             <div class="section-title" style="margin: 22px 0 0 0 ">سفر360 گیت</div>
                             <div class="section-content">
                                 <div class="form-group col-sm-3 with-icon">
-                                    <label for="password" class="control-label">کلمه عبور سفر360 گیت</label>
+                                    <label for="password" class="control-label">کلمه عبور سفر360 گیت و کانتر همکار</label>
                                     <input type="password" class="form-control" id="password" name="password"
                                            placeholder="کلمه عبور همکار را وارد نمائید">
                                 </div>

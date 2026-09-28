@@ -20,14 +20,20 @@ class passengers_tb extends Model {
 
     public function passengers_insert($data) {
 
+        $identity = ($data['is_foreign'] == '1') ? $data['passportNumber'] : $data['NationalCode'];
         if($data['is_foreign'] == '1'){
             $condition = " AND passportNumber = '{$data['passportNumber']}' ";
         } else{
             $condition = " AND NationalCode = '{$data['NationalCode']}' ";
         }
-        $sqlExist = "SELECT COUNT(id) AS repeated, id FROM {$this->table} WHERE fk_members_tb_id = '{$data['fk_members_tb_id']}' {$condition} AND  del = 'no'";
 
-        $resultExist = parent::load($sqlExist);
+        if ($identity === '' || $identity === null) {
+            // مسافر بدون کد ملی/شماره پاسپورت قابل مقایسه برای تکراری بودن نیست
+            $resultExist = array('repeated' => 0);
+        } else {
+            $sqlExist = "SELECT COUNT(id) AS repeated, id FROM {$this->table} WHERE fk_members_tb_id = '{$data['fk_members_tb_id']}' {$condition} AND  del = 'no'";
+            $resultExist = parent::load($sqlExist);
+        }
 
 
 

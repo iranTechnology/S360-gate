@@ -244,9 +244,6 @@ class resultSearchExternalHotel extends clientAuth
                 $Model = Load::library('Model');
                 functions::insertLog('getHotels before foreach result ' . microtime(true), 'times');
                 foreach ($ApiResult['Result'] as $apiKey => $apiHotel) {
-                    $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code='" . $apiHotel['HotelIndex']."' ";
-
-                    $res = $Model->select($query);
                     if($apiHotel['SourceId'] == '18') {
                         $final_price = $this->getController('currencyEquivalent')->calculateEquivalent($apiHotel['Currency']  ,$apiHotel['MinPrice']) ;
                         $hotelItem[$apiKey]['MinimumRoomPrice'] = $final_price;
@@ -269,7 +266,14 @@ class resultSearchExternalHotel extends clientAuth
                     },$apiHotel['Facilities']);
                     $hotelItem[$apiKey]['MapLang'] = $apiHotel['ContactInformation']['Location']['latitude'];
                     $hotelItem[$apiKey]['MapLat'] = $apiHotel['ContactInformation']['Location']['longitude'];
-                    $hotelItem[$apiKey]['HotelAddress'] = $apiHotel['ContactInformation']['Address'] ?? $res[0]['address'] ?? '---';
+                    // کوئری آدرس فقط زمانی اجرا می‌شود که وب سرویس آدرس نداده باشد
+                    $hotelAddress = $apiHotel['ContactInformation']['Address'] ?? null;
+                    if ($hotelAddress === null) {
+                        $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code='" . $apiHotel['HotelIndex']."' ";
+                        $res = $Model->select($query);
+                        $hotelAddress = $res[0]['address'] ?? '---';
+                    }
+                    $hotelItem[$apiKey]['HotelAddress'] = $hotelAddress;
                     $hotelItem[$apiKey]['city_id'] = $city['id'];
                     $hotelItem[$apiKey]['isSpecial'] ='no';
                 }
@@ -318,13 +322,20 @@ class resultSearchExternalHotel extends clientAuth
             $t8 = microtime(true);
 
             $ModelReservtion = Load::library('Model');
+
+            // کش نتایج در طول همین درخواست: ورودی‌ها بین هتل‌ها تکراری هستند (شهر/ستاره/کانتر/نوع سرویس)
+            $cachePriceChange = [];
+            $cacheServiceDiscount = [];
+            $currencyContext = null;
+            $arrayFacilitiesIndex = [];
+
             foreach ($arrayHotelsByType as $typeApp => $hotels) {
                 if (!empty($hotels)) {
                     $t9 = microtime(true);
                     foreach ($hotels as $k => $hotel) {
-                        $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code='" . $hotel['HotelIndex']."' ";
-
-                        $res = $ModelReservtion->select($query);
+                        // کوئری فقط در صورت نیاز (هتل خارجی بدون عکس یا بدون امکانات) اجرا می‌شود
+                        $res = null;
+                        $resLoaded = false;
 
                         $star = $hotel['HotelStars'] > 0 ? $hotel['HotelStars'] : 0;
                         $nameEnUrl = $objExternalHotel->convertStringForUrl($hotel['HotelName']);
@@ -343,15 +354,30 @@ class resultSearchExternalHotel extends clientAuth
                         } elseif ($typeApp == 'reservation') {
                             $urlPicInSize300 = $hotel['ImageURL'];
                         } else {
+                            if (!$resLoaded) {
+                                $res = $this->selectReservationHotelByCode($ModelReservtion, $hotel['HotelIndex']);
+                                $resLoaded = true;
+                            }
                             $urlPicInSize300 = $res[0]['logo'] ?  '/gds/pic/' . $res[0]['logo'] : ROOT_ADDRESS_WITHOUT_LANG . '/pic/hotel-nophoto.jpg';
                         }
 
                         $MinimumRoomPriceEachNight = 0;
-                        $service_type = $hotel['WebServiceType'] ? $hotel['WebServiceType'] : '';
-                        $city_id = $hotel['city_id'] ? $hotel['city_id']: '';
-                        $hotel_price_change = functions::getHotelPriceChange($city_id, $star, $this->counterId, $param['startDate'], $typeApp);
+                        $service_type = !empty($hotel['WebServiceType']) ? $hotel['WebServiceType'] : '';
+                        $city_id = !empty($hotel['city_id']) ? $hotel['city_id']: '';
+
+                        $priceChangeKey = json_encode([$city_id, $star, $this->counterId, $param['startDate'], $typeApp]);
+                        if (!array_key_exists($priceChangeKey, $cachePriceChange)) {
+                            $cachePriceChange[$priceChangeKey] = functions::getHotelPriceChange($city_id, $star, $this->counterId, $param['startDate'], $typeApp);
+                        }
+                        $hotel_price_change = $cachePriceChange[$priceChangeKey];
+
                         $hotel_service_title = functions::TypeServiceHotel($typeApp,'',$service_type);
-                        $discount_hotel = functions::ServiceDiscount($this->counterId,$hotel_service_title);
+
+                        $serviceDiscountKey = json_encode([$this->counterId, $hotel_service_title]);
+                        if (!array_key_exists($serviceDiscountKey, $cacheServiceDiscount)) {
+                            $cacheServiceDiscount[$serviceDiscountKey] = functions::ServiceDiscount($this->counterId,$hotel_service_title);
+                        }
+                        $discount_hotel = $cacheServiceDiscount[$serviceDiscountKey];
 
                         $external_hotel_calculate_price = functions::calculateHotelPrice($hotel_price_change,$discount_hotel,$hotel['MinimumRoomPrice']);
 
@@ -368,6 +394,10 @@ class resultSearchExternalHotel extends clientAuth
                             $hotelFacilities = $hotel['Facilities'];
                         } else {
 //                            $hotelFacilities = "MINIBAR|TV|WI-FI|ROOM SERVICE|SATELLITE TV";
+                            if (!$resLoaded) {
+                                $res = $this->selectReservationHotelByCode($ModelReservtion, $hotel['HotelIndex']);
+                                $resLoaded = true;
+                            }
                             $hotelFacilities = $res[0]['facilities'];
                         }
 
@@ -397,7 +427,7 @@ class resultSearchExternalHotel extends clientAuth
 
 
 
-                        $arrayHotel[$countHotels]['RequestNumber'] = $searchIdApi;
+                        $arrayHotel[$countHotels]['RequestNumber'] = $searchIdApi ?? null;
                         $arrayHotel[$countHotels]['typeApp'] = $typeApp;
                         $arrayHotel[$countHotels]['nameEnUrl'] = $nameEnUrl;
                         $arrayHotel[$countHotels]['hotelIndex'] = $hotel['HotelIndex'];
@@ -410,8 +440,12 @@ class resultSearchExternalHotel extends clientAuth
                             $expHotelsFacilities = explode("|", $hotelFacilities);
                             $countCh = 0;
                             foreach ($expHotelsFacilities as $facilities) {
-                                if (!in_array($facilities, $arrayFacilities) && !empty($facilities)) {
+                                // جستجوی ایندکسی به جای in_array؛ برای رشته‌های عددی همان مقایسه‌ی in_array حفظ شده
+                                $facilityExists = isset($arrayFacilitiesIndex[$facilities])
+                                    || (is_numeric($facilities) && in_array($facilities, $arrayFacilities));
+                                if (!$facilityExists && !empty($facilities)) {
                                     $arrayFacilities[] = $facilities;
+                                    $arrayFacilitiesIndex[$facilities] = true;
                                 }
 //                                if ($countCh + strlen($facilities) <= 50) {
 //                                    $countCh = $countCh + strlen($facilities);
@@ -431,11 +465,14 @@ class resultSearchExternalHotel extends clientAuth
                         $arrayHotel[$countHotels]['has_discount'] = ($discount_hotel['off_percent'] > 0) ? true: false;
                         $arrayHotel[$countHotels]['discount'] = ($discount_hotel['off_percent'] > 0) ? number_format($discount_hotel['off_percent'])  : '';
                         $arrayHotel[$countHotels]['priceWithoutDiscount'] = round($external_hotel_calculate_price['price_with_increase_change']);
-                        $arrayHotel[$countHotels]['priceWithoutDiscountCurrency'] = functions::CurrencyCalculate($external_hotel_calculate_price['price_with_increase_change']);
+                        if ($currencyContext === null) {
+                            $currencyContext = $this->getCurrencyContext();
+                        }
+                        $arrayHotel[$countHotels]['priceWithoutDiscountCurrency'] = $this->currencyCalculateByContext($external_hotel_calculate_price['price_with_increase_change'], $currencyContext);
                         $arrayHotel[$countHotels]['priceWithoutDiscountCurrency']['AmountCurrency'] = round( $arrayHotel[$countHotels]['priceWithoutDiscountCurrency']['AmountCurrency']);
-                        $arrayHotel[$countHotels]['mainCurrency'] = functions::CurrencyCalculate($minimumRoomPrice);
+                        $arrayHotel[$countHotels]['mainCurrency'] = $this->currencyCalculateByContext($minimumRoomPrice, $currencyContext);
                         $arrayHotel[$countHotels]['mainCurrency']['AmountCurrency'] = round( $arrayHotel[$countHotels]['mainCurrency']['AmountCurrency'] );
-                        $arrayHotel[$countHotels]['mainCurrencyEachNight'] = functions::CurrencyCalculate($minimumRoomPriceEachNight);
+                        $arrayHotel[$countHotels]['mainCurrencyEachNight'] = $this->currencyCalculateByContext($minimumRoomPriceEachNight, $currencyContext);
                         $arrayHotel[$countHotels]['mainCurrencyEachNight']['AmountCurrency'] = round( $arrayHotel[$countHotels]['mainCurrencyEachNight']['AmountCurrency'] );
 
                         $arrayHotel[$countHotels]['minimumRoomPrice'] =  round($minimumRoomPrice);
@@ -579,6 +616,45 @@ class resultSearchExternalHotel extends clientAuth
 //		functions::insertLog( json_encode($ApiResult), 'api', 'yes' );
 
         return json_encode($return, 256 | 64);
+    }
+
+    private function selectReservationHotelByCode($model, $hotelIndex)
+    {
+        $query = "SELECT * FROM reservation_hotel_tb WHERE sepehr_hotel_code='" . $hotelIndex . "' ";
+
+        return $model->select($query);
+    }
+
+    /**
+     * اطلاعات ارز جاری یک بار در هر درخواست محاسبه می‌شود.
+     * منطق دقیقا مطابق functions::CurrencyCalculate با CurrencyCode و CurrencyEquivalent و title_currency خالی است.
+     */
+    private function getCurrencyContext()
+    {
+        $SessionCurrency = Session::getCurrency();
+
+        $info_currency = functions::infoCurrencyBySessionCode($SessionCurrency);
+        $EquivalentAmount = isset($info_currency['EqAmount']) ? $info_currency['EqAmount'] : 0;
+
+        if (SOFTWARE_LANG == 'fa') {
+            $TypeAmount = ($SessionCurrency > 0 && ISCURRENCY == '1' && !empty($info_currency)) ? $info_currency['CurrencyTitle'] : functions::Xmlinformation('Rial')->__toString();
+        } else {
+            $TypeAmount = ($SessionCurrency > 0 && ISCURRENCY == '1' && !empty($info_currency)) ? $info_currency['CurrencyTitleEn'] : functions::Xmlinformation('Rial')->__toString();
+        }
+
+        return [
+            'convert' => ($SessionCurrency > 0 && ISCURRENCY == '1' && !empty($EquivalentAmount)),
+            'EquivalentAmount' => $EquivalentAmount,
+            'TypeAmount' => $TypeAmount,
+        ];
+    }
+
+    private function currencyCalculateByContext($Price, $currencyContext)
+    {
+        $CurrencyCalculate['AmountCurrency'] = $currencyContext['convert'] ? ($Price / $currencyContext['EquivalentAmount']) : $Price;
+        $CurrencyCalculate['TypeCurrency'] = $currencyContext['TypeAmount'];
+
+        return $CurrencyCalculate;
     }
 
     public function searchDetails($params)

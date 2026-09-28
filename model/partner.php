@@ -252,7 +252,8 @@ class partner_tb extends ModelBase
 
     protected function insertSpecialPage($slug ){
 
-        $slug_suffix = $slug === 'none' ?  '' : '-' . $slug;
+//        $slug_suffix = $slug === 'none' ?  '' : '-' . $slug;
+        $slug_suffix = '';
         $specialPages = [
             [
                 'title' => 'خرید بلیط هواپیما خارجی و داخلی ارزان ',

@@ -878,6 +878,23 @@ class factorHotelNew extends detailHotel
         //		}
     }
 
+    public function getMyFactorPassengers($factorNumber)
+    {
+        if (empty($factorNumber)) {
+            return [];
+        }
+        // لود مدل و کوئری مستقیم به دیتابیس
+        //$model = Load::library('Model')->get('bookHotelLocalModel');
+        //return $model->where('factor_number', $factorNumber)->all();
+
+        $result_temprory_hotel = $this->getModel('bookHotelLocalModel')
+            ->get()
+            ->where('factor_number', $factorNumber)
+            ->orderBy('room_id,flat_type')
+            ->all();
+
+        return $result_temprory_hotel;
+    }
     public function HotelReserveNew($params = [])
     {
         return parent::HotelReserveNew($params);

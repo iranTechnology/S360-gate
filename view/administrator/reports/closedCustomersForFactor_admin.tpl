@@ -1,6 +1,8 @@
 {load_presentation_object filename="clients" assign="objReport"}
 {assign var="reports" value=$objReport->listClosedAdminClients()}
-{fetch file="/home/irantech/public_html/factors/CurlFromOtherSyatems/LastUpdateCheckFactorForSafar360.txt" assign="lastUpdate"}
+{*{fetch file="/home/irantech/public_html/factors/CurlFromOtherSyatems/LastUpdateCheckFactorForSafar360.txt" assign="lastUpdate"}*}
+{*در لوکال کامنت باشد*}
+
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default ">

@@ -1331,11 +1331,7 @@ class functions {
 
         //yes means nesesary calculate  price changes
         $modelBase = Load::library( 'Model' );
-
-
-
         $Sql = "SELECT *  FROM book_local_tb WHERE (request_number='{$RequestNumber}' OR factor_number='{$RequestNumber}') AND (passenger_national_code='{$nationalCode}' OR passportNumber='{$nationalCode}')";
-
         $rec = $modelBase->load( $Sql );
 
 
@@ -10660,7 +10656,6 @@ class functions {
             if($source_id=='17'){
                 $duration = strlen($duration)==10 ? $duration : '0:'.$duration ;
             }
-            self::insertLog($duration,'1_check_duration');
             $day_time = substr($duration, 0, 1);
 
             $hours = substr($duration, 2, 2);
@@ -10682,7 +10677,6 @@ class functions {
             if($source_id=='17'){
                 $duration = strlen($duration)==10 ? $duration : '0:'.$duration ;
             }
-            self::insertLog($duration,'1_check_duration');
             $day_time = substr($duration, 0, 1);
             $hours = substr($duration, 2, 2);
             $minuets = substr($duration, 5, 2);

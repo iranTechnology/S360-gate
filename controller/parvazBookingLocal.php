@@ -856,9 +856,41 @@ class parvazBookingLocal extends apiLocal
 
         //$query = "SELECT * FROM book_local_tb WHERE  request_number='{$request_number}' AND (successfull='book' OR successfull='private_reserve')";
         $query = "
+SELECT
+    report.*,
+    (
         SELECT
-            report.*,
-            (
+            SUM(r2.adt_fare)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS adt_fare_sum,
+    (
+        SELECT
+            SUM(r2.chd_fare)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS chd_fare_sum,
+    (
+        SELECT
+            SUM(r2.inf_fare)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS inf_fare_sum,
+    (
+        SELECT
+            SUM(r2.amount_added)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS sum_amount_added,
+    (
         SELECT
             PercentIndemnity 
         FROM
@@ -897,13 +929,13 @@ class parvazBookingLocal extends apiLocal
 		GROUP BY
 			cancelTicket.NationalCode
 	) AS cancelTicketPriceIndemnity
-        FROM
-            book_local_tb AS report 
-        WHERE
-            report.request_number = '{$request_number}' 
-            AND ( report.successfull = 'book' OR report.successfull = 'private_reserve' )
-            {$conditionCancelStatus}
-        ";
+FROM
+    book_local_tb AS report 
+WHERE
+    report.request_number = '{$request_number}' 
+    AND ( report.successfull = 'book' OR report.successfull = 'private_reserve' )
+    {$conditionCancelStatus}
+";
         $info_ticket = $model->select($query);
 
         return $info_ticket;
@@ -979,9 +1011,41 @@ class parvazBookingLocal extends apiLocal
 
             $admin = Load::controller('admin');
             $queryClient = "
+SELECT
+    report.*,
+    (
         SELECT
-            report.*,
-            (
+            SUM(r2.adt_fare)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS adt_fare_sum,
+    (
+        SELECT
+            SUM(r2.chd_fare)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS chd_fare_sum,
+    (
+        SELECT
+            SUM(r2.inf_fare)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS inf_fare_sum,
+    (
+        SELECT
+            SUM(r2.amount_added)
+        FROM
+            book_local_tb AS r2
+        WHERE
+            r2.request_number = report.request_number
+    ) AS sum_amount_added,
+    (
         SELECT
             PercentIndemnity 
         FROM
@@ -998,7 +1062,7 @@ class parvazBookingLocal extends apiLocal
             DateRequestCancelClientInt 
         FROM
             cancel_ticket_details_tb AS cancelTicketDetail
-            LEFT JOIN cancel_ticket_tb AS cancelTicket ON cancelTicket.IdDetail = cancelTicketDetail.id
+        LEFT JOIN cancel_ticket_tb AS cancelTicket ON cancelTicket.IdDetail = cancelTicketDetail.id
         WHERE
             ( cancelTicket.NationalCode = report.passenger_national_code OR cancelTicket.NationalCode = report.passportNumber )
             AND report.request_number = cancelTicketDetail.RequestNumber 
@@ -1020,13 +1084,13 @@ class parvazBookingLocal extends apiLocal
 		GROUP BY
 			cancelTicket.NationalCode
 	) AS cancelTicketPriceIndemnity
-        FROM
-            book_local_tb AS report 
-        WHERE
-            report.request_number = '{$param}' 
-            AND ( report.successfull = 'book' OR report.successfull = 'private_reserve' )
-            {$conditionCancelStatus}
-        ";
+FROM
+    book_local_tb AS report 
+WHERE
+    report.request_number = '{$param}' 
+    AND ( report.successfull = 'book' OR report.successfull = 'private_reserve' )
+    {$conditionCancelStatus}
+";
 
             $info_ticket = $admin->ConectDbClient($queryClient, $ticketReport['client_id'], 'SelectAll', '', '', '');
             $clientid = $admin->getClient(CLIENT_ID);
@@ -1233,6 +1297,8 @@ class parvazBookingLocal extends apiLocal
 
 
 
+
+
             $cancelTicketPrice = 0;
             if ($info['request_cancel'] == 'confirm'){
 //        $cancelTicketPrice = $priceTotal - (($priceTotal * $info['cancelTicketPercent']) / 100);
@@ -1246,6 +1312,36 @@ class parvazBookingLocal extends apiLocal
 
             $type_member = functions::TypeUser(session::getUserId());
 
+            if ( $info['flight_type'] != 'charterPrivate' ) {
+                $NumberFlightTotal=$info['provider_adt_price'] + $info['provider_chd_price'] + $info['provider_inf_price'];
+
+            }
+            else {
+                $NumberFlightTotal=0;
+            }
+
+            if (
+                    ($info['flight_type'] == 'system' && $info['IsInternal'] == '1') ||
+                    ($info['flight_type'] == 'system' && $info['IsInternal'] == '0' && $info['foreign_airline'] == '0')
+            ) {
+                $NumberFlightPassengerPayData1=0;
+            } else {
+                $NumberFlightPassengerPayData1=$info['agency_commission'];
+            }
+
+            $NumberFlightPassengerPayData2=$info['amount_added'];
+
+            $discountPrice=0;
+            if ($info['flight_type'] == 'charterPrivate') {
+                $bookshow = Load::controller( 'bookshowTest' );
+                $InfoTicketReservation = $bookshow->getInfoTicketReservation( $info['request_number'] );
+                $discountPrice = $InfoTicketReservation['discount_amount']; // مبلغ کل تخفیف (عددی)
+            }
+
+            $NumberFlightPassengerPayData=($NumberFlightTotal+$NumberFlightPassengerPayData1+$NumberFlightPassengerPayData2)-$discountPrice;
+            $DataFlightPassengerPayData=number_format($NumberFlightPassengerPayData);
+
+
             ?>
             <div  style='margin-top: 1000px;font-family: "yekanbakh"'>
                 <?php if(!$_GET['Letterhead']):?>
@@ -1254,14 +1350,14 @@ class parvazBookingLocal extends apiLocal
                             <td style="padding-bottom:30px">
                                 <img src="<?php echo  ROOT_ADDRESS_WITHOUT_LANG . '/pic/' .'agencyPartner/' . CLIENT_ID . '/logo/'. $getSubAgencyInfo['logo'] ?>" height="80" style="vertical-align: middle;">
                                 <span style="display: inline-block; vertical-align: middle; padding-left: 10px;">
-                <?php echo $getSubAgencyInfo['name_fa'] ?>
-            </span>
+                                    <?php echo $getSubAgencyInfo['name_fa'] ?>
+                                </span>
                             </td>
-                            <td style="<?= $_GET['lang'] == 'fa' ? 'text-align:left' : 'text-align:right'; ?>
-                                    ">
-                                <!--                          <img src="https://safar360.com/gds/library/barcode/barcode_creator.php?barcode=--><?php //echo trim($info['pnr']); ?><!--"-->
-                                <!--                               style="max-width: 80px; min-height: 50px">-->
-                                <!--                               <img src="data:image/png;base64,--><?php //echo $qrCodeBase64; ?><!--" style="max-width: 80px; min-height: 50px"></td>-->
+                            <td style="<?= $_GET['lang'] == 'fa' ? 'text-align:left' : 'text-align:right'; ?>">
+                                <!-- <img src="https://safar360.com/gds/library/barcode/barcode_creator.php?barcode=--><?php //echo trim($info['pnr']); ?><!--"-->
+                                <!-- style="max-width: 80px; min-height: 50px">-->
+                                <!-- <img src="data:image/png;base64,--><?php //echo $qrCodeBase64; ?><!--" style="max-width: 80px; min-height: 50px">-->
+                            </td>
                         </tr>
                     </table>
                 <?php endif;?>
@@ -1454,12 +1550,14 @@ class parvazBookingLocal extends apiLocal
                                                 if ($cash == 'no') {
                                                     echo 'Cash';
                                                 } else {
-                                                    $isCounter = functions::TypeUser($info['member_id']) === 'Counter';
-                                                    if ($isCounter && $info['percent_discount'] > 0) {
-                                                        echo number_format($priceTotalWithOutDiscount) . ' ریال';
-                                                    } else {
-                                                        echo number_format($priceTotal) . ' ریال';
-                                                    }
+//                                                    $isCounter = functions::TypeUser($info['member_id']) === 'Counter';
+//                                                    if ($isCounter && $info['percent_discount'] > 0) {
+//                                                        echo number_format($priceTotalWithOutDiscount) . ' ریال';
+//                                                    } else {
+//                                                        echo number_format($priceTotal) . ' ریال';
+//                                                    }
+
+                                                    echo $DataFlightPassengerPayData . ' ریال';
                                                 }
                                                 ?>
                                             </p>
@@ -1472,12 +1570,14 @@ class parvazBookingLocal extends apiLocal
                                             if ($cash == 'no') {
                                                 echo 'Cash';
                                             } else {
-                                                $isCounter = functions::TypeUser($info['member_id']) === 'Counter';
-                                                if ($isCounter && $info['percent_discount'] > 0) {
-                                                    echo number_format($priceTotalWithOutDiscount) . ' Rial';
-                                                } else {
-                                                    echo number_format($priceTotal) . ' Rial';
-                                                }
+//                                                $isCounter = functions::TypeUser($info['member_id']) === 'Counter';
+//                                                if ($isCounter && $info['percent_discount'] > 0) {
+//                                                    echo number_format($priceTotalWithOutDiscount) . ' Rial';
+//                                                } else {
+//                                                    echo number_format($priceTotal) . ' Rial';
+//                                                }
+                                                echo $DataFlightPassengerPayData . ' Rial';
+
                                             }
                                             ?>
                                         </p>
@@ -1488,8 +1588,6 @@ class parvazBookingLocal extends apiLocal
                     </tr>
                     <tr><td colspan="2" style="height:10px;"></td></tr>
                 </table>
-
-
 
                 <?php
 
@@ -1508,64 +1606,59 @@ class parvazBookingLocal extends apiLocal
                     $DataFlightTotal = '0';
                     $DataFlightFare = '0';
                 }
+
                 if(empty($_GET['isPassenger'])){
                     if ($type_member == 'Counter') { ?>
-
-
-                        <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
                             <?php if($_GET['lang'] == 'fa'){ ?>
-
-                                <tr class="cancellationPolicy-tableHead">
-                                    <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
-                                    <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
-                                    <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">کمیسیون</td>
-                                    <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">مارک کانتر</td>
-                                </tr>
-
-
-                                <tr>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightTotal ?> ریال
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightFare ?> ریال
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightitAgencyCommission ?> ریال
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightPassengerPayData2 ?> ریال
-                                    </td>
-                                </tr>
-                            <?php } else{ ?>
-                                <tr class="cancellationPolicy-tableHead">
-                                    <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
-                                    <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
-                                    <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">Commission</td>
-                                    <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">Counter Mark</td>
-                                </tr>
-
-
-                                <tr>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightTotal ?> Rial
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightFare ?> Rial
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightitAgencyCommission ?> Rial
-                                    </td>
-                                    <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                        <?= $DataFlightPassengerPayData2 ?> Rial
-                                    </td>
-                                </tr>
-
-                            <?php } ?>
-
-                        </table>
-
-
+                                <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
+                                    <tr class="cancellationPolicy-tableHead">
+                                        <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
+                                        <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
+                                        <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">کمیسیون</td>
+                                        <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">مارک کانتر</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightTotal ?> ریال
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightFare ?> ریال
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightitAgencyCommission ?> ریال
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?= $DataFlightPassengerPayData2 ?> ریال
+                                        </td>
+                                    </tr>
+                                </table>
+                            <?php }
+                            //else{ ?>
+                                <!--
+                                <table width="100%" align="center" cellpadding="5" cellspacing="0" style="margin: auto 100px; border: 1px solid #CCCCCC; border-collapse: collapse;" border="1" bordercolor="#CCCCCC">
+                                    <tr class="cancellationPolicy-tableHead">
+                                        <td class="cancellationPolicy-c1" style="border: 1px solid #CCC;">Total</td>
+                                        <td class="cancellationPolicy-c2" style="border: 1px solid #CCC;">Fare</td>
+                                        <td class="cancellationPolicy-c3" style="border: 1px solid #CCC;">Commission</td>
+                                        <td class="cancellationPolicy-c4" style="border: 1px solid #CCC;">Counter Mark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightTotal ?> Rial
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightFare ?> Rial
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightitAgencyCommission ?> Rial
+                                        </td>
+                                        <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
+                                            <?php //echo $DataFlightPassengerPayData2 ?> Rial
+                                        </td>
+                                    </tr>
+                                </table>
+                                -->
+                            <?php //} ?>
                         <?php
                     }
                 }
@@ -1582,7 +1675,7 @@ class parvazBookingLocal extends apiLocal
 
                             <tr>
                                 <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                    <?= $DataFlightTotal ?> ریال
+                                    <?php echo $DataFlightTotal ?> ریال
                                 </td>
                             </tr>
                         <?php } else{ ?>
@@ -1594,7 +1687,7 @@ class parvazBookingLocal extends apiLocal
 
                             <tr>
                                 <td class="cancellationPolicy-title" style="border: 1px solid #CCC;">
-                                    <?= $DataFlightTotal ?> Rial
+                                    <?php echo $DataFlightTotal ?> Rial
                                 </td>
 
                             </tr>
@@ -1606,6 +1699,7 @@ class parvazBookingLocal extends apiLocal
 
                     <?php
                 }
+
                 if ($info['request_cancel'] != 'confirm' && ($info['successfull'] == 'book' || $info['successfull'] == 'private_reserve')){
                     ?>
                     <div class="" style="margin: 10px 100px ;border:1px solid #ccc">
@@ -1699,11 +1793,11 @@ class parvazBookingLocal extends apiLocal
                                         if($_GET['lang'] == 'fa'){
                                             if ($info['origin_airport_iata'] == 'THR'){ ?>
                                                 <li>
-                                                    این پرواز از ترمینال خروجی  <?=  $infoAirline[0]['out_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
+                                                    این پرواز از ترمینال خروجی  <?php echo  $infoAirline[0]['out_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
                                                 </li>
                                             <?php }  if ($info['desti_airport_iata'] == 'THR'){ ?>
                                                 <li>
-                                                    این پرواز از ترمینال ورودی  <?=  $infoAirline[0]['enter_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
+                                                    این پرواز از ترمینال ورودی  <?php echo  $infoAirline[0]['enter_thr'] . ' ' . $thrAirport ?> صورت می‌گیرد
                                                 </li>
                                             <?php } ?>
 
@@ -1712,11 +1806,11 @@ class parvazBookingLocal extends apiLocal
 
                                         <?php  }  else {   if ($info['origin_airport_iata'] == 'THR'){ ?>
                                             <li>
-                                                This flight departs from the terminal  <?=   $infoAirline[0]['out_thr'] . ' ' . $thrAirportEn ?> It takes place.
+                                                This flight departs from the terminal  <?php echo   $infoAirline[0]['out_thr'] . ' ' . $thrAirportEn ?> It takes place.
                                             </li>
                                         <?php }  if ($info['desti_airport_iata'] == 'THR'){ ?>
                                             <li>
-                                                This flight departs from the arrivals terminal  <?=  $infoAirline[0]['enter_thr'] . ' ' . $thrAirportEn ?> It takes place.
+                                                This flight departs from the arrivals terminal  <?php echo  $infoAirline[0]['enter_thr'] . ' ' . $thrAirportEn ?> It takes place.
                                             </li>
                                         <?php }?>
 
@@ -2063,26 +2157,26 @@ class parvazBookingLocal extends apiLocal
                                cellspacing="0">
                             <tr>
                                 <td colspan="2">
-                                    <?= $_GET['lang'] == 'fa' ? 'آدرس :' : 'Address:'; ?>
-                                    <?= !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : $ClientAddress; ?>
+                                    <?php echo $_GET['lang'] == 'fa' ? 'آدرس :' : 'Address:'; ?>
+                                    <?php echo !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : $ClientAddress; ?>
 
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding-top:15px">
-                                    <?= $_GET['lang'] == 'fa' ? 'وب سایت :' : 'Website:'; ?>
+                                    <?php echo $_GET['lang'] == 'fa' ? 'وب سایت :' : 'Website:'; ?>
                                     <?php echo $ClientMainDomain; ?>
 
                                 </td>
                                 <td style="padding-top:15px">
-                                    <?= $_GET['lang'] == 'fa' ? ' تلفن پشتیبانی :' : 'Support phone:'; ?>
+                                    <?php echo $_GET['lang'] == 'fa' ? ' تلفن پشتیبانی :' : 'Support phone:'; ?>
 
-                                    <?= !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : $phone; ?>
+                                    <?php echo !empty($getSubAgencyInfo['phone']) ? $getSubAgencyInfo['phone'] : $phone; ?>
                                 </td>
                                 <?php if($info_ticket[0]['agency_id']) {?>
                                     <td style="padding-top:15px">
-                                        <?= $_GET['lang'] == 'fa' ? 'تلفن کانتر فروش :' : 'Sales counter telephone:'; ?>
-                                        <?=  !empty($getSubAgencyInfo['mobile']) ? $getSubAgencyInfo['mobile'] : $PhoneManage; ?>
+                                        <?php echo $_GET['lang'] == 'fa' ? 'تلفن کانتر فروش :' : 'Sales counter telephone:'; ?>
+                                        <?php echo  !empty($getSubAgencyInfo['mobile']) ? $getSubAgencyInfo['mobile'] : $PhoneManage; ?>
                                     </td>
                                 <?php  } ?>
                             </tr>
@@ -2360,7 +2454,6 @@ class parvazBookingLocal extends apiLocal
         return $airlineController->checkSourceAirline($dataCheckConfigAirline);
     }
 #endregion
-
 
     public function returnBankSource7($requestNumber, $dataTicket) {
         $model = Load::library('Model');

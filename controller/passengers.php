@@ -259,19 +259,23 @@ class Passengers extends clientAuth {
      * @param input array of inputs
      * @return array of result
      */
-    public function insert($input) {
+    /**
+     * @param array $input
+     * @param bool $allowWithoutIdentity ثبت مسافر بدون کد ملی و شماره پاسپورت (فقط برای درج گروهی از اکسل)
+     */
+    public function insert($input, $allowWithoutIdentity = false) {
 
         if($input['passengerNationality'] == '0'){
 
             $birthDateFa = filter_var($input['passengerBirthday'], FILTER_SANITIZE_STRING);
-            $birthDate = functions::ConvertToMiladi($birthDateFa);
+            $birthDate = !empty($birthDateFa) ? functions::ConvertToMiladi($birthDateFa) : '';
             $nationalCode = filter_var($input['passengerNationalCode'], FILTER_SANITIZE_NUMBER_INT);
             $passportCountry = 'IRN';
 
         } else{
 
             $birthDate = filter_var($input['passengerBirthdayEn'], FILTER_SANITIZE_STRING);
-            $birthDateFa = str_replace('/', '-', functions::convertDateFlight($birthDate));
+            $birthDateFa = !empty($birthDate) ? str_replace('/', '-', functions::convertDateFlight($birthDate)) : '';
             $nationalCode = '';
             $passportCountry = filter_var($input['passengerPassportCountry'], FILTER_SANITIZE_STRING);
 
@@ -294,7 +298,7 @@ class Passengers extends clientAuth {
         functions::insertLog(json_encode($passengerInfo,256),'checkPassenger');
         if((!empty($passengerInfo['name']) || !empty($passengerInfo['name_en'])) &&
             (!empty($passengerInfo['family']) || !empty($passengerInfo['family_en']) ) &&
-            (!empty($passengerInfo['NationalCode']) || !empty($passengerInfo['passportNumber']))){
+            ($allowWithoutIdentity || !empty($passengerInfo['NationalCode']) || !empty($passengerInfo['passportNumber']))){
 
             /** @var passengers_tb $passengerModel */
             $passengerModel = Load::model('passengers');
