@@ -5076,8 +5076,8 @@ function triggerPackageRoomCount(_this,type) {
 
     const room_input=_this.parent().find('input:hidden')
     const each_person = $('#price_per_person').val()
-    const max=room_input.attr('max')
-    const min=room_input.attr('min')
+    const max=Number(room_input.attr('max'))
+    const min=Number(room_input.attr('min'))
     const coefficient=room_input.data('coefficient')
     const price=room_input.data('price')
     const visible_value=room_input.parent().find("[data-name='value']")
@@ -5109,13 +5109,13 @@ function triggerPackageRoomCount(_this,type) {
 
 
     if(type=='increase'){
-        if(room_input.val() < max && room_input.data('price') > 0){
+        if(Number(room_input.val()) < max && room_input.data('price') > 0){
             room_input.val(Number(room_input.val())+1)
         }
     }
     if(type=='decrease'){
-        if(room_input.val() > min) {
-            room_input.val(room_input.val() - 1)
+        if(Number(room_input.val()) > min) {
+            room_input.val(Number(room_input.val()) - 1)
         }
     }
 

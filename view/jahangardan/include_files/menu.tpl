@@ -11,7 +11,7 @@
                 <div class="nav-menus-wrapper d-flex align-items-start flex-column ml-auto" >
                     <ul class="nav-menu align-to-right">
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/cancellationFee">درصد جریمه کنسلی</a></li>
-                        <li><a href="https://jahangardan.com/">میزبان شو</a></li>
+{*                        <li><a href="https://jahangardan.com/">میزبان شو</a></li>*}
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/page/terminal">ترمینال پرواز</a></li>
 
                         <li><a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">پیگیری خرید</a></li>

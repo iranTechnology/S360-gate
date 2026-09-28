@@ -8384,14 +8384,16 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
             if (data.result_status == 'success') {
                 var display_discount_currency = $('.dispalyTypeCurrency');
 
+                let price_after_discount;
+
                     if( data.typeDiscount === 'percent'){
-                        var price_after_discount = price_before_discount - (price_before_discount * data.discountAmount / 100);
+                        price_after_discount = price_before_discount - (price_before_discount * data.discountAmount / 100);
                         display_discount_currency.text('%');
                     }
                 else{
 
 
-                        let price_after_discount = price_before_discount - data.discountAmount;
+                    price_after_discount = price_before_discount - data.discountAmount;
 
                         if (Number(data.discountAmount) > Number(price_before_discount)) {
                             price_after_discount = 0;
@@ -8409,9 +8411,6 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                     if (Number(data.discountAmount) > Number(price_before_discount)) {
                         dataDiscountAmount = price_before_discount;
                     }
-
-
-
 
                 $(".discount-code-error").html(data.result_message);
                 $(".discountAmount").html(number_format(dataDiscountAmount));

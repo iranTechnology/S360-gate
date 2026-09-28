@@ -526,7 +526,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     $agency_model = Load::model('agency');
     $agencyAddResult = $agency->insert_agency($agencyData);
 
-    if ($agencyAddResult) {
+    if (strpos(trim($agencyAddResult), 'success') === 0) {
 
         $agencyID = $agency_model->getLastId();
 
@@ -3755,6 +3755,15 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'UpdateCounterDetail') {
     $objBookShow = Load::controller('bookshow');
     $_POST['report_for_excel'] = true;
     $result = $objBookShow->createExcelFile($_POST);
+
+    echo $result;
+
+}  elseif (isset($_POST['flag']) && $_POST['flag'] == 'createNewExcelFile') {
+    unset($_POST['flag']);
+
+    $objBookShow = Load::controller('bookshow');
+    $_POST['report_for_excel'] = true;
+    $result = $objBookShow->createNewExcelFile($_POST);
 
     echo $result;
 

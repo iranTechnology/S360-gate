@@ -18,6 +18,7 @@
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/resultExternalHotel/iraq/Karbala/{$objDate->daysAfterToday('1')}/{$objDate->daysAfterToday('2')}/1/R:2-0-0">اقامتگاه های عراق</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=157&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های شمال</a></li>
                                     <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=163&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های سازمانی</a></li>
+                                    <li><a href="{$smarty.const.ROOT_ADDRESS}/searchHotel&type=new&city=164&startDate={$objDate->daysAfterToday('1')}&nights=1&rooms=R:2-0-0">اقامتگاه های گروهی</a></li>
                                 </ul>
                             </li>
                             <li>
