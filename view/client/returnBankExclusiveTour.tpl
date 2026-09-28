@@ -184,17 +184,16 @@
             <i class="fa-regular fa-house"></i>
             ${useXmltag('OsafarHome')}
         </a>
- <a href="${link_pdf}" target="_blank" class="btn-click btn-success p-3" >
-            <i class="fa-regular fa-file-pdf"></i>
-            ${useXmltag('Printticket')}
-        </a>
+     <a href="${link_pdf}" target="_blank" class="btn-click btn-success p-3" >
+                <i class="fa-regular fa-file-pdf"></i>
+                ${useXmltag('Printticket')}
+     </a>
     </div>
 </div>
 `;
 
 
             let statement_error_no_login = `
-
 <div class="error-flight-payment-box">
     <div class="problem-icon">
         <div class="icon-circle">

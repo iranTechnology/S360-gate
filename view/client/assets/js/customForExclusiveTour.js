@@ -361,6 +361,8 @@ function stopCounter(el) {
 // Display matching record
 function displayMatchingRecord(record) {
 
+   console.log('record' , record)
+
    // --- ۱) استخراج قیمت‌ها و تبدیل به ریال ---
    const newFlightPrice = Math.floor(record.TotalFlightPrice || 0);
    const newHotelPrice  = Math.floor(record.TotalHotelPrice  || 0);

@@ -217,33 +217,33 @@ class bookingInsurance extends insurance
                 try {
 //                    if ($confirm_result['status']) {
 //
-                        if($payType != 'credit') {
-                            // Caution: آپدیت تراکنش به موفق
-                            $objTransaction->setCreditToSuccess($factorNumber, $item['tracking_code_bank']);
-                        }
+                    if($payType != 'credit') {
+                        // Caution: آپدیت تراکنش به موفق
+                        $objTransaction->setCreditToSuccess($factorNumber, $item['tracking_code_bank']);
+                    }
 
-                        $data['pnr'] = $bimehNo;
-                        $data['status'] = 'book';
-                        $data['payment_date'] = date('Y-m-d H:i:s');
-                        if($item['tracking_code_bank'] == 'member_credit'){
-                            $data['payment_type'] = 'member_credit';
-                            $data['tracking_code_bank'] = '';
-                        } else{
-                            $data['payment_type'] = 'cash';
-                        }
-                        $condition = " factor_number='{$factorNumber}' AND passport_number='{$item['passport_number']}' ";
+                    $data['pnr'] = $bimehNo;
+                    $data['status'] = 'book';
+                    $data['payment_date'] = date('Y-m-d H:i:s');
+                    if($item['tracking_code_bank'] == 'member_credit'){
+                        $data['payment_type'] = 'member_credit';
+                        $data['tracking_code_bank'] = '';
+                    } else{
+                        $data['payment_type'] = 'cash';
+                    }
+                    $condition = " factor_number='{$factorNumber}' AND passport_number='{$item['passport_number']}' ";
 
-                        $model->setTable('book_insurance_tb');
-                        $res = $model->update($data, $condition);
-                        functions::insertLog('insurance set to book ' . $condition, 'insurance/saman_bank_log');
-                        functions::insertLog('insurance book result ' . $res, 'insurance/saman_bank_log');
+                    $model->setTable('book_insurance_tb');
+                    $res = $model->update($data, $condition);
+                    functions::insertLog('insurance set to book ' . $condition, 'insurance/saman_bank_log');
+                    functions::insertLog('insurance book result ' . $res, 'insurance/saman_bank_log');
+                    $this->okInsurance = true;
+                    if ($res) {
+                        $ModelBase->setTable('report_insurance_tb');
+                        $ModelBase->update($data, $condition);
                         $this->okInsurance = true;
-                        if ($res) {
-                            $ModelBase->setTable('report_insurance_tb');
-                            $ModelBase->update($data, $condition);
-                            $this->okInsurance = true;
-                            $this->payment_date = $data['payment_date'];
-                        }
+                        $this->payment_date = $data['payment_date'];
+                    }
 //                    }
                 } catch (Exception $e) {
                     functions::insertLog('insurance set error in book ' , 'insurance/saman_bank_log');
@@ -483,16 +483,16 @@ class bookingInsurance extends insurance
     public function setPortBankInsurance($bankDir, $factor_number)
     {
         if($bankDir != 'samanBankInsurance') {
-        $initialValues = array(
-            'bank_dir' => $bankDir,
-            'serviceTitle' => $_POST['serviceType']
-        );
+            $initialValues = array(
+                'bank_dir' => $bankDir,
+                'serviceTitle' => $_POST['serviceType']
+            );
 
-        $bankModel = Load::model('bankList');
-        $bankInfo = $bankModel->getByBankDir($initialValues);
+            $bankModel = Load::model('bankList');
+            $bankInfo = $bankModel->getByBankDir($initialValues);
 
-        $data['name_bank_port'] = $bankDir;
-        $data['number_bank_port'] = $bankInfo['param1'];
+            $data['name_bank_port'] = $bankDir;
+            $data['number_bank_port'] = $bankInfo['param1'];
         }else{
             $data['name_bank_port'] = $bankDir;
             $data['number_bank_port'] = '0';
@@ -544,7 +544,295 @@ class bookingInsurance extends insurance
 
 
 
-
+//    public function createExcelFile($param)
+//    {
+//        $_POST = $param;
+//
+//        $resultBook = $this->bookList('no');
+//
+//        if (empty($resultBook)) {
+//            return 'error|اطلاعاتی برای ساخت فایل اکسل وجود ندارد.';
+//        }
+//
+//        // عنوان ستون‌ها
+//        $firstRowColumnsHeading = [
+//            'نوع خدمات',
+//            'تاریخ خرید',
+//            'تاریخ مسافرت',
+//            'شماره خرید',
+//            'نام آژانس',
+//            'نام خانوادگی مشتری',
+//            'تلفن همراه مشتری',
+//            'ایمیل مشتری',
+//            'شهر اقامت کاربر',
+//            'تلفن ثابت مشتری',
+//            'مسئول مشتری',
+//            'مارک آژانس',
+//            'مارک کانتر',
+//            'تخفیف',
+//            'Total',
+//            'سود آژانس',
+//            'نقدی / اعتباری',
+//            'مقصد',
+//            'داخلی/خارجی',
+//            'اسم تامین کننده',
+//            'اشتراکی / اختصاصی',
+//            'وضعیت'
+//        ];
+//
+//        // عرض ستون‌ها
+//        $firstRowWidth = [
+//            15, // نوع خدمات
+//            20, // تاریخ خرید
+//            20, // تاریخ مسافرت
+//            20, // شماره خرید
+//            25, // نام آژانس
+//            25, // نام خانوادگی مشتری
+//            20, // تلفن همراه مشتری
+//            30, // ایمیل مشتری
+//            20, // شهر اقامت کاربر
+//            20, // تلفن ثابت مشتری
+//            20, // مسئول مشتری
+//            15, // مارک آژانس
+//            15, // مارک کانتر
+//            15, // تخفیف
+//            15, // Total
+//            15, // سود آژانس
+//            15, // نقدی / اعتباری
+//            20, // مقصد
+//            15, // داخلی/خارجی
+//            25, // اسم تامین کننده
+//            20, // اشتراکی / اختصاصی
+//            15  // وضعیت
+//        ];
+//
+//        $dataRows = [];
+//
+//        foreach ($resultBook as $k => $book) {
+//
+//            if ($book['status'] != 'book' || $book['request_cancel'] == 'confirm' ) {
+//                continue;
+//            }
+//
+//
+//            // تاریخ خرید
+//            $purchaseDate = '';
+//
+//            if (!empty($book['creation_date_int'])) {
+//                $purchaseDate = dateTimeSetting::jdate(
+//                    'Y-m-d (H:i:s)',
+//                    $book['creation_date_int']
+//                );
+//            } elseif (!empty($book['creation_date'])) {
+//                $purchaseDate = $book['creation_date'];
+//            }
+//
+//            // در جدول بیمه تاریخ شروع سفر به صورت جداگانه وجود ندارد
+//            $travelDate = '-';
+//
+//            // نام مشتری
+//            $customerFamily = $book['passenger_name'] . ' ' . $book['passenger_family'];
+//
+//
+//            if (empty($customerFamily)) {
+//                $customerFamily = '-';
+//            }
+//
+//            // نوع پرداخت
+//            switch ($book['payment_type']) {
+//                case 'cash':
+//                    $paymentType = 'نقدی';
+//                    break;
+//
+//                case 'credit':
+//                case 'member_credit':
+//                    $paymentType = 'اعتباری';
+//                    break;
+//
+//                default:
+//                    $paymentType = '-';
+//                    break;
+//            }
+//
+//            // وضعیت
+//            if (($book['request_cancel'] ) === 'confirm') {
+//
+//                $status = 'کنسل شده';
+//
+//            } else {
+//
+//                switch ($book['status']) {
+//                    case 'book':
+//                        $status = 'رزرو قطعی';
+//                        break;
+//
+//                    case 'prereserve':
+//                        $status = 'پیش رزرو';
+//                        break;
+//
+//                    case 'bank':
+//                        $status = 'در انتظار پرداخت';
+//                        break;
+//
+//                    case 'cancel':
+//                        $status = 'کنسل شده';
+//                        break;
+//
+//                    case 'nothing':
+//                        $status = 'نامشخص';
+//                        break;
+//
+//                    default:
+//                        $status = '-';
+//                        break;
+//                }
+//            }
+//
+//            if($book['serviceTitle'] == 'PublicPortalInsurance'){
+//                $sharedPrivate = 'اشتراکی';
+//            }else{
+//                $sharedPrivate = 'اختصاصی';
+//            }
+//
+//            // مارک آژانس
+//            $agencyMark = number_format(
+//                $book['agency_commission'] ?? 0
+//            );
+//
+//            // مارک کانتر - فیلد مستقیمی برای بیمه وجود ندارد
+//            $counterMark = '-';
+//
+//            // تخفیف
+//            $discount = $book['discount_percentage'] ?? 0;
+//
+//            // مبلغ نهایی
+//            $total = number_format(
+//                $book['paid_price'] ?? 0
+//            );
+//
+//            // سود آژانس
+//            $agencyProfit = number_format(
+//                $book['agency_commission'] ?? 0
+//            );
+//
+//            // تامین کننده
+//            if (!empty($book['source_name_fa'])) {
+//
+//                $supplierName = $book['source_name_fa'];
+//
+//            } else {
+//
+//                switch ($book['source_name'] ?? '') {
+//                    case 'pasargad':
+//                        $supplierName = 'پاسارگاد';
+//                        break;
+//
+//                    case 'saman':
+//                        $supplierName = 'سامان';
+//                        break;
+//
+//                    default:
+//                        $supplierName = '-';
+//                        break;
+//                }
+//            }
+//
+//            // مقصد
+//            $destination = $book['destination'] ?? '-';
+//
+//            // اطلاعات هر ردیف
+//            $dataRows[$k] = [
+//
+//                // 1 - نوع خدمات
+//                'service_type' => 'بیمه',
+//
+//                // 2 - تاریخ خرید
+//                'purchase_date' => $purchaseDate,
+//
+//                // 3 - تاریخ مسافرت
+//                'travel_date' => $travelDate,
+//
+//                // 4 - شماره خرید
+//                'purchase_number' => ($book['factor_number'] ?? '') . ' ',
+//
+//                // 5 - نام آژانس
+//                'agency_name' => $book['agency_name'] ?? '-',
+//
+//                // 6 - نام خانوادگی مشتری
+//                'customer_family' => $customerFamily,
+//
+//                // 7 - تلفن همراه مشتری
+//                'customer_mobile' => $book['mobile_buyer']
+//                    ?? $book['member_mobile']
+//                        ?? '-',
+//
+//                // 8 - ایمیل مشتری
+//                'customer_email' => $book['email_buyer']
+//                    ?? $book['member_email']
+//                        ?? '-',
+//
+//                // 9 - شهر اقامت کاربر
+//                'customer_city' => '-',
+//
+//                // 10 - تلفن ثابت مشتری
+//                'customer_phone' => $book['tel_buyer'] ?? '-',
+//
+//                // 11 - مسئول مشتری
+//                'customer_manager' => '-',
+//
+//                // 12 - مارک آژانس
+//                'mark_agency' => $agencyMark,
+//
+//                // 13 - مارک کانتر
+//                'mark_counter' => $counterMark,
+//
+//                // 14 - تخفیف
+//                'discount' => $discount,
+//
+//                // 15 - Total
+//                'total' => $total,
+//
+//                // 16 - سود آژانس
+//                'agency_profit' => $agencyProfit,
+//
+//                // 17 - نقدی / اعتباری
+//                'payment_type' => $paymentType,
+//
+//                // 18 - مقصد
+//                'destination' => $destination,
+//
+//                // 19 - داخلی / خارجی
+//                'internal_external' => '-',
+//
+//                // 20 - اسم تامین کننده
+//                'supplier_name' => $supplierName,
+//
+//                // 21 - اشتراکی / اختصاصی
+//                'shared_private' => $sharedPrivate,
+//
+//                // 22 - وضعیت
+//                'status' => $status
+//            ];
+//        }
+//
+//        if (empty($dataRows)) {
+//            return 'error|اطلاعاتی برای ساخت فایل اکسل وجود ندارد.';
+//        }
+//
+//        $objCreateExcelFile = Load::controller('createExcelFile');
+//
+//        $resultExcel = $objCreateExcelFile->create(
+//            $dataRows,
+//            $firstRowColumnsHeading,
+//            $firstRowWidth
+//        );
+//
+//        if ($resultExcel['message'] === 'success') {
+//            return 'success|' . $resultExcel['fileName'];
+//        }
+//
+//        return 'error|متاسفانه در ساخت فایل اکسل مشکلی پیش آمده. لطفا مجددا تلاش کنید';
+//    }
 
     public function createExcelFile($param)
     {
@@ -593,13 +881,13 @@ class bookingInsurance extends insurance
         if(!empty($intendedUser['agency_id'])){
             $conditions.=' AND agency_id='.$intendedUser['agency_id'].' ';
         }
-	    if(!empty($_POST['member_id'])){
-		    $conditions.=' AND member_id='.$_POST['member_id'].' ';
-	    }
+        if(!empty($_POST['member_id'])){
+            $conditions.=' AND member_id='.$_POST['member_id'].' ';
+        }
 
-	    if(!empty($_POST['agency_id'])){
-		    $conditions.=' AND agency_id='.$_POST['agency_id'].' ';
-	    }
+        if(!empty($_POST['agency_id'])){
+            $conditions.=' AND agency_id='.$_POST['agency_id'].' ';
+        }
         if (!empty($_POST['date_of']) && !empty($_POST['to_date'])) {
             $date_of = explode('-', $_POST['date_of']);
             $date_to = explode('-', $_POST['to_date']);
@@ -665,9 +953,9 @@ class bookingInsurance extends insurance
                 " WHERE 1 = 1 " . $conditions .
                 " GROUP BY rep.factor_number " .
                 " ORDER BY rep.creation_date_int DESC ";
-          
+
             $bookList = $ModelBase->select($sql);
-        
+
 
         } else{
 
@@ -681,18 +969,18 @@ class bookingInsurance extends insurance
                 " FROM book_insurance_tb " .
                 " WHERE 1 = 1 {$conditions} ";
 
-                        /*1405_2_30 غیرفعال شد
-                        $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
+            /*1405_2_30 غیرفعال شد
+            $get_session_sub_manage = Session::getAgencyPartnerLoginToAdmin();
 
-                        if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
-                            $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
+            if(Session::CheckAgencyPartnerLoginToAdmin() && $get_session_sub_manage=='AgencyHasLogin'){
+                $check_access = $this->getController('manageMenuAdmin')->getAccessServiceCounter(Session::getInfoCounterAdmin());
 
-                            $sql .= " AND serviceTitle IN ({$check_access})";
-                        }*/
+                $sql .= " AND serviceTitle IN ({$check_access})";
+            }*/
 
-                $sql .= " GROUP BY factor_number " .
+            $sql .= " GROUP BY factor_number " .
                 " ORDER BY creation_date_int DESC ";
-           
+
             $bookList = $Model->select($sql);
 
         }
@@ -791,6 +1079,12 @@ class bookingInsurance extends insurance
                 $dataRows[$k]['api_commission'] = $book['api_commission'];
                 $dataRows[$k]['irantech_commission'] = $book['irantech_commission'];
                 $dataRows[$k]['status'] = $book['status'];
+                $dataRows[$k]['creation_date_int'] = $book['creation_date_int'];
+                $dataRows[$k]['request_cancel'] = $book['request_cancel'];
+                $dataRows[$k]['serviceTitle'] = $book['serviceTitle'];
+                $dataRows[$k]['agency_name'] = $book['agency_name'];
+                $dataRows[$k]['mobile_buyer'] = $book['mobile_buyer'];
+                $dataRows[$k]['email_buyer'] = $book['email_buyer'];
                 $dataRows[$k]['NameAgency'] = $book['NameAgency'];
                 $dataRows[$k]['payment_type'] = $book['payment_type'];
                 $dataRows[$k]['name_bank_port'] = $book['name_bank_port'];
@@ -941,7 +1235,7 @@ class bookingInsurance extends insurance
         $Model = Load::library('Model');
 
 //        $sql = " SELECT * FROM book_insurance_tb WHERE factor_number = '{$factor_number}' OR pnr = '{$factor_number}' ";
- 
+
         $requestNumber = filter_input(INPUT_POST, 'request_number', FILTER_SANITIZE_STRING);
         $phoneNumber = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
 
@@ -998,7 +1292,7 @@ class bookingInsurance extends insurance
 
             $result .= '<tr>';
             $result .= '<td>' . $book['source_name_fa'] . '/' . $book['destination'];
-                if ($book['caption'] != ''){$result .= '<br>' . $book['caption'];}
+            if ($book['caption'] != ''){$result .= '<br>' . $book['caption'];}
             $result .='</td>';
             $result .= '<td>' . $book['factor_number'] . '</td>';
             $result .= '<td>' . $book['pnr'] . '</td>';
