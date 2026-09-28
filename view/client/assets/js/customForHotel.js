@@ -1,6 +1,7 @@
 /*
  * Custom functions added By Qorbani
  */
+let countRoomHotelForReservation = 0;
 
 let hotelSearchMeta = {
     startDateJs: '',
@@ -7399,33 +7400,53 @@ function tabHotel(data , e){
 
 let isResettingCapacity = false;
 function ReserveHotel() {
-    // let totalSelectedRooms = 0;
-    // totalSelectedRooms = parseInt($('#TotalNumberRoom_Reserve').val()) || 0;
-    // if (totalSelectedRooms === 0) {
-    //     $('input[name^="FinalRoomCount_Reserve"]').each(function() {
-    //         totalSelectedRooms += parseInt($(this).val()) || 0;
-    //     });
-    // }
-    // if (totalSelectedRooms < 1) {
-    //     $.alert({
-    //         title: useXmltag('Warning'),
-    //         icon: 'fa fa-exclamation-triangle',
-    //         content: useXmltag('MinRoomsRequired'),
-    //         rtl: true,
-    //         type: 'red',
-    //     });
-    //     return false;
-    // }
-    // if (totalSelectedRooms > 4) {
-    //     $.alert({
-    //         title: useXmltag('Warning'),
-    //         icon: 'fa fa-exclamation-triangle',
-    //         content: useXmltag('MaxRoomsExceeded'),
-    //         rtl: true,
-    //         type: 'red',
-    //     });
-    //     return false;
-    // }
+    let totalSelectedRooms = parseInt($('#TotalNumberRoom').val()) || 0;
+    let typeApplication = $('#typeApplication').val()
+    if(typeApplication != 'reservation'){
+        if (totalSelectedRooms < 1) {
+            $.alert({
+                title: useXmltag('Warning'),
+                icon: 'fa fa-exclamation-triangle',
+                content: useXmltag('MinRoomsRequired'),
+                rtl: true,
+                type: 'red',
+            });
+            return false;
+        }
+        if (totalSelectedRooms > 3) {
+            $.alert({
+                title: useXmltag('Warning'),
+                icon: 'fa fa-exclamation-triangle',
+                content: useXmltag('MaxRoomsExceeded'),
+                rtl: true,
+                type: 'red',
+            });
+            return false;
+        }
+    }else{
+        if (countRoomHotelForReservation < 1) {
+            $.alert({
+                title: useXmltag('Warning'),
+                icon: 'fa fa-exclamation-triangle',
+                content: useXmltag('MinRoomsRequired'),
+                rtl: true,
+                type: 'red',
+            });
+            return false;
+        }
+        if (countRoomHotelForReservation > 3) {
+            $.alert({
+                title: useXmltag('Warning'),
+                icon: 'fa fa-exclamation-triangle',
+                content: useXmltag('MaxRoomsExceeded'),
+                rtl: true,
+                type: 'red',
+            });
+            return false;
+        }
+    }
+
+
     $.post(amadeusPath + 'hotel_ajax.php',
         {
             flag: 'CheckedLogin',
@@ -8035,6 +8056,7 @@ function updateTotalPrice() {
         }
     }
 
+    countRoomHotelForReservation = countHotel
     // نمایش نتایج
     var finalText = countHotel + ' ' + useXmltag('Selectedroom') +' <br/> ';
     if (countECHDTotal > 0) {
