@@ -4909,9 +4909,13 @@ class ModalCreator extends clientAuth {
                     if ($Cancel[0]['TypeCancel'] == 'flight' || $Cancel[0]['TypeCancel'] == '') {
                         if($AmountExcelCanceling<=0) $PenaltyEnd=0; // agar jarime nashode ma karmoz nadarim
 
-                        if ($Cancel[0]['TypeExcelCanceling'] == 'provider21') {
+                        if ($Cancel[0]['TypeExcelCanceling'] == 'Chartery_provider21') {
                             $CostFinalForReturn = $AmountExcelCanceling - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
-                        } else if ($Cancel[0]['TypeExcelCanceling'] == 'provider43') {
+                        }
+                        else if ($Cancel[0]['TypeExcelCanceling'] == 'System_provider21') {
+                            $CostFinalForReturn = $AmountExcelCanceling - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
+                        }
+                        else if ($Cancel[0]['TypeExcelCanceling'] == 'provider43') {
                             $CostFinalForReturn = $ReturnProvider - ($PenaltyEnd * ($Cancel[0]['adt_qty'] + $Cancel[0]['chd_qty'] + $Cancel[0]['inf_qty']));   //کارمزد جریمه به ازای هر فرد کم میشود
                         }
                     }
