@@ -1807,7 +1807,7 @@ class user extends baseController
                     $type_member = functions::TypeUser(session::getUserId());
                     if ($type_member == 'Counter') {
                         $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'].'&lang=fa';
-                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'];// . '&cash=no'
+                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target='.$pagefinal.'&id=' . $item['request_number'];//. '&cash=no'
                     }
 
                 }
@@ -1855,6 +1855,7 @@ class user extends baseController
                     ];
                     */
                     /* 1405_07_05
+
                     $result[$key]['button_list'][] = [
                         'title' => functions::Xmlinformation('Viewbill')->__toString(),
                         'type' => 'link',
@@ -2115,12 +2116,8 @@ class user extends baseController
 //                    }else{
 //                        $pagefinal = 'parvazBookingLocal';
 //                    }
-                    $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'] . '&lang=fa';
-                    $type_member = functions::TypeUser(session::getUserId());
-                    if ($type_member == 'Counter') {
-                        $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'].'&lang=fa';
-                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
-                    }
+                    $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'].'&lang=fa';
+                    $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
 
                 }
                 $result[$key]['button_list'] = [];
@@ -4066,7 +4063,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   currency_equivalent AS currency_equivalent,
-                  pnr AS pnr
+                  pnr AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameFlight}
             WHERE
@@ -4155,7 +4156,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  pnr AS pnr
+                  pnr AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameBus} 
             WHERE
@@ -4244,7 +4249,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  '' AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameTrain} 
             WHERE
@@ -4334,7 +4343,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  '' AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameGasht} 
             WHERE
@@ -4424,7 +4437,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  '' AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameTour} 
             WHERE
@@ -4513,7 +4530,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  pnr AS pnr
+                  pnr AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameHotel} 
             WHERE
@@ -4602,7 +4623,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  pnr AS pnr
+                  pnr AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameInsurance} 
             WHERE
@@ -4692,7 +4717,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  pnr AS pnr
+                  pnr AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameVisa} 
             WHERE
@@ -4781,7 +4810,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  '' AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameEntertainment} 
             WHERE
@@ -4871,7 +4904,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   '' AS trip_type,
                   '' AS PassengerTitle,
                   '' AS currency_equivalent,
-                  '' AS pnr
+                  '' AS pnr,
+                  '' AS ret_date_flight,
+                  '' AS ret_time_flight,
+                  '' AS check_in,
+                  '' AS check_out
             FROM
                 {$tableNameEuropcar} 
             WHERE
@@ -4961,7 +4998,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
               '' AS trip_type,
               '' AS PassengerTitle,
               '' AS currency_equivalent,
-              provider_ref AS pnr
+              provider_ref AS pnr,
+              ret_date_flight,
+              ret_time_flight,
+              check_in,
+              check_out
         FROM {$tableNameExclusiveTour}
         WHERE member_id = '{$memberId}' AND request_number > '0'
         GROUP BY request_number
@@ -5046,7 +5087,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
       trip_type AS trip_type,
       PassengerTitle AS PassengerTitle,
       '' AS currency_equivalent,
-      provider_ref AS pnr
+      provider_ref AS pnr,
+      '' AS ret_date_flight,
+      '' AS ret_time_flight,
+      '' AS check_in,
+      '' AS check_out
 FROM {$tableNameCip}
 WHERE member_id = '{$memberId}'
 {$conditions} {$factor_number} {$successfull}
@@ -6290,12 +6335,8 @@ GROUP BY factor_number
 //                        }else{
 //                            $pagefinal = 'parvazBookingLocal';
 //                        }
-                        $bookList[$key]['dataBtnPdf'] = ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'] . '&lang=fa';
-                        $type_member = functions::TypeUser(session::getUserId());
-                        if ($type_member == 'Counter') {
-                            $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'].'&lang=fa';
-                            $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
-                        }
+                        $bookList[$key]['dataBtnPdf'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTourFlightPdf&id=' . $item['request_number'].'&lang=fa';
+                        $bookList[$key]['dataBtnPdfFreeLink'] =  ROOT_ADDRESS_WITHOUT_LANG . '/pdf&target=bookExclusiveTour&id=' . $item['factor_number'] . '&cash=no';
 
                     }
 

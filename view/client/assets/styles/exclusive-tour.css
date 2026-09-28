@@ -1127,7 +1127,9 @@ div.QB .logo-airline-ico {
 div.HH .logo-airline-ico {
     background-position: -120px -120px;
 }
-
+div.ISP .logo-airline-ico {
+    background-position: -414px -184px;
+}
 
 div.IV .logo-airline-ico {
     background-position: -180px -120px;
