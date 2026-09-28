@@ -721,6 +721,7 @@ class partner_tb extends ModelBase
 
     public function InsertClientModel($Info)
     {
+
         $mainDomainNew = $Info['Domain']; // مثال: iran.ir یا online.salam.ir
         preg_match('/(?:^[^.]+\.([^\.]+)\..+$)|(^([^\.]+)\.[^\.]+$)/', $mainDomainNew, $m);
         $dbNameNew = $m[1] ?: $m[3];
@@ -766,7 +767,10 @@ class partner_tb extends ModelBase
         $data['AdditionalData'] = json_encode($Info['AdditionalData'], 256 | 64);
         $data['isIframe'] = $Info['isIframe'];
         $data['usedDemo'] = $Info['usedDemo'];
-        $data['currency_type_id'] = $Info['currency_type_id'];
+        // خالی بودن یعنی ریالی؛ فیلد ارسال نمی‌شود تا مقدار پیش‌فرض NULL ستون ثبت شود (نه 0)
+        if (!empty($Info['base_currency_code'])) {
+            $data['base_currency_code'] = $Info['base_currency_code'];
+        }
 
         //
         $data['new_login'] = 1;

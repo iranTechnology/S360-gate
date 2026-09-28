@@ -8,7 +8,8 @@
 //        @ini_set('display_errors', 'on');
     //}
 
-    class demo360 extends mainPage {
+    class
+    demo360 extends mainPage {
 
         public function __construct() {
 

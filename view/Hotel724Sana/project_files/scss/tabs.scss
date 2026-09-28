@@ -79,7 +79,7 @@
     margin-bottom: 0 !important;
 }
 #searchBoxContent {
-    min-height: 108px;
+    min-height: 100px;
     flex-wrap: wrap;
     display: flex;
     width: 100%;
@@ -857,6 +857,7 @@ input::placeholder {
     border-color: transparent;
 }
 
+
 .search_col .form-group {
     position: relative;
 }
@@ -870,7 +871,7 @@ input::placeholder {
 }
 
 .switches {
-    display: flex;
+    display: none;
     align-items: center;
     height: 54px;
 }
