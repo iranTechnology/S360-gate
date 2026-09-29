@@ -360,7 +360,7 @@
                                                 {else}
                                                     <span class="yn">
                                                         <input
-                                                                style="border: 2px solid #f0ad4e; border-radius: 4px;"
+                                                                style="border: 1px solid #000; border-radius: 4px;"
                                                                 class="form-control media03"
                                                                 value="{$item.PercentIndemnity}"
                                                                 name="changePercentIndemnity"
