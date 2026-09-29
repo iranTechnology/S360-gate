@@ -1083,8 +1083,9 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     $objTransaction = Load::controller('transaction');
     $objMember = Load::controller('members');
     $info_member = functions::infoAgencyByMemberId(Session::getUserId());
+    $objUser = Load::controller('user');
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
-    $counterCredit = $objMember->getCredit();
+//    $counterCredit = $objMember->getCredit();
 
     $request_number = $_POST['requestNumber'];
     $reserveInfo = $bookModel->getOneByReq($request_number);
@@ -1092,6 +1093,12 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
 
 
     $total_amount = $reserveInfo[0]['total_price'];
+
+    if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
+        $counterCredit = $objUser->getCreditMember();
+    } else {
+        $counterCredit = $objMember->getCredit();
+    }
 
     // Caution: اعتبارسنجی اعتبار کانتر
     if ($counterCredit > $total_amount) {

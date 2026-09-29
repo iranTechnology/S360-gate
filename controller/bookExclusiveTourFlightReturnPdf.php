@@ -934,13 +934,6 @@ class bookExclusiveTourFlightReturnPdf  extends exclusiveTour
                     <table width="100%" align="center" style="width:100%; margin: 10px 100px <?php echo ($info['request_cancel'] !='confirm' && $cash=='no') ? '20px' : '10px'?> 50px ;    font-size: 17px" scellpadding="0"
                            cellspacing="0">
                         <tr>
-                            <td colspan="2">
-                                <?= $_GET['lang'] == 'fa' ? 'آدرس :' : 'Address:'; ?>
-                                <?php echo $getSubAgencyInfo['address_fa']; ?>
-
-                            </td>
-                        </tr>
-                        <tr>
                             <td style="padding-top:15px">
                                 <?= $_GET['lang'] == 'fa' ? 'وب سایت :' : 'Website:'; ?>
                                 <?php echo $ClientMainDomain; ?>
@@ -951,15 +944,12 @@ class bookExclusiveTourFlightReturnPdf  extends exclusiveTour
 
                                 <?php echo $phone; ?>
                             </td>
-                            <?php if($info_ticket[0]['agency_id']) {?>
-                                <td style="padding-top:15px">
-                                    <?= $_GET['lang'] == 'fa' ? 'تلفن کانتر فروش :' : 'Sales counter telephone:'; ?>
+                            <td colspan="2">
+                                <?= $_GET['lang'] == 'fa' ? 'آدرس :' : 'Address:'; ?>
+                                <?php echo !empty($getSubAgencyInfo['address_fa']) ? $getSubAgencyInfo['address_fa'] : $ClientAddress; ?>
 
-                                    <?php echo $PhoneManage; ?>
-                                </td>
-                            <?php  } ?>
+                            </td>
                         </tr>
-
 
                     </table>
 
