@@ -3838,11 +3838,11 @@ class bookshowTest extends clientAuth {
                 $discountPrice = $InfoTicketReservation['discount_amount']; // مبلغ کل تخفیف (عددی)
 
                 if ( TYPE_ADMIN != 1 && $InfoTicketReservation['totalPriceWithoutDiscount'] != 0 ) {
-//                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
+                    $DataFlightPassengerPayData = "<span style='text-decoration: line-through;'>" . number_format( $InfoTicketReservation['totalPriceWithoutDiscount'], 0, ".", "," ) . "</span><hr style='margin:3px'>";
                 }
 
                 $PassengerPayment            = $InfoTicketReservation['totalPrice'];
-//                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
+                $DataFlightPassengerPayData .= number_format( $PassengerPayment, 0, ".", "," );
                 $pricetotal                  = ( $InfoTicketReservation['totalPrice'] ) + $pricetotal;
             }
 
@@ -6855,6 +6855,7 @@ class bookshowTest extends clientAuth {
                 $DataIranCommission = number_format( $insurance['irantech_commission'] );
             }
             $PassengerPayment=$insurance['totalPriceIncreased'];
+            functions::insertLog('$insurance: ' . json_encode($insurance) , '000shojaee');
             $DataUser = number_format( $PassengerPayment );
             $DataAgency = 'نامشخص' ;
             $BuyFromIt = isset($transactions[$FActorNumberFor]) ? $transactions[$FActorNumberFor] : 0;
@@ -10667,7 +10668,7 @@ class bookshowTest extends clientAuth {
             $DataTable = $this->MainAllTicketHistory( $param );
         }
 
-        return json_encode( $DataTable );
+        return json_encode( $DataTable);
     }
     #endregion
 
@@ -11224,7 +11225,43 @@ class bookshowTest extends clientAuth {
         // ─────────────────────────────────────────────
         return $cleanUtf8($html);
     }
-    private function btnErrorFlight($data_flight , $tempDeduction = null){
+
+//    private function btnErrorFlight($data_flight , $tempDeduction = null){
+//        $status_admin = (TYPE_ADMIN=='1') ? true : false ;
+//        $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID ;
+//        $data_error = $this->getController('logErrorFlights')->getErrorMessage($data_flight['request_number'],$client_id);
+//
+//        $classes =  in_array($data_error['messageCode'],$this->getCodeSpecialError()) ? 'colorSpecialError' : '';
+//        $text_btn = $this->titleBtnError($data_error,$data_flight);
+//
+//        if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_flight['pid_private'] =='0'){
+//            $content_btn = functions::Xmlinformation('providerError');
+//        }
+//        else if($status_admin){
+//            $content_btn = '<p><strong>ادمین</strong> : ' . $data_error['text_message']['messageAdmin'] . '</p>';
+//            $content_btn .= '<p><strong>آژانس</strong> : ' . $data_error['text_message']['messageAgency'] . '</p>';
+//        }
+//        else{
+//            $content_btn = $data_error['text_message'];
+//        }
+//
+//        // اضافه کردن data-html="true" و escape کردن با addslashes
+//        $content_btn_escaped = addslashes($content_btn);
+//
+//        return '<a href="#" onclick="return false;" class="btn btn-danger ' . $classes . ' cursor-default popoverBox w-90 popover-danger"
+//           data-toggle="popover"
+//           data-html="true"
+//           title="' . $text_btn . '"
+//           data-placement="right"
+//           data-content="' . $content_btn_escaped . '">' . $text_btn . '
+//           <div style="display: none;" class="parent-ld">
+//' . functions::Xmlinformation('pendingPrintFlight') . $tempDeduction . '
+//  <div class="ld ld-ring ld-spin"></div>
+//</div>
+//</a>';
+//    }
+    private function btnErrorFlight($data_flight, $tempDeduction = null)
+    {
         $status_admin = (TYPE_ADMIN=='1') ? true : false ;
         $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID ;
         $data_error = $this->getController('logErrorFlights')->getErrorMessage($data_flight['request_number'],$client_id);
@@ -11243,22 +11280,78 @@ class bookshowTest extends clientAuth {
             $content_btn = $data_error['text_message'];
         }
 
-        // اضافه کردن data-html="true" و escape کردن با addslashes
-        $content_btn_escaped = addslashes($content_btn);
+        /*
+         * پاکسازی UTF-8
+         */
+        $cleanUtf8 = function ($string) {
 
-        return '<a href="#" onclick="return false;" class="btn btn-danger ' . $classes . ' cursor-default popoverBox w-90 popover-danger"
-           data-toggle="popover" 
-           data-html="true"
-           title="' . $text_btn . '" 
-           data-placement="right"
-           data-content="' . $content_btn_escaped . '">' . $text_btn . '
-           <div style="display: none;" class="parent-ld">
-' . functions::Xmlinformation('pendingPrintFlight') . $tempDeduction . '
-  <div class="ld ld-ring ld-spin"></div>
-</div>
-</a>';
+            if (!is_string($string)) {
+                return $string;
+            }
+
+            // اصلاح UTF-8 خراب
+            if (!mb_check_encoding($string, 'UTF-8')) {
+                $string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
+            }
+
+            // حذف کاراکترهای کنترلی در صورت وجود مشکل
+            if (!mb_check_encoding($string, 'UTF-8')) {
+                $string = preg_replace(
+                    '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u',
+                    '',
+                    $string
+                );
+            }
+
+            // آخرین fallback در صورت خراب بودن کامل encoding
+            if (!mb_check_encoding($string, 'UTF-8')) {
+                $string = preg_replace('/[^\x20-\x7E]/', '', $string);
     }
 
+            return $string;
+        };
+
+        $text_btn    = $cleanUtf8($text_btn);
+        $content_btn = $cleanUtf8($content_btn);
+        $classes     = $cleanUtf8($classes);
+
+        /*
+         * Escape مخصوص HTML Attribute
+         *
+         * اینجا دیگه addslashes مناسب نیست.
+         */
+        $text_btn_escaped = htmlspecialchars(
+            $text_btn,
+            ENT_QUOTES,
+            'UTF-8'
+        );
+
+        $content_btn_escaped = htmlspecialchars(
+            $content_btn,
+            ENT_QUOTES,
+            'UTF-8'
+        );
+
+        /*
+         * ساخت HTML
+         */
+        $html = '<a href="#" onclick="return false;" '
+            . 'class="btn btn-danger ' . $classes . ' cursor-default popoverBox w-90 popover-danger" '
+            . 'data-toggle="popover" '
+            . 'data-html="true" '
+            . 'title="' . $text_btn_escaped . '" '
+            . 'data-placement="right" '
+            . 'data-content="' . $content_btn_escaped . '">'
+            . $text_btn
+            . '<div style="display: none;" class="parent-ld">'
+            . functions::Xmlinformation('pendingPrintFlight')
+            . $tempDeduction
+            . '<div class="ld ld-ring ld-spin"></div>'
+            . '</div>'
+            . '</a>';
+
+        return $cleanUtf8($html);
+    }
     private function btnErrorBus($data_bus){
         $status_admin = (TYPE_ADMIN=='1') ? true : false ;
         $client_id = ($status_admin) ? $data_bus['client_id'] : CLIENT_ID ;
