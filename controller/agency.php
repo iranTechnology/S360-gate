@@ -93,6 +93,10 @@ class agency  extends clientAuth {
         if($resultSepehrUsername['id']>0 && !empty($agency['sepehr_username'])){
             return "error : خطا در تکراری بودن نام کاربری سپهر";
         }
+        $duplicateEmailOrMobile = $this->checkDuplicateEmailOrMobile($agency['email'], $agency['mobile']);
+        if ($duplicateEmailOrMobile) {
+            return $duplicateEmailOrMobile;
+        }
         // رمز سفر360 گیت، رمز کانتر پیش فرض همکار هم هست
         if (mb_strlen(trim($agency['password'])) < 6) {
             return "error : کلمه عبور سفر360 گیت الزامی است و باید حداقل 6 کاراکتر باشد (رمز ورود کانتر همکار هم همین است)";
@@ -205,6 +209,50 @@ class agency  extends clientAuth {
 	}
 
 	/**
+	 * بررسی تکراری نبودن ایمیل و شماره همراه همکار در agency_tb
+	 *
+	 * @param string $email
+	 * @param string $mobile
+	 * @param int|null $excludeId شناسه همکاری که در حال ویرایش است
+	 *
+	 * @return string|false پیام خطا در صورت تکراری بودن
+	 */
+	private function checkDuplicateEmailOrMobile( $email, $mobile, $excludeId = null ) {
+		$email  = strtolower( trim( $email ) );
+		$mobile = trim( $mobile );
+
+		if ( $email !== '' ) {
+			$query = $this->getModel( 'agencyModel' )
+				->get( ['id'] )
+				->where( 'email', $email )
+				->where( 'del', 'no' );
+			if ( $excludeId ) {
+				$query->where( 'id', $excludeId, '!=' );
+			}
+			$resultEmail = $query->find();
+			if ( $resultEmail['id'] > 0 ) {
+				return "error : همکاری با این ایمیل قبلا ثبت شده است";
+			}
+		}
+
+		if ( $mobile !== '' ) {
+			$query = $this->getModel( 'agencyModel' )
+				->get( ['id'] )
+				->where( 'mobile', $mobile )
+				->where( 'del', 'no' );
+			if ( $excludeId ) {
+				$query->where( 'id', $excludeId, '!=' );
+			}
+			$resultMobile = $query->find();
+			if ( $resultMobile['id'] > 0 ) {
+				return "error : همکاری با این شماره تلفن همراه قبلا ثبت شده است";
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * ساخت کانتر زیرمجموعه همکار با اطلاعات خود همکار (همان روند فرم counterAdd)
 	 *
 	 * @param int $agencyId
@@ -278,6 +326,10 @@ class agency  extends clientAuth {
             ->find();
         if($resultSepehrUsername['id']>0 && !empty($data['sepehr_username'])){
             return "error : خطا در تکراری بودن نام کاربری سپهر";
+        }
+        $duplicateEmailOrMobile = $this->checkDuplicateEmailOrMobile($data['email'], $data['mobile'], $data['edit_id']);
+        if ($duplicateEmailOrMobile) {
+            return $duplicateEmailOrMobile;
         }
 
         $agency_attachment_model = $this->getModel('agencyAttachmentModel');

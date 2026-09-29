@@ -274,7 +274,7 @@
                                placeholder="رنگ ثانویه را وارد نمائید">
                     </div>
                     <div class="form-group col-sm-6">
-                        <label for="base_currency_code" class="control-label">نوع ارز</label>
+                        <label for="base_currency_code" class="control-label">نوع ارز (در صورتی که ریالی است خالی بزارید)</label>
                         <select name="base_currency_code" id="base_currency_code" class="form-control">
                             <option value="">انتخاب کنید</option>
                             {foreach key=key item=item from=$objCurrencyList->CurrencyList(false , true)}

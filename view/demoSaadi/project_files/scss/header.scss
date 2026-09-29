@@ -475,16 +475,12 @@ $height-header: 95px;
     .footer_main > ul {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    #navbar {
-        position: static;
-        border-bottom: none;
-        border-top: 1px solid #bfbfc5;
-    }
-
     .nav-dropdown > li {
         flex-direction: column;
     }
+
+
+
 
     .logIn {
         @include width_height(42px);

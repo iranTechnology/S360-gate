@@ -342,13 +342,6 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     $result = $controller->getBankData($_POST['temporaryID']);
 } elseif (isset($_POST['flag']) && $_POST['flag'] == 'signout' || isset($_GET['flag']) && $_GET['flag'] == 'signout') {
 
-    if ($_SERVER['REMOTE_ADDR']) {
-        error_reporting(1);
-        error_reporting(E_ALL | E_STRICT);
-        @ini_set('display_errors', 1);
-        @ini_set('display_errors', 'on');
-    }
-
 
     echo $sessionTemplate = Session::getSessionTemplate();
     unset($_COOKIE['LoginPanel']);
@@ -526,7 +519,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     $agency_model = Load::model('agency');
     $agencyAddResult = $agency->insert_agency($agencyData);
 
-    if ($agencyAddResult) {
+    if (strpos(trim($agencyAddResult), 'success') === 0) {
 
         $agencyID = $agency_model->getLastId();
 
@@ -1091,7 +1084,11 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     $reserveInfo = $bookModel->getOneByReq($request_number);
     $factorNumber = $reserveInfo[0]['factor_number'];
 
-
+    if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
+        $counterCredit = $objUser->getCreditMember();
+    } else {
+        $counterCredit = $objMember->getCredit();
+    }
     $total_amount = $reserveInfo[0]['total_price'];
 
     if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
@@ -3762,6 +3759,15 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'UpdateCounterDetail') {
     $objBookShow = Load::controller('bookshow');
     $_POST['report_for_excel'] = true;
     $result = $objBookShow->createExcelFile($_POST);
+
+    echo $result;
+
+}  elseif (isset($_POST['flag']) && $_POST['flag'] == 'createNewExcelFile') {
+    unset($_POST['flag']);
+
+    $objBookShow = Load::controller('bookshow');
+    $_POST['report_for_excel'] = true;
+    $result = $objBookShow->createNewExcelFile($_POST);
 
     echo $result;
 

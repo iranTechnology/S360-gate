@@ -1465,8 +1465,8 @@ class listCancel extends clientAuth {
                     }
                 }
 
-                // مدل استردادی - provider21
-                if ($params['file_type'] == 'provider21') {
+                // مدل استردادی - Chartery_provider21
+                if ($params['file_type'] == 'Chartery_provider21') {
 
                     $rowIndex++;
                     $cells = $row->getCells();
@@ -1477,12 +1477,12 @@ class listCancel extends clientAuth {
                         $row_data[] = $cell->getValue();
                     }
 
-                    // رد کردن ۳ ردیف اول فقط برای provider21
-                    if ($params['file_type'] == 'provider21' && $rowIndex < 4) continue;
+                    // رد کردن ۳ ردیف اول فقط برای Chartery_provider21
+                    if ($params['file_type'] == 'Chartery_provider21' && $rowIndex < 4) continue;
 
                     // حداقل تا ستون P وجود داشته باشد
                     if (count($row_data) < 17) {
-                        return functions::JsonError(null, 'فرمت فایل provider21 اشتباه است. باید تا ستون Q پر شده باشد.');
+                        return functions::JsonError(null, 'فرمت فایل Chartery_provider21 اشتباه است. باید تا ستون Q پر شده باشد.');
                     }
 
                     // گرفتن ستون F و P با ایندکس ایمن
@@ -1494,6 +1494,36 @@ class listCancel extends clientAuth {
                     }
 
                 }
+
+                // مدل استردادی - System_provider21
+                elseif ($params['file_type'] == 'System_provider21') {
+
+                    // رد کردن ۳ ردیف اول (عنوان، تعداد رکورد و هدرها)
+                    if ($rowIndex < 4) continue;
+
+                    // حداقل تا ستون AA (ایندکس 26) وجود داشته باشد
+                    if (count($row_data) < 27) {
+                        return functions::JsonError(null, 'فرمت فایل System_provider21 اشتباه است. باید حداقل تا ستون AA پر شده باشد.');
+                    }
+
+                    // ستون F: PNR (ایندکس 5)
+                    $pnr = !empty($row_data[5]) ? trim((string)$row_data[5]) : null;
+
+                    // ستون K: نرخ fare (ایندکس 10)
+                    $k_fare = isset($row_data[10]) ? (float) str_replace([',', ' '], '', $row_data[10]) : 0;
+
+                    // ستون AA: مبلغ استردادی سیستم (ایندکس 26)
+                    $aa_refund = isset($row_data[26]) ? (float) str_replace([',', ' '], '', $row_data[26]) : 0;
+
+                    if (!empty($pnr)) {
+                        // فرمول اصلاح شده: AA - ( ( K * 4 ) / 100 )
+                        $deduction = ($k_fare * 4) / 100;
+                        $calculated_value = $aa_refund - $deduction;
+
+                        $this->pnrListExelCanceling[$pnr] = $calculated_value;
+                    }
+                }
+
 
                 // مدل جریمه‌ای - provider43
                 elseif ($params['file_type'] == 'provider43') {
@@ -1523,8 +1553,9 @@ class listCancel extends clientAuth {
                         $this->pnrListExelCanceling[$pnr_group] += $amount_ac;
                     }
                 }
-            }
-        }
+            }//end foreach 2
+
+        }//end foreach 1
 
         $reader->close();
         // بررسی لیست استخراج شده

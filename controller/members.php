@@ -548,9 +548,27 @@ class members extends clientAuth {
      */
     public function addCounter($members) {
 
-        $user = $this->members_model->getMemberByUserName($members['mobile']);
-        if ($user) {
-            return 'error : این ایمیل قبلا استفاده شده است';
+        $mobile = trim($members['mobile']);
+        if ($mobile === '') {
+            return 'error : شماره تلفن همراه را وارد نمائید';
+        }
+
+        $existByUserName = $this->getModel('membersModel')
+            ->get(['id'])
+            ->where('user_name', $mobile)
+            ->where('del', 'no')
+            ->find();
+        if (!empty($existByUserName)) {
+            return 'error : کاربری با این نام کاربری قبلا ثبت شده است';
+        }
+
+        $existByMobile = $this->getModel('membersModel')
+            ->get(['id'])
+            ->where('mobile', $mobile)
+            ->where('del', 'no')
+            ->find();
+        if (!empty($existByMobile)) {
+            return 'error : کاربری با این شماره تلفن همراه قبلا ثبت شده است';
         }
         if(trim($members['is_member'])=='2'){
             $resultDepart= $this->getModel('membersModel')
