@@ -11405,7 +11405,6 @@ public function ModalCancelAdmin($Param, $param2) {
     {
         $user = Load::controller($this->Controller);
         $InfoCancelTicket = $user->InfoModalTicketCancel($Param, $param2);
-
         $cancelTicketDetailsModel = $this->getModel('cancelTicketDetailsModel');
         $InfoCancel = $cancelTicketDetailsModel
             ->get('*')
@@ -11431,14 +11430,21 @@ public function ModalCancelAdmin($Param, $param2) {
                 <div class="center_modal_custom p-4">
                     <div class="modal-padding-bottom-15">
                         <div>
-                            <div class="w-100 modal-text-center modal-h ">   <?php echo functions::Xmlinformation("Pleaseselectthedesiredpassenger") ?></div>
-                        </div>
+                            <div class="w-100 modal-text-center modal-h ">
+                                <?php if($param2 != 'bus')
+                                    echo functions::Xmlinformation("Pleaseselectthedesiredpassenger");
+                                else
+                                    echo '<p style="font-size: 14px; font-weight: bold;"> در اتوبوس شما امکان کنسل کردن یک یا چند نفر از مسافرین را ندارید و باید کل خرید را کنسل نمائید.</p>';
+                                ?>
+                            </div></div>
                         <div>
                             <div class="w-100 table-responsive-lg">
                                 <table class="min-w-800px table table-striped table-bordered">
                                     <thead>
                                     <tr>
-                                        <th scope="col"><?php echo functions::Xmlinformation("Select") ?></th>
+                                        <?php if($param2 != 'bus'){ ?>
+                                          <th scope="col"><?php echo functions::Xmlinformation("Select") ?></th>
+                                        <?php }?>
                                         <th scope="col"><?php echo functions::Xmlinformation("Name") ?></th>
                                         <th scope="col"><?php echo functions::Xmlinformation("Nationalnumber") ?></th>
                                         <th scope="col"><?php echo functions::Xmlinformation("Passport") ?></th>
@@ -11467,7 +11473,26 @@ public function ModalCancelAdmin($Param, $param2) {
                                         }
                                         ?>
                                         <tr>
-                                            <th><input class="form-control SelectUser" type="checkbox" name="SelectUser[]" id="SelectUser" value="<?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] . '-' . $info['passenger_age'] : $info['passportNumber'] . '-' . $info['passenger_age'] ?>" <?php echo (!empty($info['Status']) && !empty($NationalCodeUser) && ($info['Status'] != 'Nothing' && $info['Status'] != 'close')) ? 'disabled ="disabled"' : '';?>></th>
+                                            <th <?php if($param2 == 'bus') echo 'style="display:none;"'; ?>>
+                                                <input class="form-control SelectUser"
+                                                       type="checkbox"
+                                                       name="SelectUser[]"
+                                                       id="SelectUser"
+                                                       value="<?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] . '-' . $info['passenger_age'] : $info['passportNumber'] . '-' . $info['passenger_age'] ?>"
+                                                            <?php
+                                                            $isDisabled =
+                                                                !empty($info['Status']) &&
+                                                                !empty($NationalCodeUser) &&
+                                                                $info['Status'] != 'Nothing' &&
+                                                                $info['Status'] != 'close';
+        
+                                                            if($param2 == 'bus'){
+                                                                echo 'checked="checked"';
+                                                            } elseif ($isDisabled) {
+                                                                echo 'disabled="disabled"';
+                                                            }?>
+                                                >
+                                            </th>
                                             <?php
                                             if ($param2 == 'bus') {
                                                 ?>

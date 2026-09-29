@@ -1097,6 +1097,7 @@ class user extends baseController
             . " WHERE book.requestNumber ='{$RequestNumber}'"
             . " GROUP BY book.id ";
         return $this->Model->select($sql);
+
     }
 
 
@@ -1143,24 +1144,24 @@ class user extends baseController
                         book.passenger_name,
                         book.passenger_family,
                         book.passenger_national_code,
-                        book.passenger_age,
+                        book.passenger_gender,
                         book.passportNumber,
                         book.passenger_birthday,
                         book.member_id,
-                        book.factor_number,
+                        book.passenger_factor_num,
                         book.total_price,
-                        book.factor_number as RequestNumber,
+                        book.passenger_factor_num as RequestNumber,
                         cancelDetail.*,
                         cancelTicket.NationalCode as NationalCode
                     FROM
-                        book_cip_tb AS book
+                         book_bus_tb  AS book
                         LEFT JOIN cancel_ticket_tb AS cancelTicket ON book.passenger_national_code = cancelTicket.NationalCode 
                         OR book.passportNumber = cancelTicket.NationalCode
                         LEFT JOIN cancel_ticket_details_tb AS cancelDetail ON cancelDetail.id = cancelTicket.IdDetail 
-                        AND cancelDetail.RequestNumber=book.factor_number
+                        AND cancelDetail.RequestNumber=book.passenger_factor_num
 
                     WHERE
-                        book.factor_number = '{$order_code}' 
+                        book.order_code = '{$order_code}' 
                     GROUP BY
                         book.id";
 
@@ -1168,7 +1169,6 @@ class user extends baseController
             var_dump($sql);
             die();
         }*/
-
         return $this->admin->ConectDbClient($sql, $ClientId, "SelectAll", "", "", "");
     }
     public function getInfoTicketHotelCancel($order_code,$ClientId=CLIENT_ID)
