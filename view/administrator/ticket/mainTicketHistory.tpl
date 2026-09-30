@@ -1248,6 +1248,7 @@
                 {/if}
                 <div class="table_history_admin">
 
+
                     <div class="w-100 table-responsive tabs_ticket-history">
                         <div class="w-100">
                             <a data-target="flight"
