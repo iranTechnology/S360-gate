@@ -36,7 +36,7 @@ function startExclusiveTourPassengerTimer() {
       if (expirationShown) return;
       expirationShown = true;
       $.alert({
-             title: useXmltag("TitleEndRserve"),,
+         title: useXmltag("TitleEndRserve"),
           content: useXmltag("ContentEndRserve"),
           rtl: true,
           type: 'orange',

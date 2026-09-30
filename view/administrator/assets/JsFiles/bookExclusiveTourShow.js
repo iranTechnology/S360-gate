@@ -42,6 +42,121 @@ $(document).ready(function () {
 
 });
 
+function reBookExclusiveTour(requestNumber) {
+   return new Promise((resolve, reject) => {
+      $.ajax({
+         url: amadeusPath + 'user_ajax.php',
+         type: 'POST',
+         data: {
+            flag: 'buyByCreditExclusiveTour',
+            requestNumber: requestNumber,
+            retryReservation: '1'
+         },
+         success: function (response) {
+            const result = String(response).trim();
+            if (result.indexOf('success:') === 0) {
+               resolve(true);
+            } else {
+               reject(new Error(result.replace(/^error:\s*/, '') || 'خطا در پرداخت اعتباری تور'));
+            }
+         },
+         error: function (xhr) {
+            reject(new Error(xhr.responseJSON?.message || 'خطا در ارتباط با سرور پرداخت'));
+         }
+      });
+   });
+}
+
+function reRserveExclusiveTour(factorNumber) {
+   return new Promise((resolve, reject) => {
+      $.ajax({
+         url: amadeusPath + 'ajax',
+         type: 'POST',
+         dataType: 'JSON',
+         data: JSON.stringify({
+            method: 'book',
+            className: 'bookExclusiveTour',
+            factorNumber: factorNumber,
+            paymentType: 'credit',
+            trackingCode: '',
+            successPayment: '1',
+            paymentBank: ''
+         }),
+         success: function (response) {
+            if (response.status === 'success' && Number(response.code) === 200) {
+               resolve(response);
+            } else {
+               reject(new Error(response.message || 'صدور تور هنوز تأیید نشده است'));
+            }
+         },
+         error: function (xhr) {
+            reject(new Error(xhr.responseJSON?.message || 'خطا در صدور مجدد تور'));
+         }
+      });
+   });
+}
+
+async function proceedWithReserveExclusiveTour(el, requestNumber, factorNumber) {
+   const parent = el.closest('td');
+   const loader = parent?.querySelector('.parent-ld');
+   const loaderLd = parent?.querySelector('.ld');
+   el.dataset.reserving = '1';
+   if (loader) loader.style.display = 'block';
+   if (loaderLd) loaderLd.style.display = 'inline-block';
+
+   try {
+      await reBookExclusiveTour(requestNumber);
+      await reRserveExclusiveTour(factorNumber);
+      $.toast({
+         heading: 'صدور موفق',
+         text: 'رزرو مجدد تور اختصاصی با موفقیت انجام شد',
+         position: 'top-right',
+         icon: 'success',
+         hideAfter: 4000,
+         textAlign: 'right'
+      });
+      setTimeout(() => location.reload(), 4000);
+   } catch (error) {
+      $.toast({
+         heading: 'خطا در رزرو مجدد تور',
+         text: $('<div>').text(error.message).html(),
+         position: 'top-right',
+         icon: 'error',
+         hideAfter: 6000,
+         textAlign: 'right'
+      });
+   } finally {
+      delete el.dataset.reserving;
+      if (loader) loader.style.display = 'none';
+      if (loaderLd) loaderLd.style.display = 'none';
+   }
+}
+
+function confirmReservationRequestAgainExclusiveTour(el, requestNumber, factorNumber) {
+   if (el.dataset.reserving === '1' || el.dataset.confirming === '1') return;
+   el.dataset.confirming = '1';
+   $.confirm({
+      theme: 'supervan',
+      title: 'درخواست مجدد رزرو تور اختصاصی',
+      icon: 'fa fa-shopping-cart',
+      content: 'آیا از درخواست مجدد رزرو تور اختصاصی اطمینان دارید؟',
+      rtl: true,
+      closeIcon: true,
+      type: 'orange',
+      onDestroy: function () { delete el.dataset.confirming; },
+      buttons: {
+         confirm: {
+            text: 'تأیید',
+            btnClass: 'btn-green',
+            action: function () {
+               proceedWithReserveExclusiveTour(el, requestNumber, factorNumber);
+            }
+         },
+         cancel: { text: 'انصراف', btnClass: 'btn-red' }
+      }
+   });
+}
+
 function ModalShowBook(RequestNumber) {
 
 

@@ -7601,6 +7601,20 @@ class bookshowTest extends clientAuth {
             if($flightBook == null){
                 continue;
             }
+            $retryExclusiveTourButton = '';
+            if (TYPE_ADMIN == '1' && in_array($flightBook['successfull'], array('error', 'lock', 'credit', 'bank'), true)
+                && $flightBook['request_cancel'] != 'confirm' && empty($flightBook['provider_ref'])) {
+                $retryArguments = htmlspecialchars(json_encode(array(
+                    (string) $flightBook['request_number'],
+                    (string) $flightBook['factor_number']
+                )), ENT_QUOTES, 'UTF-8');
+                $retryExclusiveTourButton = '<div class="pull-left margin-10"><a href="#" '
+                    . 'onclick="confirmReservationRequestAgainExclusiveTour(this, ...' . $retryArguments . ');return false;">'
+                    . '<i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-share" '
+                    . 'data-toggle="tooltip" data-placement="top" title="" '
+                    . 'data-original-title="درخواست مجدد رزرو"></i></a>'
+                    . '<div class="parent-ld" style="display:none"><div class="ld" style="display:none"></div></div></div>';
+            }
             $transactionLink          = ROOT_ADDRESS_WITHOUT_LANG . '/itadmin/transactionUser&id=' . $flightBook['client_id'];
 
             $DataFlightInfoMember     = functions::infoMember( $flightBook['member_id'], $flightBook['client_id'] );
@@ -7863,7 +7877,7 @@ class bookshowTest extends clientAuth {
                             $DataFlightActionBtn .= '<a onclick="ModalShowBookForExclusiveTour(' . "'" . $flightBook['request_number'] . "'" . ');return false" data-toggle="modal" data-target="#ModalPublic"> <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye" data-toggle="tooltip" data-placement="top" title="" data-original-title="مشاهده خرید"></i> </a>';
 
                         }
-                        $DataFlightActionBtn .= '</div>
+                        $DataFlightActionBtn .= '</div>' . $retryExclusiveTourButton . '
 
                         <div class="pull-left margin-10">';
                         $DataFlightActionBtn .= '</div>
@@ -8013,9 +8027,7 @@ class bookshowTest extends clientAuth {
                                                                         </a>';
 
                         }
-                        $DataFlightActionBtn .= ' </div>
-
-                                                                ';
+                        $DataFlightActionBtn .= ' </div>' . $retryExclusiveTourButton;
 
 
                         if ( (  $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {

@@ -1070,4 +1070,13 @@ LEFT JOIN report_gasht_tb
         $resultCharge=functions::calculateChargeUserPrice($clientID,$numberFactor);//شارژ فعلی مشتری از دیتابیس خودش
         return ($resultCharge);
     }
+
+    public function getTransactionByFactorNumber($factorNumber) {
+        $result =  $this->getModel('transactionsModel')->get()->where('FactorNumber',$factorNumber)->find();
+        if (!empty($result)) {
+            return $result;
+        } else {
+            return false;
+        }
+    }
 }
