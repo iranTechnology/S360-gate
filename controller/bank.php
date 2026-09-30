@@ -153,9 +153,19 @@ class bank {
 		elseif ( $payFor == 'reservationTourLocal' ) {
 
 			$infoBook           = functions::GetInfoTour( $requestID );
-			$this->amountToPay  = $infoBook['tour_payments_price'] > 0 ?  $infoBook['tour_payments_price'] : $infoBook['total_price'];
-			if($infoBook['payment_status'] =='fullPayment') {
-				$this->amountToPay = $infoBook['total_price'] - $infoBook['tour_payments_price'];
+			if($infoBook['payment_status'] =='prePayment') {
+				$this->amountToPay = $infoBook['tour_payments_price'];
+			} else {
+
+				if ($infoBook['status'] =='TemporaryPreReserve') {
+					if ($infoBook['tour_payments_price'] == 0) {
+						$this->amountToPay = $infoBook['total_price'];
+					} else {
+						$this->amountToPay = $infoBook['tour_payments_price'];
+					}
+				} elseif ($infoBook['status'] =='PreReserve') {
+					$this->amountToPay = $infoBook['total_price'] - $infoBook['tour_payments_price'];
+				}
 			}
 			$this->factorNumber = $requestID;
 			if(isset($redirectBank) && !empty($redirectBank)) {

@@ -459,6 +459,17 @@ class discountCodes extends clientAuth
     }
     #endregion
 
+    public function getPendingDiscountCodeByFactor($factorNumber) {
+        $Model = Load::library('Model');
+
+        $query = "SELECT DC.amount, DCU.discountCode, DCU.memberId, DCU.serviceTitle, DCU.creationDateInt
+                  FROM discount_codes_used_tb AS DCU INNER JOIN discount_codes_tb AS DC ON DCU.discountCode = DC.code 
+                  WHERE DCU.factorNumber = '{$factorNumber}' AND DCU.status = 'pending'";
+        $result = $Model->load($query);
+
+        return $result;
+    }
+
     #region calcDiscountCodeByFactor: get discount code info by factor number and if it exists
     public function getDiscountCodeByFactorAndClientId($factorNumber, $clientId) {
         $admin = Load::controller('admin');

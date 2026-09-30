@@ -6855,7 +6855,6 @@ class bookshowTest extends clientAuth {
                 $DataIranCommission = number_format( $insurance['irantech_commission'] );
             }
             $PassengerPayment=$insurance['totalPriceIncreased'];
-            functions::insertLog('$insurance: ' . json_encode($insurance) , '000shojaee');
             $DataUser = number_format( $PassengerPayment );
             $DataAgency = 'نامشخص' ;
             $BuyFromIt = isset($transactions[$FActorNumberFor]) ? $transactions[$FActorNumberFor] : 0;
@@ -7393,13 +7392,12 @@ class bookshowTest extends clientAuth {
             }
             $DataFactor .= '<hr style="margin:3px">' . $tour['factor_number'];
 
-
             if ( $tour['tour_discount'] == '' ) {
-                $DataAllPrice = number_format( $tour['changed_tour_total_price'], 0, '.', ',');
+                $DataAllPrice = number_format( $tour['changed_tour_total_price'] - $tour['discount_code_amount'], 0, '.', ',');
             } else {
                 $DataAllPrice =  '<span class="strikePrice" style="text-decoration: line-through;margin-left: 7px;">
-                                                            <b class="pice-tour">' . number_format( $tour['changed_tour_origin_price'], 0, '.', ',' ) . '</b>
-                                                        </span>' . number_format( $tour['tour_total_price'], 0, '.', ',' );
+                                                            <b class="pice-tour">' . number_format( $tour['changed_tour_origin_price'] - $tour['discount_code_amount'], 0, '.', ',' ) . '</b>
+                                                        </span>' . number_format( $tour['tour_total_price'] - $tour['discount_code_amount'], 0, '.', ',' );
             }
 
 
@@ -7409,10 +7407,10 @@ class bookshowTest extends clientAuth {
 
             }*/
             if ( $tour['status'] == 'BookedSuccessfully') {
-                $DataAllPrice .= '<hr style="margin:3px">' . number_format($tour['total_price'], 0, '.', ',') . '
+                $DataAllPrice .= '<hr style="margin:3px"> ' . number_format($tour['total_price'] - $tour['discount_code_amount'], 0, '.', ',') . '
                 <hr style="margin:3px">' . number_format($tour['cancellation_price'], 0, '.', ',');
             }else{
-                $DataAllPrice .= '<hr style="margin:3px">' . number_format($tour['tour_payments_price'], 0, '.', ',') . '
+                $DataAllPrice .= '<hr style="margin:3px"> ' . number_format($tour['tour_payments_price'] - $tour['discount_code_amount'], 0, '.', ',') . '
                 <hr style="margin:3px">' . number_format($tour['cancellation_price'], 0, '.', ',');
             }
             $DataAllPriceArzi = number_format( $tour['tour_total_price_a'], 0, '.', ',' ) . ' ' . $tour['currency_title_fa'] . '<hr style="margin:3px">' . number_format( $tour['tour_payments_price_a'], 0, '.', ',' ) . ' ' . $tour['currency_title_fa'];
@@ -7599,6 +7597,20 @@ class bookshowTest extends clientAuth {
         foreach ( $ListBookExclusiveTour as $key => $flightBook ) {
             if($flightBook == null){
                 continue;
+            }
+            $retryExclusiveTourButton = '';
+            if (TYPE_ADMIN == '1' && in_array($flightBook['successfull'], array('error', 'lock', 'credit', 'bank'), true)
+                && $flightBook['request_cancel'] != 'confirm' && empty($flightBook['provider_ref'])) {
+                $retryArguments = htmlspecialchars(json_encode(array(
+                    (string) $flightBook['request_number'],
+                    (string) $flightBook['factor_number']
+                )), ENT_QUOTES, 'UTF-8');
+                $retryExclusiveTourButton = '<div class="pull-left margin-10"><a href="#" '
+                    . 'onclick="confirmReservationRequestAgainExclusiveTour(this, ...' . $retryArguments . ');return false;">'
+                    . '<i class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-share" '
+                    . 'data-toggle="tooltip" data-placement="top" title="" '
+                    . 'data-original-title="درخواست مجدد رزرو"></i></a>'
+                    . '<div class="parent-ld" style="display:none"><div class="ld" style="display:none"></div></div></div>';
             }
             $transactionLink          = ROOT_ADDRESS_WITHOUT_LANG . '/itadmin/transactionUser&id=' . $flightBook['client_id'];
 
@@ -7862,7 +7874,7 @@ class bookshowTest extends clientAuth {
                             $DataFlightActionBtn .= '<a onclick="ModalShowBookForExclusiveTour(' . "'" . $flightBook['request_number'] . "'" . ');return false" data-toggle="modal" data-target="#ModalPublic"> <i class="fcbtn btn btn-outline btn-info btn-1c tooltip-info fa fa-eye" data-toggle="tooltip" data-placement="top" title="" data-original-title="مشاهده خرید"></i> </a>';
 
                         }
-                        $DataFlightActionBtn .= '</div>
+                        $DataFlightActionBtn .= '</div>' . $retryExclusiveTourButton . '
 
                         <div class="pull-left margin-10">';
                         $DataFlightActionBtn .= '</div>
@@ -8012,9 +8024,7 @@ class bookshowTest extends clientAuth {
                                                                         </a>';
 
                         }
-                        $DataFlightActionBtn .= ' </div>
-
-                                                                ';
+                        $DataFlightActionBtn .= ' </div>' . $retryExclusiveTourButton;
 
 
                         if ( (  $flightBook['successfull'] == 'book' ) || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {

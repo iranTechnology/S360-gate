@@ -963,16 +963,22 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
 
 
     $Model = Load::library('Model');
+    $ModelBase = Load::library('ModelBase');
     $apiLocal = load::library('apiLocal');
     $bookLocal = Load::model('book_local');
     /** @var transaction $objTransaction */
     $objTransaction = Load::controller('transaction');
+    $objTransactions = Load::controller('transactions');
     $objMember = Load::controller('members');
     $privateCharterSources = functions::privateCharterFlights();
     $bookData = $bookLocal->GetInfoBookLocal(array_values($_POST['RequestNumber'])[0]);
     $memberId = $bookData['member_id'];
     $info_member = functions::infoAgencyByMemberId($memberId);
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
+    if(TYPE_ADMIN== 1){
+        $reportData = functions::GetInfoReportFlight(array_values($_POST['RequestNumber'])[0]);
+        $memberId = $reportData['member_id'];
+    }
     $counterCredit = $objMember->getCredit($memberId);
 
     $total_amount = 0;
@@ -1008,14 +1014,14 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     if ($counterCredit > $total_amount) {
         $total_price = 0;
         foreach ($_POST['RequestNumber'] as $direction => $request_number) {
-            $reserveInfo[$direction] = $bookLocal->GetInfoBookLocal($request_number);
+            $reserveInfo[$direction] = TYPE_ADMIN == 1 ? functions::GetInfoReportFlight($request_number) : $bookLocal->GetInfoBookLocal($request_number);
 
             if ($direction == 'dept' || $direction == 'TwoWay' || $direction == 'multi_destination') {
                 $factorNumber = $reserveInfo[$direction]['factor_number'];
                 $comment = "خرید" . " " . $reserveInfo[$direction]['count_id'] . " عدد بلیط " . (count($_POST['RequestNumber']) > 1 ? "دو طرفه" : "") . " هواپیما از" . " " . $reserveInfo[$direction]['origin_city'] . " به" . " " . $reserveInfo[$direction]['desti_city'] . " " . "به شماره رزرو ";
             }
 
-            $prices = $objTransaction->calculateTransactionPrice($request_number);
+            $prices = TYPE_ADMIN == 1  ? $objTransaction->calculateTransactionPriceAdmin($request_number) : $objTransaction->calculateTransactionPrice($request_number);
 
             $total_price += $prices['transactionPrice'];
 
@@ -1039,9 +1045,9 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
             $objMember->decreaseCounterCredit($total_amount_counter[$direction], $request_number, $reserveInfo[$direction], '');
 
         }
-
-        $existTransaction = $objTransaction->getTransactionByFactorNumber($factorNumber);
-        if (empty($existTransaction)) {
+        functions::insertLog('$_POST: ' . json_encode($_POST) , '000shojaee');
+        $existTransaction =  TYPE_ADMIN == 1  ? $objTransactions->getTransactionByFactorNumber($factorNumber) : $objTransaction->getTransactionByFactorNumber($factorNumber);
+        if (empty($existTransaction) && $_POST['isRepetFlight'] != true) {
             // Caution: اعتبارسنجی صاحب سیستم
             $check = $objTransaction->checkCredit($total_price);
 
@@ -1063,7 +1069,33 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
                 echo 'error:' . functions::Xmlinformation('ChargeRialSystem');
             }
 
-        } else {
+        }
+        else if(!empty($existTransaction) &&  $_POST['isRepetFlight'] == true){
+            $Condition = "FactorNumber='{$factorNumber}' ";
+            // for client
+            $Sql       = "SELECT * FROM transaction_tb WHERE FactorNumber='{$factorNumber}'";
+            $resClient = $Model->load( $Sql );
+            if($resClient['BankTrackingCode'] == 'کسر موقت'){
+                $d['BankTrackingCode'] = '';
+            }
+            $d['PaymentStatus'] = 'success';
+            $Model->setTable('transaction_tb');
+            $Model->update($d, $Condition);
+
+            //for admin panel , transaction table
+            $Sql       = "SELECT * FROM transactions WHERE FactorNumber='{$factorNumber}'";
+            $resAdmin = $ModelBase->load( $Sql );
+            if($resAdmin['BankTrackingCode'] == 'کسر موقت'){
+                $dAdmin['BankTrackingCode'] = '';
+            }
+            $dAdmin['clientID'] = $resAdmin['clientID'];
+            $dAdmin['PaymentStatus'] = 'success';
+            $ModelBase->setTable('transactions');
+            $ModelBase->update($dAdmin, $Condition);
+
+            echo 'success:' . $total_amount;
+        }
+        else {
             echo 'error:' . functions::Xmlinformation('ErrorDecreaseCreditByFactorNumber');
         }
     } else {
@@ -1155,7 +1187,6 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
         . $reserveInfo[0]['reserve_number']
         . " {$request_number}";
 
-    functions::insertLog('$_POST: ' . json_encode($_POST), '000shojaee');
 
     if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
         $credit = $objUser->getCreditMember();
@@ -2596,6 +2627,13 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
     $Model = Load::library('Model');
     $ModelBase = Load::library('ModelBase');
 
+    if (
+            $_POST['serviceType'] == 'PublicLocalHotel'
+            || $_POST['serviceType'] == 'PublicPortalHotel'
+            || $_POST['serviceType'] == 'PrivatePortalHotel'
+            || $_POST['serviceType'] == 'PrivateLocalHotel'
+    )
+    {
     $d['discount_code_amount'] = $_POST['discountAmount'];
     $d['type_discount'] = $_POST['typeDiscount'];
     $condition = " factor_number = '{$factorNumber}'";
@@ -2604,6 +2642,7 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
     if ($res) {
         $ModelBase->setTable("report_hotel_tb");
         $ModelBase->update($d, $condition);
+    }
     }
 
 
@@ -2699,7 +2738,8 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
     } else {
         echo 'error: ' . functions::Xmlinformation('EndCreditAgency');
     }
-} elseif (isset($_POST['flag']) && $_POST['flag'] == 'check_credit_tour') {
+}
+elseif (isset($_POST['flag']) && $_POST['flag'] == 'check_credit_tour') {
 
     unset($_POST['flag']);
     $factorNumber = trim($_POST['factorNumber']);
@@ -2732,6 +2772,12 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
         $comment .= " به مدت: " . $reserveInfo['tour_day'] . " روز ";
     }
     $comment .= ' به مقصد: ' . $reserveInfo['tour_cities'] . '  شماره فاکتور: ' . $reserveInfo['factor_number'];
+
+    $reservation_tour = new reservationTour();
+    $tour_status_changer = $reservation_tour->tourBookChanger($factorNumber, [
+        //                'status'=>$status,
+            'payment_status' => $_POST['paymentStatus']
+    ]);
 
 
     // Caution: اعتبارسنجی صاحب سیستم
@@ -2805,7 +2851,8 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
         echo 'FALSE';
     }
 
-} elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditTourLocal') {
+}
+elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditTourLocal') {
 
 //    error_reporting(1);
 //    error_reporting(E_ALL | E_STRICT);
@@ -2819,6 +2866,29 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
     $objUser = Load::controller('user');
     $objTransaction = Load::controller('transaction');
     $objMemberCredit = Load::controller('memberCredit');
+    $objDiscountCodes = Load::controller('discountCodes');
+
+
+        $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
+        $discountCode = $getDiscountCode['discountCode'];
+
+        $getDiscountCodeByFactor = $objDiscountCodes->getPendingDiscountCodeByFactor($factorNumber);
+        $discountCodeAmount = $getDiscountCodeByFactor['amount'];
+
+        if ($discountCodeAmount && !empty($discountCodeAmount)) {
+
+            $Model = Load::library('Model');
+            $ModelBase = Load::library('ModelBase');
+
+            $d['discount_code_amount'] = $discountCodeAmount;
+            $condition = " factor_number = '{$factorNumber}'";
+            $Model->setTable("book_tour_local_tb");
+            $res = $Model->update($d, $condition);
+            if ($res) {
+                $ModelBase->setTable("report_tour_tb");
+                $ModelBase->update($d, $condition);
+            }
+        }
 
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
 
@@ -2830,7 +2900,20 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
 
     $reserveInfo = functions::GetInfoTour($factorNumber);
 
-    $amount = $reserveInfo['total_price'];
+    $amount = 0;
+
+
+    if ($_POST['paymentStatus'] == 'prePayment') {
+        $amount = $reserveInfo['tour_payments_price'];
+    } else {
+        $amount = $reserveInfo['tour_total_price'];
+    }
+
+
+    if (!empty($discountCode)) {
+        $memberId = Session::getUserId();
+        $amount = $objDiscountCodes->reduceAmountViaDiscountCode($amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType']);
+    }
 
     /*	if($reserveInfo['serviceTitle'] == 'PrivateLocalTour' || $reserveInfo['serviceTitle'] == 'PrivatePortalTour' ){
 
@@ -2865,11 +2948,11 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
 
 
         $reservation_tour = new reservationTour();
+
         $tour_status_changer = $reservation_tour->tourBookChanger($factorNumber, [
             //                'status'=>$status,
             'payment_status' => $_POST['paymentStatus']
         ]);
-
 
         if ($_POST['creditUse'] == 'member_credit') {
             $objMemberCredit->decreaseChargeMemberForBuy($amount, $factorNumber, $comment);
@@ -3811,7 +3894,6 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'UpdateCounterDetail') {
 
     $objSmsPanel = Load::controller('smsPanel');
     $result = $objSmsPanel->searchSmsReports();
-    functions::insertLog('$resul$resultt: ' . json_encode($result), '000shojaee');
     return $result;
 
 } elseif (isset($_POST['flag']) && $_POST['flag'] == 'setLangPanelAdmin') {
