@@ -461,7 +461,7 @@
                                                     class="fa mdi fa-list-ol fa-fw padding-right-10"></i><span
                                                     class="hide-menu padding-right-10">گزارش صورت وضعیت </span></a>
                                     </li>
-                                   
+
 
                                 {/if}
                                 <li>
