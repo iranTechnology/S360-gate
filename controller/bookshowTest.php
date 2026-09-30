@@ -7394,13 +7394,12 @@ class bookshowTest extends clientAuth {
             }
             $DataFactor .= '<hr style="margin:3px">' . $tour['factor_number'];
 
-
             if ( $tour['tour_discount'] == '' ) {
-                $DataAllPrice = number_format( $tour['changed_tour_total_price'], 0, '.', ',');
+                $DataAllPrice = number_format( $tour['changed_tour_total_price'] - $tour['discount_code_amount'], 0, '.', ',');
             } else {
                 $DataAllPrice =  '<span class="strikePrice" style="text-decoration: line-through;margin-left: 7px;">
-                                                            <b class="pice-tour">' . number_format( $tour['changed_tour_origin_price'], 0, '.', ',' ) . '</b>
-                                                        </span>' . number_format( $tour['tour_total_price'], 0, '.', ',' );
+                                                            <b class="pice-tour">' . number_format( $tour['changed_tour_origin_price'] - $tour['discount_code_amount'], 0, '.', ',' ) . '</b>
+                                                        </span>' . number_format( $tour['tour_total_price'] - $tour['discount_code_amount'], 0, '.', ',' );
             }
 
 
@@ -7410,10 +7409,10 @@ class bookshowTest extends clientAuth {
 
             }*/
             if ( $tour['status'] == 'BookedSuccessfully') {
-                $DataAllPrice .= '<hr style="margin:3px">' . number_format($tour['total_price'], 0, '.', ',') . '
+                $DataAllPrice .= '<hr style="margin:3px"> ' . number_format($tour['total_price'] - $tour['discount_code_amount'], 0, '.', ',') . '
                 <hr style="margin:3px">' . number_format($tour['cancellation_price'], 0, '.', ',');
             }else{
-                $DataAllPrice .= '<hr style="margin:3px">' . number_format($tour['tour_payments_price'], 0, '.', ',') . '
+                $DataAllPrice .= '<hr style="margin:3px"> ' . number_format($tour['tour_payments_price'] - $tour['discount_code_amount'], 0, '.', ',') . '
                 <hr style="margin:3px">' . number_format($tour['cancellation_price'], 0, '.', ',');
             }
             $DataAllPriceArzi = number_format( $tour['tour_total_price_a'], 0, '.', ',' ) . ' ' . $tour['currency_title_fa'] . '<hr style="margin:3px">' . number_format( $tour['tour_payments_price_a'], 0, '.', ',' ) . ' ' . $tour['currency_title_fa'];
@@ -10681,7 +10680,7 @@ class bookshowTest extends clientAuth {
             $DataTable = $this->MainAllTicketHistory( $param );
         }
 
-        return json_encode( $DataTable );
+        return json_encode( $DataTable);
     }
     #endregion
 

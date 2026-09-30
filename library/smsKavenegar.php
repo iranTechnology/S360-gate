@@ -44,8 +44,6 @@ class smsKavenegar extends smsServicesAbstract {
      */
     public function smsSend( $input ) {
 
-        var_dump('56');
-        die;
         functions::insertLog('send input: ' . json_encode($input), 'log_smsService');
 
         $url = $this->baseUrl . $this->apiKey . '/sms/send.json';

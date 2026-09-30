@@ -516,6 +516,7 @@
             {/if}
 
 
+
         </div>
         <!-- /.navbar-header -->
         <!-- /.navbar-top-links -->
@@ -820,6 +821,9 @@
         }
     });
 </script>
+
+{var_dump($smarty.const.TYPE_ADMIN)}
+
 
 </body>
 </html>

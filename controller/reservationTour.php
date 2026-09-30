@@ -1716,6 +1716,14 @@ class reservationTour extends clientAuth
     public function editTourWithIdSame($param, $file) {
 
 
+        if ($_SERVER['REMOTE_ADDR']) {
+            error_reporting(1);
+            error_reporting(E_ALL | E_STRICT);
+            @ini_set('display_errors', 1);
+            @ini_set('display_errors', 'on');
+        }
+
+
 
 
         if(Session::IsLogin()) {

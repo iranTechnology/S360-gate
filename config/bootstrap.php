@@ -71,6 +71,17 @@ $query = $mainConfig->prepare($SqlClient);
 $query->execute();
 $client = $query->fetch(PDO::FETCH_ASSOC);
 
+//lang panel admin fa  ar  en
+if (isset($_SESSION['lang_panel_admin']) && $_SESSION['lang_panel_admin']!='') {
+    defined('LANG_PANEL_ADMIN') or define('LANG_PANEL_ADMIN', $_SESSION['lang_panel_admin']);
+}
+else if($client['default_lang_admin']!=''){
+    defined('LANG_PANEL_ADMIN') or define('LANG_PANEL_ADMIN', $client['default_lang_admin']);
+}
+else{
+    defined('LANG_PANEL_ADMIN') or define('LANG_PANEL_ADMIN', 'fa');
+}
+
 //select id current page panel counter
 if (isset($_SESSION['memberIdCounterInAdmin']) && !isset($pageCallCurllFactorIrantech)) {
     defined('memberIdCounterInAdmin') or define('memberIdCounterInAdmin',$_SESSION['memberIdCounterInAdmin']);

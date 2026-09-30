@@ -266,6 +266,7 @@ class bookTourShow extends clientAuth
             $dataRows[$k]['tour_origin_price'] = $book['tour_origin_price']. ' ';
             $dataRows[$k]['changed_tour_origin_price'] = $book['tour_origin_price']. ' ';
             $dataRows[$k]['tour_payments_price'] = $book['tour_payments_price'] > 0 ? $book['tour_payments_price'] :  $book['total_price']. ' ';
+            $dataRows[$k]['discount_code_amount'] = empty($book['discount_code_amount']) ? 0 : (int) $book['discount_code_amount'];
             $dataRows[$k]['cancellation_price'] = $book['cancellation_price']. ' ';
             $dataRows[$k]['tour_total_price_a'] = $book['tour_total_price_a'] . ' ' . $book['currency_title_fa']. ' ';
             $dataRows[$k]['tour_payments_price_a'] = $book['tour_payments_price_a'] . ' ' . $book['currency_title_fa']. ' ';
@@ -600,13 +601,7 @@ class bookTourShow extends clientAuth
 
             }
 
-            $totalPrice = intval($book['tour_total_price']);
-            $getDiscountCode = $this->getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber',  $this->FactorNumber)->find();
-            $getDiscountCodeAmount = $this->getModel('discountCodesModel')->get(['amount'], true)->where('code',  $getDiscountCode['discountCode'])->find();
-            if (!empty($getDiscountCodeAmount) && $getDiscountCodeAmount) {
-                $discountCodeAmount = $getDiscountCodeAmount['amount'];
-                $totalPrice -= $discountCodeAmount;
-            }
+            $totalPrice = intval($book['tour_total_price'] - $book['discount_code_amount']);
 
             $result .= join(', ',$cities) . '</td>';
             $result .= '<td>' . $book['tour_start_date'] . '<hr style="color: #f8f8f8;">';
@@ -624,7 +619,7 @@ class bookTourShow extends clientAuth
             if($priceChanged > 0){
                 $result .= 'افزایش قیمت ' . number_format($priceChanged).'<hr style="color: #f8f8f8;">' ;
             }
-            $result.=number_format($book['tour_payments_price']) ;
+            $result.=number_format($book['tour_payments_price'] - $book['discount_code_amount']) ;
 
             $result.='</td>';
             $result .= '<td>' . $status . '</td>';

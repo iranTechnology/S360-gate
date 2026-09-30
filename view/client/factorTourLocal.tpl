@@ -450,6 +450,14 @@
 
                     {assign var="serviceType" value=$objFunctions->getTypeServiceTour('reservation', $smarty.post.idTour)} {* لازم برای انتخاب نوع بانک *}
 
+                    {if $objFactor->tourBookingInfo['prepayment_percentage'] neq 0}
+                        {if $smarty.post.typeTourReserve neq 'oneDayTour'}
+                            {assign var="prePaymentPrice" value=$objResult->prePaymentCalculate($arrayTourPackage['total_price_package'] , $objFactor->tourBookingInfo['prepayment_percentage'])}
+                        {else}
+                            {assign var="prePaymentPrice" value=$objResult->prePaymentCalculate($smarty.post.totalPrice)}
+                        {/if}
+                    {/if}
+
                     {if $objSession->IsLogin() && $objMember->list['fk_counter_type_id'] =='5'}
 
                     <h2 class="passengerDetailReservationTour_title">
@@ -463,7 +471,7 @@
                                 <div class="form-discount-code">
                                     <input type="text" placeholder="##Codediscount## ..." id="discount-code">
                                     <input type="hidden" name="priceWithoutDiscountCode" id="priceWithoutDiscountCode"
-                                           value="{$total_price}"/>
+                                           value="{if $paymentStatusValue eq 'fullPayment'}{$total_price}{elseif $paymentStatusValue eq 'prePayment'}{$prePaymentPrice}{/if}"/>
                                     <button type="button" onclick="setDiscountCode('{$serviceType}', '{$CurrencyCode}' , {$factorNumber})" class="site-bg-main-color">
                                         ##Apply##
                                     </button>
@@ -506,11 +514,6 @@
                                     </div>
                                 {/if}
                                 {if $objFactor->tourBookingInfo['prepayment_percentage'] neq 0}
-                                    {if $smarty.post.typeTourReserve neq 'oneDayTour'}
-                                        {assign var="prePaymentPrice" value=$objResult->prePaymentCalculate($arrayTourPackage['total_price_package'] , $objFactor->tourBookingInfo['prepayment_percentage'])}
-                                    {else}
-                                        {assign var="prePaymentPrice" value=$objResult->prePaymentCalculate($smarty.post.totalPrice)}
-                                    {/if}
                                     <div class="prepayment">
                                         <span>  ##Prereserve## :</span>
                                         <span> {$prePaymentPrice|number_format:0:".":","} <p>{$iranCurrency}</p></span>
@@ -565,7 +568,13 @@
                                                 <div class="info-box__price info-box__item pull-left">
                                                     <div class="item-discount">
                                                         <span class="item-discount__label">##Amountpayable## :</span>
-                                                        <span class="price__amount-price price-after-discount-code">{$total_price|number_format:0:".":","}</span>
+                                                        <span class="price__amount-price price-after-discount-code">
+                                                            {if $paymentStatusValue eq 'fullPayment'}
+                                                                {$total_price|number_format:0:".":","}
+                                                            {elseif $paymentStatusValue eq 'prePayment'}
+                                                                {$prePaymentPrice|number_format:0:".":","}
+                                                            {/if}
+                                                        </span>
                                                         <span class="price__unit-price">{$iranCurrency}</span>
                                                     </div>
                                                 </div>
@@ -717,7 +726,7 @@
         {assign var="bankInputs" value=['type_service'=>'tour','flag' => 'check_credit_tour', 'factorNumber' => $factorNumber, 'paymentStatus' => $paymentStatusValue, 'serviceType' => $serviceType]}
         {assign var="bankAction" value="`$smarty.const.ROOT_ADDRESS`/goBankTourLocal"}
 
-        {assign var="creditInputs" value=['flag' => 'buyByCreditTourLocal', 'factorNumber' => $factorNumber, 'paymentStatus' => $paymentStatusValue]}
+        {assign var="creditInputs" value=['flag' => 'buyByCreditTourLocal', 'factorNumber' => $factorNumber, 'paymentStatus' => $paymentStatusValue, 'serviceType' => $serviceType]}
         {assign var="creditAction" value="`$smarty.const.ROOT_ADDRESS`/returnBankTourLocal"}
 
         {assign var="currencyPermition" value="0"}
