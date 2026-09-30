@@ -8390,8 +8390,7 @@ function setDiscountCode(serviceType, currencyCode , factorNumber ,typeApplicati
                         price_after_discount = price_before_discount - (price_before_discount * data.discountAmount / 100);
                         display_discount_currency.text('%');
                     }
-                else{
-
+                else {
 
                     price_after_discount = price_before_discount - data.discountAmount;
 
