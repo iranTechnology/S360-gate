@@ -11091,8 +11091,9 @@ public function ModalCancelAdmin($Param, $param2) {
 
         <div class="modal_custom" onclick="closeModalParent(event)">
             <div class="container">
-                <div class="main_modal_custom" style="width: 80% !important;margin: 0 auto;">
-                    <div class="scrollIng_model" style="font-size:14px">
+                <div class="main_modal_custom" style="width: 80% !important; max-width: 900px; margin: 0 auto; height: auto !important; min-height: unset !important;">
+                    <div class="scrollIng_model" style="font-size:14px; max-height: 85vh; overflow-y: auto; height: auto !important; min-height: unset !important;">
+
                         <div class="header_modal_custom">
                             <h2><?php echo functions::Xmlinformation("CancelPurchase") ?></h2>
                             <input type="hidden" name="typeService" id="typeService" value="<?php echo $param2 ?>">
@@ -11108,11 +11109,13 @@ public function ModalCancelAdmin($Param, $param2) {
                                         <table class="min-w-800px table table-striped table-bordered">
                                             <thead>
                                             <tr>
-                                                <th scope="col" style="width: 8%;"><?php echo functions::Xmlinformation("Select")?></th>
-                                                <th scope="col"><?php echo functions::Xmlinformation("Name") ?></th>
-                                                <th scope="col"><?php echo functions::Xmlinformation("Nationalnumber") ?></th>
+                                                <?php if($param2 != 'bus'){ ?>
+                                                    <th scope="col" style="width: 8%;"><?php echo functions::Xmlinformation("Select")?></th>
+                                                <?php }?>
+                                                <th scope="col"><?php echo functions::Xmlinformation("Namefamily")?></th>
+                                                <th scope="col"><?php echo functions::Xmlinformation("NationalCode") ?></th>
                                                 <th scope="col"><?php echo functions::Xmlinformation("Passport") ?></th>
-                                                <?php if($param2 != 'flight'){ ?>
+                                                <?php if($param2 != 'flight' && $param2 != 'bus'){ ?>
                                                     <th scope="col"><?php echo functions::Xmlinformation("DateOfBirth") ?></th>
                                                     <th scope="col"><?php echo functions::Xmlinformation("Age") ?></th>
                                                 <?php } ?>
@@ -11139,11 +11142,38 @@ public function ModalCancelAdmin($Param, $param2) {
                                                 }
                                                 ?>
                                                 <tr>
-                                                    <th class="d-flex justify-content-center"><input class="form-control SelectUser" style="width:31% !important" type="checkbox" name="SelectUser[]" id="SelectUser" value="<?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] . '-' . $info['passenger_age'] : $info['passportNumber'] . '-' . $info['passenger_age'] ?>" <?php echo (!empty($info['Status']) && !empty($NationalCodeUser) && ($info['Status'] != 'Nothing' && $info['Status'] != 'close')) ? 'disabled ="disabled"' : '';?>></th>
-                                                    <th><?php echo $info['passenger_name_en'] . ' ' . $info['passenger_family_en']; ?></th>
-                                                    <th><?php echo $info['passenger_national_code']; ?></th>
+                                                    <th <?php if($param2 == 'bus') echo 'style="display:none !important;"'; else {?> class="d-flex justify-content-center" <?php }?> >
+                                                        <input
+                                                                class="form-control SelectUser"
+                                                                style="width:31% !important"
+                                                                type="checkbox"
+                                                                name="SelectUser[]"
+                                                                id="SelectUser"
+                                                            <?php
+                                                            $isDisabled =
+                                                                !empty($info['Status']) &&
+                                                                !empty($NationalCodeUser) &&
+                                                                $info['Status'] != 'Nothing' &&
+                                                                $info['Status'] != 'close';
+
+                                                            if($param2 == 'bus'){
+                                                                echo 'checked="checked"';
+                                                            } elseif ($isDisabled) {
+                                                                echo 'disabled="disabled"';
+                                                            }?>
+                                                                value="<?php echo ($info['passenger_national_code'] != '0000000000') ? $info['passenger_national_code'] . '-' . $info['passenger_age'] : $info['passportNumber'] . '-' . $info['passenger_age'] ?>"
+                                                        >
+                                                    </th>
+                                                    <th><?php
+                                                        if($info['passenger_name_en']!='' || $info['passenger_family_en']!='')
+                                                            echo $info['passenger_name_en'] . ' ' . $info['passenger_family_en'];
+                                                        else
+                                                            echo $info['passenger_name'] . ' ' . $info['passenger_family'];
+                                                        ?>
+                                                    </th>
+                                                    <th><?php echo $info['passenger_national_code'];?></th>
                                                     <th><?php echo $info['passportNumber']; ?></th>
-                                                    <?php if($param2 != 'flight'){ ?>
+                                                    <?php if($param2 != 'flight' && $param2 != 'bus'){ ?>
                                                         <th><?php echo (!empty($info['passenger_birthday'])) ? $info['passenger_birthday'] : $info['passenger_birthday_en'] ?></th>
                                                         <th><?php
                                                             switch ($info['passenger_age']) {
