@@ -157,12 +157,12 @@ function bookUserHistoryFilter(target) {
                                        <h2>${useXmltag("PriceAllOrder")}<span>${i?.price ?? ''}</span>${i?.currency_title ?? useXmltag("Rial")}</h2>
                                    </div>
                
-                                   <button onclick="open_details_box($(event.currentTarget))">
+                                   <button onclick="open_details_box($(event.currentTarget))" style="color: #000 !important; font-weight: bold !important;">
                                        ${useXmltag("Detail")}
-                                     <svg  class="down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                     <svg  class="down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="width: 10px; fill: #000 !important;">
                                          <path d="M362.7 203.9c6.5 5.9 7.1 15.9 1.3 22.6l-159.1 144c-6.1 5.5-15.3 5.5-21.4 0L20 226.5c-5.8-6.6-5.2-16.7 1.3-22.6 6.6-5.9 16.7-5.4 22.6 1.3L192 314.5l149.3-134.4c5.9-6.7 16-7.2 22.4-1.2z"/>
                                      </svg>
-                                     <svg style="display:none" class="up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                     <svg class="up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="display:none; width: 10px; fill: #000 !important; color: #000 !important;">
                                          <path d="M21.3 308.1c-6.5-5.9-7.1-15.9-1.3-22.6l159.1-144c6.1-5.5 15.3-5.5 21.4 0l159.1 144c5.8 6.6 5.2 16.7-1.3 22.6-6.6 5.9-16.7 5.4-22.6-1.3L192 197.5 42.7 330.7c-5.9 6.7-16 7.2-22.4 1.2z"/>
                                      </svg>
                                  </button>

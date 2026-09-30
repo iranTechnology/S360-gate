@@ -161,14 +161,19 @@
                                 <th>آژانس</th>
                                 <th>دلیل درخواست</th>
                                 <th>شماره رزرو</th>
-                                <th>نوع درخواست
+                                <th>
+                                    نوع درخواست
+                                    <br/>
+                                   نام سرور
                                 </th>
-                                <th>نام سرور</th>
                                 <th>تاریخ در خواست کاربر</th>
                                 <th>تاریخ ارسال به کارگزار</th>
                                 <th>تاریخ تایید/رد درخواست</th>
-                                <th>درصد جریمه</th>
-                                <th style="width: 100px;">مبلغ استرداد</th>
+                                <th>
+                                    درصد جریمه
+                                    <br/>
+                                    مبلغ استرداد
+                                </th>
                                 <th style="width: 150px;">عملیات</th>
                                 <th>وضعیت درخواست</th>
 
@@ -261,7 +266,6 @@
                                                  id="myInput{$item.id}">
                                                 {$item.pnr}
                                             </div>
-
                                         </div>
 
                                         <script>
@@ -271,11 +275,9 @@
                                               alert("Copied: " + text);
                                            }
                                         </script>
-
                                     </td>
-
-
                                     <td>
+
                                         {if $item.TypeCancel eq 'flight' || $item.TypeCancel eq '' }
                                             پرواز-
                                             {if $objFunctions->TypeFlight($item.RequestNumber) eq 'PrivateSystem'}
@@ -296,8 +298,8 @@
                                             بیمه
                                         {/if}
 
-                                    </td>
-                                    <td>
+                                        <br/>
+
                                         {if $item.TypeCancel eq 'flight' || $item.TypeCancel eq '' }
                                             {$item.provider_name}
                                         {elseif $item.TypeCancel eq 'bus'}
@@ -357,16 +359,22 @@
                                                     -----
                                                 {else}
                                                     <span class="yn">
-                                            <input class="form-control media03" value="{$item.PercentIndemnity}" name="changePercentIndemnity" id="changePercentIndemnity{$item.ClientId}{$item.id}" onchange="changePercentIndemnity('{$item.id}','{$item.ClientId}')">
-                                            <div class="media04">%</div>
-                                            </span>
+                                                        <input
+                                                                style="border: 1px solid #000; border-radius: 4px;"
+                                                                class="form-control media03"
+                                                                value="{$item.PercentIndemnity}"
+                                                                name="changePercentIndemnity"
+                                                                id="changePercentIndemnity{$item.ClientId}{$item.id}"
+                                                                onchange="changePercentIndemnity('{$item.id}','{$item.ClientId}')">
+                                                        <div class="media04">%</div>
+                                                    </span>
 
                                                 {/if}
                                             {else}
                                                 -----
                                             {/if}
-                                        </td>
-                                        <td>
+
+                                            <br/>
 
                                             {if $item.PriceIndemnity neq ''}
                                                 <span class="yn">{$item.PriceIndemnity|number_format} &nbsp;ریال</span>
@@ -375,9 +383,7 @@
                                             {/if}
                                         </td>
                                         <td>
-
                                             <div class="btn-group m-r-10">
-
                                                 <button aria-expanded="false" data-toggle="dropdown"
                                                         class="btn btn-default btn-outline dropdown-toggle waves-effect waves-light"
                                                         type="button"> عملیات <span class="caret"></span></button>
@@ -613,7 +619,6 @@
 
                                         </td>
                                     {else}
-                                        <td style="color:#ccc;">&#8211;</td>
                                         <td style="color:#ccc;">&#8211;</td>
                                         <td style="color:#ccc;">&#8211;</td>
                                         <td style="color:#ccc;">&#8211;</td>
