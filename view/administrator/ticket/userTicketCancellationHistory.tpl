@@ -281,23 +281,25 @@
                                 {if ($item.pid_private eq '1' and $item.TypeCancel eq 'flight') || ($item.type_application eq 'reservation' and $item.TypeCancel eq 'hotel')}
                                     <td>
                                         {if $item.Status eq 'ConfirmCancel'}
-                                            <span data-toggle="popover" data-placement="top" data-content="برای دریافت رسید کنسلی کلیک کنید"
-                                                  class="popoverBox  popover-info" data-original-title="رسید کنسلی">
-                                             {if $item.TypeCancel eq 'bus'}
-                                                 <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=bookingBusShow&id={$item.FactorNumber}&cancelStatus=confirm"
-                                                    class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
-                                            </a>
-                                            {elseif $item.TypeCancel eq 'hotel'}
-                                            <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pdf&target=BookingHotelNew&id={$item.FactorNumber}"
-                                               class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
-                                            </a>
+                                            {if $item.TypeCancel neq 'bus'}
+                                                <span data-toggle="popover" data-placement="top" data-content="برای دریافت رسید کنسلی کلیک کنید"
+                                                      class="popoverBox  popover-info" data-original-title="رسید کنسلی">
+                                                     {if $item.TypeCancel eq 'bus'}
+                                                         <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=bookingBusShow&id={$item.FactorNumber}&cancelStatus=confirm"
+                                                            class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
+                                                    </a>
+                                                    {elseif $item.TypeCancel eq 'hotel'}
+                                                    <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pdf&target=BookingHotelNew&id={$item.FactorNumber}"
+                                                       class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
+                                                    </a>
 
-                                            {elseif $item.TypeCancel eq 'flight'}
-                                             <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=parvazBookingLocal&id={$item.RequestNumber}&cancelStatus=confirm"
-                                                class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
-                                            </a>
-                                             {/if}
-                                        </span>
+                                                    {elseif $item.TypeCancel eq 'flight'}
+                                                     <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=parvazBookingLocal&id={$item.RequestNumber}&cancelStatus=confirm"
+                                                        class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
+                                                    </a>
+                                                     {/if}
+                                                </span>
+                                            {/if}
                                             <span data-toggle="popover" title="مشاهده جزئیات" data-placement="top"
                                                   data-content="برای مشاهده جزئیات کلیک کنید"
                                                   class="popoverBox  popover-primary">
@@ -455,24 +457,24 @@
                                     <td>
 
 
-                                        {if $item.Status eq 'ConfirmCancel'}
+                                        {if $item.Status eq 'ConfirmCancel' && $item.TypeCancel neq 'bus'}
                                             <span data-toggle="popover" data-placement="top" data-content="برای دریافت رسید کنسلی کلیک کنید"
                                                   class="popoverBox  popover-info" data-original-title="رسید کنسلی">
-                                             {if $item.TypeCancel eq 'bus'}
-                                                 <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=bookingBusShow&id={$item.FactorNumber}&cancelStatus=confirm"
-                                                    class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
-                                            </a>
-                                            {elseif $item.TypeCancel eq 'hotel'}
-                                            <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pdf&target=BookingHotelNew&id={$item.FactorNumber}"
-                                               class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
-                                            </a>
+                                                 {if $item.TypeCancel eq 'bus'}
+                                                     <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=bookingBusShow&id={$item.FactorNumber}&cancelStatus=confirm"
+                                                        class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
+                                                </a>
+                                                {elseif $item.TypeCancel eq 'hotel'}
+                                                <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pdf&target=BookingHotelNew&id={$item.FactorNumber}"
+                                                   class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
+                                                </a>
 
-                                            {elseif $item.TypeCancel eq 'flight'}
-                                             <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=parvazBookingLocal&id={$item.RequestNumber}&cancelStatus=confirm"
-                                                class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
-                                            </a>
-                                             {/if}
-                                        </span>
+                                                {elseif $item.TypeCancel eq 'flight'}
+                                                 <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=parvazBookingLocal&id={$item.RequestNumber}&cancelStatus=confirm"
+                                                    class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
+                                                </a>
+                                                 {/if}
+                                            </span>
                                         {/if}
 
                                         {if $typeFlight eq 'reservation'}
@@ -631,7 +633,7 @@
 
                                         {elseif $item.Status eq 'ConfirmCancel'}
                                             {if ($item.pid_private eq '0' and $item.TypeCancel eq 'flight') || ($item.type_application neq 'reservation' and $item.TypeCancel eq 'hotel')}
-                                                <div class="btn btn-success" disabled="disabled" style="cursor: context-menu;"> به اعتبار شما واریز شد </div>
+                                                <div class="btn btn-success" disabled="disabled" style="cursor: context-menu; background-color: #28a745 !important; border-color: #28a745 !important; color: #ffffff !important; opacity: 1 !important;">به اعتبار شما واریز شد</div>
                                             {/if}
                                             {if $item.confirmTransferWallet eq 'none' && $item.backCredit eq 'on' }
                                                 {*                                            <div class="btn btn-primary"   onclick="ModalConfirmAdminReturnUserWallet('{$item.RequestNumber}', '{$item.id}' , '{$item.PriceIndemnity}' , '{$item.MemberId}');return false" disabled="disabled" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">انتقال به کیف پول</div>*}

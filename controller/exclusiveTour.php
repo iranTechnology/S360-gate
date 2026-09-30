@@ -586,8 +586,14 @@ class exclusiveTour extends clientAuth {
         }
 
         $user =    $this->getModel('membersModel')->getMemberById($userId);
-
-        $d['passengerMobile'] = $user['mobile'];
+        functions::insertLog('$user: ' . json_encode($user) , '000shojaee');
+        $passengerMobile = $user['mobile'];
+        if(empty($user['mobile'])){
+            $infoClient = functions::getClientInfo(CLIENT_ID);
+            functions::insertLog('$infoClient: ' . json_encode($infoClient) , '000shojaee');
+            $passengerMobile = $infoClient['Mobile'];
+        }
+        $d['passengerMobile'] = $passengerMobile;
         $d['passengerEmail'] = $user['email'];
 
 

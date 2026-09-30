@@ -100,7 +100,8 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
             <h3> ##Reservationhotel## </h3>
         </div>
     </div>
-    <div class="counter counter-analog"
+    <div id="hotel-passenger-counter" class="counter counter-analog"
+         data-home-url="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_MAIN_DOMAIN|escape:'html'}/"
          data-direction="down"
          data-format="59:59"
          data-stop="00:00"
@@ -1071,17 +1072,43 @@ c19 -21 18 -22 -75 -115 l-94 -95 -53 52 -53 52 22 23 22 23 31 -30 31 -30 69
     <script src="assets/js/jdate.js" type="text/javascript"></script>
     <script src="assets/js/jquery.counter.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $('.counter').counter({});
-        $('.counter').on('counterStop', function () {
-            $('.lazy_loader_flight').slideDown({
-                start: function () {
-                    $(this).css({
-                        display: "flex"
-                    })
+        (function () {
+            const counter = $('#hotel-passenger-counter');
+            if (!counter.length) return;
+            let expirationShown = false;
+            let warningCheck;
+            const showExpiration = function () {
+                if (expirationShown) return;
+                expirationShown = true;
+                clearInterval(warningCheck);
+                $.alert({
+                   title: useXmltag("TitleEndRserve"),
+                    content: useXmltag("ContentEndRserve"),
+                    rtl: true,
+                    type: 'orange',
+                    closeIcon: false,
+                    backgroundDismiss: false,
+                    escapeKey: false,
+                    buttons: {
+                        ok: {
+                            text: 'OK',
+                            action: function () {
+                                window.location.replace(counter.attr('data-home-url'));
+                            }
+                        }
+                    }
+                });
+            };
+            counter.on('counterStop.hotelReservation', showExpiration);
+            counter.counter({});
+            warningCheck = setInterval(function () {
+                const data = counter.data('counter');
+                const remaining = data.parts[0].value * 60 + data.parts[1].value;
+                if (remaining <= 60) {
+                    showExpiration();
                 }
-            });
-
-        });
+            }, 200);
+        })();
     </script>
 
     <script type="text/javascript">

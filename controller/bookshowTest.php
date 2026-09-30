@@ -3463,6 +3463,7 @@ class bookshowTest extends clientAuth {
     #region MainTicketHistory
 
     public function MainFlightTicketHistory( $param ) {
+
         $ArrInfoAgancyShare=array();
         if ( ! empty( $param['member_id'] ) ) {
             $intendedUser  = [
@@ -4261,8 +4262,8 @@ class bookshowTest extends clientAuth {
                             }
                         }
                         if ($flightBook['IsInternal'] == '1' &&
-                                ($flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ))
-                            ){
+                            ($flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ))
+                        ){
                             $DataFlightAgencyShare .= "<div class='pull-left margin-10'>";
                             $DataFlightAgencyShare .= "<a href='" . SERVER_HTTP . $flightBook['DomainAgency'] . "/gds/pdf&target=parvazBookingLocal&id=" . $flightBook['request_number'] . "&lang=fa&Letterhead=true'
                                                                            target='_blank'>
@@ -4336,6 +4337,8 @@ class bookshowTest extends clientAuth {
                                                                                </a></div>
                                                                                ";
                         }
+
+
                         if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
                             $DataFlightAgencyShare .= '
                              <div class="pull-left margin-10">
@@ -6938,7 +6941,6 @@ class bookshowTest extends clientAuth {
             if ( TYPE_ADMIN == 1 && $insurance['status'] == 'book' && strpos($insurance['serviceTitle'], 'Public') === 0 ) { //محاسبه اعتبار فعلی مشتری
                 $DataBuyFromIt.=$this->CalculateCurrentCredit($insurance['client_id'],$FActorNumberFor,$BuyFromIt);
             }
-
             $agencyShare = $PassengerPayment - $BuyFromIt;
             $ClssShare = 'bg-inverse';
             if($agencyShare > 0){
@@ -11272,21 +11274,35 @@ class bookshowTest extends clientAuth {
 //    }
     private function btnErrorFlight($data_flight, $tempDeduction = null)
     {
-        $status_admin = (TYPE_ADMIN=='1') ? true : false ;
-        $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID ;
-        $data_error = $this->getController('logErrorFlights')->getErrorMessage($data_flight['request_number'],$client_id);
+        $status_admin = (TYPE_ADMIN == '1') ? true : false;
+        $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID;
 
-        $classes =  in_array($data_error['messageCode'],$this->getCodeSpecialError()) ? 'colorSpecialError' : '';
-        $text_btn = $this->titleBtnError($data_error,$data_flight);
+        $data_error = $this->getController('logErrorFlights')
+            ->getErrorMessage($data_flight['request_number'], $client_id);
 
-        if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_flight['pid_private'] =='0'){
+        $classes = in_array($data_error['messageCode'], $this->getCodeSpecialError())
+            ? 'colorSpecialError'
+            : '';
+
+        $text_btn = $this->titleBtnError($data_error, $data_flight);
+
+        if (
+            ($data_error['messageCode'] == '-506' || $data_error['messageCode'] == 'Err0111006')
+            && !$status_admin
+            && $data_flight['pid_private'] == '0'
+        ) {
             $content_btn = functions::Xmlinformation('providerError');
         }
-        else if($status_admin){
-            $content_btn = '<p><strong>ادمین</strong> : ' . $data_error['text_message']['messageAdmin'] . '</p>';
-            $content_btn .= '<p><strong>آژانس</strong> : ' . $data_error['text_message']['messageAgency'] . '</p>';
+        elseif ($status_admin) {
+            $content_btn = '<p><strong>ادمین</strong> : '
+                . $data_error['text_message']['messageAdmin']
+                . '</p>';
+
+            $content_btn .= '<p><strong>آژانس</strong> : '
+                . $data_error['text_message']['messageAgency']
+                . '</p>';
         }
-        else{
+        else {
             $content_btn = $data_error['text_message'];
         }
 
@@ -11316,7 +11332,7 @@ class bookshowTest extends clientAuth {
             // آخرین fallback در صورت خراب بودن کامل encoding
             if (!mb_check_encoding($string, 'UTF-8')) {
                 $string = preg_replace('/[^\x20-\x7E]/', '', $string);
-    }
+            }
 
             return $string;
         };

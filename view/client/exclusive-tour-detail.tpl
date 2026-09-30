@@ -109,442 +109,442 @@
 
     </div>
     <div class="side-bar-hotel--new sidebar-detailHotel">
-{*        <div class="filter_hotel_boxes filter_hotel_boxes_detail-internal_hotel">*}
-{*            *}{*                    {if $typeApplication eq 'api' AND $sourceId neq '17' AND $sourceId neq '29'}*}
-{*            *}{*                        <div class="filterBox Reserve_box_detail">*}
-{*            *}{*                            <div class="filtertip_hotel_detail site-bg-main-color site-bg-color-border-bottom ">*}
-{*            *}{*                                <p class="txt14">##Reserve##</p>*}
-{*            *}{*                            </div>*}
-{*            *}{*                            <div class="filtertip-searchbox filtertip-searchbox-box1">*}
-{*            *}{*                                <div class="w-100">*}
-{*            *}{*                                    <div class="box-reserve-hotel-fix-items-2 main-fixed-bottom-js">*}
-{*            *}{*                                <span>*}
-{*            *}{*                                    <b class="roomFinalTxt">0 ##Selectedroom## </b>*}
-{*            *}{*                                    ##For##  ##EachTimenight##*}
-{*            *}{*                                </span>*}
-{*            *}{*                                        <div class="parent-fixed--new">*}
-{*            *}{*                                            <span class="roomFinalPrice">0 <i>##Rial##</i></span>*}
-{*            *}{*                                            <span class="roomFinalBtn multi-rooms-price-btn-container">*}
-{*            *}{*                                    <button id="btnReserve" type="button" disabled="disabled"*}
-{*            *}{*                                            class="site-secondary-text-color site-bg-main-color "*}
-{*            *}{*                                            onclick="ReserveHotel()">*}
-{*            *}{*                                        ##Reservation##*}
-{*            *}{*                                        <i class="fa-solid fa-arrow-left"></i>*}
-{*            *}{*                                    </button>*}
-{*            *}{*                                        <img class="imgLoad" src="assets/images/load2.gif" id="img"/>*}
-{*            *}{*                                </span>*}
-{*            *}{*                                        </div>*}
-{*            *}{*                                    </div>*}
-{*            *}{*                                </div>*}
-{*            *}{*                            </div>*}
-{*            *}{*                        </div>*}
-{*            *}{*                    {/if}*}
+        {*        <div class="filter_hotel_boxes filter_hotel_boxes_detail-internal_hotel">*}
+        {*            *}{*                    {if $typeApplication eq 'api' AND $sourceId neq '17' AND $sourceId neq '29'}*}
+        {*            *}{*                        <div class="filterBox Reserve_box_detail">*}
+        {*            *}{*                            <div class="filtertip_hotel_detail site-bg-main-color site-bg-color-border-bottom ">*}
+        {*            *}{*                                <p class="txt14">##Reserve##</p>*}
+        {*            *}{*                            </div>*}
+        {*            *}{*                            <div class="filtertip-searchbox filtertip-searchbox-box1">*}
+        {*            *}{*                                <div class="w-100">*}
+        {*            *}{*                                    <div class="box-reserve-hotel-fix-items-2 main-fixed-bottom-js">*}
+        {*            *}{*                                <span>*}
+        {*            *}{*                                    <b class="roomFinalTxt">0 ##Selectedroom## </b>*}
+        {*            *}{*                                    ##For##  ##EachTimenight##*}
+        {*            *}{*                                </span>*}
+        {*            *}{*                                        <div class="parent-fixed--new">*}
+        {*            *}{*                                            <span class="roomFinalPrice">0 <i>##Rial##</i></span>*}
+        {*            *}{*                                            <span class="roomFinalBtn multi-rooms-price-btn-container">*}
+        {*            *}{*                                    <button id="btnReserve" type="button" disabled="disabled"*}
+        {*            *}{*                                            class="site-secondary-text-color site-bg-main-color "*}
+        {*            *}{*                                            onclick="ReserveHotel()">*}
+        {*            *}{*                                        ##Reservation##*}
+        {*            *}{*                                        <i class="fa-solid fa-arrow-left"></i>*}
+        {*            *}{*                                    </button>*}
+        {*            *}{*                                        <img class="imgLoad" src="assets/images/load2.gif" id="img"/>*}
+        {*            *}{*                                </span>*}
+        {*            *}{*                                        </div>*}
+        {*            *}{*                                    </div>*}
+        {*            *}{*                                </div>*}
+        {*            *}{*                            </div>*}
+        {*            *}{*                        </div>*}
+        {*            *}{*                    {/if}*}
 
-{*            <div class="filterBox filterBoxTop">*}
-{*                {if $typeApplication eq 'externalApi' OR $sourceId eq '17' or $sourceId eq '29'}*}
-{*                    <input type="hidden" name="searchRooms" id="searchRooms" value="{$searchRooms}">*}
-{*                {/if}*}
+        {*            <div class="filterBox filterBoxTop">*}
+        {*                {if $typeApplication eq 'externalApi' OR $sourceId eq '17' or $sourceId eq '29'}*}
+        {*                    <input type="hidden" name="searchRooms" id="searchRooms" value="{$searchRooms}">*}
+        {*                {/if}*}
 
-{*                *}{*                        <div class="filtertip_hotel_detail site-bg-main-color site-bg-color-border-bottom" onclick="researchAccordionBtnDetailHotel()">*}
-{*                *}{*                            <p class="txt14 text-center">##Repeatsearch##</p>*}
-{*                *}{*                            <i class="fa-solid fa-chevron-down"></i>*}
-{*                *}{*                        </div>*}
+        {*                *}{*                        <div class="filtertip_hotel_detail site-bg-main-color site-bg-color-border-bottom" onclick="researchAccordionBtnDetailHotel()">*}
+        {*                *}{*                            <p class="txt14 text-center">##Repeatsearch##</p>*}
+        {*                *}{*                            <i class="fa-solid fa-chevron-down"></i>*}
+        {*                *}{*                        </div>*}
 
-{*                <div class="filtertip-searchbox filtertip-searchbox-box1 d-sm-flex">*}
-{*                    <div class=" w-100">*}
-{*                        {if $typeApplication eq 'externalApi'}*}
-{*                            <form class="search-wrapper parent-research-external-hotel-detail-sidebar" action="" method="post">*}
-{*                                <input id="typeApplication" name="typeApplication" type="hidden" value="{$typeApplication}">*}
-{*                                <input type="hidden" name="rooms" id="rooms" value="{$searchRooms}">*}
-{*                                <input type="hidden" name="searchRooms" id="searchRooms" value="{$searchRooms}">*}
-{*                                <div class="inputSearchForeign-box inputSearchForeign-pad_Fhotel">*}
-{*                                    <div class="s-u-in-out-wrapper raft raft-change change-bor">*}
-{*                                        <input id="destination_country" name="destination_country" type="hidden" value="">*}
-{*                                        <input id="destination_city" name="destination_city" type="hidden" value="">*}
-{*                                        <input id="autoComplateSearchIN" name="autoComplateSearchIN" class="inputSearchForeign" type="text"*}
-{*                                               value="" onkeyup="searchCity()">*}
-{*                                        <img src="assets/images/load.gif" id="LoaderForeignDep" name="LoaderForeignDep" class="loaderSearch">*}
-{*                                        <ul id="listSearchCity" class="ul-inputSearch-externalHotel displayNone"></ul>*}
-{*                                    </div>*}
-{*                                </div>*}
-{*                                {assign var="classNameStartDate" value="shamsiDeptCalendarToCalculateNights"}*}
-{*                                {assign var="classNameEndDate" value="shamsiReturnCalendarToCalculateNights"}*}
-{*                                {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || (isset($startDate) AND $startDate|substr:0:4 gt 2000)}*}
-{*                                    {$classNameStartDate="deptCalendarToCalculateNights"}*}
-{*                                {/if}*}
-{*                                {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || (isset($endDate) AND $endDate|substr:0:4 gt 2000)}*}
-{*                                    {$classNameEndDate="returnCalendarToCalculateNights"}*}
-{*                                {/if}*}
-{*                                <div class="parent-data-night-room--new">*}
-{*                                    <div class="form-hotel-item form-hotel-item-searchBox-date">*}
-{*                                        <div class="input parent-box-input">*}
-{*                                            <div class="parent-box-calendar">*}
-{*                                                <i class="fa fa-calendar"></i>*}
-{*                                                <input type="text" placeholder="##Enterdate##" id="startDateForeign" name="startDate"*}
-{*                                                       value="{$startDate}"*}
-{*                                                       class="{$classNameStartDate} calendar--input">*}
-{*                                            </div>*}
-{*                                            <i class="fa fa-angle-down"></i>*}
-{*                                        </div>*}
-{*                                    </div>*}
-{*                                    <div class="form-hotel-item form-hotel-item-searchBox-date">*}
-{*                                        <div class="input parent-box-input">*}
-{*                                            <div class="parent-box-calendar">*}
-{*                                                <i class="fa fa-calendar"></i>*}
-{*                                                <input type="text" placeholder="##Exitdate##" id="endDateForeign" name="endDate"*}
-{*                                                       value="{$endDate}"*}
-{*                                                       class="{$classNameEndDate} calendar--input">*}
-{*                                            </div>*}
-{*                                            <i class="fa fa-angle-down"></i>*}
-{*                                        </div>*}
-{*                                    </div>*}
-{*                                </div>*}
-{*                                <div class="parent-data-night-room--new">*}
-{*                                    <div class="form-hotel-item form-hotel-item-searchBox-date mt-0">*}
-{*                                        <div class=" parent-box-input parent-box-input--h">*}
-{*                                            <i class="fa fa-moon"></i>*}
-{*                                            <span class="lh33 stayingTime">{$nights} ##Night## </span>*}
-{*                                            <input type="hidden" id="stayingTime" name="stayingTime" value="{$nights}"/>*}
-{*                                        </div>*}
-{*                                    </div>*}
-{*                                    <div class="form-hotel-item  form-hotel-item-searchBox-date mart2  parent-box-input parent-box-input--h p-0">*}
-{*                                        <div class="select">*}
-{*                                            <select name="countRoom" id="countRoom" class="select2">*}
-{*                                                <option value="1" {if $numberOfRooms['countRoom'] eq '1'} selected {/if}>1 ##Room##</option>*}
-{*                                                <option value="2" {if $numberOfRooms['countRoom'] eq '2'} selected {/if}>2 ##Room##</option>*}
-{*                                                <option value="3" {if $numberOfRooms['countRoom'] eq '3'} selected {/if}>3 ##Room##</option>*}
-{*                                                <option value="4" {if $numberOfRooms['countRoom'] eq '4'} selected {/if}>4 ##Room##</option>*}
-{*                                            </select>*}
-{*                                        </div>*}
-{*                                    </div>*}
-{*                                </div>*}
-
-
-{*                                <div id="box-foreign-hotel-room">*}
-{*                                    <div class="clrB site-main-text-color-drck box-foreign-hotel-room-item">*}
-{*                                        <div class="myroom-hotel">*}
-{*                                            {foreach from=$numberOfRooms['rooms'] key=key item=room}*}
-{*                                                {assign var="count" value=$key+1}*}
-{*                                                <div class="myroom-hotel-item" data-roomNumber="{$count}">*}
-{*                                                    <div class="myroom-hotel-item-title site-main-text-color">*}
-{*                                                        ##Room## {$objFunctions->textNumber($count)}<span class="close"></span></div>*}
-{*                                                    <div class="myroom-hotel-item-info">*}
-{*                                                        <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
-{*                                                            <span>##Adultnumber##</span>*}
-{*                                                            <div>*}
-{*                                                                <i class="addParentEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                                <input type="text" name="adult{$count}" id="adult{$count}" readonly=""*}
-{*                                                                       class="countParentEHotel" min="0" value="{$room['AdultCount']}"*}
-{*                                                                       max="5">*}
-{*                                                                <i class="minusParentEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                            </div>*}
-{*                                                        </div>*}
-{*                                                        <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
-{*                                                            <span>##Numberofchildren##</span>*}
-{*                                                            <div>*}
-{*                                                                <i class="addChildEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                                <input type="text" readonly="" name="child{$count}" id="child{$count}"*}
-{*                                                                       class="countChildEHotel" min="0" value="{$room['ChildrenCount']}"*}
-{*                                                                       max="5">*}
-{*                                                                <i class="minusChildEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                            </div>*}
-{*                                                        </div>*}
-{*                                                        <div class="tarikh-tavalods">*}
-{*                                                            {if $room['ChildrenCount'] neq '0'}*}
-{*                                                                {for $i=1 to $room['ChildrenCount']}*}
-{*                                                                    <div class="tarikh-tavalod-item">*}
-{*                                                                        <span>##Childage## <i>{$objFunctions->textNumber($i)}</i></span>*}
-{*                                                                        <select id="childAge{$count}{$i}" name="childAge{$count}{$i}">*}
-{*                                                                            <option value="1"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '1'}selected{/if}>*}
-{*                                                                                0 ##To## 1 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="2"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '2'}selected{/if}>*}
-{*                                                                                1 ##To## 2 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="3"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '3'}selected{/if}>*}
-{*                                                                                2 ##To## 3 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="4"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '4'}selected{/if}>*}
-{*                                                                                3 ##To## 4 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="5"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '5'}selected{/if}>*}
-{*                                                                                4 ##To## 5 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="6"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '6'}selected{/if}>*}
-{*                                                                                5 ##To## 6 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="7"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '7'}selected{/if}>*}
-{*                                                                                6 ##To## 7 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="8"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '8'}selected{/if}>*}
-{*                                                                                7 ##To## 8 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="9"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '9'}selected{/if}>*}
-{*                                                                                8 ##To## 9 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="10"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '10'}selected{/if}>*}
-{*                                                                                9 ##To## 10 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="11"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '11'}selected{/if}>*}
-{*                                                                                10 ##To## 11 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                            <option value="12"*}
-{*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '12'}selected{/if}>*}
-{*                                                                                11 ##To## 12 ##Year##*}
-{*                                                                            </option>*}
-{*                                                                        </select>*}
-{*                                                                    </div>*}
-{*                                                                {/for}*}
-{*                                                            {/if}*}
-{*                                                        </div>*}
-{*                                                    </div>*}
-{*                                                </div>*}
-{*                                            {/foreach}*}
-{*                                        </div>*}
-{*                                    </div>*}
-{*                                </div>*}
-{*                                {if $newSearchbox}*}
-{*                                    <input type="hidden" id="type" name="type" value="new">*}
-{*                                {/if}*}
-{*                                {if $nationality}*}
-{*                                    <input type="hidden" id="nationality" name="nationality" value="{$nationality}">*}
-{*                                {/if}*}
-{*                                <div class="form-hotel-item  form-hotel-item-searchBox-btn">*}
-{*                                    <span></span>*}
-{*                                    <div class="input">*}
-{*                                        <button class="site-bg-main-color site-secondary-text-color"*}
-{*                                                type="button" id="searchHotelLocal" onclick="submitSearchExternalHotel(true)">##Repeatsearch##*}
-{*                                        </button>*}
-{*                                    </div>*}
-{*                                </div>*}
-{*                            </form>*}
-{*                        {else}*}
-{*                            <form action="" method="post" id="formHotel">*}
-{*                                <input type="hidden" value="{$requestNumber}" name="requestNumber">*}
-{*                                <input id="webServiceType" name="webServiceType" type="hidden" value="">*}
-{*                                <input id="page" name="page" type="hidden" value="">*}
-{*                                <input id="idHotel_select" name="idHotel_select" type="hidden" value="{$hotelIndex}">*}
-{*                                <input id="typeApplication" name="typeApplication" type="hidden" value="{$typeApplication}">*}
-{*                                <input id="idCity" name="idCity" type="hidden" value="">*}
-{*                                <input id="nights" name="nights" type="hidden" value="">*}
-{*                                <input id="CurrencyCode" name="CurrencyCode" type="hidden" value=""/>*}
-
-{*                                <div class="filtertip-searchbox filtertip-searchbox-box1 parent-research-internal-hotel-detail-sidebar">*}
-{*                                    <div class="parent-counter-analog">*}
-{*                                        <span class="City hotelDetailHotelName"></span>*}
-{*                                        <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"*}
-{*                                             style="direction: ltr">10:00</div>*}
-{*                                    </div>*}
-{*                                    {assign var="classNameStartDate" value="hotelStartDateShamsi"}*}
-{*                                    {assign var="classNameEndDate" value="hotelEndDateShamsi"}*}
-{*                                    {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || $smarty.const.SEARCH_START_DATE|substr:0:4 gt 2000}*}
-{*                                        {$classNameStartDate="deptCalendarToCalculateNights"}*}
-{*                                    {/if}*}
-
-{*                                    {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || ( isset($search_end_date) AND $search_end_date|substr:0:4 gt 2000 )}*}
-{*                                        {$classNameEndDate="returnCalendarToCalculateNights"}*}
-{*                                    {/if}*}
-
-{*                                    <div class="parent-calender--new">*}
-{*                                        <div class="form-hotel-item  form-hotel-item-searchBox-date">*}
-
-{*                                            <div class="input parent-box-input">*}
-{*                                                <div class="parent-box-calendar">*}
-{*                                                    <i class="fa fa-calendar"></i>*}
-{*                                                    <input type="text" placeholder=" ##Enterdate## " id="startDate"*}
-{*                                                           name="startDateForHotelLocal"*}
-{*                                                           class="{$classNameStartDate} calendar--input"*}
-{*                                                           value="">*}
-{*                                                </div>*}
-{*                                                <i class="fa fa-angle-down"></i>*}
-{*                                            </div>*}
-{*                                        </div>*}
-{*                                        <div class="form-hotel-item  form-hotel-item-searchBox-date">*}
-
-{*                                            <div class="input parent-box-input">*}
-{*                                                <div class="parent-box-calendar">*}
-{*                                                    <i class="fa fa-calendar"></i>*}
-{*                                                    <input type="text" placeholder="##Exitdate##" id="endDate" name="endDateForHotelLocal"*}
-{*                                                           class="{$classNameEndDate} calendar--input"*}
-{*                                                           value="{$endDate}">*}
-{*                                                </div>*}
-{*                                                <i class="fa fa-angle-down"></i>*}
-{*                                            </div>*}
-{*                                        </div>*}
-{*                                    </div>*}
-
-{*                                    <div class="form-hotel-item {if $sourceId eq '17' or  $sourceId eq '29'}form-hotel-item-searchBox-date{/if} parent-box--icon">*}
-{*                                        <div class="">*}
-{*                                            <i class="fa fa-moon"></i>*}
-{*                                            <span class="lh35 stayingTime"> ##Night## </span>*}
-{*                                            <input type="hidden" id="stayingTime" name="stayingTime" value="1"/>*}
-{*                                        </div>*}
-{*                                        <div class="form-hotel-item  form-hotel-item-searchBox-btn">*}
-{*                                            <span></span>*}
-{*                                            <div class="input">*}
-{*                                                <button class="site-secondary-text-colo" type="button" id="searchHotelLocal"*}
-{*                                                        onclick="hotelDetail('{$typeApplication}', '{$hotelIndex}', '{$hotelNameEn}','{$requestNumber}')">*}
-{*                                                    ##Repeatsearch##*}
-{*                                                </button>*}
-{*                                            </div>*}
-{*                                        </div>*}
-{*                                        </span>*}
+        {*                <div class="filtertip-searchbox filtertip-searchbox-box1 d-sm-flex">*}
+        {*                    <div class=" w-100">*}
+        {*                        {if $typeApplication eq 'externalApi'}*}
+        {*                            <form class="search-wrapper parent-research-external-hotel-detail-sidebar" action="" method="post">*}
+        {*                                <input id="typeApplication" name="typeApplication" type="hidden" value="{$typeApplication}">*}
+        {*                                <input type="hidden" name="rooms" id="rooms" value="{$searchRooms}">*}
+        {*                                <input type="hidden" name="searchRooms" id="searchRooms" value="{$searchRooms}">*}
+        {*                                <div class="inputSearchForeign-box inputSearchForeign-pad_Fhotel">*}
+        {*                                    <div class="s-u-in-out-wrapper raft raft-change change-bor">*}
+        {*                                        <input id="destination_country" name="destination_country" type="hidden" value="">*}
+        {*                                        <input id="destination_city" name="destination_city" type="hidden" value="">*}
+        {*                                        <input id="autoComplateSearchIN" name="autoComplateSearchIN" class="inputSearchForeign" type="text"*}
+        {*                                               value="" onkeyup="searchCity()">*}
+        {*                                        <img src="assets/images/load.gif" id="LoaderForeignDep" name="LoaderForeignDep" class="loaderSearch">*}
+        {*                                        <ul id="listSearchCity" class="ul-inputSearch-externalHotel displayNone"></ul>*}
+        {*                                    </div>*}
+        {*                                </div>*}
+        {*                                {assign var="classNameStartDate" value="shamsiDeptCalendarToCalculateNights"}*}
+        {*                                {assign var="classNameEndDate" value="shamsiReturnCalendarToCalculateNights"}*}
+        {*                                {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || (isset($startDate) AND $startDate|substr:0:4 gt 2000)}*}
+        {*                                    {$classNameStartDate="deptCalendarToCalculateNights"}*}
+        {*                                {/if}*}
+        {*                                {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || (isset($endDate) AND $endDate|substr:0:4 gt 2000)}*}
+        {*                                    {$classNameEndDate="returnCalendarToCalculateNights"}*}
+        {*                                {/if}*}
+        {*                                <div class="parent-data-night-room--new">*}
+        {*                                    <div class="form-hotel-item form-hotel-item-searchBox-date">*}
+        {*                                        <div class="input parent-box-input">*}
+        {*                                            <div class="parent-box-calendar">*}
+        {*                                                <i class="fa fa-calendar"></i>*}
+        {*                                                <input type="text" placeholder="##Enterdate##" id="startDateForeign" name="startDate"*}
+        {*                                                       value="{$startDate}"*}
+        {*                                                       class="{$classNameStartDate} calendar--input">*}
+        {*                                            </div>*}
+        {*                                            <i class="fa fa-angle-down"></i>*}
+        {*                                        </div>*}
+        {*                                    </div>*}
+        {*                                    <div class="form-hotel-item form-hotel-item-searchBox-date">*}
+        {*                                        <div class="input parent-box-input">*}
+        {*                                            <div class="parent-box-calendar">*}
+        {*                                                <i class="fa fa-calendar"></i>*}
+        {*                                                <input type="text" placeholder="##Exitdate##" id="endDateForeign" name="endDate"*}
+        {*                                                       value="{$endDate}"*}
+        {*                                                       class="{$classNameEndDate} calendar--input">*}
+        {*                                            </div>*}
+        {*                                            <i class="fa fa-angle-down"></i>*}
+        {*                                        </div>*}
+        {*                                    </div>*}
+        {*                                </div>*}
+        {*                                <div class="parent-data-night-room--new">*}
+        {*                                    <div class="form-hotel-item form-hotel-item-searchBox-date mt-0">*}
+        {*                                        <div class=" parent-box-input parent-box-input--h">*}
+        {*                                            <i class="fa fa-moon"></i>*}
+        {*                                            <span class="lh33 stayingTime">{$nights} ##Night## </span>*}
+        {*                                            <input type="hidden" id="stayingTime" name="stayingTime" value="{$nights}"/>*}
+        {*                                        </div>*}
+        {*                                    </div>*}
+        {*                                    <div class="form-hotel-item  form-hotel-item-searchBox-date mart2  parent-box-input parent-box-input--h p-0">*}
+        {*                                        <div class="select">*}
+        {*                                            <select name="countRoom" id="countRoom" class="select2">*}
+        {*                                                <option value="1" {if $numberOfRooms['countRoom'] eq '1'} selected {/if}>1 ##Room##</option>*}
+        {*                                                <option value="2" {if $numberOfRooms['countRoom'] eq '2'} selected {/if}>2 ##Room##</option>*}
+        {*                                                <option value="3" {if $numberOfRooms['countRoom'] eq '3'} selected {/if}>3 ##Room##</option>*}
+        {*                                                <option value="4" {if $numberOfRooms['countRoom'] eq '4'} selected {/if}>4 ##Room##</option>*}
+        {*                                            </select>*}
+        {*                                        </div>*}
+        {*                                    </div>*}
+        {*                                </div>*}
 
 
-{*                                    </div>*}
-{*                                    {if $sourceId eq '17' or  $sourceId eq '29'}*}
+        {*                                <div id="box-foreign-hotel-room">*}
+        {*                                    <div class="clrB site-main-text-color-drck box-foreign-hotel-room-item">*}
+        {*                                        <div class="myroom-hotel">*}
+        {*                                            {foreach from=$numberOfRooms['rooms'] key=key item=room}*}
+        {*                                                {assign var="count" value=$key+1}*}
+        {*                                                <div class="myroom-hotel-item" data-roomNumber="{$count}">*}
+        {*                                                    <div class="myroom-hotel-item-title site-main-text-color">*}
+        {*                                                        ##Room## {$objFunctions->textNumber($count)}<span class="close"></span></div>*}
+        {*                                                    <div class="myroom-hotel-item-info">*}
+        {*                                                        <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
+        {*                                                            <span>##Adultnumber##</span>*}
+        {*                                                            <div>*}
+        {*                                                                <i class="addParentEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                                <input type="text" name="adult{$count}" id="adult{$count}" readonly=""*}
+        {*                                                                       class="countParentEHotel" min="0" value="{$room['AdultCount']}"*}
+        {*                                                                       max="5">*}
+        {*                                                                <i class="minusParentEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                            </div>*}
+        {*                                                        </div>*}
+        {*                                                        <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
+        {*                                                            <span>##Numberofchildren##</span>*}
+        {*                                                            <div>*}
+        {*                                                                <i class="addChildEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                                <input type="text" readonly="" name="child{$count}" id="child{$count}"*}
+        {*                                                                       class="countChildEHotel" min="0" value="{$room['ChildrenCount']}"*}
+        {*                                                                       max="5">*}
+        {*                                                                <i class="minusChildEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                            </div>*}
+        {*                                                        </div>*}
+        {*                                                        <div class="tarikh-tavalods">*}
+        {*                                                            {if $room['ChildrenCount'] neq '0'}*}
+        {*                                                                {for $i=1 to $room['ChildrenCount']}*}
+        {*                                                                    <div class="tarikh-tavalod-item">*}
+        {*                                                                        <span>##Childage## <i>{$objFunctions->textNumber($i)}</i></span>*}
+        {*                                                                        <select id="childAge{$count}{$i}" name="childAge{$count}{$i}">*}
+        {*                                                                            <option value="1"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '1'}selected{/if}>*}
+        {*                                                                                0 ##To## 1 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="2"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '2'}selected{/if}>*}
+        {*                                                                                1 ##To## 2 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="3"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '3'}selected{/if}>*}
+        {*                                                                                2 ##To## 3 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="4"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '4'}selected{/if}>*}
+        {*                                                                                3 ##To## 4 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="5"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '5'}selected{/if}>*}
+        {*                                                                                4 ##To## 5 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="6"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '6'}selected{/if}>*}
+        {*                                                                                5 ##To## 6 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="7"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '7'}selected{/if}>*}
+        {*                                                                                6 ##To## 7 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="8"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '8'}selected{/if}>*}
+        {*                                                                                7 ##To## 8 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="9"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '9'}selected{/if}>*}
+        {*                                                                                8 ##To## 9 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="10"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '10'}selected{/if}>*}
+        {*                                                                                9 ##To## 10 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="11"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '11'}selected{/if}>*}
+        {*                                                                                10 ##To## 11 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                            <option value="12"*}
+        {*                                                                                    {if {$room['ChildrenAge'][$i-1]} eq '12'}selected{/if}>*}
+        {*                                                                                11 ##To## 12 ##Year##*}
+        {*                                                                            </option>*}
+        {*                                                                        </select>*}
+        {*                                                                    </div>*}
+        {*                                                                {/for}*}
+        {*                                                            {/if}*}
+        {*                                                        </div>*}
+        {*                                                    </div>*}
+        {*                                                </div>*}
+        {*                                            {/foreach}*}
+        {*                                        </div>*}
+        {*                                    </div>*}
+        {*                                </div>*}
+        {*                                {if $newSearchbox}*}
+        {*                                    <input type="hidden" id="type" name="type" value="new">*}
+        {*                                {/if}*}
+        {*                                {if $nationality}*}
+        {*                                    <input type="hidden" id="nationality" name="nationality" value="{$nationality}">*}
+        {*                                {/if}*}
+        {*                                <div class="form-hotel-item  form-hotel-item-searchBox-btn">*}
+        {*                                    <span></span>*}
+        {*                                    <div class="input">*}
+        {*                                        <button class="site-bg-main-color site-secondary-text-color"*}
+        {*                                                type="button" id="searchHotelLocal" onclick="submitSearchExternalHotel(true)">##Repeatsearch##*}
+        {*                                        </button>*}
+        {*                                    </div>*}
+        {*                                </div>*}
+        {*                            </form>*}
+        {*                        {else}*}
+        {*                            <form action="" method="post" id="formHotel">*}
+        {*                                <input type="hidden" value="{$requestNumber}" name="requestNumber">*}
+        {*                                <input id="webServiceType" name="webServiceType" type="hidden" value="">*}
+        {*                                <input id="page" name="page" type="hidden" value="">*}
+        {*                                <input id="idHotel_select" name="idHotel_select" type="hidden" value="{$hotelIndex}">*}
+        {*                                <input id="typeApplication" name="typeApplication" type="hidden" value="{$typeApplication}">*}
+        {*                                <input id="idCity" name="idCity" type="hidden" value="">*}
+        {*                                <input id="nights" name="nights" type="hidden" value="">*}
+        {*                                <input id="CurrencyCode" name="CurrencyCode" type="hidden" value=""/>*}
 
-{*                                        <div class="form-hotel-item  form-hotel-item-searchBox-date mart2">*}
-{*                                            <div class="select">*}
-{*                                                <select name="countRoom" id="countRoom" class="select2">*}
-{*                                                    <option value="1" {if $numberOfRooms['countRoom'] eq '1'} selected {/if}>1 ##Room##</option>*}
-{*                                                    <option value="2" {if $numberOfRooms['countRoom'] eq '2'} selected {/if}>2 ##Room##</option>*}
-{*                                                    <option value="3" {if $numberOfRooms['countRoom'] eq '3'} selected {/if}>3 ##Room##</option>*}
-{*                                                    <option value="4" {if $numberOfRooms['countRoom'] eq '4'} selected {/if}>4 ##Room##</option>*}
-{*                                                </select>*}
-{*                                            </div>*}
-{*                                        </div>*}
-{*                                        <div id="box-foreign-hotel-room">*}
-{*                                            <div class="clrB site-main-text-color-drck box-foreign-hotel-room-item">*}
-{*                                                <div class="myroom-hotel">*}
-{*                                                    {foreach from=$numberOfRooms['rooms'] key=key item=room}*}
-{*                                                        {assign var="count" value=$key+1}*}
-{*                                                        <div class="myroom-hotel-item" data-roomNumber="{$count}">*}
-{*                                                            <div class="myroom-hotel-item-title site-main-text-color">*}
-{*                                                                ##Room## {$objFunctions->textNumber($count)}<span class="close"></span></div>*}
-{*                                                            <div class="myroom-hotel-item-info">*}
-{*                                                                <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
-{*                                                                    <span>##Adultnumber##<i>(12 ##yearsandup##)</i></span>*}
-{*                                                                    <div>*}
-{*                                                                        <i class="addParentEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                                        <input type="text" name="adult{$count}" id="adult{$count}" readonly=""*}
-{*                                                                               class="countParentEHotel" min="0" value="{$room['AdultCount']}"*}
-{*                                                                               max="5">*}
-{*                                                                        <i class="minusParentEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                                    </div>*}
-{*                                                                </div>*}
-{*                                                                <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
-{*                                                                    <span>##Numberofchildren##<i>(##Under## 12 ##Year##)</i></span>*}
-{*                                                                    <div>*}
-{*                                                                        <i class="addChildEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                                        <input type="text" readonly="" name="child{$count}" id="child{$count}"*}
-{*                                                                               class="countChildEHotel" min="0" value="{$room['ChildrenCount']}"*}
-{*                                                                               max="5">*}
-{*                                                                        <i class="minusChildEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
-{*                                                                    </div>*}
-{*                                                                </div>*}
-{*                                                                <div class="tarikh-tavalods">*}
-{*                                                                    {if $room['ChildrenCount'] neq '0'}*}
-{*                                                                        {for $i=1 to $room['ChildrenCount']}*}
-{*                                                                            <div class="tarikh-tavalod-item">*}
-{*                                                                                <span>##Childage## <i>{$objFunctions->textNumber($i)}</i></span>*}
-{*                                                                                <select id="childAge{$count}{$i}" name="childAge{$count}{$i}">*}
-{*                                                                                    <option value="1"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '1'}selected{/if}>*}
-{*                                                                                        0 ##To## 1 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="2"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '2'}selected{/if}>*}
-{*                                                                                        1 ##To## 2 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="3"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '3'}selected{/if}>*}
-{*                                                                                        2 ##To## 3 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="4"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '4'}selected{/if}>*}
-{*                                                                                        3 ##To## 4 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="5"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '5'}selected{/if}>*}
-{*                                                                                        4 ##To## 5 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="6"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '6'}selected{/if}>*}
-{*                                                                                        5 ##To## 6 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="7"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '7'}selected{/if}>*}
-{*                                                                                        6 ##To## 7 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="8"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '8'}selected{/if}>*}
-{*                                                                                        7 ##To## 8 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="9"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '9'}selected{/if}>*}
-{*                                                                                        8 ##To## 9 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="10"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '10'}selected{/if}>*}
-{*                                                                                        9 ##To## 10 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="11"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '11'}selected{/if}>*}
-{*                                                                                        10 ##To## 11 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                    <option value="12"*}
-{*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '12'}selected{/if}>*}
-{*                                                                                        11 ##To## 12 ##Year##*}
-{*                                                                                    </option>*}
-{*                                                                                </select>*}
-{*                                                                            </div>*}
-{*                                                                        {/for}*}
-{*                                                                    {/if}*}
-{*                                                                </div>*}
-{*                                                            </div>*}
-{*                                                        </div>*}
-{*                                                    {/foreach}*}
-{*                                                </div>*}
-{*                                            </div>*}
-{*                                        </div>*}
+        {*                                <div class="filtertip-searchbox filtertip-searchbox-box1 parent-research-internal-hotel-detail-sidebar">*}
+        {*                                    <div class="parent-counter-analog">*}
+        {*                                        <span class="City hotelDetailHotelName"></span>*}
+        {*                                        <div class="counter counter-analog" data-direction="down" data-format="59:59" data-stop="00:00"*}
+        {*                                             style="direction: ltr">10:00</div>*}
+        {*                                    </div>*}
+        {*                                    {assign var="classNameStartDate" value="hotelStartDateShamsi"}*}
+        {*                                    {assign var="classNameEndDate" value="hotelEndDateShamsi"}*}
+        {*                                    {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || $smarty.const.SEARCH_START_DATE|substr:0:4 gt 2000}*}
+        {*                                        {$classNameStartDate="deptCalendarToCalculateNights"}*}
+        {*                                    {/if}*}
 
-{*                                    {/if}*}
+        {*                                    {if $smarty.const.SOFTWARE_LANG eq 'en' || $smarty.const.SOFTWARE_LANG eq 'ar' || ( isset($search_end_date) AND $search_end_date|substr:0:4 gt 2000 )}*}
+        {*                                        {$classNameEndDate="returnCalendarToCalculateNights"}*}
+        {*                                    {/if}*}
 
-{*                                </div>*}
+        {*                                    <div class="parent-calender--new">*}
+        {*                                        <div class="form-hotel-item  form-hotel-item-searchBox-date">*}
 
-{*                            </form>*}
-{*                        {/if}*}
-{*                    </div>*}
-{*                </div>*}
-{*                {if $typeApplication eq 'api' AND $sourceId neq '17' AND $sourceId neq '29'}*}
-{*                    <div class="box-reserve-hotel-fix-items-2">*}
-{*                        <span class="City">صورتحساب  شما</span>*}
-{*                        <div class="parent--price">*}
-{*                            <div class="box--price">*}
-{*                                <p class="roomFinalTxt">0 اتاق </p>*}
-{*                            </div>*}
-{*                            <h6 class="roomFinalPrice site-main-text-color">0 <i>##Rial##</i></h6>*}
-{*                        </div>*}
+        {*                                            <div class="input parent-box-input">*}
+        {*                                                <div class="parent-box-calendar">*}
+        {*                                                    <i class="fa fa-calendar"></i>*}
+        {*                                                    <input type="text" placeholder=" ##Enterdate## " id="startDate"*}
+        {*                                                           name="startDateForHotelLocal"*}
+        {*                                                           class="{$classNameStartDate} calendar--input"*}
+        {*                                                           value="">*}
+        {*                                                </div>*}
+        {*                                                <i class="fa fa-angle-down"></i>*}
+        {*                                            </div>*}
+        {*                                        </div>*}
+        {*                                        <div class="form-hotel-item  form-hotel-item-searchBox-date">*}
 
-{*                        {if $objResult->SearchHotel.prepayment_percentage gt 0}*}
-{*                            <div class="parent-advance--payment">*}
-{*                                <p>  {$objResult->SearchHotel.prepayment_percentage} % پیش پرداخت</p>*}
-{*                                <h6 class='roomFinalPrepaymentPackagePrice'></h6>*}
-{*                            </div>*}
-{*                        {/if}*}
-{*                        <span class="roomFinalBtn multi-rooms-price-btn-container">*}
-{*                                    <button id="btnReserve" type="button" class="site-secondary-text-color site-bg-main-color " onclick="ReserveHotel()">*}
-{*                                        ##Reservation##*}
-{*                                        <i class="fa-solid fa-arrow-left"></i>*}
-{*                                    </button>*}
-{*                                        <img class="imgLoad" src="https://192.168.1.100/gds/view/client/assets/images/load2.gif" id="img">*}
-{*                                </span>*}
-{*                    </div>*}
-{*                {/if}*}
-{*            </div>*}
-{*        </div>*}
+        {*                                            <div class="input parent-box-input">*}
+        {*                                                <div class="parent-box-calendar">*}
+        {*                                                    <i class="fa fa-calendar"></i>*}
+        {*                                                    <input type="text" placeholder="##Exitdate##" id="endDate" name="endDateForHotelLocal"*}
+        {*                                                           class="{$classNameEndDate} calendar--input"*}
+        {*                                                           value="{$endDate}">*}
+        {*                                                </div>*}
+        {*                                                <i class="fa fa-angle-down"></i>*}
+        {*                                            </div>*}
+        {*                                        </div>*}
+        {*                                    </div>*}
+
+        {*                                    <div class="form-hotel-item {if $sourceId eq '17' or  $sourceId eq '29'}form-hotel-item-searchBox-date{/if} parent-box--icon">*}
+        {*                                        <div class="">*}
+        {*                                            <i class="fa fa-moon"></i>*}
+        {*                                            <span class="lh35 stayingTime"> ##Night## </span>*}
+        {*                                            <input type="hidden" id="stayingTime" name="stayingTime" value="1"/>*}
+        {*                                        </div>*}
+        {*                                        <div class="form-hotel-item  form-hotel-item-searchBox-btn">*}
+        {*                                            <span></span>*}
+        {*                                            <div class="input">*}
+        {*                                                <button class="site-secondary-text-colo" type="button" id="searchHotelLocal"*}
+        {*                                                        onclick="hotelDetail('{$typeApplication}', '{$hotelIndex}', '{$hotelNameEn}','{$requestNumber}')">*}
+        {*                                                    ##Repeatsearch##*}
+        {*                                                </button>*}
+        {*                                            </div>*}
+        {*                                        </div>*}
+        {*                                        </span>*}
+
+
+        {*                                    </div>*}
+        {*                                    {if $sourceId eq '17' or  $sourceId eq '29'}*}
+
+        {*                                        <div class="form-hotel-item  form-hotel-item-searchBox-date mart2">*}
+        {*                                            <div class="select">*}
+        {*                                                <select name="countRoom" id="countRoom" class="select2">*}
+        {*                                                    <option value="1" {if $numberOfRooms['countRoom'] eq '1'} selected {/if}>1 ##Room##</option>*}
+        {*                                                    <option value="2" {if $numberOfRooms['countRoom'] eq '2'} selected {/if}>2 ##Room##</option>*}
+        {*                                                    <option value="3" {if $numberOfRooms['countRoom'] eq '3'} selected {/if}>3 ##Room##</option>*}
+        {*                                                    <option value="4" {if $numberOfRooms['countRoom'] eq '4'} selected {/if}>4 ##Room##</option>*}
+        {*                                                </select>*}
+        {*                                            </div>*}
+        {*                                        </div>*}
+        {*                                        <div id="box-foreign-hotel-room">*}
+        {*                                            <div class="clrB site-main-text-color-drck box-foreign-hotel-room-item">*}
+        {*                                                <div class="myroom-hotel">*}
+        {*                                                    {foreach from=$numberOfRooms['rooms'] key=key item=room}*}
+        {*                                                        {assign var="count" value=$key+1}*}
+        {*                                                        <div class="myroom-hotel-item" data-roomNumber="{$count}">*}
+        {*                                                            <div class="myroom-hotel-item-title site-main-text-color">*}
+        {*                                                                ##Room## {$objFunctions->textNumber($count)}<span class="close"></span></div>*}
+        {*                                                            <div class="myroom-hotel-item-info">*}
+        {*                                                                <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
+        {*                                                                    <span>##Adultnumber##<i>(12 ##yearsandup##)</i></span>*}
+        {*                                                                    <div>*}
+        {*                                                                        <i class="addParentEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                                        <input type="text" name="adult{$count}" id="adult{$count}" readonly=""*}
+        {*                                                                               class="countParentEHotel" min="0" value="{$room['AdultCount']}"*}
+        {*                                                                               max="5">*}
+        {*                                                                        <i class="minusParentEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                                    </div>*}
+        {*                                                                </div>*}
+        {*                                                                <div class="myroom-hotel-item-tedad my-room-hotel-bozorgsal">*}
+        {*                                                                    <span>##Numberofchildren##<i>(##Under## 12 ##Year##)</i></span>*}
+        {*                                                                    <div>*}
+        {*                                                                        <i class="addChildEHotel fa fa-plus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                                        <input type="text" readonly="" name="child{$count}" id="child{$count}"*}
+        {*                                                                               class="countChildEHotel" min="0" value="{$room['ChildrenCount']}"*}
+        {*                                                                               max="5">*}
+        {*                                                                        <i class="minusChildEHotel fa fa-minus  site-main-text-color site-bg-color-dock-border"></i>*}
+        {*                                                                    </div>*}
+        {*                                                                </div>*}
+        {*                                                                <div class="tarikh-tavalods">*}
+        {*                                                                    {if $room['ChildrenCount'] neq '0'}*}
+        {*                                                                        {for $i=1 to $room['ChildrenCount']}*}
+        {*                                                                            <div class="tarikh-tavalod-item">*}
+        {*                                                                                <span>##Childage## <i>{$objFunctions->textNumber($i)}</i></span>*}
+        {*                                                                                <select id="childAge{$count}{$i}" name="childAge{$count}{$i}">*}
+        {*                                                                                    <option value="1"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '1'}selected{/if}>*}
+        {*                                                                                        0 ##To## 1 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="2"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '2'}selected{/if}>*}
+        {*                                                                                        1 ##To## 2 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="3"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '3'}selected{/if}>*}
+        {*                                                                                        2 ##To## 3 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="4"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '4'}selected{/if}>*}
+        {*                                                                                        3 ##To## 4 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="5"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '5'}selected{/if}>*}
+        {*                                                                                        4 ##To## 5 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="6"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '6'}selected{/if}>*}
+        {*                                                                                        5 ##To## 6 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="7"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '7'}selected{/if}>*}
+        {*                                                                                        6 ##To## 7 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="8"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '8'}selected{/if}>*}
+        {*                                                                                        7 ##To## 8 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="9"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '9'}selected{/if}>*}
+        {*                                                                                        8 ##To## 9 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="10"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '10'}selected{/if}>*}
+        {*                                                                                        9 ##To## 10 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="11"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '11'}selected{/if}>*}
+        {*                                                                                        10 ##To## 11 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                    <option value="12"*}
+        {*                                                                                            {if {$room['ChildrenAge'][$i-1]} eq '12'}selected{/if}>*}
+        {*                                                                                        11 ##To## 12 ##Year##*}
+        {*                                                                                    </option>*}
+        {*                                                                                </select>*}
+        {*                                                                            </div>*}
+        {*                                                                        {/for}*}
+        {*                                                                    {/if}*}
+        {*                                                                </div>*}
+        {*                                                            </div>*}
+        {*                                                        </div>*}
+        {*                                                    {/foreach}*}
+        {*                                                </div>*}
+        {*                                            </div>*}
+        {*                                        </div>*}
+
+        {*                                    {/if}*}
+
+        {*                                </div>*}
+
+        {*                            </form>*}
+        {*                        {/if}*}
+        {*                    </div>*}
+        {*                </div>*}
+        {*                {if $typeApplication eq 'api' AND $sourceId neq '17' AND $sourceId neq '29'}*}
+        {*                    <div class="box-reserve-hotel-fix-items-2">*}
+        {*                        <span class="City">صورتحساب  شما</span>*}
+        {*                        <div class="parent--price">*}
+        {*                            <div class="box--price">*}
+        {*                                <p class="roomFinalTxt">0 اتاق </p>*}
+        {*                            </div>*}
+        {*                            <h6 class="roomFinalPrice site-main-text-color">0 <i>##Rial##</i></h6>*}
+        {*                        </div>*}
+
+        {*                        {if $objResult->SearchHotel.prepayment_percentage gt 0}*}
+        {*                            <div class="parent-advance--payment">*}
+        {*                                <p>  {$objResult->SearchHotel.prepayment_percentage} % پیش پرداخت</p>*}
+        {*                                <h6 class='roomFinalPrepaymentPackagePrice'></h6>*}
+        {*                            </div>*}
+        {*                        {/if}*}
+        {*                        <span class="roomFinalBtn multi-rooms-price-btn-container">*}
+        {*                                    <button id="btnReserve" type="button" class="site-secondary-text-color site-bg-main-color " onclick="ReserveHotel()">*}
+        {*                                        ##Reservation##*}
+        {*                                        <i class="fa-solid fa-arrow-left"></i>*}
+        {*                                    </button>*}
+        {*                                        <img class="imgLoad" src="https://192.168.1.100/gds/view/client/assets/images/load2.gif" id="img">*}
+        {*                                </span>*}
+        {*                    </div>*}
+        {*                {/if}*}
+        {*            </div>*}
+        {*        </div>*}
 
         <script src="assets/js/scrollWithPage.min.js"></script>
         {*            <script>*}
@@ -561,7 +561,7 @@
 </div>
 
 {if $objSession->IsLogin()}
-<span class="price-after-discount-code d-none">
+    <span class="price-after-discount-code d-none">
     <i>ریال</i>
 </span>
 {/if}
@@ -597,40 +597,58 @@
 </div>
 
 <style>
-/* استایل برای فیلدهای دارای خطا */
-.entry_div.error-border input,
-.entry_div.error-border select {
-   border: 2px solid #dc3545 !important;
-   background-color: #fff5f5 !important;
-}
+    .passengerDetailReservationTour_title {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .exclusive-tour-timer {
+        margin-left: 0;
+        margin-right: auto;
+        white-space: nowrap;
+        direction: ltr;
+    }
+    /* استایل برای فیلدهای دارای خطا */
+    .entry_div.error-border input,
+    .entry_div.error-border select {
+        border: 2px solid #dc3545 !important;
+        background-color: #fff5f5 !important;
+    }
 
-.entry_div.error-border {
-   animation: shake 0.5s;
-}
+    .entry_div.error-border {
+        animation: shake 0.5s;
+    }
 
-@keyframes shake {
-   0%, 100% { transform: translateX(0); }
-   10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-   20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
 </style>
 
 <script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
 <script src="assets/js/jdate.min.js" type="text/javascript"></script>
 <script src="assets/js/jdate.js" type="text/javascript"></script>
-<script src="assets/js/customForExclusiveTour.js"></script>
+<link href="assets/css/jquery.counter-analog.css" rel="stylesheet" type="text/css"/>
+<script src="assets/js/jquery.counter.js" type="text/javascript"></script>
+<div id="exclusive-tour-counter" class="exclusive-tour-timer counter counter-analog"
+     data-home-url="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_MAIN_DOMAIN|escape:'html'}/"
+     data-direction="down" data-format="59:59" data-stop="01:00"
+     role="timer" aria-label="زمان باقی‌مانده" style="display: none; direction: ltr">09:00</div>
+<script src="assets/js/customForExclusiveTour.js?v=counter-analog-6"></script>
 <script>
-   window.isUserLoggedIn = {if $objSession->IsLogin()}true{else}false{/if};
+    window.isUserLoggedIn = {if $objSession->IsLogin()}true{else}false{/if};
 
-   // لیست کشورها برای select2
-   window.countryCodes = [
-      {foreach $objFunctions->CountryCodes() as $Country}
-         {
+    // لیست کشورها برای select2
+    window.countryCodes = [
+        {foreach $objFunctions->CountryCodes() as $Country}
+        {
             code: '{$Country['code']}',
             name: '{$Country[$countryTitleName]|escape:'javascript'}'
-         },
-      {/foreach}
-   ];
+        },
+        {/foreach}
+    ];
 
-   GetPackageDetail('{$smarty.const.REQUEST_NUMBER}' , '{$smarty.const.SOURCE_ID}' , '{$smarty.const.HOTEL_GLOBAL_ID}' , '{$objFunctions->CalculateCredit()}');
+    GetPackageDetail('{$smarty.const.REQUEST_NUMBER}' , '{$smarty.const.SOURCE_ID}' , '{$smarty.const.HOTEL_GLOBAL_ID}' , '{$objFunctions->CalculateCredit()}');
 </script>

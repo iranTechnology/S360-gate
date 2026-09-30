@@ -155,60 +155,426 @@ class bookhotelshow extends baseController
         }
         return 'Error|' . $sqlSelect;
     }
-
     public function createExcelFile($param)
     {
-
         $_POST = $param;
-        $resultBook = $this->listBookHotelLocal('yes');
-        if (!empty($resultBook)) {
 
-            // برای نام گذاری سطر اول فایل اکسل //
-            $firstRowColumnsHeading = [
-                'ردیف',
-                'فرم درخواست',
-                'شماره فاکتور',
-                'شماره درخواست',
-                'نام خریدار',
-                'شماره موبایل خریدار',
-                'تاریخ خرید',
-                'ساعت خرید',
-                'شهر',
-                'هتل',
-                'تاریخ ورود',
-                'تاریخ خروج',
-                'مدت اقامت',
-                'تعداد اتاق',
-                'نام اتاق (ها)',
-                'قیمت کل وب سرویس',
-                'قیمت کل',
-                'سهم آژانس',
-                'قیمت',
-                'سهم کارگزار',
-                'نوع هتل',
-                'خرید از نرم افزار',
-                'وضعیت'];
+        $resultBook = $this->listBookHotelLocal('no');
 
-
-            $firstRowWidth = [10, 10, 20, 30, 15, 15, 15, 15, 10, 15, 15, 15,
-                10, 10, 40, 15, 15, 15, 15, 15, 20, 15, 10];
-
-            /** @var createExcelFile $objCreateExcelFile */
-            $objCreateExcelFile = Load::controller('createExcelFile');
-            $resultExcel = $objCreateExcelFile->create($resultBook, $firstRowColumnsHeading, $firstRowWidth);
-            if ($resultExcel['message'] == 'success') {
-                return 'success|' . $resultExcel['fileName'];
-            } else {
-                return 'error|متاسفانه در ساخت فایل اکسل مشکلی پیش آمده. لطفا مجددا تلاش کنید';
-            }
-
-
-        } else {
-            return 'error|اطلاعاتی برای ساخت فایل اکسسل وجود ندارد.';
+        if (empty($resultBook)) {
+            return 'error|اطلاعاتی برای ساخت فایل اکسل وجود ندارد.';
         }
 
+        $firstRowColumnsHeading = [
+            'نوع خدمات',
+            'تاریخ خرید',
+            'تاریخ مسافرت',
+            'شماره خرید',
+            'نام آژانس',
+            'نام خانوادگی مشتری',
+            'تلفن همراه مشتری',
+            'ایمیل مشتری',
+            'شهر اقامت کاربر',
+            'تلفن ثابت مشتری',
+            'مارک آژانس',
+            'مارک کانتر',
+            'تخفیف',
+            'Total',
+            'سود آژانس',
+            'نقدی / اعتباری',
+            'مقصد',
+            'داخلی/خارجی',
+            'ستاره هتل',
+            'مدت اقامت',
+            'اسم تامین کننده',
+            'اشتراکی / اختصاصی',
+            'وضعیت'
+        ];
 
+        $firstRowWidth = [
+            15, // نوع خدمات
+            20, // تاریخ خرید
+            20, // تاریخ مسافرت
+            20, // شماره خرید
+            25, // نام آژانس
+            25, // نام خانوادگی مشتری
+            20, // تلفن همراه مشتری
+            30, // ایمیل مشتری
+            20, // شهر اقامت کاربر
+            20, // تلفن ثابت مشتری
+            15, // مارک آژانس
+            15, // مارک کانتر
+            15, // تخفیف
+            15, // Total
+            15, // سود آژانس
+            15, // نقدی / اعتباری
+            20, // مقصد
+            15, // داخلی/خارجی
+            15, // ستاره هتل
+            15, // مدت اقامت
+            25, // اسم تامین کننده
+            20, // اشتراکی / اختصاصی
+            20  // وضعیت
+        ];
+
+        $dataRows = [];
+
+        foreach ($resultBook as $k => $hotel) {
+
+            if($hotel['status'] != 'BookedSuccessfully' || ($hotel['request_cancel'] ?? '') == 'confirm'){
+                continue;
+            }
+
+            $agencyName = trim($hotel['agency_name'] ?? '');
+            if (TYPE_ADMIN == '1') {
+                $parentAgencyName = functions::ClientName($hotel['client_id']);
+                $agencyName = $parentAgencyName . ($agencyName !== '' ? ' / ' . $agencyName : '');
+            }
+
+            $purchaseDate = '-';
+
+            if (!empty(trim($hotel['creation_date_int'] ?? '')) && (int)$hotel['creation_date_int'] > 0) {
+                $purchaseDate = dateTimeSetting::jdate(
+                    'Y-m-d (H:i:s)',
+                    (int)$hotel['creation_date_int']
+                );
+            } elseif (!empty($hotel['payment_date'])) {
+                $purchaseDate = trim($hotel['payment_date'] . ' ' . ($hotel['payment_time'] ?? ''));
+            }
+            /*
+             |--------------------------------------------------------------------------
+             | نوع پرداخت
+             |--------------------------------------------------------------------------
+             */
+            switch ($hotel['payment_type'] ?? '') {
+                case 'cash':
+                    $paymentType = 'نقدی';
+                    break;
+
+                case 'credit':
+                    $paymentType = 'اعتباری';
+                    break;
+
+                case 'member_credit':
+                    $paymentType = 'اعتبار کاربر';
+                    break;
+
+                default:
+                    $paymentType = '-';
+                    break;
+            }
+
+            /*
+             |--------------------------------------------------------------------------
+             | وضعیت
+             |--------------------------------------------------------------------------
+             */
+            $cancelledCount = (int)($hotel['cancelled_count'] ?? 0);
+            $bookingCount = (int)($hotel['booking_count'] ?? 0);
+            if ($cancelledCount > 0 && $cancelledCount < $bookingCount) {
+                $status = 'کنسلی / قطعی';
+            } elseif ($cancelledCount > 0 || ($hotel['request_cancel'] ?? '') === 'confirm') {
+                $status = 'کنسل شده';
+            } else {
+                $status = 'رزرو قطعی';
+            }
+
+            /*
+             |--------------------------------------------------------------------------
+             | نام تامین کننده
+             |--------------------------------------------------------------------------
+             */
+            switch ((string)($hotel['source_id'])) {
+
+                case '1':
+                    $supplierName = 'هتل خارجی سایروسافت (جونیپر)';
+                    break;
+
+                case '11':
+                    $supplierName = 'علائدین';
+                    break;
+
+                case '12':
+                    $supplierName = 'آیتورز';
+                    break;
+
+                case '13':
+                    $supplierName = 'اقامت 24';
+                    break;
+
+                case '17':
+                    $supplierName = 'پرتو';
+                    break;
+
+                case '18':
+                    $supplierName = 'TBO';
+                    break;
+
+                case '29':
+                    $supplierName = 'فلایتیو';
+                    break;
+
+                case '40':
+                    $supplierName = 'اسنپ تریپ';
+                    break;
+
+                case '42':
+                    $supplierName = 'هتل سپهر';
+                    break;
+
+                case '46':
+                    $supplierName = 'پریزم-تراوزیلاپرو';
+                    break;
+
+                default:
+                    $supplierName = '-';
+                    break;
+            }
+
+            /*
+             |--------------------------------------------------------------------------
+             | Total
+             |--------------------------------------------------------------------------
+             |
+             | همان منطق موجود در گزارش:
+             | اگر تخفیف درصدی باشد از درصد استفاده می‌شود،
+             | در غیر این صورت مبلغ تخفیف کم می‌شود.
+             |
+             */
+            $totalPrice = (float)($hotel['total_price'] ?? 0);
+            $discountCodeAmount = (float)($hotel['discount_code_amount'] ?? 0);
+
+            if (($hotel['type_discount'] ?? '') === 'percent') {
+
+                $total = $totalPrice - (
+                        $totalPrice * $discountCodeAmount / 100
+                    );
+
+            } else {
+
+                $total = $totalPrice - $discountCodeAmount;
+
+                if ($discountCodeAmount > $totalPrice) {
+                    $total = 0;
+                }
+            }
+
+            /*
+             |--------------------------------------------------------------------------
+             | سود آژانس
+             |--------------------------------------------------------------------------
+             |
+             | در MainHotelHistory همین فرمول استفاده شده:
+             | فروش آژانس - خرید از تامین کننده
+             |
+             */
+            $buyFromSupplier = (float)($hotel['total_price_api'] ?? 0);
+            $agencyProfit = $total - $buyFromSupplier;
+
+            /*
+             |--------------------------------------------------------------------------
+             | تخفیف
+             |--------------------------------------------------------------------------
+             */
+            if (($hotel['type_discount'] ?? '') === 'percent') {
+                $discount = $discountCodeAmount . '%';
+            } else {
+                $discount = number_format($discountCodeAmount);
+            }
+
+            /*
+             |--------------------------------------------------------------------------
+             | داخلی / خارجی
+             |--------------------------------------------------------------------------
+             |
+             | مقدار ذخیره‌شده رزرو مبنای تشخیص داخلی/خارجی است.
+             |
+             */
+            $internalExternal = '-';
+            if (isset($hotel['isInternal']) && (string)$hotel['isInternal'] === '1') {
+                $internalExternal = 'داخلی';
+            } elseif (isset($hotel['isInternal']) && (string)$hotel['isInternal'] === '0') {
+                $internalExternal = 'خارجی';
+            }
+
+            /*
+             |--------------------------------------------------------------------------
+             | اطلاعات مشتری
+             |--------------------------------------------------------------------------
+             |
+             | فیلدهای موجود در listBookHotelLocal را استفاده می‌کنیم.
+             | اگر بعضی از این فیلدها در Query وجود نداشته باشند، مقدار - می‌گیرند.
+             |
+             */
+            $customerFamily = $hotel['passenger_name'] ?? '-';
+
+            $customerMobile =
+                $hotel['member_mobile']
+                ?? $hotel['mobile_buyer']
+                ?? '-';
+
+            $customerEmail =
+                $hotel['member_email']
+                ?? $hotel['email_buyer']
+                ?? '-';
+
+            $customerPhone =
+                $hotel['tel_buyer']
+                ?? $hotel['member_phone']
+                ?? '-';
+
+            /*
+             |--------------------------------------------------------------------------
+             | ساخت ردیف
+             |--------------------------------------------------------------------------
+             */
+            $dataRows[$k] = [
+
+                // 1 - نوع خدمات
+                'service_type_name' => 'هتل',
+
+                // 2 - تاریخ خرید
+                'purchase_date' => $purchaseDate ?? '-',
+
+                // 3 - تاریخ مسافرت
+                'travel_date' => $hotel['start_date'] ?? '-',
+
+                // 4 - شماره خرید
+                'purchase_number' => ($hotel['factor_number'] ?? '') . ' ',
+
+                // 5 - نام آژانس
+                'agency_name' => $agencyName !== '' ? $agencyName : '-',
+
+                // 6 - نام خانوادگی مشتری
+                'customer_family' => $customerFamily,
+
+                // 7 - تلفن همراه مشتری
+                'customer_mobile' => $customerMobile,
+
+                // 8 - ایمیل مشتری
+                'customer_email' => $customerEmail,
+
+                // 9 - شهر اقامت کاربر
+                'customer_city' => '-',
+
+                // 10 - تلفن ثابت مشتری
+                'customer_phone' => $customerPhone,
+
+                // 11 - مارک آژانس
+                'mark_agency' => '-',
+
+                // 12 - مارک کانتر
+                'mark_counter' => '-',
+
+                // 13 - تخفیف
+                'discount' => $discount,
+
+                // 14 - Total
+                'total' => number_format($total),
+
+                // 15 - سود آژانس
+                'agency_profit' => number_format($agencyProfit),
+
+                // 16 - نقدی / اعتباری
+                'payment_type' => $paymentType,
+
+                // 17 - مقصد
+                'destination' => $hotel['city_name'] ?? '-',
+
+                // 18 - داخلی / خارجی
+                'internal_external' => $internalExternal,
+
+                // 19 - ستاره هتل
+                'hotel_star' =>
+                    $hotel['hotel_starCode']
+                    ?? '-',
+
+                // 20 - مدت اقامت
+                'duration' => $hotel['number_night'] ?? '-',
+
+                // 21 - اسم تامین کننده
+                'supplier_name' => $supplierName,
+
+                // 22 - اشتراکی / اختصاصی
+                'shared_private' => $hotel['service_type'] ?? '-',
+
+                // 23 - وضعیت
+                'status' => $status
+            ];
+        }
+
+        if (empty($dataRows)) {
+            return 'error|اطلاعاتی برای ساخت فایل اکسل وجود ندارد.';
+        }
+
+        /** @var createExcelFile $objCreateExcelFile */
+        $objCreateExcelFile = Load::controller('createExcelFile');
+
+        $resultExcel = $objCreateExcelFile->create(
+            $dataRows,
+            $firstRowColumnsHeading,
+            $firstRowWidth
+        );
+
+        if ($resultExcel['message'] == 'success') {
+            return 'success|' . $resultExcel['fileName'];
+        }
+
+        return 'error|متاسفانه در ساخت فایل اکسل مشکلی پیش آمده. لطفا مجددا تلاش کنید';
     }
+//    public function createExcelFile($param)
+//    {
+//
+//        $_POST = $param;
+//        $resultBook = $this->listBookHotelLocal('yes');
+//        if (!empty($resultBook)) {
+//
+//            // برای نام گذاری سطر اول فایل اکسل //
+//            $firstRowColumnsHeading = [
+//                'ردیف',
+//                'فرم درخواست',
+//                'شماره فاکتور',
+//                'شماره درخواست',
+//                'نام خریدار',
+//                'شماره موبایل خریدار',
+//                'تاریخ خرید',
+//                'ساعت خرید',
+//                'شهر',
+//                'هتل',
+//                'تاریخ ورود',
+//                'تاریخ خروج',
+//                'مدت اقامت',
+//                'تعداد اتاق',
+//                'نام اتاق (ها)',
+//                'قیمت کل وب سرویس',
+//                'قیمت کل',
+//                'سهم آژانس',
+//                'قیمت',
+//                'سهم کارگزار',
+//                'نوع هتل',
+//                'خرید از نرم افزار',
+//                'وضعیت'];
+//
+//
+//            $firstRowWidth = [10, 10, 20, 30, 15, 15, 15, 15, 10, 15, 15, 15,
+//                10, 10, 40, 15, 15, 15, 15, 15, 20, 15, 10];
+//
+//            /** @var createExcelFile $objCreateExcelFile */
+//            $objCreateExcelFile = Load::controller('createExcelFile');
+//            $resultExcel = $objCreateExcelFile->create($resultBook, $firstRowColumnsHeading, $firstRowWidth);
+//            if ($resultExcel['message'] == 'success') {
+//                return 'success|' . $resultExcel['fileName'];
+//            } else {
+//                return 'error|متاسفانه در ساخت فایل اکسل مشکلی پیش آمده. لطفا مجددا تلاش کنید';
+//            }
+//
+//
+//        } else {
+//            return 'error|اطلاعاتی برای ساخت فایل اکسسل وجود ندارد.';
+//        }
+//
+//
+//    }
 
 
     public function listBookHotelLocal($reportForExcel = null, $intendedUser = null)
@@ -236,6 +602,14 @@ class bookhotelshow extends baseController
                 {$tableName}.city_name,
                 {$tableName}.hotel_id,
                 {$tableName}.hotel_name,
+                {$tableName}.hotel_starCode,
+                {$tableName}.isInternal,
+                {$tableName}.request_cancel,
+                (SELECT COUNT(*) FROM {$tableName} AS reservation_rows
+                    WHERE reservation_rows.factor_number = {$tableName}.factor_number) AS booking_count,
+                (SELECT COUNT(*) FROM {$tableName} AS cancelled_rows
+                    WHERE cancelled_rows.factor_number = {$tableName}.factor_number
+                    AND cancelled_rows.request_cancel = 'confirm') AS cancelled_count,
                 {$tableName}.payment_date,
                 {$tableName}.agency_name,
                 {$tableName}.number_night,
@@ -255,6 +629,8 @@ class bookhotelshow extends baseController
                 {$tableName}.member_name,
                 {$tableName}.passenger_leader_room_fullName,
                 {$tableName}.member_mobile,
+                {$tableName}.member_email,
+                {$tableName}.member_phone,
                 {$tableName}.member_id,
                 {$tableName}.agency_commission,
                 {$tableName}.type_of_price_change,
@@ -268,6 +644,7 @@ class bookhotelshow extends baseController
                 {$tableName}.discount_code_amount,
                  {$tableName}.type_discount,
                  {$tableName}.source_id,
+     
               
 
             ";
@@ -533,6 +910,14 @@ class bookhotelshow extends baseController
 
 
             $dataRows[$k]['number_column'] = $numberColumn - 1;
+            $dataRows[$k]['hotel_starCode'] = $book['hotel_starCode'] ?? null;
+            $dataRows[$k]['isInternal'] = $book['isInternal'] ?? null;
+            $dataRows[$k]['request_cancel'] = $book['request_cancel'] ?? '';
+            $dataRows[$k]['booking_count'] = (int)($book['booking_count'] ?? 0);
+            $dataRows[$k]['cancelled_count'] = (int)($book['cancelled_count'] ?? 0);
+            $dataRows[$k]['member_email'] = $book['member_email'] ?? null;
+            $dataRows[$k]['member_phone'] = $book['member_phone'] ?? null;
+            $dataRows[$k]['serviceTitle'] = $book['serviceTitle'] ?? '';
             if (!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel == 'no')) {
                 $dataRows[$k]['hotel_id'] = $book['hotel_id'];
             }

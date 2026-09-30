@@ -7,19 +7,83 @@ class bookingBusShow extends clientAuth
     public function createExcelFile($param)
     {
         $_POST = $param;
-        $resultBook = $this->listBookBusTicket('yes');
+        $resultBook = $this->listBookBusTicket('no');
 
         if (!empty($resultBook)) {
 
-            // برای نام گذاری سطر اول فایل اکسل //
-            $firstRowColumnsHeading = ['ردیف', 'تاریخ پرداخت', 'ساعت پرداخت', 'نام خریدار','شماره موبایل خریدار',
-                'مبدا', 'مقصد', 'تاریخ حرکت', 'ساعت حرکت', 'شرکت مسافربری', 'اتوبوس', 'شماره فاکتور',
-                'شماره بلیط', 'شماره صندلی', 'نام مسافر', 'شماره موبایل', 'سهم آژانس', 'مبلغ', 'وضعیت' , 'مبلغ کل', 'مبلغ پروایدر'];
-            $firstRowWidth = [10, 15, 15, 15, 15, 10,10, 10, 10, 15,15, 15,
-                15,10,15,15,15,15,10];
+            $firstRowColumnsHeading = [
+                'نوع خدمات', 'تاریخ خرید', 'تاریخ مسافرت', 'شماره خرید', 'نام آژانس',
+                'نام خانوادگی مشتری', 'تلفن همراه مشتری', 'ایمیل مشتری', 'شهر اقامت کاربر',
+                'تلفن ثابت مشتری', 'مارک آژانس', 'مارک کانتر', 'تخفیف', 'Total', 'سود آژانس',
+                'نقدی / اعتباری', 'مبدا', 'مقصد', 'داخلی/خارجی', 'کلاس صندلی', 'اتوبوس‌رانی',
+                'اسم تامین کننده', 'اشتراکی / اختصاصی', 'وضعیت'
+            ];
+            $firstRowWidth = [15, 25, 25, 20, 30, 25, 20, 30, 20, 20, 15, 15,
+                15, 15, 15, 20, 20, 20, 15, 15, 25, 25, 20, 20];
+
+            $dataRows = [];
+            foreach ($resultBook as $bus) {
+                if (!in_array($bus['Status'] ?? '', ['book', 'cancel'], true)) {
+                    continue;
+                }
+
+                $agencyName = trim($bus['agency_name'] ?? '');
+                if (TYPE_ADMIN == '1') {
+                    $agencyName = ($bus['AgencyName'] ?? '') . ($agencyName !== '' ? ' / ' . $agencyName : '');
+                }
+                $paymentTypes = ['cash' => 'نقدی', 'credit' => 'اعتباری', 'member_credit' => 'اعتبار کاربر'];
+                $total = (float)($bus['total_price'] ?? 0);
+                // total_price already includes the service discount applied when booking.
+                $discount = isset($bus['OriginalPrice'])
+                    ? max(0, (float)$bus['OriginalPrice'] - $total) : 0;
+                $cancelledCount = (int)($bus['cancelled_count'] ?? 0);
+                $bookingCount = (int)($bus['booking_count'] ?? 0);
+                if ($cancelledCount > 0 && $cancelledCount < $bookingCount) {
+                    $status = 'کنسلی / قطعی';
+                } elseif ($cancelledCount > 0 || ($bus['Status'] ?? '') === 'cancel') {
+                    $status = 'کنسل شده';
+                } else {
+                    $status = 'رزرو قطعی';
+                }
+                $internalExternal = '-';
+                if (isset($bus['isInternal']) && (string)$bus['isInternal'] === '1') {
+                    $internalExternal = 'داخلی';
+                } elseif (isset($bus['isInternal']) && (string)$bus['isInternal'] === '0') {
+                    $internalExternal = 'خارجی';
+                }
+                $dataRows[] = [
+                    'service_type_name' => 'اتوبوس',
+                    'purchase_date' => $bus['CreationDateInt'] ?? '-',
+                    'travel_date' => trim(($bus['DateMove'] ?? '') . ' ' . ($bus['TimeMove'] ?? '')),
+                    'purchase_number' => ($bus['FactorNumber'] ?? '') . ' ',
+                    'agency_name' => $agencyName !== '' ? $agencyName : '-',
+                    'customer_family' => $bus['PassengerName'] ?? '-',
+                    'customer_mobile' => !empty($bus['MemberMobile']) ? $bus['MemberMobile'] : ($bus['PassengerMobile'] ?? '-'),
+                    'customer_email' => $bus['member_email'] ?? '-',
+                    'customer_city' => '-',
+                    'customer_phone' => $bus['member_phone'] ?? '-',
+                    'mark_agency' => '-',
+                    'mark_counter' => '-',
+                    'discount' => number_format($discount),
+                    'total' => number_format($total),
+                    'agency_profit' => number_format($total - (float)($bus['price_api'] ?? 0)),
+                    'payment_type' => $paymentTypes[$bus['payment_type'] ?? ''] ?? '-',
+                    'origin' => $bus['OriginName'] ?? '-',
+                    'destination' => $bus['DestinationCity'] ?? '-',
+                    'internal_external' => $internalExternal,
+                    'seat_class' => 'VIP',
+                    'bus_company' => $bus['BaseCompany'] ?? '-',
+                    'supplier_name' => $bus['SourceName'] ?? '-',
+                    'shared_private' => strip_tags($bus['service_type'] ?? '-'),
+                    'status' => $status
+                ];
+            }
+            if (empty($dataRows)) {
+                return 'error|اطلاعاتی برای ساخت فایل اکسل وجود ندارد.';
+            }
 
             $objCreateExcelFile = Load::controller('createExcelFile');
-            $resultExcel = $objCreateExcelFile->create($resultBook, $firstRowColumnsHeading , $firstRowWidth);
+            $resultExcel = $objCreateExcelFile->create($dataRows, $firstRowColumnsHeading , $firstRowWidth);
             if ($resultExcel['message'] == 'success') {
                 return 'success|' . $resultExcel['fileName'];
             } else {
@@ -62,7 +126,12 @@ class bookingBusShow extends clientAuth
 
         $sql="
             SELECT
-                *  , GROUP_CONCAT(passenger_chairs SEPARATOR ', ') AS chairs , GROUP_CONCAT(passenger_national_code SEPARATOR ', ') AS nationalCodes , GROUP_CONCAT(passenger_gender SEPARATOR ', ') AS genders 
+                *  , GROUP_CONCAT(passenger_chairs SEPARATOR ', ') AS chairs , GROUP_CONCAT(passenger_national_code SEPARATOR ', ') AS nationalCodes , GROUP_CONCAT(passenger_gender SEPARATOR ', ') AS genders,
+                (SELECT COUNT(*) FROM {$tableName} AS reservation_rows
+                    WHERE reservation_rows.passenger_factor_num = {$tableName}.passenger_factor_num) AS booking_count,
+                (SELECT COUNT(*) FROM {$tableName} AS cancelled_rows
+                    WHERE cancelled_rows.passenger_factor_num = {$tableName}.passenger_factor_num
+                    AND (cancelled_rows.request_cancel = 'confirm' OR cancelled_rows.status = 'cancel')) AS cancelled_count
             FROM
                 {$tableName}
             WHERE
@@ -254,6 +323,13 @@ class bookingBusShow extends clientAuth
             }
             $dataRows[$k]['service_type']=$service_type;
             if(!isset($reportForExcel) || (isset($reportForExcel) && $reportForExcel=='no')){
+                $dataRows[$k]['agency_name']=$book['agency_name'] ?? '';
+                $dataRows[$k]['member_email']=$book['member_email'] ?? null;
+                $dataRows[$k]['member_phone']=$book['member_phone'] ?? null;
+                $dataRows[$k]['OriginalPrice']=$book['OriginalPrice'] ?? null;
+                $dataRows[$k]['isInternal']=$book['isInternal'] ?? $book['IsInternal'] ?? null;
+                $dataRows[$k]['booking_count']=(int)($book['booking_count'] ?? 0);
+                $dataRows[$k]['cancelled_count']=(int)($book['cancelled_count'] ?? 0);
                 $dataRows[$k]['Id']=$book['id'];
                 $dataRows[$k]['seen_at']=$book['seen_at'];
                 $dataRows[$k]['OrderCode']=$book['order_code'];
