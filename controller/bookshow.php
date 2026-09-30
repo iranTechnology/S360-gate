@@ -726,7 +726,7 @@ class bookshow extends clientAuth
                 } else {
 
                     $fareRaw = null;
-                    $DataFlightFare = '_';
+                    $DataFlightFare = '-';
                 }
 
             } else {
@@ -758,7 +758,7 @@ class bookshow extends clientAuth
 
             } else {
 
-                $DataFlightTax = '_';
+                $DataFlightTax = '-';
             }
 
             /*
@@ -933,65 +933,22 @@ class bookshow extends clientAuth
              | سود آژانس
              |--------------------------------------------------------------------------
              */
-            $agencyShare = 0;
-
-            if (
-                ($book['flight_type'] ?? '') == 'charter' ||
-                ($book['flight_type'] ?? '') == 'system'
-            ) {
-
-                /*
-                 * برگشت
-                 */
-                if ($TitleDetectDirection == 'دوطرفه-برگشت') {
-
-                    $ArrInfoAgancyShare[
-                    $book['factor_number']
-                    ]['SellingReturnPassengerTickets'] = $PassengerPayment;
-
-                    $DataFlightAgencyShare = '-';
-
-                } else {
-
-                    /*
-                     * رفت دوطرفه
-                     */
-                    if ($TitleDetectDirection == 'دوطرفه-رفت') {
-
-                        $agencyShare =
-                            ($book['successfull'] == 'book')
-                                ? ($book['sum_amount_added'] ?? 0) - $BuyFromIt
-                                : 0;
-
-                    } else {
-
-                        /*
-                         * یک‌طرفه
-                         */
-                        $agencyShare =
-                            ($book['successfull'] == 'book')
-                                ? ($book['sum_amount_added'] ?? 0) - $BuyFromIt
-                                : 0;
-                    }
-
-                    $DataFlightAgencyShare = number_format($agencyShare);
-
-                    if (
-                        ($book['request_cancel'] ?? '') != 'confirm' &&
-                        (
-                            ($book['successfull'] ?? '') == 'book' ||
-                            ($book['successfull'] ?? '') == 'private_reserve'
-                        )
-                    ) {
-
-                        $priceAgency += $agencyShare;
-                    }
-                }
-
-            } else {
-
-                $DataFlightAgencyShare = '-';
-            }
+            // Match the final profit calculation in MainFlightTicketHistory.
+            $providerTotal = (float)($book['provider_adt_price'] ?? 0)
+                + (float)($book['provider_chd_price'] ?? 0)
+                + (float)($book['provider_inf_price'] ?? 0);
+            $hasSystemCommission = ($book['flight_type'] ?? '') === 'system'
+                && (($book['IsInternal'] ?? '') == '1'
+                    || (($book['IsInternal'] ?? '') == '0' && ($book['foreign_airline'] ?? '') == '0'));
+            $providerCost = $providerTotal - ($hasSystemCommission
+                    ? (float)($book['sum_system_flight_commission'] ?? 0) : 0);
+            $agencyMarkup = $hasSystemCommission ? 0 : (float)($book['agency_commission'] ?? 0);
+            $discountPrice = ($book['flight_type'] ?? '') === 'charterPrivate'
+                ? (float)($InfoTicketReservation['discount_amount'] ?? 0) : 0;
+            $saleTotal = (($book['flight_type'] ?? '') === 'charterPrivate' ? 0 : $providerTotal)
+                + $agencyMarkup + (float)($book['sum_amount_added'] ?? 0) - $discountPrice;
+            $agencyShare = $saleTotal - $providerCost;
+            $DataFlightAgencyShare = number_format($agencyShare);
 
             /*
              |--------------------------------------------------------------------------
@@ -1007,7 +964,7 @@ class bookshow extends clientAuth
                     ($book['foreign_airline'] ?? '') == '0')
             ) {
 
-                $DataFlightPassengerPayData1 = '_';
+                $DataFlightPassengerPayData1 = '0';
 
             } else {
 
@@ -1030,7 +987,17 @@ class bookshow extends clientAuth
              | تخفیف
              |--------------------------------------------------------------------------
              */
-            $discount = $book['percent_discount'] ?? 0;
+            $discount = number_format($discountPrice);
+
+            $agencyName = trim($book['agency_name'] ?? '');
+            if (TYPE_ADMIN == '1') {
+                $parentAgencyName = trim($book['NameAgency'] ?? '');
+                if ($parentAgencyName === '' && !empty($book['client_id'])) {
+                    $parentAgencyName = functions::ClientName($book['client_id']);
+                }
+                $agencyName = $parentAgencyName . ($agencyName !== '' && !empty($book['agency_id'])
+                        ? ($parentAgencyName !== '' ? ' / ' : '') . $agencyName : '');
+            }
 
             /*
              |--------------------------------------------------------------------------
@@ -1135,7 +1102,7 @@ class bookshow extends clientAuth
                 'purchase_number' => ($book['request_number'] ?? '') . ' ',
 
                 // 5 - نام آژانس
-                'agency_name' => $book['agency_name'] ?? '',
+                'agency_name' => $agencyName,
 
                 // 6 - نام خانوادگی مشتری
                 'customer_family' => $customerFamily,

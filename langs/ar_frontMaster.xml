@@ -3394,5 +3394,6 @@
   <TermsandConditionsDetailFlight>القواعد واللوائح</TermsandConditionsDetailFlight>
   <WithoutAPenalty>بدون غرامة</WithoutAPenalty>
   <Untitled>بدون عنوان</Untitled>
-
+  <TitleEndRserve>الموعد النهائي للحجز</TitleEndRserve>
+  <ContentEndRserve>عزيزي المسافر، نعتذر منك، ولكن فترة الحجز الخاصة بك قد انتهت؛ لذا سيتعين عليك إجراء الحجز مجدداً من البداية.</ContentEndRserve>
 </Main>

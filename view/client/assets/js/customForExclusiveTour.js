@@ -14,6 +14,63 @@ let finalPassengers;
 let agency_credit;
 let total_price;
 
+let exclusiveTourCounter = null;
+let exclusiveTourCounterStarted = false;
+
+function startExclusiveTourPassengerTimer() {
+   const title = $('.passengerDetailReservationTour_title').filter(':visible').last();
+   if (!title.length) return;
+
+   if (!exclusiveTourCounter) {
+      exclusiveTourCounter = $('#exclusive-tour-counter');
+   }
+   if (!exclusiveTourCounter.length) return;
+
+   // Move the same counter to the active heading without restarting it.
+   exclusiveTourCounter.detach().appendTo(title).show();
+   if (exclusiveTourCounterStarted) return;
+   exclusiveTourCounterStarted = true;
+
+   let expirationShown = false;
+   const showExpiration = () => {
+      if (expirationShown) return;
+      expirationShown = true;
+      $.alert({
+             title: useXmltag("TitleEndRserve"),,
+          content: useXmltag("ContentEndRserve"),
+          rtl: true,
+          type: 'orange',
+          closeIcon: false,
+          backgroundDismiss: false,
+          escapeKey: false,
+          buttons: {
+         ok: {
+            text: 'OK',
+                action: function() {
+               window.location.replace(exclusiveTourCounter.attr('data-home-url'));
+            }
+         }
+      }
+   });
+   };
+   // Attach our handler even if another page script has already initialized counters.
+   const existingCounter = exclusiveTourCounter.data('counter');
+   if (existingCounter) {
+      clearInterval(existingCounter.intervalId);
+   }
+   exclusiveTourCounter.on('counterStop.exclusiveTour', showExpiration);
+   exclusiveTourCounter.counter({ initial: '09:00', format: '59:59', direction: 'down', stop: '00:00' });
+   // Read the plugin's actual digits; the alert must not stop its countdown.
+   const warningCheck = setInterval(() => {
+      const counter = exclusiveTourCounter.data('counter');
+      const remaining = counter.parts[0].value * 60 + counter.parts[1].value;
+      if (remaining <= 60) {
+         clearInterval(warningCheck);
+         showExpiration();
+      }
+   }, 200);
+}
+
 // اضافه کردن استایل‌های validation به صورت dynamic
 (function() {
    if (!document.getElementById('validation-styles')) {
@@ -360,8 +417,6 @@ function stopCounter(el) {
 
 // Display matching record
 function displayMatchingRecord(record) {
-
-   console.log('record' , record)
 
    // --- ۱) استخراج قیمت‌ها و تبدیل به ریال ---
    const newFlightPrice = Math.floor(record.TotalFlightPrice || 0);
@@ -839,6 +894,7 @@ function showPassengerForm(record) {
 
    // اضافه کردن محتوا به جای مناسب
    $('.content-detailHotel').append(mainContentHTML);
+   startExclusiveTourPassengerTimer();
    $('.passengerDetailReservationTour_aside_lastBox button').hide();
    $('.passengerDetailReservationTour_aside_lastBox').append(btnNextStep);
 
@@ -1159,23 +1215,23 @@ function createPassengerFields(number, type, totalPassengers) {
 
                <div class="s-u-passenger-item s-u-passenger-item-changes entry_div d-none">
                   <input data-required="foreign" id="nameEn${number}" type="text"
-                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Name') : 'نام'}"
+                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Nameenglish') : 'نام'}"
                          name="nameEn${number}" onkeypress="return isAlfabetKeyFields(event, 'nameEn${number}')" class="">
                </div>
                <div class="s-u-passenger-item s-u-passenger-item-change entry_div d-none">
                   <input data-required="foreign" id="familyEn${number}" type="text"
-                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Family') : 'نام خانوادگی'}"
+                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Familyenglish') : 'نام خانوادگی'}"
                          name="familyEn${number}" onkeypress="return isAlfabetKeyFields(event, 'familyEn${number}')" class="">
                </div>
 
                <div class="s-u-passenger-item no-before s-u-passenger-item-change entry_div d-none">
                   <input data-required="iranian" id="nameFa${number}" type="text"
-                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Name') : 'نام'}"
+                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Nameenglish') : 'نام'}"
                          name="nameFa${number}" onkeypress=" return isAlfabetKeyFields(event, 'nameFa${number}')" class="justpersian">
                </div>
                <div class="s-u-passenger-item no-before s-u-passenger-item-change entry_div d-none">
                   <input data-required="iranian" id="familyFa${number}" type="text"
-                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Family') : 'نام خانوادگی'}"
+                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Familyenglish') : 'نام خانوادگی'}"
                          name="familyFa${number}" onkeypress=" return isAlfabetKeyFields(event, 'familyFa${number}')" class="justpersian">
                </div>
 
@@ -1288,14 +1344,14 @@ function validatePassengerForm() {
          const nationalCode = $(`#NationalCode${numberRow}`).val();
 
          if (!nameFa || nameFa.trim() === '') {
-            errors.push('نام فارسی');
+            errors.push('نام انگلیسی');
             $(`#nameFa${numberRow}`).addClass('field-error');
             if (!firstErrorField) firstErrorField = $(`#nameFa${numberRow}`);
             isValid = false;
          }
 
          if (!familyFa || familyFa.trim() === '') {
-            errors.push('نام خانوادگی فارسی');
+            errors.push('نام خانوادگی انگلیسی');
             $(`#familyFa${numberRow}`).addClass('field-error');
             if (!firstErrorField) firstErrorField = $(`#familyFa${numberRow}`);
             isValid = false;
@@ -1706,6 +1762,7 @@ function showLock() {
            'afterend',
            btnPay
        );
+   startExclusiveTourPassengerTimer();
 }
 
 function createPassengersLockView(passenger , number) {
