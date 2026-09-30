@@ -333,7 +333,7 @@ class bookExclusiveTour extends exclusiveTour
             if ($payType == 'credit') {
                 if ($eachDirection['successfull'] != 'book') {
                     $this->transaction->pendingTransactionCurrent($eachDirection['factor_number']);
-                    $this->transaction->deleteCreditAgencyCurrent($eachDirection['request_number']);
+                    $this->transaction->deleteCreditAgencyCurrent($eachDirection['factor_number']);
                 }
             }
         }

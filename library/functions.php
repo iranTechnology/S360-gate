@@ -12426,4 +12426,11 @@ class functions {
         return CLIENT_ID == '166';
     }
 
+    function GetInfoReportFlight($num) {
+        $ModelBase = Load::library('ModelBase');
+        $sql = "SELECT member_id, pid_private, origin_city, desti_city,irantech_commission, factor_number, request_number, tracking_code_bank, flight_type, airline_iata, api_id,IsInternal,direction,api_id,currency_code,currency_equivalent,"
+            . " (SELECT COUNT(id)  FROM report_tb WHERE request_number='$num' ) AS count_id"
+            . " FROM report_tb WHERE request_number='$num'" ;
+        return $ModelBase->load($sql);
+    }
 }

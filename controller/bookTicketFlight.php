@@ -88,7 +88,7 @@ class bookTicketFlight extends apiLocal
             $this->tracking_code = $dataBooked['trackingCode'] ;
         }
 
-        $infoTicketFlights = $this->bookLocalModel->getInfoFlightByFactorNumberWithGroupByDirection($factorNumber);
+        $infoTicketFlights = TYPE_ADMIN == 1 ? $this->reportModel->getInfoFlightByFactorNumberWithGroupByDirection($factorNumber): $this->bookLocalModel->getInfoFlightByFactorNumberWithGroupByDirection($factorNumber);
 
 
         $count_flight = count($infoTicketFlights);

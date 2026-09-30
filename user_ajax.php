@@ -991,6 +991,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
         $total_amount += $amount[$direction];
         $total_amount_counter[$direction] = $amount[$direction];
     }
+
     $agencyInfo = Load::controller('agency')->subAgencyInfo();
     $isCounter = Load::controller('login')->isCounter();
     $isCounter = json_decode($isCounter);
@@ -1122,12 +1123,6 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
         $counterCredit = $objMember->getCredit();
     }
     $total_amount = $reserveInfo[0]['total_price'];
-
-    if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
-        $counterCredit = $objUser->getCreditMember();
-    } else {
-        $counterCredit = $objMember->getCredit();
-    }
 
     // Caution: اعتبارسنجی اعتبار کانتر
     if ($counterCredit > $total_amount) {

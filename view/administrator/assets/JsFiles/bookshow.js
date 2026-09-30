@@ -70,7 +70,8 @@ function reReserve(factorNum, RequestNumber, dir) {
             data: {
                 flag: 'buyByCreditLocal',
                 factorNum: factorNum,
-                RequestNumber: RequestNumberObj
+                RequestNumber: RequestNumberObj,
+                isRepetFlight:true
             },
             success: function (data) {
                 if (data.indexOf('success') > -1) {
@@ -119,11 +120,16 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                 text: 'تایید',
                 btnClass: 'btn-green',
                 action: async function () {
-                    let parentLoader = el.closest('td');parent-ld
+                    let parentLoader = el.closest('td');
                     let loader = parentLoader.querySelector('.parent-ld');
                     let loaderLd = parentLoader.querySelector('.ld');
-                    loader.style.display = 'block';
-                    loaderLd.style.display = 'inline-block';
+                    if (loader) {
+                        loader.style.display = 'block';
+                    }
+
+                    if (loaderLd) {
+                        loaderLd.style.display = 'inline-block';
+                    }
 
                     try {
                         let reBookResult = await reBook(el, RequestNumber, IdMember, SourceId, dir);
@@ -172,8 +178,8 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                                             text: 'انصراف',
                                             btnClass: 'btn-red',
                                             action: function() {
-                                                loader.style.display = 'none';
-                                                loaderLd.style.display = 'none';
+                                                loader?.style && (loader.style.display = 'block');
+                                                loaderLd?.style && (loaderLd.style.display = 'inline-block');
                                             }
                                         }
                                     }
@@ -192,8 +198,8 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                                 textAlign: 'right',
                                 stack: 6
                             });
-                            loader.style.display = 'none';
-                            loaderLd.style.display = 'none';
+                            loader?.style && (loader.style.display = 'block');
+                            loaderLd?.style && (loaderLd.style.display = 'inline-block');
                         }
                     }
                     catch (error) {
@@ -220,8 +226,8 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                                 stack: 6
                             });
                         }
-                        loader.style.display = 'none';
-                        loaderLd.style.display = 'none';
+                        loader?.style && (loader.style.display = 'block');
+                        loaderLd?.style && (loaderLd.style.display = 'inline-block');
                     }
                 }
             },
@@ -273,8 +279,8 @@ async function proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderL
         });
     }
 
-    loader.style.display = 'none';
-    loaderLd.style.display = 'none';
+    loader?.style && (loader.style.display = 'block');
+    loaderLd?.style && (loaderLd.style.display = 'inline-block');
 
     setTimeout(() => {
         location.reload();

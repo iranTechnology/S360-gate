@@ -1639,6 +1639,7 @@ class apiLocal extends clientAuth
             $data['subAgencyId'] = $agencyInfo['id'];
         }
 
+        $data['isRepetFlight'] = TYPE_ADMIN == 1 ? true : false;
 
         $url = $this->apiAddress . "Flight/Book/{$RequestNumber}";
         $info_json_passengers = json_encode($data);
@@ -2155,7 +2156,11 @@ class apiLocal extends clientAuth
         $ModelBase = Load::library('ModelBase');
         $sql = "SELECT * FROM book_local_tb WHERE request_number='{$RequestNumber}'";
         $book = $Model->load($sql);
+        if(TYPE_ADMIN == 1){
+            $sql = "SELECT * FROM report_tb WHERE request_number='{$RequestNumber}'";
+            $book = $ModelBase->load($sql);
 
+        }
         if ($book['direction'] == 'return') {
             $check_dept_reserve = $this->getModel('bookLocalModel')->get()->where('direction', 'dept')->where('factor_number', $book['factor_number'])->find();
             error_log('try show result of dept book' . $book['direction'] . ' And ticketed in : ' . date('Y/m/d H:i:s') . ' buy  With RequestNumber : =>' . $RequestNumber . ' AND array Equal  =>' . json_encode($check_dept_reserve, true) . " \n", 3, LOGS_DIR . 'log_method_reserve.txt');
