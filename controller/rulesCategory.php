@@ -59,10 +59,6 @@ class rulesCategory {
         $check_slug = $ruleCategoryModel->get()->where('slug' , $slug)->where('language' , $data['lang'])->find();
 
         if (!$check_slug) {
-            error_reporting(1);
-            error_reporting(E_ALL | E_STRICT);
-            @ini_set('display_errors', 1);
-            @ini_set('display_errors', 'on');
 
             $insert = $ruleCategoryModel->add( [ 'title' => $title, 'slug' => $slug,'icon' => $icon, 'language' => $data['lang'] ] );
 
