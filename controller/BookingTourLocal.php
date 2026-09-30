@@ -166,7 +166,8 @@ class BookingTourLocal extends clientAuth
             $this->payment_date = $infoBook['payment_date'];
 
 
-        } elseif ($infoBook['payment_status'] == 'prePayment') {
+        }
+        elseif ($infoBook['payment_status'] == 'prePayment') {
 
 
             $prePaymentStatus= 'PreReserve';

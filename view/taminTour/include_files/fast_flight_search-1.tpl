@@ -22,22 +22,22 @@
                         <span>
                             پرواز داخلی
                         </span>
-                        <svg viewbox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M360.5 217.5l-152 143.1C203.9 365.8 197.9 368 192 368s-11.88-2.188-16.5-6.562L23.5 217.5C13.87 208.3 13.47 193.1 22.56 183.5C31.69 173.8 46.94 173.5 56.5 182.6L192 310.9l135.5-128.4c9.562-9.094 24.75-8.75 33.94 .9375C370.5 193.1 370.1 208.3 360.5 217.5z"></path></svg>
+{*                        <svg viewbox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M360.5 217.5l-152 143.1C203.9 365.8 197.9 368 192 368s-11.88-2.188-16.5-6.562L23.5 217.5C13.87 208.3 13.47 193.1 22.56 183.5C31.69 173.8 46.94 173.5 56.5 182.6L192 310.9l135.5-128.4c9.562-9.094 24.75-8.75 33.94 .9375C370.5 193.1 370.1 208.3 360.5 217.5z"></path></svg>*}
                     </button>
-                    <div>
-                        <ul class="nav nav-pills mb-3" id="search_flight-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button onclick='textInput("پرواز داخلی")' aria-controls="search_flight_internal" aria-selected="true" class="nav-link active" data-target="#search_flight_internal" data-toggle="pill" id="search_flight_internal-tab" role="tab" type="button">
-                                    پرواز داخلی
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button onclick='textInput("پرواز خارجی")' aria-controls="search_flight_internation" aria-selected="false" class="nav-link" data-target="#search_flight_internation" data-toggle="pill" id="search_flight_internation-tab" role="tab" type="button">
-                                    پرواز خارجی
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+{*                    <div>*}
+{*                        <ul class="nav nav-pills mb-3" id="search_flight-tab" role="tablist">*}
+{*                            <li class="nav-item" role="presentation">*}
+{*                                <button onclick='textInput("پرواز داخلی")' aria-controls="search_flight_internal" aria-selected="true" class="nav-link active" data-target="#search_flight_internal" data-toggle="pill" id="search_flight_internal-tab" role="tab" type="button">*}
+{*                                    پرواز داخلی*}
+{*                                </button>*}
+{*                            </li>*}
+{*                            <li class="nav-item" role="presentation">*}
+{*                                <button onclick='textInput("پرواز خارجی")' aria-controls="search_flight_internation" aria-selected="false" class="nav-link" data-target="#search_flight_internation" data-toggle="pill" id="search_flight_internation-tab" role="tab" type="button">*}
+{*                                    پرواز خارجی*}
+{*                                </button>*}
+{*                            </li>*}
+{*                        </ul>*}
+{*                    </div>*}
                 </div>
             </div>
         </div>
