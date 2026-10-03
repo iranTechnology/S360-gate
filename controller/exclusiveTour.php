@@ -13,7 +13,7 @@ class exclusiveTour extends clientAuth {
     protected $uniqueCode;
     protected $InfoSearch;
     protected $isInternal;
-
+    protected $agency;
     private $username;
     private $apiAddress;
     private $model;
@@ -26,6 +26,7 @@ class exclusiveTour extends clientAuth {
         $this->init($url);
         $this->model     = Load::library( 'Model' );
         $this->modelBase     = Load::library( 'Model' );
+        $this->agency = new agency();
     }
 
     public function init($url = null) {
@@ -428,8 +429,104 @@ class exclusiveTour extends clientAuth {
         return $array_airlines;
     }
 
-    public function Lock($data) {
+    private function buildStoredLockData($rows) {
 
+        $tour = $rows[0];
+        $rooms = json_decode($tour['room_info'], true) ?: [];
+        $lockRooms = [];
+        foreach ($rooms as $room) {
+            $lockRooms[] = [
+                'Id' => (int) $room['Id'],
+                'Type' => $room['Type'],
+                'Adults' => (int) $room['Adults'],
+                'Children' => (int) $room['Children'],
+                'Ages' => $room['Ages'] ?? [],
+                'Extrabed' => (int) ($room['Extrabed'] ?? 0)
+            ];
+        }
+        $passengers = [];
+        foreach ($rows as $row) {
+            $passengers[] = [
+                'PassengerType' => $row['passenger_age'],
+                // These fields are not stored in the current report table.
+                'PassengerTitle' => $row['passenger_title'] ?? '',
+                'FirstName' => $row['passenger_name'],
+                'LastName' => $row['passenger_family'],
+                'NationalCode' => $row['passenger_national_code'],
+                'PassportNumber' => $row['passportNumber'],
+                'DateOfBirth' => $row['passenger_birthday'],
+                'Nationality' => $row['passportCountry'],
+                'isIranian' => strtoupper($row['passportCountry']) === 'IR'
+            ];
+        }
+        return [
+            'lockData' => [
+                'HotelID' => (int) $tour['hotel_id'],
+                'CheckinDate' => $tour['check_in'],
+                'CheckoutDate' => $tour['check_out'],
+                'FlightTotalPrice' => (int) $tour['total_flight_price'],
+                'HotelTotalPrice' => (int) $tour['total_hotel_price'],
+                'Routes' => [
+                    'Output' => [[
+                        'FlightNo' => $tour['flight_number'],
+                        'DepartureDate' => $tour['date_flight'],
+                        'DepartureTime' => $tour['time_flight'],
+                        'DepartureCode' => $tour['origin_city'],
+                        'ArrivalCode' => $tour['desti_city'],
+                        'FareName' => $tour['fareName']
+                    ]],
+                    'Return' => [[
+                        'FlightNo' => $tour['ret_flight_number'],
+                        'DepartureDate' => $tour['ret_date_flight'],
+                        'DepartureTime' => $tour['ret_time_flight'],
+                        'DepartureCode' => $tour['desti_city'],
+                        'ArrivalCode' => $tour['origin_city'],
+                        'FareName' => $tour['fareName_return']
+                    ]]
+                ],
+                'Rooms' => $lockRooms,
+                'Passengers' => $passengers,
+                'SourceId' => (string) $tour['api_id']
+            ],
+            'additionalData' => [
+                'HotelName' => $tour['hotel_name'],
+                'Routes' => [
+                    'Output' => [[
+                        'seatClass' => $tour['seat_class'],
+                        'airlineIata' => $tour['airline_iata'],
+                        'airlineName' => $tour['airline_name']
+                    ]],
+                    'Return' => [[
+                        'seatClass' => $tour['ret_seat_class'],
+                        'airlineIata' => $tour['ret_airline_iata'],
+                        'airlineName' => $tour['ret_airline_name']
+                    ]]
+                ],
+                'Rooms' => $rooms
+            ],
+            'entertainments' => json_decode($tour['entertainment_data_json'] ?? '', true) ?: []
+        ];
+    }
+
+    public function Lock($data) {
+        $isRepeat = $data['isRepetExclusiveTour'];
+        if ($isRepeat) {
+            if (TYPE_ADMIN != 1) {
+                return functions::withError(null, 403, 'دسترسی به رزرو مجدد تور مجاز نیست');
+            }
+            $rows = $this->getModel('exclusiveTourBaseModel')->get(['*'])
+                ->where('request_number', $data['requestNumber'])
+                ->where('factor_number', $data['factorNumber'])->all();
+            $infoSource = $this->exclusiveTourAuth($rows[0]['client_id']);
+            if (empty($rows)) {
+                return functions::withError(null, 404, 'رزرو تور یافت نشد');
+            }
+            $storedData = $this->buildStoredLockData($rows);
+            if (empty($storedData['lockData']['Rooms'])) {
+                return functions::withError(null, 400, 'اطلاعات اتاق رزرو موجود نیست');
+            }
+            $data = array_merge($data, $storedData);
+        }
 
         $d = $data['lockData'];
         $addData = $data['additionalData'];
@@ -441,7 +538,8 @@ class exclusiveTour extends clientAuth {
             $ent_ids = implode(',', array_column($ent, 'id'));
         }
         $url = $this->apiAddress . "Tour/Lock/" . $data['requestNumber'];
-        $d['UserName'] = $this->username;
+        $d['UserName'] = $this->username ?? $infoSource['Username'];
+        $d['isRepetExclusiveTour'] = $isRepeat;
         $d['subAgencyId'] = '';
         $agencyInfo = $this->getController('agency')->subAgencyInfo();
         if ($agencyInfo != null && !empty($agencyInfo['sepehr_username']) && !empty($agencyInfo['sepehr_password'])) {
@@ -454,7 +552,6 @@ class exclusiveTour extends clientAuth {
             unset($Passengers['isIranian']);
         }
         unset($Passengers);
-
 
 
 
@@ -503,8 +600,10 @@ class exclusiveTour extends clientAuth {
             'desti_city' => $result['Routes']['Output'][0]['ArrivalCode'],
             'date_flight' => $result['Routes']['Output'][0]['DepartureDate'],
             'time_flight' => $result['Routes']['Output'][0]['DepartureTime'],
+            'fareName' => $result['Routes']['Output'][0]['FareName'],
             'ret_date_flight' => $result['Routes']['Return'][0]['DepartureDate'],
             'ret_time_flight' => $result['Routes']['Return'][0]['DepartureTime'],
+            'fareName_return' => $result['Routes']['Return'][0]['FareName'],
             'total_price' => $result['FlightTotalPrice'] + $result['HotelTotalPrice'],
             'total_flight_price' => $result['FlightTotalPrice'],
             'total_hotel_price' => $result['HotelTotalPrice'],
@@ -548,6 +647,7 @@ class exclusiveTour extends clientAuth {
                 'passenger_family' => $p['LastName'],
                 'passenger_birthday' => $p['DateOfBirth'],
                 'passenger_national_code' => $p['NationalCode'],
+                'passenger_title' => $p['PassengerTitle'],
                 'passportCountry' => $p['Nationality'],
                 'passportNumber' => $p['PassportNumber'],
                 'passenger_age' => $p['PassengerType']
@@ -567,31 +667,51 @@ class exclusiveTour extends clientAuth {
     }
 
     public function Book($data) {
+        $isRepeat = $data['isRepetExclusiveTour'];
+        if ($isRepeat) {
+            if (TYPE_ADMIN != 1) {
+                return functions::withError(null, 403, 'دسترسی به رزرو مجدد تور مجاز نیست');
+            }
+            $rows = $this->getModel('exclusiveTourBaseModel')->get(['*'])
+                ->where('request_number', $data['request_number'])
+                ->where('factor_number', $data['factorNumber'])->all();
+            $infoSource = $this->exclusiveTourAuth($rows[0]['client_id']);
+            $dbName = functions::getClientInfo($rows[0]['client_id'])['DbName'];
+            if (empty($rows)) {
+                return functions::withError(null, 404, 'رزرو تور یافت نشد');
+            }
+            $storedData = $this->buildStoredLockData($rows);
+            if (empty($storedData['lockData']['Rooms'])) {
+                return functions::withError(null, 400, 'اطلاعات اتاق رزرو موجود نیست');
+            }
+            $data = array_merge($data, $storedData);
+        }
         $Model = Load::library('Model');
         $ModelBase = Load::library('ModelBase');
 
         $url = $this->apiAddress . "Tour/Book/" . $data['request_number'];
 
-        $d['UserName'] = $this->username;
-        $d['SourceId'] = $data['api_id'];
+        $d['UserName'] = $this->username ?? $infoSource['Username'];
+        $d['SourceId'] = $data['api_id'] ?? $data['lockData']['SourceId'];
 
         $d['subAgencyId'] = '';
         $agencyInfo = $this->getController('agency')->subAgencyInfo();
         if ($agencyInfo != null && !empty($agencyInfo['sepehr_username']) && !empty($agencyInfo['sepehr_password'])) {
             $d['subAgencyId'] = $agencyInfo['id'];
         }
-
         if (Session::IsLogin()) {
             $userId = Session::getUserId();
         }
 
         $user =    $this->getModel('membersModel')->getMemberById($userId);
-        functions::insertLog('$user: ' . json_encode($user) , '000shojaee');
         $passengerMobile = $user['mobile'];
         if(empty($user['mobile'])){
-            $infoClient = functions::getClientInfo(CLIENT_ID);
-            functions::insertLog('$infoClient: ' . json_encode($infoClient) , '000shojaee');
-            $passengerMobile = $infoClient['Mobile'];
+            if(!empty($rows[0]['member_mobile'])){
+                $passengerMobile = $rows[0]['member_mobile'];
+            }else{
+                $infoClient = functions::getClientInfo(CLIENT_ID);
+                $passengerMobile = $infoClient['Mobile'];
+            }
         }
         $d['passengerMobile'] = $passengerMobile;
         $d['passengerEmail'] = $user['email'];
@@ -599,12 +719,11 @@ class exclusiveTour extends clientAuth {
 
         $JsonArray = json_encode($d);
 
-
         $result = functions::curlExecution($url, $JsonArray, 'yes');
 
 
 
-            if (!empty($result) && $result['curl_error'] == false && !empty($result['Pnr'])) {
+        if (!empty($result) && $result['curl_error'] == false && !empty($result['Pnr'])) {
 
 //                $email_buyer      = $data['member_email'];
 //                if (isset($email_buyer) && !empty($email_buyer)) {
@@ -634,44 +753,49 @@ class exclusiveTour extends clientAuth {
 //                $members = Load::controller( 'members' );
 //                $members->SendEmailForOther($email_buyer, $data['request_number']);
 
-                $BookFlight['successfull'] = 'book';
-                $BookFlight['provider_ref'] = $result['Pnr'];
-                $condition = "request_number='{$data['request_number']}'";
-                $Model->setTable("book_exclusive_tour_tb");
-                $res = $Model->update($BookFlight, $condition);
-                if ($res) {
-                    $ModelBase->setTable("report_exclusive_tour_tb");
-                    $ModelBase->update($BookFlight, $condition);
-                }
-
-                return $result;
+            $BookFlight['successfull'] = 'book';
+            $BookFlight['provider_ref'] = $result['Pnr'];
+            $condition = "request_number='{$data['request_number']}'";
+            if(TYPE_ADMIN == 1){
+                $this->agency->agencyModel()->getPDO()->query("USE `$dbName`");
             }
-            else {
-
-                $MessageError = functions::ShowError($result['Messages']['errorCode']);
-
-                $data_error['message'] = str_replace('\'','',$result['Messages']['errorMessage']);
-                $data_error['message_fa'] = $MessageError;
-                $data_error['client_id'] = CLIENT_ID;
-                $data_error['messageCode'] = $result['Messages']['errorCode'];
-                $data_error['request_number'] = $data['request_number'];
-                $data_error['origin'] = $data['origin_city'];
-                $data_error['destination'] = $data['desti_city'];
-                $data_error['action'] = 'Book';
-                $data_error['creation_date_int'] = time();
-                $this->getController('logErrorExclusiveTour')->insertLogErrorExclusiveTour($data_error);
-
-                $BookFlight['successfull'] = 'error';
-                $condition = "request_number='{$data['request_number']}'";
-                $Model->setTable("book_exclusive_tour_tb");
-                $res = $Model->update($BookFlight, $condition);
-                if ($res) {
-                    $ModelBase->setTable("report_exclusive_tour_tb");
-                    $ModelBase->update($BookFlight, $condition);
-                }
-
-                return false;
+            $Model->setTable("book_exclusive_tour_tb");
+            $res = $Model->update($BookFlight, $condition);
+            if ($res) {
+                $ModelBase->setTable("report_exclusive_tour_tb");
+                $ModelBase->update($BookFlight, $condition);
             }
+
+            return $result;
+        }
+        else {
+
+            $MessageError = functions::ShowError($result['Messages']['errorCode']);
+
+            $data_error['message'] = str_replace('\'','',$result['Messages']['errorMessage']);
+            $data_error['message_fa'] = $MessageError;
+            $data_error['client_id'] = CLIENT_ID;
+            $data_error['messageCode'] = $result['Messages']['errorCode'];
+            $data_error['request_number'] = $data['request_number'];
+            $data_error['origin'] = $data['origin_city'];
+            $data_error['destination'] = $data['desti_city'];
+            $data_error['action'] = 'Book';
+            $data_error['creation_date_int'] = time();
+            $this->getController('logErrorExclusiveTour')->insertLogErrorExclusiveTour($data_error);
+            $BookFlight['successfull'] = 'error';
+            $condition = "request_number='{$data['request_number']}'";
+            if(TYPE_ADMIN == 1){
+                $this->agency->agencyModel()->getPDO()->query("USE `$dbName`");
+            }
+            $Model->setTable("book_exclusive_tour_tb");
+            $res = $Model->update($BookFlight, $condition);
+            if ($res) {
+                $ModelBase->setTable("report_exclusive_tour_tb");
+                $ModelBase->update($BookFlight, $condition);
+            }
+
+            return false;
+        }
 
     }
     public function clientExclusiveTourData()

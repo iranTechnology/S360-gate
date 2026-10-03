@@ -67,6 +67,7 @@ function reReserve(factorNum, RequestNumber, dir) {
         $.ajax({
             type: 'POST',
             url: amadeusPath + 'user_ajax.php',
+            dataType: 'text',
             data: {
                 flag: 'buyByCreditLocal',
                 factorNum: factorNum,
@@ -90,7 +91,7 @@ function reReserve(factorNum, RequestNumber, dir) {
                         }),
                         success: function (data) {
 
-                            resolve(true);
+                            resolve(data && data.status === 'success' && data.code === 200);
 
                         },
                         error: function () {
@@ -102,6 +103,9 @@ function reReserve(factorNum, RequestNumber, dir) {
                 }
 
             },
+            error: function (xhr, status, error) {
+                reject(error || status);
+            }
         });
     });
 }
@@ -178,8 +182,8 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                                             text: 'انصراف',
                                             btnClass: 'btn-red',
                                             action: function() {
-                                                loader?.style && (loader.style.display = 'block');
-                                                loaderLd?.style && (loaderLd.style.display = 'inline-block');
+                                                loader?.style && (loader.style.display = 'none');
+                                                loaderLd?.style && (loaderLd.style.display = 'none');
                                             }
                                         }
                                     }
@@ -198,8 +202,8 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                                 textAlign: 'right',
                                 stack: 6
                             });
-                            loader?.style && (loader.style.display = 'block');
-                            loaderLd?.style && (loaderLd.style.display = 'inline-block');
+                            loader?.style && (loader.style.display = 'none');
+                            loaderLd?.style && (loaderLd.style.display = 'none');
                         }
                     }
                     catch (error) {
@@ -226,8 +230,8 @@ async function confirmReservationRequestAgain(el, RequestNumber, IdMember, Sourc
                                 stack: 6
                             });
                         }
-                        loader?.style && (loader.style.display = 'block');
-                        loaderLd?.style && (loaderLd.style.display = 'inline-block');
+                        loader?.style && (loader.style.display = 'none');
+                        loaderLd?.style && (loaderLd.style.display = 'none');
                     }
                 }
             },
@@ -243,6 +247,9 @@ async function proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderL
     try {
         let reReserveResult = await reReserve(factorNum, RequestNumber, dir);
 
+        loader?.style && (loader.style.display = 'none');
+        loaderLd?.style && (loaderLd.style.display = 'none');
+
         if (reReserveResult) {
             $.toast({
                 heading: 'صدور موفق',
@@ -255,32 +262,32 @@ async function proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderL
                 stack: 6
             });
         } else {
-            $.toast({
-                heading: 'خطا در صدور',
-                text: 'صدور مجدد رزرو با خطا مواجه گردید',
-                position: 'top-right',
-                loaderBg: '#fff',
-                icon: 'error',
-                hideAfter: 4000,
-                textAlign: 'right',
-                stack: 6
-            });
+            // $.toast({
+            //     heading: 'خطا در صدور',
+            //     text: 'صدور مجدد رزرو با خطا مواجه گردید',
+            //     position: 'top-right',
+            //     loaderBg: '#fff',
+            //     icon: 'error',
+            //     hideAfter: 4000,
+            //     textAlign: 'right',
+            //     stack: 6
+            // });
         }
     } catch (error) {
-        $.toast({
-            heading: 'خطا',
-            text: 'خطای غیرمنتظره در صدور رزرو رخ داد',
-            position: 'top-right',
-            loaderBg: '#fff',
-            icon: 'error',
-            hideAfter: 4000,
-            textAlign: 'right',
-            stack: 6
-        });
+        // $.toast({
+        //     heading: 'خطا',
+        //     text: 'خطای غیرمنتظره در صدور رزرو رخ داد',
+        //     position: 'top-right',
+        //     loaderBg: '#fff',
+        //     icon: 'error',
+        //     hideAfter: 4000,
+        //     textAlign: 'right',
+        //     stack: 6
+        // });
     }
 
-    loader?.style && (loader.style.display = 'block');
-    loaderLd?.style && (loaderLd.style.display = 'inline-block');
+    loader?.style && (loader.style.display = 'none');
+    loaderLd?.style && (loaderLd.style.display = 'none');
 
     setTimeout(() => {
         location.reload();
