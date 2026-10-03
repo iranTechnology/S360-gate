@@ -20,23 +20,11 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:">اقامت</a>
-                                <ul class="nav-dropdown">
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
+                                <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
 
-                                            هتل داخلی
+                                    اقامت
 
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">
-
-                                            هتل خارجی
-
-                                        </a>
-                                    </li>
-                                </ul>
+                                </a>
                             </li>
                             <li>
                                 <a href='{$smarty.const.ROOT_ADDRESS}/page/package'>پرواز + هتل</a>
@@ -60,20 +48,20 @@
                                         </ul>
                                         {/if}
                                     </li>
-                                    <li>
-                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور خارجی</a>
-                                        {if $objResult->ReservationTourCountries('yes')}
-                                        <ul class="nav-dropdown nav-menu_ul">
-                                            {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries('yes')}
-                                            <li>
-                                                <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/{$item_tour.id}-all/all/all">
-                                                    {($smarty.const.SOFTWARE_LANG == 'fa') ? $item_tour.name : $item_tour.name_en}
-                                                </a>
-                                            </li>
-                                            {/foreach}
-                                        </ul>
-                                        {/if}
-                                    </li>
+{*                                    <li>*}
+{*                                        <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور خارجی</a>*}
+{*                                        {if $objResult->ReservationTourCountries('yes')}*}
+{*                                        <ul class="nav-dropdown nav-menu_ul">*}
+{*                                            {foreach key=key_tour item=item_tour from=$objResult->ReservationTourCountries('yes')}*}
+{*                                            <li>*}
+{*                                                <a href="{$smarty.const.ROOT_ADDRESS}/resultTourLocal/1-all/{$item_tour.id}-all/all/all">*}
+{*                                                    {($smarty.const.SOFTWARE_LANG == 'fa') ? $item_tour.name : $item_tour.name_en}*}
+{*                                                </a>*}
+{*                                            </li>*}
+{*                                            {/foreach}*}
+{*                                        </ul>*}
+{*                                        {/if}*}
+{*                                    </li>*}
                                     <li>
                                         <a href='{$smarty.const.ROOT_ADDRESS}/page/tour' class='all-tour-menu'>جستجوی تورها</a>
                                     </li>
