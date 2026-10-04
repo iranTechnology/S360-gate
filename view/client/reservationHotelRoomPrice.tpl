@@ -40,7 +40,7 @@
         {$AllTypeRoomHotel = "`$AllTypeRoomHotel``$room.id_room`/"}
         {$TotalNumberRoom = $TotalNumberRoom + 1}
 
-
+        {if $objResult->RoomPrices[$room.id_room]['DBL'][$startDate]['PriceOnline'] != 0}
         <div class="hotel-detail-room-list special_list_room">
             <div class="hotel-rooms-name-container">
                 <input type="hidden" name="statusDiscount" id="statusDiscount" value="{$objResult->RoomPrices[$room.id_room]['DBL'][$startDate]['statusDiscount']}">
@@ -603,6 +603,8 @@
                 </div>
             </div>
         </div>
+        {/if}
+
     {/if}
 {/foreach}
 
