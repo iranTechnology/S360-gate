@@ -27,10 +27,10 @@
                                 </a>
                             </li>
                             <li>
-                                <a href='{$smarty.const.ROOT_ADDRESS}/page/package'>پرواز + هتل</a>
+                                <a href='{$smarty.const.ROOT_ADDRESS}/page/package'>تور</a>
                             </li>
                             <li>
-                                <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تور</a>
+                                <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">تورهای سازمانی</a>
                                 {if $objResult->ReservationTourCities('=1', 'return') || $objResult->ReservationTourCountries('yes')}
                                 <ul class="nav-dropdown">
                                     <li>
