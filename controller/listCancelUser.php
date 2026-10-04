@@ -336,6 +336,11 @@ WHERE 1=1
                 $data['Status'] = "RequestClient";
                 $data['DateRequestCancelClientInt'] = time();
             }
+
+            if($result['PercentNoMatter']=='Yes'){//اگر درصد برای کاربر اهمیت ندارد یک مرحله را رد کنیم
+                $data['Status'] = "ConfirmClient";
+            }
+
             $isCreditPayment =$Param['isCreditPayment'];
 
             if($isCreditPayment =='true')
