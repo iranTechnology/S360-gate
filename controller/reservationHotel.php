@@ -2036,10 +2036,11 @@ ORDER BY HRP.id_same;
         }
         $this->hotelRooms = $infoRooms;
 
+        $userHotelCondition = $preferCurrentDates ? "id_hotel='{$idHotel}' AND " : '';
         $sqlUser
             = " SELECT discount, maximum_capacity, user_type
                  FROM reservation_hotel_room_prices_tb 
-                 WHERE id_hotel='{$idHotel}' AND id_same='{$idSame}' AND is_del='no'{$dateCondition}
+                 WHERE {$userHotelCondition}id_same='{$idSame}' AND is_del='no'{$dateCondition}
                  GROUP BY user_type
                  ORDER BY id";
         $users = $Model->select($sqlUser);
