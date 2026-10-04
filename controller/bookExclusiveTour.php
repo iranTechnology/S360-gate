@@ -97,7 +97,12 @@ class bookExclusiveTour extends exclusiveTour
             ->where('factor_number', $factorNumber)
             ->limit(0, 1)
             ->find();
-
+        if(TYPE_ADMIN == 1){
+            $info = $this->reportModel->get(['*'])
+                ->where('factor_number', $factorNumber)
+                ->limit(0, 1)
+                ->find();
+        }
 
         $resultBook = false;
 
