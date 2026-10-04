@@ -3430,6 +3430,7 @@ class functions {
                     AND is_del = 'no'
             ";
             $tour  = $Model->select( $sql );
+
             if ( ! empty( $tour ) ) {
                 return 'PrivatePortalTour';
             } else {

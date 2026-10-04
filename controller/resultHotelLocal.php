@@ -1527,6 +1527,7 @@ class resultHotelLocal extends apiHotelLocal
                 }
 
 
+
                 if ($this->IsLogin || $room['guest_user_status'] == 'yes') {
                     if (isset($calculated)) {
                         $online_price = $calculated['Online'];
@@ -1559,7 +1560,10 @@ class resultHotelLocal extends apiHotelLocal
 
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = 'yes';
 
-                } else {
+                }
+                else {
+
+
                     if (isset($calculated)) {
                         $online_price = $calculated['Online'];
                         $board_price = $calculated['Board'];
@@ -1592,7 +1596,8 @@ class resultHotelLocal extends apiHotelLocal
                     $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = 'no';
 
                 }
-            } elseif (($room['flat_type'] == 'ECHD')) {
+            }
+            elseif (($room['flat_type'] == 'ECHD')) {
                 if (isset($calculated)) {
                     $online_price = $calculated['Online'];
                     $board_price = $calculated['Board'];
@@ -1657,7 +1662,8 @@ class resultHotelLocal extends apiHotelLocal
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['PriceCurrencyForView'] = $room['currency_price'];
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['CurrencyTypeForView'] = $room['currency_type'];
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = ($this->IsLogin || $room['guest_user_status'] == 'yes') ? 'yes' : 'no';
-            } elseif (($room['flat_type'] == 'EXT')) {
+            }
+            elseif (($room['flat_type'] == 'EXT')) {
                 if (isset($calculated)) {
                     $online_price = $calculated['Online'];
                     $board_price = $calculated['Board'];
@@ -1721,7 +1727,8 @@ class resultHotelLocal extends apiHotelLocal
                 $this->RoomPrices[$room['id_room']][$room['flat_type']][$date]['statusDiscount'] = ($this->IsLogin || $room['guest_user_status'] == 'yes') ? 'yes' : 'no';
 
 
-            } else {
+            }
+            else {
                 if (isset($calculated)) {
                     $online_price = $calculated['Online'];
                     $board_price = $calculated['Board'];

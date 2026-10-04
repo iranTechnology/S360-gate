@@ -4576,8 +4576,11 @@ class reservationTour extends clientAuth
                     $discountedPrice = $price_change;
                 } else {
                     // discount exists
-                    $price_change = $this->doPriceChange($discountVal, $package['change_price']);
+                    $do_discount = ($objResultTour->doDiscount($tour_id, ['minPriceR' => $package[$room_type['packagePriceName']]]));
+                    $price_change = $this->doPriceChange($do_discount['discountedMinPriceR'], $package['change_price']);
                     $discountedPrice = $price_change;
+
+
                 }
                 if(functions::isEnableSetting('toman')) {
                     $final_price = round($discountedPrice / 10) ;
@@ -5006,7 +5009,7 @@ class reservationTour extends clientAuth
 
         foreach ($room_types as $room_key => $room_type) {
 
-            $do_discount = ($resultTourLocalController->doDiscount($result_get_tour['id_same'], ['minPriceR' => $result_get_tour[$room_type['packagePriceName']]]));
+            $do_discount = ($resultTourLocalController->doDiscount($result_get_tour['id'], ['minPriceR' => $result_get_tour[$room_type['packagePriceName']]]));
 
 //            if (empty($do_discount['discountedMinPriceR'])) {
 //                $final_price = $result_get_tour[$room_type['packagePriceName']] + $result_get_tour['change_price'];

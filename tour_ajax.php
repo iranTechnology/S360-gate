@@ -1195,7 +1195,8 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'tourRegistration') {
     echo $result;
 
 
-} elseif (isset($_POST['flag']) && $_POST['flag'] == 'getResultTourPackage') {
+}
+elseif (isset($_POST['flag']) && $_POST['flag'] == 'getResultTourPackage') {
     unset($_POST['flag']);
 
 

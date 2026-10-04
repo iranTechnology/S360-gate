@@ -1,7 +1,5 @@
 <?php
 
-
-
 //@ini_set('display_errors', 'on');
 
 /**
@@ -10,6 +8,8 @@
  */
 class factorTourLocal extends clientAuth
 {
+
+
     public $tourBookingInfo = array();
     public $IsLogin;
     public $counterId;
@@ -81,7 +81,6 @@ class factorTourLocal extends clientAuth
         if(functions::isEnableSetting('toman')) {
             $totalPrice = $totalPrice * 10 ;
         }
-
 
         $totalOriginPrice = filter_var($_POST['totalOriginPrice'], FILTER_SANITIZE_STRING);
         if(functions::isEnableSetting('toman')) {
@@ -160,7 +159,6 @@ class factorTourLocal extends clientAuth
             $this->tourBookingInfo['tour_origin_region_id'] = $resultInfoTour['origin_region_id'];
             $this->tourBookingInfo['tour_origin_region_name'] = $resultInfoTour['origin_region_name'];
 
-
             $doDiscount=$objResultTour->doDiscount($idTour,['minPriceR'=>$totalOriginPrice]);
             $infoTourRoutByIdTour = ($_POST['is_api']) ? $this->info_api->infoTourRoutByIdTour(['tour_id'=>$idTour]): $objReservationTour->infoTourRoutByIdTour($idTour);
             $ServiceDiscount = '';
@@ -184,8 +182,7 @@ class factorTourLocal extends clientAuth
                 $this->tourBookingInfo['tour_discount'] = '';
             }
             $this->tourBookingInfo['tour_counter_id'] = $this->counterId;
-            $this->tourBookingInfo['tour_origin_price'] = $doDiscount['minPriceR'];
-
+            $this->tourBookingInfo['tour_origin_price'] = $totalOriginPrice;
           
 
             $sql = " SELECT name, family, mobile FROM members_tb WHERE id='{$resultInfoTour['user_id']}'";
@@ -287,6 +284,7 @@ class factorTourLocal extends clientAuth
         $this->tourBookingInfo['tour_payments_price'] = $paymentPrice;
         $this->tourBookingInfo['tour_payments_price_a'] = 0;
         $this->tourBookingInfo['total_price'] =  ($totalPrice + $changedPrice) ;
+        $this->tourBookingInfo['discount_amount'] =  $totalOriginPrice - $totalPrice ;
         $this->tourBookingInfo['factor_number'] = $factorNumber;
         $this->tourBookingInfo['client_id'] = CLIENT_ID;
         $this->tourBookingInfo['is_api'] = $_POST['is_api'];

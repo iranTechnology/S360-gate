@@ -3,7 +3,7 @@
 {load_presentation_object filename="currencyEquivalent" assign="objCurrencyEquivalent"}
 
 {$objPublic->getAllCounter('all')} {*گرفتن لیست انواع کانتر*}
-{$objResult->infoAllHotelRooms($smarty.get.idHotel, $smarty.get.idSame)}
+{$objResult->infoAllHotelRooms($smarty.get.idHotel, $smarty.get.idSame, true)}
 
 <div class="container-fluid">
     <div class="row bg-title">

@@ -3010,14 +3010,9 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditTourLocal') {
             $objMember->decreaseCounterCredit($amount, $factorNumber, $reserveInfo, 'reservationTour', 'no');
         }
 
-        // Caution: اعتبارسنجی صاحب سیستم
-        $check = $objTransaction->checkCredit($total_price);
-        if ($check['status'] == 'TRUE') {
-
-
             // Caution: کاهش اعتبار صاحب سیستم
 
-            $reduceTransaction = $objTransaction->decreaseSuccessCredit($total_price, $factorNumber, $comment, 'buy_reservation_tour');
+            $reduceTransaction = $objTransaction->decreaseSuccessCredit(0, $factorNumber, $comment, 'buy_reservation_tour');
 
             if ($reduceTransaction) {
 
@@ -3026,9 +3021,6 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditTourLocal') {
                 echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
             }
 
-        } else {
-            echo 'error :' . functions::Xmlinformation('ChargeRialSystem');
-        }
 
 
     } else {
