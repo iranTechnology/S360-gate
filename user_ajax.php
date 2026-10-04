@@ -991,7 +991,6 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
         $total_amount += $amount[$direction];
         $total_amount_counter[$direction] = $amount[$direction];
     }
-
     $agencyInfo = Load::controller('agency')->subAgencyInfo();
     $isCounter = Load::controller('login')->isCounter();
     $isCounter = json_decode($isCounter);
@@ -1131,6 +1130,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
     }
     $total_amount = $reserveInfo[0]['total_price'];
 
+
     // Caution: اعتبارسنجی اعتبار کانتر
     if ($counterCredit > $total_amount) {
 
@@ -1197,11 +1197,11 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'memberRegister') {
 
 
 
-                if ($reduceTransaction) {
-                        echo 'success:' . $total_amount;
-        } else {
-                    echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
-                }
+            if ($reduceTransaction) {
+                echo 'success:' . $total_amount;
+            } else {
+                echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
+            }
 
 
         }
@@ -2678,21 +2678,21 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
     $ModelBase = Load::library('ModelBase');
 
     if (
-            $_POST['serviceType'] == 'PublicLocalHotel'
-            || $_POST['serviceType'] == 'PublicPortalHotel'
-            || $_POST['serviceType'] == 'PrivatePortalHotel'
-            || $_POST['serviceType'] == 'PrivateLocalHotel'
+        $_POST['serviceType'] == 'PublicLocalHotel'
+        || $_POST['serviceType'] == 'PublicPortalHotel'
+        || $_POST['serviceType'] == 'PrivatePortalHotel'
+        || $_POST['serviceType'] == 'PrivateLocalHotel'
     )
     {
-    $d['discount_code_amount'] = $_POST['discountAmount'];
-    $d['type_discount'] = $_POST['typeDiscount'];
-    $condition = " factor_number = '{$factorNumber}'";
-    $Model->setTable("book_hotel_local_tb");
-    $res = $Model->update($d, $condition);
-    if ($res) {
-        $ModelBase->setTable("report_hotel_tb");
-        $ModelBase->update($d, $condition);
-    }
+        $d['discount_code_amount'] = $_POST['discountAmount'];
+        $d['type_discount'] = $_POST['typeDiscount'];
+        $condition = " factor_number = '{$factorNumber}'";
+        $Model->setTable("book_hotel_local_tb");
+        $res = $Model->update($d, $condition);
+        if ($res) {
+            $ModelBase->setTable("report_hotel_tb");
+            $ModelBase->update($d, $condition);
+        }
     }
 
 
@@ -2826,7 +2826,7 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'check_credit_tour') {
     $reservation_tour = new reservationTour();
     $tour_status_changer = $reservation_tour->tourBookChanger($factorNumber, [
         //                'status'=>$status,
-            'payment_status' => $_POST['paymentStatus']
+        'payment_status' => $_POST['paymentStatus']
     ]);
 
 
@@ -2919,26 +2919,26 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditTourLocal') {
     $objDiscountCodes = Load::controller('discountCodes');
 
 
-        $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
-        $discountCode = $getDiscountCode['discountCode'];
+    $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
+    $discountCode = $getDiscountCode['discountCode'];
 
-        $getDiscountCodeByFactor = $objDiscountCodes->getPendingDiscountCodeByFactor($factorNumber);
-        $discountCodeAmount = $getDiscountCodeByFactor['amount'];
+    $getDiscountCodeByFactor = $objDiscountCodes->getPendingDiscountCodeByFactor($factorNumber);
+    $discountCodeAmount = $getDiscountCodeByFactor['amount'];
 
-        if ($discountCodeAmount && !empty($discountCodeAmount)) {
+    if ($discountCodeAmount && !empty($discountCodeAmount)) {
 
-            $Model = Load::library('Model');
-            $ModelBase = Load::library('ModelBase');
+        $Model = Load::library('Model');
+        $ModelBase = Load::library('ModelBase');
 
-            $d['discount_code_amount'] = $discountCodeAmount;
-            $condition = " factor_number = '{$factorNumber}'";
-            $Model->setTable("book_tour_local_tb");
-            $res = $Model->update($d, $condition);
-            if ($res) {
-                $ModelBase->setTable("report_tour_tb");
-                $ModelBase->update($d, $condition);
-            }
+        $d['discount_code_amount'] = $discountCodeAmount;
+        $condition = " factor_number = '{$factorNumber}'";
+        $Model->setTable("book_tour_local_tb");
+        $res = $Model->update($d, $condition);
+        if ($res) {
+            $ModelBase->setTable("report_tour_tb");
+            $ModelBase->update($d, $condition);
         }
+    }
 
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
 
