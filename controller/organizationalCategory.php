@@ -42,7 +42,7 @@ class organizationalCategory
     {
         $Model = Load::library('Model');
 
-        $query = "SELECT * FROM organization_users_tb WHERE organization_category_id='{$organization_id}'";
+        $query = "SELECT * FROM organization_users_tb WHERE organization_category_id='{$organization_id}' ORDER BY id DESC";
         return $Model->select($query);
     }
     #endregion
