@@ -1400,7 +1400,6 @@ class resultTourLocal extends clientAuth {
             $minPrice['CurrencyTitleEn'] = $currency['CurrencyTitleEn'];
             $minPrice['is_toman'] = $this->is_toman();
         }
-        
 
         return $minPrice;
     }
@@ -1671,7 +1670,6 @@ class resultTourLocal extends clientAuth {
 		foreach ( $countAllRooms as $countRoom ) {
 
 			$count = explode( ':', $countRoom );
-            functions::insertLog(json_encode($count) , '000000000ararara');
             switch ( $count[0] ) {
 				case 'oneBed':
 					$countSingleRoom = $count[1];
@@ -1916,6 +1914,12 @@ class resultTourLocal extends clientAuth {
 
             $package['currencyTitleFa'] = ( isset( $_POST['currencyTitleFa'] ) && $_POST['currencyTitleFa'] != '' ) ? $_POST['currencyTitleFa'] : '';
 
+            $do_discount = $this->doDiscount($infoTourPackage[0]['fk_tour_id'], ['minPriceR' => $total_price_package]);
+
+            if (!empty($do_discount['discountedMinPriceR'])) {
+                $total_price_package = $do_discount['discountedMinPriceR'];
+            }
+
             if(functions::isEnableSetting('toman')) {
                 $package['total_price_package'] = round($total_price_package/10);
             }else{
@@ -2059,35 +2063,17 @@ class resultTourLocal extends clientAuth {
 	 */
 	public function doDiscount( $id, array $minPrice, $web_service_type = 'private' ) {
 
-
-
-
-//        var_dump($id,  $minPrice, $web_service_type);
-//        die;
-//        if(  $_SERVER['REMOTE_ADDR']=='93.118.161.174'  ) {
-//            var_dump('aaaa');
-//            var_dump($id,  $minPrice, $web_service_type);
-//            var_dump('bbbb');
-//            die;
-//        }
-
 		$destination_country_id          = functions::getTypeServiceTour( 'reservation', $id );
 		$minPrice['discountedMinPriceR'] = null;
 		if ( $destination_country_id == 'PrivatePortalTour' ) {
-//            var_dump('22222');
-//
-//            die;
+
 			if ( ! empty( $this->portalServiceDiscount[ $web_service_type ] ) && $this->portalServiceDiscount[ $web_service_type ]['off_percent'] > 0 ) {
 				$price                           = $minPrice['minPriceR'];
 				$price                           = $price - ( ( $price * $this->portalServiceDiscount[ $web_service_type ]['off_percent'] ) / 100 );
 				$minPrice['discountedMinPriceR'] = $price;
 			}
 		} elseif ( $destination_country_id == 'PrivateLocalTour' ) {
-//            var_dump('aaaa');
-//            var_dump($this->localServiceDiscount[ $web_service_type ]);
-//            var_dump($this->localServiceDiscount[ $web_service_type ]['off_percent']);
-//            var_dump($minPrice['minPriceR']);
-//            die;
+
 			if ( ! empty( $this->localServiceDiscount[ $web_service_type ] ) && $this->localServiceDiscount[ $web_service_type ]['off_percent'] > 0 ) {
 				$price                           = $minPrice['minPriceR'];
 				$price                           = $price - ( ( $price * $this->localServiceDiscount[ $web_service_type ]['off_percent'] ) / 100 );
@@ -2138,7 +2124,15 @@ class resultTourLocal extends clientAuth {
             ->where('counter_type_id', $counter_type_id)
             ->find();
 
+
         $price = $minPrice['minPriceR'];
+
+        $do_discount = $this->doDiscount($tour_id, ['minPriceR' => $price]);
+
+        if (!empty($do_discount['discountedMinPriceR'])) {
+            $discount['adult_amount'] += $price - $do_discount['discountedMinPriceR'];
+            $price = $do_discount['discountedMinPriceR'];
+        }
 
         $minPrice['discount'] = $discount;
         $minPrice['discount']['after_discount'] = $price;
@@ -2153,7 +2147,6 @@ class resultTourLocal extends clientAuth {
         }
         $minPrice['discountedMinPriceR'] = $price;
         $minPrice['discount']['counter_type_name'] =$discount_counter['name'] ;
-
 
 
         return $minPrice;

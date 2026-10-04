@@ -2955,6 +2955,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
     }
 
     public function getBookAllTour($param = '') {
+
+
+
         $Model = Load::library('Model');
         $id = Session::getUserId();
         $sql = "SELECT   
@@ -2967,6 +2970,10 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                     tour_name,
                     tour_type,
                     total_price,
+                    tour_total_price,
+                    tour_origin_price,
+                    tour_discount,
+                    discount_code_amount,
                     tour_night,
                     tour_day,
                     tour_id,
@@ -3015,7 +3022,16 @@ LEFT JOIN cancel_ticket_details_tb AS cd
             } else {
                 $bookList[$key]['tour_type'] = '';
             }
-            $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
+
+            if ( $item['tour_discount'] == '' ) {
+                $bookList[$key]['price_final'] = number_format( $item['total_price'] - $item['discount_code_amount'], 0, '.', ',');
+            } else {
+                $bookList[$key]['price_final'] =  '<span class="strikePrice" style="text-decoration: line-through;margin-left: 7px;">
+                                                            <span class="pice-tour">' . number_format( $item['tour_origin_price'] - $item['discount_code_amount'], 0, '.', ',' ) . '</span>
+                                                        </span>' . number_format( $item['tour_total_price'] - $item['discount_code_amount'], 0, '.', ',' );
+            }
+
+//            $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
             if ($item['tour_night'] > 0) {
                 $bookList[$key]['tour_night'] = $item['tour_night'] .' '. functions::Xmlinformation('Night');
             } else {
@@ -3984,7 +4000,10 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
         $sql = "
             SELECT
-                 'flight' As moduleTitle,                 
+                 'flight' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,     
                   passenger_name_en AS passenger_name_en,
@@ -4078,6 +4097,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'bus' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4171,6 +4193,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'train' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4265,6 +4290,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'gashttransfer' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4359,6 +4387,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'tour' As moduleTitle,
+                 tour_discount AS tour_discount,
+                 tour_origin_price AS tour_origin_price,
+                 tour_total_price AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4373,7 +4404,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   creation_date_int AS  creation_date_int,
                   status AS statusBook,
                   '' AS request_cancel, 
-                  '' AS discount_code_amount,
+                  discount_code_amount AS discount_code_amount,
                   '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
@@ -4452,6 +4483,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'hotel' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4545,6 +4579,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
               UNION
             SELECT
                  'insurance' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4639,6 +4676,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
       UNION
             SELECT
                  'visa' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4732,6 +4772,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                     UNION
             SELECT
                  'entertainment' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4826,6 +4869,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 UNION
             SELECT
                  'europcar' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4920,6 +4966,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
             
         SELECT
              'exclusivetour' AS moduleTitle,
+             '' AS tour_discount,
+             '' AS tour_origin_price,
+             '' AS tour_total_price,
               passenger_name AS passenger_name,
               passenger_family AS passenger_family,
               '' AS passenger_name_en,
@@ -5009,6 +5058,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
         UNION
     SELECT
      'cip' AS moduleTitle,
+     '' AS tour_discount,
+     '' AS tour_origin_price,
+     '' AS tour_total_price,
       passenger_name AS passenger_name,
       passenger_family AS passenger_family,
       '' AS passenger_name_en,
@@ -5630,7 +5682,13 @@ GROUP BY factor_number
                 } else {
                     $bookList[$key]['tour_type'] = '';
                 }
-                $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
+                if ( $item['tour_discount'] == '' ) {
+                    $bookList[$key]['price_final'] = number_format( $item['total_price'] - $item['discount_code_amount'], 0, '.', ',');
+                } else {
+                    $bookList[$key]['price_final'] =  '<span class="strikePrice" style="text-decoration: line-through;margin-left: 7px;">
+                                                            <span class="pice-tour">' . number_format( $item['tour_origin_price'] - $item['discount_code_amount'], 0, '.', ',' ) . '</span>
+                                                        </span>' . number_format( $item['tour_total_price'] - $item['discount_code_amount'], 0, '.', ',' );
+                }
                 if ($item['tour_night'] > 0) {
                     $bookList[$key]['tour_night'] = $item['tour_night'] .' '. functions::Xmlinformation('Night');
                 } else {
@@ -5692,6 +5750,7 @@ GROUP BY factor_number
                     'value' => $bookList[$key]['view_status']
                 ];
                 $result[$key]['factor_number'] = $item['factor_number'];
+
                 $result[$key]['price'] = $bookList[$key]['price_final'];
                 $result[$key]['info_list'] = [
                     [

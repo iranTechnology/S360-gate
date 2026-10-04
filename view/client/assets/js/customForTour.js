@@ -5121,6 +5121,7 @@ function triggerPackageRoomCount(_this,type) {
 
     visible_value.html(room_input.val())
     let final_package_price=0
+    let final_package_origin_price=0
     let final_prepayment_package_price=0
     let selected_rooms_count=0
     let selected_rooms_type={
@@ -5139,17 +5140,23 @@ function triggerPackageRoomCount(_this,type) {
         const each_room_coefficient=each_room_input.data('coefficient')
         const each_room_index=each_room_input.data('index-name')
         const each_room_price=each_room_input.data('price')
+        const each_room_origin_price=each_room_input.data('origin-price')
         const each_room_type=each_room_input.data('type')
         const each_room_value=each_room_input.val()
+
+
 
         const each_room_currency_price = each_room_input.data('currency-price')
         const each_room_currency_name = each_room_input.data('currency-name')
 
         if(each_person == 1) {
             final_package_price+=(each_room_value*each_room_price*each_room_coefficient)
+            final_package_origin_price+=(each_room_value*each_room_origin_price*each_room_coefficient)
         }else{
-            final_package_price+=(each_room_value*each_room_price)
+            final_package_price+=(each_room_value*each_room_origin_price)
+            final_package_origin_price+=(each_room_value*each_room_origin_price)
         }
+
 
         if (is_request == 1 && each_room_currency_price > 0 && typeTourReserve != 'oneDayTour') {
 
@@ -5262,6 +5269,7 @@ function triggerPackageRoomCount(_this,type) {
         });
     }
 
+
     selected_package_price.html(`<span data-name="selected-package-price">${final_package_price_html}</span>`);
 
     package_form.find('[name="passengerCount"]').val(selected_rooms_count)
@@ -5271,6 +5279,7 @@ function triggerPackageRoomCount(_this,type) {
     package_form.find('[name="countRoom"]').val(room_string)
     package_form.find('[name="totalPrice"]').val(final_package_price)
     package_form.find('[name="totalPriceA"]').val(currency_total)
+    package_form.find('[name="totalOriginPrice"]').val(final_package_origin_price)
 
 }
 

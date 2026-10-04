@@ -454,7 +454,7 @@
                         {if $smarty.post.typeTourReserve neq 'oneDayTour'}
                             {assign var="prePaymentPrice" value=$objResult->prePaymentCalculate($arrayTourPackage['total_price_package'] , $objFactor->tourBookingInfo['prepayment_percentage'])}
                         {else}
-                            {assign var="prePaymentPrice" value=$objResult->prePaymentCalculate($smarty.post.totalPrice)}
+                            {assign var="prePaymentPrice" value=$objResult->prePaymentCalculate($smarty.post.totalPrice , $objFactor->tourBookingInfo['prepayment_percentage'])}
                         {/if}
                     {/if}
 
