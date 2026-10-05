@@ -5180,14 +5180,9 @@ function triggerPackageRoomCount(_this,type) {
         }
 
 
-        selected_rooms_count+=Number(each_room_value*each_room_coefficient)
-        if(each_room_value > 0 && each_room_type==='adult' ) {
-
-            selected_rooms_type[each_room_type]+=Number(each_room_coefficient)
-        }else{
-
-            selected_rooms_type[each_room_type]+=Number(each_room_value)
-        }
+        const each_room_passenger_count = Number(each_room_value) * Number(each_room_coefficient)
+        selected_rooms_count += each_room_passenger_count
+        selected_rooms_type[each_room_type] += each_room_passenger_count
 
         if(each_room_value>0){
             room_string+=each_room_index+':'+each_room_value+'|'
