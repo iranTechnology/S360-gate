@@ -456,6 +456,8 @@ class exclusiveTour extends clientAuth {
                 'PassportNumber' => $row['passportNumber'],
                 'DateOfBirth' => $row['passenger_birthday'],
                 'Nationality' => $row['passportCountry'],
+                'passengerNationality' => $row['passengerNationality'],
+                'passportExpire' => $row['passportExpire'],
                 'isIranian' => strtoupper($row['passportCountry']) === 'IR'
             ];
         }
@@ -593,6 +595,8 @@ class exclusiveTour extends clientAuth {
 
         $result = functions::curlExecution($url, $JsonArray, 'yes');
 
+
+
         $result['entertainments'] = $ent;
         $adtCount = count(array_filter($result['Passengers'], function($p) {
             return strtolower($p['PassengerType']) === 'adt';
@@ -673,6 +677,7 @@ class exclusiveTour extends clientAuth {
 
         $book_exclusive_tour_tb = $this->getModel('exclusiveTourModel');
         $report_exclusive_tour_tb = $this->getModel('exclusiveTourBaseModel');
+        functions::insertLog('test s: ' . json_encode($result['Passengers']) , '000shojaee');
         foreach ($result['Passengers'] as $p) {
             $passengerData = array(
                 'passenger_name' => $p['FirstName'],
@@ -682,7 +687,9 @@ class exclusiveTour extends clientAuth {
                 'passenger_title' => $p['PassengerTitle'],
                 'passportCountry' => $p['Nationality'],
                 'passportNumber' => $p['PassportNumber'],
-                'passenger_age' => $p['PassengerType']
+                'passenger_age' => $p['PassengerType'],
+                'passenger_nationality' => $p['PassengerNationality'],
+                'passport_expire' => $p['PassportExpire']
             );
             $insert_book = $book_exclusive_tour_tb->insertWithBind(array_merge($tourData, $passengerData));
             if ($insert_book) {

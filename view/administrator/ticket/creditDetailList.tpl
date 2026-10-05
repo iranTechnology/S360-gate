@@ -6,7 +6,7 @@
 {assign var="info_currency" value=$objAgency->showInfoCurrency($objAgency->list['type_currency'])}
 {if $objAgency->list['type_payment'] eq 'currency'}
     {assign value=0 var="format_desimal"}
-    {else}
+{else}
     {assign value=0 var="format_desimal"}
 {/if}
 <div class="container-fluid">
@@ -46,10 +46,10 @@
                                 <span class="btn-label"><i class="mdi mdi-credit-card-plus"></i></span>افزودن/کسر اعتبار
                              </a>
                          {*{else}*}
-                            {*<a href="sendAgencyToBank"  class="btn btn-info waves-effect waves-light" type="button">*}
-                                {*<span class="btn-label"><i class="mdi mdi-credit-card-plus"></i></span>افزودن اعتبار*}
-                             {*</a>*}
-                         {*{/if}*}
+                        {*<a href="sendAgencyToBank"  class="btn btn-info waves-effect waves-light" type="button">*}
+                        {*<span class="btn-label"><i class="mdi mdi-credit-card-plus"></i></span>افزودن اعتبار*}
+                        {*</a>*}
+                        {*{/if}*}
 
                 </span>
 
@@ -59,12 +59,15 @@
                         <thead>
                         <tr>
                             <th>ردیف</th>
-                            <th>افزایش</th>
-                            <th>خرید</th>
-                            <th>باقی مانده</th>
-                            <th>علت تراکنش</th>
-                            <th>تاریخ ثبت</th>
                             <td>توضیحات</td>
+                            <th>تاریخ ثبت</th>
+                            <th>علت تراکنش</th>
+                            <th>افزایش</th>
+                            <th>کاهش</th>
+                            <th>باقی مانده</th>
+
+
+
                         </tr>
                         </thead>
                         <tbody>
@@ -72,23 +75,25 @@
                         {assign var="remain" value=$objCreditDetail->total_transaction}
                         {foreach key=key item=item from=$objCreditDetail->list}
                             {$number=$number+1}
-                            <tr>
-                                <td>{$number}</td>
-                                <td>{if $item.type eq 'increase'}
-                                        {$item.credit|number_format:$format_desimal}
-                                    {else}
-                                        0
-                                    {/if} </td>
-                                <td>{if $item.type eq 'decrease'}{$item.credit|number_format:$format_desimal}{else}0{/if} </td>
-                                <td><span>{$remain|number_format:$format_desimal}</span>
-                                    {if $item.type=='increase'}
-                                        {$remain = $remain - $item.credit}
-                                    {else}
-                                        {$remain = $remain + $item.credit}
-                                    {/if}
-                                    <td>{if $item.reason eq 'buy'} خرید خدمات{elseif  $item.reason eq 'harvest'} کسر از حساب{elseif  $item.reason eq 'deposit'} واریز به حساب{elseif  $item.reason eq 'settle'} تسویه اعتبار غیر مالی{/if}</td>
-                                <td style='direction: ltr;'>{$objCreditDetail->timeToDateJalali($item.creation_date_int)}</td>
-                                <td>{$item.comment}</td>
+                            <tr
+                            <td>{$number}</td>
+                            <td>{$item.comment}</td>
+                            <td style='direction: ltr;'>{$objCreditDetail->timeToDateJalali($item.creation_date_int)}</td>
+                            <td>{if $item.reason eq 'buy'} خرید خدمات{elseif  $item.reason eq 'harvest'} کسر از حساب{elseif  $item.reason eq 'deposit'} واریز به حساب{elseif  $item.reason eq 'settle'} تسویه اعتبار غیر مالی{/if}</td>
+                            <td><span>{$remain|number_format:$format_desimal}</span>
+                                {if $item.type=='increase'}
+                                    {$remain = $remain - $item.credit}
+                                {else}
+                                    {$remain = $remain + $item.credit}
+                                {/if}
+
+                            <td>{if $item.type eq 'increase'}
+                                    {$item.credit|number_format:$format_desimal}
+                                {else}
+                                    0
+                                {/if} </td>
+                            <td>{if $item.type eq 'decrease'}{$item.credit|number_format:$format_desimal}{else}0{/if} </td>
+
                             </tr>
                         {/foreach}
                         </tbody>

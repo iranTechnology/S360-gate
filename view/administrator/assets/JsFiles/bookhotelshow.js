@@ -69,6 +69,71 @@ $('#hotelHistory').DataTable({
 });
 
 
+function confirmReservationRequestAgainHotel(el, factorNumber, clientId) {
+    if (el.dataset.reserving === '1' || el.dataset.confirming === '1') return;
+    el.dataset.confirming = '1';
+    $.confirm({
+        theme: 'supervan',
+        title: 'درخواست مجدد رزرو هتل',
+        icon: 'fa fa-shopping-cart',
+        content: 'آیا از درخواست مجدد رزرو هتل اطمینان دارید؟',
+        rtl: true,
+        closeIcon: true,
+        type: 'orange',
+        onDestroy: function () { delete el.dataset.confirming; },
+        buttons: {
+            confirm: {
+                text: 'تأیید',
+                btnClass: 'btn-green',
+                action: function () { proceedWithReserveHotel(el, factorNumber, clientId); }
+            },
+            cancel: { text: 'انصراف', btnClass: 'btn-red' }
+        }
+    });
+}
+
+async function proceedWithReserveHotel(el, factorNumber, clientId) {
+    if (el.dataset.reserving === '1') return;
+    const parent = el.closest('.pull-left');
+    const loader = parent?.querySelector('.parent-ld');
+    const loaderLd = parent?.querySelector('.ld');
+    el.dataset.reserving = '1';
+    if (loader) loader.style.display = 'block';
+    if (loaderLd) loaderLd.style.display = 'inline-block';
+    try {
+        const response = await $.ajax({
+            url: amadeusPath + 'ajax',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({
+                className: 'bookshowTest',
+                method: 'retryHotelReservation',
+                factorNumber: factorNumber,
+                clientId: clientId
+            })
+        });
+        if (!response || !response.success) {
+            throw new Error(response?.message || 'خطا در رزرو مجدد هتل');
+        }
+        $.toast({
+            heading: 'درخواست موفق',
+            text: $('<div>').text(response.message).html(),
+            position: 'top-right', icon: 'success', hideAfter: 4000, textAlign: 'right'
+        });
+        setTimeout(() => location.reload(), 4000);
+    } catch (error) {
+        $.toast({
+            heading: 'خطا در رزرو مجدد هتل',
+            text: $('<div>').text(error.message || 'خطا در ارتباط با سرور').html(),
+            position: 'top-right', icon: 'error', hideAfter: 6000, textAlign: 'right'
+        });
+    } finally {
+        delete el.dataset.reserving;
+        if (loader) loader.style.display = 'none';
+        if (loaderLd) loaderLd.style.display = 'none';
+    }
+}
+
 function ModalShowBookForHotel(factorNumber) {
     console.log('ModalShowBookForHotel');
     $.post(libraryPath + 'ModalCreatorForHotel.php',
@@ -333,6 +398,5 @@ function RejectAdminRequestedPrereserveHotelUser(FactorNumber) {
 
 
 }
-
 
 

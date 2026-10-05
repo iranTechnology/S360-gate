@@ -162,7 +162,10 @@
             let link_profile = `${amadeusPathByLang}Profile`;
             let link_tracking = `${amadeusPathByLang}UserBook`;
             let  factorNumber = '{/literal}{$factorNumber}{literal}';
+            let  requestNumber = '{/literal}{$smarty.post['requestNumber']}{literal}';
             let link_pdf = `${amadeusPathByLang}pdf&target=bookExclusiveTour&id=${factorNumber}`;
+            let link_pdf_dept = `${amadeusPathByLang}pdf&target=bookExclusiveTourFlightPdf&id=${requestNumber}&lang=fa`;
+            let link_pdf_return = `${amadeusPathByLang}pdf&target=bookExclusiveTourFlightReturnPdf&id=${requestNumber}&lang=fa`;
 
             let statement_error_login = `
 <div class="error-flight-payment-box">
@@ -176,17 +179,17 @@
         <p>${useXmltag('SuccessMessageRetrunBank')}</p>
     </div>
     <div class="action-buttons">
-        <a href="${link_profile}" class="btn-click btn-pdf btn-pdf-success p-3" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-            <i class="fa-regular fa-user"></i>
-            ${useXmltag('userAccount')}
+ <a href="${link_pdf}" target="_blank" class="btn-click btn-success p-3" >
+            <i class="fa-regular fa-file-pdf"></i>
+            ${useXmltag('TourVoucher')}
         </a>
-        <a href="/" class="btn-click btn-receipt p-3">
-            <i class="fa-regular fa-house"></i>
-            ${useXmltag('OsafarHome')}
-        </a>
-     <a href="${link_pdf}" target="_blank" class="btn-click btn-success p-3" >
+<a href="${link_pdf_dept}" target="_blank" class="btn-click btn-success p-3" >
                 <i class="fa-regular fa-file-pdf"></i>
-                ${useXmltag('Printticket')}
+                ${useXmltag('Onewayticket')}
+     </a>
+<a href="${link_pdf_return}" target="_blank" class="btn-click btn-success p-3" >
+                <i class="fa-regular fa-file-pdf"></i>
+                ${useXmltag('Returnticket')}
      </a>
     </div>
 </div>
@@ -194,6 +197,7 @@
 
 
             let statement_error_no_login = `
+
 <div class="error-flight-payment-box">
     <div class="problem-icon">
         <div class="icon-circle">
