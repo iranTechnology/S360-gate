@@ -1052,8 +1052,8 @@ class resultTourLocal extends clientAuth {
         $serviceTitle                    = '';
         foreach ( $infoTourRoutByIdTour as $city ) {
             if ( $city['tour_title'] == 'dept' ) {
+                $destination_cities .= $city['destination_city_name'] . ' / ';
                 if ( $city['night'] > 0 ) {
-                    $destination_cities .= $city['destination_city_name'] . ' / ';
                     $destination_region .= $city['destination_region_name'] . ' / ';
                 }
                 if ( $city['destination_country_id'] == '1' ) {
@@ -1136,8 +1136,8 @@ class resultTourLocal extends clientAuth {
             $serviceTitle                    = '';
             foreach ( $infoTourRoutByIdTour as $city ) {
                 if ( $city['tour_title'] == 'dept' ) {
+                    $destination_cities .= $city['destination_city_name'] . ' / ';
                     if ( $city['night'] > 0 ) {
-                        $destination_cities .= $city['destination_city_name'] . ' / ';
                         $destination_region .= $city['destination_region_name'] . ' / ';
                     }
                     if ( $city['destination_country_id'] == '1' ) {

@@ -3119,7 +3119,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 ],
                 [
                     'title' => functions::Xmlinformation('Enterdate')->__toString(),
-                    'value' => $bookList[$key]['enter_date'],
+                    'value' => $bookList[$key]['tour_start_date'],
                 ],
             ];
 
@@ -5773,7 +5773,7 @@ GROUP BY factor_number
                     ],
                     [
                         'title' => functions::Xmlinformation('Enterdate')->__toString(),
-                        'value' => $bookList[$key]['enter_date'],
+                        'value' => $bookList[$key]['tour_start_date'],
                     ],
                 ];
 
