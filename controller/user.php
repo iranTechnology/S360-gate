@@ -3062,7 +3062,10 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestRejected')->__toString();
             }
             elseif  ($is_request && $item['status'] == 'RequestAccepted') {
-                $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+//                $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+                $bookList[$key]['view_status'] =  '<span>'.functions::Xmlinformation('RequestAccepted')->__toString().'</span>' .
+                    ' <a class="receive-tickets-btn mr-2" target="_blank" href="' . ROOT_ADDRESS . '/UserTracking&type=tour&id=' . $item['factor_number'] . '">'.functions::Xmlinformation('ResumeReservation')->__toString().'</a>'
+                ;
             }
             elseif ($item['status'] == 'BookedSuccessfully') {
                 $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString();
@@ -5712,7 +5715,10 @@ GROUP BY factor_number
                     $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestRejected')->__toString();
                 }
                 elseif  ($is_request && $item['statusBook'] == 'RequestAccepted') {
-                    $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+//                    $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+                    $bookList[$key]['view_status'] =  '<span>'.functions::Xmlinformation('RequestAccepted')->__toString().'</span>' .
+                        ' <a class="receive-tickets-btn mr-2" target="_blank" href="' . ROOT_ADDRESS . '/UserTracking&type=tour&id=' . $item['factor_number'] . '">'.functions::Xmlinformation('ResumeReservation')->__toString().'</a>'
+                    ;
                 }
                 elseif ($item['statusBook'] == 'BookedSuccessfully') {
                     $bookList[$key]['view_status'] =  '<span class="text-success">'.functions::Xmlinformation('Definitivereservation')->__toString().'</span>';

@@ -101,7 +101,7 @@ class factorTourLocal extends clientAuth
         } else {
             $isResumeRequest = false;
             $factorNumber = filter_var($_POST['factorNumber'], FILTER_SANITIZE_STRING);
-            $idMember = filter_var($_POST['idMember'], FILTER_SANITIZE_STRING);
+            $idMember = $this->IsLogin ? Session::getUserId() : filter_var($_POST['idMember'], FILTER_SANITIZE_STRING);
         }
         $changedPrice =$objReservationTour->getRequestPriceChanged( $factorNumber) ;
 
