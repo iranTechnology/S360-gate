@@ -59,6 +59,7 @@
                             <option value="selfit-سلفیت-selfit">درگاه سلفیت (SELFiT)</option>
                             <option value="payStar-پی استار-payStar">پی استار</option>
                             <option value="payPing-پی پینگ-payPing">پی پینگ</option>
+                            <option value="ap-آپ-ap">بانک آپ</option>
                         </select>
                     </div>
 

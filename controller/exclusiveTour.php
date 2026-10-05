@@ -508,6 +508,36 @@ class exclusiveTour extends clientAuth {
         ];
     }
 
+    public function insertPassenger($data){
+        $passengerController = Load::controller('passengers');
+        if (Session::IsLogin()) {
+            $userId = Session::getUserId();
+        } else {
+            $userId = $data['IdMember'];
+        }
+
+        $user = $this->getModel('membersModel')->getMemberById($userId);
+
+        $passengerAddArray = array(
+            'passengerName'             => $data['FirstName'] ?? 'Test',
+            'passengerNameEn'           => $data['FirstName'] ?? 'Test',
+            'passengerFamily'           => $data['LastName'] ?? 'Test',
+            'passengerFamilyEn'         => $data['LastName'] ?? 'Test',
+            'passengerGender'           => ($data['PassengerTitle'] ?? '') == 'MS' ? 'Female' : 'Male',
+            'passengerBirthday'         => $data['DateOfBirth'] ?? '1370-01-01',
+            'passengerNationalCode'     => !empty($data['NationalCode']) ? (string)$data['NationalCode'] : '1234567890',
+            'passengerBirthdayEn'       => $data['DateOfBirth'] ?? '1991-01-01',
+            'passengerPassportCountry'  => $data['passportCountry'] ?? 'IR',
+            'passengerPassportNumber'   => (string)$data['PassportNumber'] ?? '11111',
+            'passengerPassportExpire'   => $data['passportExpire'] ?? '2030-01-01',
+            'memberID'                  => $user['id'],
+            'passengerNationality'      => $data["Nationality"] == 'IR' ? '0' : '',
+        );
+
+        $res =  $passengerController->insert($passengerAddArray , true);
+
+        return $res;
+    }
     public function Lock($data) {
         $isRepeat = $data['isRepetExclusiveTour'];
         if ($isRepeat) {
@@ -542,10 +572,12 @@ class exclusiveTour extends clientAuth {
         $d['isRepetExclusiveTour'] = $isRepeat;
         $d['subAgencyId'] = '';
         $agencyInfo = $this->getController('agency')->subAgencyInfo();
+
         if ($agencyInfo != null && !empty($agencyInfo['sepehr_username']) && !empty($agencyInfo['sepehr_password'])) {
             $d['subAgencyId'] = $agencyInfo['id'];
         }
         foreach ($d['Passengers'] as &$Passengers) {
+            $resultPassengers = $this->insertPassenger($Passengers);
             if (!$Passengers['isIranian']) {
                 $Passengers['DateOfBirth'] = functions::ConvertToJalali($Passengers['DateOfBirth']);
             }
