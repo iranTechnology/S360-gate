@@ -6653,6 +6653,11 @@ div[data-name="result-data"] .fas {
 }
 
 @media (max-width: 576px) {
+    .boxerFactorLogo img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover;
+    }
     .activing_grid {
         grid-template-columns: repeat(1, 1fr);
     }

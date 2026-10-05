@@ -71,6 +71,8 @@
 
 {/foreach}
 
+{assign var="cities" value=$cities|array_reverse}
+
 
 {assign var="priceChanged" value=$objTour->getRequestPriceChanged($factorNumber)}
 
