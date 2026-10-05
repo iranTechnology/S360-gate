@@ -58,6 +58,7 @@ function reBookExclusiveTour(requestNumber, factorNumber) {
          success: function (response) {
             if (response?.ProviderStatus == 'errorProvider') {
                reject(new Error( '  عدم تمام شدن زمان لاک | Fare not found | خطا در پیش‌رزرو مجدد تور'));
+               window.location.reload();
             }else{
                resolve(true);
             }
@@ -127,7 +128,6 @@ async function reReserveExclusiveTour(factorNumber, requestNumber) {
             }
          },
          error: function (xhr) {
-            console.log('xhr res' , xhr)
             // if (xhr.statusText == 'error') {
             //    reject(new Error(' خطا در رزرو مجدد تور'));
             // }else{
@@ -175,6 +175,7 @@ async function proceedWithReserveExclusiveTour(el, requestNumber, factorNumber) 
          hideAfter: 6000,
          textAlign: 'right'
       });
+      window.location.reload();
    } finally {
       delete el.dataset.reserving;
       if (loader) loader.style.display = 'none';

@@ -2535,8 +2535,8 @@ function selectPassengerLocal(idPass, moduleType, _this = null) {
             $("#gender" + numberRow + " option[value=" + obj.gender + "]").prop('selected', true);
             $("#nameEn" + numberRow).val(obj.name_en);
             $("#familyEn" + numberRow).val(obj.family_en);
-            $("#nameFa" + numberRow).val(obj.name_fa);
-            $("#familyFa" + numberRow).val(obj.family_fa);
+            $("#nameFa" + numberRow).val(obj.name_fa ?? obj.name_en);
+            $("#familyFa" + numberRow).val(obj.family_fa ?? obj.family_en);
 
             // تاریخ تولد
             if (obj.birthday && obj.birthday !== '0000-00-00') {

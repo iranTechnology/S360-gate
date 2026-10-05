@@ -6227,6 +6227,20 @@ class bookshowTest extends clientAuth {
                                                     </a>
                                                 </div>';
 
+                if (TYPE_ADMIN == '1' && in_array($hotel['type_application'], ['api', 'externalApi', 'api_app']) &&
+                    in_array($hotel['status'], ['NoReserve', 'error', 'bank', 'credit', 'PreReserve'], true) &&
+                    empty($hotel['pnr']) && empty($hotel['voucher_number']) && empty($hotel['manual_book'])) {
+                    $retryArguments = htmlspecialchars(json_encode([
+                        (string)$hotel['factor_number'],
+                        (string)$hotel['client_id']
+                    ]), ENT_QUOTES, 'UTF-8');
+                    $DataAction .= '<div class="pull-left margin-10">'
+                        . '<a href="#" onclick="confirmReservationRequestAgainHotel(this, ...' . $retryArguments . ');return false;">'
+                        . '<i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-share" '
+                        . 'data-toggle="tooltip" data-placement="top" title="" data-original-title="درخواست مجدد رزرو"></i>'
+                        . '</a><div class="parent-ld" style="display:none"><div class="ld" style="display:none"></div></div></div>';
+                }
+
                 if ($hotel['status'] == 'BookedSuccessfully') {
                     $DataAction .= '<div class="pull-left margin-10"><a href="' . SERVER_HTTP . $addressClient . '/gds/' . $linkView . '&num=' . $hotel['factor_number'] . '"
                                                            target="_blank"

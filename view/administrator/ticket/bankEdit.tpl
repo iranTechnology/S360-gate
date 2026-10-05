@@ -12,7 +12,7 @@
                 <li><a href="bankList{if $smarty.get.ClientId neq ''}&ClientId={$smarty.get.ClientId}{/if}">اطلاعات بانک ها </a></li>
                 <li class="active">ویرایش بانک</li>
                 {if $smarty.get.ClientId neq ''}
-                <li class="">{$objFunctions->ClientName($smarty.get.ClientId)}</li>
+                    <li class="">{$objFunctions->ClientName($smarty.get.ClientId)}</li>
                 {/if}
             </ol>
         </div>
@@ -60,6 +60,7 @@
                             <option value="publicBank-بانک اشتراکی-publicBank" {if $ObjBank->edit['bank_dir'] eq 'publicBank'} selected {/if}>بانک اشتراکی (publicBank)</option>
                             <option value="selfit-سلفیت-selfit" {if $ObjBank->edit['bank_dir'] eq 'selfit'} selected {/if}>درگاه سلفیت (SELFiT)</option>
                             <option value="payStar-پی استار-payStar" {if $ObjBank->edit['bank_dir'] eq 'payStar'} selected {/if}>پی استار</option>
+                            <option value="ap-آپ-ap" {if $ObjBank->edit['bank_dir'] eq 'ap'} selected {/if}>بانک آپ</option>
 
                         </select>
                     </div>

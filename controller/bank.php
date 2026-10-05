@@ -498,6 +498,9 @@ class bank {
 			case 'payPing':
 				return $this->executePayPing( $operation );
 				break;
+			case 'ap':
+				return $this->executeAp($operation);
+				break;
 			case 'zarrinPlus':
 				return $this->executeZarrinPlus( $operation );
 				break;
