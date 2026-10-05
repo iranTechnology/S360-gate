@@ -4412,11 +4412,6 @@ class reservationTour extends clientAuth
 
     public function getTourPackage($tour_id, $start_date, $end_date) {
 
-//    error_reporting(1);
-//    error_reporting(E_ALL | E_STRICT);
-//    @ini_set('display_errors', 1);
-//    @ini_set('display_errors', 'on');
-
         $string_start_date = str_replace(['/', '-', ' '], '', $start_date);
         functions::insertLog('******************Start Of the Story*******************', 'slow_package');
         $tour_table = $this->reservation_tour_model->getTable();
@@ -4567,6 +4562,7 @@ class reservationTour extends clientAuth
 //
 //                }
                 $room_key_index = $room_type['index'];
+                $price_change = 0;
 
                 $objResultTour = Load::controller('resultTourLocal');
                 $discountVal = $tour_discount_package_list[$package['id']][$room_key_index]['discountedMinPriceR'];
@@ -4577,7 +4573,11 @@ class reservationTour extends clientAuth
                 } else {
                     // discount exists
                     $do_discount = ($objResultTour->doDiscount($tour_id, ['minPriceR' => $package[$room_type['packagePriceName']]]));
-                    $price_change = $this->doPriceChange($do_discount['discountedMinPriceR'], $package['change_price']);
+                    if (empty($do_discount['discountedMinPriceR'])) {
+                        $price_change = $this->doPriceChange($package[$room_type['packagePriceName']], $package['change_price']);
+                    } else {
+                        $price_change = $this->doPriceChange($do_discount['discountedMinPriceR'], $package['change_price']);
+                    }
                     $discountedPrice = $price_change;
 
 
