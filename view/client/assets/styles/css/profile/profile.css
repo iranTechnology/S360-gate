@@ -476,6 +476,9 @@ body > .select2-container {
     background: rgba(0, 0, 0, .12)
 }
 
+.reserves_card .reserves_footer > div h2 span {
+    font-size: 1rem
+}
 
 .pnr-reference::after {
     content: "";
@@ -484,10 +487,6 @@ body > .select2-container {
     height: 20px;
     left: -10px;
     background: rgba(0, 0, 0, .12)
-}
-
-.reserves_card .reserves_footer > div h2 span {
-    font-size: 1rem
 }
 
 .reserves_card .reserves_footer button {
@@ -2896,6 +2895,9 @@ body .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
 }
 
 @media (max-width: 545px) {
+    .profile-search-div {
+        display: none;
+    }
     .box-style .form-profile {
         grid-template-columns:repeat(1, 1fr) !important
     }
