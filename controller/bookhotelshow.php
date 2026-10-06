@@ -621,6 +621,7 @@ class bookhotelshow extends baseController
                 {$tableName}.`status`,
                 {$tableName}.request_number,
                 {$tableName}.pnr,
+                {$tableName}.price_session_id,
                 {$tableName}.payment_type,
                 {$tableName}.tracking_code_bank,
                 {$tableName}.total_price,
@@ -924,6 +925,7 @@ class bookhotelshow extends baseController
             $dataRows[$k]['request_from'] = $book['request_from'];
             $dataRows[$k]['factor_number'] = $book['factor_number'] . ' ';
             $dataRows[$k]['request_number'] = $book['request_number'];
+            $dataRows[$k]['price_session_id'] = $book['price_session_id'];
             $dataRows[$k]['pnr'] = $book['pnr'];
             $dataRows[$k]['agency_id'] = $book['agency_id'] . ' ';
             $dataRows[$k]['creation_date_int'] = $book['creation_date_int'] . ' ';
