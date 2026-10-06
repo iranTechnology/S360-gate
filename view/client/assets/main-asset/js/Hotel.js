@@ -1545,6 +1545,27 @@ function runHotelSearch(flag, altDomain) {
 
    let check_in_date = $(".check-in-date-js")
    let nights_hotel = $(".nights-hotel-js")
+   // const checkOutField = $(form).find('.check-out-date-internal-js');
+
+   // const checkOutDate = String((checkOutField.length ? checkOutField : $('.check-out-date-internal-js')).val() || '').trim();
+   const checkOutField = $('.check-out-date-js');
+
+   const checkOutDate = String(
+       (checkOutField.length
+               ? checkOutField
+               : $('.check-out-date-internal-js')
+       ).val() || ''
+   ).trim();
+   const checkInDate = String(check_in_date.val() || '').trim();
+   if (checkInDate && checkOutDate && checkInDate === checkOutDate) {
+      $.alert({
+         title: 'خطای تاریخ',
+         content: 'تاریخ ورود و خروج نمی‌تواند یکسان باشد؛ لطفاً تاریخ خروج را تغییر دهید',
+         rtl: true,
+         type: 'red'
+      });
+      return false;
+   }
    const city_for_hotel_local = $("#autoComplateSearchIN_hidden").val()
    const no_select_city = $("#no_select_city").val()
    const hotel_id = $("#autoComplateSearchIN_hidden").val()
@@ -1774,6 +1795,17 @@ function runHotelInternationalSearch(flag, altDomain) {
 
    let check_in_date = $("#international_hotel .check-in-date-international-js")
    let check_out_date_js = $("#international_hotel .check-out-date-international-js")
+   const checkInDate = String(check_in_date.val() || '').trim();
+   const checkOutDate = String(check_out_date_js.val() || '').trim();
+   if (checkInDate && checkOutDate && checkInDate === checkOutDate) {
+      $.alert({
+         title: 'خطای تاریخ',
+         content: 'تاریخ ورود و خروج نمی‌تواند یکسان باشد؛ لطفاً تاریخ خروج را تغییر دهید',
+         rtl: true,
+         type: 'red'
+      });
+      return false;
+   }
    let nights_hotel = $(".nights-hotel-js")
    let destination_country = $(".destination-country-js")
    const destination_city = $(".destination-city-js").val()

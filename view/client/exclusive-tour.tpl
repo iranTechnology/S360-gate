@@ -1,6 +1,6 @@
 
 <link href="/gds/dist/css/exclusiveTour.css" rel='stylesheet' />
-<div class="w-100 position-unset" id="vueApp">
+<div class="w-100 position-unset" id="vueApp" data-search-rooms="{$smarty.const.TOUR_SEARCH_ROOMS|escape:'html'}">
     <exclusive-tour :const-data="{
             'is_internal':`{$smarty.const.TOUR_SEARCH_IS_INTERNAL}`,
             'dept_date':`{$smarty.const.TOUR_SEARCH_DEPT_DATE}`,

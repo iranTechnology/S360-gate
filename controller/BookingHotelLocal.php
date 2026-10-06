@@ -263,22 +263,22 @@ class BookingHotelLocal extends clientAuth
                 $data['payment_type'] = 'credit';
                 $data['creation_date_int'] = time();
 
-                $MessageError = functions::ShowHotelError($ReserveHotel['Message']);
-                $errorsController = $this->getController('errors');
-                $errMsg = $errorsController->processError($ReserveHotel, 'hotel', 'reserve', $Hotel['source_id']);
-                $dataError['message'] = $ReserveHotel['Result']['Message'];
-                $dataError['messageFa'] = $MessageError;
-                $dataError['clientId'] = CLIENT_ID;
-                $dataError['messageCode'] = $ReserveHotel['StatusCode'];
-                $dataError['request_number'] =$Hotel['request_number'];
-                $dataError['factor_number'] = $this->factor_number;
-                $dataError['message_agency'] = $errMsg['displayAgency'];
-                $dataError['message_passenger'] = $errMsg['displayPassenger'];
-                $dataError['message_admin'] = $errMsg['displayAdmin'];
-                $dataError['action'] = 'Reserve';
-                $dataError['creation_date_int'] = time();
-
-                $this->getController('logErrorsHotels')->insertLogErrorHotels($dataError);
+//                $MessageError = functions::ShowHotelError($ReserveHotel['Message']);
+//                $errorsController = $this->getController('errors');
+//                $errMsg = $errorsController->processError($ReserveHotel, 'hotel', 'reserve', $Hotel['source_id']);
+//                $dataError['message'] = $ReserveHotel['Result']['Message'];
+//                $dataError['messageFa'] = $MessageError;
+//                $dataError['clientId'] = CLIENT_ID;
+//                $dataError['messageCode'] = $ReserveHotel['StatusCode'];
+//                $dataError['request_number'] =$Hotel['request_number'];
+//                $dataError['factor_number'] = $this->factor_number;
+//                $dataError['message_agency'] = $errMsg['displayAgency'];
+//                $dataError['message_passenger'] = $errMsg['displayPassenger'];
+//                $dataError['message_admin'] = $errMsg['displayAdmin'];
+//                $dataError['action'] = 'Reserve';
+//                $dataError['creation_date_int'] = time();
+//
+//                $this->getController('logErrorsHotels')->insertLogErrorHotels($dataError);
 
                 $condition = " factor_number='{$factorNumber}' AND request_number = '{$request_number}' ";
                 $Model->setTable('book_hotel_local_tb');
@@ -801,22 +801,22 @@ class BookingHotelLocal extends clientAuth
 
             $this->errorMessage = 'اشکالی در فرآیند رزرو هتل پیش آمده است، لطفا برای پیگیری رزرو هتل و یا برگرداندن اعتبار  خود با پشتیبانی تماس حاصل نمائید';
 
-            $MessageError = functions::ShowHotelError($resultHotel['Message']);
-            $errorsController = $this->getController('errors');
-            $errMsg = $errorsController->processError($resultHotel, 'hotel', 'reserve', $this->hotelInfo['source_id']);
-            $dataError['message'] = $resultHotel['Result']['Message'];
-            $dataError['messageFa'] = $MessageError;
-            $dataError['clientId'] = CLIENT_ID;
-            $dataError['messageCode'] = $resultHotel['StatusCode'];
-            $dataError['request_number'] =$this->hotelInfo['request_number'];
-            $dataError['factor_number'] = $this->factor_number;
-            $dataError['message_agency'] = $errMsg['displayAgency'];
-            $dataError['message_passenger'] = $errMsg['displayPassenger'];
-            $dataError['message_admin'] = $errMsg['displayAdmin'];
-            $dataError['action'] = 'Reserve';
-            $dataError['creation_date_int'] = time();
-
-            $this->getController('logErrorsHotels')->insertLogErrorHotels($dataError);
+//            $MessageError = functions::ShowHotelError($resultHotel['Message']);
+//            $errorsController = $this->getController('errors');
+//            $errMsg = $errorsController->processError($resultHotel, 'hotel', 'reserve', $this->hotelInfo['source_id']);
+//            $dataError['message'] = $resultHotel['Result']['Message'];
+//            $dataError['messageFa'] = $MessageError;
+//            $dataError['clientId'] = CLIENT_ID;
+//            $dataError['messageCode'] = $resultHotel['StatusCode'];
+//            $dataError['request_number'] =$this->hotelInfo['request_number'];
+//            $dataError['factor_number'] = $this->factor_number;
+//            $dataError['message_agency'] = $errMsg['displayAgency'];
+//            $dataError['message_passenger'] = $errMsg['displayPassenger'];
+//            $dataError['message_admin'] = $errMsg['displayAdmin'];
+//            $dataError['action'] = 'Reserve';
+//            $dataError['creation_date_int'] = time();
+//
+//            $this->getController('logErrorsHotels')->insertLogErrorHotels($dataError);
             $data['status'] = 'NoReserve';
             $data['payment_type'] = $paymentType;
             $data['creation_date_int'] = time();
