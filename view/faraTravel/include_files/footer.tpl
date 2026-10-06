@@ -11,9 +11,8 @@
                         <div class='pre-footer-parent'>
                             <div class='social-footer'>
                                 <a class="footer-brand" href="https://{$smarty.const.CLIENT_MAIN_DOMAIN}">
-                                    <img id="footerLogo" alt="{$obj->Title_head()}" class="__logo_class__"
+                                    <img alt="{$obj->Title_head()}" class="__logo_class__"
                                          src="project_files/images/logo.png" />
-                                    <span class="respect">بر مدار احترام</span>
                                 </a>
                                 {assign var="socialLinks"  value=$about['social_links']|json_decode:true}
                                 {assign var="socialLinksArray" value=['telegram'=>'telegramHref','whatsapp'=> 'whatsappHref','instagram' => 'instagramHref','aparat' => 'aparatHref','youTube' => 'youtubeHref','facebook' => 'facebookHref','linkedin' => 'linkeDinHref' , 'twitter' => 'twitterHref']}
@@ -21,9 +20,6 @@
                                 {foreach $socialLinks as $key => $val}
                                     {assign var=$socialLinksArray[$val['social_media']] value=$val['link']}
                                 {/foreach}
-                                <div class="link-footer">
-                                    <a href='project_files/images/Airlines-Commission-img.jpg' target="_blank">کمیسیون ایرلاین ها</a>
-                                </div>
                                 <div class="__social_class__ footer-icon icon-respancive">
                                     <a class="__telegram_class__ fab fa-telegram footer_telegram"
                                        href="{if $telegramHref}{$telegramHref}{/if}" target="_blank">
@@ -82,7 +78,7 @@
                             <div class="item-footer col-lg-5 col-md-6 col-sm-6 col-12 order-foot1">
                                 <div class="{*parent-item-footer parent-item-footer-responsive box-item-footer2*} box-item-footer">
                                     <h3>
-                                        درباره سفر 360
+                                        درباره فرآگشت
                                     </h3>
                                     <div class="parent-about-footer text-right">
                                         <span class="__aboutUs_class__ text-footer-about">
@@ -106,86 +102,29 @@
                                         دسترسی آسان
                                     </h3>
                                     <ul>
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                تور داخلی*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/tour">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                تور خارجی*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/hotel">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                هتل*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
-
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/visa">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                اطلاعات ویزا*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/contactUs">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                تماس با ما*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/page/flight">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                پرواز*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                درباره ما*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
-                                        {*                                        <li>*}
-                                        {*                                            <a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">*}
-                                        {*                                                <i class="fa-sharp fa-solid fa-square">*}
-                                        {*                                                </i>*}
-                                        {*                                                پیگیری خرید*}
-                                        {*                                            </a>*}
-                                        {*                                        </li>*}
                                         <li>
                                             <a href="{$smarty.const.ROOT_ADDRESS}/UserTracking">
                                                 پیگیری خرید
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/introductIran">
-                                                معرفی ایران
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/introductCountry">
-                                                معرفی کشورها
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/weather">
-                                                هواشناسی
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/mag">
+                                                وبلاگ
                                             </a>
                                         </li>
                                         <li>
                                             <a href="{$smarty.const.ROOT_ADDRESS}/club">
                                                 باشگاه مشتریان
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/rules">
+                                                قوانین و مقررات
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/aboutUs">
+                                                درباره ما
                                             </a>
                                         </li>
                                     </ul>
@@ -207,50 +146,16 @@
                                             <a href='{$smarty.const.ROOT_ADDRESS}/page/tour'>تور</a>
                                         </li>
                                         <li>
-                                            <a href='{$smarty.const.ROOT_ADDRESS}/page/visa'> ویزا</a>
+                                            <a href='{$smarty.const.ROOT_ADDRESS}/page/bus'>
+                                                اتوبوس
+                                            </a>
                                         </li>
-
                                         <li>
-                                            <a href='{$smarty.const.ROOT_ADDRESS}/page/train'>قطار</a>
+                                            <a href='{$smarty.const.ROOT_ADDRESS}/page/insurance'>
+                                                بیمه
+                                            </a>
                                         </li>
-
-
                                     </ul>
-                                    {*                                    <div class="parent-tour-footer">*}
-                                    {*                                        <a class="" href="javascript:">*}
-                                    {*                                            <img alt="img-tour" src="project_files/images/tour-france.jpg" />*}
-                                    {*                                            <div class="caption-tour">*}
-                                    {*                                                <h4>*}
-                                    {*                                                    تور فرانسه*}
-                                    {*                                                </h4>*}
-                                    {*                                                <span>*}
-                                    {*           2 بهمن 1403*}
-                                    {*          </span>*}
-                                    {*                                            </div>*}
-                                    {*                                        </a>*}
-                                    {*                                        <a class="" href="javascript:">*}
-                                    {*                                            <img alt="img-tour" src="project_files/images/tour-italya.jpg" />*}
-                                    {*                                            <div class="caption-tour">*}
-                                    {*                                                <h4>*}
-                                    {*                                                    تور ایتالیا*}
-                                    {*                                                </h4>*}
-                                    {*                                                <span>*}
-                                    {*           12 بهمن 1403*}
-                                    {*          </span>*}
-                                    {*                                            </div>*}
-                                    {*                                        </a>*}
-                                    {*                                        <a class="" href="javascript:">*}
-                                    {*                                            <img alt="img-tour" src="project_files/images/tour-sydney.jpg" />*}
-                                    {*                                            <div class="caption-tour">*}
-                                    {*                                                <h4>*}
-                                    {*                                                    تور استرالیا*}
-                                    {*                                                </h4>*}
-                                    {*                                                <span>*}
-                                    {*           18 بهمن 1403*}
-                                    {*          </span>*}
-                                    {*                                            </div>*}
-                                    {*                                        </a>*}
-                                    {*                                    </div>*}
                                 </div>
                             </div>
                             <div class="item-footer col-lg-3 col-md-6 col-sm-6 col-12 order-foot4">
@@ -281,9 +186,6 @@
                                             </a>
                                         {/if}
 
-                                        <a href="https://www.iran-tech.com/pic/news/Danesh_Bonyan.jpg">
-                                            <img alt="daneshBonyan" src="project_files/images/danesh.jpg" />
-                                        </a>
                                         <a href="http://e-tourism.ir/fa/home.php">
                                             <img alt="namad-2" src="project_files/images/etourism.jpg" />
                                         </a>
