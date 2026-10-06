@@ -5482,8 +5482,9 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'BackWallet') {
     $cancelTicketDetailsModel = Load::getModel('cancelTicketDetailsModel');
     $InsertPrice = $memberCredit->ReturnAdminToWalletUser($data);
 
-    if (strpos($InsertPrice, 'Success') !== false) {
-        $insertPriceIndemnity = $cancelTicketDetailsModel->updateWithBind(['PriceIndemnity' => $data['priceBack']], ['RequestNumber' => $data['RequestNumber']]);
+    if (strpos($InsertPrice, 'Success') !== false
+        && !Load::controller('tourCancellation')->isTourRequest($data['ParamId'], $data['RequestNumber'])) {
+        $insertPriceIndemnity = $cancelTicketDetailsModel->updateWithBind(['PriceIndemnity' => $data['priceBack']], ['id' => $data['ParamId'], 'RequestNumber' => $data['RequestNumber']]);
     }
 
     echo $InsertPrice;
@@ -5491,6 +5492,7 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'BackWallet') {
     unset($_POST['flag']);
 
     $data = array(
+        "priceBack" => isset($_POST['priceBack']) ? filter_var($_POST['priceBack'], FILTER_SANITIZE_STRING) : '',
         "ClientID" => filter_var($_POST['memberId'], FILTER_SANITIZE_STRING),
         "RequestNumber" => filter_var($_POST['RequestNumber'], FILTER_SANITIZE_STRING),
         "ParamId" => filter_var($_POST['ParamId'], FILTER_SANITIZE_STRING),

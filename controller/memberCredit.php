@@ -474,6 +474,10 @@ class memberCredit extends clientAuth{
 
 
     public function ReturnAdminToWalletUser($data) {
+        $tourCancellation = Load::controller('tourCancellation');
+        if ($tourCancellation->isTourRequest($data['ParamId'])) {
+            return $tourCancellation->refund($data, 'wallet');
+        }
 
         $Model = Load::library('Model');
 
@@ -539,6 +543,10 @@ class memberCredit extends clientAuth{
 
 
     public function ConfirmReturnBankUser($data) {
+        $tourCancellation = Load::controller('tourCancellation');
+        if ($tourCancellation->isTourRequest($data['ParamId']) || (isset($data['TypeCancel']) && $data['TypeCancel'] === 'tour')) {
+            return $tourCancellation->refund($data, 'bank');
+        }
         $Model = Load::library('Model');
 
         $check_exist_cancel = $this->getModel('cancelTicketDetailsModel')->get()->where('id', $data['ParamId'])->find();

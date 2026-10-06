@@ -150,6 +150,7 @@ function bookUserHistoryFilter(target) {
                                    <span class="${i?.status?.title ?? ''}">${i?.status?.value ?? ''}</span>
                                </div>
                
+                               ${i?.cancellation_notice ?? ''}
                                <div class="reserves_footer">
                                    <div>
                                        <h2>${useXmltag("OrderNumber")}<span>${i?.factor_number ?? ''}</span></h2>
@@ -445,19 +446,19 @@ function requestCancelFinalBuy_old(typeApplication, factorNumber) {
 }
 
 
-function requestCancelFinalBuy(typeApplication, factorNumber) {
+function requestCancelFinalBuy(typeApplication, factorNumber, target) {
   const loading = document.getElementById('btn-send-information-load');
 
   if ($('#Ruls').is(':checked')) {
-    $("form#cancelBuyForm").find('#typeService').val(typeService);
-    $("form#cancelBuyForm").find('#factorNumber').val(factorNumber);
+    $("form#cancelBuyForm").find('#typeService').val(typeApplication);
+    $("form#cancelBuyForm").find('#FactorNumber').val(factorNumber);
 
     // alert($("#factorNumber").val());
     // var formDate = $("form#cancelBuyForm").serialize();
     // alert(formDate)
     // console.log(formDate)
 
-    let currentTarget = $(event.currentTarget)
+    let currentTarget = $(target)
     // var thiss=$(this);
     // thiss.removeClass('submitChangePasswordProfile').addClass('disabled');
     // console.log('runing');
@@ -475,12 +476,13 @@ function requestCancelFinalBuy(typeApplication, factorNumber) {
     var cardNumber = formArray['cardNumber'];
     var AccountOwner = formArray['accountOwner'];
     var backCredit = formArray['backCredit'];
+    var passengerIds = form.find('[name="passengerIds[]"]:checked').map(function () { return this.value; }).get();
     var Status = 'RequestMember';
     var NameBank = formArray['NameBank'];
 
 // alert(typeService)
 // alert(factorNumber)
-     if (cardNumber == "" || AccountOwner == "" || NameBank == "" || commentUser == "") {
+     if (!commentUser || (backCredit !== 'on' && (!cardNumber || !AccountOwner || !NameBank)) || (typeApplication === 'tour' && passengerIds.length === 0)) {
       $.alert({
         title: useXmltag("CancellationRequest"),
         icon: 'fa fa-trash',
@@ -491,8 +493,11 @@ function requestCancelFinalBuy(typeApplication, factorNumber) {
 
   } else {
     currentTarget.children('.bouncing-loader').removeClass("bouncing-loader-none")
+    currentTarget.prop('disabled', true);
+    if (loading) { loading.style.display = 'inline-block'; }
     $.post(amadeusPath + 'user_ajax.php',
       {
+        'passengerIds[]': passengerIds,
         typeService: typeService,
         FactorNumber: FactorNumber,
         commentUser: commentUser,
@@ -515,7 +520,7 @@ function requestCancelFinalBuy(typeApplication, factorNumber) {
             type: 'green',
           });
           setTimeout(function () {
-            $('#memberChangePassword')[0].reset();
+            form[0].reset();
           }, 1000);
           setTimeout(function() {
             location.reload()
@@ -531,8 +536,8 @@ function requestCancelFinalBuy(typeApplication, factorNumber) {
         }
       })
      .always(function () {
-         loading.style.display = 'none';
-         console.log("تست سلام")
+         if (loading) { loading.style.display = 'none'; }
+         currentTarget.prop('disabled', false);
        });
   }
 
@@ -631,7 +636,6 @@ function inputDisabled(event) {
 //
 // // اضافه کردن لیسنر به چک‌باکس برای تغییرات
 // $parentLabelInput.on('change', inputDisabled);
-
 
 
 

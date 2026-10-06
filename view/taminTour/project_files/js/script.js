@@ -255,11 +255,11 @@ if (window.innerWidth > 576) {  // فقط برای دسکتاپ
             const filteredData = mainData.find(item => item.index === dataName);
 
             if (filteredData) {
-                const titleBanner = document.getElementById('title-banner');
+                // const titleBanner = document.getElementById('title-banner');
                 const captionBanner = document.getElementById('caption-banner');
 
                 if (titleBanner && captionBanner) {
-                    titleBanner.textContent = filteredData.title;
+                    // titleBanner.textContent = filteredData.title;
                     captionBanner.textContent = filteredData.description;
                 }
             } else {

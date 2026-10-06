@@ -907,6 +907,10 @@ class ModalCreator extends clientAuth {
      * @param $type
      */
     public function ModalShowBook($Param, $type) {
+        if ($type === 'tour') {
+            $this->ModalTourDetails($Param);
+            return;
+        }
 
         $typeFlight = ($type == 'flight' || $type == '');
         $objDiscountCode = Load::controller('discountCodes');
@@ -12150,6 +12154,8 @@ public function ModalCancelAdmin($Param, $param2) {
 
         $typeApplication = $_POST['typeApplication'];
         $factorNumber = $_POST['factorNumber'];
+        $tourPassengers = $typeApplication === 'tour'
+            ? Load::controller('tourCancellation')->availablePassengers($factorNumber, Session::getUserId()) : [];
 
         ?>
         <div class="modal_custom" onclick="closeModalParent(event)">
@@ -12174,9 +12180,26 @@ public function ModalCancelAdmin($Param, $param2) {
                                         <input type="hidden" name="typeService" id="typeService" value="<?php echo $typeApplication; ?>">
                                         <input type="hidden" name="FactorNumber" id="FactorNumber" value="<?php echo $factorNumber; ?>">
 
+                                        <?php if ($typeApplication === 'tour') { ?>
+                                            <div class="mb-3">
+                                                <label>مسافران مورد نظر برای کنسلی را انتخاب کنید</label>
+                                                <?php foreach ($tourPassengers as $passenger) { ?>
+                                                    <label class="d-flex align-items-center mb-2">
+                                                        <input type="checkbox" class="mr-2" name="passengerIds[]" value="<?php echo (int) $passenger['id']; ?>">
+                                                        <span>
+                                                            <?php echo htmlspecialchars(trim($passenger['passenger_name'] . ' ' . $passenger['passenger_family']) ?: trim($passenger['passenger_name_en'] . ' ' . $passenger['passenger_family_en']), ENT_QUOTES, 'UTF-8'); ?>
+                                                            <small class="text-muted d-block">
+                                                                <?php echo htmlspecialchars($passenger['passenger_national_code'] ?: $passenger['passportNumber'], ENT_QUOTES, 'UTF-8'); ?>
+                                                            </small>
+                                                        </span>
+                                                    </label>
+                                                <?php } ?>
+                                                <?php if (!$tourPassengers) { ?><p>مسافری برای ثبت درخواست کنسلی باقی نمانده است.</p><?php } ?>
+                                            </div>
+                                        <?php } ?>
                                         <div>
                                             <div class="modal-padding-bottom-15">
-                                                <?php if (functions::TypeUser(CLIENT_ID) == 'Ponline') { ?>
+                                                <?php if ($typeApplication === 'tour' || functions::TypeUser(CLIENT_ID) == 'Ponline') { ?>
                                                     <div>
                                                         <div class="w-100 modal-text-center modal-h mb-4">
                                                             <label class='mb-0'><?php echo functions::Xmlinformation("Pleaseenteryourinformationreturningmoneyyouraccount") ?></label>
@@ -12234,7 +12257,7 @@ public function ModalCancelAdmin($Param, $param2) {
                                     </form>
                                     <div class="col-md-12 box_btn mt-4">
                                         <button class="close btn btn-primary btn-send-information site-bg-main-color"  style='font-size: 18px;  padding: 10px;  color: #fff;  background-color: #38ae61;border:#38ae61;'
-                                                onclick="requestCancelFinalBuy('<?php echo $typeApplication; ?>', '<?php echo $factorNumber; ?>')">
+                                                onclick="requestCancelFinalBuy('<?php echo $typeApplication; ?>', '<?php echo $factorNumber; ?>', this)">
                                             <?php echo functions::Xmlinformation("Sendinformation") ?>
                                             <div class="spinner-border" id='btn-send-information-load' role="status">
                                                 <span class="sr-only">Loading...</span>
@@ -13442,7 +13465,7 @@ public function ModalCancelAdmin($Param, $param2) {
             <div class="modal-content">
                 <div class="modal-header site-bg-main-color">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">انتقال اعتبار به کیف پول کاربر</h4>
+                    <h4 class="modal-title">بازگشت وجه به اعتبار کاربر یا همکار کانتر</h4>
                 </div>
                 <form id="BackWallet" name="BackWallet" method="post">
                     <input type="hidden" value="BackWallet" name="flag" id="flag">
@@ -13572,7 +13595,7 @@ public function ModalCancelAdmin($Param, $param2) {
                                         console.log(data_response);
                                         let displayIcon
                                         var res = response.split(':');
-                                        if (res[0] = 'Success ') {
+                                        if (/^success\s*:/i.test(response)) {
                                             displayIcon = 'success'
                                         } else {
                                             displayIcon = 'error'
@@ -13591,7 +13614,7 @@ public function ModalCancelAdmin($Param, $param2) {
                                             stack: 6,
                                         })
 
-                                        if (res[0] === 'Success ') {
+                                        if (/^success\s*:/i.test(response)) {
                                             setTimeout(function() {
                                                 location.reload()
                                                 // window.location = `${amadeusPath}itadmin/ticket/userTicketCancellationHistory`;

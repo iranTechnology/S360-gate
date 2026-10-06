@@ -7528,6 +7528,8 @@ class bookshowTest extends clientAuth {
                 $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>';
             }
 
+            $DataStatus .= isset($tour['cancellation_overview']) ? $tour['cancellation_overview'] : '';
+
             if ( $tour['cancel_status'] == 'CancellationR==uest' ) {
                 $DataStatus .= '<hr style="margin:3px">
                                     <a class="btn btn-danger cursor-default" onclick="return false;">درخواست کنسلی از طرف مسافر</a>';

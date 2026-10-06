@@ -23,30 +23,6 @@ function submitRequest(_this){
     });
     return false;
   }
-  $.post(amadeusPath + 'hotel_ajax.php',
-    {
-      Email: requestedMemberPhoneNumber,
-      flag: "register_memeberHotel"
-    },
-    function (data) {
-      if (data != "") {
-        data =  data.replaceAll(/\s/g,'');
-        $('#idMember').val(data);
-
-      } else {
-
-     /*   $.alert({
-          title:  useXmltag("Tourreservation"),
-          icon: 'fa fa-cart-plus',
-          content: useXmltag("Errorrecordinginformation"),
-          rtl: true,
-          type: 'red'
-        });
-        return false;*/
-      }
-    });
-
-
   // $('#requestForm').append('<input type="hidden" name="className" value="requestReservation" />');
   // $('#requestForm').append('<input type="hidden" name="method" value="create" />');
 
@@ -59,10 +35,33 @@ function submitRequest(_this){
 
 
 
-  setTimeout(
-    function () {
+  _this.prop('disabled', true);
+  $.post(amadeusPath + 'hotel_ajax.php',
+    {
+      Email: requestedMemberPhoneNumber,
+      flag: "register_memeberHotel"
+    },
+    function (data) {
+      const memberId = String(data || '').replace(/\s/g, '');
+      if (!/^[1-9][0-9]*$/.test(memberId)) {
+        showRequestMemberError();
+        return;
+      }
+      $('#idMember').val(memberId);
       $('#requestForm').submit();
-    }, 300);
+    }
+  ).fail(showRequestMemberError);
+
+  function showRequestMemberError() {
+    _this.prop('disabled', false);
+    $.alert({
+      title: useXmltag("ErrorEnteringInformation"),
+      icon: 'fa fa-cart-plus',
+      content: useXmltag("Errorrecordinginformation"),
+      rtl: true,
+      type: 'red'
+    });
+  }
 
 
 }

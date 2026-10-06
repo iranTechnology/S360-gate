@@ -657,6 +657,13 @@ class cancelBuy extends clientAuth
 
     public function setCancelRequestUser($params)
     {
+        if (isset($params['typeService']) && $params['typeService'] === 'tour') {
+            if (!Session::IsLogin()) {
+                return 'error : برای ثبت درخواست کنسلی وارد حساب کاربری شوید';
+            }
+            return Load::controller('tourCancellation')->request($params, Session::getUserId());
+        }
+
 
         $Model = Load::library('Model');
         $smsController = Load::controller('smsServices');

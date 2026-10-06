@@ -424,7 +424,7 @@
         });
         if (DescriptionClient == "") {
             $.toast({
-                heading: 'رد درخواست کنسلی پرواز',
+                heading: 'رد درخواست کنسلی',
                 text: 'لطفا توضیحات خود را وارد نمائید',
                 position: 'top-right',
                 loaderBg: '#fff',
@@ -437,7 +437,7 @@
         } else {
             $.confirm({
                 theme: 'supervan' ,// 'material', 'bootstrap'
-                title: 'رد درخواست کنسلی  پرواز',
+                title: 'رد درخواست کنسلی',
                 icon: 'fa fa-ban',
                 content: 'آیا از رد درخواست اطمینان دارید',
                 rtl: true,
@@ -461,7 +461,7 @@
                                     if (data.indexOf('success') > -1) {
 
                                         $.toast({
-                                            heading: 'رد درخواست کنسلی پرواز',
+                                            heading: 'رد درخواست کنسلی',
                                             text: res[1],
                                             position: 'top-right',
                                             loaderBg: '#fff',
@@ -476,10 +476,11 @@
                                             $('#ConfirmCancelRequest-' +id).remove();
                                             $('#FailedCancel-' + id ).attr('onclick','return false').removeAttr('data-toggle').removeAttr('data-target').removeClass('btn btn-success  mdi mdi-check').addClass('btn btn-warning mdi mdi-do-not-disturb').parent().attr('data-original-title', 'رد درخواست توسط آژانس').attr('data-content', 'شما قبلا این در خواست را رد کرده اید،برای اقدام مجدد ،می بایستی کاربر خریدار مجددا اقدام به ارسال درخواست کنسلی نماید');
                                           $('#ModalPublic').modal('hide');
+                                          location.reload();
                                         }, 1000);
                                     } else {
                                         $.toast({
-                                            heading: 'رد درخواست کنسلی پرواز',
+                                            heading: 'رد درخواست کنسلی',
                                             text: 'لطفا توضیحات خود را وارد نمائید',
                                             position: 'top-right',
                                             loaderBg: '#fff',
@@ -860,9 +861,10 @@
 
 
                                   setTimeout(function () {
-                                      $('#FailedPercent-'+ id).remove();
-                                      $('#ConfirmPercent-' + id ).attr('onclick','return false').removeClass('btn btn-success  mdi mdi-check').addClass('btn btn-info mdi mdi-timer').attr('data-original-title', 'انتظار تایید نهایی').attr('data-content', 'شما در صد اعلامی از سوی کارگزار را تایید کرده اید،لطفا  منتظر تایید نهایی باشید').removeClass('popover-success').addClass('popover-info');
-                                      $('#ConfirmPercentBtn-' + id).removeClass('btn-warning').addClass('btn-info').html('تایید انتقال به حساب کاربر');
+                                      if (TypeCancel === 'tour') { location.reload(); return; }
+                                      $('#FailedPercent-'+ ItemId).remove();
+                                      $('#ConfirmPercent-' + ItemId ).attr('onclick','return false').removeClass('btn btn-success  mdi mdi-check').addClass('btn btn-info mdi mdi-timer').attr('data-original-title', 'انتظار تایید نهایی').attr('data-content', 'شما در صد اعلامی از سوی کارگزار را تایید کرده اید،لطفا  منتظر تایید نهایی باشید').removeClass('popover-success').addClass('popover-info');
+                                      $('#ConfirmPercentBtn-' + ItemId).removeClass('btn-warning').addClass('btn-info').html('تایید انتقال به حساب کاربر');
                                       $('#ModalPublic').modal('hide');
                                   }, 1000);
                               } else {

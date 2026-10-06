@@ -184,7 +184,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/authenticate">
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/club">
                                                 باشگاه مشتریان
                                             </a>
                                         </li>

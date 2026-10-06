@@ -167,12 +167,13 @@
 {/if}
 
 
-{assign var="cities" value=[]}
+            {assign var="cities" value=[]}
 
-{foreach $objResult->arrayTour['infoTourRout'] as $item}
-    {$cities[]=$item[$index_name]}
+            {foreach $objResult->arrayTour['infoTourRout'] as $item}
+                {$cities[]=$item[$index_name]}
+            {/foreach}
 
-{/foreach}
+            {assign var="cities" value=$cities|array_reverse}
 
 
 {if $smarty.post.typeTourReserve eq 'noOneDayTour'}
