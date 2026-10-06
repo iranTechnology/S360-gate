@@ -3481,4 +3481,6 @@
   <ListColleagues>List Colleagues (If you leave this field blank, it will be displayed to all colleagues and users.)</ListColleagues>
   <TitleEndRserve>Reservation deadline</TitleEndRserve>
   <ContentEndRserve>Dear traveler, we apologize, but your reservation period has expired; you will need to make your reservation again from the beginning.</ContentEndRserve>
+  <TourVoucher>Get Tour Voucher </TourVoucher>
+
 </Main>
