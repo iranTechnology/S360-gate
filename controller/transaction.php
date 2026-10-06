@@ -136,8 +136,8 @@ class  transaction extends clientAuth {
             $this->agency->agencyModel()->getPDO()->query("USE `$dbName`");
         }
 
-        $this->Model->setTable('transaction_tb');
-        $result = $this->Model->insertLocal($data);
+            $this->Model->setTable('transaction_tb');
+            $result = $this->Model->insertLocal($data);
 
         //for admin panel
         $this->transactions->insertTransaction($data);
