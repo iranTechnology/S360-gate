@@ -75,24 +75,24 @@
                         {assign var="remain" value=$objCreditDetail->total_transaction}
                         {foreach key=key item=item from=$objCreditDetail->list}
                             {$number=$number+1}
-                            <tr
+                            <tr>
                             <td>{$number}</td>
-                            <td>{$item.comment}</td>
-                            <td style='direction: ltr;'>{$objCreditDetail->timeToDateJalali($item.creation_date_int)}</td>
-                            <td>{if $item.reason eq 'buy'} خرید خدمات{elseif  $item.reason eq 'harvest'} کسر از حساب{elseif  $item.reason eq 'deposit'} واریز به حساب{elseif  $item.reason eq 'settle'} تسویه اعتبار غیر مالی{/if}</td>
+                                <td>{$item.comment}</td>
+                                <td style='direction: ltr;'>{$objCreditDetail->timeToDateJalali($item.creation_date_int)}</td>
+                                <td>{if $item.reason eq 'buy'} خرید خدمات{elseif  $item.reason eq 'harvest'} کسر از حساب{elseif  $item.reason eq 'deposit'} واریز به حساب{elseif  $item.reason eq 'settle'} تسویه اعتبار غیر مالی{/if}</td>
+                                <td>{if $item.type eq 'increase'}
+                                        {$item.credit|number_format:$format_desimal}
+                                    {else}
+                                        0
+                                    {/if} </td>
+                                <td>{if $item.type eq 'decrease'}{$item.credit|number_format:$format_desimal}{else}0{/if} </td>
                             <td><span>{$remain|number_format:$format_desimal}</span>
                                 {if $item.type=='increase'}
                                     {$remain = $remain - $item.credit}
                                 {else}
                                     {$remain = $remain + $item.credit}
                                 {/if}
-
-                            <td>{if $item.type eq 'increase'}
-                                    {$item.credit|number_format:$format_desimal}
-                                {else}
-                                    0
-                                {/if} </td>
-                            <td>{if $item.type eq 'decrease'}{$item.credit|number_format:$format_desimal}{else}0{/if} </td>
+                            </td>
 
                             </tr>
                         {/foreach}

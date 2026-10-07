@@ -68,70 +68,163 @@ $('#hotelHistory').DataTable({
     ]
 });
 
-
-function confirmReservationRequestAgainHotel(el, factorNumber, clientId) {
-    if (el.dataset.reserving === '1' || el.dataset.confirming === '1') return;
-    el.dataset.confirming = '1';
+async function confirmReservationRequestAgainHotel(el, RequestNumber, IdMember, SourceId, dir, factorNum, clientId) {
     $.confirm({
         theme: 'supervan',
-        title: 'درخواست مجدد رزرو هتل',
+        title: 'درخواست مجدد صدور رزرو',
         icon: 'fa fa-shopping-cart',
-        content: 'آیا از درخواست مجدد رزرو هتل اطمینان دارید؟',
+        content: 'آیا از درخواست مجدد برای صدور رزرو اطمینان دارید ؟',
         rtl: true,
         closeIcon: true,
         type: 'orange',
-        onDestroy: function () { delete el.dataset.confirming; },
         buttons: {
             confirm: {
-                text: 'تأیید',
+                text: 'تایید',
                 btnClass: 'btn-green',
-                action: function () { proceedWithReserveHotel(el, factorNumber, clientId); }
+                action: async function () {
+                    let parentLoader = el.closest('td');
+                    let loader = parentLoader.querySelector('.parent-ld');
+                    let loaderLd = parentLoader.querySelector('.ld');
+                    if (loader) {
+                        loader.style.display = 'block';
+                    }
+
+                    if (loaderLd) {
+                        loaderLd.style.display = 'inline-block';
+                    }
+
+                    try {
+                        await proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderLd);
+                    }
+                    catch (error) {
+                        if (error === 'creditError') {
+                            $.toast({
+                                heading: 'خطا در اعتبار',
+                                text: 'اعتبار آژانس اصلی و یا آژانس زیر مجموعه جهت صدور رزرو کافی نیست',
+                                position: 'top-right',
+                                loaderBg: '#fff',
+                                icon: 'error',
+                                hideAfter: 4000,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                        } else {
+                            $.toast({
+                                heading: 'خطا',
+                                text: 'خطای غیرمنتظره رخ داد',
+                                position: 'top-right',
+                                loaderBg: '#fff',
+                                icon: 'error',
+                                hideAfter: 4000,
+                                textAlign: 'right',
+                                stack: 6
+                            });
+                        }
+                        loader?.style && (loader.style.display = 'none');
+                        loaderLd?.style && (loaderLd.style.display = 'none');
+                    }
+                }
             },
-            cancel: { text: 'انصراف', btnClass: 'btn-red' }
+            cancel: {
+                text: 'انصراف',
+                btnClass: 'btn-orange',
+            }
         }
     });
 }
 
-async function proceedWithReserveHotel(el, factorNumber, clientId) {
-    if (el.dataset.reserving === '1') return;
-    const parent = el.closest('.pull-left');
-    const loader = parent?.querySelector('.parent-ld');
-    const loaderLd = parent?.querySelector('.ld');
-    el.dataset.reserving = '1';
-    if (loader) loader.style.display = 'block';
-    if (loaderLd) loaderLd.style.display = 'inline-block';
+async function proceedWithReserve(factorNum, RequestNumber, dir, loader, loaderLd) {
     try {
-        const response = await $.ajax({
-            url: amadeusPath + 'ajax',
-            type: 'POST',
-            dataType: 'json',
-            data: JSON.stringify({
-                className: 'bookshowTest',
-                method: 'retryHotelReservation',
-                factorNumber: factorNumber,
-                clientId: clientId
-            })
-        });
-        if (!response || !response.success) {
-            throw new Error(response?.message || 'خطا در رزرو مجدد هتل');
-        }
+        const result = await reReserve(factorNum, RequestNumber, dir);
+        const pending = result === 'pending';
         $.toast({
-            heading: 'درخواست موفق',
-            text: $('<div>').text(response.message).html(),
-            position: 'top-right', icon: 'success', hideAfter: 4000, textAlign: 'right'
+            heading: pending ? 'در انتظار تایید' : (result ? 'صدور موفق' : 'خطا در صدور'),
+            text: pending ? 'پیش‌رزرو در انتظار تایید تامین‌کننده است' :
+                (result ? 'صدور مجدد رزرو با موفقیت انجام شد' : 'صدور مجدد رزرو با خطا مواجه گردید'),
+            position: 'top-right',
+            loaderBg: '#fff',
+            icon: pending ? 'info' : (result ? 'success' : 'error'),
+            hideAfter: 4000,
+            textAlign: 'right',
+            stack: 6
         });
         setTimeout(() => location.reload(), 4000);
-    } catch (error) {
-        $.toast({
-            heading: 'خطا در رزرو مجدد هتل',
-            text: $('<div>').text(error.message || 'خطا در ارتباط با سرور').html(),
-            position: 'top-right', icon: 'error', hideAfter: 6000, textAlign: 'right'
-        });
     } finally {
-        delete el.dataset.reserving;
         if (loader) loader.style.display = 'none';
         if (loaderLd) loaderLd.style.display = 'none';
     }
+}
+function reReserve(factorNum, RequestNumber, dir, typeApplication = 'api', paymentStatus = 'fullPayment', serviceType = '') {
+    return new Promise((resolve, reject) => {
+
+        $.ajax({
+            type: 'POST',
+            url: amadeusPath + 'user_ajax.php',
+            dataType: 'text',
+            data: {
+                flag: 'buyByCreditHotelLocal',
+                factorNumber: factorNum,
+                typeApplication: typeApplication,
+                paymentStatus: paymentStatus,
+                serviceType: serviceType,
+                discountCode: '',
+                creditUse: ''
+            },
+            success: function (data) {
+                if (data.indexOf('success') > -1) {
+                    $.ajax({
+                        url: amadeusPath + 'ajax',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: JSON.stringify({
+                            method: 'HotelReserveNew',
+                            className: 'detailHotel',
+                            factorNumber: factorNum,
+                            requestNumber: RequestNumber,
+                            typeApplication: typeApplication
+                        }),
+                        success: function (data) {
+
+                            if (data && data.book === 'OnRequest') {
+                                resolve('pending');
+                                return;
+                            }
+                            if (!data || data.book !== 'yes' || Number(data.StatusCode) !== 200 || !data.price_session_id || !data.request_number) {
+                                resolve(false);
+                                return;
+                            }
+                            $.ajax({
+                                url: amadeusPath + 'ajax',
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: JSON.stringify({
+                                    method: 'Reserve',
+                                    className: 'detailHotel',
+                                    factor_number: factorNum,
+                                    request_number: data.request_number,
+                                    price_session_id: data.price_session_id
+                                }),
+                                success: function (result) {
+                                    resolve(result && result.Success === true && Number(result.StatusCode) === 200 && result.Result && !result.Result.Error && result.Result.Status !== 'pending' ? true : (result && result.Result && result.Result.Status === 'pending' ? 'pending' : false));
+                                },
+                                error: function () { resolve(false); }
+                            });
+
+                        },
+                        error: function () {
+                            resolve(false);
+                        }
+                    });
+                } else {
+                    reject('creditError');
+                }
+
+            },
+            error: function (xhr, status, error) {
+                reject(error || status);
+            }
+        });
+    });
 }
 
 function ModalShowBookForHotel(factorNumber) {
@@ -398,5 +491,3 @@ function RejectAdminRequestedPrereserveHotelUser(FactorNumber) {
 
 
 }
-
-

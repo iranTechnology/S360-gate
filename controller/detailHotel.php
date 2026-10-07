@@ -1659,7 +1659,6 @@ class detailHotel extends ApiHotelCore
             $Model->setTable('book_hotel_local_tb');
 
             $resultBook = $Model->insertWithBind($d);
-
             $ModelBase->setTable('report_hotel_tb');
             $d['client_id'] = CLIENT_ID;
 
@@ -1983,6 +1982,8 @@ class detailHotel extends ApiHotelCore
 
                                 $statusRequestWebService['type_application'] = $type_application;
                                 $statusRequestWebService['book'] = "yes";
+                                $statusRequestWebService['request_number'] = $params['requestNumber'];
+                                $statusRequestWebService['price_session_id'] = $price_session_id;
                                 $statusRequestWebService['factor_number'] = $factor_number;
                                 $statusRequestWebService['total_price'] = $total_price;
                                 $statusRequestWebService['RequestNumber'] = $params['requestNumber'];
@@ -2069,8 +2070,185 @@ class detailHotel extends ApiHotelCore
     }
 
 
+    private function buildStoredBookData($book_hotel, $book_room_hotel = [])
+    {
+        $hotel_source = $book_hotel[0];
+        $type_application = $hotel_source['type_application'];
+        $factor_number = $hotel_source['factor_number'];
+        $price_session_id = $hotel_source['price_session_id'];
+        $params = ['requestNumber' => $hotel_source['request_number']];
+        $roomsArray = $passengersArray = $buyerArray = [];
+        $roomIndex = 0;
+        foreach ($book_hotel as $rk => $room) {
+            if ($type_application == 'externalApi' /*||( $book_hotel[0]['is_internal'] == '1' && substr($book_hotel[0]['hotel_id'],0,2) == '17') */) {
+                $roomsArray = [
+                    [
+                        'RoomCode' => $room['room_id'],
+                        'RoomCount' => $room['room_count'],
+                        'ExtraBed' => $room['extra_bed_count'],
+                        'CountAdult' => $room['AdultCapacity'],
+                    ]
+                ];
+            }
+            else {
+
+
+                $thisRoomArray = [
+                    'RoomCode' => $room['room_id'],
+                    'RoomCount' => $room['room_count'],
+                    'ExtraBed' => $room['extra_bed_count'],
+                    'CountAdult' => $room['AdultCapacity'],
+                ];
+
+                //						echo $room['child_array'];
+
+                $child_array = json_decode($room['child_array'], true);
+                //						echo Load::plog($child_array);die();
+                if (isset($child_array[$room['room_index']])) {
+                    $thisRoomArray['ChildrenAges'] = $child_array[$rk];
+                }
+                $roomsArray[] = $thisRoomArray;
+            }
+            if($room['source_id'] == '29') {
+                if($room['passenger_age'] == 'Adt') {
+                    $birthday = $this->generateBirthdayDate();
+                }else{
+                    $birthday = $this->generateYoungerBirthdayDate();
+                }
+
+            }else{
+                $birthday = ($room['passenger_birthday_en']) ? $room['passenger_birthday_en'] : dateTimeSetting::jalali_to_gregorian(explode('-', $room['passenger_birthday'])[0], explode('-', $room['passenger_birthday'])[1], explode('-', $room['passenger_birthday'])[2], '-');
+            }
+            if($room['source_id'] == '42'){
+                $numberOfPassengers = (int)($room['AdultCapacity'] ?? 1);
+                for ($i = 0; $i < $numberOfPassengers; $i++) {
+                    $passengersArray[] = [
+                        'Gender' => $room['passenger_gender'],
+                        'FirstName' => $room['passenger_name'],
+                        'FirstNameEn' => $room['passenger_name_en'],
+                        'LastName' => $room['passenger_family'],
+                        'LastNameEn' => $room['passenger_family_en'],
+                        'Birthday' => $room['passenger_birthday'],
+                        'RoomIndex' => $roomIndex,
+                        'NationalCode' => $room['passenger_national_code'],
+                        'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
+                        'BirthdayEn' => $birthday,
+                    ];
+                }
+
+            }
+
+            else{
+                $passengersArray[] = [
+                    'Gender' => $room['passenger_gender'],
+                    'FirstName'    => $room['passenger_name'],
+                    'FirstNameEn'  => !empty($room['passenger_name_en']) ? $room['passenger_name_en'] : (!empty($room['passenger_name']) ? $room['passenger_name'] : $room['passenger_gender']),
+                    'LastName'     => $room['passenger_family'],
+                    'LastNameEn'   => !empty($room['passenger_family_en']) ? $room['passenger_family_en'] : (!empty($room['passenger_family']) ? $room['passenger_family'] : 'Passenger'),
+                    'Birthday' => $room['passenger_birthday'],
+                    'RoomIndex' => ($room['room_index'] + 1),
+                    'NationalCode' => $room['passenger_national_code'],
+                    'Country' => isset($room['passportCountry']) ? $room['passportCountry'] : '',
+                    'BirthdayEn' => $birthday,
+                ];
+            }
+            $roomIndex++;
+            //					$buyerArray = [
+            //						'FirstName' => $room['member_name'],
+            //						'LastName'  => $room['member_name'],
+            //						'Mobile'    => $room['member_mobile'],
+            //						'Email'     => $room['member_email'],
+            //					];
+            if ($room['source_id'] == '42') {
+                $buyerArray = [
+                    'FirstName' => $room['member_name'] ? $room['member_name'] :'Abazar',
+                    'LastName' => $room['member_name'] ? $room['member_name'] :'Abazar',
+                    'Mobile' => $room['member_mobile'],
+                    'Email' => $room['member_email'] ? $room['member_email'] : 'info@iran-tech.com',
+                ];
+            } else {
+                $buyerArray = [
+                    'FirstName' => 'Abazar',
+                    'LastName' => 'Afshar',
+                    'Mobile' => '09057078341',
+                    'Email' => 'info@iran-tech.com',
+                ];
+            }
+        }
+
+        if($hotel_source['source_id'] == '29'){
+            foreach ($book_room_hotel as $rk => $room) {
+                $roomsArray = [
+                    [
+                        'RoomCode' => $room['room_id'],
+                        'RoomCount' => $room['room_count'],
+                        'ExtraBed' => $room['extra_bed_count']
+                    ]
+                ];
+            }
+        }
+
+
+
+
+
+
+        $requestArray = [
+            'FactorNumber' => $factor_number,
+            'RequestNumber' => $params['requestNumber'],
+            'PriceSessionId' => $price_session_id,
+            'Rooms' => $roomsArray,
+            'CountPassengers' => $book_hotel[0]['AdultCapacity'],
+            'Passengers' => $passengersArray,
+            'Buyer' => $buyerArray,
+        ];
+
+
+        return $requestArray;
+    }
+
     public function Book($requestArray = null)
     {
+        if (!empty($requestArray['isRepetHotel'])) {
+            if (TYPE_ADMIN != 1) {
+                return $this->showError('دسترسی به رزرو مجدد هتل مجاز نیست', 403);
+            }
+            $factor = isset($requestArray['FactorNumber']) ? trim($requestArray['FactorNumber']) : '';
+            if ($factor === '') {
+                return $this->showError('شماره فاکتور الزامی است', 400);
+            }
+            $report_model = $this->getModel('reportHotelModel');
+            $query = $report_model->get()->where('factor_number', $factor);
+            if (!empty($requestArray['clientId'])) {
+                $query = $query->where('client_id', $requestArray['clientId']);
+            }
+            $hotel_source = $query->find();
+            if (empty($hotel_source)) {
+                return $this->showError('رزرو هتل یافت نشد', 404);
+            }
+            $query = $report_model->get()->where('factor_number', $factor)
+                ->where('client_id', $hotel_source['client_id']);
+            $type = $hotel_source['type_application'];
+            if (!in_array($type, ['api', 'externalApi', 'api_app'])) {
+                return $this->showError('این نوع رزرو پشتیبانی نمی‌شود', 400);
+            }
+            if (!in_array($hotel_source['source_id'], ['46', '17', '29', '42']) &&
+                (($type == 'api' && substr($hotel_source['hotel_id'], 0, 2) != '17') ||
+                 substr($hotel_source['hotel_id'], 0, 2) != '29' || $type == 'api_app')) {
+                $query = $query->groupBy('room_id');
+            }
+            $rows = $query->all();
+            if (empty($rows)) {
+                return $this->showError('اطلاعات رزرو هتل موجود نیست', 404);
+            }
+            $room_rows = $hotel_source['source_id'] == '29'
+                ? $report_model->get()->where('factor_number', $factor)
+                    ->where('client_id', $hotel_source['client_id'])->groupBy('room_id')->all() : [];
+            $requestArray = $this->buildStoredBookData($rows, $room_rows);
+            if (empty($requestArray['PriceSessionId']) || empty($requestArray['Rooms'])) {
+                return $this->showError('اطلاعات اتاق یا شناسه قیمت رزرو موجود نیست', 400);
+            }
+        }
         if (!$requestArray['RequestNumber']) {
             return $this->returnJson('شماره پیگیری الزامی است', 400);
         }
@@ -2078,6 +2256,7 @@ class detailHotel extends ApiHotelCore
         //		unset( $requestArray['FactorNumber'] );
         functions::insertLog(PHP_EOL . 'request with factor number ' . $factor_number . ' AND data ' . json_encode($requestArray, 256 | 64) . ' => ', 'log_hotel_preReserve');
         $HotelReserveRoom = json_decode(parent::Book($requestArray), true);
+
 //        $HotelReserveRoom = json_decode('{
 //    "StatusCode": 406,
 //    "Message": "این درخواست قبلا ارسال شده است",

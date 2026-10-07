@@ -99,21 +99,146 @@ class errors extends clientAuth
     }
 
 
-    function extractDisplayError($err , $type , $method , $sourceCode) {
+//    function extractDisplayError($err , $type , $method , $sourceCode) {
+//
+//        $allErr = $this->listErrors($type , $method , $sourceCode);
+//
+//        foreach ($allErr as $err0) {
+//
+//            $compare = $this->compareJsonErr(json_decode($err0['providerError'] , true) , $err);
+//
+//            if ($compare) {
+//                return $err0;
+//            }
+//        }
+//
+//        return false;
+//
+//    }
 
-        $allErr = $this->listErrors($type , $method , $sourceCode);
+    public function extractDisplayError($err, $type, $method, $sourceCode)
+    {
+        $text = $this->extractErrorText($err);
 
-        foreach ($allErr as $err0) {
+        if ($text === '') {
+            return false;
+        }
 
-            $compare = $this->compareJsonErr(json_decode($err0['providerError'] , true) , $err);
+        $allErr = $this->listErrors($type, $method, $sourceCode);
 
-            if ($compare) {
-                return $err0;
+        $bestMatch = false;
+        $bestPercent = 0;
+
+        foreach ($allErr as $storedError) {
+            $storedText = $this->extractErrorText(
+                $storedError['providerError']
+            );
+
+            if ($storedText === '') {
+                continue;
+            }
+
+            $percent = $this->similarPercent($storedText, $text);
+
+            if ($percent >= 70 && $percent > $bestPercent) {
+                $bestPercent = $percent;
+                $bestMatch = $storedError;
             }
         }
 
-        return false;
+        return $bestMatch;
+    }
 
+    public function extractErrorText($data)
+    {
+        // پشتیبانی از JSON ذخیره‌شده و پیام متنی ساده
+        if (is_string($data)) {
+            $decoded = json_decode($data, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $data = $decoded;
+            }
+        }
+
+        $texts = [];
+        $this->collectErrorTexts($data, $texts);
+
+        $texts = array_values(array_unique($texts));
+        sort($texts, SORT_STRING);
+
+        return implode("\n", $texts);
+    }
+
+    private function collectErrorTexts($data, &$texts)
+    {
+        if (is_string($data)) {
+            // پشتیبانی از JSON داخل فیلدهای پاسخ
+            $decoded = json_decode($data, true);
+
+            if (
+                json_last_error() === JSON_ERROR_NONE
+                && (is_array($decoded) || is_string($decoded))
+                && $decoded !== $data
+            ) {
+                $this->collectErrorTexts($decoded, $texts);
+                return;
+            }
+
+            $text = preg_replace('/\s+/u', ' ', trim($data));
+
+            if ($text === null || $text === '') {
+                return;
+            }
+
+            // مقادیر ساده و شناسه‌ها وارد مقایسه نشوند
+            if (
+                is_numeric($text)
+                || in_array(
+                    strtolower($text),
+                    ['true', 'false', 'null', 'success', 'no err'],
+                    true
+                )
+                || preg_match(
+                    '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i',
+                    $text
+                )
+                || preg_match(
+                    '/^\d{4}-\d{2}-\d{2}(?:[T ].*)?$/',
+                    $text
+                )
+            ) {
+                return;
+            }
+
+            $texts[] = $text;
+            return;
+        }
+
+        if (!is_array($data)) {
+            return;
+        }
+
+        // فقط این فیلدها حذف می‌شوند؛ سایر ساختارها عمومی بررسی می‌شوند
+        $ignoredKeys = [
+            'curlerror', 'info', 'errno',
+            'traceid', 'sessionid', 'bookid',
+            'requestid', 'correlationid', 'transactionid',
+            'token', 'accesstoken', 'refreshtoken',
+            'executiontime', 'currenttime',
+            'url', 'headers',
+        ];
+
+        foreach ($data as $key => $value) {
+            $normalizedKey = strtolower(
+                preg_replace('/[^a-z0-9]/i', '', (string) $key)
+            );
+
+            if (in_array($normalizedKey, $ignoredKeys, true)) {
+                continue;
+            }
+
+            $this->collectErrorTexts($value, $texts);
+        }
     }
 
     function insertNewError($err , $type , $method , $sourceCode) {

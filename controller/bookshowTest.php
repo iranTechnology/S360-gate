@@ -6228,7 +6228,11 @@ class bookshowTest extends clientAuth {
                     in_array($hotel['status'], ['NoReserve', 'error', 'bank', 'credit', 'PreReserve'], true) &&
                     empty($hotel['pnr']) && empty($hotel['voucher_number']) && empty($hotel['manual_book'])) {
                     $retryArguments = htmlspecialchars(json_encode([
-                        (string)$hotel['factor_number'],
+                        (string)$hotel['request_number'],
+                        (string)$hotel['member_id'],
+                        (string)$hotel['source_id'],
+                        'dept',
+                        trim((string)$hotel['factor_number']),
                         (string)$hotel['client_id']
                     ]), ENT_QUOTES, 'UTF-8');
                     $DataAction .= '<div class="pull-left margin-10">'
