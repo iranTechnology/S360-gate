@@ -2,6 +2,12 @@
 @import "components/mixin";
 @import "components/fonts";
 
+.main-navigation__sub-menu2 {
+    left: 68px;
+    right: unset !important;
+    top: 100% !important;
+}
+
 
 $height-header: 95px;
 /*header*/
