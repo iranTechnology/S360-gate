@@ -46,7 +46,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>انتخاب فایل اکسل</label>
-                                    <input type="file" name="pnr_file" class="form-control" p required>
+                                    <input type="file" name="pnr_file" class="form-control" required>
                                 </div>
                             </div>
 
@@ -300,35 +300,46 @@
                                         {/if}
                                     </td>
                                     <td dir="ltr" class="text-left">
-                                        {$objDate->jdate('Y-m-d (H:i:s)', $item.DateRequestMemberInt)}
-                                        <hr/>
+                                        {$objDate->jdate('Y-m-d', $item.DateRequestMemberInt)}
+                                        <br/><br/>
+                                        {$objDate->jdate('H:i:s', $item.DateRequestMemberInt)}
+                                        <br/>
                                         {$objDate->jdate('l', $item.DateRequestMemberInt)}
                                     </td>
                                     <td dir="ltr" class="text-left">
-                                        {if $item.DateRequestCancelClientInt neq '0'} {$objDate->jdate('Y-m-d (H:i:s)', $item.DateRequestCancelClientInt)}
-                                            <hr/>
+                                        {if $item.DateRequestCancelClientInt neq '0'}
+                                            {$objDate->jdate('Y-m-d', $item.DateRequestCancelClientInt)}
+                                            <br/><br/>
+                                            {$objDate->jdate('H:i:s', $item.DateRequestCancelClientInt)}
+                                            <br/>
                                             {$objDate->jdate('l', $item.DateRequestCancelClientInt)}
-
-                                        {else}---{/if}
-                                    </td>
+                                        {else}
+                                            ---
+                                        {/if}
+                                    </td>5
                                     <td dir="ltr" class="text-left">
                                         {if $item.DateSetCancelInt neq '0' || $item.DateConfirmClientInt neq '0' ||
                                         $item.DateSetFailedIndemnityInt neq '0'}
 
                                             {if $item.Status eq 'SetCancelClient'}
-
-                                                {$objDate->jdate('Y-m-d (H:i:s)', $item.DateSetCancelInt)}
-                                                <hr/>
+                                                {$objDate->jdate('Y-m-d', $item.DateSetCancelInt)}
+                                                <br/><br/>
+                                                {$objDate->jdate('H:i:s', $item.DateSetCancelInt)}
+                                                <br/>
                                                 {$objDate->jdate('l', $item.DateSetCancelInt)}
 
                                             {elseif $item.Status eq 'ConfirmClient'}
-
-                                                {$objDate->jdate('Y-m-d (H:i:s)', $item.DateConfirmClientInt)}
-                                                <hr/>
+                                                {$objDate->jdate('Y-m-d', $item.DateConfirmClientInt)}
+                                                <br/><br/>
+                                                {$objDate->jdate('H:i:s', $item.DateConfirmClientInt)}
+                                                <br/>
                                                 {$objDate->jdate('l', $item.DateConfirmClientInt)}
+
                                             {elseif $item.Status eq 'SetFailedIndemnity'}
-                                                {$objDate->jdate('Y-m-d (H:i:s)', $item.DateSetFailedIndemnityInt)}
-                                                <hr/>
+                                                {$objDate->jdate('Y-m-d', $item.DateSetFailedIndemnityInt)}
+                                                <br/><br/>
+                                                {$objDate->jdate('H:i:s', $item.DateSetFailedIndemnityInt)}
+                                                <br/>
                                                 {$objDate->jdate('l', $item.DateSetFailedIndemnityInt)}
                                             {/if}
 

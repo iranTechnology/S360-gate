@@ -5071,7 +5071,12 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'flagRequestCancelUser') {
     $agencyController = Load::controller('agency');
 
     echo $agencyController->changeStatusServiceAgency($_POST);
-} elseif ((isset($_POST['flag']) && $_POST['flag'] == 'acceptSubAgencyWhiteLabel')) {
+} elseif ((isset($_POST['flag']) && $_POST['flag'] == 'changeStatusReconciliation')) {
+    unset($_POST['flag']);
+    $agencyController = Load::controller('listCancel');
+
+    echo $agencyController->changeStatusReconciliation($_POST['Pnr']);
+}elseif ((isset($_POST['flag']) && $_POST['flag'] == 'acceptSubAgencyWhiteLabel')) {
     unset($_POST['flag']);
     $agencyController = Load::controller('agency');
 
