@@ -281,6 +281,7 @@ class Passengers extends clientAuth {
 
         }
 
+
         $passengerInfo['name'] = filter_var($input['passengerName'], FILTER_SANITIZE_STRING);
         $passengerInfo['name_en'] = filter_var($input['passengerNameEn'], FILTER_SANITIZE_STRING);
         $passengerInfo['family'] = filter_var($input['passengerFamily'], FILTER_SANITIZE_STRING);

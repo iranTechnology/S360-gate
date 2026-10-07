@@ -146,6 +146,7 @@
 }
 
 #Flight .cheng-internal-external,
+#Hotel .cheng-internal-external,
 #Tour .cheng-internal-external
 {
     display: none;

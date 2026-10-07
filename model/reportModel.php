@@ -21,4 +21,6 @@ class reportModel extends ModelBase
        
         return parent::load($sql);
     }
+
+
 }

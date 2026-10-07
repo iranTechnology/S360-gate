@@ -189,7 +189,29 @@ class bookTourShow extends clientAuth
         $dataRows = [];
         $this->totalPrice = 0;
         $this->payment_price = 0;
+        $cancellationServices = [];
         foreach ($BookShow as $k => $book) {
+            $clientId = TYPE_ADMIN == '1' ? (int) $book['client_id'] : (int) CLIENT_ID;
+            if (!isset($cancellationServices[$clientId])) {
+                if ($clientId === (int) CLIENT_ID) {
+                    $connection = Load::library('Model')->getPDO();
+                } else {
+                    $clientInfo = functions::getClientInfo($clientId);
+                    if (empty($clientInfo['DbName'])) {
+                        throw new RuntimeException('Tour client database is unavailable');
+                    }
+                    $dsn = preg_replace('/dbname=[^;]*/', 'dbname=' . $clientInfo['DbName'], PDO_DSN);
+                    $connection = new PDO($dsn, $clientInfo['DbUser'], $clientInfo['DbPass'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+                    $connection->exec('SET NAMES utf8');
+                }
+                $cancellationServices[$clientId] = Load::controller('tourCancellation', $connection);
+            }
+            $cancellationOverview = $cancellationServices[$clientId]->adminOverview($book['factor_number'], $book['member_id']);
+            if (!empty($cancellationOverview['status'])) {
+                $book['status'] = $cancellationOverview['status'];
+            }
+            $dataRows[$k]['cancellation_overview'] = $cancellationOverview['html'];
+
 
             $changePrice=$reservationTourController->getRequestPriceChanged($book['factor_number']);
 

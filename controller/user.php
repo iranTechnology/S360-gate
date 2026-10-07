@@ -434,6 +434,9 @@ class user extends baseController
         if($type=='hotel'){
             return $this->getInfoTicketHotelCancel($RequestNumber);
         }
+        if($type=='tour'){
+            return $this->getInfoTicketTourCancel($RequestNumber, $clientId ?: CLIENT_ID);
+        }
         if($type=='insurance'){
             return $this->getInfoTicketInsuranceCancel($RequestNumber);
         }
@@ -483,6 +486,11 @@ class user extends baseController
                 $LeftJoin = "LEFT JOIN book_train_tb AS book ON book.requestNumber = Cancel.RequestNumber AND ((TCancel.NationalCode = book.passenger_national_code)OR(TCancel.NationalCode = book.passportNumber))";
             }else if($resultExistCancel['TypeCancel']=='hotel'){
                 $LeftJoin = "LEFT JOIN book_hotel_local_tb AS book ON book.factor_number = Cancel.RequestNumber AND ((TCancel.NationalCode = book.passenger_national_code)OR(TCancel.NationalCode = book.passportNumber))";
+            }else if($resultExistCancel['TypeCancel']=='tour'){
+                $LeftJoin = "LEFT JOIN book_tour_local_tb AS book ON book.factor_number = Cancel.RequestNumber AND
+                    (TCancel.NationalCode = CONCAT('tourPassenger:', book.id) OR TCancel.NationalCode = book.factor_number
+                     OR (book.passenger_national_code <> '' AND TCancel.NationalCode = book.passenger_national_code)
+                     OR (book.passportNumber <> '' AND TCancel.NationalCode = book.passportNumber))";
             }else if($resultExistCancel['TypeCancel']=='bus'){
                 $passenger_age = 'book.passenger_birthday';
                 $passenger_factor_number = 'book.passenger_factor_num';
@@ -548,6 +556,22 @@ class user extends baseController
             return [];
         }
 
+        if ($cancelDetail['TypeCancel'] === 'tour') {
+            $RequestNumber = filter_var($RequestNumber, FILTER_SANITIZE_NUMBER_INT);
+            $id = (int) $id;
+            $sql = "SELECT book.*, TCancel.NationalCode AS cancel_national_code, Cancel.*
+                    FROM book_tour_local_tb book
+                    JOIN cancel_ticket_details_tb Cancel ON Cancel.FactorNumber = book.factor_number
+                        AND Cancel.TypeCancel = 'tour' AND Cancel.id = '{$id}'
+                    JOIN cancel_ticket_tb TCancel ON TCancel.IdDetail = Cancel.id
+                        AND (TCancel.NationalCode = CONCAT('tourPassenger:', book.id)
+                         OR TCancel.NationalCode = book.factor_number
+                         OR (book.passenger_national_code <> '' AND TCancel.NationalCode = book.passenger_national_code)
+                         OR (book.passportNumber <> '' AND TCancel.NationalCode = book.passportNumber))
+                    WHERE book.factor_number = '{$RequestNumber}' ORDER BY book.id";
+            return $this->admin->ConectDbClient($sql, $ClientId, 'SelectAll', '', '', '');
+        }
+
         /* -------------------------------
            Dynamic book table & fields
         -------------------------------- */
@@ -567,6 +591,11 @@ class user extends baseController
 
             case 'hotel':
                 $bookTable = 'book_hotel_local_tb';
+                $bookJoinKey = 'book.factor_number';
+                break;
+
+            case 'tour':
+                $bookTable = 'book_tour_local_tb';
                 $bookJoinKey = 'book.factor_number';
                 break;
 
@@ -1204,6 +1233,24 @@ class user extends baseController
             die();
         }*/
 
+        return $this->admin->ConectDbClient($sql, $ClientId, "SelectAll", "", "", "");
+    }
+
+    public function getInfoTicketTourCancel($factorNumber, $ClientId = CLIENT_ID)
+    {
+        $factorNumber = filter_var($factorNumber, FILTER_SANITIZE_NUMBER_INT);
+        $sql = "SELECT book.*, book.factor_number AS RequestNumber, cancelDetail.*,
+                       cancelTicket.NationalCode AS NationalCode
+                FROM book_tour_local_tb AS book
+                LEFT JOIN cancel_ticket_details_tb AS cancelDetail
+                    ON cancelDetail.FactorNumber = book.factor_number AND cancelDetail.TypeCancel = 'tour'
+                LEFT JOIN cancel_ticket_tb AS cancelTicket ON cancelTicket.IdDetail = cancelDetail.id
+                    AND (cancelTicket.NationalCode = CONCAT('tourPassenger:', book.id)
+                     OR cancelTicket.NationalCode = book.factor_number
+                     OR (book.passenger_national_code <> '' AND cancelTicket.NationalCode = book.passenger_national_code)
+                     OR (book.passportNumber <> '' AND cancelTicket.NationalCode = book.passportNumber))
+                WHERE book.factor_number = '{$factorNumber}'
+                GROUP BY book.id";
         return $this->admin->ConectDbClient($sql, $ClientId, "SelectAll", "", "", "");
     }
 
@@ -2955,7 +3002,11 @@ LEFT JOIN cancel_ticket_details_tb AS cd
     }
 
     public function getBookAllTour($param = '') {
+
+
+
         $Model = Load::library('Model');
+        $tourCancellation = Load::controller('tourCancellation', $Model->getPDO());
         $id = Session::getUserId();
         $sql = "SELECT   
                     passenger_name,
@@ -2967,6 +3018,10 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                     tour_name,
                     tour_type,
                     total_price,
+                    tour_total_price,
+                    tour_origin_price,
+                    tour_discount,
+                    discount_code_amount,
                     tour_night,
                     tour_day,
                     tour_id,
@@ -3010,12 +3065,27 @@ LEFT JOIN cancel_ticket_details_tb AS cd
         $bookList = $Model->select($sql);
         $result = [];
         foreach ($bookList as $key => $item) {
+            $tourCancelSummary = $tourCancellation->summary($item['factor_number'], $id);
+            $result[$key]['cancellation_notice'] = $tourCancellation->requestNotices($item['factor_number'], $id);
+            if (!empty($tourCancelSummary['status'])) {
+                $item['status'] = $tourCancelSummary['status'];
+            }
+
             if ($item['tour_type'] != '') {
                 $bookList[$key]['tour_type'] = $item['tour_type'];
             } else {
                 $bookList[$key]['tour_type'] = '';
             }
-            $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
+
+            if ( $item['tour_discount'] == '' ) {
+                $bookList[$key]['price_final'] = number_format( $item['total_price'] - $item['discount_code_amount'], 0, '.', ',');
+            } else {
+                $bookList[$key]['price_final'] =  '<span class="strikePrice" style="text-decoration: line-through;margin-left: 7px;">
+                                                            <span class="pice-tour">' . number_format( $item['tour_origin_price'] - $item['discount_code_amount'], 0, '.', ',' ) . '</span>
+                                                        </span>' . number_format( $item['tour_total_price'] - $item['discount_code_amount'], 0, '.', ',' );
+            }
+
+//            $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
             if ($item['tour_night'] > 0) {
                 $bookList[$key]['tour_night'] = $item['tour_night'] .' '. functions::Xmlinformation('Night');
             } else {
@@ -3046,7 +3116,10 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestRejected')->__toString();
             }
             elseif  ($is_request && $item['status'] == 'RequestAccepted') {
-                $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+//                $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+                $bookList[$key]['view_status'] =  '<span>'.functions::Xmlinformation('RequestAccepted')->__toString().'</span>' .
+                    ' <a class="receive-tickets-btn mr-2" target="_blank" href="' . ROOT_ADDRESS . '/UserTracking&type=tour&id=' . $item['factor_number'] . '">'.functions::Xmlinformation('ResumeReservation')->__toString().'</a>'
+                ;
             }
             elseif ($item['status'] == 'BookedSuccessfully') {
                 $bookList[$key]['view_status'] = functions::Xmlinformation('Definitivereservation')->__toString();
@@ -3066,6 +3139,10 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 $bookList[$key]['view_status'] =  functions::Xmlinformation('Cancellation')->__toString() . '<span style="border: 1px dashed #d1d1d1; ">' . $item['cancellation_comment'] .'</span>';
             } else {
                 $bookList[$key]['view_status'] =  functions::Xmlinformation('Unknow')->__toString();
+            }
+            if (!empty($tourCancelSummary['cancelled'])) {
+                $bookList[$key]['view_status'] .= ' (' . functions::Xmlinformation('Cancellation')->__toString()
+                    . ': ' . $tourCancelSummary['cancelled'] . '/' . $tourCancelSummary['total'] . ')';
             }
             if ($item['tour_start_date'] != '') {
                 $bookList[$key]['enter_date'] =  functions::printDateIntByLanguage('Y-m-d',functions::convertJalaliDateToGregInt($item['tour_start_date']),SOFTWARE_LANG);
@@ -3100,7 +3177,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 ],
                 [
                     'title' => functions::Xmlinformation('Enterdate')->__toString(),
-                    'value' => $bookList[$key]['enter_date'],
+                    'value' => $bookList[$key]['tour_start_date'],
                 ],
             ];
 
@@ -3921,6 +3998,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
     public function getBookAllItem($param = '') {
         $Model = Load::library('Model');
+        $tourCancellation = Load::controller('tourCancellation', $Model->getPDO());
         $obj_user = Load::controller('user');
         $memberId = Session::getUserId();
 
@@ -3969,6 +4047,8 @@ LEFT JOIN cancel_ticket_details_tb AS cd
             $conditions .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%'))";
             $conditions_flight .= " AND ((concat(passenger_name,' ',passenger_family) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name,passenger_family) LIKE '%{$param['passengerName']}%') OR (concat(passenger_name_en,' ',passenger_family_en) LIKE '%{$param['passengerName']}%')  OR (concat(passenger_name_en,passenger_family_en) LIKE '%{$param['passengerName']}%'))";
         }
+        $tour_status = isset($param['statusGroup']) && $param['statusGroup'] === 'cancel'
+            ? " AND status = 'Cancellation' " : $status;
         $tableNameFlight = 'book_local_tb';
         $tableNameBus = 'book_bus_tb';
         $tableNameTrain = 'book_train_tb';
@@ -3984,7 +4064,10 @@ LEFT JOIN cancel_ticket_details_tb AS cd
 
         $sql = "
             SELECT
-                 'flight' As moduleTitle,                 
+                 'flight' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,     
                   passenger_name_en AS passenger_name_en,
@@ -4078,6 +4161,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'bus' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4171,6 +4257,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'train' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4265,6 +4354,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'gashttransfer' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4359,6 +4451,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
              UNION
             SELECT
                  'tour' As moduleTitle,
+                 tour_discount AS tour_discount,
+                 tour_origin_price AS tour_origin_price,
+                 tour_total_price AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4373,7 +4468,7 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                   creation_date_int AS  creation_date_int,
                   status AS statusBook,
                   '' AS request_cancel, 
-                  '' AS discount_code_amount,
+                  discount_code_amount AS discount_code_amount,
                   '' AS type_discount,
                   '' AS car_name,
                   '' AS car_name_en,
@@ -4446,12 +4541,15 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 {$tableNameTour} 
             WHERE
                 member_id = '{$memberId}' 
-                {$conditions} {$factor_number} {$status}
+                {$conditions} {$factor_number} {$tour_status}
             GROUP BY
                 factor_number 
              UNION
             SELECT
                  'hotel' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4545,6 +4643,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
               UNION
             SELECT
                  'insurance' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4639,6 +4740,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
       UNION
             SELECT
                  'visa' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4732,6 +4836,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                     UNION
             SELECT
                  'entertainment' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4826,6 +4933,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
                 UNION
             SELECT
                  'europcar' As moduleTitle,
+                 '' AS tour_discount,
+                 '' AS tour_origin_price,
+                 '' AS tour_total_price,
                   passenger_name AS passenger_name,
                   passenger_family AS passenger_family,
                   '' AS passenger_name_en,
@@ -4920,6 +5030,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
             
         SELECT
              'exclusivetour' AS moduleTitle,
+             '' AS tour_discount,
+             '' AS tour_origin_price,
+             '' AS tour_total_price,
               passenger_name AS passenger_name,
               passenger_family AS passenger_family,
               '' AS passenger_name_en,
@@ -5009,6 +5122,9 @@ LEFT JOIN cancel_ticket_details_tb AS cd
         UNION
     SELECT
      'cip' AS moduleTitle,
+     '' AS tour_discount,
+     '' AS tour_origin_price,
+     '' AS tour_total_price,
       passenger_name AS passenger_name,
       passenger_family AS passenger_family,
       '' AS passenger_name_en,
@@ -5625,12 +5741,24 @@ GROUP BY factor_number
                 }
             }
             elseif ($item['moduleTitle'] == 'tour') {
+                $tourCancelSummary = $tourCancellation->summary($item['factor_number'], $memberId);
+                $result[$key]['cancellation_notice'] = $tourCancellation->requestNotices($item['factor_number'], $memberId);
+                if (!empty($tourCancelSummary['status'])) {
+                    $item['statusBook'] = $tourCancelSummary['status'];
+                }
+
                 if ($item['tour_type'] != '') {
                     $bookList[$key]['tour_type'] = $item['tour_type'];
                 } else {
                     $bookList[$key]['tour_type'] = '';
                 }
-                $bookList[$key]['price_final'] = number_format(functions::calcDiscountCodeByFactor($item['total_price'], $item['factor_number']));
+                if ( $item['tour_discount'] == '' ) {
+                    $bookList[$key]['price_final'] = number_format( $item['total_price'] - $item['discount_code_amount'], 0, '.', ',');
+                } else {
+                    $bookList[$key]['price_final'] =  '<span class="strikePrice" style="text-decoration: line-through;margin-left: 7px;">
+                                                            <span class="pice-tour">' . number_format( $item['tour_origin_price'] - $item['discount_code_amount'], 0, '.', ',' ) . '</span>
+                                                        </span>' . number_format( $item['tour_total_price'] - $item['discount_code_amount'], 0, '.', ',' );
+                }
                 if ($item['tour_night'] > 0) {
                     $bookList[$key]['tour_night'] = $item['tour_night'] .' '. functions::Xmlinformation('Night');
                 } else {
@@ -5654,7 +5782,10 @@ GROUP BY factor_number
                     $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestRejected')->__toString();
                 }
                 elseif  ($is_request && $item['statusBook'] == 'RequestAccepted') {
-                    $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+//                    $bookList[$key]['view_status'] =  functions::Xmlinformation('RequestAccepted')->__toString();
+                    $bookList[$key]['view_status'] =  '<span>'.functions::Xmlinformation('RequestAccepted')->__toString().'</span>' .
+                        ' <a class="receive-tickets-btn mr-2" target="_blank" href="' . ROOT_ADDRESS . '/UserTracking&type=tour&id=' . $item['factor_number'] . '">'.functions::Xmlinformation('ResumeReservation')->__toString().'</a>'
+                    ;
                 }
                 elseif ($item['statusBook'] == 'BookedSuccessfully') {
                     $bookList[$key]['view_status'] =  '<span class="text-success">'.functions::Xmlinformation('Definitivereservation')->__toString().'</span>';
@@ -5676,6 +5807,10 @@ GROUP BY factor_number
                     $bookList[$key]['view_status'] =  functions::Xmlinformation('Unknow')->__toString();
                 }
 
+                if (!empty($tourCancelSummary['cancelled'])) {
+                    $bookList[$key]['view_status'] .= ' (' . functions::Xmlinformation('Cancellation')->__toString()
+                        . ': ' . $tourCancelSummary['cancelled'] . '/' . $tourCancelSummary['total'] . ')';
+                }
                 if ($item['tour_start_date'] != '') {
                     $bookList[$key]['enter_date'] =  functions::printDateIntByLanguage('Y/m/d',functions::convertJalaliDateToGregInt($item['tour_start_date']),SOFTWARE_LANG);
                 } else {
@@ -5692,6 +5827,7 @@ GROUP BY factor_number
                     'value' => $bookList[$key]['view_status']
                 ];
                 $result[$key]['factor_number'] = $item['factor_number'];
+
                 $result[$key]['price'] = $bookList[$key]['price_final'];
                 $result[$key]['info_list'] = [
                     [
@@ -5708,7 +5844,7 @@ GROUP BY factor_number
                     ],
                     [
                         'title' => functions::Xmlinformation('Enterdate')->__toString(),
-                        'value' => $bookList[$key]['enter_date'],
+                        'value' => $bookList[$key]['tour_start_date'],
                     ],
                 ];
 

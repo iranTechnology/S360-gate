@@ -13,13 +13,14 @@
 class  transaction extends clientAuth {
     public $Model;
     public $transactionModel;
-
+    protected $agency;
     public $transactions;
     public function __construct() {
         parent::__construct();
         $this->Model = Load::library('Model');
         $this->transactionModel = $this->transactionModel();
         $this->transactions = $this->getModel('transactionsModel');
+        $this->agency = new agency();
     }
 
     /**
@@ -45,6 +46,7 @@ class  transaction extends clientAuth {
         } else {
             $currentCredit = $this->getCredit();
         }
+
         $remainingCredit = $currentCredit - $amountToCheck;
         if ($checkGetWayIranTech && $typeBuy == 'online') {
             $amountSendToGetWayIranTech = intval($amount_to_bank + $currentCredit);
@@ -120,12 +122,22 @@ class  transaction extends clientAuth {
         return $this->insertCredit($data);
     }
 
-    public function insertCredit($data) {
+    public function insertCredit($data , $factorNumber=null) {
         $data['CreationDateInt'] = time();
         $data['PriceDate'] = date("Y-m-d H:i:s");
 
-        $this->Model->setTable('transaction_tb');
-        $result = $this->Model->insertLocal($data);
+        if(TYPE_ADMIN == 1){
+            $modelReportExclusiveTour = Load::getModel('exclusiveTourBaseModel');
+
+            $exclusiveTourData = $modelReportExclusiveTour->getOneByFactorNumber($factorNumber);
+            functions::insertLog('$exclusiveTourData: ' . json_encode($exclusiveTourData) , '000shojaee');
+            $dbName = functions::getClientInfo($exclusiveTourData[0]['client_id'])['DbName'];
+            functions::insertLog('$dbName: ' . json_encode($dbName) , '000shojaee');
+            $this->agency->agencyModel()->getPDO()->query("USE `$dbName`");
+        }
+
+            $this->Model->setTable('transaction_tb');
+            $result = $this->Model->insertLocal($data);
 
         //for admin panel
         $this->transactions->insertTransaction($data);
@@ -144,7 +156,7 @@ class  transaction extends clientAuth {
         $data['Status'] = '2';
         $data['PaymentStatus'] = 'success';
         $data['BankTrackingCode'] = '';
-        return $this->insertCredit($data);
+        return $this->insertCredit($data,$factorNumber);
     }
 
     public function setCreditToSuccess($factorNumber, $bankTrackingCode) {
@@ -1043,8 +1055,8 @@ class  transaction extends clientAuth {
             ->get()
             ->where('FactorNumber', trim($factor_number))
             ->openParentheses()
-                ->where('Reason', $reason)
-                ->orWhere('Reason', '')
+            ->where('Reason', $reason)
+            ->orWhere('Reason', '')
             ->closeParentheses()
             ->where('Status', '2')
             ->where('clientID', $client_id)

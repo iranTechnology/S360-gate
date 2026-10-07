@@ -50,9 +50,9 @@
                             {*                            <th>typeAgency</th>*}
                             <th>نام ادمین</th>
                             <th>افزایش</th>
-                            <th>خرید</th>
-                            <th>در حال بررسی</th>
-                            <th>ناموفق</th>
+                            <th>کاهش</th>
+{*                            <th>در حال بررسی</th>*}
+{*                            <th>ناموفق</th>*}
                             <th>باقی مانده</th>
                             <th>علت تراکنش</th>
                             <th>وضعیت تراکنش</th>
@@ -96,20 +96,20 @@
                                         0
                                     {/if}
                                 </td>
-                                <td>
-                                    {if $item.state eq 'buy' && $item.status eq 'pending'}
-                                        {$item.amount|number_format:$format_desimal}
-                                    {else}
-                                        0
-                                    {/if}
-                                </td>
-                                <td>
-                                    {if $item.state eq 'charge' && $item.status neq 'success'}
-                                        {$item.amount|number_format:$format_desimal}
-                                    {else}
-                                        0
-                                    {/if}
-                                </td>
+{*                                <td>*}
+{*                                    {if $item.state eq 'buy' && $item.status eq 'pending'}*}
+{*                                        {$item.amount|number_format:$format_desimal}*}
+{*                                    {else}*}
+{*                                        0*}
+{*                                    {/if}*}
+{*                                </td>*}
+{*                                <td>*}
+{*                                    {if $item.state eq 'charge' && $item.status neq 'success'}*}
+{*                                        {$item.amount|number_format:$format_desimal}*}
+{*                                    {else}*}
+{*                                        0*}
+{*                                    {/if}*}
+{*                                </td>*}
 
                                 <td>
                                     {if $item.state=='charge'}

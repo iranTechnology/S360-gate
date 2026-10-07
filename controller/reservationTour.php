@@ -4412,11 +4412,6 @@ class reservationTour extends clientAuth
 
     public function getTourPackage($tour_id, $start_date, $end_date) {
 
-//    error_reporting(1);
-//    error_reporting(E_ALL | E_STRICT);
-//    @ini_set('display_errors', 1);
-//    @ini_set('display_errors', 'on');
-
         $string_start_date = str_replace(['/', '-', ' '], '', $start_date);
         functions::insertLog('******************Start Of the Story*******************', 'slow_package');
         $tour_table = $this->reservation_tour_model->getTable();
@@ -4567,6 +4562,7 @@ class reservationTour extends clientAuth
 //
 //                }
                 $room_key_index = $room_type['index'];
+                $price_change = 0;
 
                 $objResultTour = Load::controller('resultTourLocal');
                 $discountVal = $tour_discount_package_list[$package['id']][$room_key_index]['discountedMinPriceR'];
@@ -4576,8 +4572,15 @@ class reservationTour extends clientAuth
                     $discountedPrice = $price_change;
                 } else {
                     // discount exists
-                    $price_change = $this->doPriceChange($discountVal, $package['change_price']);
+                    $do_discount = ($objResultTour->doDiscount($tour_id, ['minPriceR' => $package[$room_type['packagePriceName']]]));
+                    if (empty($do_discount['discountedMinPriceR'])) {
+                        $price_change = $this->doPriceChange($package[$room_type['packagePriceName']], $package['change_price']);
+                    } else {
+                        $price_change = $this->doPriceChange($do_discount['discountedMinPriceR'], $package['change_price']);
+                    }
                     $discountedPrice = $price_change;
+
+
                 }
                 if(functions::isEnableSetting('toman')) {
                     $final_price = round($discountedPrice / 10) ;
@@ -5006,7 +5009,7 @@ class reservationTour extends clientAuth
 
         foreach ($room_types as $room_key => $room_type) {
 
-            $do_discount = ($resultTourLocalController->doDiscount($result_get_tour['id_same'], ['minPriceR' => $result_get_tour[$room_type['packagePriceName']]]));
+            $do_discount = ($resultTourLocalController->doDiscount($result_get_tour['id'], ['minPriceR' => $result_get_tour[$room_type['packagePriceName']]]));
 
 //            if (empty($do_discount['discountedMinPriceR'])) {
 //                $final_price = $result_get_tour[$room_type['packagePriceName']] + $result_get_tour['change_price'];

@@ -3462,7 +3462,6 @@ class bookshowTest extends clientAuth {
     #region MainTicketHistory
 
     public function MainFlightTicketHistory( $param ) {
-
         $ArrInfoAgancyShare=array();
         if ( ! empty( $param['member_id'] ) ) {
             $intendedUser  = [
@@ -4336,8 +4335,6 @@ class bookshowTest extends clientAuth {
                                                                                </a></div>
                                                                                ";
                         }
-
-
                         if ( $flightBook['successfull'] == 'book' || ( $flightBook['successfull'] == 'private_reserve' && TYPE_ADMIN == '1' ) ) {
                             $DataFlightAgencyShare .= '
                              <div class="pull-left margin-10">
@@ -6226,6 +6223,24 @@ class bookshowTest extends clientAuth {
                                                     </a>
                                                 </div>';
 
+                if (TYPE_ADMIN == '1' && in_array($hotel['type_application'], ['api', 'externalApi', 'api_app']) &&
+                    in_array($hotel['status'], ['NoReserve', 'error', 'bank', 'credit', 'PreReserve'], true) &&
+                    empty($hotel['pnr']) && empty($hotel['voucher_number']) && empty($hotel['manual_book'])) {
+                    $retryArguments = htmlspecialchars(json_encode([
+                        (string)$hotel['request_number'],
+                        (string)$hotel['member_id'],
+                        (string)$hotel['source_id'],
+                        'dept',
+                        trim((string)$hotel['factor_number']),
+                        (string)$hotel['client_id']
+                    ]), ENT_QUOTES, 'UTF-8');
+                    $DataAction .= '<div class="pull-left margin-10">'
+                        . '<a href="#" onclick="confirmReservationRequestAgainHotel(this, ...' . $retryArguments . ');return false;">'
+                        . '<i style="margin: 5px auto;" class="fcbtn btn btn-outline btn-success btn-1c tooltip-success fa fa-share" '
+                        . 'data-toggle="tooltip" data-placement="top" title="" data-original-title="درخواست مجدد رزرو"></i>'
+                        . '</a><div class="parent-ld" style="display:none"><div class="ld" style="display:none"></div></div></div>';
+                }
+
                 if ($hotel['status'] == 'BookedSuccessfully') {
                     $DataAction .= '<div class="pull-left margin-10"><a href="' . SERVER_HTTP . $addressClient . '/gds/' . $linkView . '&num=' . $hotel['factor_number'] . '"
                                                            target="_blank"
@@ -6940,6 +6955,7 @@ class bookshowTest extends clientAuth {
             if ( TYPE_ADMIN == 1 && $insurance['status'] == 'book' && strpos($insurance['serviceTitle'], 'Public') === 0 ) { //محاسبه اعتبار فعلی مشتری
                 $DataBuyFromIt.=$this->CalculateCurrentCredit($insurance['client_id'],$FActorNumberFor,$BuyFromIt);
             }
+
             $agencyShare = $PassengerPayment - $BuyFromIt;
             $ClssShare = 'bg-inverse';
             if($agencyShare > 0){
@@ -7511,6 +7527,8 @@ class bookshowTest extends clientAuth {
                 $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>';
             }
 
+            $DataStatus .= isset($tour['cancellation_overview']) ? $tour['cancellation_overview'] : '';
+
             if ( $tour['cancel_status'] == 'CancellationR==uest' ) {
                 $DataStatus .= '<hr style="margin:3px">
                                     <a class="btn btn-danger cursor-default" onclick="return false;">درخواست کنسلی از طرف مسافر</a>';
@@ -7888,8 +7906,24 @@ class bookshowTest extends clientAuth {
                                                                             <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-file-pdf-o "
                                                                                data-toggle="tooltip"
                                                                                data-placement="top" title=""
-                                                                               data-original-title=" بلیط پارسی "></i>
+                                                                               data-original-title=" واچر تور "></i>
                                                                         </a>';
+                            $DataFlightActionBtn .= '</div><div class="pull-left margin-10">';
+                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookExclusiveTourFlightPdf&id=' . $flightBook['request_number'] . '&lang=fa"
+                                                                           target="_blank">
+                                                                            <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-ticket-airline"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top" title=""
+                                                                               data-original-title=" بلیط رفت "></i>
+                                                                        </a></div><div class="pull-left margin-10">';
+                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookExclusiveTourFlightReturnPdf&id=' . $flightBook['request_number'] . '&lang=fa"
+                                                                           target="_blank">
+                                                                            <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-ticket-airline "
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top" title=""
+                                                                               data-original-title=" بلیط برگشت "></i>
+                                                                        </a>';
+                            $DataFlightActionBtn .= '</div>';
                         }
                         $DataFlightActionBtn .= '</div>';
 
@@ -8035,8 +8069,22 @@ class bookshowTest extends clientAuth {
                                                                                data-toggle="tooltip"
                                                                                data-placement="top"
                                                                                title=""
-                                                                               data-original-title=" بلیط پارسی "></i>
+                                                                               data-original-title="واچر تور "></i>
                                                                         </a></div>';
+                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookExclusiveTourFlightPdf&id=' . $flightBook['request_number'] . '&lang=fa"
+                                                                           target="_blank">
+                                                                            <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-ticket-airline"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top" title=""
+                                                                               data-original-title=" بلیط رفت "></i>
+                                                                        </a>';
+                            $DataFlightActionBtn .= '<a href="' . SERVER_HTTP . $flightBook['DomainAgency'] . '/gds/pdf&target=bookExclusiveTourFlightReturnPdf&id=' . $flightBook['request_number'] . '&lang=fa"
+                                                                           target="_blank">
+                                                                            <i class="fcbtn btn btn-outline btn-primary btn-1c tooltip-primary fa fa-ticket-airline "
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="top" title=""
+                                                                               data-original-title=" بلیط برگشت "></i>
+                                                                        </a>';
                         }
 
 
@@ -10774,9 +10822,20 @@ class bookshowTest extends clientAuth {
                 $passengerName = $hotel['passenger_name'];
             }
 
-
+            $error = null;
+            if (in_array($hotel['status'], ['NoReserve', 'error'], true)) {
+                $errorData = $this->getModel('logErrorHotelModel')->get()
+                    ->where('request_number', $hotel['request_number'])
+                    ->where('factor_number', $hotel['factor_number'])
+                    ->where('clientId', $hotel['client_id'])
+                    ->find();
+                $messageAdmin = trim($errorData['message_admin'] ?? '');
+                $error = ($messageAdmin === '' || $messageAdmin === '؟')
+                    ? functions::Xmlinformation('Errorunknown')
+                    : functions::Xmlinformation('Errorknown');
+            }
+            $statusText = $this->getHotelStatusText($hotel, $error);
             $agencyName = $hotel['agency_name'] ?? functions::ClientName($hotel['client_id']) ?? 'نامشخص';
-            $statusText = $this->getHotelStatusText($hotel);
 
             $AllBookings[] = [
                 "id" => $CountRow++,
@@ -10786,6 +10845,7 @@ class bookshowTest extends clientAuth {
                 "passenger_name" => $hotel['passenger_name'],
                 "agency_name" => $agencyName,
                 "status" => $statusText,
+                "errorData" => $errorData,
                 "request_time" => dateTimeSetting::jdate('H:i:s', $hotel['creation_date_int'] ?? time()),
             ];
         }
@@ -10978,8 +11038,11 @@ class bookshowTest extends clientAuth {
     /**
      * دریافت متن وضعیت هتل (تمام حالت‌ها)
      */
-    private function getHotelStatusText($hotel) {
+    private function getHotelStatusText($hotel, $error = null) {
         $status = $hotel['status'] ?? 'نامشخص';
+        if (in_array($status, ['NoReserve', 'error'], true) && $error !== null) {
+            return $error;
+        }
 
         $statusMap = [
             'BookedSuccessfully' => functions::Xmlinformation("Definitivereservation"),
@@ -11273,35 +11336,21 @@ class bookshowTest extends clientAuth {
 //    }
     private function btnErrorFlight($data_flight, $tempDeduction = null)
     {
-        $status_admin = (TYPE_ADMIN == '1') ? true : false;
-        $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID;
+        $status_admin = (TYPE_ADMIN=='1') ? true : false ;
+        $client_id = ($status_admin) ? $data_flight['client_id'] : CLIENT_ID ;
+        $data_error = $this->getController('logErrorFlights')->getErrorMessage($data_flight['request_number'],$client_id);
 
-        $data_error = $this->getController('logErrorFlights')
-            ->getErrorMessage($data_flight['request_number'], $client_id);
+        $classes =  in_array($data_error['messageCode'],$this->getCodeSpecialError()) ? 'colorSpecialError' : '';
+        $text_btn = $this->titleBtnError($data_error,$data_flight);
 
-        $classes = in_array($data_error['messageCode'], $this->getCodeSpecialError())
-            ? 'colorSpecialError'
-            : '';
-
-        $text_btn = $this->titleBtnError($data_error, $data_flight);
-
-        if (
-            ($data_error['messageCode'] == '-506' || $data_error['messageCode'] == 'Err0111006')
-            && !$status_admin
-            && $data_flight['pid_private'] == '0'
-        ) {
+        if(($data_error['messageCode']=='-506' || $data_error['messageCode']=='Err0111006') && !$status_admin && $data_flight['pid_private'] =='0'){
             $content_btn = functions::Xmlinformation('providerError');
         }
-        elseif ($status_admin) {
-            $content_btn = '<p><strong>ادمین</strong> : '
-                . $data_error['text_message']['messageAdmin']
-                . '</p>';
-
-            $content_btn .= '<p><strong>آژانس</strong> : '
-                . $data_error['text_message']['messageAgency']
-                . '</p>';
+        else if($status_admin){
+            $content_btn = '<p><strong>ادمین</strong> : ' . $data_error['text_message']['messageAdmin'] . '</p>';
+            $content_btn .= '<p><strong>آژانس</strong> : ' . $data_error['text_message']['messageAgency'] . '</p>';
         }
-        else {
+        else{
             $content_btn = $data_error['text_message'];
         }
 
@@ -11440,16 +11489,15 @@ class bookshowTest extends clientAuth {
 
         $status_admin = (TYPE_ADMIN=='1') ? true : false ;
         $client_id = ($status_admin) ? $data_hotel['client_id'] : CLIENT_ID ;
-        $data_error = $this->getController('logErrorsHotels')->getErrorMessage($data_hotel['request_number'] , $data_hotel['factor_number'],$client_id);
-
+        $data_error = $this->getController('logErrorsHotels')->getErrorMessage($data_hotel['request_number'],$data_hotel['factor_number'],$client_id);
         if($data_error) {
             $classes =  in_array($data_error['messageCode'],$this->getHotelCodeSpecialError()) ? 'colorSpecialError' : '';
             $text_btn = $this->titleBtnHotelError($data_error,$data_hotel);
-            if(!$status_admin && ($data_error['messageCode'] == 'BK-426' || $data_error['messageCode'] == 'Err0111006') ) {
-                $content_btn = functions::Xmlinformation("reserveError");
-            }else{
-                $content_btn = $data_error['text_message'];
-            }
+//            if(!$status_admin && ($data_error['messageCode'] == 'BK-426' || $data_error['messageCode'] == 'Err0111006') ) {
+//                $content_btn = functions::Xmlinformation("reserveError");
+//            }else{
+            $content_btn =TYPE_ADMIN == 1 ? $data_error['message_admin']: $data_error['message_agency'];
+//            }
 
 
             return  '<a href="#" onclick="return false;" class="btn btn-danger '. $classes .' cursor-default popoverBox  popover-danger"

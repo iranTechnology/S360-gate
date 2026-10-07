@@ -133,7 +133,7 @@
                                 <div class='nav-dropdown  passengers-sub-menu' style='display: none'>
                                     <ul class="ul-menu-passengers">
                                         <li>
-                                            <a href="{$smarty.const.ROOT_ADDRESS}/authenticate">
+                                            <a href="{$smarty.const.ROOT_ADDRESS}/club">
                                                 <i class="parent-icon-sub-menu">
                                                     <svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
                                                         <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -729,15 +729,3 @@
         استفاده غیر تجاری
     </div>
 </div>
-
-
-
-{if  $smarty.const.GDS_SWITCH eq 'page'}
-    <script>
-        {literal}
-        if (window.innerWidth <= 576) {
-           console.log('ggggggggg')
-        }
-        {/literal}
-    </script>
-{/if}

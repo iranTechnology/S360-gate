@@ -42,15 +42,48 @@ $(document).ready(function () {
 
 });
 
-function reBookExclusiveTour(requestNumber) {
+function reBookExclusiveTour(requestNumber, factorNumber) {
    return new Promise((resolve, reject) => {
+      $.ajax({
+         url: amadeusPath + 'ajax',
+         type: 'POST',
+         dataType: 'JSON',
+         data: JSON.stringify({
+            className: 'exclusiveTour',
+            method: 'Lock',
+            requestNumber: requestNumber,
+            factorNumber: factorNumber,
+            isRepetExclusiveTour: true
+         }),
+         success: function (response) {
+            if (response?.ProviderStatus == 'errorProvider') {
+               reject(new Error( '  عدم تمام شدن زمان لاک | Fare not found | خطا در پیش‌رزرو مجدد تور'));
+               window.location.reload();
+            }else{
+               resolve(true);
+            }
+         },
+         error: function (xhr) {
+            console.log(xhr)
+            // if (xhr.statusText == 'error') {
+            // reject(new Error('  1عدم تمام شدن زمان لاک | خطا در پیش‌رزرو مجدد تور'));
+            // }else{
+            resolve(true);
+            // }
+         }
+      });
+   });
+}
+
+async function reReserveExclusiveTour(factorNumber, requestNumber) {
+   await new Promise((resolve, reject) => {
       $.ajax({
          url: amadeusPath + 'user_ajax.php',
          type: 'POST',
          data: {
             flag: 'buyByCreditExclusiveTour',
             requestNumber: requestNumber,
-            retryReservation: '1'
+            isRepetExclusiveTour: true
          },
          success: function (response) {
             const result = String(response).trim();
@@ -65,32 +98,49 @@ function reBookExclusiveTour(requestNumber) {
          }
       });
    });
-}
 
-function reRserveExclusiveTour(factorNumber) {
    return new Promise((resolve, reject) => {
       $.ajax({
          url: amadeusPath + 'ajax',
          type: 'POST',
          dataType: 'JSON',
          data: JSON.stringify({
-            method: 'book',
-            className: 'bookExclusiveTour',
+            method: 'Book',
+            className: 'exclusiveTour',
+            request_number: requestNumber,
             factorNumber: factorNumber,
-            paymentType: 'credit',
-            trackingCode: '',
-            successPayment: '1',
-            paymentBank: ''
+            isRepetExclusiveTour: true
          }),
          success: function (response) {
-            if (response.status === 'success' && Number(response.code) === 200) {
-               resolve(response);
-            } else {
-               reject(new Error(response.message || 'صدور تور هنوز تأیید نشده است'));
+            console.log('response res' , response)
+            if (response == null || response?.ProviderStatus == 'errorProvider') {
+               reject(new Error( '  خطا در ‌رزرو مجدد تور'));
+            }else{
+               $.toast({
+                  heading: 'با موفقیت رزرو شد',
+                  text: 'رزرو تور اختصاصی با موفقیت انجام شد',
+                  position: 'top-right',
+                  icon: 'success',
+                  hideAfter: 6000,
+                  textAlign: 'right'
+               });
+               window.location.reload();
             }
          },
          error: function (xhr) {
-            reject(new Error(xhr.responseJSON?.message || 'خطا در صدور مجدد تور'));
+            // if (xhr.statusText == 'error') {
+            //    reject(new Error(' خطا در رزرو مجدد تور'));
+            // }else{
+            $.toast({
+               heading: 'با موفقیت رزرو شد',
+               text: 'رزرو تور اختصاصی با موفقیت انجام شد',
+               position: 'top-right',
+               icon: 'success',
+               hideAfter: 6000,
+               textAlign: 'right'
+            });
+            window.location.reload();
+            // }
          }
       });
    });
@@ -105,8 +155,8 @@ async function proceedWithReserveExclusiveTour(el, requestNumber, factorNumber) 
    if (loaderLd) loaderLd.style.display = 'inline-block';
 
    try {
-      await reBookExclusiveTour(requestNumber);
-      await reRserveExclusiveTour(factorNumber);
+      await reBookExclusiveTour(requestNumber, factorNumber);
+      await reReserveExclusiveTour(factorNumber, requestNumber);
       $.toast({
          heading: 'صدور موفق',
          text: 'رزرو مجدد تور اختصاصی با موفقیت انجام شد',
@@ -125,6 +175,7 @@ async function proceedWithReserveExclusiveTour(el, requestNumber, factorNumber) 
          hideAfter: 6000,
          textAlign: 'right'
       });
+      window.location.reload();
    } finally {
       delete el.dataset.reserving;
       if (loader) loader.style.display = 'none';
@@ -161,31 +212,31 @@ function ModalShowBook(RequestNumber) {
 
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'ModalShowBook',
-         Param: RequestNumber
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'ModalShowBook',
+          Param: RequestNumber
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 function ModalShowBookForExclusiveTour(RequestNumber) {
 
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'ModalShowBookForExclusiveTour',
-         Param: RequestNumber,
-      },
-      function (data) {
-         $('#ModalPublic').html(data);
+       {
+          Controller: 'bookshow',
+          Method: 'ModalShowBookForExclusiveTour',
+          Param: RequestNumber,
+       },
+       function (data) {
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 
@@ -194,16 +245,16 @@ function ModalSendSms(RequestNumber) {
 
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'ModalSendSms',
-         Param: RequestNumber
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'ModalSendSms',
+          Param: RequestNumber
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 
@@ -211,160 +262,160 @@ function ModalUploadProof(RequestNumber , type) {
 
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'ModalUploadProof',
-         Param: {
-            requestNumber : RequestNumber ,
-            type : type
-         }
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'ModalUploadProof',
+          Param: {
+             requestNumber : RequestNumber ,
+             type : type
+          }
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 
 function ModalSendInteractiveSms(FactorNumber) {
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'ModalSendInteractiveSms',
-         Param: FactorNumber
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'ModalSendInteractiveSms',
+          Param: FactorNumber
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 function editInfoPassenger(RequestNumber, ClientId) {
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'editInfoPassenger',
-         Param: RequestNumber,
-         ParamId: ClientId
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'editInfoPassenger',
+          Param: RequestNumber,
+          ParamId: ClientId
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
-         $("#flightDate").datepicker({
-            dateFormat: "yy-mm-dd"
-         });
-      });
+          $('#ModalPublic').html(data);
+          $("#flightDate").datepicker({
+             dateFormat: "yy-mm-dd"
+          });
+       });
 }
 
 function insertPnr(RequestNumber, ClientId) {
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'insertPnr',
-         Param: RequestNumber,
-         ParamId: ClientId
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'insertPnr',
+          Param: RequestNumber,
+          ParamId: ClientId
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 function insertHotelPnr(RequestNumber, ClientId) {
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'insertHotelPnr',
-         Param: RequestNumber,
-         ParamId: ClientId
-      },
-      function (data) {
-         $('#ModalPublic').html(data);
-      });
+       {
+          Controller: 'bookshow',
+          Method: 'insertHotelPnr',
+          Param: RequestNumber,
+          ParamId: ClientId
+       },
+       function (data) {
+          $('#ModalPublic').html(data);
+       });
 }
 function changePendingHotel(FactorNumber, ClientId) {
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'changePendingHotel',
-         Param: FactorNumber,
-         ParamId: ClientId
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'changePendingHotel',
+          Param: FactorNumber,
+          ParamId: ClientId
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 function FlightConvertToBook(RequestNumber, ClientId) {
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'FlightConvertToBook',
-         Param: RequestNumber,
-         ParamId: ClientId
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'FlightConvertToBook',
+          Param: RequestNumber,
+          ParamId: ClientId
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 function changeFlagBuyPrivate(RequestNumber) {
 
    $.post(amadeusPath + 'user_ajax.php',
-      {
-         RequestNumber: RequestNumber,
-         flag: 'changeFlagBuyPrivate'
-      },
-      function (data) {
+       {
+          RequestNumber: RequestNumber,
+          flag: 'changeFlagBuyPrivate'
+       },
+       function (data) {
 
-         if(data.indexOf('success') > -1){
-            $('#i_Jump2StepPublic' + RequestNumber).removeClass('btn-info fa-shopping-cart tooltip-info').addClass('btn-danger fa-refresh tooltip-danger').attr('data-original-title', 'در حال رزرو بلیط');
-         }
+          if(data.indexOf('success') > -1){
+             $('#i_Jump2StepPublic' + RequestNumber).removeClass('btn-info fa-shopping-cart tooltip-info').addClass('btn-danger fa-refresh tooltip-danger').attr('data-original-title', 'در حال رزرو بلیط');
+          }
 
-      });
+       });
 }
 
 function changeFlagBuySystemPublic(RequestNumber) {
 
    $.post(amadeusPath + 'user_ajax.php',
-      {
-         RequestNumber: RequestNumber,
-         flag: 'changeFlagBuyPublicSystem'
-      },
-      function (data) {
+       {
+          RequestNumber: RequestNumber,
+          flag: 'changeFlagBuyPublicSystem'
+       },
+       function (data) {
 
-         if(data.indexOf('success') > -1){
-            $('#i_Jump2StepPublic' + RequestNumber).removeClass('btn-info fa-shopping-cart tooltip-info').addClass('btn-danger fa-refresh tooltip-danger').attr('data-original-title', 'در حال رزرو بلیط');
-         }
+          if(data.indexOf('success') > -1){
+             $('#i_Jump2StepPublic' + RequestNumber).removeClass('btn-info fa-shopping-cart tooltip-info').addClass('btn-danger fa-refresh tooltip-danger').attr('data-original-title', 'در حال رزرو بلیط');
+          }
 
-      });
+       });
 }
 
 function changeFlagBuyPrivateToPublic(RequestNumber) {
 
    $.post(amadeusPath + 'user_ajax.php',
-      {
-         RequestNumber: RequestNumber,
-         flag: 'changeFlagBuyPrivateToPublic'
-      },
-      function (data) {
+       {
+          RequestNumber: RequestNumber,
+          flag: 'changeFlagBuyPrivateToPublic'
+       },
+       function (data) {
 
-         if(data.indexOf('success') > -1){
-            $('#i_Jump2StepPublic' + RequestNumber).removeClass('btn-primary fa-shopping-cart tooltip-info').addClass('btn-danger fa-refresh tooltip-danger').attr('data-original-title', 'در حال رزرو بلیط');
-         }
+          if(data.indexOf('success') > -1){
+             $('#i_Jump2StepPublic' + RequestNumber).removeClass('btn-primary fa-shopping-cart tooltip-info').addClass('btn-danger fa-refresh tooltip-danger').attr('data-original-title', 'در حال رزرو بلیط');
+          }
 
-      });
+       });
 }
 
 
@@ -383,46 +434,46 @@ function DoneIsPrivate(RequestNumber) {
             btnClass: 'btn-green',
             action: function () {
                $.post(amadeusPath + 'user_ajax.php',
-                  {
-                     RequestNumber: RequestNumber,
-                     flag: 'done_private'
-                  },
-                  function (data) {
-                     var res = data.split(':');
+                   {
+                      RequestNumber: RequestNumber,
+                      flag: 'done_private'
+                   },
+                   function (data) {
+                      var res = data.split(':');
 
-                     if(data.indexOf('success') > -1){
+                      if(data.indexOf('success') > -1){
 
 
-                        $.toast({
-                           heading: 'تایید اتمام خرید پید اختصاصی',
-                           text: res[1],
-                           position: 'top-right',
-                           loaderBg: '#fff',
-                           icon: 'success',
-                           hideAfter: 3500,
-                           textAlign: 'right',
-                           stack: 6
-                        });
+                         $.toast({
+                            heading: 'تایید اتمام خرید پید اختصاصی',
+                            text: res[1],
+                            position: 'top-right',
+                            loaderBg: '#fff',
+                            icon: 'success',
+                            hideAfter: 3500,
+                            textAlign: 'right',
+                            stack: 6
+                         });
 
-                        setTimeout(function () {
-                           $('#checkWarningFinal' + RequestNumber).remove();
-                           $('#Jump2Step' + RequestNumber).remove();
-                           $('#checkSuccessFinal' + RequestNumber).fadeIn(500);
-                        }, 1000);
-                     } else {
-                        $.toast({
-                           heading: 'تایید اتمام خرید پید اختصاصی',
-                           text: res[1],
-                           position: 'top-right',
-                           loaderBg: '#fff',
-                           icon: 'error',
-                           hideAfter: 3500,
-                           textAlign: 'right',
-                           stack: 6
-                        });
-                     }
+                         setTimeout(function () {
+                            $('#checkWarningFinal' + RequestNumber).remove();
+                            $('#Jump2Step' + RequestNumber).remove();
+                            $('#checkSuccessFinal' + RequestNumber).fadeIn(500);
+                         }, 1000);
+                      } else {
+                         $.toast({
+                            heading: 'تایید اتمام خرید پید اختصاصی',
+                            text: res[1],
+                            position: 'top-right',
+                            loaderBg: '#fff',
+                            icon: 'error',
+                            hideAfter: 3500,
+                            textAlign: 'right',
+                            stack: 6
+                         });
+                      }
 
-                  });
+                   });
             }
          },
          cancel: {
@@ -448,44 +499,44 @@ function DoneIsPublice(RequestNumber) {
             btnClass: 'btn-green',
             action: function () {
                $.post(amadeusPath + 'user_ajax.php',
-                  {
-                     RequestNumber: RequestNumber,
-                     flag: 'done_public'
-                  },
-                  function (data) {
-                     var res = data.split(':');
+                   {
+                      RequestNumber: RequestNumber,
+                      flag: 'done_public'
+                   },
+                   function (data) {
+                      var res = data.split(':');
 
-                     if(data.indexOf('success') > -1){
-                        $.toast({
-                           heading: 'تایید اتمام خرید پید اختصاصی',
-                           text: res[1],
-                           position: 'top-right',
-                           loaderBg: '#fff',
-                           icon: 'success',
-                           hideAfter: 3500,
-                           textAlign: 'right',
-                           stack: 6
-                        });
+                      if(data.indexOf('success') > -1){
+                         $.toast({
+                            heading: 'تایید اتمام خرید پید اختصاصی',
+                            text: res[1],
+                            position: 'top-right',
+                            loaderBg: '#fff',
+                            icon: 'success',
+                            hideAfter: 3500,
+                            textAlign: 'right',
+                            stack: 6
+                         });
 
-                        setTimeout(function () {
-                           $('#checkWarningFinalPublic' + RequestNumber).remove();
-                           $('#Jump2Step' + RequestNumber).remove();
-                           $('#checkSuccessFinalPublic' + RequestNumber).fadeIn(500);
-                        }, 1000);
-                     } else {
-                        $.toast({
-                           heading: 'تایید اتمام خرید پید اختصاصی',
-                           text: res[1],
-                           position: 'top-right',
-                           loaderBg: '#fff',
-                           icon: 'error',
-                           hideAfter: 3500,
-                           textAlign: 'right',
-                           stack: 6
-                        });
-                     }
+                         setTimeout(function () {
+                            $('#checkWarningFinalPublic' + RequestNumber).remove();
+                            $('#Jump2Step' + RequestNumber).remove();
+                            $('#checkSuccessFinalPublic' + RequestNumber).fadeIn(500);
+                         }, 1000);
+                      } else {
+                         $.toast({
+                            heading: 'تایید اتمام خرید پید اختصاصی',
+                            text: res[1],
+                            position: 'top-right',
+                            loaderBg: '#fff',
+                            icon: 'error',
+                            hideAfter: 3500,
+                            textAlign: 'right',
+                            stack: 6
+                         });
+                      }
 
-                  });
+                   });
             }
          },
          cancel: {
@@ -555,13 +606,13 @@ $('#RTRDRepoert').DataTable({
 
 function ModalShowBookForEntertainment(factorNumber) {
    $.post(libraryPath + 'ModalCreatorForEntertainment.php',
-      {
-         Method: 'ModalShowBook',
-         factorNumber: factorNumber,
-      },
-      function (data) {
-         $('#ModalPublic').html(data);
-      });
+       {
+          Method: 'ModalShowBook',
+          factorNumber: factorNumber,
+       },
+       function (data) {
+          $('#ModalPublic').html(data);
+       });
 }
 function DonePreReserve(RequestNumber, FactorNumber, ClientID) {
    $.confirm({
@@ -592,46 +643,46 @@ function DonePreReserve(RequestNumber, FactorNumber, ClientID) {
                         btnClass: 'btn-green',
                         action: function () {
                            $.post(amadeusPath + 'user_ajax.php',
-                              {
-                                 RequestNumber: RequestNumber,
-                                 FactorNumber: FactorNumber,
-                                 ClientID: ClientID,
-                                 flag: 'preReserveBuy'
-                              },
-                              function (data) {
-                                 var res = data.split(':');
+                               {
+                                  RequestNumber: RequestNumber,
+                                  FactorNumber: FactorNumber,
+                                  ClientID: ClientID,
+                                  flag: 'preReserveBuy'
+                               },
+                               function (data) {
+                                  var res = data.split(':');
 
-                                 if(data.indexOf('success') > -1){
+                                  if(data.indexOf('success') > -1){
 
-                                    $.toast({
-                                       heading: 'پیش رزرو کردن بلیط',
-                                       text: res[1],
-                                       position: 'top-right',
-                                       loaderBg: '#fff',
-                                       icon: 'success',
-                                       hideAfter: 3500,
-                                       textAlign: 'right',
-                                       stack: 6
-                                    });
+                                     $.toast({
+                                        heading: 'پیش رزرو کردن بلیط',
+                                        text: res[1],
+                                        position: 'top-right',
+                                        loaderBg: '#fff',
+                                        icon: 'success',
+                                        hideAfter: 3500,
+                                        textAlign: 'right',
+                                        stack: 6
+                                     });
 
-                                    setTimeout(function () {
-                                       $('#DonePrereserve' + RequestNumber).remove();
+                                     setTimeout(function () {
+                                        $('#DonePrereserve' + RequestNumber).remove();
 
-                                    }, 1000);
-                                 } else {
-                                    $.toast({
-                                       heading: 'پیش رزرو کردن بلیط',
-                                       text: res[1],
-                                       position: 'top-right',
-                                       loaderBg: '#fff',
-                                       icon: 'error',
-                                       hideAfter: 3500,
-                                       textAlign: 'right',
-                                       stack: 6
-                                    });
-                                 }
+                                     }, 1000);
+                                  } else {
+                                     $.toast({
+                                        heading: 'پیش رزرو کردن بلیط',
+                                        text: res[1],
+                                        position: 'top-right',
+                                        loaderBg: '#fff',
+                                        icon: 'error',
+                                        hideAfter: 3500,
+                                        textAlign: 'right',
+                                        stack: 6
+                                     });
+                                  }
 
-                              });
+                               });
 
                         }
 
@@ -671,45 +722,45 @@ function sendSms(RequestNumber) {
                var contentSms = $('#contentSms').val();
                var Reason = $('#Reason').val();
                $.post(amadeusPath + 'user_ajax.php',
-                  {
-                     RequestNumber: RequestNumber,
-                     contentSms: contentSms,
-                     Reason: Reason,
-                     flag: 'SendSmsForUser'
-                  },
-                  function (data) {
-                     var res = data.split(':');
-                     if(data.indexOf('success') > -1){
+                   {
+                      RequestNumber: RequestNumber,
+                      contentSms: contentSms,
+                      Reason: Reason,
+                      flag: 'SendSmsForUser'
+                   },
+                   function (data) {
+                      var res = data.split(':');
+                      if(data.indexOf('success') > -1){
 
 
-                        $.toast({
-                           heading: 'ارسال پیام کوتاه',
-                           text: res[1],
-                           position: 'top-right',
-                           loaderBg: '#fff',
-                           icon: 'success',
-                           hideAfter: 3500,
-                           textAlign: 'right',
-                           stack: 6
-                        });
+                         $.toast({
+                            heading: 'ارسال پیام کوتاه',
+                            text: res[1],
+                            position: 'top-right',
+                            loaderBg: '#fff',
+                            icon: 'success',
+                            hideAfter: 3500,
+                            textAlign: 'right',
+                            stack: 6
+                         });
 
-                        setTimeout(function () {
-                           $('#ModalPublic').modal('hide');
-                        }, 1000);
-                     } else {
-                        $.toast({
-                           heading: 'ارسال پیام کوتاه',
-                           text: res[1],
-                           position: 'top-right',
-                           loaderBg: '#fff',
-                           icon: 'error',
-                           hideAfter: 3500,
-                           textAlign: 'right',
-                           stack: 6
-                        });
-                     }
+                         setTimeout(function () {
+                            $('#ModalPublic').modal('hide');
+                         }, 1000);
+                      } else {
+                         $.toast({
+                            heading: 'ارسال پیام کوتاه',
+                            text: res[1],
+                            position: 'top-right',
+                            loaderBg: '#fff',
+                            icon: 'error',
+                            hideAfter: 3500,
+                            textAlign: 'right',
+                            stack: 6
+                         });
+                      }
 
-                  });
+                   });
             }
          },
          cancel: {
@@ -741,12 +792,12 @@ function sendInteractiveSms(factorNumber, memberID) {
                   url: amadeusPath + 'user_ajax.php',
                   dataType: 'JSON',
                   data:
-                     {
-                        flag: 'reSendInteractiveSms',
-                        factorNumber: factorNumber,
-                        memberID: memberID,
-                        offCodeGroup: $('input[name=offCodeGroup]:checked').val()
-                     },
+                      {
+                         flag: 'reSendInteractiveSms',
+                         factorNumber: factorNumber,
+                         memberID: memberID,
+                         offCodeGroup: $('input[name=offCodeGroup]:checked').val()
+                      },
                   success: function (response) {
 
                      if(response.result_status == 'success'){
@@ -788,17 +839,17 @@ function ModalSenEmailForOther(RequestNumber, ClientID) {
 
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'bookshow',
-         Method: 'ModalSenEmailForOther',
-         Param: RequestNumber,
-         ParamId: ClientID
-      },
-      function (data) {
+       {
+          Controller: 'bookshow',
+          Method: 'ModalSenEmailForOther',
+          Param: RequestNumber,
+          ParamId: ClientID
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 function createExcelForReportTicket() {
@@ -872,17 +923,17 @@ function ModalCancelAdmin(type, RequestNumber) {
 
 
    $.post(libraryPath + 'ModalCreator.php',
-      {
-         Controller: 'user',
-         Method: 'ModalCancelAdmin',
-         Param: RequestNumber,
-         ParamId: type
-      },
-      function (data) {
+       {
+          Controller: 'user',
+          Method: 'ModalCancelAdmin',
+          Param: RequestNumber,
+          ParamId: type
+       },
+       function (data) {
 
-         $('#ModalPublic').html(data);
+          $('#ModalPublic').html(data);
 
-      });
+       });
 }
 
 
@@ -911,41 +962,41 @@ function SelectUser(RequestNumber) {
 
    if(NationalCodes != "" && Reasons != ""){
       $.post(amadeusPath + 'user_ajax.php',
-         {
-            NationalCodes: NationalCodes,
-            Reasons: Reasons,
-            FactorNumber: FactorNumber,
-            RequestNumber: RequestNumber,
-            MemberId: MemberId,
-            typeService: typeService,
-            admin: 'yes',
-            flightType: flightType,
-            flag: 'RequestCancelUser'
-         },
-         function (data) {
-            var res = data.split(':');
-            if(data.indexOf('success') > -1){
-               $.alert({
-                  title: 'ارسال درخواست کنسلی',
-                  icon: 'fa fa-check',
-                  content: 'درخواست کنسلی شما با موفقیت ثبت شد',
-                  rtl: true,
-                  type: 'green'
-               });
+          {
+             NationalCodes: NationalCodes,
+             Reasons: Reasons,
+             FactorNumber: FactorNumber,
+             RequestNumber: RequestNumber,
+             MemberId: MemberId,
+             typeService: typeService,
+             admin: 'yes',
+             flightType: flightType,
+             flag: 'RequestCancelUser'
+          },
+          function (data) {
+             var res = data.split(':');
+             if(data.indexOf('success') > -1){
+                $.alert({
+                   title: 'ارسال درخواست کنسلی',
+                   icon: 'fa fa-check',
+                   content: 'درخواست کنسلی شما با موفقیت ثبت شد',
+                   rtl: true,
+                   type: 'green'
+                });
 
-            } else {
-               $.alert({
-                  title: 'ارسال درخواست کنسلی',
-                  icon: 'fa fa-times',
-                  content: res[1],
-                  rtl: true,
-                  type: 'red'
-               });
-               $('#SendEmailForOther').attr("disabled", false);
-               $('#loaderTracking').fadeOut(500);
-            }
+             } else {
+                $.alert({
+                   title: 'ارسال درخواست کنسلی',
+                   icon: 'fa fa-times',
+                   content: res[1],
+                   rtl: true,
+                   type: 'red'
+                });
+                $('#SendEmailForOther').attr("disabled", false);
+                $('#loaderTracking').fadeOut(500);
+             }
 
-         });
+          });
    } else {
       $.alert({
          title: 'ارسال درخواست کنسلی',
@@ -1215,17 +1266,17 @@ function fadeBG(Target) {
 // }
 function CheckReserveHotelTab(){
    $.post(amadeusPath + 'hotel_ajax.php',
-      {
-         flag: "checkReserveHotel"
-      },
-      function (data) {
-         if (parseInt(data) > 0){
-            $('a[data-target="hotel-list2"][data-info="pendingBtn"]').addClass('reap_admin_note');
-         } else {
-            $('a[data-target="hotel-list2"][data-info="pendingBtn"]').removeClass('reap_admin_note');
+       {
+          flag: "checkReserveHotel"
+       },
+       function (data) {
+          if (parseInt(data) > 0){
+             $('a[data-target="hotel-list2"][data-info="pendingBtn"]').addClass('reap_admin_note');
+          } else {
+             $('a[data-target="hotel-list2"][data-info="pendingBtn"]').removeClass('reap_admin_note');
 
-         }
-      });
+          }
+       });
 }
 
 function selectTextMessage(_this){
@@ -1248,28 +1299,28 @@ function selectTextMessage(_this){
 
 function ModalCancelFlightAdmin(RequestNumber , type) {
    $.post(libraryPath + 'ModalCreator.php', {
-         Controller: 'user',
-         requestNumber: RequestNumber,
-         Method: 'ModalCancelFlightAdmin',
-         Param: RequestNumber,
-         ParamId: type
-      },
-      function (data) {
-         $("#ModalPublic").html(data);
-      });
+          Controller: 'user',
+          requestNumber: RequestNumber,
+          Method: 'ModalCancelFlightAdmin',
+          Param: RequestNumber,
+          ParamId: type
+       },
+       function (data) {
+          $("#ModalPublic").html(data);
+       });
 }
 
 function ModalCancelHotelAdmin(factorNumber , type) {
    $.post(libraryPath + 'ModalCreator.php', {
-         Controller: 'user',
-         typeApplication: type,
-         factorNumber: factorNumber,
-         Param: factorNumber,
-         Method: 'ModalCancelHotelAdmin',
-      },
-      function (data) {
-         $("#ModalPublic").html(data);
-      });
+          Controller: 'user',
+          typeApplication: type,
+          factorNumber: factorNumber,
+          Param: factorNumber,
+          Method: 'ModalCancelHotelAdmin',
+       },
+       function (data) {
+          $("#ModalPublic").html(data);
+       });
 }
 
 

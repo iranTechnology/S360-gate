@@ -1,18 +1,18 @@
 {load_presentation_object filename="specialPages" assign="objSpecialPages"}
 
 {assign var="searchServices" value=[
-'flight-saadi'=>'specialFlightPic',
-'hotel-saadi'=> 'specialHotelPic',
-'train-saadi' => 'specialTrainPic',
-'bus-saadi' =>'specialBusPic',
-'tour-saadi' =>'specialTourPic',
-'insurance-saadi' =>'specialInsurancePic',
-'visa-saadi' =>'specialVisaPic',
-'gasht-saadi' =>'specialGashtPic',
-'package-saadi' =>'specialPackagePic',
-'rentCar-saadi' =>'specialCarPic',
-'entertainment-saadi' =>'specialEntertainmentPic',
-'cip-saadi' =>'specialCipPic',
+'flight'=>'specialFlightPic',
+'hotel'=> 'specialHotelPic',
+'train' => 'specialTrainPic',
+'bus' =>'specialBusPic',
+'tour' =>'specialTourPic',
+'insurance' =>'specialInsurancePic',
+'visa' =>'specialVisaPic',
+'gasht' =>'specialGashtPic',
+'package' =>'specialPackagePic',
+'rentCar' =>'specialCarPic',
+'entertainment' =>'specialEntertainmentPic',
+'cip' =>'specialCipPic',
 'mainPage' =>'MainPagePic']}
 {foreach $searchServices as $key => $val}
     {assign var="homePage" value=$objSpecialPages->unSlugPage($key)}

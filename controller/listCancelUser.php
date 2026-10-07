@@ -37,7 +37,8 @@ class listCancelUser extends clientAuth
 
         $sql = "
 SELECT 
-    cancel.*, 
+    cancel.*,
+    refundMember.fk_counter_type_id AS refund_counter_type,
     book.pnr, 
     book.eticket_number, 
     book.pid_private,
@@ -45,14 +46,19 @@ SELECT
                     book.desti_city,
                     book.airline_name,
                     book.date_flight,
-                    hotel.type_application,
+                    CASE WHEN cancel.TypeCancel = 'tour' THEN tour.type_application ELSE hotel.type_application END AS type_application,
+                    tour.tour_name,
+                    tour.tour_cities,
                     hotel.city_name,
                     hotel.hotel_name        
 FROM cancel_ticket_details_tb AS cancel
+LEFT JOIN members_tb AS refundMember ON refundMember.id = cancel.MemberId
 LEFT JOIN book_local_tb AS book 
     ON book.request_number = cancel.RequestNumber
 LEFT JOIN book_hotel_local_tb AS hotel
     ON hotel.factor_number = cancel.FactorNumber
+LEFT JOIN book_tour_local_tb AS tour
+    ON tour.factor_number = cancel.FactorNumber AND cancel.TypeCancel = 'tour'
 LEFT JOIN book_cip_tb AS cip
     ON cip.request_number = cancel.RequestNumber
 WHERE 1=1
@@ -85,7 +91,7 @@ WHERE 1=1
         if (!empty($_POST['Status'])) {
             $sql .= " AND cancel.Status ='{$_POST['Status']}'";
         }
-        $sql .="GROUP BY cancel.DateRequestMemberInt DESC";
+        $sql .=" GROUP BY cancel.id ORDER BY cancel.DateRequestMemberInt DESC, cancel.id DESC";
         $res = $Model->select($sql);
 
 
@@ -125,6 +131,27 @@ WHERE 1=1
         $InfoCancel = $this->admin->ConectDbClient($sql, $Param['ClientId'], "Select", "", "", "");
 
         if (!empty($InfoCancel)) {
+            if ($InfoCancel['TypeCancel'] === 'tour') {
+                $response = Load::controller('tourCancellation')->approve($Param);
+                if (strpos($response, 'success :') === 0) {
+                    try {
+                        $tourBook = $this->getModel('bookTourLocalModel')->get(['member_mobile', 'tour_name'])
+                            ->where('factor_number', $InfoCancel['FactorNumber'])->find();
+                        $smsController = Load::controller('smsServices');
+                        if (!empty($tourBook['member_mobile']) && $smsController->initService('1')) {
+                            $smsController->sendSMS([
+                                'smsMessage' => 'کنسلی مسافران انتخاب‌شده تور ' . $tourBook['tour_name']
+                                    . ' به شماره فاکتور ' . $InfoCancel['FactorNumber']
+                                    . ' با جریمه ' . $Param['PercentIndemnity'] . '% تأیید شد.',
+                                'cellNumber' => $tourBook['member_mobile']
+                            ]);
+                        }
+                    } catch (Throwable $error) {
+                        functions::insertLog('Tour cancellation notification failed', 'tourCancellation');
+                    }
+                }
+                return $response;
+            }
             $data['PercentIndemnity'] = $Param['PercentIndemnity'];
             $data['DescriptionAdmin'] = $Param['DescriptionAdmin'];
             $data['Status'] = 'ConfirmCancel';
@@ -455,6 +482,9 @@ WHERE 1=1
         $result = $Model->load($sql);
 
         if ($result) {
+            if ($result['TypeCancel'] === 'tour') {
+                return Load::controller('tourCancellation')->reject($Param);
+            }
             $data['DescriptionClient'] = $Param['DescriptionClient'];
             $data['Status'] = "SetCancelClient";
             $data['DateSetCancelInt'] = time();

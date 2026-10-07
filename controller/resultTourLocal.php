@@ -1052,8 +1052,8 @@ class resultTourLocal extends clientAuth {
         $serviceTitle                    = '';
         foreach ( $infoTourRoutByIdTour as $city ) {
             if ( $city['tour_title'] == 'dept' ) {
+                $destination_cities .= $city['destination_city_name'] . ' / ';
                 if ( $city['night'] > 0 ) {
-                    $destination_cities .= $city['destination_city_name'] . ' / ';
                     $destination_region .= $city['destination_region_name'] . ' / ';
                 }
                 if ( $city['destination_country_id'] == '1' ) {
@@ -1136,8 +1136,8 @@ class resultTourLocal extends clientAuth {
             $serviceTitle                    = '';
             foreach ( $infoTourRoutByIdTour as $city ) {
                 if ( $city['tour_title'] == 'dept' ) {
+                    $destination_cities .= $city['destination_city_name'] . ' / ';
                     if ( $city['night'] > 0 ) {
-                        $destination_cities .= $city['destination_city_name'] . ' / ';
                         $destination_region .= $city['destination_region_name'] . ' / ';
                     }
                     if ( $city['destination_country_id'] == '1' ) {
@@ -1400,7 +1400,6 @@ class resultTourLocal extends clientAuth {
             $minPrice['CurrencyTitleEn'] = $currency['CurrencyTitleEn'];
             $minPrice['is_toman'] = $this->is_toman();
         }
-        
 
         return $minPrice;
     }
@@ -1671,7 +1670,6 @@ class resultTourLocal extends clientAuth {
 		foreach ( $countAllRooms as $countRoom ) {
 
 			$count = explode( ':', $countRoom );
-            functions::insertLog(json_encode($count) , '000000000ararara');
             switch ( $count[0] ) {
 				case 'oneBed':
 					$countSingleRoom = $count[1];
@@ -1745,9 +1743,9 @@ class resultTourLocal extends clientAuth {
                 $price = $this->calculateDiscountedPrices( $infoTourPackage[0]['discount_type'], $infoTourPackage[0]['discount'], $price );
                 $package['infoRooms']['double_room']['name_fa']       = functions::Xmlinformation( "TwoBed" );
                 if($price_per_person){
-                    $package['infoRooms']['double_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']) * 2;
+                    $package['infoRooms']['double_room']['price']         = $price['price'] * 2;
                     $package['infoRooms']['double_room']['price_a']       = ( $infoTourPackage[0]['double_room_price_a'] > 0 ) ? intval($infoTourPackage[0]['double_room_price_a']) * 2 : 0;
-                    $package['infoRooms']['double_room']['total_price']   = ( $price['price'] - $infoTourPackage[0]['adult_amount']) * ( $countDoubleRoom  ) * 2;
+                    $package['infoRooms']['double_room']['total_price']   = $price['price'] * ( $countDoubleRoom  ) * 2;
                     $package['infoRooms']['double_room']['total_price_a'] = ($package['infoRooms']['double_room']['price_a']) * ( $countDoubleRoom  ) ;
                 }else{
                     $package['infoRooms']['double_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']);
@@ -1769,9 +1767,9 @@ class resultTourLocal extends clientAuth {
 
                 $package['infoRooms']['three_room']['name_fa']       = functions::Xmlinformation( "ThreeBed" );
                 if($price_per_person){
-                    $package['infoRooms']['three_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']) * 3;
+                    $package['infoRooms']['three_room']['price']         = $price['price'] * 3;
                     $package['infoRooms']['three_room']['price_a']       = ( $infoTourPackage[0]['three_room_price_a'] > 0 ) ? intval($infoTourPackage[0]['three_room_price_a'] ) * 3 : 0;
-                    $package['infoRooms']['three_room']['total_price']   = ( $price['price'] - $infoTourPackage[0]['adult_amount']) * ( $countThreeRoom  ) * 3 ;
+                    $package['infoRooms']['three_room']['total_price']   = $price['price'] * ( $countThreeRoom  ) * 3 ;
                     $package['infoRooms']['three_room']['total_price_a'] = ($package['infoRooms']['three_room']['price_a'] ) * ( $countThreeRoom  ) ;
                 }else{
                     $package['infoRooms']['three_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']);
@@ -1795,9 +1793,9 @@ class resultTourLocal extends clientAuth {
                     $price = $this->calculateDiscountedPrices( $infoTourPackage[0]['discount_type'], $infoTourPackage[0]['discount'], $price );
 
                     if($price_per_person){
-                        $package['infoRooms']['four_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']) * 4;
+                        $package['infoRooms']['four_room']['price']         = $price['price'] * 4;
                         $package['infoRooms']['four_room']['price_a']       = ( $custom['fourRoom']['price_a'] > 0 ) ? intval($custom['fourRoom']['price_a'] )  * 4 : 0;
-                        $package['infoRooms']['four_room']['total_price']   = ( $price['price'] - $infoTourPackage[0]['adult_amount']) * ( $countFourRoom  )  * 4;
+                        $package['infoRooms']['four_room']['total_price']   = $price['price'] * ( $countFourRoom  )  * 4;
                         $package['infoRooms']['four_room']['total_price_a'] = ($custom['fourRoom']['price_a'] ) * ( $countFourRoom  ) * 4;
                     }else{
                         $package['infoRooms']['four_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']);
@@ -1817,9 +1815,9 @@ class resultTourLocal extends clientAuth {
                     $price = $custom['fiveRoom']['price_r'] + $infoTourPackage[0]['change_price'];
                     $price = $this->calculateDiscountedPrices( $infoTourPackage[0]['discount_type'], $infoTourPackage[0]['discount'], $price );
                     if($price_per_person){
-                        $package['infoRooms']['five_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']) * 5;
+                        $package['infoRooms']['five_room']['price']         = $price['price'] * 5;
                         $package['infoRooms']['five_room']['price_a']       = ( $custom['fiveRoom']['price_a'] > 0 ) ? intval($custom['fiveRoom']['price_a'] ) * 5 : 0;
-                        $package['infoRooms']['five_room']['total_price']   = ( $price['price'] - $infoTourPackage[0]['adult_amount']) * ( $countFiveRoom  )  * 5;
+                        $package['infoRooms']['five_room']['total_price']   = $price['price'] * ( $countFiveRoom  )  * 5;
                         $package['infoRooms']['five_room']['total_price_a'] = ( $custom['fiveRoom']['price_a'] ) * ( $countFiveRoom  );
                     }else{
                         $package['infoRooms']['five_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']);
@@ -1841,9 +1839,9 @@ class resultTourLocal extends clientAuth {
                     $price = $this->calculateDiscountedPrices( $infoTourPackage[0]['discount_type'], $infoTourPackage[0]['discount'], $price );
 
                     if($price_per_person){
-                        $package['infoRooms']['six_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']) * 6;
+                        $package['infoRooms']['six_room']['price']         = $price['price'] * 6;
                         $package['infoRooms']['six_room']['price_a']       = ( $custom['sixRoom']['price_a'] > 0 ) ? intval($custom['sixRoom']['price_a'] ) * 6 : 0;
-                        $package['infoRooms']['six_room']['total_price']   = ( $price['price'] - $infoTourPackage[0]['adult_amount']) * ( $countSixRoom  ) * 6;
+                        $package['infoRooms']['six_room']['total_price']   = $price['price'] * ( $countSixRoom  ) * 6;
                         $package['infoRooms']['six_room']['total_price_a'] = ($custom['sixRoom']['price_a'] ) * ( $countSixRoom  );
                     }else{
                         $package['infoRooms']['six_room']['price']         = ($price['price'] - $infoTourPackage[0]['adult_amount']);
@@ -1915,6 +1913,12 @@ class resultTourLocal extends clientAuth {
             }
 
             $package['currencyTitleFa'] = ( isset( $_POST['currencyTitleFa'] ) && $_POST['currencyTitleFa'] != '' ) ? $_POST['currencyTitleFa'] : '';
+
+            $do_discount = $this->doDiscount($infoTourPackage[0]['fk_tour_id'], ['minPriceR' => $total_price_package]);
+
+            if (!empty($do_discount['discountedMinPriceR'])) {
+                $total_price_package = $do_discount['discountedMinPriceR'];
+            }
 
             if(functions::isEnableSetting('toman')) {
                 $package['total_price_package'] = round($total_price_package/10);
@@ -2059,35 +2063,17 @@ class resultTourLocal extends clientAuth {
 	 */
 	public function doDiscount( $id, array $minPrice, $web_service_type = 'private' ) {
 
-
-
-
-//        var_dump($id,  $minPrice, $web_service_type);
-//        die;
-//        if(  $_SERVER['REMOTE_ADDR']=='93.118.161.174'  ) {
-//            var_dump('aaaa');
-//            var_dump($id,  $minPrice, $web_service_type);
-//            var_dump('bbbb');
-//            die;
-//        }
-
 		$destination_country_id          = functions::getTypeServiceTour( 'reservation', $id );
 		$minPrice['discountedMinPriceR'] = null;
 		if ( $destination_country_id == 'PrivatePortalTour' ) {
-//            var_dump('22222');
-//
-//            die;
+
 			if ( ! empty( $this->portalServiceDiscount[ $web_service_type ] ) && $this->portalServiceDiscount[ $web_service_type ]['off_percent'] > 0 ) {
 				$price                           = $minPrice['minPriceR'];
 				$price                           = $price - ( ( $price * $this->portalServiceDiscount[ $web_service_type ]['off_percent'] ) / 100 );
 				$minPrice['discountedMinPriceR'] = $price;
 			}
 		} elseif ( $destination_country_id == 'PrivateLocalTour' ) {
-//            var_dump('aaaa');
-//            var_dump($this->localServiceDiscount[ $web_service_type ]);
-//            var_dump($this->localServiceDiscount[ $web_service_type ]['off_percent']);
-//            var_dump($minPrice['minPriceR']);
-//            die;
+
 			if ( ! empty( $this->localServiceDiscount[ $web_service_type ] ) && $this->localServiceDiscount[ $web_service_type ]['off_percent'] > 0 ) {
 				$price                           = $minPrice['minPriceR'];
 				$price                           = $price - ( ( $price * $this->localServiceDiscount[ $web_service_type ]['off_percent'] ) / 100 );
@@ -2138,7 +2124,15 @@ class resultTourLocal extends clientAuth {
             ->where('counter_type_id', $counter_type_id)
             ->find();
 
+
         $price = $minPrice['minPriceR'];
+
+        $do_discount = $this->doDiscount($tour_id, ['minPriceR' => $price]);
+
+        if (!empty($do_discount['discountedMinPriceR'])) {
+            $discount['adult_amount'] += $price - $do_discount['discountedMinPriceR'];
+            $price = $do_discount['discountedMinPriceR'];
+        }
 
         $minPrice['discount'] = $discount;
         $minPrice['discount']['after_discount'] = $price;
@@ -2153,7 +2147,6 @@ class resultTourLocal extends clientAuth {
         }
         $minPrice['discountedMinPriceR'] = $price;
         $minPrice['discount']['counter_type_name'] =$discount_counter['name'] ;
-
 
 
         return $minPrice;

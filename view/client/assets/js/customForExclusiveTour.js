@@ -1,3 +1,15 @@
+function getExclusiveTourSearchChildAges() {
+   const roomData = document.getElementById('vueApp')?.dataset.searchRooms
+      || decodeURIComponent(window.location.pathname).split('/').find(part => part.startsWith('R:')) || '';
+   return roomData.split('R:').filter(Boolean).flatMap(room => {
+      const ages = room.split('-')[2];
+      return ages ? ages.split(',').filter(age => age.trim() !== '').map(Number)
+         .filter(age => Number.isFinite(age) && age >= 0) : [];
+   });
+}
+
+const exclusiveTourChildAges = getExclusiveTourSearchChildAges();
+
 let originalData = [];
 let disaggregateData = {};
 let selectedOptions = {
@@ -37,21 +49,21 @@ function startExclusiveTourPassengerTimer() {
       expirationShown = true;
       $.alert({
          title: useXmltag("TitleEndRserve"),
-          content: useXmltag("ContentEndRserve"),
-          rtl: true,
-          type: 'orange',
-          closeIcon: false,
-          backgroundDismiss: false,
-          escapeKey: false,
-          buttons: {
-         ok: {
-            text: 'OK',
-                action: function() {
-               window.location.replace(exclusiveTourCounter.attr('data-home-url'));
+         content: useXmltag("ContentEndRserve"),
+         rtl: true,
+         type: 'orange',
+         closeIcon: false,
+         backgroundDismiss: false,
+         escapeKey: false,
+         buttons: {
+            ok: {
+               text: 'OK',
+               action: function() {
+                  window.location.replace(exclusiveTourCounter.attr('data-home-url'));
+               }
             }
          }
-      }
-   });
+      });
    };
    // Attach our handler even if another page script has already initialized counters.
    const existingCounter = exclusiveTourCounter.data('counter');
@@ -825,6 +837,10 @@ function calculateTotalPassengers(record) {
 // نمایش فرم اطلاعات مسافرین
 function showPassengerForm(record) {
    const passengers = calculateTotalPassengers(record);
+   const searchedAges = exclusiveTourChildAges.length ? exclusiveTourChildAges
+      : record.Hotel.Rooms.flatMap(room => room.Ages || []).map(Number);
+   const childAges = searchedAges.filter(age => age >= 2);
+   const infantAges = searchedAges.filter(age => age < 2);
    let passengerCounter = 0;
 
    // ساخت آرایه مسافران با شماره‌گذاری صحیح
@@ -842,13 +858,13 @@ function showPassengerForm(record) {
    // کودکان
    for (let i = 1; i <= passengers.totalChildren; i++) {
       passengerCounter++;
-      passengersHTML += createPassengerFields(passengerCounter, 'child', totalPassengers);
+      passengersHTML += createPassengerFields(passengerCounter, 'child', totalPassengers, childAges[i - 1]);
    }
 
    // نوزادان
    for (let i = 1; i <= passengers.totalInfants; i++) {
       passengerCounter++;
-      passengersHTML += createPassengerFields(passengerCounter, 'infant', totalPassengers);
+      passengersHTML += createPassengerFields(passengerCounter, 'infant', totalPassengers, infantAges[i - 1]);
    }
 
 
@@ -906,7 +922,7 @@ function showPassengerForm(record) {
 
    // فراخوانی تابع passengerFormInit برای نمایش فیلدهای صحیح
    if (typeof passengerFormInit === 'function') {
-      passengerFormInit(totalPassengers.toString());
+      exclusiveTourPassengerFormInit(totalPassengers.toString());
    }
 
    // Initialize select2 و datepicker ها بعد از render
@@ -957,6 +973,7 @@ function initializeJDateCalendars() {
       // تنظیمات خاص برای تقویم‌های میلادی (به صورت object)
       var gregorianDatepickerOptions = {
          dateFormat: 'yy-mm-dd',
+         onSelect: function () { $(this).trigger('change'); },
          showButtonPanel: true,
          changeYear: true,
          changeMonth: true,
@@ -1002,15 +1019,18 @@ function initializeJDateCalendars() {
       // تاریخ تولد کودکان میلادی (بین 2 تا 12 سال)
       $('.gregorianChildBirthdayCalendar').each(function() {
          var $input = $(this);
+         const ageValue = $input.closest('.s-u-passenger-wrapper').attr('data-expected-age');
+         const birthYear = ageValue !== undefined && ageValue !== '' ? today.getFullYear() - Number(ageValue) : null;
 
          try {
             $input.datepicker('destroy');
          } catch(e) {}
 
          $input.datepicker($.extend({}, gregorianDatepickerOptions, {
-            yearRange: '-12:-2',
-            minDate: minDateChild,
-            maxDate: maxDateChild
+            yearRange: birthYear !== null ? `${birthYear}:${today.getFullYear()}` : '-12:-2',
+            minDate: birthYear !== null ? new Date(birthYear, 0, 1) : minDateChild,
+            maxDate: birthYear !== null ? today : maxDateChild,
+            defaultDate: birthYear !== null ? new Date(birthYear, 0, 1) : minDateChild
          }));
 
          $input.on('click.gregorian focus.gregorian', function(e) {
@@ -1039,7 +1059,7 @@ function initializeJDateCalendars() {
          });
       });
 
-      // تاریخ انقضای پاسپورت (از امروز به بعد) میلادی
+      // تاریخ انقضای پاسپورت با حداقل شش ماه اعتبار
       $('.gregorianFromTodayCalendar').each(function() {
          var $input = $(this);
 
@@ -1048,8 +1068,15 @@ function initializeJDateCalendars() {
          } catch(e) {}
 
          $input.datepicker($.extend({}, gregorianDatepickerOptions, {
-            minDate: new Date(),
-            yearRange: '+0:+10'
+            minDate: null,
+            yearRange: '-10:+10',
+            onSelect: function (dateText) {
+               const isValid = hasExclusiveTourPassportValidity(dateText);
+               clearExclusiveTourFieldError($input);
+               if (!isValid) {
+                  showExclusiveTourFieldError($input, 'اعتبار گذرنامه باید حداقل ۶ ماه از امروز باشد');
+               }
+            }
          }));
 
          $input.on('click.gregorian focus.gregorian', function(e) {
@@ -1085,13 +1112,15 @@ function initializeJDateCalendars() {
 
          // تاریخ تولد کودکان شمسی (بین 2 تا 12 سال)
          $('.shamsiChildBirthdayCalendar').each(function() {
+            const ageValue = $(this).closest('.s-u-passenger-wrapper').attr('data-expected-age');
+            const birthYear = ageValue !== undefined && ageValue !== '' ? new persianDate().year() - Number(ageValue) : null;
             $(this).persianDatepicker({
                observer: true,
                format: 'YYYY-MM-DD',
                altField: $(this),
                altFormat: 'YYYY-MM-DD',
-               maxDate: new persianDate().subtract('year', 2).valueOf(),
-               minDate: new persianDate().subtract('year', 12).valueOf(),
+               maxDate: birthYear !== null ? new persianDate().valueOf() : new persianDate().subtract('year', 2).valueOf(),
+               minDate: birthYear !== null ? new persianDate([birthYear, 1, 1]).valueOf() : new persianDate().subtract('year', 12).valueOf(),
                initialValue: false,
                autoClose: true
             });
@@ -1111,6 +1140,29 @@ function initializeJDateCalendars() {
             });
          });
       } else {
+         if (typeof $.fn.datepicker !== 'undefined') {
+            $('.shamsiChildBirthdayCalendar, .shamsiInfantBirthdayCalendar').each(function () {
+               const $input = $(this);
+               const ageValue = $input.closest('.s-u-passenger-wrapper').attr('data-expected-age');
+               const currentYear = Number(new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn', {year: 'numeric'})
+                  .formatToParts(new Date()).find(part => part.type === 'year').value);
+               const birthYear = ageValue !== undefined && ageValue !== '' ? currentYear - Number(ageValue) : null;
+               $input.datepicker({
+                  dateFormat: 'yy-mm-dd',
+                  changeMonth: true,
+                  changeYear: true,
+                  yearRange: birthYear !== null ? `${birthYear}:${currentYear}` : '1300:1480',
+                  minDate: birthYear !== null ? `${birthYear}-01-01` : '-12Y',
+                  maxDate: birthYear !== null ? 'Y/M/D' : '-2Y',
+                  defaultDate: birthYear !== null ? `${birthYear}-01-01` : '-6Y',
+                  onSelect: function () { $(this).trigger('change'); }
+               });
+               $input.off('click.exclusiveBirthday focus.exclusiveBirthday')
+                  .on('click.exclusiveBirthday focus.exclusiveBirthday', function () {
+                     $(this).datepicker('show');
+                  });
+            });
+         }
       }
    } else {
       // استفاده از jdate
@@ -1126,11 +1178,14 @@ function initializeJDateCalendars() {
       });
 
       // تاریخ تولد کودکان شمسی (بین 2 تا 12 سال)
-      $('.shamsiBirthdayCalendar').each(function() {
+      $('.shamsiChildBirthdayCalendar').each(function() {
+         const ageValue = $(this).closest('.s-u-passenger-wrapper').attr('data-expected-age');
+         const currentYear = Number(new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn', {year: 'numeric'}).formatToParts(new Date()).find(part => part.type === 'year').value);
+         const birthYear = ageValue !== undefined && ageValue !== '' ? currentYear - Number(ageValue) : null;
          $(this).jDatepicker({
             dateFormat: 'YYYY-MM-DD',
-            maxDate: 'today -2y',
-            minDate: 'today -12y',
+            maxDate: birthYear !== null ? 'today' : 'today -2y',
+            minDate: birthYear !== null ? `${birthYear}-01-01` : 'today -12y',
             showTodayBtn: false
          });
       });
@@ -1147,8 +1202,36 @@ function initializeJDateCalendars() {
    }
 
 }
+function getExclusiveTourMinimumPassportExpiry(today = new Date()) {
+   const minimum = new Date(today.getFullYear(), today.getMonth() + 6, 1);
+   const lastDay = new Date(minimum.getFullYear(), minimum.getMonth() + 1, 0).getDate();
+   minimum.setDate(Math.min(today.getDate(), lastDay));
+   return minimum;
+}
+
+function hasExclusiveTourPassportValidity(value, today = new Date()) {
+   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ''));
+   if (!match) return false;
+   const year = Number(match[1]), month = Number(match[2]), day = Number(match[3]);
+   const expiry = new Date(year, month - 1, day);
+   return expiry.getFullYear() === year && expiry.getMonth() === month - 1
+       && expiry.getDate() === day && expiry >= getExclusiveTourMinimumPassportExpiry(today);
+}
+
+function exclusiveTourPassengerFormInit(totalPassengers) {
+   if (typeof passengerFormInit === 'function') {
+      passengerFormInit(totalPassengers);
+   }
+   for (let number = 1; number <= Number(totalPassengers); number++) {
+      const isForeign = $(`input[name="passengerNationality${number}"]:checked`).val() === '1';
+      $(`#nationality${number}, #passportExpire${number}`)
+          .prop('required', isForeign)
+          .parent().toggleClass('d-none', !isForeign);
+   }
+}
+
 // ساخت فیلدهای هر مسافر
-function createPassengerFields(number, type, totalPassengers) {
+function createPassengerFields(number, type, totalPassengers, expectedAge) {
    const passengerAge = type === 'adult' ? 'adt' : (type === 'child' ? 'chd' : 'inf');
 
    // متن label بر اساس نوع مسافر
@@ -1163,7 +1246,7 @@ function createPassengerFields(number, type, totalPassengers) {
 
    // const classNameBirthdayShamsi = type === 'adult' ? 'shamsiBirthdayCalendar' : (type === 'child' ? 'shamsiChildBirthdayCalendar' : 'shamsiInfantBirthdayCalendar');
    const classNameBirthdayMiladi = type === 'adult' ? 'gregorianAdultBirthdayCalendar' : (type === 'child' ? 'gregorianChildBirthdayCalendar' : 'gregorianInfantBirthdayCalendar');
-   const classNameBirthdayShamsi = 'shamsiBirthdayCalendar';
+   const classNameBirthdayShamsi = type === 'adult' ? 'shamsiBirthdayCalendar' : (type === 'child' ? 'shamsiChildBirthdayCalendar' : 'shamsiInfantBirthdayCalendar');
    // دکمه دفترچه مسافرین (فقط در صورت لاگین)
    const passengerBookButton = window.isUserLoggedIn ? `
       <span class="s-u-last-passenger-btn s-u-last-passenger-btn-change" onclick="setHidenFildnumberRow('${number}')">
@@ -1175,7 +1258,7 @@ function createPassengerFields(number, type, totalPassengers) {
    ` : '';
 
    return `
-      <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first require_check require_check_${number}">
+      <div class="s-u-passenger-wrapper s-u-passenger-wrapper-change first require_check require_check_${number}" data-expected-age="${Number.isFinite(expectedAge) ? expectedAge : ''}">
          <span class="s-u-last-p-bozorgsal s-u-last-p-bozorgsal-change site-main-text-color">
             ${typeLabel}
             <i class="soap-icon-family"></i>
@@ -1189,7 +1272,7 @@ function createPassengerFields(number, type, totalPassengers) {
                <span class="kindOfPasenger">
                   <label class="control--checkbox">
                      <input type="radio" name="passengerNationality${number}"
-                            onchange="passengerFormInit('${totalPassengers}')"
+                            onchange="exclusiveTourPassengerFormInit('${totalPassengers}')"
                             id="passengerNationality${number}" value="0" checked>
                      <span>${typeof useXmltag === 'function' ? useXmltag('Iranian') : 'ایرانی'}</span>
                   </label>
@@ -1197,7 +1280,7 @@ function createPassengerFields(number, type, totalPassengers) {
                <span class="kindOfPasenger">
                   <label class="control--checkbox">
                      <input type="radio" name="passengerNationality${number}"
-                            onchange="passengerFormInit('${totalPassengers}')"
+                            onchange="exclusiveTourPassengerFormInit('${totalPassengers}')"
                             id="passengerNationality${number}" value="1">
                      <span>${typeof useXmltag === 'function' ? useXmltag('Noiranian') : 'غیر ایرانی'}</span>
                   </label>
@@ -1266,8 +1349,22 @@ function createPassengerFields(number, type, totalPassengers) {
                <div class="s-u-passenger-item s-u-passenger-item-change entry_div d-none">
                   <input data-required="foreign" id="passportNumber${number}" type="text"
                          placeholder="${typeof useXmltag === 'function' ? useXmltag('Numpassport') : 'شماره گذرنامه'}"
-                         name="passportNumber${number}" class="UniqPassportNumber"
+                         name="passportNumber${number}" class="UniqPassportNumber" minlength="9"
                          onkeypress="return isAlfabetNumberKeyFields(event, 'passportNumber${number}')">
+               </div>
+
+               <div class="s-u-passenger-item s-u-passenger-item-change entry_div d-none">
+                  <input data-required="foreign" id="passportExpire${number}" type="text"
+                         placeholder="${typeof useXmltag === 'function' ? useXmltag('Passportexpirydate') : 'تاریخ انقضا پاسپورت'}"
+                         name="passportExpire${number}" class="gregorianFromTodayCalendar" readonly="readonly">
+               </div>
+               <div class="s-u-passenger-item s-u-passenger-item-change select-meliat entry_div d-none">
+                  <select data-required="foreign" name="nationality${number}" id="nationality${number}" class="select2">
+                     <option value="">ملیت</option>
+                     ${window.countryCodes ? window.countryCodes.map(country =>
+       `<option value="${country.code}">${country.name}</option>`
+   ).join('') : ''}
+                  </select>
                </div>
 
                <div class="clear"></div>
@@ -1305,13 +1402,134 @@ function backToSelection() {
 
 }
 
+function isExclusiveTourLatinName(value) {
+   return /^[A-Za-z]+(?: +[A-Za-z]+)*$/.test(String(value || '').trim());
+}
+
+function getExclusiveTourRequiredFieldMessage(field) {
+   const name = (field.name || field.id || '').replace(/\d+$/, '');
+   const labels = {
+      gender: 'جنسیت',
+      nameFa: 'نام انگلیسی',
+      nameEn: 'نام انگلیسی',
+      familyFa: 'نام خانوادگی انگلیسی',
+      familyEn: 'نام خانوادگی انگلیسی',
+      birthday: 'تاریخ تولد شمسی',
+      birthdayEn: 'تاریخ تولد میلادی',
+      NationalCode: 'کد ملی',
+      passportNumber: 'شماره پاسپورت',
+      passportExpire: 'تاریخ انقضای پاسپورت',
+      passportCountry: 'کشور صادرکننده پاسپورت',
+      nationality: 'ملیت'
+   };
+   return `لطفا ${labels[name] || 'این فیلد'} را تکمیل نمایید`;
+}
+
+function showExclusiveTourFieldError($field, message) {
+   if (!String($field.val() || '').trim()) {
+      message = getExclusiveTourRequiredFieldMessage($field[0]);
+   }
+   $field.addClass('field-error').attr('aria-invalid', 'true');
+   const $parent = $field.parent();
+   $parent.find('.select2-container').addClass('field-error');
+   $parent.find('.passenger-field-error, .latin-name-error').remove();
+   $('<span class="passenger-field-error text-danger" role="alert"></span>')
+       .css({display: 'block', width: '100%', fontSize: '12px'})
+       .text(message).appendTo($parent);
+}
+
+function clearExclusiveTourFieldError($field) {
+   $field.removeClass('field-error').removeAttr('aria-invalid');
+   $field.parent().find('.select2-container').removeClass('field-error');
+   $field.parent().find('.passenger-field-error, .latin-name-error').remove();
+}
+
+function getExclusiveTourChildBirthdayError(value, expectedAge, isJalali, today = new Date()) {
+   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value).trim());
+   if (!match) return 'تاریخ تولد معتبر وارد نمایید';
+   const year = Number(match[1]), month = Number(match[2]), day = Number(match[3]);
+   let currentYear = today.getFullYear(), currentMonth = today.getMonth() + 1, currentDay = today.getDate();
+   if (isJalali) {
+      const parts = new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn', {
+         year: 'numeric', month: 'numeric', day: 'numeric'
+      }).formatToParts(today);
+      const part = type => Number(parts.find(item => item.type === type).value);
+      currentYear = part('year'); currentMonth = part('month'); currentDay = part('day');
+   } else {
+      const date = new Date(year, month - 1, day);
+      if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+         return 'تاریخ تولد معتبر وارد نمایید';
+      }
+   }
+   if (month < 1 || month > 12 || day < 1 || day > 31) return 'تاریخ تولد معتبر وارد نمایید';
+   const age = currentYear - year;
+   return age === expectedAge ? '' : `تاریخ تولد باید با سن ${expectedAge} سال انتخاب‌شده در جستجو مطابقت داشته باشد`;
+}
+
+function getExclusiveTourFieldError(field) {
+   const value = String(field.value || '').trim();
+   const name = field.name || field.id || '';
+   if (!value) return getExclusiveTourRequiredFieldMessage(field);
+   if (/^birthday(?:En)?\d+$/.test(name)) {
+      const expectedAge = $(field).closest('.s-u-passenger-wrapper').attr('data-expected-age');
+      if (expectedAge !== undefined && expectedAge !== '') {
+         return getExclusiveTourChildBirthdayError(value, Number(expectedAge), !name.startsWith('birthdayEn'));
+      }
+   }
+   if (/^(nameFa|nameEn|familyFa|familyEn)\d+$/.test(name)) {
+      return isExclusiveTourLatinName(value) ? '' : 'نام و نام خانوادگی باید فقط با حروف انگلیسی وارد شوند';
+   }
+   if (/^passportNumber\d+$/.test(name) && value.length < 9) {
+      return 'شماره گذرنامه باید حداقل ۹ کاراکتر باشد';
+   }
+   if (/^NationalCode\d+$/.test(name) && value.length !== 10) {
+      return 'کد ملی باید ۱۰ رقم باشد';
+   }
+   if (/^passportExpire\d+$/.test(name) && !hasExclusiveTourPassportValidity(value)) {
+      return 'اعتبار گذرنامه باید حداقل ۶ ماه از امروز باشد';
+   }
+   return '';
+}
+
+$(document).on('input change blur', '.s-u-passenger-wrapper input, .s-u-passenger-wrapper select, .s-u-passenger-wrapper textarea', function () {
+   if (this.type === 'radio' || this.type === 'checkbox' || this.type === 'hidden') return;
+   const $field = $(this);
+   const isName = /^(nameFa|nameEn|familyFa|familyEn)\d+$/.test(this.name || this.id || '');
+   const isBirthday = /^birthday(?:En)?\d+$/.test(this.name || this.id || '');
+   const hadError = $field.attr('aria-invalid') === 'true';
+   if (!hadError && !((isName || isBirthday) && this.value.trim() !== '')) return;
+   const error = getExclusiveTourFieldError(this);
+   clearExclusiveTourFieldError($field);
+   if (error) showExclusiveTourFieldError($field, error);
+});
+
+function trimExclusiveTourPassengerField(field) {
+   if (field.type === 'radio' || field.type === 'checkbox') return;
+   if (field.tagName === 'SELECT') {
+      Array.from(field.options).forEach(option => {
+         option.value = option.value.trim();
+      });
+   } else if (typeof field.value === 'string') {
+      field.value = field.value.trim();
+   }
+}
+
+$(document).on('blur', '.s-u-passenger-wrapper input, .s-u-passenger-wrapper textarea', function () {
+   trimExclusiveTourPassengerField(this);
+});
+
 // تابع validation فرم مسافرین
 function validatePassengerForm() {
+   $('.s-u-passenger-wrapper input, .s-u-passenger-wrapper select, .s-u-passenger-wrapper textarea').each(function () {
+      trimExclusiveTourPassengerField(this);
+   });
    let isValid = true;
    let firstErrorField = null;
 
    // حذف همه خطاهای قبلی
-   $('.s-u-passenger-item input, .s-u-passenger-item select').removeClass('field-error');
+   $('.s-u-passenger-wrapper input, .s-u-passenger-wrapper select').each(function () {
+      clearExclusiveTourFieldError($(this));
+   });
    $('.alert_msg').html('');
 
    // پیدا کردن تعداد مسافران
@@ -1325,13 +1543,11 @@ function validatePassengerForm() {
       // چک کردن نوع ملیت (ایرانی/غیر ایرانی)
       const isIranian = $wrapper.find(`input[name="passengerNationality${numberRow}"]:checked`).val() === '0';
 
-      let errors = [];
 
       // چک جنسیت (الزامی برای همه)
       const gender = $(`#gender${numberRow}`).val();
       if (!gender) {
-         errors.push('جنسیت');
-         $(`#gender${numberRow}`).addClass('field-error');
+         showExclusiveTourFieldError($(`#gender${numberRow}`), 'جنسیت');
          if (!firstErrorField) firstErrorField = $(`#gender${numberRow}`);
          isValid = false;
       }
@@ -1343,35 +1559,30 @@ function validatePassengerForm() {
          const birthday = $(`#birthday${numberRow}`).val();
          const nationalCode = $(`#NationalCode${numberRow}`).val();
 
-         if (!nameFa || nameFa.trim() === '') {
-            errors.push('نام انگلیسی');
-            $(`#nameFa${numberRow}`).addClass('field-error');
+         if (!isExclusiveTourLatinName(nameFa)) {
+            showExclusiveTourFieldError($(`#nameFa${numberRow}`), 'نام باید فقط با حروف انگلیسی وارد شود');
             if (!firstErrorField) firstErrorField = $(`#nameFa${numberRow}`);
             isValid = false;
          }
 
-         if (!familyFa || familyFa.trim() === '') {
-            errors.push('نام خانوادگی انگلیسی');
-            $(`#familyFa${numberRow}`).addClass('field-error');
+         if (!isExclusiveTourLatinName(familyFa)) {
+            showExclusiveTourFieldError($(`#familyFa${numberRow}`), 'نام خانوادگی باید فقط با حروف انگلیسی وارد شود');
             if (!firstErrorField) firstErrorField = $(`#familyFa${numberRow}`);
             isValid = false;
          }
 
          if (!birthday || birthday.trim() === '') {
-            errors.push('تاریخ تولد شمسی');
-            $(`#birthday${numberRow}`).addClass('field-error');
+            showExclusiveTourFieldError($(`#birthday${numberRow}`), 'تاریخ تولد شمسی');
             if (!firstErrorField) firstErrorField = $(`#birthday${numberRow}`);
             isValid = false;
          }
 
          if (!nationalCode || nationalCode.trim() === '') {
-            errors.push('کد ملی');
-            $(`#NationalCode${numberRow}`).addClass('field-error');
+            showExclusiveTourFieldError($(`#NationalCode${numberRow}`), 'کد ملی');
             if (!firstErrorField) firstErrorField = $(`#NationalCode${numberRow}`);
             isValid = false;
          } else if (nationalCode.length !== 10) {
-            errors.push('کد ملی باید 10 رقم باشد');
-            $(`#NationalCode${numberRow}`).addClass('field-error');
+            showExclusiveTourFieldError($(`#NationalCode${numberRow}`), 'کد ملی باید 10 رقم باشد');
             if (!firstErrorField) firstErrorField = $(`#NationalCode${numberRow}`);
             isValid = false;
          }
@@ -1384,37 +1595,32 @@ function validatePassengerForm() {
          const passportNumber = $(`#passportNumber${numberRow}`).val();
          const passportCountry = $(`#passportCountry${numberRow}`).val();
 
-         if (!nameEn || nameEn.trim() === '') {
-            errors.push('نام انگلیسی');
-            $(`#nameEn${numberRow}`).addClass('field-error');
+         if (!isExclusiveTourLatinName(nameEn)) {
+            showExclusiveTourFieldError($(`#nameEn${numberRow}`), 'نام باید فقط با حروف انگلیسی وارد شود');
             if (!firstErrorField) firstErrorField = $(`#nameEn${numberRow}`);
             isValid = false;
          }
 
-         if (!familyEn || familyEn.trim() === '') {
-            errors.push('نام خانوادگی انگلیسی');
-            $(`#familyEn${numberRow}`).addClass('field-error');
+         if (!isExclusiveTourLatinName(familyEn)) {
+            showExclusiveTourFieldError($(`#familyEn${numberRow}`), 'نام خانوادگی باید فقط با حروف انگلیسی وارد شود');
             if (!firstErrorField) firstErrorField = $(`#familyEn${numberRow}`);
             isValid = false;
          }
 
          if (!birthdayEn || birthdayEn.trim() === '') {
-            errors.push('تاریخ تولد میلادی');
-            $(`#birthdayEn${numberRow}`).addClass('field-error');
+            showExclusiveTourFieldError($(`#birthdayEn${numberRow}`), 'تاریخ تولد میلادی');
             if (!firstErrorField) firstErrorField = $(`#birthdayEn${numberRow}`);
             isValid = false;
          }
 
-         if (!passportNumber || passportNumber.trim() === '') {
-            errors.push('شماره گذرنامه');
-            $(`#passportNumber${numberRow}`).addClass('field-error');
+         if (!passportNumber || passportNumber.trim().length < 9) {
+            showExclusiveTourFieldError($(`#passportNumber${numberRow}`), 'شماره گذرنامه باید حداقل ۹ کاراکتر باشد');
             if (!firstErrorField) firstErrorField = $(`#passportNumber${numberRow}`);
             isValid = false;
          }
 
          if (!passportCountry || passportCountry.trim() === '') {
-            errors.push('کشور صادر کننده گذرنامه');
-            $(`#passportCountry${numberRow}`).addClass('field-error');
+            showExclusiveTourFieldError($(`#passportCountry${numberRow}`), 'کشور صادر کننده گذرنامه');
             // برای select2 باید parent را قرمز کنیم
             $(`#passportCountry${numberRow}`).parent().find('.select2-container').addClass('field-error');
             if (!firstErrorField) firstErrorField = $(`#passportCountry${numberRow}`);
@@ -1422,12 +1628,38 @@ function validatePassengerForm() {
          }
       }
 
-      // نمایش پیغام خطا برای این مسافر
-      if (errors.length > 0) {
-         const passengerType = passengerAge === 'adt' ? 'بزرگسال' : (passengerAge === 'chd' ? 'کودک' : 'نوزاد');
-         const errorMsg = `<span class="text-danger">⚠️ لطفاً فیلدهای زیر را تکمیل کنید: ${errors.join('، ')}</span>`;
-         $(`#message${numberRow}`).html(errorMsg);
+      if (!isIranian) {
+         const foreignFields = [
+            [`#passportExpire${numberRow}`, 'تاریخ انقضا پاسپورت'],
+            [`#nationality${numberRow}`, 'ملیت']
+         ];
+         foreignFields.forEach(([selector, label]) => {
+            const $field = $(selector);
+            if (!$field.val() || !$field.val().trim()) {
+               showExclusiveTourFieldError($field, label);
+               $field.parent().find('.select2-container').addClass('field-error');
+               if (!firstErrorField) firstErrorField = $field;
+               isValid = false;
+            }
+         });
+         const $passportExpiry = $(`#passportExpire${numberRow}`);
+         if ($passportExpiry.val() && !hasExclusiveTourPassportValidity($passportExpiry.val())) {
+            showExclusiveTourFieldError($passportExpiry, 'اعتبار گذرنامه باید حداقل ۶ ماه از امروز باشد');
+            if (!firstErrorField) firstErrorField = $passportExpiry;
+            isValid = false;
+         }
       }
+
+      const $birthdayField = $(`#${isIranian ? 'birthday' : 'birthdayEn'}${numberRow}`);
+      if ($birthdayField.val()) {
+         const birthdayError = getExclusiveTourFieldError($birthdayField[0]);
+         if (birthdayError) {
+            showExclusiveTourFieldError($birthdayField, birthdayError);
+            if (!firstErrorField) firstErrorField = $birthdayField;
+            isValid = false;
+         }
+      }
+
    });
 
    // اگر خطا وجود داشت، به اولین فیلد خطا scroll کن
@@ -1436,13 +1668,6 @@ function validatePassengerForm() {
          scrollTop: firstErrorField.offset().top - 150
       }, 500);
 
-      // نمایش alert کلی
-      $.alert({
-         title: useXmltag('Error') || 'خطا',
-         content: 'لطفاً تمامی فیلدهای الزامی را با دقت تکمیل نمایید.',
-         rtl: true,
-         type: 'red'
-      });
    }
 
    return isValid;
@@ -1494,10 +1719,12 @@ function handlePassengerFormSubmit(e) {
          passenger.NationalCode = '';
          passenger.PassportCountry = $(`#passportCountry${numberRow}`).val() || '';
          passenger.DateOfBirth = $(`#birthdayEn${numberRow}`).val() || '';
-         passenger.Nationality = passenger.PassportCountry;
+         passenger.PassportExpire = $(`#passportExpire${numberRow}`).val() || '';
+         passenger.Nationality = $(`#nationality${numberRow}`).val() || '';
          passenger.isIranian = false;
       }
 
+      passenger.PassengerNationality = passenger.Nationality;
       passengersArray.push(passenger);
    });
 
@@ -1776,6 +2003,24 @@ function createPassengersLockView(passenger , number) {
    }
 
    let docNum = passenger.PassportNumber == '' ? passenger.NationalCode : passenger.PassportNumber;
+   const isForeign = passenger.isIranian === false;
+   const countryCode = passenger.PassportCountry || '';
+   const issuingCountry = (window.countryCodes || []).find(country => country.code === countryCode);
+   const nationalityCode = passenger.passengerNationality || passenger.Nationality || '';
+   const nationality = (window.countryCodes || []).find(country => country.code === nationalityCode);
+   const escapeValue = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+   }[char]));
+   const passportDetails = isForeign ? `
+                                <div>
+                                    <h4>${useXmltag('Passportexpirydate')}</h4>
+                                    <h5>${escapeValue(passenger.PassportExpire || '—')}</h5>
+                                </div>
+                                <div>
+                                    <h4>${useXmltag('Countryissuingpassport')}</h4>
+                                    <h5>${escapeValue(issuingCountry ? issuingCountry.name : (countryCode || '—'))}</h5>
+                                </div>
+   ` : '';
 
    return `
                         <div>
@@ -1787,7 +2032,7 @@ function createPassengersLockView(passenger , number) {
                                 </div>
                                 <div>
                                     <h4>${useXmltag('Nation')}</h4>
-                                    <h5>${passenger.NationalCode}</h5>
+                                    <h5>${escapeValue(nationality ? nationality.name : (nationalityCode || '—'))}</h5>
                                 </div>
                                 <div>
                                     <h4>${useXmltag('Name')}</h4>
@@ -1805,6 +2050,7 @@ function createPassengersLockView(passenger , number) {
                                     <h4>${useXmltag('Numpassport')} / ${useXmltag('Nationalnumber')}</h4>
                                     <h5>${docNum}</h5>
                                 </div>
+                                ${passportDetails}
                             </div>
                         </div>
    
@@ -2535,8 +2781,8 @@ function selectPassengerLocal(idPass, moduleType, _this = null) {
             $("#gender" + numberRow + " option[value=" + obj.gender + "]").prop('selected', true);
             $("#nameEn" + numberRow).val(obj.name_en);
             $("#familyEn" + numberRow).val(obj.family_en);
-            $("#nameFa" + numberRow).val(obj.name_fa);
-            $("#familyFa" + numberRow).val(obj.family_fa);
+            $("#nameFa" + numberRow).val(obj.name_fa ?? obj.name_en);
+            $("#familyFa" + numberRow).val(obj.family_fa ?? obj.family_en);
 
             // تاریخ تولد
             if (obj.birthday && obj.birthday !== '0000-00-00') {
@@ -2549,8 +2795,6 @@ function selectPassengerLocal(idPass, moduleType, _this = null) {
             // کد ملی و اطلاعات پاسپورت
             if (obj.NationalCode) {
                $("#NationalCode" + numberRow).val(obj.NationalCode);
-               // تنظیم ملیت به ایرانی
-               $("input[name='passengerNationality" + numberRow + "'][value='0']").prop('checked', true).trigger('change');
             }
 
             if (obj.passportNumber) {
@@ -2564,14 +2808,24 @@ function selectPassengerLocal(idPass, moduleType, _this = null) {
             }
 
 
-            // اگر پاسپورت دارد، ملیت را غیر ایرانی تنظیم کن
-            if (!obj.NationalCode && obj.passportNumber) {
-               $("input[name='passengerNationality" + numberRow + "'][value='1']").prop('checked', true).trigger('change');
+            if (obj.passportExpire && obj.passportExpire !== '0000-00-00') {
+               $("#passportExpire" + numberRow).val(obj.passportExpire);
             }
+            $("#nationality" + numberRow).val(obj.Nationality || obj.nationality || obj.passportCountry || '').trigger('change');
+
+            $("#gender" + numberRow).closest('.s-u-passenger-wrapper')
+               .find('input, select, textarea').each(function () {
+                  trimExclusiveTourPassengerField(this);
+                  const $field = $(this);
+                  if ($field.parent().hasClass('d-none')) {
+                     clearExclusiveTourFieldError($field);
+                  } else {
+                     $field.trigger('change');
+                  }
+               });
 
             // بستن modal
             $(".s-u-close-last-p").trigger("click");
-            e
             // نمایش پیام موفقیت
             if (typeof $.toast !== 'undefined') {
                $.toast({

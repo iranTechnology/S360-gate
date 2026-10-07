@@ -18,14 +18,14 @@
                 {*    <div id="large-header" class="large-header">*}
                 {*        <canvas id="demo-canvas" width="1280" height="840"></canvas>*}
                 {*    </div>*}
-                <div class="parent-text-banner-demo">
-                    <h2 id="title-banner">رزرو بلیط هواپیما داخلی و خارجی</h2>
-                    <p id="caption-banner">
+{*                <div class="parent-text-banner-demo">*}
+{*                    <h2 id="title-banner">رزرو بلیط هواپیما داخلی و خارجی</h2>*}
+{*                    <p id="caption-banner">*}
 
-                        برای خرید آنلاین بلیط هواپیما در تامین تور کافیست مبدا، مقصد و تاریخ پرواز خود را انتخاب کنید.
+{*                        برای خرید آنلاین بلیط هواپیما در تامین تور کافیست مبدا، مقصد و تاریخ پرواز خود را انتخاب کنید.*}
 
-                    </p>
-                </div>
+{*                    </p>*}
+{*                </div>*}
             </div>
         </div>
     </div>

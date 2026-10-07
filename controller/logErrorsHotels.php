@@ -23,8 +23,8 @@ class logErrorsHotels extends clientAuth{
 //        return $result_error ;
 //    }
 
-    public function getErrorMessage($request_number,$client_id) {
-        $result_error =  $this->getModel('logErrorHotelModel')->get()->where('request_number',$request_number)->where('clientId',$client_id)->orderBy()->all();
+    public function getErrorMessage($request_number,$factor_number,$client_id) {
+        $result_error =  $this->getModel('logErrorHotelModel')->get()->where('request_number',$request_number)->where('factor_number',$factor_number)->where('clientId',$client_id)->orderBy()->all();
         $result_error = $result_error[0];
         if (TYPE_ADMIN == '1') {
             $result_error['text_message'] = (!empty($result_error['message_admin']))

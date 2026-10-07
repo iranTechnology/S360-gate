@@ -173,6 +173,9 @@
                                         <span >
                                             {$item.city_name} - {$item.hotel_name}
                                         </span>
+                                    {elseif $item.TypeCancel eq 'tour'}
+                                        <br/>
+                                        <span>{$item.tour_name} - {$item.tour_cities}</span>
                                     {/if}
                                 </td>
                                 
@@ -278,7 +281,7 @@
                                     {/if}
                                 </td>
 
-                                {if ($item.pid_private eq '1' and $item.TypeCancel eq 'flight') || ($item.type_application eq 'reservation' and $item.TypeCancel eq 'hotel')}
+                                {if ($item.pid_private eq '1' and $item.TypeCancel eq 'flight') || ($item.type_application eq 'reservation' and $item.TypeCancel eq 'hotel') || $item.TypeCancel eq 'tour'}
                                     <td>
                                         {if $item.Status eq 'ConfirmCancel'}
                                             {if $item.TypeCancel neq 'bus'}
@@ -293,6 +296,9 @@
                                                        class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
                                                     </a>
 
+                                                    {elseif $item.TypeCancel eq 'tour'}
+                                                    <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/pdf&target=BookingTourLocal&id={$item.FactorNumber}"
+                                                       class="fcbtn btn btn-outline btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank"></a>
                                                     {elseif $item.TypeCancel eq 'flight'}
                                                      <a href="{$smarty.const.SERVER_HTTP}{$smarty.const.CLIENT_DOMAIN}/gds/pdf&target=parvazBookingLocal&id={$item.RequestNumber}&cancelStatus=confirm"
                                                         class="fcbtn btn btn-outline  btn-info btn-1c fa fa-file-pdf-o cursor-default" target="_blank">
@@ -330,7 +336,7 @@
                                                               data-placement="top"
                                                               data-content="برای مشاهده جزئیات کلیک کنید"
                                                               class="popoverBox  popover-primary">
-                                                            <a onclick="ModalTrackingCancelTicket('{$item.RequestNumber}', '{$item.ClientId}' , '{$item.IdDetail}','{$item.TypeCancel}');return false"
+                                                            <a onclick="ModalTrackingCancelTicket('{$item.RequestNumber}', '{$item.id}', '{$item.TypeCancel}');return false"
                                                                data-toggle="modal" data-target="#ModalPublic"
                                                                class="fcbtn btn btn-outline btn-primary btn-1c mdi mdi-eye cursor-default">
 
@@ -361,6 +367,15 @@
 
 
                                                     {if $item.Status eq 'RequestMember'}
+                                                        {if $item.TypeCancel eq 'tour'}
+                                                            <li>
+                                                                <div class="pull-left margin-10">
+                                                                    <a class="btn btn-danger" id="FailedCancel-{$item.id}"
+                                                                       data-toggle="modal" data-target="#ModalPublic"
+                                                                       onclick="ShowModalFailedCancel('{$item.RequestNumber}', '{$item.id}');return false">رد درخواست کنسلی</a>
+                                                                </div>
+                                                            </li>
+                                                        {/if}
                                                         <li>
                                                             <div class="pull-left">
                                                                 <div class="pull-left margin-10">
@@ -435,6 +450,7 @@
                                                     {/if}
 
 
+                                                    {if $item.TypeCancel neq 'tour'}
                                                     <li>
                                                         <div class="pull-left">
                                                             <div class="pull-left margin-10">
@@ -446,6 +462,7 @@
                                                             </div>
                                                         </div>
                                                     </li>
+                                                    {/if}
 
                                                 </ul>
                                             </div>
@@ -637,8 +654,8 @@
                                             {if ($item.pid_private eq '0' and $item.TypeCancel eq 'flight') || ($item.type_application neq 'reservation' and $item.TypeCancel eq 'hotel')}
                                                 <div class="btn btn-success" disabled="disabled" style="cursor: context-menu; background-color: #28a745 !important; border-color: #28a745 !important; color: #ffffff !important; opacity: 1 !important;">به اعتبار شما واریز شد</div>
                                             {/if}
-                                            {if $item.confirmTransferWallet eq 'none' && $item.backCredit eq 'on' }
-                                                {*                                            <div class="btn btn-primary"   onclick="ModalConfirmAdminReturnUserWallet('{$item.RequestNumber}', '{$item.id}' , '{$item.PriceIndemnity}' , '{$item.MemberId}');return false" disabled="disabled" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">انتقال به کیف پول</div>*}
+                                            {if $item.confirmTransferWallet eq 'none' && ($item.backCredit eq 'on' || $item.TypeCancel eq 'tour') }
+                                                {*                                            <div class="btn btn-primary"   onclick="ModalConfirmAdminReturnUserWallet('{$item.RequestNumber}', '{$item.id}' , '{$item.PriceIndemnity}' , '{$item.MemberId}');return false" disabled="disabled" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">{if $item.TypeCancel eq 'tour' && $item.refund_counter_type neq '5'}انتقال به اعتبار همکار{else}انتقال به کیف پول{/if}</div>*}
                                                 <div class="btn btn-primary"   onclick="ModalConfirmAdminReturnUserWallet('{$item.RequestNumber}', '{$item.id}'  , '{$item.MemberId}');return false" disabled="disabled"  data-toggle="modal"
                                                      data-target="#ModalPublic" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">انتقال به کیف پول مسافر</div>
 
@@ -654,7 +671,7 @@
                                                 {if $item.confirmTransferWallet eq 'ReturnWallet'}
                                                     <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به کیف پول کاربر برگردانده شد</div>
                                                 {elseif $item.confirmTransferWallet eq 'ReturnWalletCounter'}
-                                                    <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به اعتبار کانتر برگردانده شد</div>
+                                                    <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به اعتبار همکار کانتر برگردانده شد</div>
                                                 {elseif $item.confirmTransferWallet eq 'ReturnBankCart'}
                                                     <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به درخواست کاربر به کارت واریز شد</div>
                                                 {else}

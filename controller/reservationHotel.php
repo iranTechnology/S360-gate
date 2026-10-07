@@ -1979,18 +1979,26 @@ ORDER BY HRP.id_same;
 
 
     //////////گزارش اتاق های هتل بر اساس کد یکسان//////////
-    public function infoAllHotelRooms($idHotel, $idSame)
+    public function infoAllHotelRooms($idHotel, $idSame, $preferCurrentDates = false)
     {
 
-//        $mod = '';
-//        $format = 'Y' . $mod . 'm' . $mod . 'd';
-//        $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
-
         $Model = Load::library('Model');
+        $dateCondition = '';
+        $dateRange = array();
+        if ($preferCurrentDates) {
+            $dateToday = dateTimeSetting::jdate('Ymd', time(), '', '', 'en');
+            $dateRange = $Model->load("SELECT MIN(date) AS minDate, MAX(date) AS maxDate
+                FROM reservation_hotel_room_prices_tb
+                WHERE id_hotel='{$idHotel}' AND id_same='{$idSame}' AND is_del='no'");
+            if (!empty($dateRange['maxDate']) && $dateRange['maxDate'] >= $dateToday) {
+                $dateCondition = " AND date>='{$dateToday}'";
+            }
+        }
+
         $sqlRoom
             = " SELECT *, MIN(date) as minDate, MAX(date) as maxDate
                  FROM reservation_hotel_room_prices_tb 
-                 WHERE id_hotel='{$idHotel}' AND id_same='{$idSame}' AND is_del='no'
+                 WHERE id_hotel='{$idHotel}' AND id_same='{$idSame}' AND is_del='no'{$dateCondition}
                  GROUP BY id_room, flat_type
                  ORDER BY id";
         $rooms = $Model->select($sqlRoom);
@@ -1999,6 +2007,10 @@ ORDER BY HRP.id_same;
         foreach ($rooms as $k => $room) {
             if ($k == 0) {
                 $this->infoRoomPrice = $room;
+                if ($preferCurrentDates && !empty($dateRange['maxDate'])) {
+                    $this->infoRoomPrice['minDate'] = $dateRange['minDate'];
+                    $this->infoRoomPrice['maxDate'] = $dateRange['maxDate'];
+                }
             }
             if ($room['flat_type'] == 'DBL') {
                 $i++;
@@ -2024,10 +2036,11 @@ ORDER BY HRP.id_same;
         }
         $this->hotelRooms = $infoRooms;
 
+        $userHotelCondition = $preferCurrentDates ? "id_hotel='{$idHotel}' AND " : '';
         $sqlUser
             = " SELECT discount, maximum_capacity, user_type
                  FROM reservation_hotel_room_prices_tb 
-                 WHERE id_same='{$idSame}' AND is_del='no'
+                 WHERE {$userHotelCondition}id_same='{$idSame}' AND is_del='no'{$dateCondition}
                  GROUP BY user_type
                  ORDER BY id";
         $users = $Model->select($sqlUser);
