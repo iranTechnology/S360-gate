@@ -43,7 +43,6 @@ class bookshowTest extends clientAuth {
         else{//7ماه قبل را واکشی کند
             // امروز میلادی
             $todayGregorian = date('Y-m-d');
-            // 3 ماه قبل (میلادی)
             $threeMonthAgoGregorian = date('Y-m-d', strtotime('-7 months'));
             // تبدیل به شمسی
             $todayJalali = dateTimeSetting::jdate('Y-m-d', strtotime($todayGregorian));

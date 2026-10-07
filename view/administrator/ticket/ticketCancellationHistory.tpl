@@ -46,7 +46,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>انتخاب فایل اکسل</label>
-                                    <input type="file" name="pnr_file" class="form-control" p required>
+                                    <input type="file" name="pnr_file" class="form-control" required>
                                 </div>
                             </div>
 
@@ -166,9 +166,9 @@
                                     <br/>
                                    نام سرور
                                 </th>
-                                <th>تاریخ در خواست کاربر</th>
-                                <th>تاریخ ارسال به کارگزار</th>
-                                <th>تاریخ تایید/رد درخواست</th>
+                                <th> تاریخ<br/>در خواست کاربر</th>
+                                <th>تاریخ ارسال <br/>به کارگزار</th>
+                                <th>تاریخ <br>  تایید/رد <br>  درخواست</th>
                                 <th>
                                     درصد جریمه
                                     <br/>
@@ -250,20 +250,7 @@
                                             </a>
 
                                             <!-- PNR -->
-                                            <div style="
-                                                        width:100px;
-                                                        height:40px;
-                                                        background:#2cabe3;
-                                                        color:#fff;
-                                                        display:flex;
-                                                        align-items:center;
-                                                        justify-content:center;
-                                                        border-radius:4px;
-                                                        font-weight:500;
-                                                        font-size:13px;
-                                                        user-select:all;
-                                                    "
-                                                 id="myInput{$item.id}">
+                                            <div class="BoxBlueTxt" id="myInput{$item.id}">
                                                 {$item.pnr}
                                             </div>
                                         </div>
@@ -313,35 +300,46 @@
                                         {/if}
                                     </td>
                                     <td dir="ltr" class="text-left">
-                                        {$objDate->jdate('Y-m-d (H:i:s)', $item.DateRequestMemberInt)}
-                                        <hr/>
+                                        {$objDate->jdate('Y-m-d', $item.DateRequestMemberInt)}
+                                        <br/><br/>
+                                        {$objDate->jdate('H:i:s', $item.DateRequestMemberInt)}
+                                        <br/>
                                         {$objDate->jdate('l', $item.DateRequestMemberInt)}
                                     </td>
                                     <td dir="ltr" class="text-left">
-                                        {if $item.DateRequestCancelClientInt neq '0'} {$objDate->jdate('Y-m-d (H:i:s)', $item.DateRequestCancelClientInt)}
-                                            <hr/>
+                                        {if $item.DateRequestCancelClientInt neq '0'}
+                                            {$objDate->jdate('Y-m-d', $item.DateRequestCancelClientInt)}
+                                            <br/><br/>
+                                            {$objDate->jdate('H:i:s', $item.DateRequestCancelClientInt)}
+                                            <br/>
                                             {$objDate->jdate('l', $item.DateRequestCancelClientInt)}
-
-                                        {else}---{/if}
-                                    </td>
+                                        {else}
+                                            ---
+                                        {/if}
+                                    </td>5
                                     <td dir="ltr" class="text-left">
                                         {if $item.DateSetCancelInt neq '0' || $item.DateConfirmClientInt neq '0' ||
                                         $item.DateSetFailedIndemnityInt neq '0'}
 
                                             {if $item.Status eq 'SetCancelClient'}
-
-                                                {$objDate->jdate('Y-m-d (H:i:s)', $item.DateSetCancelInt)}
-                                                <hr/>
+                                                {$objDate->jdate('Y-m-d', $item.DateSetCancelInt)}
+                                                <br/><br/>
+                                                {$objDate->jdate('H:i:s', $item.DateSetCancelInt)}
+                                                <br/>
                                                 {$objDate->jdate('l', $item.DateSetCancelInt)}
 
                                             {elseif $item.Status eq 'ConfirmClient'}
-
-                                                {$objDate->jdate('Y-m-d (H:i:s)', $item.DateConfirmClientInt)}
-                                                <hr/>
+                                                {$objDate->jdate('Y-m-d', $item.DateConfirmClientInt)}
+                                                <br/><br/>
+                                                {$objDate->jdate('H:i:s', $item.DateConfirmClientInt)}
+                                                <br/>
                                                 {$objDate->jdate('l', $item.DateConfirmClientInt)}
+
                                             {elseif $item.Status eq 'SetFailedIndemnity'}
-                                                {$objDate->jdate('Y-m-d (H:i:s)', $item.DateSetFailedIndemnityInt)}
-                                                <hr/>
+                                                {$objDate->jdate('Y-m-d', $item.DateSetFailedIndemnityInt)}
+                                                <br/><br/>
+                                                {$objDate->jdate('H:i:s', $item.DateSetFailedIndemnityInt)}
+                                                <br/>
                                                 {$objDate->jdate('l', $item.DateSetFailedIndemnityInt)}
                                             {/if}
 
@@ -358,15 +356,17 @@
                                                 {if $item.TypeCancel eq 'flight' && $item.IsInternal neq '1' }
                                                     -----
                                                 {else}
+                                                    <div  class="BoxBlueTxt" style="width: 50px !importand;">
+                                                        {$item.PercentIndemnity}  %
+                                                    </div>
                                                     <span class="yn">
                                                         <input
-                                                                style="border: 1px solid #000; border-radius: 4px;"
+                                                                stype="hidden"
                                                                 class="form-control media03"
                                                                 value="{$item.PercentIndemnity}"
                                                                 name="changePercentIndemnity"
                                                                 id="changePercentIndemnity{$item.ClientId}{$item.id}"
                                                                 onchange="changePercentIndemnity('{$item.id}','{$item.ClientId}')">
-                                                        <div class="media04">%</div>
                                                     </span>
 
                                                 {/if}
@@ -547,42 +547,48 @@
                                                 <div id="ConfirmClientStatus-{$item.id}"
                                                      class="btn btn-success-excel cursor-default"
                                                      disabled="disabled">
-                                                    تایید از طریق اکسل /  واریز کنید<br/>
-                                                    وضعیت را تعیین کنید
+                                                    تایید از طریق اکسل
+                                                    <br/>  واریز کنید
+                                                    <br/>     وضعیت را تعیین کنید
                                                 </div>
                                             {elseif $item.Status eq 'RequestMember'}
-                                                <div class="btn btn-primary cursor-default" disabled="disabled"
-                                                     id="RequestMember">درخواست
-                                                    کاربر
+                                                <div class="btn btn-primary cursor-default"
+                                                     disabled="disabled"
+                                                     id="RequestMember">
+                                                    درخواست کاربر
                                                 </div>
                                             {elseif $item.Status eq 'SetCancelClient'}
                                                 <div id="SetCancelClient" class="btn btn-danger cursor-default"
-                                                     disabled="disabled"
-                                                >
+                                                     disabled="disabled">
                                                     رد
                                                     درخواست
                                                     کاربر
                                                 </div>
                                             {elseif $item.Status eq 'RequestClient'}
                                                 <div id="RequestClientStatus-{$item.id}" class="btn btn-danger cursor-default"
-                                                     disabled="disabled"
-                                                >درصد کنسلی را مشخص نمایید</div>
+                                                     disabled="disabled">
+                                                    درصد کنسلی را <br>مشخص نمایید
+                                                </div>
                                             {elseif $item.Status eq 'SetIndemnity'}
                                                 <div id="SetIndemnityId" class="btn btn-warning btn-percent cursor-default"
-                                                     disabled="disabled"
-                                                >
-                                                    جریمه مشخص شد / منتظر تایید آژانس
-
+                                                     disabled="disabled">
+                                                    جریمه مشخص شد
+                                                    <br/>
+                                                    منتظر تایید آژانس
                                                 </div>
                                             {elseif $item.Status eq 'ConfirmClient' }
                                                 <div id="ConfirmClientStatus-{$item.id}" class="btn btn-info cursor-default"
-                                                     disabled="disabled"
-                                                >آژانس تایید کرد / واریز کنید</div>
+                                                     disabled="disabled">
+                                                    آژانس تایید کرد
+                                                    <br/>
+                                                    کنسل کنید
+                                                </div>
                                             {elseif $item.Status eq 'SetFailedIndemnity' }
                                                 <div id="SetFailedIndemnity" class="btn btn-danger cursor-default"
-                                                     disabled="disabled"
-                                                >
-                                                    آژانس رد کرد / واریز نکنید
+                                                     disabled="disabled" >
+                                                    آژانس رد کرد
+                                                    <br/>
+                                                    کنسل نکنید
                                                 </div>
                                             {elseif $item.Status eq 'close' }
                                                 <div id="SetFailedIndemnity" class="btn btn-danger cursor-default"
@@ -691,5 +697,18 @@
         background-color: #218838;   /* سبز تیره‌تر برای هاور */
         border-color: #1e7e34;
         color: #fff;
+    }
+    .BoxBlueTxt{
+        width:100px;
+        height:40px;
+        background:#2cabe3;
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:4px;
+        font-weight:500;
+        font-size:13px;
+        user-select:all;
     }
 </style>

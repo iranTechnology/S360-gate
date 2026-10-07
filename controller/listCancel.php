@@ -41,7 +41,8 @@ class listCancel extends clientAuth {
     public $Pid;
     private $pnrListExelCanceling=[];
     public $transactions;
-
+    protected $pnrListExelReconciliation = [];
+    protected $file_type_excel = '';
     /**
      * listCancel constructor.
      */
@@ -57,7 +58,6 @@ class listCancel extends clientAuth {
 
         $sql = " SELECT * FROM clients_tb WHERE id >'1'";
         $res = $this->ModelBase->select($sql);
-
 
         $date = dateTimeSetting::jdate("Y-m-d", time());
         $date_now_explode = explode('-', $date);
@@ -1208,6 +1208,9 @@ class listCancel extends clientAuth {
 //        var_dump($data);
 //        die;
         if ($apiCancel || ((isset($params['admin']) && $params['admin'] == 'yes' && $params['flightType'] == 'system'))) {
+            $data['Status'] = 'RequestClient';
+
+            /* 1405_07_12 faal nabahshad
             if ($params['flightType'] == 'system') {
                 $CalculateIndemnity = $this->getIndemnityCancel($params['RequestNumber']);
                 if (is_numeric($CalculateIndemnity)) {
@@ -1217,9 +1220,8 @@ class listCancel extends clientAuth {
                 }else{
                     $data['Status'] = 'RequestClient';
                 }
-            } else {
-                $data['Status'] = 'RequestClient';
-            }
+            }*/
+
             $data['DateRequestCancelClientInt'] = time();
         } else {
             $data['Status'] = 'RequestMember';
@@ -1415,7 +1417,7 @@ class listCancel extends clientAuth {
     }
 
 
-    public function InsertExelCanceling($params)
+    public  function InsertExelCanceling($params)
     {
         // بررسی ارسال فایل
         if (!isset($_FILES['pnr_file']) || empty($_FILES['pnr_file']['name'])) {
@@ -1600,4 +1602,395 @@ class listCancel extends clientAuth {
         }
 
     }
+
+    public function getTransactionsByDateRange() {
+        //3ماه قبل را واکشی کند
+        // امروز میلادی
+        $todayGregorian = date('Y-m-d');
+        $threeMonthAgoGregorian = date('Y-m-d', strtotime('-3 months'));
+        // تبدیل به شمسی
+        $todayJalali = dateTimeSetting::jdate('Y-m-d', strtotime($todayGregorian));
+        $threeMonthAgoJalali = dateTimeSetting::jdate('Y-m-d', strtotime($threeMonthAgoGregorian));
+        $ReturnDate=functions::ChangeDateForTransactions($threeMonthAgoJalali,$todayJalali);
+
+        $transactions = $this->getModel('transactionsModel')
+            ->get(['Price', 'FactorNumber'])
+            ->where('Status','2')
+            ->where('PaymentStatus','success')
+            ->openParentheses()
+            ->where('PriceDate', $ReturnDate[0], '>=')
+            ->where('PriceDate', $ReturnDate[1], '<=')
+            ->closeParentheses()
+            ->all();
+        $priceByFactor = [];
+        foreach ($transactions as $t) {
+            $priceByFactor[$t['FactorNumber']] = $t['Price'];
+        }
+        return $priceByFactor;
+    }
+
+    public function ListTicketReconciliation() {
+        // az date 1405/07/10 (2026-10-02) start khord - Tehran time
+        $date_start_int = dateTimeSetting::jmktime(0, 0, 0, 7, 10, 1405);
+
+        $apiProviders = [
+            '1'  => 'سرور 5',
+            '5'  => 'سرور 4',
+            '8'  => 'سرور 7',
+            '10' => 'سرور 9',
+            '11' => 'سرور 10',
+            '12' => 'سرور 12',
+            '13' => 'سرور 13',
+            '14' => 'سرور 14',
+            '15' => 'سرور 15',
+            '16' => 'سرور 16',
+            '17' => 'سرور 17',
+            '18' => 'سرور 18',
+            '19' => 'سرور 19',
+            '20' => 'سپهر',
+            '21' => 'چارتر118',
+            '43' => 'سیتی نت',
+        ];
+
+        // دریافت تراکنش‌ها
+        $transactions = $this->getTransactionsByDateRange();
+
+        // ۱. واکشی کلیه رکوردهای اکسل معلق (status = 0)
+        $excelModel = $this->getModel('ticketReconciliationModel');
+        $allExcelRows = $excelModel->get()->where('status', '0')->all();
+
+        $excelPnrMap = [];
+        if (!empty($allExcelRows) && is_array($allExcelRows)) {
+            foreach ($allExcelRows as $ex) {
+                $cleanPnr = trim((string)$ex['pnr']);
+                $excelPnrMap[$cleanPnr] = [
+                    'cost_excel' => $ex['cost_excel'],
+                    'type_excel' => $ex['type_excel'],
+                    'matched'    => false
+                ];
+            }
+        }
+
+        // ۲. واکشی پروازها از report_tb
+        $NameReportTb = $this->getModel('reportModel')->getTable();
+        $ListReconciliation = $this->getModel('reportModel')
+            ->get([
+                "id",
+                "{$NameReportTb}.factor_number",
+                "{$NameReportTb}.pnr",
+                "{$NameReportTb}.serviceTitle",
+                "{$NameReportTb}.creation_date_int",
+                "{$NameReportTb}.api_id",
+                "{$NameReportTb}.flight_type",
+                "{$NameReportTb}.IsInternal",
+                "{$NameReportTb}.foreign_airline",
+                "SUM({$NameReportTb}.provider_adt_price) AS provider_adt_price",
+                "SUM({$NameReportTb}.provider_chd_price) AS provider_chd_price",
+                "SUM({$NameReportTb}.provider_inf_price) AS provider_inf_price",
+                "SUM({$NameReportTb}.system_flight_commission) AS sum_system_flight_commission"
+            ])
+            ->where($NameReportTb.'.creation_date_int', $date_start_int, '>=')
+            ->openParentheses()
+            ->where('successfull', 'book')
+            ->orwhere('successfull', 'private_reserve')
+            ->closeParentheses()
+            ->openParentheses()
+            ->like('serviceTitle', 'Public', 'left')
+            ->like('serviceTitle', 'Private', 'left')
+            ->closeParentheses()
+            ->groupBy($NameReportTb.'.request_number')
+            ->orderBy($NameReportTb.'.creation_date_int', 'desc')
+            ->all();
+
+        $finalList = [];
+
+        // ۳. تطبیق پروازها با رکوردهای اکسل
+        if (!empty($ListReconciliation) && is_array($ListReconciliation)) {
+            foreach ($ListReconciliation as $row) {
+                $rowPnr = trim((string)$row['pnr']);
+                $row['creation_date'] = dateTimeSetting::jdate('Y-m-d', $row['creation_date_int']);
+                $row['provider_name'] = isset($apiProviders[$row['api_id']]) ? $apiProviders[$row['api_id']] : 'نامشخص';
+
+                $serviceTitle = $row['serviceTitle'];
+
+                if (strpos($serviceTitle, 'Public') !== false) {
+                    $row['serviceDisplay'] = '<span>اشتراکی</span>';
+                } elseif (strpos($serviceTitle, 'Private') !== false) {
+                    $row['serviceDisplay'] = '<span style="font-size: 10px;color:#128fc5;">اختصاصی</span>';
+                } else {
+                    $row['serviceDisplay'] = $serviceTitle; // در صورتی که هیچکدام نبود
+                }
+
+                // نوع پرواز: چارتری / سیستمی
+                $row['flightTypeDisplay'] = ($row['flight_type'] == 'system') ? 'سیستمی' : 'چارتری';
+
+                // محاسبه مبلغ خرید از پرووایدر
+                if (
+                    ($row['flight_type'] == 'system' && $row['IsInternal'] == '1') ||
+                    ($row['flight_type'] == 'system' && $row['IsInternal'] == '0' && $row['foreign_airline'] == '0')
+                ) {
+                    $NumberFlightProvider = ($row['provider_adt_price'] + $row['provider_chd_price'] + $row['provider_inf_price']) - ($row['sum_system_flight_commission']);
+                } else {
+                    $NumberFlightProvider = ($row['provider_adt_price'] + $row['provider_chd_price'] + $row['provider_inf_price']);
+                }
+
+                $row['BuyFromProvider'] = number_format($NumberFlightProvider);
+                $saleRaw = isset($transactions[$row['factor_number']]) ? $transactions[$row['factor_number']] : 0;
+                $row['AgencySale'] = number_format($saleRaw);
+
+                // اتصال مبلغ اکسل در صورت وجود
+                if (isset($excelPnrMap[$rowPnr])) {
+                    $row['cost_excel_formatted'] = number_format((float)$excelPnrMap[$rowPnr]['cost_excel']);
+                    $row['cost_excel_raw']       = (float)$excelPnrMap[$rowPnr]['cost_excel'];
+                    $excelPnrMap[$rowPnr]['matched'] = true; // علامت‌گذاری به عنوان یافت‌شده
+                } else {
+                    $row['cost_excel_formatted'] = null;
+                    $row['cost_excel_raw']       = null;
+                }
+
+                // رنگ باکس مبلغ اکسل بر اساس مقایسه با مبلغ پرووایدر
+                if ($row['cost_excel_raw'] !== null) {
+                    if ($row['cost_excel_raw'] > $NumberFlightProvider) {
+                        $row['cost_excel_class'] = '#d9534f'; // قرمز: اکسل بیشتر
+                    } elseif ($row['cost_excel_raw'] == $NumberFlightProvider) {
+                        $row['cost_excel_class'] = '#f0ad4e'; // زرد: مساوی
+                    } else {
+                        $row['cost_excel_class'] = '#5cb85c'; // سبز: اکسل کمتر
+                    }
+                } else {
+                    $row['cost_excel_class'] = '';
+                }
+
+                // مقایسه وضعیت سود و زیان (سایز بزرگ‌تر)
+                if ($NumberFlightProvider < $saleRaw) {
+                    $row['Result'] = '<i class="fa fa-check fa-lg text-success" style="font-size: 20px;"></i>';
+                } elseif ($NumberFlightProvider == $saleRaw) {
+                    $row['Result'] = '<i class="fa fa-equals fa-lg text-warning" style="font-size: 20px;"></i>';
+                } else {
+                    $row['Result'] = '<i class="fa fa-times fa-lg text-danger" style="font-size: 20px;"></i>';
+                }
+
+                $row['is_missing'] = false;
+                $row['row_class']  = ''; // رنگ عادی
+                $finalList[] = $row;
+            }
+        }
+
+        // ۴. افزودن رکوردهایی از اکسل که در سیستم پرواز اصلاً ثبت نشده‌اند (مغایرت کامل - قرمز)
+        foreach ($excelPnrMap as $missingPnr => $exInfo) {
+            if (!$exInfo['matched']) {
+                $finalList[] = [
+                    'creation_date'        => '-',
+                    'pnr'                  => $missingPnr,
+                    'provider_name'        => $exInfo['type_excel'],
+                    'BuyFromProvider'      => '-',
+                    'cost_excel_formatted' => number_format((float)$exInfo['cost_excel']),
+                    'cost_excel_raw'       => (float)$exInfo['cost_excel'],
+                    'AgencySale'           => '-',
+                    'Result'               => '<span class="label label-danger font-11">رزرو یافت نشد</span>',
+                    'is_missing'           => true,
+                    'row_class'            => 'danger' // کلاس استایل رنگ قرمز برای جدول بوت‌استرپ
+                ];
+            }
+        }
+
+        return $finalList;
+    }
+
+    public function changeStatusReconciliation( $Pnr ) {
+        Load::autoload( 'ModelBase' );
+        $ModelBase               = new ModelBase();
+        $data['status'] = '1';
+        $Condition = " pnr='{$Pnr}'";
+        $ModelBase->setTable( 'ticket_reconciliation_tb' );
+        $res = $ModelBase->update( $data, $Condition );
+
+        if ( $res ) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    public function InsertExelReconciliation($params)
+    {
+        // ۱. بررسی وجود فایل
+        if (!isset($_FILES['pnr_file']) || empty($_FILES['pnr_file']['name'])) {
+            return functions::JsonError('هیچ فایلی ارسال نشده است', 500);
+        }
+
+        // ۲. بررسی انتخاب نوع فایل
+        if (empty($params['file_type'])) {
+            return functions::JsonError('نوع فایل مشخص نشده است', 400);
+        }
+
+        // ۳. جداسازی و ولیدیشن فایل
+        $separated_files = functions::separateFiles('pnr_file');
+
+        if (!is_array($separated_files)) {
+            return functions::JsonError('خطا در پردازش فایل', 500);
+        }
+
+        if (count($separated_files) > 1) {
+            return functions::JsonError('فقط یک فایل اکسل مجاز است', 400);
+        }
+
+        $separated_file = $separated_files[0];
+        $_FILES['file'] = $separated_file;
+
+        // ۴. بررسی پسوند فایل
+        $ext = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+        if ($ext !== 'xlsx') {
+            return functions::JsonError('فقط فایل xlsx مجاز است', 400);
+        }
+
+        // ۵. خواندن داده‌ها با Spout Reader
+        $reader = ReaderEntityFactory::createXLSXReader();
+        $reader->open($_FILES['file']['tmp_name']);
+        $this->file_type_excel = $params['file_type'];
+        $this->pnrListExelReconciliation = [];
+
+        foreach ($reader->getSheetIterator() as $sheet) {
+            $rowIndex = 0;
+
+            foreach ($sheet->getRowIterator() as $row) {
+                $rowIndex++;
+                $cells = $row->getCells();
+                $row_data = [];
+
+                if (is_array($cells)) {
+                    foreach ($cells as $cell) {
+                        $row_data[] = $cell->getValue();
+                    }
+                }
+
+                // ----------------------------------------------------
+                // ۱. سیتی نت (CityNet)
+                // PNR = ستون I (ایندکس 8) | قیمت = ستون AC (ایندکس 28)
+                // ----------------------------------------------------
+                if ($params['file_type'] == 'CityNet') {
+                    if ($rowIndex < 2) continue; // رد کردن هدر اول
+
+                    if (count($row_data) < 29) continue;
+
+                    $pnr = !empty($row_data[8]) ? trim((string)$row_data[8]) : null;
+                    $cost = isset($row_data[28]) ? (float) str_replace([',', ' '], '', $row_data[28]) : 0;
+
+                    if (!empty($pnr)) {
+                        if (!isset($this->pnrListExelReconciliation[$pnr])) {
+                            $this->pnrListExelReconciliation[$pnr] = 0;
+                        }
+                        $this->pnrListExelReconciliation[$pnr] += $cost;
+                    }
+                }
+
+                // ----------------------------------------------------
+                // ۲. سیستمی 118 (System_118)
+                // PNR = ستون F (ایندکس 5) | قیمت = N (ایندکس 13) منهای P (ایندکس 15)
+                // ----------------------------------------------------
+                elseif ($params['file_type'] == 'System_118') {
+                    // داده‌های واقعی از ردیف ۴ شروع می‌شوند (رد کردن عنوان، تعداد رکورد و هدر)
+                    if ($rowIndex < 4) continue;
+
+                    if (count($row_data) < 16) continue;
+
+                    $pnr = !empty($row_data[5]) ? trim((string)$row_data[5]) : null;
+                    $paid_n = isset($row_data[13]) ? (float) str_replace([',', ' '], '', $row_data[13]) : 0;
+                    $profit_p = isset($row_data[15]) ? (float) str_replace([',', ' '], '', $row_data[15]) : 0;
+
+                    $final_cost = $paid_n - $profit_p;
+
+                    // فیلتر اطمینان از خالی نبودن و رد شدن هدر
+                    if (!empty($pnr) && strtoupper($pnr) !== 'PNR') {
+                        if (!isset($this->pnrListExelReconciliation[$pnr])) {
+                            $this->pnrListExelReconciliation[$pnr] = 0;
+                        }
+                        $this->pnrListExelReconciliation[$pnr] += $final_cost;
+                    }
+                }
+
+
+                // ----------------------------------------------------
+                // ۳. چارتری 118 (Charter_118)
+                // PNR = ستون F (ایندکس 5) | قیمت = ستون J (ایندکس 9)
+                // ----------------------------------------------------
+                elseif ($params['file_type'] == 'Charter_118') {
+                    // داده‌های واقعی از ردیف ۴ شروع می‌شوند
+                    if ($rowIndex < 4) continue;
+
+                    if (count($row_data) < 10) continue;
+
+                    $pnr = !empty($row_data[5]) ? trim((string)$row_data[5]) : null;
+                    $cost_j = isset($row_data[9]) ? (float) str_replace([',', ' '], '', $row_data[9]) : 0;
+
+                    // فیلتر امنیتی: مطمئن شویم خود کلمه PNR یا مقدار خالی ثبت نشود
+                    if (!empty($pnr) && strtoupper($pnr) !== 'PNR') {
+                        if (!isset($this->pnrListExelReconciliation[$pnr])) {
+                            $this->pnrListExelReconciliation[$pnr] = 0;
+                        }
+                        $this->pnrListExelReconciliation[$pnr] += $cost_j;
+                    }
+                }
+            } // end foreach row
+        } // end foreach sheet
+
+        $reader->close();
+
+        // بررسی آیا داده‌ای استخراج شد
+        if (empty($this->pnrListExelReconciliation)) {
+            return functions::JsonError('هیچ PNR معتبری در فایل اکسل یافت نشد', 400);
+        }
+
+        // ذخیره و همگام‌سازی در جدول ticket_reconciliation_tb
+        $this->SaveReconciliationFromExcel();
+
+        return functions::JsonSuccess(null, 'اطلاعات اکسل با موفقیت بارگذاری و ذخیره شد');
+    }
+
+    public function SaveReconciliationFromExcel()
+    {
+        if (empty($this->pnrListExelReconciliation)) {
+            return false;
+        }
+
+        $now = date('Y-m-d H:i:s');
+        Load::autoload('ModelBase');
+        $ModelBase = new ModelBase();
+        $ModelBase->setTable('ticket_reconciliation_tb');
+
+        foreach ($this->pnrListExelReconciliation as $pnr => $cost) {
+            $pnr = trim($pnr);
+            if (empty($pnr)) continue;
+
+            // بررسی وجود رکورد در جدول مغایرت
+            $exist = $this->getModel('ticketReconciliationModel')->get()
+                ->where('pnr', $pnr)
+                ->find();
+
+            if ($exist) {
+                // آپدیت رکورد قبلی
+                $updateData = [
+                    'type_excel' => $this->file_type_excel,
+                    'cost_excel' => $cost,
+                    'update_at'  => $now
+                ];
+                $condition = " pnr = '{$pnr}' ";
+                $ModelBase->update($updateData, $condition);
+            } else {
+                // درج رکورد جدید
+                $insertData = [
+                    'pnr'          => "'{$pnr}'",
+                    'type_excel'   => "'{$this->file_type_excel}'",
+                    'status'       => "'0'",
+                    'cost_excel'   => $cost, // فیلد عددی نیازی به کوتیشن ندارد
+                    'create_at'    => "'{$now}'",
+                    'update_at'    => "'{$now}'"
+                ];
+                $ModelBase->insert($insertData);
+            }
+        }
+
+        return true;
+    }
+
 }

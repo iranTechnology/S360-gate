@@ -638,7 +638,9 @@
                                             <div class="btn btn-warning" disabled="disabled" style="cursor: context-menu;">در انتظار تعیین جریمه توسط تامین کننده </div>
                                         {elseif $item.Status eq 'SetIndemnity'}
                                             <div class="btn btn-warning btn-percent" disabled="disabled"
-                                                 id="ConfirmPercentBtn-{$item.id}" style="cursor: context-menu;">تعیین درصد جریمه</div>
+                                                 id="ConfirmPercentBtn-{$item.id}" style="cursor: context-menu;">
+                                                درصد جریمه مشخص شد (رد / تائید)
+                                            </div>
                                         {elseif $item.Status eq 'ConfirmClient' }
                                             <div class="btn btn-info btn-confirmClient " disabled="disabled"
                                                  style="cursor: context-menu;">در انتظار واریز مبلغ توسط تامین کننده
@@ -655,15 +657,17 @@
                                             {if $item.confirmTransferWallet eq 'none' && ($item.backCredit eq 'on' || $item.TypeCancel eq 'tour') }
                                                 {*                                            <div class="btn btn-primary"   onclick="ModalConfirmAdminReturnUserWallet('{$item.RequestNumber}', '{$item.id}' , '{$item.PriceIndemnity}' , '{$item.MemberId}');return false" disabled="disabled" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">{if $item.TypeCancel eq 'tour' && $item.refund_counter_type neq '5'}انتقال به اعتبار همکار{else}انتقال به کیف پول{/if}</div>*}
                                                 <div class="btn btn-primary"   onclick="ModalConfirmAdminReturnUserWallet('{$item.RequestNumber}', '{$item.id}'  , '{$item.MemberId}');return false" disabled="disabled"  data-toggle="modal"
-                                                     data-target="#ModalPublic" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">{if $item.TypeCancel eq 'tour' && $item.refund_counter_type neq '5'}انتقال به اعتبار همکار{else}انتقال به کیف پول{/if}</div>
+                                                     data-target="#ModalPublic" style="cursor: context-menu; background-color: #53e69d;border: 1px solid #53e69d; margin-top:2px">انتقال به کیف پول مسافر</div>
 
-                                                <div class="fcbtn btn btn-outline btn-success btn-1c mdi mdi-bookmark-check popoverBox  popover-success"
-                                                     onclick="ModalConfirmAdminForReturnBank('{$item.RequestNumber}', '{$item.id}', '{$item.MemberId}' ,'{$item.TypeCancel}') ; return false"
-                                                     data-placement="top" style="cursor:context-menu; margin-top:3px" data-toggle="popover"
-                                                     title="" data-content="در صورتی که کاربر تلفنی درخواست خود را تغییر داده می توانید از این گزینه استفاده نموده و تایید نمایید که پول به حساب کاربر برگشت داده شده است"
-                                                     data-original-title="بازگشت به حساب کاربر">
-                                                </div>
-                                            {elseif  ($item.confirmTransferWallet eq 'ReturnWallet' || $item.confirmTransferWallet eq 'ReturnWalletCounter' ||  $item.confirmTransferWallet eq 'ReturnBankCart') && ($item.backCredit eq 'on' || $item.TypeCancel eq 'tour')}
+                                                <button type="button" class="btn btn-outline btn-success popoverBox popover-success"
+                                                        onclick="ModalConfirmAdminForReturnBank('{$item.RequestNumber}', '{$item.id}', '{$item.MemberId}', '{$item.TypeCancel}'); return false;"
+                                                        data-placement="top" style="margin-top:3px" data-toggle="popover"
+                                                        title="" data-content="در صورتی که کاربر تلفنی درخواست خود را تغییر داده می توانید از این گزینه استفاده نموده و تایید نمایید که پول به حساب کاربر برگشت داده شده است"
+                                                        data-original-title="برگشت به حساب همکار">
+                                                    برگشت به حساب همکار
+                                                </button>
+
+                                            {elseif  ($item.confirmTransferWallet eq 'ReturnWallet' || $item.confirmTransferWallet eq 'ReturnWalletCounter' ||  $item.confirmTransferWallet eq 'ReturnBankCart') && $item.backCredit eq 'on'}
                                                 {if $item.confirmTransferWallet eq 'ReturnWallet'}
                                                     <div  style="cursor: context-menu;font-size:10px ; margin-top:2px">به کیف پول کاربر برگردانده شد</div>
                                                 {elseif $item.confirmTransferWallet eq 'ReturnWalletCounter'}
