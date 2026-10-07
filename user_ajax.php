@@ -2529,30 +2529,35 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
     /** @var transaction $objTransaction */
     $objMember = Load::controller('members');
     $objTransaction = Load::controller('transaction');
+    $objTransactions = Load::controller('transactions');
     $objUser = Load::controller('user');
     $objMemberCredit = Load::controller('memberCredit');
     $objDiscountCodes = Load::controller('discountCodes');
+    $Model = Load::library('Model');
+    $ModelBase = Load::library('ModelBase');
+    $bookModel = Load::getModel('bookHotelLocalModel');
+    $reportModel = Load::getModel('reportHotelModel');
 
     if (empty($discountCode)) {
         $getDiscountCode = Load::getModel('discountCodesUsedModel')->get(['discountCode'], true)->where('factorNumber', $factorNumber)->find();
         $discountCode = $getDiscountCode['discountCode'];
     }
-
+    $reserveInfo = functions::GetInfoHotel($factorNumber) ;
+    $memberId = TYPE_ADMIN == 1 ? $reserveInfo['member_id'] : Session::getUserId();
     // Caution: اعتبار همکار(آژانس همکار با صاحب پنل ) که ممکنه  خود صاحب سیستم باشد یا همکار دیگری که کانتری که خرید میکند شامل این همکار است
     if (!empty($_POST['creditUse']) && $_POST['creditUse'] == 'member_credit') {
         $credit = $objUser->getCreditMember();
     } else {
-        $credit = $objMember->getCredit();
+        $credit = $objMember->getCredit($memberId);
     }
 
-    $reserveInfo = functions::GetInfoHotel($factorNumber);
     if ($reserveInfo['hotel_payments_price'] > 0) {
         $amount = $reserveInfo['hotel_payments_price'];
     } else {
         $amount = $reserveInfo['total_price'];
     }
 
-    $memberId = Session::getUserId();
+
     $amount = $objDiscountCodes->reduceAmountViaDiscountCode($amount, $factorNumber, $memberId, $discountCode, $_POST['serviceType']);
 
     if ($_POST['paymentStatus'] == 'prePayment') {
@@ -2636,14 +2641,18 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
             $check = [];
             if ($typeApplication == 'reservation') {
                 $check['status'] = 'TRUE';
+            }else if($_POST['isRepetHotel'] && $reserveInfo[0]['status'] != 'BookedSuccessfully'){
+                $check['status'] = 'TRUE';
             } else {
                 // Caution: اعتبارسنجی صاحب پنل
-                $check = $objTransaction->checkCredit($total_price);
+                $check = $objTransaction->checkCredit($total_price , null , $credit);
             }
             if ($check['status'] == 'TRUE') {
 
-                $existTransaction = $objTransaction->getTransactionByFactorNumber($factorNumber);
-                if (empty($existTransaction) || $typeApplication == 'reservation') {
+                $existTransaction = TYPE_ADMIN == 1 ? $objTransactions->getTransactionByFactorNumber($factorNumber) : $objTransaction->getTransactionByFactorNumber($factorNumber);
+                functions::insertLog('$existTransaction: ' . json_encode($existTransaction) , '000shojaee');
+
+                if ((empty($existTransaction) && $_POST['isRepetHotel'] != true) || $typeApplication == 'reservation') {
 
                     $reduceTransaction = $objTransaction->decreaseSuccessCredit($total_price, $factorNumber, $comment, $reason);
 
@@ -2653,7 +2662,46 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditHotelLocal') {
                         echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
                     }
 
+                }
+                else if((!empty($existTransaction) || empty($existTransaction)) &&  $_POST['isRepetHotel'] == true){
+
+                    // Caution: کاهش اعتبار صاحب سیستم
+                    $reduceTransaction = $objTransaction->decreaseSuccessCredit($total_price, $factorNumber, $comment, 'buy');
+
+                    $Condition = "FactorNumber='{$factorNumber}' ";
+                    // for client
+                    $Sql       = "SELECT * FROM transaction_tb WHERE FactorNumber='{$factorNumber}'";
+                    $resClient = $Model->load( $Sql );
+                    if($resClient['BankTrackingCode'] == 'کسر موقت'){
+                        $d['BankTrackingCode'] = '';
+                    }
+                    $d['PaymentStatus'] = 'success';
+                    $Model->setTable('transaction_tb');
+                    $Model->update($d, $Condition);
+
+                    //for admin panel , transaction table
+                    $Sql       = "SELECT * FROM transactions WHERE FactorNumber='{$factorNumber}'";
+                    $resAdmin = $ModelBase->load( $Sql );
+                    if($resAdmin['BankTrackingCode'] == 'کسر موقت'){
+                        $dAdmin['BankTrackingCode'] = '';
+                    }
+                    $dAdmin['clientID'] = $resAdmin['clientID'];
+                    $dAdmin['PaymentStatus'] = 'success';
+                    $ModelBase->setTable('transactions');
+                    $ModelBase->update($dAdmin, $Condition);
+
+
+
+
+                    if ($reduceTransaction) {
+                        echo 'success:' . $amount;
                 } else {
+                        echo 'error:' . functions::Xmlinformation('ErrorDecreaseCredit');
+                    }
+
+
+                }
+                else {
                     echo 'error:' . functions::Xmlinformation('ChargeRialSystem');
                 }
 
@@ -5120,6 +5168,11 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'flagRequestCancelUser') {
     $agencyController = Load::controller('agency');
 
     echo $agencyController->changeStatusServiceAgency($_POST);
+} elseif ((isset($_POST['flag']) && $_POST['flag'] == 'changeStatusReconciliation')) {
+    unset($_POST['flag']);
+    $agencyController = Load::controller('listCancel');
+
+    echo $agencyController->changeStatusReconciliation($_POST['Pnr']);
 } elseif ((isset($_POST['flag']) && $_POST['flag'] == 'acceptSubAgencyWhiteLabel')) {
     unset($_POST['flag']);
     $agencyController = Load::controller('agency');
