@@ -258,7 +258,7 @@
                                 class="hidden-xs">{if $smarty.const.TYPE_ADMIN eq '1'}ایران تکنولوژی {else}{$smarty.const.CLIENT_NAME}{/if}</b><span
                                 class="caret"></span>
                     </a>
-{*                   {$smarty.session.AgencyPartner}*}
+                    {*                   {$smarty.session.AgencyPartner}*}
 
 
                     <ul class="dropdown-menu dropdown-user animated flipInY">
@@ -283,32 +283,32 @@
                                     <span> تغییر کلمه عبور </span></a></li>
                             <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/transactionUser"><i
                                             class="fa fa-money fa-fw"></i><span> جزئیات اعتبار </span> </a></li>
-{*                            {if $smarty.const.TYPE_ADMIN neq '1'}*}
-{*                                <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/messageBox"><i*}
-{*                                                class="mdi mdi-email-outline fa-fw"></i>*}
-{*                                        <span> صندوق پیام ها </span></a></li>*}
-{*                            {/if}*}
+                            {*                            {if $smarty.const.TYPE_ADMIN neq '1'}*}
+                            {*                                <li><a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/messageBox"><i*}
+                            {*                                                class="mdi mdi-email-outline fa-fw"></i>*}
+                            {*                                        <span> صندوق پیام ها </span></a></li>*}
+                            {*                            {/if}*}
                         {/if}
                         {if isset($smarty.session.memberIdCounterInAdmin)}
-                        <li><a href="#" target="_blank"><i class="fas fa-users fa-fw"></i>
-                                <span>
+                            <li><a href="#" target="_blank"><i class="fas fa-users fa-fw"></i>
+                                    <span>
                                     {$Infocounter.name} {$Infocounter.family} خوش آمدید
                                 </span></a></li>
                         {/if}
 
-{*                        <li><a href="http://www.safarbank.ir/irantech" target="_blank"><i*}
-{*                                        class="mdi mdi-bell-ring"></i>*}
-{*                                <span>اخبار </span></a></li>*}
-                      {if $smarty.const.TYPE_ADMIN eq '1'}
-                        <li>
-                            <div class="language-selector">
-                                <span> </span>
-                                <a href="#" onclick="funSetLangPanelAdmin('fa')"  class="{if $smarty.const.LANG_PANEL_ADMIN == 'fa'}active{/if}" >فارسی</a>
-                                <a href="#" onclick="funSetLangPanelAdmin('ar')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'ar'}active{/if}" >عربی</a>
-                                <a href="#" onclick="funSetLangPanelAdmin('en')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'en'}active{/if}" >انگلیسی</a>
-                            </div>
-                        </li>
-                      {/if}
+                        {*                        <li><a href="http://www.safarbank.ir/irantech" target="_blank"><i*}
+                        {*                                        class="mdi mdi-bell-ring"></i>*}
+                        {*                                <span>اخبار </span></a></li>*}
+                        {if $smarty.const.TYPE_ADMIN eq '1'}
+                            <li>
+                                <div class="language-selector">
+                                    <span> </span>
+                                    <a href="#" onclick="funSetLangPanelAdmin('fa')"  class="{if $smarty.const.LANG_PANEL_ADMIN == 'fa'}active{/if}" >فارسی</a>
+                                    <a href="#" onclick="funSetLangPanelAdmin('ar')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'ar'}active{/if}" >عربی</a>
+                                    <a href="#" onclick="funSetLangPanelAdmin('en')" class="{if $smarty.const.LANG_PANEL_ADMIN == 'en'}active{/if}" >انگلیسی</a>
+                                </div>
+                            </li>
+                        {/if}
                         <li role="separator" class="divider"></li>
                         <li><a href="#" onclick="logoute(); return false;" class="colorExit"><i
                                         class="fa fa-power-off fa-fw"></i>
@@ -323,42 +323,42 @@
             {if $smarty.const.TYPE_ADMIN eq '1'}
                 {load_presentation_object filename="bookhotelshow" assign="objbookHotel"}
                 {assign var="countReserveHotel" value=$objbookHotel->getHotelOnRequestForAdmin()}
-{*                <ul class="nav navbar-top-links navbar-right pull-right"*}
-{*                    style="border-left: 1px solid rgba(0,0,0,.08);">*}
-{*                    <li class="dropdown">*}
-{*                        <a class="profile-pic"*}
-{*                           href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/reservation/hotelWishList"*}
-{*                           target="_blank">*}
-{*                            <img src="assets/css/images/notification-reserve-safar360.png"*}
-{*                                 alt="notification reserve hotel" width="36" class="img-circle">*}
-{*                            <div class="notify {if $countReserveHotel eq 0}displayN{/if}"*}
-{*                                 style="position: absolute !important;"*}
-{*                                 id="notifyReserveHotel"><span class="heartbit"></span><span class="point"></span></div>*}
-{*                            <b class="hidden-xs"> <i*}
-{*                                        id="numberReserveHotel">{if $countReserveHotel gt 0}{$countReserveHotel}{/if}</i>*}
-{*                                درخواست رزرو هتل </b>*}
-{*                        </a>*}
-{*                    </li>*}
-{*                </ul>*}
+                {*                <ul class="nav navbar-top-links navbar-right pull-right"*}
+                {*                    style="border-left: 1px solid rgba(0,0,0,.08);">*}
+                {*                    <li class="dropdown">*}
+                {*                        <a class="profile-pic"*}
+                {*                           href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/reservation/hotelWishList"*}
+                {*                           target="_blank">*}
+                {*                            <img src="assets/css/images/notification-reserve-safar360.png"*}
+                {*                                 alt="notification reserve hotel" width="36" class="img-circle">*}
+                {*                            <div class="notify {if $countReserveHotel eq 0}displayN{/if}"*}
+                {*                                 style="position: absolute !important;"*}
+                {*                                 id="notifyReserveHotel"><span class="heartbit"></span><span class="point"></span></div>*}
+                {*                            <b class="hidden-xs"> <i*}
+                {*                                        id="numberReserveHotel">{if $countReserveHotel gt 0}{$countReserveHotel}{/if}</i>*}
+                {*                                درخواست رزرو هتل </b>*}
+                {*                        </a>*}
+                {*                    </li>*}
+                {*                </ul>*}
                 {load_presentation_object filename="bookingBusShow" assign="objbookBus"}
                 {assign var="countBusTicket" value=$objbookBus->getCountBusBookingInStatusTemporaryReservation()}
-{*                <ul class="nav navbar-top-links navbar-right pull-right"*}
-{*                    style="border-left: 1px solid rgba(0,0,0,.08);">*}
-{*                    <li class="dropdown">*}
-{*                        <a class="profile-pic"*}
-{*                           href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/ticket/mainTicketHistory"*}
-{*                           target="_blank">*}
-{*                            <img src="assets/css/images/notification-reserve-safar360.png"*}
-{*                                 alt="notification reserve hotel" width="36" class="img-circle">*}
-{*                            <div class="notify {if $countBusTicket eq 0}displayN{/if}"*}
-{*                                 style="position: absolute !important;"*}
-{*                                 id="notifyReserveHotel"><span class="heartbit"></span><span class="point"></span></div>*}
-{*                            <b class="hidden-xs"> <i*}
-{*                                        id="numberReserveHotel">{if $countBusTicket gt 0}{$countBusTicket}{/if}</i> رزرو*}
-{*                                اتوبوس </b>*}
-{*                        </a>*}
-{*                    </li>*}
-{*                </ul>*}
+                {*                <ul class="nav navbar-top-links navbar-right pull-right"*}
+                {*                    style="border-left: 1px solid rgba(0,0,0,.08);">*}
+                {*                    <li class="dropdown">*}
+                {*                        <a class="profile-pic"*}
+                {*                           href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/itadmin/ticket/mainTicketHistory"*}
+                {*                           target="_blank">*}
+                {*                            <img src="assets/css/images/notification-reserve-safar360.png"*}
+                {*                                 alt="notification reserve hotel" width="36" class="img-circle">*}
+                {*                            <div class="notify {if $countBusTicket eq 0}displayN{/if}"*}
+                {*                                 style="position: absolute !important;"*}
+                {*                                 id="notifyReserveHotel"><span class="heartbit"></span><span class="point"></span></div>*}
+                {*                            <b class="hidden-xs"> <i*}
+                {*                                        id="numberReserveHotel">{if $countBusTicket gt 0}{$countBusTicket}{/if}</i> رزرو*}
+                {*                                اتوبوس </b>*}
+                {*                        </a>*}
+                {*                    </li>*}
+                {*                </ul>*}
             {/if}
 
             {if $smarty.const.TYPE_ADMIN eq '1'}
@@ -401,9 +401,18 @@
                         </a>
                     </li>
 
+
                 </ul>
             {/if}
+            <ul class="nav navbar-top-links navbar-right pull-right"
+                style="float: right !important;">
+                <li>
+                    <button type="button" class="btn btn-sm" style="margin: 16px 8px; background: #fff; color: #1f2937; border: solid 1px #ccc; border-radius: 10px;" onclick="openAdminQuickLinks()" aria-haspopup="dialog" aria-controls="adminQuickLinksDialog">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i> لینک‌های سریع
+                    </button>
+                </li>
 
+            </ul>
             {if $smarty.const.TYPE_ADMIN eq '1'}
                 <ul class="nav navbar-top-links navbar-right pull-right"
                     style="border-left: 1px solid rgba(0,0,0,.08);">
@@ -516,7 +525,6 @@
             {/if}
 
 
-
         </div>
         <!-- /.navbar-header -->
         <!-- /.navbar-top-links -->
@@ -546,7 +554,7 @@
             </div>
             <ul class="nav slide_menu_" id="side-menu">
                 {assign var="menu" value=$objAdmin->LinkAdminMenu()}
-{*                <pre>{$smarty.session|print_r}</pre>*}
+                {*                <pre>{$smarty.session|print_r}</pre>*}
                 {if isset($smarty.session.AgencyPartner) && $smarty.session.AgencyPartner eq 'AgencyHasLogin'}
                     {assign var="session_agency_partner" value=true}
                 {else}
@@ -555,13 +563,13 @@
 
                 {foreach $menu as $key=>$link}
                     {if (
-                            $session_agency_partner &&
-                            $objAdmin->accessMenuCounter($link['id'],$smarty.session.memberIdCounterInAdmin)
-                        ) ||
-                        (
-                            (!$session_agency_partner && $link['accessCustomer'] eq '1' ) ||
-                            ($smarty.const.TYPE_ADMIN  eq '1')
-                        )
+                    $session_agency_partner &&
+                    $objAdmin->accessMenuCounter($link['id'],$smarty.session.memberIdCounterInAdmin)
+                    ) ||
+                    (
+                    (!$session_agency_partner && $link['accessCustomer'] eq '1' ) ||
+                    ($smarty.const.TYPE_ADMIN  eq '1')
+                    )
                     }
                         {if $link['parentId'] eq '0'}
                             {if $link['url'] eq '#'}
@@ -577,13 +585,13 @@
                                             {if $valueLevel1['parentId'] eq $link['id']}
                                                 {if $valueLevel1['url'] eq '#'}
                                                     {if (
-                                                        $session_agency_partner &&
-                                                        $objAdmin->accessMenuCounter($valueLevel1['id'],$smarty.session.memberIdCounterInAdmin)
-                                                        ) ||
-                                                        (
-                                                        (!$session_agency_partner && $valueLevel1['accessCustomer'] eq '1' ) ||
-                                                        ($smarty.const.TYPE_ADMIN  eq '1')
-                                                        )
+                                                    $session_agency_partner &&
+                                                    $objAdmin->accessMenuCounter($valueLevel1['id'],$smarty.session.memberIdCounterInAdmin)
+                                                    ) ||
+                                                    (
+                                                    (!$session_agency_partner && $valueLevel1['accessCustomer'] eq '1' ) ||
+                                                    ($smarty.const.TYPE_ADMIN  eq '1')
+                                                    )
                                                     }
                                                         <li>
                                                             <a href="javascript:void(0);" class="waves-effect">
@@ -597,26 +605,26 @@
                                                                 {foreach $menu as $level2Key=>$valueLevel2}
                                                                     {if $valueLevel2['parentId'] eq $valueLevel1['id']}
                                                                         {if (
-                                                                                $session_agency_partner &&
-                                                                                $objAdmin->accessMenuCounter($valueLevel2['id'],$smarty.session.memberIdCounterInAdmin)
-                                                                            ) ||
-                                                                            (
-                                                                                (!$session_agency_partner && $valueLevel2['accessCustomer'] eq '1' ) ||
-                                                                                ($smarty.const.TYPE_ADMIN  eq '1')
-                                                                            )
+                                                                        $session_agency_partner &&
+                                                                        $objAdmin->accessMenuCounter($valueLevel2['id'],$smarty.session.memberIdCounterInAdmin)
+                                                                        ) ||
+                                                                        (
+                                                                        (!$session_agency_partner && $valueLevel2['accessCustomer'] eq '1' ) ||
+                                                                        ($smarty.const.TYPE_ADMIN  eq '1')
+                                                                        )
                                                                         }
-                                                                                <li>
-                                                                                    {if strpos($valueLevel2['url'], 'http') === 0}
-                                                                                        <a href="{$valueLevel2['url']}" target="_blank">
+                                                                            <li>
+                                                                                {if strpos($valueLevel2['url'], 'http') === 0}
+                                                                                <a href="{$valueLevel2['url']}" target="_blank">
                                                                                     {else}
-                                                                                        <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/{$valueLevel2['url']}">
-                                                                                    {/if}
+                                                                                    <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/{$valueLevel2['url']}">
+                                                                                        {/if}
                                                                                         <i class="{$valueLevel2['classIcon']}"></i>
                                                                                         <span class="hide-menu padding-right-10">
                                                                                             {$valueLevel2['title']}
                                                                                         </span>
                                                                                     </a>
-                                                                                </li>
+                                                                            </li>
                                                                         {/if}
                                                                     {/if}
                                                                 {/foreach}
@@ -625,23 +633,23 @@
                                                     {/if}
                                                 {else}
                                                     {if
-                                                        (
-                                                            $session_agency_partner &&
-                                                            $objAdmin->accessMenuCounter($valueLevel1['id'],$smarty.session.memberIdCounterInAdmin)
-                                                        ) ||
-                                                        (
-                                                            (!$session_agency_partner && $valueLevel1['accessCustomer'] eq '1' ) ||
-                                                            ($smarty.const.TYPE_ADMIN  eq '1')
-                                                        )
+                                                    (
+                                                    $session_agency_partner &&
+                                                    $objAdmin->accessMenuCounter($valueLevel1['id'],$smarty.session.memberIdCounterInAdmin)
+                                                    ) ||
+                                                    (
+                                                    (!$session_agency_partner && $valueLevel1['accessCustomer'] eq '1' ) ||
+                                                    ($smarty.const.TYPE_ADMIN  eq '1')
+                                                    )
                                                     }
                                                         <li>
                                                             {if strpos($valueLevel1['url'], 'http') === 0}
-                                                                <a href="{$valueLevel1['url']}" target="_blank">
-                                                            {else}
+                                                            <a href="{$valueLevel1['url']}" target="_blank">
+                                                                {else}
                                                                 <a href="{$smarty.const.ROOT_ADDRESS_WITHOUT_LANG}/{$valueLevel1['url']}">
-                                                            {/if}
-                                                                <i class="{$valueLevel1['classIcon']}"></i>
-                                                                <span class="hide-menu">{$valueLevel1['title']}</span></a>
+                                                                    {/if}
+                                                                    <i class="{$valueLevel1['classIcon']}"></i>
+                                                                    <span class="hide-menu">{$valueLevel1['title']}</span></a>
                                                         </li>
                                                     {/if}
                                                 {/if}
@@ -664,42 +672,42 @@
 
                     {/if}
                 {/foreach}
-          <!--  <li>
-            <a href="#" class="waves-effect ColorAndSizeMenu">
-                <i class="mdi mdi-backburger fa-fw"></i>
-                <span class="fa fa-arrow-left arrowleft_menu  text-align-left"></span>
-                <span class="hide-menu">وب سرویس</span></a>
+                <!--  <li>
+                  <a href="#" class="waves-effect ColorAndSizeMenu">
+                      <i class="mdi mdi-backburger fa-fw"></i>
+                      <span class="fa fa-arrow-left arrowleft_menu  text-align-left"></span>
+                      <span class="hide-menu">وب سرویس</span></a>
 
-            <ul class="nav nav-second-level nav_ul_second" aria-expanded="true" style="">
+                  <ul class="nav nav-second-level nav_ul_second" aria-expanded="true" style="">
 
-                <li>
-                    <a target="_blank" href="https://safar360.com/api/swagger/flight/index.html">
-                        <i class="fa fa-sort-amount-asc fa-fw"></i>
-                        <span class="hide-menu">وب سرویس پرواز</span></a>
-                </li>
-                <li>
-                    <a target="_blank" href="https://safar360.com/api/swagger/hotel/index.html  ">
-                        <i class="fa fa-sort-amount-asc fa-fw"></i>
-                        <span class="hide-menu">وب سرویس هتل</span></a>
-                </li>
-                <li>
-                    <a target="_blank" href="https://safar360.com/api/swagger/bus/index.html">
-                        <i class="fa fa-sort-amount-asc fa-fw"></i>
-                        <span class="hide-menu">وب سرویس اتوبوس</span></a>
-                </li>
-                <li>
-                    <a  href="https://admin.chartertech.ir/gds/pic/webservice/airline.xlsx">
-                        <i class="fa fa-sort-amount-asc fa-fw"></i>
-                        <span class="hide-menu">اکسل فرودگاهها برای پرواز</span></a>
-                </li>
+                      <li>
+                          <a target="_blank" href="https://safar360.com/api/swagger/flight/index.html">
+                              <i class="fa fa-sort-amount-asc fa-fw"></i>
+                              <span class="hide-menu">وب سرویس پرواز</span></a>
+                      </li>
+                      <li>
+                          <a target="_blank" href="https://safar360.com/api/swagger/hotel/index.html  ">
+                              <i class="fa fa-sort-amount-asc fa-fw"></i>
+                              <span class="hide-menu">وب سرویس هتل</span></a>
+                      </li>
+                      <li>
+                          <a target="_blank" href="https://safar360.com/api/swagger/bus/index.html">
+                              <i class="fa fa-sort-amount-asc fa-fw"></i>
+                              <span class="hide-menu">وب سرویس اتوبوس</span></a>
+                      </li>
+                      <li>
+                          <a  href="https://admin.chartertech.ir/gds/pic/webservice/airline.xlsx">
+                              <i class="fa fa-sort-amount-asc fa-fw"></i>
+                              <span class="hide-menu">اکسل فرودگاهها برای پرواز</span></a>
+                      </li>
 
-               <li>
-                    <a  href="https://admin.chartertech.ir/gds/pic/webservice/airports.xlsx">
-                        <i class="fa fa-sort-amount-asc fa-fw"></i>
-                        <span class="hide-menu">اکسل ایرلاین ها برای پرواز</span></a>
-                </li>                                                                                                                           </ul>
-            </li>-->
-		</ul>
+                     <li>
+                          <a  href="https://admin.chartertech.ir/gds/pic/webservice/airports.xlsx">
+                              <i class="fa fa-sort-amount-asc fa-fw"></i>
+                              <span class="hide-menu">اکسل ایرلاین ها برای پرواز</span></a>
+                      </li>                                                                                                                           </ul>
+                  </li>-->
+            </ul>
         </div>
         <div class="app-sidebar-bg opacity-06" style="background-image: url(assets/bgs.jpg);"></div>
     </div>
@@ -712,11 +720,11 @@
     <!-- ============================================================== -->
 
     <div id="page-wrapper">
-          {include file=$obj->page}
+        {include file=$obj->page}
     </div>
     <!-- /#page-wrapper -->
     <div id="ErrorCurllIrantech"></div>
-  <footer class="footer text-center"> 2017 &copy; iran-tech.com All Rights Reserved</footer>
+    <footer class="footer text-center"> 2017 &copy; iran-tech.com All Rights Reserved</footer>
 </div>
 
 {*{if $smarty.const.TYPE_ADMIN eq '1'}
@@ -765,24 +773,24 @@
 <script type="text/javascript" src="assets/ckeditor/ckeditor.js"></script>
 
 <script>
-   $(document).ready(function(){
-      $(".bg-title").attr("style", "margin-top:50px !important;margin-bottom: 5px  !important;");
-   });
-   const bell = document.getElementById("notifBell");
-   setTimeout(() => {
-       if (bell) {
-           bell.classList.remove("bell-shake");
-       }
-   }, 5000);
+    $(document).ready(function(){
+        $(".bg-title").attr("style", "margin-top:50px !important;margin-bottom: 5px  !important;");
+    });
+    const bell = document.getElementById("notifBell");
+    setTimeout(() => {
+        if (bell) {
+            bell.classList.remove("bell-shake");
+        }
+    }, 5000);
 
-   if(bell) {
-       bell.addEventListener("mouseenter", () => {
-           bell.classList.remove("bell-shake");
-       });
-       bell.addEventListener("click", () => {
-           bell.classList.remove("bell-shake");
-       });
-   }
+    if(bell) {
+        bell.addEventListener("mouseenter", () => {
+            bell.classList.remove("bell-shake");
+        });
+        bell.addEventListener("click", () => {
+            bell.classList.remove("bell-shake");
+        });
+    }
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -822,8 +830,57 @@
     });
 </script>
 
-{var_dump($smarty.const.TYPE_ADMIN)}
 
+
+
+<div id="adminQuickLinksDialog" role="dialog" aria-modal="true" aria-labelledby="adminQuickLinksTitle" tabindex="-1" style="display: none; position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,.6); padding: 60px 16px; overflow-y: auto;">
+    <div style="max-width: 950px; margin: 0 auto; background: #fff; border-radius: 14px; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 id="adminQuickLinksTitle" style="margin: 0;">لینک‌های سریع</h3>
+            <button type="button" class="btn btn-default" onclick="closeAdminQuickLinks()" aria-label="بستن"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        {include file="view/administrator/reports/user_bookMarks_link.tpl" objBookmarks=$objAdminQuickBookmarks}
+    </div>
+</div>
+<script>
+    var adminQuickLinksPreviousFocus;
+    var adminQuickLinksPreviousOverflow;
+    function openAdminQuickLinks() {
+        var dialog = document.getElementById('adminQuickLinksDialog');
+        adminQuickLinksPreviousFocus = document.activeElement;
+        adminQuickLinksPreviousOverflow = document.body.style.overflow;
+        dialog.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        var content = dialog.querySelector('#bookmarksContent');
+        content.classList.add('expanded');
+        content.style.maxHeight = 'none';
+        document.getElementById('toggleIcon').classList.add('rotated');
+        dialog.querySelector('button').focus();
+    }
+    function closeAdminQuickLinks() {
+        document.getElementById('adminQuickLinksDialog').style.display = 'none';
+        document.body.style.overflow = adminQuickLinksPreviousOverflow || '';
+        if (adminQuickLinksPreviousFocus) adminQuickLinksPreviousFocus.focus();
+    }
+    document.getElementById('adminQuickLinksDialog').addEventListener('click', function (event) {
+        if (event.target === this) closeAdminQuickLinks();
+    });
+    document.addEventListener('keydown', function (event) {
+        var dialog = document.getElementById('adminQuickLinksDialog');
+        if (dialog.style.display === 'none') return;
+        if (event.key === 'Escape') {
+            if (document.getElementById('bookmarkModal').classList.contains('active')) closeAddModal();
+            else closeAdminQuickLinks();
+        }
+        if (event.key === 'Tab' && !document.getElementById('bookmarkModal').classList.contains('active')) {
+            var controls = dialog.querySelectorAll('button, a[href], input');
+            var visible = Array.prototype.filter.call(controls, function (control) { return control.offsetParent !== null; });
+            var first = visible[0], last = visible[visible.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -54,7 +54,9 @@
         {include file="view/administrator/reports/creditLimit.tpl"}
         {include file="view/administrator/reports/user_module_reports.tpl"}
         {include file="view/administrator/reports/servicesCommission.tpl"}
+        {if $smarty.const.TYPE_ADMIN neq '1'}
         {include file="view/administrator/reports/user_bookMarks_link.tpl"}
+        {/if}
 
 
     {/if}

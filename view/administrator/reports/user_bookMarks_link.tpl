@@ -1,4 +1,6 @@
-{load_presentation_object filename="userBookmarks" assign="objBookmarks"}
+{if !isset($objBookmarks)}
+    {load_presentation_object filename="userBookmarks" assign="objBookmarks"}
+{/if}
 
 <style>
     .bookmarks-wrapper {
@@ -205,7 +207,7 @@
         display: flex;
     }
 
-    .modal-content {
+    .bookmark-modal .modal-content {
         background: #fff;
         border-radius: 16px;
         padding: 28px;
@@ -226,21 +228,21 @@
         }
     }
 
-    .modal-header {
+    .bookmark-modal .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
     }
 
-    .modal-header h3 {
+    .bookmark-modal .modal-header h3 {
         margin: 0;
         font-size: 18px;
         font-weight: 700;
         color: #1f2937;
     }
 
-    .modal-close {
+    .bookmark-modal .modal-close {
         background: #f3f4f6;
         border: none;
         width: 32px;
@@ -253,16 +255,16 @@
         transition: all 0.3s ease;
     }
 
-    .modal-close:hover {
+    .bookmark-modal .modal-close:hover {
         background: #e5e7eb;
         transform: rotate(90deg);
     }
 
-    .form-group {
+    .bookmark-modal .form-group {
         margin-bottom: 16px;
     }
 
-    .form-group label {
+    .bookmark-modal .form-group label {
         display: block;
         font-size: 13px;
         font-weight: 600;
@@ -270,7 +272,7 @@
         margin-bottom: 6px;
     }
 
-    .form-group input {
+    .bookmark-modal .form-group input {
         width: 100%;
         padding: 10px 12px;
         border: 1px solid #d1d5db;
@@ -280,19 +282,19 @@
         box-sizing: border-box;
     }
 
-    .form-group input:focus {
+    .bookmark-modal .form-group input:focus {
         outline: none;
         border-color: #3b82f6;
         box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
     }
 
-    .modal-actions {
+    .bookmark-modal .modal-actions {
         display: flex;
         gap: 10px;
         margin-top: 20px;
     }
 
-    .btn-submit {
+    .bookmark-modal .btn-submit {
         flex: 1;
         background: linear-gradient(135deg, #3b82f6, #2563eb);
         color: #fff;
@@ -304,12 +306,12 @@
         transition: all 0.3s ease;
     }
 
-    .btn-submit:hover {
+    .bookmark-modal .btn-submit:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(59,130,246,0.3);
     }
 
-    .btn-cancel {
+    .bookmark-modal .btn-cancel {
         flex: 1;
         background: #f3f4f6;
         color: #374151;
@@ -321,7 +323,7 @@
         transition: all 0.3s ease;
     }
 
-    .btn-cancel:hover {
+    .bookmark-modal .btn-cancel:hover {
         background: #e5e7eb;
     }
 

@@ -126,14 +126,31 @@ class  transaction extends clientAuth {
         $data['CreationDateInt'] = time();
         $data['PriceDate'] = date("Y-m-d H:i:s");
 
-        if(TYPE_ADMIN == 1){
-            $modelReportExclusiveTour = Load::getModel('exclusiveTourBaseModel');
+        if (TYPE_ADMIN == 1) {
 
-            $exclusiveTourData = $modelReportExclusiveTour->getOneByFactorNumber($factorNumber);
-            functions::insertLog('$exclusiveTourData: ' . json_encode($exclusiveTourData) , '000shojaee');
-            $dbName = functions::getClientInfo($exclusiveTourData[0]['client_id'])['DbName'];
-            functions::insertLog('$dbName: ' . json_encode($dbName) , '000shojaee');
-            $this->agency->agencyModel()->getPDO()->query("USE `$dbName`");
+            $modelReportExclusiveTour = Load::getModel('exclusiveTourBaseModel');
+            $modelReportHotel = Load::getModel('reportHotelModel');
+
+            $Data = $modelReportHotel->getOneByFactorNumber($factorNumber);
+
+            if (empty($Data)) {
+                $Data = $modelReportExclusiveTour->getOneByFactorNumber($factorNumber);
+            }
+
+            if (!empty($Data) && !empty($Data[0]['client_id'])) {
+
+                $clientInfo = functions::getClientInfo($Data[0]['client_id']);
+
+                if (!empty($clientInfo['DbName'])) {
+
+                    $dbName = str_replace('`', '``', $clientInfo['DbName']);
+
+                    $this->agency
+                        ->agencyModel()
+                        ->getPDO()
+                        ->query("USE `{$dbName}`");
+                }
+            }
         }
 
             $this->Model->setTable('transaction_tb');

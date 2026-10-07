@@ -14,4 +14,5 @@ class bookHotelLocalModel extends Model
 //        $sql = "SELECT * FROM {$this->table} WHERE agency_id='{$agencyId}' GROUP BY factor_number";
 //        return parent::select($sql,'assoc');
     }
+
 }

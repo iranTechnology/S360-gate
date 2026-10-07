@@ -6383,7 +6383,7 @@ class bookshowTest extends clientAuth {
                 $DataActivity = ' <a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("RequestAccepted").'</a>';
             }
             elseif ( $hotel['status'] == 'BookedSuccessfully' ) {
-                $DataActivity = '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Definitivereservation").'<br>' .$hotel['pnr']. '</a>';
+                $DataActivity = '<a class="btn btn-success cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Definitivereservation").'<br><p style="margin: 0; font-family: arial; cursor: text;user-select: text;">' .$hotel['pnr']. '</p></a>';
             } elseif ( $hotel['status'] == 'PreReserve' ) {
                 $DataActivity = '<a class="btn btn-warning cursor-default w-90" onclick="return false;">'.functions::Xmlinformation("Prereservation").'</a>';
             } elseif ( $hotel['status'] == '' ) {
@@ -7527,8 +7527,6 @@ class bookshowTest extends clientAuth {
             } else {
                 $DataStatus = '<a class="btn btn-danger cursor-default" onclick="return false;">نامشخص</a>';
             }
-
-            $DataStatus .= isset($tour['cancellation_overview']) ? $tour['cancellation_overview'] : '';
 
             if ( $tour['cancel_status'] == 'CancellationR==uest' ) {
                 $DataStatus .= '<hr style="margin:3px">

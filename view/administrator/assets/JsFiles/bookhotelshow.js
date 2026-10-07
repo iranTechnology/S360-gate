@@ -167,6 +167,7 @@ function reReserve(factorNum, RequestNumber, dir, typeApplication = 'api', payme
                 typeApplication: typeApplication,
                 paymentStatus: paymentStatus,
                 serviceType: serviceType,
+                isRepetHotel:true,
                 discountCode: '',
                 creditUse: ''
             },
@@ -184,7 +185,6 @@ function reReserve(factorNum, RequestNumber, dir, typeApplication = 'api', payme
                             typeApplication: typeApplication
                         }),
                         success: function (data) {
-
                             if (data && data.book === 'OnRequest') {
                                 resolve('pending');
                                 return;
@@ -366,39 +366,39 @@ function ConfirmAdminRequestedPrereserveHotelUser(FactorNumber) {
                     btnClass: 'btn-green',
                     action: function () {
                         $.post(amadeusPath + 'hotel_ajax.php',
-                           {
-                               FactorNumber: FactorNumber,
-                               ConfirmAdminRequestedPrereserveHotelUserCode: ConfirmAdminRequestedPrereserveHotelUserCode,
-                               flag: 'ConfirmRequestedHotelPrereserveByAdmin'
-                           },
-                           function (data) {
-                               var res = data.split(':');
-                               if (data.indexOf('success') > -1) {
-                                   $.toast({
-                                       heading: `تایید پرداخت`,
-                                       text: res[1],
-                                       position: 'top-right',
-                                       loaderBg: '#fff',
-                                       icon: 'success',
-                                       hideAfter: 3500,
-                                       textAlign: 'right',
-                                       stack: 6
-                                   });
+                            {
+                                FactorNumber: FactorNumber,
+                                ConfirmAdminRequestedPrereserveHotelUserCode: ConfirmAdminRequestedPrereserveHotelUserCode,
+                                flag: 'ConfirmRequestedHotelPrereserveByAdmin'
+                            },
+                            function (data) {
+                                var res = data.split(':');
+                                if (data.indexOf('success') > -1) {
+                                    $.toast({
+                                        heading: `تایید پرداخت`,
+                                        text: res[1],
+                                        position: 'top-right',
+                                        loaderBg: '#fff',
+                                        icon: 'success',
+                                        hideAfter: 3500,
+                                        textAlign: 'right',
+                                        stack: 6
+                                    });
 
-                                   setTimeout(function () {
-                                       location.reload()
-                                       // window.location = `${amadeusPath}itadmin/ticket/mainTicketHistory`;
-                                   }, 1000);
-                               } else {
-                                   $.alert({
-                                       title: `تایید پرداخت`,
-                                       icon: 'fa fa-times',
-                                       content: res[1],
-                                       rtl: true,
-                                       type: 'red',
-                                   });
-                               }
-                           });
+                                    setTimeout(function () {
+                                        location.reload()
+                                        // window.location = `${amadeusPath}itadmin/ticket/mainTicketHistory`;
+                                    }, 1000);
+                                } else {
+                                    $.alert({
+                                        title: `تایید پرداخت`,
+                                        icon: 'fa fa-times',
+                                        content: res[1],
+                                        rtl: true,
+                                        type: 'red',
+                                    });
+                                }
+                            });
                     }
                 },
                 cancel: {
@@ -447,38 +447,38 @@ function RejectAdminRequestedPrereserveHotelUser(FactorNumber) {
                     btnClass: 'btn-green',
                     action: function () {
                         $.post(amadeusPath + 'hotel_ajax.php',
-                           {
-                               FactorNumber: FactorNumber,
-                               flag: 'RejectRequestedHotelPreeserveByAdmin'
-                           },
-                           function (data) {
-                               var res = data.split(':');
-                               if (data.indexOf('success') > -1) {
-                                   $.toast({
-                                       heading: `عدم تایید`,
-                                       text: res[1],
-                                       position: 'top-right',
-                                       loaderBg: '#fff',
-                                       icon: 'success',
-                                       hideAfter: 3500,
-                                       textAlign: 'right',
-                                       stack: 6
-                                   });
+                            {
+                                FactorNumber: FactorNumber,
+                                flag: 'RejectRequestedHotelPreeserveByAdmin'
+                            },
+                            function (data) {
+                                var res = data.split(':');
+                                if (data.indexOf('success') > -1) {
+                                    $.toast({
+                                        heading: `عدم تایید`,
+                                        text: res[1],
+                                        position: 'top-right',
+                                        loaderBg: '#fff',
+                                        icon: 'success',
+                                        hideAfter: 3500,
+                                        textAlign: 'right',
+                                        stack: 6
+                                    });
 
-                                   setTimeout(function () {
-                                       location.reload()
-                                       // window.location = `${amadeusPath}itadmin/ticket/mainTicketHistory`;
-                                   }, 1000);
-                               } else {
-                                   $.alert({
-                                       title: `عدم تایید`,
-                                       icon: 'fa fa-times',
-                                       content: res[1],
-                                       rtl: true,
-                                       type: 'red',
-                                   });
-                               }
-                           });
+                                    setTimeout(function () {
+                                        location.reload()
+                                        // window.location = `${amadeusPath}itadmin/ticket/mainTicketHistory`;
+                                    }, 1000);
+                                } else {
+                                    $.alert({
+                                        title: `عدم تایید`,
+                                        icon: 'fa fa-times',
+                                        content: res[1],
+                                        rtl: true,
+                                        type: 'red',
+                                    });
+                                }
+                            });
                     }
                 },
                 cancel: {

@@ -1753,7 +1753,9 @@ class detailHotel extends ApiHotelCore
             $report_model = $this->getModel('reportHotelModel');
             $book_hotel = $book_model->get()->where('factor_number', $factor_number);
             $hotel_source = $book_hotel->find();
-
+            if(TYPE_ADMIN == 1){
+                $book_hotel = $report_model->get()->where('factor_number', $factor_number);
+            }
             if($hotel_source['source_id'] != '46' &&  $hotel_source['source_id'] != '17' &&  $hotel_source['source_id'] != '29' &&  $hotel_source['source_id'] != '42') {
                 if (
                     ($type_application == 'api' && substr($params['hotel_id'], 0, 2) != '17') ||
@@ -1778,7 +1780,6 @@ class detailHotel extends ApiHotelCore
             //				$sql = " SELECT * FROM book_hotel_local_tb WHERE factor_number='{$factor_number}'";
             //			}
             //			$book_hotel = $Model->select( $sql );
-
             if (!empty($book_hotel)) {
 
                 $hotel_id = $book_hotel[0]['hotel_id'];
@@ -1913,8 +1914,11 @@ class detailHotel extends ApiHotelCore
                     'Passengers' => $passengersArray,
                     'Buyer' => $buyerArray,
                 ];
-
+                if (TYPE_ADMIN == 1) {
+                    $requestArray['isRepetHotel'] = true;
+                }
                 $HotelReserveRoom = json_decode($this->Book($requestArray), true);
+
 
                 if (isset($HotelReserveRoom['Success']) &&  $HotelReserveRoom['Success'] == true) {
                     if ($HotelReserveRoom['Success']) {
@@ -1982,8 +1986,6 @@ class detailHotel extends ApiHotelCore
 
                                 $statusRequestWebService['type_application'] = $type_application;
                                 $statusRequestWebService['book'] = "yes";
-                                $statusRequestWebService['request_number'] = $params['requestNumber'];
-                                $statusRequestWebService['price_session_id'] = $price_session_id;
                                 $statusRequestWebService['factor_number'] = $factor_number;
                                 $statusRequestWebService['total_price'] = $total_price;
                                 $statusRequestWebService['RequestNumber'] = $params['requestNumber'];
@@ -2234,7 +2236,7 @@ class detailHotel extends ApiHotelCore
             }
             if (!in_array($hotel_source['source_id'], ['46', '17', '29', '42']) &&
                 (($type == 'api' && substr($hotel_source['hotel_id'], 0, 2) != '17') ||
-                 substr($hotel_source['hotel_id'], 0, 2) != '29' || $type == 'api_app')) {
+                    substr($hotel_source['hotel_id'], 0, 2) != '29' || $type == 'api_app')) {
                 $query = $query->groupBy('room_id');
             }
             $rows = $query->all();
@@ -2245,6 +2247,7 @@ class detailHotel extends ApiHotelCore
                 ? $report_model->get()->where('factor_number', $factor)
                     ->where('client_id', $hotel_source['client_id'])->groupBy('room_id')->all() : [];
             $requestArray = $this->buildStoredBookData($rows, $room_rows);
+            $requestArray['isRepetHotel'] = true;
             if (empty($requestArray['PriceSessionId']) || empty($requestArray['Rooms'])) {
                 return $this->showError('اطلاعات اتاق یا شناسه قیمت رزرو موجود نیست', 400);
             }
@@ -2256,7 +2259,6 @@ class detailHotel extends ApiHotelCore
         //		unset( $requestArray['FactorNumber'] );
         functions::insertLog(PHP_EOL . 'request with factor number ' . $factor_number . ' AND data ' . json_encode($requestArray, 256 | 64) . ' => ', 'log_hotel_preReserve');
         $HotelReserveRoom = json_decode(parent::Book($requestArray), true);
-
 //        $HotelReserveRoom = json_decode('{
 //    "StatusCode": 406,
 //    "Message": "این درخواست قبلا ارسال شده است",
@@ -2428,7 +2430,6 @@ class detailHotel extends ApiHotelCore
         //
         $reserve_params = ['RequestNumber' => $requestNumber,'PriceSessionId'=>$session_id];
         $Reserve = json_decode(parent::Reserve($reserve_params), true);
-
         if (!isset($Reserve['Result'])) {
             return $this->showError('خطا در رزرو اتاق. ', 400, $Reserve);
         }
