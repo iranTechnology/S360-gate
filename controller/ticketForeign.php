@@ -213,8 +213,6 @@ class ticketForeign extends apiLocal
                                         echo 'cashe';
                                     }else{
                                         $PriceTicket = functions::CalculateDiscountOnePerson($info['request_number'],$info['passportNumber']) ;
-                                        functions::insertLog( '$PriceTicket==>'.print_r($PriceTicket, true)." \n", '0ardalani' );
-
                                         $AddOnPrice = ((!empty($info['amount_added']) && $info['amount_added'] > 0) ? $info['amount_added'] : '0');
                                         if($agency_info['type_payment'] == 'currency' && !empty($agency_info)){
                                             /** @var currencyEquivalent $currency_equivalent_controller */
