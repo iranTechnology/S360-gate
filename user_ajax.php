@@ -2952,11 +2952,19 @@ elseif (isset($_POST['flag']) && $_POST['flag'] == 'buyByCreditTourLocal') {
 
     $amount = 0;
 
-
-    if ($_POST['paymentStatus'] == 'prePayment') {
+    if($_POST['paymentStatus'] =='prePayment') {
         $amount = $reserveInfo['tour_payments_price'];
     } else {
-        $amount = $reserveInfo['tour_total_price'];
+
+        if ($reserveInfo['status'] =='TemporaryPreReserve') {
+            if ($reserveInfo['tour_payments_price'] == 0) {
+                $amount = $reserveInfo['total_price'];
+            } else {
+                $amount = $reserveInfo['tour_payments_price'];
+            }
+        } elseif ($reserveInfo['status'] =='PreReserve') {
+            $amount = $reserveInfo['total_price'] - $reserveInfo['tour_payments_price'];
+        }
     }
 
 
