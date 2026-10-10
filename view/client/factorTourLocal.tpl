@@ -521,6 +521,21 @@
                                         <span> {$prePaymentPrice|number_format:0:".":","} <p>{$iranCurrency}</p></span>
                                     </div>
                                 {/if}
+                                {if $objSession->IsLogin() && $objMember->list['fk_counter_type_id'] !='5'}
+                                {if $objFactor->tourBookingInfo['counter_discount_amount'] gt 0}
+                                    <div class="discount">
+                                        <span> ##SpecialCounterPrice## :</span>
+                                        <span>
+                                            {if $showTourToman}
+                                                {round($objFactor->tourBookingInfo['counter_discount_amount']/10)|number_format:0:".":","}
+                                            {else}
+                                                {$objFactor->tourBookingInfo['counter_discount_amount']|number_format:0:".":","}
+                                            {/if}
+                                            <p>{$iranCurrency}</p>
+                                        </span>
+                                    </div>
+                                {/if}
+                                {/if}
                                 <div class="price">
                                     <span>##TotalPrice## : </span>
                                     <span>

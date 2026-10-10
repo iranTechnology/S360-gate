@@ -46,6 +46,37 @@ class factorTourLocal extends clientAuth
 
     }
 
+    /**
+     * جمع تخفیف همکار تور یک روزه (ریال) بر اساس تعداد مسافرین هر رده سنی
+     */
+    private function oneDayTourCounterDiscount($infoTour) {
+        /** @var resultTourLocal $resultTourLocal */
+        $resultTourLocal = $this->getController('resultTourLocal');
+        $amounts = $resultTourLocal->getCounterDiscountAmounts($infoTour['id_same'], 0);
+
+        $types = [
+            'adult'  => ['price' => 'adult_price_one_day_tour_r', 'count' => 'passengerCountADT'],
+            'child'  => ['price' => 'child_price_one_day_tour_r', 'count' => 'passengerCountCHD'],
+            'infant' => ['price' => 'infant_price_one_day_tour_r', 'count' => 'passengerCountINF'],
+        ];
+
+        $total = 0;
+        foreach ($types as $type => $fields) {
+            $count = isset($_POST[$fields['count']]) ? (int)$_POST[$fields['count']] : 0;
+            if ($count <= 0) {
+                continue;
+            }
+            $price = $infoTour[$fields['price']] + $infoTour['change_price'];
+            $do_discount = $resultTourLocal->doDiscount($infoTour['id'], ['minPriceR' => $infoTour[$fields['price']]]);
+            if (!empty($do_discount['discountedMinPriceR'])) {
+                $price = $do_discount['discountedMinPriceR'] + $infoTour['change_price'];
+            }
+            $total += $resultTourLocal->counterDiscountForPrice($price, $amounts[$type]) * $count;
+        }
+
+        return $total;
+    }
+
     #region registerPassengers
     public function registerPassengers() {
 
@@ -181,6 +212,25 @@ class factorTourLocal extends clientAuth
                 $this->tourBookingInfo['tour_discount_type'] = '';
                 $this->tourBookingInfo['tour_discount'] = '';
             }
+
+            // تخفیف همکار (ریال) - بعد از تخفیف درصدی خدمات کسر می شود
+            $counterDiscountTotal = 0;
+            if ($_POST['typeTourReserve'] == 'oneDayTour') {
+                if (empty($_POST['is_api'])) {
+                    $counterDiscountTotal = $this->oneDayTourCounterDiscount($resultInfoTour);
+                }
+            } else {
+                $counterDiscountTotal = (int)$package_info['counter_discount_total'];
+                if (functions::isEnableSetting('toman')) {
+                    $counterDiscountTotal = $counterDiscountTotal * 10;
+                }
+            }
+            // در صورت اعمال تخفیف خدمات، totalPrice از قیمت اصلی بازنویسی شده و تخفیف همکار باید دوباره کسر شود
+            // (در ادامه رزرو، totalOriginPrice همان مبلغ نهایی قبلی است و تخفیف همکار در آن لحاظ شده)
+            if (!empty($doDiscount['discountedMinPriceR']) && $counterDiscountTotal > 0 && !$isResumeRequest) {
+                $totalPrice = max(0, $totalPrice - $counterDiscountTotal);
+            }
+            $this->tourBookingInfo['counter_discount_amount'] = $counterDiscountTotal;
             $this->tourBookingInfo['tour_counter_id'] = $this->counterId;
             $this->tourBookingInfo['tour_origin_price'] = $totalOriginPrice;
           

@@ -1198,35 +1198,14 @@ class reservationTour extends clientAuth
 
                             }
                         }
+
+                        $this->saveTourPackageCounterDiscount($tour['id'], $tourPackage['id'], $param, $count, $counter_types);
                     }
 
                     //ثبت تعداد رکورد کمتر از 100 تا اینجا اتفاق میفتد
                     if ($this->sqlInsertTourHotel != '' && $this->countInsertTourHotel > 0) {
                         $this->sqlInsertTourHotel = substr($this->sqlInsertTourHotel, 0, -1);
                         $res[] = $Model->execQuery($this->sqlInsertTourHotel);
-
-
-                        $this->reservation_tour_discount_model->delete([
-                            'tour_package_id' => $tourPackage['id']
-                        ]);
-
-                        foreach ($counter_types as $type_key => $type) {
-                            $discount_params = [];
-                            foreach ($result_tour_local_controller->tourDiscountFieldsIndex() as $discount_index_key => $discount_index) {
-
-                                functions::insertLog('count=>' . $count . 'params==>' . json_encode($param, 256), 'check_discount_counter');
-
-                                $discount_params[$discount_index['index']] = str_replace(',', '', $param[$discount_index['index'] . $count . $type_key]);
-                            }
-                            $reservation_tour_discount_data = [
-                                'tour_id' => $tour['id'],
-                                'tour_package_id' => $tourPackage['id'],
-                                'counter_type_id' => $type['id'],
-                            ];
-                            $reservation_tour_discount_data = array_merge($reservation_tour_discount_data, $discount_params);
-                            $this->reservation_tour_discount_model->insertWithBind($reservation_tour_discount_data);
-                        }
-
                     }
 
                 }
@@ -1250,6 +1229,34 @@ class reservationTour extends clientAuth
     }
     #endregion
 
+
+    /**
+     * ثبت تخفیف همکاران یک پکیج
+     * نام فیلدها در فرم: {index}{شماره پکیج}{اندیس نوع کانتر}
+     */
+    private function saveTourPackageCounterDiscount($tour_id, $package_id, $param, $package_number, $counter_types) {
+        if (empty($package_id)) {
+            return;
+        }
+        $result_tour_local_controller = $this->getController('resultTourLocal');
+
+        $this->reservation_tour_discount_model->delete([
+            'tour_package_id' => $package_id
+        ]);
+
+        foreach ($counter_types as $type_key => $type) {
+            $reservation_tour_discount_data = [
+                'tour_id' => $tour_id,
+                'tour_package_id' => $package_id,
+                'counter_type_id' => $type['id'],
+            ];
+            foreach ($result_tour_local_controller->tourDiscountFieldsIndex() as $discount_index) {
+                $field_name = $discount_index['index'] . $package_number . $type_key;
+                $reservation_tour_discount_data[$discount_index['index']] = isset($param[$field_name]) ? (int)str_replace(',', '', $param[$field_name]) : 0;
+            }
+            $this->reservation_tour_discount_model->insertWithBind($reservation_tour_discount_data);
+        }
+    }
 
     #region insertOneDayTour
     public function insertOneDayTour($param) {
@@ -1289,7 +1296,9 @@ class reservationTour extends clientAuth
         if ($res) {
             $result_tour_local_controller = $this->getController('resultTourLocal');
             $counter_type_controller = $this->getController('counterType');
-            $counter_types = $counter_type_controller->listCounterType();
+            // همان لیستی که فرم با آن ساخته می شود (اندیس ها باید یکسان باشند)
+            $counter_type_controller->getAll('all');
+            $counter_types = $counter_type_controller->list;
             $this->reservation_tour_discount_model->delete([
                 'tour_id' => $param['id_same']
             ]);
@@ -2799,24 +2808,7 @@ class reservationTour extends clientAuth
                             $Model->setTable('reservation_tour_hotel_tb');
                             $res[] = $Model->update($dataHotel[$countPackage . $countHotel], $condition);
 
-                            $this->reservation_tour_discount_model->delete([
-                                'tour_package_id' => $arrayPackage[$tour['id']][$countPackage]
-                            ]);
-
-                            foreach ($counter_types as $type_key => $type) {
-                                $discount_params = [];
-                                foreach ($result_tour_local_controller->tourDiscountFieldsIndex() as $discount_index_key => $discount_index) {
-
-                                    $discount_params[$discount_index['index']] = str_replace(',', '', $param[$discount_index['index'] . $countPackage . $type_key]);
-                                }
-                                $reservation_tour_discount_data = [
-                                    'tour_id' => $tour['id'],
-                                    'tour_package_id' => $arrayPackage[$tour['id']][$countPackage],
-                                    'counter_type_id' => $type['id'],
-                                ];
-                                $reservation_tour_discount_data = array_merge($reservation_tour_discount_data, $discount_params);
-                                $this->reservation_tour_discount_model->insertWithBind($reservation_tour_discount_data);
-                            }
+                            $this->saveTourPackageCounterDiscount($tour['id'], $arrayPackage[$tour['id']][$countPackage], $param, $countPackage, $counter_types);
 
 
                         }
@@ -2851,23 +2843,7 @@ class reservationTour extends clientAuth
                                 $res[] = $Model->insertLocal($dataHotel[$countPackage . $countHotel]);
 
 
-                                $this->reservation_tour_discount_model->delete([
-                                    'tour_package_id' => $arrayPackage[$tour['id']][$countPackage]
-                                ]);
-
-                                foreach ($counter_types as $type_key => $type) {
-                                    $discount_params = [];
-                                    foreach ($result_tour_local_controller->tourDiscountFieldsIndex() as $discount_index_key => $discount_index) {
-                                        $discount_params[$discount_index['index']] = str_replace(',', '', param[$discount_index['index'] . $countPackage . $type_key]);
-                                    }
-                                    $reservation_tour_discount_data = [
-                                        'tour_id' => $tour['id'],
-                                        'tour_package_id' => $fk_tour_package_id,
-                                        'counter_type_id' => $type['id'],
-                                    ];
-                                    $reservation_tour_discount_data = array_merge($reservation_tour_discount_data, $discount_params);
-                                    $this->reservation_tour_discount_model->insertWithBind($reservation_tour_discount_data);
-                                }
+                                $this->saveTourPackageCounterDiscount($tour['id'], $fk_tour_package_id, $param, $countPackage, $counter_types);
 
 
                             }
@@ -2975,7 +2951,9 @@ class reservationTour extends clientAuth
         if ($res) {
             $result_tour_local_controller = $this->getController('resultTourLocal');
             $counter_type_controller = $this->getController('counterType');
-            $counter_types = $counter_type_controller->listCounterType();
+            // همان لیستی که فرم با آن ساخته می شود (اندیس ها باید یکسان باشند)
+            $counter_type_controller->getAll('all');
+            $counter_types = $counter_type_controller->list;
 
             $this->reservation_tour_discount_model->delete([
                 'tour_id' => $param['id_same']
@@ -4515,6 +4493,10 @@ class reservationTour extends clientAuth
 
             $packages[$package_key]['hotels'] =  $hotel_information_list[$package['id']]['hotels'] ;
 
+            // تخفیف همکار این پکیج برای نوع کانتر کاربر
+            $objResultTourCounter = Load::controller('resultTourLocal');
+            $counter_discount_amounts = $objResultTourCounter->getCounterDiscountAmounts($tour_id, $package['id']);
+
 //            $hotels = $this->infoTourHotelByIdPackage($package['id']);
 //
 //            foreach ($hotels as $hotel_key => $hotel) {
@@ -4582,8 +4564,14 @@ class reservationTour extends clientAuth
 
 
                 }
+
+                // تخفیف همکار: بعد از تخفیف درصدی خدمات کسر می شود
+                $counter_discount = $objResultTourCounter->counterDiscountForPrice($discountedPrice, $counter_discount_amounts[$room_type['type']]);
+                $discountedPrice = $discountedPrice - $counter_discount;
+
                 if(functions::isEnableSetting('toman')) {
                     $final_price = round($discountedPrice / 10) ;
+                    $counter_discount = round($counter_discount / 10) ;
                 } else {
                     $final_price = $discountedPrice ;
                 }
@@ -4619,6 +4607,7 @@ class reservationTour extends clientAuth
                     'order' => $room_type['order'],
                     'type' => $room_type['type'],
                     'final_price' => $final_price,
+                    'counter_discount' => $counter_discount,
                     'capacity' => $package[$room_type['capacityValue']],
                 ];
 
@@ -4684,6 +4673,14 @@ class reservationTour extends clientAuth
                         }
                     }
 
+                    // calculateDiscount تخفیف همکار (بزرگسال) را در final_price اعمال کرده؛ مبلغ آن برای محاسبه JS نگه داشته می شود
+                    $custom_service_price = $reservationTourController->doDiscount($tour_id, ['minPriceR' => $custom_room[$room_type]['price_r']]);
+                    $custom_service_price = !empty($custom_service_price['discountedMinPriceR']) ? $custom_service_price['discountedMinPriceR'] : $custom_room[$room_type]['price_r'];
+                    $custom_counter_discount = $objResultTourCounter->counterDiscountForPrice($custom_service_price, $counter_discount_amounts['adult']);
+                    if(functions::isEnableSetting('toman')) {
+                        $custom_counter_discount = round($custom_counter_discount / 10);
+                    }
+
                     if ($custom_room[$room_type]['price_a'] == "") {
                         $package_currency_name = '';
                     }
@@ -4706,6 +4703,7 @@ class reservationTour extends clientAuth
                         'index' => $index,
                         'type' => 'adult',
                         'final_price' => $final_price,
+                        'counter_discount' => $custom_counter_discount,
                         'capacity' => $custom_room[$room_type]['capacity']
                     ];
                 }
@@ -5007,6 +5005,9 @@ class reservationTour extends clientAuth
         $resultTourLocalController = $this->getController('resultTourLocal');
         $final_array[0]['hotels'] = [];
 
+        // تخفیف همکار تور یک روزه با id_same و پکیج صفر ذخیره می شود
+        $counter_discount_amounts = $resultTourLocalController->getCounterDiscountAmounts($result_get_tour['id_same'], 0);
+
         foreach ($room_types as $room_key => $room_type) {
 
             $do_discount = ($resultTourLocalController->doDiscount($result_get_tour['id'], ['minPriceR' => $result_get_tour[$room_type['packagePriceName']]]));
@@ -5037,6 +5038,14 @@ class reservationTour extends clientAuth
                     $final_price = $do_discount['discountedMinPriceR'] + $result_get_tour['change_price'];
                 }
             }
+
+            // تخفیف همکار: بعد از تخفیف درصدی خدمات کسر می شود
+            $service_price = (empty($do_discount['discountedMinPriceR']) ? $result_get_tour[$room_type['packagePriceName']] : $do_discount['discountedMinPriceR']) + $result_get_tour['change_price'];
+            $counter_discount = $resultTourLocalController->counterDiscountForPrice($service_price, $counter_discount_amounts[$room_type['type']]);
+            if(functions::isEnableSetting('toman')) {
+                $counter_discount = round($counter_discount / 10);
+            }
+            $final_price = $final_price - $counter_discount;
 
 
 
@@ -5075,6 +5084,7 @@ class reservationTour extends clientAuth
                 'index' => $room_type['index'],
                 'type' => $room_type['type'],
                 'final_price' => $final_price,
+                'counter_discount' => $counter_discount,
                 'capacity' => 20,
             ];
 

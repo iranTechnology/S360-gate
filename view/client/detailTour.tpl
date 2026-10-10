@@ -852,7 +852,7 @@
                                             value='0'
                                             data-name="has-package-room-index"
                                             min="0"
-                                            data-index='[{"max":"capacity"},{"data-price":"final_price"},{"data-origin-price":"price"},{"data-coefficient":"coefficient"},{"data-index-name":"index"},{"data-type":"type"},{"data-currency-price":"currency_price"},{"data-currency-name":"currency_name"}]' />
+                                            data-index='[{"max":"capacity"},{"data-price":"final_price"},{"data-origin-price":"price"},{"data-counter-discount":"counter_discount"},{"data-coefficient":"coefficient"},{"data-index-name":"index"},{"data-type":"type"},{"data-currency-price":"currency_price"},{"data-currency-name":"currency_name"}]' />
                                 </div>
                             </div>
 

@@ -5141,6 +5141,7 @@ function triggerPackageRoomCount(_this,type) {
         const each_room_index=each_room_input.data('index-name')
         const each_room_price=each_room_input.data('price')
         const each_room_origin_price=each_room_input.data('origin-price')
+        const each_room_counter_discount=Number(each_room_input.data('counter-discount')) || 0
         const each_room_type=each_room_input.data('type')
         const each_room_value=each_room_input.val()
 
@@ -5153,7 +5154,8 @@ function triggerPackageRoomCount(_this,type) {
             final_package_price+=(each_room_value*each_room_price*each_room_coefficient)
             final_package_origin_price+=(each_room_value*each_room_origin_price*each_room_coefficient)
         }else{
-            final_package_price+=(each_room_value*each_room_origin_price)
+            // تخفیف همکار برای هر واحد اتاق کسر می شود
+            final_package_price+=(each_room_value*(each_room_origin_price-each_room_counter_discount))
             final_package_origin_price+=(each_room_value*each_room_origin_price)
         }
 

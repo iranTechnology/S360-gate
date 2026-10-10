@@ -315,7 +315,7 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'insertRowPackage') {
                                       ('.functions::Xmlinformation("Riali").'):</label>
 
                                   <input type="text"
-                                         name="'.$entry['index'].'['.$rowAnyPackage.']['.$counter_key.']"
+                                         name="'.$entry['index'].$rowAnyPackage.$counter_key.'"
                                          id="'.$entry['index'].$counter_key.$entry_key.'"
                                          onkeypress="isDigit(this)"
                                          class="form-control font-12"

@@ -441,6 +441,9 @@
                                value="{$infoTour['prepayment_percentage']}">
                         <input type="hidden" id="paymentStatus" name="paymentStatus" value="{$paymentStatusValue}">
                         <input type="hidden" id="passengerCount" name="passengerCount" value="{$smarty.post.passengerCount}">
+                        <input type="hidden" name="passengerCountADT" value="{$smarty.post.passengerCountADT}">
+                        <input type="hidden" name="passengerCountCHD" value="{$smarty.post.passengerCountCHD}">
+                        <input type="hidden" name="passengerCountINF" value="{$smarty.post.passengerCountINF}">
                         <input type="hidden" id="cities" name="cities" value="{$smarty.post.cities}">
                         <input type="hidden" id="serviceTitle" name="serviceTitle" value="{$smarty.post.serviceTitle}">
                         <input type="hidden" id="startDate" name="startDate" value="{$date[0]}">
