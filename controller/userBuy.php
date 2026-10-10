@@ -2013,6 +2013,7 @@ class userBuy extends clientAuth
     public function getBuyBookMember($param)
     {
 
+
         $objUser = Load::controller('user');
 //        $Model = Load::library('Model');
         $user_id = Session::getUserId();
