@@ -1724,17 +1724,6 @@ class reservationTour extends clientAuth
     #region editTourWithIdSame
     public function editTourWithIdSame($param, $file) {
 
-
-        if ($_SERVER['REMOTE_ADDR']) {
-            error_reporting(1);
-            error_reporting(E_ALL | E_STRICT);
-            @ini_set('display_errors', 1);
-            @ini_set('display_errors', 'on');
-        }
-
-
-
-
         if(Session::IsLogin()) {
 
             $Model = Load::library('Model');
@@ -1753,6 +1742,7 @@ class reservationTour extends clientAuth
 
             $check_start_date = str_replace("-", "", $param['startDate']);
             $check_end_date = str_replace("-", "", $param['endDate']);
+
             //////////لیست نام هفته، انتخاب شده///////////
             $days_Week = [];
             for ($sh = 0; $sh <= 6; $sh++) {
@@ -1799,8 +1789,6 @@ class reservationTour extends clientAuth
             }
             functions::insertLog('$not_array_check_Days =>' . json_encode($not_array_check_Days, 256), $log_name);
             functions::insertLog('check day exist =>' . json_encode($array_check_Days, 256), $log_name);
-
-
 
             if (empty($not_array_check_Days) && !in_array(false,$array_check_Days)) {
 
@@ -1922,7 +1910,6 @@ class reservationTour extends clientAuth
 
                     }
                 }
-
 
                 if (!empty($param['id_one_day_only']) && $param['id_one_day_only'] == '1') {
                     $flagOneDayTour = 'yes';
@@ -2099,61 +2086,67 @@ class reservationTour extends clientAuth
 
 
                 $all_package_items = [];
+                // Cache schema checks only for this edit; preserve all()'s soft-delete filter.
+                $package_table_has_deleted_at = [];
+                $load_package_rows = static function ($model) use (&$package_table_has_deleted_at) {
+                    $table = $model->getTable();
+                    if (!array_key_exists($table, $package_table_has_deleted_at)) {
+                        $package_table_has_deleted_at[$table] = $model->existField('deleted_at');
+                    }
+                    if ($package_table_has_deleted_at[$table]) {
+                        $model->where('deleted_at', null, ' IS ');
+                    }
+                    return $model->all(false);
+                };
                 functions::insertLog('before foreach for delete and again insert=>' . json_encode($all_tours_by_id_same, 256), $log_name);
-
-
 
                 foreach ($all_tours_by_id_same as $tour) {
 
                     functions::insertLog('first in loop foreach for delete each tour=>' . json_encode($tour, 256), $log_name);
                     $this->reservation_tour_route_model->delete([
                         'fk_tour_id' => $tour['id']
-                    ]);
+                    ], true);
                     functions::insertLog(' in loop check change route=>' . json_encode($param['is_routes_changed'], 256), $log_name);
 
                     if ($param['is_routes_changed'] === '0') {
-                        if (empty($last_package_item)) {
-                            $last_package_items = $this->reservation_tour_package_model->get()
+                        // Keep reading each tour: later packages overwrite matching keys only.
+                        $last_package_items = $load_package_rows($this->reservation_tour_package_model->get()
+                            ->where('fk_tour_id', $tour['id']));
+                        $last_package_items_json = json_encode($last_package_items, 256);
+                        functions::insertLog('in loop last package items=>' . $last_package_items_json, $log_name);
+
+                        foreach ($last_package_items as $key => $package) {
+
+                            $last_package_hotel_item = $load_package_rows($this->reservation_tour_hotel_model->get()
                                 ->where('fk_tour_id', $tour['id'])
-                                ->all();
-                            functions::insertLog('in loop last package items=>' . json_encode($last_package_items, 256), $log_name);
+                                ->where('fk_tour_package_id', $package['id'])
+                                ->whereIn('fk_city_id', $destination_index));
+                            functions::insertLog('in loop last package items=>' . $key . '=>' . $last_package_items_json, $log_name);
 
-                            foreach ($last_package_items as $key => $package) {
+                            $package['package_hotel_items'] = $last_package_hotel_item;
 
-                                $last_package_hotel_item = $this->reservation_tour_hotel_model->get()
-                                    ->where('fk_tour_id', $tour['id'])
-                                    ->where('fk_tour_package_id', $package['id'])
-                                    ->whereIn('fk_city_id', $destination_index)
-                                    ->all();
-                                functions::insertLog('in loop last package items=>' . $key . '=>' . json_encode($last_package_items, 256), $log_name);
-
-                                $package['package_hotel_items'] = $last_package_hotel_item;
-
-                                $last_package_discount_item = $this->reservation_tour_discount_model->get()
-                                    ->where('tour_id', $tour['id'])
-                                    ->where('tour_package_id', $package['id'])
-                                    ->all();
-                                functions::insertLog('in loop  last package discount item=>' . $key . '=>' . json_encode($last_package_discount_item, 256), $log_name);
+                            $last_package_discount_item = $load_package_rows($this->reservation_tour_discount_model->get()
+                                ->where('tour_id', $tour['id'])
+                                ->where('tour_package_id', $package['id']));
+                            functions::insertLog('in loop  last package discount item=>' . $key . '=>' . json_encode($last_package_discount_item, 256), $log_name);
 
 
-                                $package['package_discount_items'] = $last_package_discount_item;
+                            $package['package_discount_items'] = $last_package_discount_item;
 
-                                $all_package_items[$key] = $package;
-                            }
-
+                            $all_package_items[$key] = $package;
                         }
+
                         functions::insertLog('in loop all package items=>' . json_encode($all_package_items, 256), $log_name);
                     }
 
 
                     $this->reservation_tour_package_model->delete([
                         'fk_tour_id' => $tour['id']
-                    ]);
+                    ], true);
                     $this->reservation_tour_hotel_model->delete([
                         'fk_tour_id' => $tour['id']
-                    ]);
+                    ], true);
                 }
-
 
                 $this->reservation_tour_model->delete([
                     'id_same' => $idSame
@@ -2194,7 +2187,6 @@ class reservationTour extends clientAuth
                     }
                 }
                 $counter = 0;
-
 
                 while ($startDate <= $endDate) {
                     $nameDay = $objController->nameDay($startDate);
@@ -2379,7 +2371,6 @@ class reservationTour extends clientAuth
                 // tour type
                 $res[] = $this->registrationTourType($idSame, $param['TourTypes']);
                 functions::insertLog('after  registrationTourType =>' . json_encode($res, 256), $log_name);
-
 
                 if (in_array('0', $res)) {
                     functions::insertLog('********************End Of Story IN Error**********************=>' . json_encode($res, 256), $log_name);

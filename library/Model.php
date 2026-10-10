@@ -351,9 +351,9 @@ class Model {
 	 *
 	 * @return bool
 	 */
-	public function delete( $condition = '' ) {
+	public function delete( $condition = '', $reuse_permission_connection = false ) {
         // --- کنترل پرمیشن قبل از ساخت کوئری ---
-        if (!$this->checkPermissionModel('delete')) {
+        if (!$this->checkPermissionModel('delete', $reuse_permission_connection)) {
             functions::insertLog("Permission denied for delete by user {$this->userIdSession}==> ".date("Y-m-d H:i:s")."\n",'log_permission');
             return false;
         }
@@ -1107,7 +1107,7 @@ class Model {
             default: return true;
         }
     }
-    private function checkPermissionModel($action) {
+    private function checkPermissionModel($action, $reuse_connection = false) {
         if ($this->userIdSession=='NoCounter') {
             return true;
         }
@@ -1115,7 +1115,7 @@ class Model {
             $userId = (int)$this->userIdSession;
             $PageId = (int)$this->currentPageSession;
             // اتصال PDO
-            $pdo = new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD, [
+            $pdo = $reuse_connection ? $this->_pdo : new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD, [
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]);
