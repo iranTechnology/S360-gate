@@ -502,9 +502,9 @@ class Model {
 	 *
 	 * @return bool|string
 	 */
-	public function insertWithBind( $data = array(), $table = '' ) {
+	public function insertWithBind( $data = array(), $table = '', &$insert_context = null ) {
        // --- کنترل پرمیشن قبل از ساخت کوئری ---
-        if (!$this->checkPermissionModel('insert')) {
+        if (!$this->checkPermissionModel('insert', false, $insert_context)) {
             functions::insertLog("Permission denied for insertWithBind by user {$this->userIdSession} ==> ".date("Y-m-d H:i:s")."\n",'log_permission');
             return false;
         }
@@ -512,10 +512,10 @@ class Model {
 		if ( $table ) {
 			$this->setTable( $table );
 		}
-		if ( $this->existField( 'created_at' ) ) {
+		if ( $this->existInsertField('created_at', $insert_context) ) {
 			$data['created_at'] = date( 'Y-m-d H:i:s' );
 		}
-		if ( $this->existField( 'updated_at' ) ) {
+		if ( $this->existInsertField('updated_at', $insert_context) ) {
 			$data['updated_at'] = date( 'Y-m-d H:i:s' );
 		}
 
@@ -541,6 +541,18 @@ class Model {
 		//		return false;
 	}
 	
+    // An explicit context limits cached metadata to one bulk operation.
+    private function existInsertField($field, &$insert_context) {
+        if ($insert_context === null) {
+            return $this->existField($field);
+        }
+        if (!isset($insert_context['fields'][$this->table]) ||
+            !array_key_exists($field, $insert_context['fields'][$this->table])) {
+            $insert_context['fields'][$this->table][$field] = $this->existField($field);
+        }
+        return $insert_context['fields'][$this->table][$field];
+    }
+
 	/**
 	 * @param array $data
 	 * @param null $condition
@@ -1107,7 +1119,7 @@ class Model {
             default: return true;
         }
     }
-    private function checkPermissionModel($action, $reuse_connection = false) {
+    private function checkPermissionModel($action, $reuse_connection = false, &$insert_context = null) {
         if ($this->userIdSession=='NoCounter') {
             return true;
         }
@@ -1115,10 +1127,19 @@ class Model {
             $userId = (int)$this->userIdSession;
             $PageId = (int)$this->currentPageSession;
             // اتصال PDO
-            $pdo = $reuse_connection ? $this->_pdo : new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD, [
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]);
+            // Keep permission reads on a separate connection, as before, so
+            // an insert transaction cannot change their visibility.
+            if ($insert_context !== null && isset($insert_context['permission_pdo'])) {
+                $pdo = $insert_context['permission_pdo'];
+            } else {
+                $pdo = $reuse_connection ? $this->_pdo : new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD, [
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                ]);
+                if ($insert_context !== null) {
+                    $insert_context['permission_pdo'] = $pdo;
+                }
+            }
             // Query دستی
             $stmt = $pdo->prepare("SELECT can_insert,can_update,can_delete 
                                FROM pages_permissions_tb 

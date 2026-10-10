@@ -2084,7 +2084,6 @@ class reservationTour extends clientAuth
                     }
                 }
 
-
                 $all_package_items = [];
                 // Cache schema checks only for this edit; preserve all()'s soft-delete filter.
                 $package_table_has_deleted_at = [];
@@ -2102,10 +2101,14 @@ class reservationTour extends clientAuth
 
                 foreach ($all_tours_by_id_same as $tour) {
 
+
+
+
+
                     functions::insertLog('first in loop foreach for delete each tour=>' . json_encode($tour, 256), $log_name);
                     $this->reservation_tour_route_model->delete([
-                        'fk_tour_id' => $tour['id']
-                    ], true);
+                            'fk_tour_id' => $tour['id']
+                        ], true);
                     functions::insertLog(' in loop check change route=>' . json_encode($param['is_routes_changed'], 256), $log_name);
 
                     if ($param['is_routes_changed'] === '0') {
@@ -2141,16 +2144,18 @@ class reservationTour extends clientAuth
 
 
                     $this->reservation_tour_package_model->delete([
-                        'fk_tour_id' => $tour['id']
-                    ], true);
+                            'fk_tour_id' => $tour['id']
+                        ], true);
                     $this->reservation_tour_hotel_model->delete([
-                        'fk_tour_id' => $tour['id']
-                    ], true);
+                            'fk_tour_id' => $tour['id']
+                        ], true);
+
                 }
 
+
                 $this->reservation_tour_model->delete([
-                    'id_same' => $idSame
-                ]);
+                        'id_same' => $idSame
+                    ]);
 
                 // check travel programs
                 $resultTourTravel = $this->getModel('tourTravelProgramModel')->get()
@@ -2187,6 +2192,7 @@ class reservationTour extends clientAuth
                     }
                 }
                 $counter = 0;
+                $tour_insert_context = [];
 
                 while ($startDate <= $endDate) {
                     $nameDay = $objController->nameDay($startDate);
@@ -2236,7 +2242,7 @@ class reservationTour extends clientAuth
                                         }
                                         if (!empty($hotel_items)) {
                                             functions::insertLog('in while check if it hotel items not empty =>' . json_encode($hotel_items, 256), $log_name);
-                                            $last_package_id = $this->reservation_tour_package_model->insertWithBind($data_package_item);
+                                            $last_package_id = $this->reservation_tour_package_model->insertWithBind($data_package_item, '', $tour_insert_context);
 
                                         }
                                         foreach ($hotel_items as $hotel_item) {
@@ -2246,7 +2252,7 @@ class reservationTour extends clientAuth
                                                 unset($hotel_item['id']);
                                             }
                                             functions::insertLog('in while- in foreach for each item  =>' . json_encode($hotel_item, 256), $log_name);
-                                            $this->reservation_tour_hotel_model->insertWithBind($hotel_item);
+                                            $this->reservation_tour_hotel_model->insertWithBind($hotel_item, '', $tour_insert_context);
                                         }
 
 
@@ -2257,7 +2263,7 @@ class reservationTour extends clientAuth
                                                 unset($discount_item['id']);
                                             }
                                             functions::insertLog('in while- in foreach for each discount item  =>' . json_encode($hotel_item, 256), $log_name);
-                                            $this->reservation_tour_discount_model->insertWithBind($discount_item);
+                                            $this->reservation_tour_discount_model->insertWithBind($discount_item, '', $tour_insert_context);
                                         }
 
 
@@ -2364,9 +2370,6 @@ class reservationTour extends clientAuth
 //            $startDate = $objController->dateNextFewDays($startDate, ' + 1');
 //
 //        }//end while startDate<=endDate
-
-
-
 
                 // tour type
                 $res[] = $this->registrationTourType($idSame, $param['TourTypes']);
