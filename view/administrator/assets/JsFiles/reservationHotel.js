@@ -1267,6 +1267,41 @@ function orderHotelActive(id)
 
 
 //////////حذف منطقی///////
+function setRoomPriceVisibility(button, idHotel, idSame, visibility)
+{
+    var $button = $(button);
+    $button.prop('disabled', true);
+    $.post(amadeusPath + 'hotel_ajax.php', {
+        flag: 'setRoomPriceVisibility',
+        idHotel: idHotel,
+        idSame: idSame,
+        visibility: visibility
+    }).done(function (data) {
+        var success = data.indexOf('success :') === 0;
+        $.toast({
+            heading: 'وضعیت نمایش بازه',
+            text: data.split(':').slice(1).join(':'),
+            position: 'top-right',
+            icon: success ? 'success' : 'error',
+            hideAfter: 3500,
+            textAlign: 'right'
+        });
+        if (success) {
+            location.reload();
+        }
+    }).fail(function () {
+        $.toast({
+            heading: 'وضعیت نمایش بازه',
+            text: 'ارتباط با سرور برقرار نشد؛ دوباره تلاش کنید',
+            position: 'top-right',
+            icon: 'error',
+            textAlign: 'right'
+        });
+    }).always(function () {
+        $button.prop('disabled', false);
+    });
+}
+
 function deleteRoomPrice(idHotel, id, type)
 {
     $.confirm({

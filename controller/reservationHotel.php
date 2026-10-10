@@ -765,7 +765,8 @@ class reservationHotel extends clientAuth
                             '" . $flag_adl . "',
                             '" . $data['childFromAge'] . "',
                             '" . $data['childToAge'] . "',
-                            'no'
+                            'no',
+                            'yes'
                             ),";
 
 
@@ -893,7 +894,8 @@ class reservationHotel extends clientAuth
                             '" . $info['fromAge'] . "',
                             '" . $info['toAge'] . "',
                         
-                            'no'
+                            'no',
+                            'yes'
                          
                             ),";
 
@@ -1217,6 +1219,29 @@ ORDER BY HRP.id_country, HRP.id_city ASC";
     }
 
     ///////////////////حذف قیمت اتاق/////////////////
+    public function setRoomPriceVisibility($idHotel, $idSame, $visibility)
+    {
+        if (!Session::adminIsLogin()) {
+            return 'error : دسترسی غیرمجاز';
+        }
+        if (!ctype_digit((string)$idHotel) || !ctype_digit((string)$idSame)
+            || !in_array($visibility, array('yes', 'no'), true)) {
+            return 'error : اطلاعات بازه نامعتبر است';
+        }
+
+        $Model = Load::library('Model');
+        $condition = "id_hotel='{$idHotel}' AND id_same='{$idSame}' AND is_del='no'";
+        $range = $Model->load("SELECT id FROM reservation_hotel_room_prices_tb WHERE {$condition} LIMIT 1");
+        if (empty($range)) {
+            return 'error : بازه مورد نظر یافت نشد';
+        }
+        $Model->setTable('reservation_hotel_room_prices_tb');
+        if ($Model->update(array('is_show' => $visibility), $condition)) {
+            return 'success : وضعیت نمایش بازه با موفقیت تغییر کرد';
+        }
+        return 'error : خطا در تغییر وضعیت نمایش بازه';
+    }
+
     public function deleteRoomPrice($idHotel, $id, $type)
     {
 
@@ -1955,7 +1980,7 @@ ORDER BY HRP.id_country, HRP.id_city ASC";
         $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
 
         $Model = Load::library('Model');
-        $sql = "SELECT HRP.id_hotel, MIN( HRP.date ) AS minDate, MAX( HRP.date ) AS maxDate, HRP.id_same, HR.room_name, H.name as hotel_name
+        $sql = "SELECT HRP.id_hotel, MIN( HRP.date ) AS minDate, MAX( HRP.date ) AS maxDate, MIN(HRP.is_show) AS is_show, HRP.id_same, HR.room_name, H.name as hotel_name
 FROM reservation_hotel_room_prices_tb HRP
 LEFT JOIN reservation_hotel_room_tb HR ON HR.id_room = HRP.id_room 
 LEFT JOIN reservation_hotel_tb H ON H.id = HRP.id_hotel
@@ -2060,6 +2085,10 @@ ORDER BY HRP.id_same;
         $format = 'Y' . $mod . 'm' . $mod . 'd';
         $dateToday = dateTimeSetting::jdate($format, time(), '', '', 'en');
         $Model = Load::library('Model');
+        $rangeVisibility = $Model->load("SELECT is_show FROM reservation_hotel_room_prices_tb
+            WHERE id_hotel='{$param['idHotel']}' AND id_same='{$param['idSame']}' AND is_del='no'
+            ORDER BY is_show ASC LIMIT 1");
+        $rangeVisibility = isset($rangeVisibility['is_show']) ? $rangeVisibility['is_show'] : 'yes';
         $objController = Load::controller('reservationPublicFunctions');
 
         if (isset($param['breakfast']) && $param['breakfast'] == 'yes') {
@@ -2364,7 +2393,8 @@ ORDER BY HRP.id_same;
                                     '" . $dataInsert['flag_dbl'] . "',
                                     '" . $dataInsert['fromAge'] . "',
                                     '" . $dataInsert['toAge'] . "',
-                                    'no'
+                                    'no',
+                                    '" . $rangeVisibility . "'
                                   
                                     ),";
 

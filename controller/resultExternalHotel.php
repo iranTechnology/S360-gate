@@ -316,6 +316,24 @@ $city_name_fa
 		$dateNow      = dateTimeSetting::jdate( "Ymd", '', '', '', 'en' );
 		$sDatePersian = str_replace( "-", "", $sDatePersian );
 		$sDatePersian = str_replace( "/", "", $sDatePersian );
+        $startGregorian = implode('-', dateTimeSetting::jalali_to_gregorian(
+            substr($sDatePersian, 0, 4), substr($sDatePersian, 4, 2), substr($sDatePersian, 6, 2)
+        ));
+        $endDatePersian = dateTimeSetting::jdate('Ymd', strtotime($startGregorian . ' + ' . (int)$nights . ' days'), '', '', 'en');
+        // Exclude a hotel only when a hidden rate leaves a searched night with no visible rate.
+        $visibilityCondition = " AND NOT EXISTS (
+            SELECT 1 FROM reservation_hotel_room_prices_tb hiddenPrice
+            WHERE hiddenPrice.id_hotel = reservationHotel.id
+              AND hiddenPrice.is_del = 'no' AND hiddenPrice.is_show = 'no'
+              AND hiddenPrice.flat_type = 'DBL' AND hiddenPrice.user_type = '{$this->counterId}'
+              AND hiddenPrice.date >= '{$sDatePersian}' AND hiddenPrice.date < '{$endDatePersian}'
+              AND NOT EXISTS (
+                  SELECT 1 FROM reservation_hotel_room_prices_tb visiblePrice
+                  WHERE visiblePrice.id_hotel = hiddenPrice.id_hotel AND visiblePrice.date = hiddenPrice.date
+                    AND visiblePrice.user_type = hiddenPrice.user_type AND visiblePrice.flat_type = 'DBL'
+                    AND visiblePrice.is_del = 'no' AND visiblePrice.is_show = 'yes'
+              )
+        ) ";
 		if ( trim( $sDatePersian ) >= trim( $dateNow ) ) {
 
 			$countryNameEn = str_replace( "-", " ", $countryNameEn );
@@ -353,7 +371,7 @@ $city_name_fa
                     AND reservationHotelPrice.date = '" . $sDatePersian . "' 
                     AND reservationHotelPrice.user_type = '" . $this->counterId . "' 
                     AND reservationHotelPrice.flat_type = 'DBL' 
-                    AND reservationHotelPrice.is_del = 'no' 
+                    AND reservationHotelPrice.is_del = 'no' AND reservationHotelPrice.is_show = 'yes'
                     LIMIT 1 
                     ) AS minimum_room_price,
                           (
@@ -366,7 +384,7 @@ $city_name_fa
                     AND reservationHotelPrice.date = '" . $sDatePersian . "' 
                     AND reservationHotelPrice.user_type = '" . $this->counterId . "' 
                     AND reservationHotelPrice.flat_type = 'DBL' 
-                    AND reservationHotelPrice.is_del = 'no' 
+                    AND reservationHotelPrice.is_del = 'no' AND reservationHotelPrice.is_show = 'yes'
                     LIMIT 1 
                     ) AS currency_type,
                     (
@@ -379,7 +397,7 @@ $city_name_fa
                                 AND reservationHotelPrice.date = '" . $sDatePersian . "'
                                 AND reservationHotelPrice.user_type = '" . $this->counterId . "'
                                 AND reservationHotelPrice.flat_type = 'DBL'
-                                AND reservationHotelPrice.is_del = 'no'
+                                AND reservationHotelPrice.is_del = 'no' AND reservationHotelPrice.is_show = 'yes'
                             LIMIT 1
                         ) AS commissionDiscount,
                      (
@@ -392,10 +410,10 @@ $city_name_fa
                     AND reservationHotelPrice.date = '" . $sDatePersian . "' 
                     AND reservationHotelPrice.user_type = '" . $this->counterId . "' 
                     AND reservationHotelPrice.flat_type = 'DBL' 
-                    AND reservationHotelPrice.is_del = 'no' 
+                    AND reservationHotelPrice.is_del = 'no' AND reservationHotelPrice.is_show = 'yes'
                     LIMIT 1 
                     ) AS currency_price,
-                    ( SELECT GROUP_CONCAT( reservationHotelRoom.breakfast SEPARATOR '|' ) FROM " . DB_DATABASE . ".reservation_hotel_room_prices_tb AS reservationHotelRoom WHERE reservationHotel.id = reservationHotelRoom.id_hotel ) AS free_breakfast,
+                    ( SELECT GROUP_CONCAT( reservationHotelRoom.breakfast SEPARATOR '|' ) FROM " . DB_DATABASE . ".reservation_hotel_room_prices_tb AS reservationHotelRoom WHERE reservationHotel.id = reservationHotelRoom.id_hotel AND reservationHotelRoom.is_show = 'yes' AND reservationHotelRoom.is_del = 'no' ) AS free_breakfast,
                     (
                 SELECT
                     GROUP_CONCAT( reservationFacilities.title SEPARATOR '|' )
@@ -414,7 +432,7 @@ $city_name_fa
                     reservationHotel.country != '1' 
                     AND LOWER( reservationCountry.name_en ) = '" . $countryNameEn . "' 
                     AND LOWER( reservationCity.name_en ) = '" . $cityNameEn . "' 
-                    AND reservationHotel.is_del = 'no'
+                    AND reservationHotel.is_del = 'no' {$visibilityCondition}
                 ";
 
 
@@ -513,7 +531,7 @@ LEFT JOIN reservation_hotel_room_prices_tb AS rp
     AND rp.date      = '" . $sDatePersian . "'
     AND rp.user_type = '" . $this->counterId . "'
     AND rp.flat_type = 'DBL'
-    AND rp.is_del    = 'no'
+    AND rp.is_del    = 'no' AND rp.is_show = 'yes'
 
 LEFT JOIN (
     SELECT
@@ -522,7 +540,7 @@ LEFT JOIN (
     FROM reservation_hotel_room_prices_tb
     WHERE date      = '" . $sDatePersian . "'
       AND user_type = '" . $this->counterId . "'
-      AND is_del    = 'no'
+      AND is_del    = 'no' AND is_show = 'yes'
     GROUP BY id_hotel
 ) AS fb ON fb.id_hotel = reservationHotel.id
 
@@ -530,7 +548,7 @@ WHERE
     reservationHotel.country != '1'
     AND LOWER( reservationCountry.name_en ) = '" . $countryNameEn . "'
     AND LOWER( reservationCity.name_en )    = '" . $cityNameEn . "'
-    AND reservationHotel.is_del = 'no'
+    AND reservationHotel.is_del = 'no' {$visibilityCondition}
     " . $passenger_condition . "
 
 GROUP BY reservationHotel.id
@@ -591,6 +609,7 @@ GROUP BY reservationHotel.id
                         AND LOWER( reservationCountry.name_en ) = '" . $countryNameEn . "' 
                         AND LOWER( reservationCity.name_en ) = '" . $cityNameEn . "' 
                         AND (reservationHotelRoom.room_capacity + reservationHotelRoom.maximum_extra_beds) >= '{$max_adult}' AND reservationHotelRoom.maximum_extra_chd_beds >= '{$max_children}'
+                        AND reservationHotelRoomPrice.is_show = 'yes' AND reservationHotelRoomPrice.is_del = 'no'
                         AND reservationHotelRoomPrice.remaining_capacity >= '" . $roomCount . "'  
                         AND reservationHotel.is_del = 'no'  
                         GROUP BY reservationHotel.id 

@@ -186,6 +186,15 @@
                                         {/foreach}
                                     </select>
                                 </div>
+                                <div id="flight-defaults-panel" class="form-group d-none">
+                                    <label><input type="checkbox" name="flight_defaults_enabled" id="flight_defaults_enabled" value="1" > مبدا و مقصد پیش‌فرض سرچ‌باکس پرواز</label>
+                                    <div id="flight-defaults-fields" class="row">
+                                        {include file="{$smarty.const.FRONT_CURRENT_ADMIN}/modules/position/flight_defaults.tpl"}
+
+                                        <div class="col-md-12"><small>تاریخ رفت هنگام نمایش صفحه، امروز خواهد بود.</small></div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 

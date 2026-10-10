@@ -362,7 +362,7 @@ async function removeSelect2(){
   if ($('.select2SearchHotel').data('select2')) {
     await $('.select2SearchHotel.select2-hidden-accessible').select2('destroy')
   }
-  await $('.select2-container--default').remove()
+  // destroy() removes only the widgets managed above; preserve other selects.
 }
 
 
@@ -720,3 +720,26 @@ $(document).ready(function() {
 
 
 
+
+$(function () {
+  const panel = $('#flight-defaults-panel');
+  const enabled = $('#flight_defaults_enabled');
+  const airports = $('.flight-default-airport');
+  function updateFlightDefaults() {
+    const applicable = $('input[name="page_type"]:checked').val() === 'separate' &&
+      $('#has_search_box').prop('checked') &&
+      ['internalFlight', 'internationalFlight'].includes($('#positions').val());
+    panel.toggleClass('d-none', !applicable);
+    $('#flight-defaults-fields').toggleClass('d-none', !enabled.prop('checked'));
+    enabled.prop('disabled', !applicable);
+    airports.prop('disabled', !applicable || !enabled.prop('checked'));
+    airports.prop('required', applicable && enabled.prop('checked'));
+  }
+  airports.select2({placeholder: 'انتخاب شهر یا فرودگاه', width: '100%'});
+  $('#positions').on('change.flightDefaults', function () {
+    airports.val('').trigger('change');
+    updateFlightDefaults();
+  });
+  $(document).on('change.flightDefaults', 'input[name="page_type"], #has_search_box, #flight_defaults_enabled', updateFlightDefaults);
+  updateFlightDefaults();
+});

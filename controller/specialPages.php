@@ -70,6 +70,56 @@ class specialPages extends positions
         $fileName = $fileName.".".$ext;
         return $fileName;
     }
+    public function flightDefaultsForPage($page) {
+        $defaults = $page['flight_search_defaults'];
+        $now = new DateTime('now', new DateTimeZone('Asia/Tehran'));
+        $defaults['today_gregorian'] = $now->format('Y-m-d');
+        $defaults['today_jalali'] = dateTimeSetting::jdate('Y-m-d', $now->getTimestamp(), '', 'Asia/Tehran', 'en');
+        return json_encode($defaults, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    }
+
+    private function flightDefaultAirports($service, $term = '') {
+        // Use exactly the same airport list as modules/position/edit.tpl.
+        $airports = [];
+        foreach ($this->listAllPositions($service) ?: [] as $code => $position) {
+            $code = strtoupper(trim($code));
+            if (!preg_match('/^[A-Z]{3}(?:ALL)?$/', $code)) {
+                continue;
+            }
+            if ($term !== '' && $code !== strtoupper(trim($term))) {
+                continue;
+            }
+            $airports[$code] = ['code' => $code, 'title' => $position['name'],
+                'title_en' => $position['name_en'] . ' - ' . $code];
+        }
+        return $airports;
+    }
+
+    private function flightDefaultsFromParams($params, $positions) {
+        if ($params['page_type'] !== 'separate' || empty($params['has_search_box']) ||
+            empty($params['flight_defaults_enabled']) ||
+            !in_array($positions, ['internalFlight', 'internationalFlight'], true)) {
+            return null;
+        }
+        $defaults = ['service' => $positions];
+        foreach (['origin', 'destination'] as $field) {
+            $code = isset($params['flight_default_' . $field]) ? strtoupper(trim($params['flight_default_' . $field])) : '';
+            if (!preg_match('/^[A-Z]{3}(?:ALL)?$/', $code)) {
+                throw new InvalidArgumentException('مبدا و مقصد پیش‌فرض پرواز را انتخاب کنید');
+            }
+            $airports = $this->flightDefaultAirports($positions, $code);
+            $airport = isset($airports[$code]) ? $airports[$code] : null;
+            if (!$airport) {
+                throw new InvalidArgumentException('مبدا یا مقصد پرواز معتبر نیست');
+            }
+            $defaults[$field] = $airport;
+        }
+        if ($defaults['origin']['code'] === $defaults['destination']['code']) {
+            throw new InvalidArgumentException('مبدا و مقصد پرواز باید متفاوت باشند');
+        }
+        return $defaults;
+    }
+
     public function addSpecialPage($params) {
 
         $page_type = $params['page_type'];
@@ -84,6 +134,12 @@ class specialPages extends positions
         } elseif ($page_type === 'attach' && $attach_type === 'main_page') {
             $positions = 'MainPage';
         }
+        try {
+            $flight_defaults = $this->flightDefaultsFromParams($params, $positions);
+        } catch (InvalidArgumentException $error) {
+            return functions::JsonError(false, $error->getMessage(), 200);
+        }
+
         $title = $params['title'];
         $slug = functions::slugify($params['title']);
         if (isset($params['slug']) && $params['slug'] != '') {
@@ -108,6 +164,11 @@ class specialPages extends positions
 
         if ($params['AddedMeta']) {
             $added_metas = json_encode(array_merge($params['AddedMeta'], [$description]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+        if ($flight_defaults !== null) {
+            $meta_items = json_decode($added_metas, true) ?: [];
+            $meta_items[] = ['flight_search_defaults' => $flight_defaults];
+            $added_metas = json_encode($meta_items, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
         $data = [
             'title' => $title,
@@ -306,6 +367,10 @@ class specialPages extends positions
             if ($meta_tags) {
 
                 foreach ($meta_tags as $meta_tag) {
+                    if (isset($meta_tag['flight_search_defaults'])) {
+                        $pages_result[$page_key]['flight_search_defaults'] = $meta_tag['flight_search_defaults'];
+                        continue;
+                    }
                     if (isset($meta_tag['name']) && $meta_tag['name'] == 'description') {
                         $pages_result[$page_key]['description'] = $meta_tag['content'];
                     } else {
@@ -447,6 +512,12 @@ class specialPages extends positions
                 $positions = 'MainPage';
             }
 
+            try {
+                $flight_defaults = $this->flightDefaultsFromParams($params, $positions);
+            } catch (InvalidArgumentException $error) {
+                return functions::JsonError(false, $error->getMessage(), 200);
+            }
+
             $title = $params['title'];
             $slug = functions::slugify($params['title']);
             if (isset($params['slug']) && $params['slug'] != '') {
@@ -481,6 +552,11 @@ class specialPages extends positions
                 $added_metas = json_encode(array_merge($params['AddedMeta'], [$description]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             }
 
+            if ($flight_defaults !== null) {
+                $meta_items = json_decode($added_metas, true) ?: [];
+                $meta_items[] = ['flight_search_defaults' => $flight_defaults];
+                $added_metas = json_encode($meta_items, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
             $data = [
                 'title' => $title,
                 'heading' => $params['heading'],

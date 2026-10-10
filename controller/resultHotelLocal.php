@@ -300,7 +300,7 @@ class resultHotelLocal extends apiHotelLocal
             AND HH.id = '{$idHotel}' 
             AND HHR.date = HR.date 
             AND HHR.flat_type = 'DBL' 
-            AND HHR.is_del = 'no' 
+            AND HHR.is_del = 'no' AND HHR.is_show='yes'
             ) AS minPrice 
         FROM
             reservation_hotel_tb H
@@ -311,7 +311,7 @@ class resultHotelLocal extends apiHotelLocal
             AND H.id = '{$idHotel}' 
             AND ( HR.date >= '{$startDate}' AND HR.date < '{$endDate}' ) 
             AND HR.flat_type = 'DBL' 
-            AND HR.is_del = 'no' 
+            AND HR.is_del = 'no' AND HR.is_show='yes'
         GROUP BY
             HR.date;
         ";
@@ -342,7 +342,7 @@ class resultHotelLocal extends apiHotelLocal
                      H.city='{$cityId}' AND 
                      HR.flat_type='DBL' AND 
                      HR.date='{$date}' AND
-                     HR.is_del='no'
+                     HR.is_del='no' AND HR.is_show='yes'
                     ";
         $resultHotelReservation = $Model->load($sql);
         $arrayPrice[] = $resultHotelReservation['minPrice'];
@@ -1225,7 +1225,7 @@ class resultHotelLocal extends apiHotelLocal
 
         if ($typeApplication == 'reservation') {
 
-            $sql = " SELECT sell_for_night FROM reservation_hotel_room_prices_tb WHERE id_hotel='{$idHotel}' AND is_del='no' GROUP BY id_room";
+            $sql = " SELECT sell_for_night FROM reservation_hotel_room_prices_tb WHERE id_hotel='{$idHotel}' AND is_del='no' AND is_show='yes' GROUP BY id_room";
             $ResultHotelRoom = $Model->select($sql);
 
             if (!empty($ResultHotelRoom)) {
@@ -1366,7 +1366,7 @@ class resultHotelLocal extends apiHotelLocal
                     user_type='{$this->counterId}' AND
                     date='{$StartDate}' AND 
                     remaining_capacity > 0  AND 
-                    is_del='no' ";
+                    is_del='no' AND is_show='yes' ";
 
             $result_Hotel_AllRoomPrice = $Model->select($sql);
 
@@ -1422,7 +1422,7 @@ class resultHotelLocal extends apiHotelLocal
                 
                     user_type='{$this->counterId}' AND
                     date>='{$StartDate}' AND date<'{$EndDate}' AND 
-                    is_del='no' ";
+                    is_del='no' AND is_show='yes' ";
 
 
         $result_Hotel_AllRoomPrice = $Model->select($sql);
@@ -1881,19 +1881,19 @@ LEFT JOIN reservation_hotel_room_prices_tb ECHD
     AND ECHD.id_room = RP.id_room 
     AND ECHD.date = RP.date 
     AND ECHD.flat_type = 'ECHD'
-    AND ECHD.is_del = 'no'
+    AND ECHD.is_del = 'no' AND ECHD.is_show='yes'
     AND ECHD.user_type = RP.user_type
 LEFT JOIN reservation_hotel_room_prices_tb EXT 
     ON EXT.id_hotel = RP.id_hotel 
     AND EXT.id_room = RP.id_room 
     AND EXT.date = RP.date 
     AND EXT.flat_type = 'EXT'
-    AND EXT.is_del = 'no'
+    AND EXT.is_del = 'no' AND EXT.is_show='yes'
     AND EXT.user_type = RP.user_type
 WHERE 
     RP.id_hotel='{$hotelId}' AND
     RP.id_room='{$roomId}' AND
-    RP.is_del='no' AND
+    RP.is_del='no' AND RP.is_show='yes' AND
     RP.user_type='{$this->counterId}' AND
     RP.date>='{$startDate}' AND RP.date<'{$endDate}' AND
     RP.flat_type='DBL'

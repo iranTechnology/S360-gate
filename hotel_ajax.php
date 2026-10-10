@@ -897,6 +897,14 @@ if (isset($_POST['flag']) && $_POST['flag'] == 'deleteRoomPricesForUser') {
     unset($_POST['flag']);
     echo $Result->deleteRoomPricesForUser($_POST);
 }
+if (isset($_POST['flag']) && $_POST['flag'] == 'setRoomPriceVisibility') {
+    $Result = Load::controller('reservationHotel');
+    echo $Result->setRoomPriceVisibility(
+        isset($_POST['idHotel']) ? $_POST['idHotel'] : '',
+        isset($_POST['idSame']) ? $_POST['idSame'] : '',
+        isset($_POST['visibility']) ? $_POST['visibility'] : ''
+    );
+}
 if (isset($_POST['flag']) && $_POST['flag'] == 'deleteRoomPrice') {
 
     $Result = Load::controller('reservationHotel');

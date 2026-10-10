@@ -603,6 +603,7 @@ class searchHotel extends ApiHotelCore {
                 AND HHR.date = HR.date
                 AND HHR.flat_type = 'DBL'
                 AND HHR.is_del = 'no'
+                AND HHR.is_show = 'yes'
                 AND HHR.online_price > 0
         ) AS minPrice,
 
@@ -619,6 +620,7 @@ class searchHotel extends ApiHotelCore {
                 AND HH.id = '{$idHotel}'
                 AND HHR.date = HR.date
                 AND HHR.is_del = 'no'
+                AND HHR.is_show = 'yes'
                 AND HHR.online_price > 0
         ) AS maxDiscount
 
@@ -634,6 +636,7 @@ class searchHotel extends ApiHotelCore {
         AND (HR.date >= '{$startDate}' AND HR.date < '{$endDate}')
         AND HR.flat_type = 'DBL'
         AND HR.is_del = 'no'
+        AND HR.is_show = 'yes'
         AND HR.remaining_capacity > 0
 
     GROUP BY

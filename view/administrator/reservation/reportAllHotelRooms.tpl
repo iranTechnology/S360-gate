@@ -24,11 +24,18 @@
                     {if $item.isExpired}
                         <span class="btn btn-danger" style="font-size: 10px">منقضی شده</span>
                     {/if}
+                    {if $item.is_show == 'no'}
+                        <span class="label label-warning">عدم نمایش در سایت</span>
+                    {/if}
                     {*<h3 class="box-title m-b-0"> ویرایش اتاق ها({$key+1} )</h3>*}
                     <h4 class="m-b-1">اتاق <span class="room-name text-muted text-sm">{$item.room_name}</span> در هتل <span class="hotel-name text-megna text-sm">{$item.hotel_name}</span></h4>
                     <h6 class="box-title m-b-0"> از تاریخ {$objPublic->format_Date($item['minDate'])} تا  {$objPublic->format_Date($item['maxDate'])}</h6>
                     <div class="collapse m-t-15" aria-expanded="true"></div>
                     <hr>
+                    <button type="button" class="btn btn-warning m-b-15"
+                            onclick="setRoomPriceVisibility(this, '{$item.id_hotel}', '{$item.id_same}', '{if $item.is_show == 'no'}yes{else}no{/if}')">
+                        {if $item.is_show == 'no'}<i class="fa fa-eye"></i> نمایش در سایت{else}<i class="fa fa-eye-slash"></i> عدم نمایش{/if}
+                    </button>
                     <a href="editAllHotelRooms&idHotel={$smarty.get.hotel}&idSame={$item.id_same}">
                         <p>
                             <button type="button" class="btn btn-primary btn-circle"><i class="fa fa-list"></i></button>

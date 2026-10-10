@@ -12,9 +12,19 @@
     {/if}
     {if $page.position || $page.position neq '' }
         
-        {include file="`$smarty.const.FRONT_CURRENT_THEME`include_files/search-box.tpl" active_tab=$page.position}
+        {assign var="page_search_tab" value=$page.position}
+        {if $page.position eq 'internationalFlight' && !empty($page.flight_search_defaults)}
+            {assign var="page_search_tab" value='internalFlight'}
+        {/if}
+        {include file="`$smarty.const.FRONT_CURRENT_THEME`include_files/search-box.tpl" active_tab=$page_search_tab}
 
 
+    {/if}
+
+    {if $page.page_type eq 'separate' && !empty($page.flight_search_defaults) && $page.position eq $page.flight_search_defaults.service}
+        {assign var="flight_defaults" value=$objSpecialPages->flightDefaultsForPage($page)}
+        <script type="application/json" id="special-page-flight-defaults">{$flight_defaults}</script>
+        <script src="assets/modules/js/special-page-flight-defaults.js"></script>
     {/if}
 
     {*    item page*}
