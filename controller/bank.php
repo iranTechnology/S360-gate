@@ -174,8 +174,6 @@ class bank {
 				$this->callBackPage = ROOT_ADDRESS . "/" . 'returnBankTourLocal';
 			}
 
-
-
 		}
 		elseif ( $payFor == 'busTicket' ) {
 
@@ -1091,7 +1089,232 @@ class bank {
 	}
 	#endregion
 
+	public function executeAp($operation)
+	{
+		require_once(LIBRARY_DIR . 'bank/ap/ap.php');
 
+		$client = new ap();
+
+		try {
+
+			$client->setConfig(
+				$this->bankParam1,
+				$this->bankParam2,
+				$this->bankParam3
+			);
+
+			/*
+             * ==========================
+             * GO
+             * ==========================
+             */
+			if ($operation === 'go') {
+
+				$invoice = (string)$this->factorNumber;
+				$amount = (int)$this->amountToPay;
+
+				$separator = (
+					strpos($this->callBackURL, '?') !== false ||
+					strpos($this->callBackURL, '&') !== false
+				) ? '&' : '?';
+
+				$callback = $this->callBackURL
+					. $separator
+					. 'apInvoiceId='
+					. $invoice;
+
+				$date = new DateTime(
+					'now',
+					new DateTimeZone('Asia/Tehran')
+				);
+
+				$request = array(
+					'invoice' => $invoice,
+					'amount' => $amount,
+					'localDate' => $date->format('Ymd His'),
+					'additionalData' => is_scalar($this->additionalData)
+						? (string)$this->additionalData
+						: '',
+					'callbackURL' => $callback,
+					'paymentId' => '0'
+				);
+
+				$result = $client->requestPayment(
+					$request
+				);
+
+				functions::insertLog(
+					'AP GO RESULT ===> ' .
+					json_encode(
+						$result,
+						JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+					),
+					'logBankAp'
+				);
+
+				if (!$result['status']) {
+					return $this->returnMethod(
+						false,
+						$operation,
+						array(
+							'factorNumber' => $this->factorNumber,
+							'trackingCode' => '',
+							'transactionStatus' => 'failed',
+							'failMessage' => $result['message']
+						)
+					);
+				}
+
+				return $this->returnMethod(
+					true,
+					$operation,
+					array(
+						'link' => $result['data']['redirect_url'],
+						'inputs' => array(
+							'RefId' => $result['data']['token']
+						)
+					)
+				);
+			}
+
+			/*
+             * ==========================
+             * RETURN
+             * ==========================
+             */
+
+			$invoice = isset($_GET['apInvoiceId'])
+				? $_GET['apInvoiceId']
+				: $this->factorNumber;
+
+			$this->factorNumber = (string)$invoice;
+
+			$tranResult = $client->transactionResult(
+				$invoice
+			);
+
+			if (!$tranResult['status']) {
+				return $this->returnMethod(
+					false,
+					$operation,
+					array(
+						'factorNumber' => $invoice,
+						'trackingCode' => '',
+						'transactionStatus' => 'failed',
+						'failMessage' => $tranResult['message']
+					)
+				);
+			}
+
+			$transaction = $tranResult['data'];
+
+			if (
+				!isset(
+					$transaction['payGateTranID'],
+					$transaction['amount'],
+					$transaction['salesOrderID']
+				)
+			) {
+				throw new Exception(
+					'اطلاعات تراکنش برگشتی آپ ناقص است.'
+				);
+			}
+
+			if (
+				(string)$transaction['salesOrderID']
+				!==
+				(string)$invoice
+			) {
+				throw new Exception(
+					'شماره فاکتور تراکنش آپ مطابقت ندارد.'
+				);
+			}
+
+			if (
+				(int)$this->amountToPay > 0 &&
+				(int)$transaction['amount']
+				!==
+				(int)$this->amountToPay
+			) {
+				throw new Exception(
+					'مبلغ تراکنش آپ با مبلغ فاکتور مطابقت ندارد.'
+				);
+			}
+
+			$payGateTranId = $transaction['payGateTranID'];
+
+			/*
+             * Verify
+             */
+			$verify = $client->verifyPayment(
+				$payGateTranId
+			);
+
+			if (!$verify['status']) {
+				return $this->returnMethod(
+					false,
+					$operation,
+					array(
+						'factorNumber' => $invoice,
+						'trackingCode' => '',
+						'transactionStatus' => 'failed',
+						'failMessage' => $verify['message']
+					)
+				);
+			}
+
+			/*
+             * Settlement
+             */
+			$settlement = $client->settlementPayment(
+				$payGateTranId
+			);
+
+			if (!$settlement['status']) {
+				return $this->returnMethod(
+					false,
+					$operation,
+					array(
+						'factorNumber' => $invoice,
+						'trackingCode' => '',
+						'transactionStatus' => 'failed',
+						'failMessage' => $settlement['message']
+					)
+				);
+			}
+
+			return $this->returnMethod(
+				true,
+				$operation,
+				array(
+					'factorNumber' => (string)$invoice,
+					'amountToPay' => $transaction['amount'],
+					'trackingCode' => (string)$payGateTranId,
+					'transactionStatus' => 'success',
+					'failMessage' => ''
+				)
+			);
+
+		} catch (Exception $e) {
+
+			functions::insertLog(
+				'AP EXCEPTION ===> ' .
+				$e->getMessage(),
+				'logBankAp'
+			);
+
+			return $this->returnMethod(
+				false,
+				$operation,
+				array(
+					'factorNumber' => $this->factorNumber,
+					'trackingCode' => '',
+					'transactionStatus' => 'failed',
+					'failMessage' => $e->getMessage()
+				)
+			);
+		}
+	}
 	#execution of Sadad
 	public function executeSadad( $operation ) {
 		require_once( LIBRARY_DIR . 'bank/sadad/sadad.php');
